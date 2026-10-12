@@ -4,10 +4,24 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "关系教学四次初评对照准备完成；候选语义未证，新付费范围未授权，自动任务暂停。"
+pause_reason: "四次关系初评已授权但原CI测试误报；付费前waiter已停，独立分支修复中，原冻结HEAD/授权不变。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 用户已明确授权关系教学四次初评，但原HEAD `549220ab1b8c7a4edcd93dd74ab6c366c9c2a733` 的CI `38254464870` 出现Linux测试断言误报。合法绝对路径 `/bin/python -m` 被当作裸命令拒绝；未到模型发送。唯一waiter PID22200已停止，automation PAUSED；原后端树干净、冻结HEAD与授权原件保持。
+
+修复在独立工作目录 `D:/riftcoach-agent-ci-portability-20261012` 的 `codex/host-dispatch-ci-portability` 分支进行，仅调整测试并记录状态。两处断言改为逐条核绝对解释器和命令数量，Linux/空格路径/Windows及负例覆盖。见[修复记录](plans/2026-10-12-host-dispatch-ci-portability.md)与 `data/evaluation/results/host_dispatch_ci_portability_20261012.json`；公共CI须核新提交实际结果。
+
+## 当前行动
+
+下一项：完成并提交独立测试修复，取得新HEAD的公共CI；按原精确HEAD/CI约束明确迁移绑定后才首次执行同一四次范围。原authorization不覆盖、不延长，截止 `2026-10-13T13:18:08.784319Z`；plan `8b93463e04a5d4321727ba06188914047d12215d097a12fc0091eabb2e3d0dda`、材料、最多4 GLM初评/Flash0、387072tokens、2400活动秒/86400Host秒和估价5.718016元非硬封顶不变。没有业务run或operator/execution，Provider/HTTP/业务submit/新增资格均0。不得重启旧waiter或另开付费批。
+
+候选语义仍未验证；两臂均过无改善证据，候选仍错则否定。旧47/26/14/146原件及缺口独立保留；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习均未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 关系教学对照授权前准备快照
 
 2026-10-12 新开发完整报告成对诊断的无付费准备完成。R4保留正确反向比较与区间重叠；T9仅在两段引入明确均值/全称错误，两稿各26个实际请求段。复用原独立主体做一次全文开发校准，真实终答已核；R4无实质错误、T9两处需修，第6段仅可读性建议。熟悉来源、非holdout；校准不认证未来Provider答复。
 
@@ -19,7 +33,6 @@ pause_reason: "关系教学四次初评对照准备完成；候选语义未证�
 
 本轮项目Provider/HTTP/业务submit/资格0，复用独立开发任务1、新Agent0；automation实核PAUSED。旧47/26/14/146原件及各自缺口、历史2/15、3/15、remaining11、分段15及教学对照分别保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。本次提交公共CI须按实际HEAD查询，不能沿用旧绿。
 
-## 以下为历史记录
 
 ### 2026-10-12 合同对照后的暂定动作（来源先行已撤回）
 

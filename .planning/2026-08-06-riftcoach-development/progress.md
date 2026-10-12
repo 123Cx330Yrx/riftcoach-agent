@@ -1,3 +1,11 @@
+## 2026-10-12 关系初评发送前CI误报与隔离修复
+
+用户已授权四次初评，绑定549220ab/CI38254464870及原24小时截止。Linux shard0报告1失败846通过13跳过：合法绝对/bin/python -m被字符串否定断言误报。唯一waiter PID22200已停止，原树/授权未改，无run/execution，Provider/HTTP/submit/资格0，automation PAUSED。
+
+独立分支codex/host-dispatch-ci-portability修两处同类断言，逐命令核指定绝对Python和命令数；Linux/空格路径/Windows及裸命令/相对/错路径负例覆盖。28项通过（107.43s）。新工作树初次CRLF换行触发数据哈希拒绝，恢复2386份未改文本的Git原字节后通过；暂存核只有预期测试/状态变更。原执行树固定包及全部绑定源码SHA实核不变，4请求verify通过。隔离树LF源码与原Windows包raw-byte摘要不同，verify正确拒绝，未重写包或hash。详见host-dispatch-ci-portability计划及同名结果审计。
+
+下一项推送修复取得新CI，再明确原精确HEAD/CI授权的迁移绑定；不延展2026-10-13T13:18:08.784319Z、不扩范围、不重启旧waiter。测试修复不证明候选语义或正式15/自然消费/8E及后续完成。
+
 ## 2026-10-12 四次关系教学对照准备完成，未启动付费
 
 从原产品格式报告编写R4/T9，两稿各26段。完整policy与来源、当前输入全文经一次复用主体独立校准，真实native final/19公开工具调用已实读；R4无真错、T9第14/15段需修，第6段仅advisory。主审先存意见、重算五组均值及全对关系，再核全部独立修法。派发正文加密，按既有FINAL policy验证路由/API终答；原日志的压缩摘要未冒充判断。材料校准不是业务submit。

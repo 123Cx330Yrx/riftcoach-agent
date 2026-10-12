@@ -9,6 +9,7 @@ import pytest
 
 from scripts import document_full_report_diagnostic as original
 from scripts import document_full_report_remaining_initial as remaining
+from tests.dispatch_assertions import assert_dispatch_python
 
 
 @pytest.fixture(scope='module')
@@ -102,7 +103,8 @@ def test_real_observe_uses_explicit_dispatch_or_stops_before_host_wait(
             text = (folder / 'dispatch.txt').read_text(encoding='utf-8')
             assert str(remaining.ROOT.resolve()) in text
             assert str(Path(sys.executable).resolve()) in text
-            assert 'python -m ' not in text
+            assert_dispatch_python(text, Path(sys.executable).resolve(), sys.platform,
+                                   command_count=2)
             assert 'scripts.verify_host_review_artifacts' in text
             assert 'check-answer' in text and 'do not append backend' in text
         before = {p.relative_to(tmp_path).as_posix(): p.read_bytes()

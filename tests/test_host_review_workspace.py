@@ -15,6 +15,7 @@ import pytest
 from scripts.document_sampling_screening import load_private
 from scripts.host_review_workspace import HostReviewWorkspace
 from app.evaluation.role_task_outcome import stage_identity
+from tests.dispatch_assertions import assert_dispatch_python
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -107,7 +108,7 @@ def test_author_file_through_submit_next_request_and_strict_seal(tmp_path, monke
         folder = directory / cell['key'].replace(':', '-')
         text = (folder / 'dispatch.txt').read_text(encoding='utf-8')
         assert '--answer-file ' in text and str(a.workspace.answers) in text
-        assert 'python -m ' not in text
+        assert_dispatch_python(text, a.workspace.python, sys.platform, command_count=3)
     before = {p.relative_to(directory).as_posix(): p.read_bytes()
               for p in directory.rglob('*') if p.is_file()}
     output = tmp_path / 'OFFLINE-seal.json'

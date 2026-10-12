@@ -19,8 +19,8 @@
 **本包新证据：** H5原始双审拒绝不变；原H5/V2自由章节在两种编辑表示下4项格式失败。新合成Coach格式14项对照证明结构与引用编号不能过滤错误替换；4项离线测试通过。实际编辑没有照抄修法的policy冲突；不选换schema/加引用作为语义修复。见 `docs/plans/2026-10-12-correction-consumption-audit.md`。
 **后续裁决：** 来源先行替代初评安排漏核ADR0110/10月8日真实漏检证据，已撤回，未建设/执行。现隔离关系教学候选只扩展均值方向/逐行比较/因果对照；保持完整初评、编辑、终评与全部来源/schema，25项相关离线检查通过。模型语义尚未验证。见 `docs/plans/2026-10-12-relation-contrast-preparation.md`。
 **本轮完成：** 两份新开发完整报告各26段，完整来源与policy的独立校准完成；R4正确保留、T9两处真错需修。新600秒私有worker/Host工作区接线完成；联合66项、最终新入口29项通过，当前绝对路径及真实native预检通过。包及材料/校准原件SHA固定，方案见 `docs/plans/2026-10-12-relation-initial-comparison.md`。这不是Provider语义、完整15或实际消费成功。
-**当前下一动作：** 就固定plan `8b93463e04a5d4321727ba06188914047d12215d097a12fc0091eabb2e3d0dda` 确认新4 GLM初评范围（Flash0、387072tokens、2400活动秒/24h Host，估价5.718016元非硬封顶），绑定精确HEAD全绿CI及即时前检后才首次执行。没有授权文件、waiter或业务run；不提前启动。
-**依赖与边界：** 工作区演练入口paid run仍关闭；新业务入口须校验新范围授权。旧H5/V2/S8不重买、旧47/26/14/146原件与失败裁决保持；automation PAUSED。本轮项目Provider/HTTP/submit/资格0，复用独立材料校准1次、新Agent0。真实校准只证明本次新材料的判断，不能替未来业务预签名。
+**当前下一动作：** 四次初评已获用户授权，但原CI38254464870有Linux测试误报；waiter PID22200已在发送前停止。独立分支修复两处绝对Python断言并验证/提交/取得新CI，再明确精确HEAD/CI迁移绑定。原HEAD549220ab、plan摘要和授权原件不改，原截止2026-10-13T13:18:08.784319Z不延展。见 `docs/plans/2026-10-12-host-dispatch-ci-portability.md`。
+**依赖与边界：** 无业务run/execution，Provider/HTTP/submit/资格0，automation PAUSED；不重启旧waiter或另开付费批。材料及四次范围不变；旧H5/V2/S8不重买、旧47/26/14/146原件与失败裁决保持。复用独立材料校准1次、新Agent0，不替未来业务预签名。
 **验收与失败决策：** 方案必须能表达正确保留、真实错误和修法新增断言的反例，且实际编辑消费可达；不能由结构通过推断语义可靠。证据反驳当前设计就改设计，不自动付费重试。
 
 ## Dependencies and Follow-through
@@ -42,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方当前工作卡为准：来源先行安排已撤回；关系教学四调用对照已完成材料校准与执行准备，下一项确认具体新付费范围并绑定同HEAD全绿CI，尚未执行。正式同版本15及所有下游依赖保留。
+以canonical和上方当前工作卡为准：来源先行安排已撤回；四次关系初评授权后被CI误报挡在首次发送前。完成隔离测试修复及新CI/原授权迁移绑定后才恢复。正式同版本15及所有下游依赖保留。
 
 ## History
 
