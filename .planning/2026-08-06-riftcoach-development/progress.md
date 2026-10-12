@@ -1,3 +1,9 @@
+## 2026-10-12 错误修法消费合同对照
+
+原H5初评修法错误已被双方拒绝；未进入编辑。追踪实际system message排除“必须照抄修法”冲突，现有来源已有2.50/.50和all_pairs=greater。原H5/V2自由章节在两种编辑表示下4项固定章节失败，不能直接当编辑例；不改旧稿。另以明确新合成Coach格式做14项语义正反例/空编辑/正确保持对照，两种表示均能组装错句且保持semantic_approval=false；无效来源/锚点拒绝、完整终评请求绑定通过。新增4项测试通过，首次本地替身usage构造错误已修复，格式反证转为正式审计结果。
+
+不选换schema或加引用编号当语义修复；下一项检查已有来源核验编辑→独立完整终评任务分工的runtime/预算/停止路径，尚未采用或授权付费。结果 scripts/audit_correction_consumption.py、data/evaluation/results/correction_consumption_audit_20261012.json、docs/plans/2026-10-12-correction-consumption-audit.md。全部旧原件只读、Provider/HTTP/native/submit/新资格0，automation PAUSED。82f0546a的CI查询HTTP502，状态未知而非失败。
+
 ## 2026-10-12 Host等待方故障监督与发布竞态补强
 
 原生正常链路固定在8686d19a，原audit及seal不改。submit在独立调用栈失败时发布abort，等待方轮询库存；相关跨调用栈测试证明未提交异物/原生不可用能自主退出，无下一请求。库存检查与原子提交共用原锁，延迟发布超过轮询周期仍成功，不误拒受锁临时文件；已关闭replay保持只读。最终工作区14项通过，旧完整/两稿入口19项保持，共33项。失败分支是离线证据，没有重新派原生任务或项目模型调用。

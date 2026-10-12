@@ -224,3 +224,8 @@
 /tests/host_workspace_native_rehearsal.py text eol=lf
 /tests/test_host_review_workspace.py text eol=lf
 /data/evaluation/results/host_workspace_repair_20261012/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Read-only correction-consumption counterexample audit.
+/scripts/audit_correction_consumption.py text eol=lf
+/tests/test_correction_consumption.py text eol=lf
+/data/evaluation/results/correction_consumption_audit_20261012.json -text

@@ -4,10 +4,24 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "Host工作区修复与无付费原生演练完成；H5语义修法仍未解决，旧认证缺口保留，自动任务暂停。"
+pause_reason: "H5合同对照排除编辑格式替代语义核验；来源先行候选尚待离线接线，旧缺口保留，自动任务暂停。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 错误修法消费的离线合同对照完成。H5错误首次出现在初评建议中，真实Host双方已拒绝；实际编辑policy没有强制照抄修法冲突。现有计算来源已包含2.50/.50及all_pairs=greater。原H5/V2自由章节报告在两种编辑表示下均无法通过产品固定章节门，共4项明确格式失败；原任务本来只做初评，未发生付费编辑。
+
+另用新作者合成的Coach格式材料，对照按段替换和带来源编号替换，共14项覆盖正确保持、正确修法、错误数字/区分/因果/全称及空编辑。两种表示均只证明结构有效，不能拦住语义错句；无效锚点/来源正确拒绝、原文与完整终评请求绑定已核。4项新增测试通过，未修改产品或历史共享源码。结果见[合同裁决](plans/2026-10-12-correction-consumption-audit.md)及`data/evaluation/results/correction_consumption_audit_20261012.json`。Provider/HTTP/native任务/业务submit/资格均0；automation仍PAUSED。
+
+## 当前行动
+
+不以更换编辑schema或增加引用编号作为H5语义修复。下一项：无付费验证既有来源核验/必要编辑→独立完整终评的任务分工候选，检查真实runtime共享预算和失败停止路径，先证明能省去中间修法转述而不放宽最后的质量标准。尚未选择付费范围、未采用该候选或替换正式15合同；构造请求成功不能冒充已接线或更可靠。
+
+Host工作区修复及唯一无付费native演练维持原结论；旧47/26/14/146原件与封存/认证缺口保留。82f0546a的CI38249016912此次查询HTTP502，结果未知，不计CI失败也不沿用旧绿。历史2/15、3/15、remaining11、分段15与教学对照不拼资格。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 工作区修复完成时的合同检查起点
 
 2026-10-12 Host工作区与库存边界修复已实现于新的私有验证入口：dispatch明确run外作者文件；提交前、原生读取后的提交锁内、下一请求及transport交接前核库存，并核作者JSON与原生判断一致。旧共享源码、白名单、已关闭业务run未改，付费run关闭，automation仍PAUSED。
 
@@ -21,7 +35,7 @@ pause_reason: "Host工作区修复与无付费原生演练完成；H5语义修�
 
 旧H5双审拒绝、S8已返回未认证、V2未认证、TCP unknown1、旧温度及两稿strict seal缺口全部保留。旧47/26/14/146原件清单和SHA实核不变，不补签/重开/移删原件。历史2/15、3/15、remaining11、完整15分段及教学对照不拼资格。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
 
-## 以下为历史记录
+
 
 ### 2026-10-12 两稿关闭后的工作区修复起点
 
