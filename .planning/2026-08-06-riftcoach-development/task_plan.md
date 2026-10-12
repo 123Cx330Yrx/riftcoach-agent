@@ -17,10 +17,11 @@
 **起点：** H5正确检出中单早死均值不接近，却给出错误否定区分的修法；原生双方拒绝。S8仅有响应未认证，所有旧资格/封存缺口独立保留。
 **本包已完成：** 新私有入口指定run外作者答案，提交与下一请求前核库存和作者/native一致；33项相关离线检查通过，含等待/分离提交失败传播及受锁发布。唯一新短报告完成真实作者落盘/check-answer/native/submit/严格seal，14公开命令exit0、26演练原件不变。transport明确为模拟；项目Provider/HTTP/tokens0、业务submit0、资格0，未重审旧任务。结果见 `docs/plans/2026-10-12-host-workspace-repair.md`。
 **本包新证据：** H5原始双审拒绝不变；原H5/V2自由章节在两种编辑表示下4项格式失败。新合成Coach格式14项对照证明结构与引用编号不能过滤错误替换；4项离线测试通过。实际编辑没有照抄修法的policy冲突；不选换schema/加引用作为语义修复。见 `docs/plans/2026-10-12-correction-consumption-audit.md`。
-**后续裁决：** 来源先行替代初评安排漏核ADR0110/10月8日真实漏检证据，已撤回，未建设/执行。现隔离关系教学候选只扩展均值方向/逐行比较/因果对照；保持完整初评、编辑、终评与全部来源/schema，25项相关离线检查通过。模型语义尚未验证。见 `docs/plans/2026-10-12-relation-contrast-preparation.md`。
-**本轮完成：** 两份新开发完整报告各26段，完整来源与policy的独立校准完成；R4正确保留、T9两处真错需修。新600秒私有worker/Host工作区接线完成；联合66项、最终新入口29项通过，当前绝对路径及真实native预检通过。包及材料/校准原件SHA固定，方案见 `docs/plans/2026-10-12-relation-initial-comparison.md`。这不是Provider语义、完整15或实际消费成功。
-**当前下一动作：** 四次初评已获用户授权，但原CI38254464870有Linux测试误报；waiter PID22200已在发送前停止。独立分支修复两处绝对Python断言并验证/提交/取得新CI，再明确精确HEAD/CI迁移绑定。原HEAD549220ab、plan摘要和授权原件不改，原截止2026-10-13T13:18:08.784319Z不延展。见 `docs/plans/2026-10-12-host-dispatch-ci-portability.md`。
-**依赖与边界：** 无业务run/execution，Provider/HTTP/submit/资格0，automation PAUSED；不重启旧waiter或另开付费批。材料及四次范围不变；旧H5/V2/S8不重买、旧47/26/14/146原件与失败裁决保持。复用独立材料校准1次、新Agent0，不替未来业务预签名。
+**准备阶段裁决：** 来源先行替代初评安排漏核ADR0110/10月8日真实漏检证据，已撤回，未建设/执行。现隔离关系教学候选只扩展均值方向/逐行比较/因果对照；保持完整初评、编辑、终评与全部来源/schema，25项相关离线检查通过。当时尚无模型语义证据，本批实际结果见下。见 `docs/plans/2026-10-12-relation-contrast-preparation.md`。
+**执行前准备：** 两份新开发完整报告各26段，完整来源与policy的独立校准完成；R4正确保留、T9两处真错需修。新600秒私有worker/Host工作区接线完成；联合66项、最终新入口29项通过，当前绝对路径及真实native预检通过。包及材料/校准原件SHA固定，方案见 `docs/plans/2026-10-12-relation-initial-comparison.md`。这不是Provider语义、完整15或实际消费成功。
+**本批执行结果：** 用户确认迁移后1039fb50/CI38258297688全绿，4次初评全部发送：R4基线误报被双方拒绝，R4候选正确保留，T9基线检出两处真错且修法正确，T9候选600秒超时。严格回放/封存通过，3项真实native、73原件SHA不变；actual/HTTP各4、known50893tokens、unknown1/receiptless1、未发0。见 `docs/plans/2026-10-12-relation-initial-result.md`。
+**当前下一动作：** 本批已关闭。只做无付费方案裁决：区分正确稿范围误报与旧H5关系修法错误，从现有证据明确新增验证的信息价值和具体范围；不直接采用候选或追加付费批，新成本另行授权。
+**依赖与边界：** automation已实核PAUSED；原authorization/issued_at/截止不改、不延展。候选仅有R4单次保留差异，错误稿配对不完整，旧H5修法机制未证改善；新增资格0。旧47/26/14/146原件及缺口逐项SHA不变，不重买/补签，不拼历史资格。
 **验收与失败决策：** 方案必须能表达正确保留、真实错误和修法新增断言的反例，且实际编辑消费可达；不能由结构通过推断语义可靠。证据反驳当前设计就改设计，不自动付费重试。
 
 ## Dependencies and Follow-through
@@ -42,7 +43,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方当前工作卡为准：来源先行安排已撤回；四次关系初评授权后被CI误报挡在首次发送前。完成隔离测试修复及新CI/原授权迁移绑定后才恢复。正式同版本15及所有下游依赖保留。
+以canonical和上方当前工作卡为准：四次关系初评已发送并关闭，第四项超时，3项双审及严格seal完成；候选未采用、automation PAUSED。后续仅无付费方案裁决，不重开本批。正式同版本15及所有下游依赖保留。
 
 ## History
 

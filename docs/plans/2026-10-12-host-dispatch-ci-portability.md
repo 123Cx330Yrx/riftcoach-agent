@@ -1,4 +1,6 @@
-# Host dispatch CI portability repair
+# Host dispatch CI portability repair (pre-migration record)
+
+Closed update: the user explicitly confirmed rebinding to `1039fb50` / CI `38258297688`; all jobs passed, the authorized fast-forward preserved source/package bytes, and the same batch ran without extending its expiry. See [closed results](2026-10-12-relation-initial-result.md). The remainder is the original pre-migration snapshot.
 
 The four-request relation comparison remains unexecuted. Its frozen HEAD is
 `549220ab1b8c7a4edcd93dd74ab6c366c9c2a733`, with CI `38254464870` and plan

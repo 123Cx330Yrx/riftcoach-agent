@@ -4,10 +4,26 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "四次关系初评已授权但原CI测试误报；付费前waiter已停，独立分支修复中，原冻结HEAD/授权不变。"
+pause_reason: "关系四次初评已关闭：3项双审、最后一项600秒超时；严格封存，automation PAUSED，候选未采用。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 关系教学四次初评对照已关闭。用户明确确认后迁移到1039fb50184aebdcbc9401da3b33b594b92919b7及全绿CI38258297688，原授权/原期限保留。4次GLM-5.3/high均发送，3次完整响应并真实双审，T9候选第四次600秒超时；无重试/补发，新增资格0，automation已实核PAUSED。
+
+R4基线第6段被双方判误报，R4候选正确保留；T9基线两处真错的检出、解释、来源和修法获双方认可。T9候选无完整响应，不能评语义。只得到正确稿保留的单次差异，尚不能证明旧H5错误修法改善或采用候选。见[关闭结果](plans/2026-10-12-relation-initial-result.md)。
+
+严格replay/seal成功，3项真实native复核、73原件SHA不变。actual/HTTP各4、known50893tokens、unknown1/receiptless1、未发0；已知部分估价0.637484元，超时费用未知，非总账单。旧47/26/14/146原件及缺口逐项保持；本次源/包未改，原授权未延展。
+
+## 当前行动
+
+本批完成关闭，不重开。下一项仅做无付费方案裁决：从已封存结果区分正确稿范围误报与旧H5关系修法错误，明确新增验证的信息价值，再形成可审查的具体范围；不直接采用候选或追加付费批。任何新成本另行授权。
+
+正式同版本15、自然生成/工具/编辑/终评消费、8E以及Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。历史库存不拼资格。
+
+## 以下为历史记录
+
+### 2026-10-12 CI修复迁移前快照（已被上方结果替代）
 
 2026-10-12 用户已明确授权关系教学四次初评，但原HEAD `549220ab1b8c7a4edcd93dd74ab6c366c9c2a733` 的CI `38254464870` 出现Linux测试断言误报。合法绝对路径 `/bin/python -m` 被当作裸命令拒绝；未到模型发送。唯一waiter PID22200已停止，automation PAUSED；原后端树干净、冻结HEAD与授权原件保持。
 
@@ -19,7 +35,7 @@ pause_reason: "四次关系初评已授权但原CI测试误报；付费前waiter
 
 候选语义仍未验证；两臂均过无改善证据，候选仍错则否定。旧47/26/14/146原件及缺口独立保留；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习均未完成。
 
-## 以下为历史记录
+### 以下为更早历史记录
 
 ### 2026-10-12 关系教学对照授权前准备快照
 

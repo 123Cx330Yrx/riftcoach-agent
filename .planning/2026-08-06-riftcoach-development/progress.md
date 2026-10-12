@@ -1,3 +1,11 @@
+## 2026-10-12 关系初评关闭：三项双审、一项传输超时
+
+用户明确确认迁移到1039fb50/CI38258297688后，同批原授权/期限不变；公共8个job全绿，源/包SHA保持，唯一runner14:20:04至14:57:32 UTC。四次全部发送，R4基线第6段误报双方拒绝；R4候选pass双方接受；T9基线两处关系错误及正确修法双方接受；T9候选600079ms deadline/ProviderTimeoutError，无完整响应、无派审/submit。无重试/补发/新Agent。
+
+actual/HTTP各4，known50893tokens，unknown1/receiptless1，未发0；已知部分估价0.637484元、超时部分未知，非核实总账单。active796.016秒/Host1442.062秒在预算内。严格只读replay/create-only seal通过，3真实native、73原件SHA不变；旧47/26/14/146清单与SHA逐项保持。公开命令16/14/14均exit0；作者run外create-only/check-answer/native字面核验成立，不声称解密派发或OS沙箱。automation已实核PAUSED。
+
+候选仅在R4获得保留正确稿的单次差异；T9基线没有重现旧H5错误修法，候选T9结果未知，无法宣称关系修法改善或采用。结果、关闭审计、公开Host证据和方案记录已保存。下一项只做无付费方案裁决；任何新批另需授权，正式15/自然消费/8E及既有全部下游保留。
+
 ## 2026-10-12 关系初评发送前CI误报与隔离修复
 
 用户已授权四次初评，绑定549220ab/CI38254464870及原24小时截止。Linux shard0报告1失败846通过13跳过：合法绝对/bin/python -m被字符串否定断言误报。唯一waiter PID22200已停止，原树/授权未改，无run/execution，Provider/HTTP/submit/资格0，automation PAUSED。

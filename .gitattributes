@@ -244,3 +244,8 @@
 /data/evaluation/fixtures/document_relation_initial_20261012/** -text
 /data/evaluation/results/host_relation_material_calibration_20261012/** -text
 /data/evaluation/results/document_relation_preparation_20261012.json -text
+
+# Closed relation comparison: preserve native and raw-byte evidence.
+/data/evaluation/results/document_relation_initial_result_20261012.json -text
+/data/evaluation/results/document_relation_initial_close_audit_20261012.json -text
+/data/evaluation/results/document_relation_host_evidence_20261012.json -text
