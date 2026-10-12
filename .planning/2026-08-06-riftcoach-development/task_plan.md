@@ -13,19 +13,12 @@
 
 ## Active Work Package
 
-**目标：** 让审查正确区分全文已消解的省略与真实事实错误，取得同版本质量证据后接入真实Agent消费。
-**当前起点：** 修正控制温度筛查已关闭：7请求、6原生双审（4接受/2拒绝）、第7项有回执无合规独立终答、3项未发；known117826/unknown0/receiptless0，新资格0。停止原因是Host误读标签，非Provider失败。严格replay又在旧时钟等式失败，未生成strict seal；原件保持。
-**反证与决策：** 首对双拒绝与全文block14及实际policy甲1存在判读冲突，不能把Host一致当温度效果。两种温度只在两个修正final正例得到合规配对通过，采用门未完成；不再原样购买此筛查。
-**已完成修复：** 时钟waiting/finished/summary每组字段用一次观测；单任务原字节SHA核验已接入实际dispatch，新计划绑定其源码，异常不发布交接或进入Host等待。第7项只读干跑成功、146原件未改。历史测试使用核实的旧源码快照，新生产代码仍不能匹配旧冻结批；前提交CI失败与修复后待核状态分开记录。
-**本次校准结果：** 用户授权的1个新主体/1次六例合成校准完成，真实唯一final及10条公开工具调用核验通过，六项判定有完整依据，B4交叉引用联动修法为独立增量。11处引句及全部均值实核，Provider0/业务submit0/新资格0；只证明该组材料，不证明长文稳定性。c49f004c公共CI另暴露历史clock归档遗漏，已按旧SHA补齐、13项检查通过，公共CI仍待完整结果。
-**完整报告校准：** 复用原主体完成三篇16段新报告检查；正确稿无实质错，窄范围数字错与K3伪引均检出，7处引句及修法实核。新Agent0、Provider0、业务submit0；真实唯一final及15条公开读取留存，146旧原件不变。一次熟悉来源受控组不等于稳定率或产品资格。
-**三稿诊断已关闭：** 用户授权、冻结6265e14d、CI38226883176全绿后首次执行；V2 TCP建连超时，1次客户端尝试、known0/unknown1/receiptless1，H5/S8未发，无模型输出/Host派发/submit/新资格。严格replay与create-only seal通过，14本批和146旧批原件SHA保持；旧strict seal缺口不补。runner退出，automation暂停，无重试。
-**网络后续批已关闭：** 用户确认后，11d1f9e0/CI38232745159全绿首次执行，V2模型97/pass但独立命令误用不存在的backend工作目录，OS error267后原生routing_failed终答。按规则停批，1调用/15927known/unknown0/receiptless0，后2未发，认证/submit/资格0；26原件/24公开JSON严格seal成功。旧14+146原件和冻结源码保持，automation暂停。主审审查未完成，不补签。
-**交接修正已实核：** AGENTS补明确cwd/Python和原样dispatch要求；主审路径检查后，复用原主体另做中性routing-probe，5条公开命令exit0、同checkpoint两次读取/作者check-answer/唯一native final实核。Provider0/业务submit0，不是旧任务重派或语义认证。证据host_explicit_cwd_probe_20261012.json。
-**两稿已执行关闭：** ceb3a5ad/CI38240151033全绿，2GLM/2HTTP/33883known/unknown0/receiptless0。H5真实双审一致拒绝wrong_correction；S8返回但未派审。作者答案额外写入run、H5提交前未查库存，S8在途才发现；helper abort后exit1，strict seal因semantic_unexpected_run_file失败。47本批及旧26/14/146原件保持，不移删额外文件补造seal。自动任务PAUSED，新增资格0。结果docs/plans/2026-10-12-full-report-remaining-result.md。
-**当前下一动作：** 无付费修复审查工作区和库存边界：生成dispatch给出run外作者文件路径；提交/下一请求前验证库存；覆盖作者落盘到strict seal完整路径。AGENTS要求已补，实际生成器/运行门仍待实现。随后依据H5“反向关联被写成无区分”反例选择修法机制，不立即重买案例、不补签S8/V2。
-**验收边界：** 软件回归及只读实件摘要检查不等于语义通过；旧计时回执不能回填。严格seal缺口明确保留。Provider调用、Host原生证据、语义真值和产品资格分别报告。
-**证据：** `docs/plans/2026-10-12-host-full-report-calibration.md`及同名公开结果目录；`docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
+**目标：** 让真实事实错误被检出后得到正确修法，取得同版本质量证据并接入真实Agent消费。
+**起点：** H5正确检出中单早死均值不接近，却给出错误否定区分的修法；原生双方拒绝。S8仅有响应未认证，所有旧资格/封存缺口独立保留。
+**本包已完成：** 新私有入口指定run外作者答案，提交与下一请求前核库存和作者/native一致；30项离线检查通过。唯一新短报告完成真实作者落盘/check-answer/native/submit/严格seal，14公开命令exit0、26演练原件不变。transport明确为模拟；项目Provider/HTTP/tokens0、业务submit0、资格0，未重审旧任务。结果见 `docs/plans/2026-10-12-host-workspace-repair.md`。
+**当前下一动作：** 检查评审修法到编辑消费的合同，用H5与既有正确全文反例比较如何约束新增替换断言，先验证表达能力与相关失败分支，再决定必要模型实测。policy已有逐项核修法与同类数字例，不把重复提醒当有效方案。
+**依赖与边界：** 验证入口的paid run关闭；未来业务范围/计划/成本独立冻结，不能借本包重买V2/H5/S8。旧47/26/14/146原件与失败裁决保持，automation PAUSED。真实native演练只证该次本地整链，不是模型稳定率或产品资格。
+**验收与失败决策：** 方案必须能表达正确保留、真实错误和修法新增断言的反例，且实际编辑消费可达；不能由结构通过推断语义可靠。证据反驳当前设计就改设计，不自动付费重试。
 
 ## Dependencies and Follow-through
 
@@ -46,7 +39,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical当前行动为准：Host校准和三次新Provider诊断的离线可执行准备已完成；同HEAD CI确认及具体成本授权后才首次执行。修正控制批已关闭，strict seal未通过，禁止重买、补发或回填。正式同版本15、自然消费、8E及下游依赖保留。
+以canonical和上方当前工作卡为准：工作区修复完成，下一项是H5修法机制的无付费合同对照。未来付费范围尚未选择或启动，正式同版本15及所有下游依赖保留。
 
 ## History
 

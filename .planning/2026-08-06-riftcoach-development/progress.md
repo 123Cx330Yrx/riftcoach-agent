@@ -1,3 +1,11 @@
+## 2026-10-12 Host工作区修复与真实native整链演练
+
+新增prospective工作区helper及私有验证入口，旧冻结源码不动；明确run外作者路径，提交前/锁内/下一请求和transport前核库存，作者文件与native判断不一致拒绝。30项相关离线回归通过，含作者实际写文件、CLI校验、模拟native、submit及strict seal，而非直接合成事件绕过落盘。
+
+复用原主体，唯一新短报告演练完成：14真实公开命令exit0、作者create-only、同checkpoint重读/check-answer、唯一native终答实读，主审提交成功、runner exit0、26原件strict seal成功且SHA不变。响应/transport/用量是显式模拟夹具；项目Provider/HTTP/tokens0、业务submit0、新资格0。前两次本地准备因时间保留及缺知识引用停止，无独立派审，失败与driver快照保留；修正后先完整离线预验，再派唯一原生任务。旧47/26/14/146全部原件核验保持。自动任务仍PAUSED。
+
+证据：data/evaluation/results/host_workspace_repair_20261012/audit.json，SHA cd71c137a53f0aa9648c85bf11d5bea34564555134492f27354d2fb76e3d1f58；模拟transport/真实native seal SHA 62530865bfbc1c14597d63fb3438f2a7c0812e54aefa1b39864eb0b5f99c5032。公共CI与提交绑定另核；旧绿不代表本次。下一项回到错误修法机制，非新付费批或完整15已就绪。
+
 ## 2026-10-12 两稿实际执行与库存故障关闭
 
 ceb3a5ad/CI38240151033全绿后唯一runner111236首次执行，2GLM/2HTTP、input26595/output7288、known33883/unknown0/receiptless0，合同估价0.416824元非账单。H5 82/needs_revision检出真错但修法错误，主审/独立全文审查同拒；16公开命令exit0、作者check-answer/唯一native实核，成功submit1。S8 74/needs_revision仅返回，无全文双审或提交。

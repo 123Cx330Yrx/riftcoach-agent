@@ -4,10 +4,27 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "两稿初评已关闭：H5双审拒绝错误修法；S8已返回未派审。作者答案额外落入run导致strict seal失败，自动任务暂停。"
+pause_reason: "Host工作区修复与无付费原生演练完成；H5语义修法仍未解决，旧认证缺口保留，自动任务暂停。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 Host工作区与库存边界修复已实现于新的私有验证入口：dispatch明确run外作者文件；提交前、原生读取后的提交锁内、下一请求及transport交接前核库存，并核作者JSON与原生判断一致。旧共享源码、白名单、已关闭业务run未改，付费run关闭，automation仍PAUSED。
+
+30项相关离线检查通过。原独立主体完成唯一新短报告演练：实际作者落盘/check-answer/唯一native final/submit/严格只读seal成功，14条公开命令exit0，26演练原件不变。**响应、transport和计数是明确标识的离线夹具，真实的是Host作者与native导入；项目Provider/HTTP/tokens均0，业务submit0，新资格0。** 两次本地材料预验失败另留证据，均未派审；修正后先整链离线预验再派唯一任务。
+
+结果与限制见[工作区修复](plans/2026-10-12-host-workspace-repair.md)，公开证据 `data/evaluation/results/host_workspace_repair_20261012/audit.json`，SHA `cd71c137a53f0aa9648c85bf11d5bea34564555134492f27354d2fb76e3d1f58`。本轮提交的公共CI尚待结果，不沿用旧绿。
+
+## 当前行动
+
+主线仍是正确报告及修法进入真实Agent消费。下一动作：对照H5“中单胜3/2、负0/1却建议改成没有区分”与既有正确全文反例，检查评审修法到编辑消费的实际合同，先用离线反例选择能约束新增替换断言的机制。现policy已经要求逐项核修法且有2.5/0.5例子，不能把重复提醒或工作区修复当成语义有效证据；不立即重买案例。
+
+旧H5双审拒绝、S8已返回未认证、V2未认证、TCP unknown1、旧温度及两稿strict seal缺口全部保留。旧47/26/14/146原件清单和SHA实核不变，不补签/重开/移删原件。历史2/15、3/15、remaining11、完整15分段及教学对照不拼资格。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 两稿关闭后的工作区修复起点
+
 
 2026-10-12 H5/S8两稿已按用户确认首次执行，冻结 `ceb3a5add6eeee6fc0648a1b2ac2e1b27e194798`，CI `38240151033` 全绿。实际2 GLM/2 HTTP、known33883 tokens、unknown0/receiptless0，合同估价0.416824元，非实际账单。
 
@@ -25,7 +42,8 @@ H5输出82/needs_revision；主审与原独立主体真实全文审查均拒绝w
 
 本批关闭不补签、不重开、不删额外原件以通过封存。V2未认证、S8无双审、旧温度批strict seal缺口与前TCP批unknown1各自保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格；新增资格0。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
 
-## 以下为历史记录
+
+
 
 ### 2026-10-12 未发送两稿准备快照
 
