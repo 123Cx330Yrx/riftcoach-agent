@@ -7,6 +7,7 @@ boundary, not an OS sandbox against concurrent hostile filesystem mutation.
 from pathlib import Path
 import shlex
 import sys
+import time
 
 from scripts import host_review_task_checkpoint as checkpoint
 from app.evaluation.golden_inference_scope_v5 import strict_json
@@ -98,7 +99,7 @@ class HostReviewWorkspace:
         runner.checkpoint = SimpleNamespace(**{name: getattr(checkpoint, name)
             for name in ('read', 'publish', 'check_answer', 'digest')}, dispatch=self.dispatch)
 
-        def inventory(directory):
+        def inventory_unlocked(directory):
             self.validate_paths()
             plan = runner.read(Path(directory) / 'plan.json')['preparation_plan']
             runner.validate_inventory(directory, plan)
@@ -108,10 +109,32 @@ class HostReviewWorkspace:
                 if submitted.exists():
                     self.check_submission_answer(folder, runner.read(submitted))
 
-        def submit(directory, *args, **kwargs):
+        def inventory(directory, *, locked=False):
+            # A submitter briefly owns a .submission-*.tmp file while publishing
+            # under this lock. Pollers must not mistake that protected temporary
+            # file for contamination. Closed replay remains strictly read-only.
+            if locked or (Path(directory) / 'result.json').exists():
+                return inventory_unlocked(directory)
+            with runner.submission_close_gate(directory):
+                return inventory_unlocked(directory)
+
+        def submit(directory, key, *args, **kwargs):
             # Reject extra files before native IO or publishing any decision.
-            inventory(directory)
-            return old_submit(directory, *args, **kwargs)
+            try:
+                inventory(directory)
+                return old_submit(directory, key, *args, **kwargs)
+            except (ValueError, OSError):
+                # The CLI submitter and observer are separate processes. A
+                # rejected native/author handoff must stop the waiting observer
+                # too, not leave it waiting until its Host deadline. Preserve
+                # the original exception; never replace an existing decision.
+                folder = Path(directory) / key.replace(':', '-')
+                if not (folder / 'review-submission.json').exists():
+                    try:
+                        runner.abort(directory, key, 'operator_stop')
+                    except (ValueError, OSError):
+                        pass  # Already closed, or corrupt input; polling fails closed.
+                raise
 
         def validate(directory, key, submission, event_source):
             inventory(directory)
@@ -123,12 +146,27 @@ class HostReviewWorkspace:
             if path.name == 'review-submission.json':
                 # Called inside the existing submission/close OS lock, after
                 # native import. Catch contamination during that native read.
-                inventory(path.parent.parent)
+                inventory(path.parent.parent, locked=True)
                 self.check_submission_answer(path.parent, value)
             return old_atomic(path, value)
 
         def observe(directory, plan, rows, provider, event_source, **kwargs):
             before = kwargs.pop('before_send', lambda: None)
+
+            def supervised_wait(directory, key, seconds):
+                deadline = time.monotonic() + seconds
+                while True:
+                    inventory(directory)
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise ValueError('semantic_host_deadline')
+                    try:
+                        return runner.wait_reviews(directory, key, min(.25, remaining))
+                    except ValueError as error:
+                        if str(error) != 'semantic_host_deadline':
+                            raise
+
+            kwargs.setdefault('adjudicate', supervised_wait)
 
             def before_send():
                 inventory(directory)

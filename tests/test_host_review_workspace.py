@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import threading
+import time
 
 import pytest
 
@@ -206,3 +208,64 @@ def test_native_rehearsal_fixture_is_complete_before_real_dispatch(tmp_path, mon
     assert result['scan_completed'], result['first_deviation']
     assert a.runner.seal(directory, tmp_path / 'OFFLINE-seal.json',
                          event_source=host.source)['native_reviews'] == 1
+
+
+@pytest.mark.parametrize('fault', ['unsubmitted_pollution', 'submit_native_failure'])
+def test_waiting_observer_stops_independently_of_submit_caller(tmp_path, monkeypatch, fault):
+    a, directory, plan, rows, provider, host = setup(tmp_path, monkeypatch)
+    results = []
+    worker = threading.Thread(target=lambda: results.append(a.runner.observe(
+        directory, plan, rows, provider, host.source)), daemon=True)
+    worker.start()
+    first = directory / rows[0][0]['key'].replace(':', '-')
+    deadline = time.monotonic() + 15
+    while not (first / 'review-wait-start.json').exists() and worker.is_alive():
+        assert time.monotonic() < deadline
+        time.sleep(.05)
+    assert worker.is_alive()
+    if fault == 'unsubmitted_pollution':
+        (first / 'unexpected-answer.json').write_text('{}')
+    else:
+        def unavailable(**kwargs):
+            raise ValueError('test_native_unavailable')
+        monkeypatch.setattr(host.source, 'fetch', unavailable)
+        # This exception occurs in the submitting caller, outside observe's
+        # stack. The waiting observer must notice the abort on its own.
+        with pytest.raises(ValueError, match='test_native_unavailable'):
+            author_submit(a, directory, plan, host, rows[0][0]['key'])
+        assert (first / 'operator-abort.json').exists()
+    worker.join(timeout=10)
+    assert not worker.is_alive()
+    assert len(results) == 1 and len(provider.calls) == 1
+    assert len(results[0]['unexecuted']) == 2
+    assert results[0]['first_deviation']['code'] == (
+        'semantic_unexpected_run_file' if fault == 'unsubmitted_pollution'
+        else 'semantic_operator_abort')
+    assert not (first / 'review-submission.json').exists()
+
+
+def test_wait_polling_does_not_reject_protected_atomic_publication(tmp_path, monkeypatch):
+    a, directory, plan, rows, provider, host = setup(tmp_path, monkeypatch)
+    original = a.runner.os.link
+    def delayed_link(source, target, **kwargs):
+        if Path(source).name.startswith('.submission-'):
+            time.sleep(.4)  # Longer than the supervisor poll interval.
+        return original(source, target, **kwargs)
+    monkeypatch.setattr(a.runner.os, 'link', delayed_link)
+    results = []
+    worker = threading.Thread(target=lambda: results.append(a.runner.observe(
+        directory, plan, rows, provider, host.source)), daemon=True)
+    worker.start()
+    for cell, _, _ in rows:
+        folder = directory / cell['key'].replace(':', '-')
+        deadline = time.monotonic() + 15
+        while not (folder / 'review-wait-start.json').exists() and worker.is_alive():
+            assert time.monotonic() < deadline
+            time.sleep(.05)
+        assert worker.is_alive(), results
+        author_submit(a, directory, plan, host, cell['key'])
+    worker.join(timeout=10)
+    assert not worker.is_alive() and results[0]['scan_completed'], results
+    assert len(provider.calls) == 3
+    assert a.runner.seal(directory, tmp_path / 'OFFLINE-concurrent-seal.json',
+                         event_source=host.source)['native_reviews'] == 3

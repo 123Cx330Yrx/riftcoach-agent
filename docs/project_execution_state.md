@@ -11,9 +11,9 @@ pause_reason: "Host工作区修复与无付费原生演练完成；H5语义修�
 
 2026-10-12 Host工作区与库存边界修复已实现于新的私有验证入口：dispatch明确run外作者文件；提交前、原生读取后的提交锁内、下一请求及transport交接前核库存，并核作者JSON与原生判断一致。旧共享源码、白名单、已关闭业务run未改，付费run关闭，automation仍PAUSED。
 
-30项相关离线检查通过。原独立主体完成唯一新短报告演练：实际作者落盘/check-answer/唯一native final/submit/严格只读seal成功，14条公开命令exit0，26演练原件不变。**响应、transport和计数是明确标识的离线夹具，真实的是Host作者与native导入；项目Provider/HTTP/tokens均0，业务submit0，新资格0。** 两次本地材料预验失败另留证据，均未派审；修正后先整链离线预验再派唯一任务。
+最终工作区14项与未改旧入口19项相关回归通过，共33项；含等待、分离提交失败传播及受锁临时文件保护。原独立主体完成唯一新短报告演练：实际作者落盘/check-answer/唯一native final/submit/严格只读seal成功，14条公开命令exit0，26演练原件不变。**响应、transport和计数是明确标识的离线夹具，真实的是Host作者与native导入；项目Provider/HTTP/tokens均0，业务submit0，新资格0。** 两次本地材料预验失败另留证据，均未派审；修正后先整链离线预验再派唯一任务。
 
-结果与限制见[工作区修复](plans/2026-10-12-host-workspace-repair.md)，公开证据 `data/evaluation/results/host_workspace_repair_20261012/audit.json`，SHA `cd71c137a53f0aa9648c85bf11d5bea34564555134492f27354d2fb76e3d1f58`。本轮提交的公共CI尚待结果，不沿用旧绿。
+结果与限制见[工作区修复](plans/2026-10-12-host-workspace-repair.md)，公开证据 `data/evaluation/results/host_workspace_repair_20261012/audit.json`，SHA `cd71c137a53f0aa9648c85bf11d5bea34564555134492f27354d2fb76e3d1f58`。真实native正常链路源码固定于8686d19a，后继等待/失败分支单列离线证据；旧审计不改。本轮最终提交的公共CI尚待结果，不沿用旧绿。
 
 ## 当前行动
 

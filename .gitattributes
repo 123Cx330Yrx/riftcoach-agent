@@ -217,3 +217,10 @@
 
 /data/evaluation/results/document_full_report_remaining_close_audit_20261012.json -text
 /data/evaluation/results/document_full_report_remaining_host_evidence_20261012.json -text
+
+# Prospective Host workspace code and explicitly synthetic/native evidence.
+/scripts/host_review_workspace.py text eol=lf
+/scripts/document_full_report_workspace.py text eol=lf
+/tests/host_workspace_native_rehearsal.py text eol=lf
+/tests/test_host_review_workspace.py text eol=lf
+/data/evaluation/results/host_workspace_repair_20261012/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
