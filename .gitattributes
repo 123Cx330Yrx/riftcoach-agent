@@ -192,3 +192,8 @@
 /tests/test_document_full_report_diagnostic.py text eol=lf
 /data/evaluation/fixtures/document_full_report_initial_20261012/** -text
 /data/evaluation/results/document_full_report_initial_preparation_20261012.json -text
+
+# Closed initial diagnostic evidence: preserve exact sealed bytes.
+/data/evaluation/results/document_full_report_initial_result_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_initial_close_audit_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_route_followup_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

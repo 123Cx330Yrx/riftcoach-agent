@@ -1,3 +1,11 @@
+## 2026-10-12 三稿初评首项建连失败，整批封存
+
+后续用户切回系统代理，UTC09:44:31公网DNS/WLAN路由与一次TCP/TLS0.125秒成功已核，无HTTP/模型调用。另存document_full_report_route_followup_20261012.json，不改既有seal/close audit；路径变化不等于根因已证或业务API验证。
+
+用户授权后冻结6265e14d、同HEAD CI38226883176全绿，唯一runner125600首次执行后exit1。V2最后事件connection.connect_tcp.failed，约24秒无任何stream事件；H5/S8未发送。attempted1/HTTP hook1/known0/unknown1/receiptless1，费用未知；无Host派发/native/submit/新增资格，没有重试或补发。
+
+严格只读replay、create-only白名单seal通过（13公开JSON/14原件），seal SHA47da76c9…bcce3、close audit SHAeceb3b8e…f4b023；旧146原件不变、旧strict seal缺口保留。事后无HTTP/凭据的TCP/TLS探针0.187秒成功，DNS与Windows路由经iKuuuVPN，未复现历史超时；用户随后说明启用虚拟网卡，不能仅据此断定根因。自动任务已暂停。结果与下一步见docs/plans/2026-10-12-full-report-initial-result.md。
+
 ## 2026-10-12 三稿初评诊断可执行准备
 
 已固定新三稿V2/H5/S8各一次初评的准备包，plan SHA `66dcb5d0f9a1fe43b8cf38442f34da9e4a13e17213fbd3414c2982eba608ee0a`；新增适配器复用原私有runner/基线传输/业务validator/真实native门/严格replay，不另复制运行器。完整来源与校准逐字段相等，仅更新依赖新报告的3个摘要；policy字节相等。16逻辑块拼接后既有解析器生成18实际段号，后续按请求定位，不改报告正文。

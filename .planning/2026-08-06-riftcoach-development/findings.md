@@ -1,3 +1,11 @@
+## 2026-10-12 连接失败、请求计数与系统TUN的边界
+
+后续用户切回系统代理，UTC09:44:31公网DNS/WLAN路由与一次TCP/TLS0.125秒成功已核，无HTTP/模型调用。另存document_full_report_route_followup_20261012.json，不改既有seal/close audit；路径变化不等于根因已证或业务API验证。
+
+三稿初评首项在TCP建连阶段超时，最后事件connection.connect_tcp.failed、events0，无HTTP状态码、usage或终答。不是600秒总时限耗尽，也不能归因401/429/503、Codex额度或语义质量。HTTP request hook先于TCP连接计数，observed_http_requests=1不能证明服务器收到正文或实际计费；known0仍须保留unknown1及96768tokens预留。
+
+runner的进程direct只移除代理环境；关闭后open.bigmodel.cn解析为198.18.0.120，Windows路由经过iKuuuVPN。用户说明为浏览器扩展启用虚拟网卡，与实际路由相容但不构成因果证据。一次事后TCP/TLS成功既没有复现事故，也不证明长期可用；应核网络路径，不因这个失败改教学、温度或评审时限，不凭探针重开已关闭批次。
+
 ## 2026-10-12 校准材料到真实初评请求的保真边界
 
 三稿校准的16逻辑段不等于业务解析器段号：标题与表格拆分为18段。逐逻辑块字节保持、请求文档可逆恢复；不能沿用校准第11段定位真实工具issue。来源比较只允许三个绑定新报告的摘要变化，原始值、知识、用户原话、确定性全文和policy全部精确保持。新稿没有旧initial journal，Host task必须如实表达，不能借复用adapter把不存在的历史stage塞入材料。

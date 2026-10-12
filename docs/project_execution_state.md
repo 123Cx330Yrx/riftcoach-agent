@@ -4,10 +4,30 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "修正控制温度筛查已关闭：7请求/6原生双审，第7项Host误读标签未认证，3项未发；严格replay因旧时钟回执15/46ms不一致失败，未生成strict seal；新资格0。"
+pause_reason: "三稿初评诊断首项TCP建连超时，1尝试/unknown1/后2项未发；本批已严格封存且自动任务暂停，无语义结果或新资格。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 三篇完整报告初评诊断已按授权首次执行并硬停止。冻结 `6265e14d458f0b060b9f188f97fdee3e56acec17`、同HEAD全绿CI `38226883176`；首项V2在TCP建连阶段超时，H5/S8未发送。实际1次客户端HTTP尝试、known0 tokens/unknown1/receiptless1，无模型输出或语义结论，native/submit0，新资格0。HTTP hook计数不证明服务器收到或计费，实际费用未知。
+
+严格只读replay和create-only封存已完成，14份run原件及旧批146份原件SHA不变；旧strict seal缺口仍保留。证据见[关闭结果](plans/2026-10-12-full-report-initial-result.md)、`data/evaluation/results/document_full_report_initial_result_20261012.json`（SHA `47da76c94f4688e62ff4687bd018abe455139f5dc50723ebc7a6f033ccdbcce3`）及同目录close audit（SHA `eceb3b8ee71b85ad7cd49b4eb8475b46541a5fc288dc0804181952a3c1f4b023`）。本批未重试、未补发，runner退出，automation已PAUSED。
+
+## 当前行动
+
+主线仍是区分正确全文概括与真实事实/来源错误，再取得同版本质量证据接入真实Agent消费。六例及三篇Host校准、三稿Provider准备与51项离线回归已完成；此次连接失败没有回答Provider语义问题，不能据此改教学、温度或600秒时限。
+
+事后无HTTP/凭据/模型调用的TCP/TLS检查成功，但DNS/Windows路由实证经过iKuuuVPN虚拟网卡。进程direct不绕过系统TUN；用户说明为浏览器扩展启用了虚拟网卡，与观测相容，但不是事故根因证明。
+
+用户切回系统代理后，UTC09:44:31检查解析为公网地址、路由走WLAN，TCP/TLS一次连接0.125秒成功；无HTTP/模型请求。后续路由证据另存`data/evaluation/results/document_full_report_route_followup_20261012.json`，原seal/audit不改。仅证明当前连接路径，非持续稳定性或模型API验证。
+
+下一动作：依据切换后的网络路径准备具体后续诊断范围及停止条件；不重开本批或沿余量补发。后续付费执行须有具体范围授权。没有语义新证据，不改变教学/温度；语义采用门和独立产品依赖仍保留。
+
+temperature=0.2未达到采用门，产品默认入口未切换。历史2/15、3/15、remaining11、完整15前段/后8/后4与教学对照各自独立；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 三稿初评首次执行前快照
 
 2026-10-12 修正控制温度筛查已按授权执行并关闭。冻结HEAD `51923f4b95e0e17f6bec9aea8d622fd65e2fbce4`、CI `38160991496`、plan `1c9b0eebb5ac6a2957ccb9fc3a47369a2ea1554ab0aef20fb1051dc61c24237a`。实际7 HTTP、known117826 tokens、unknown0、receiptless0。额度补充后接续同一runner，未重发；第7项独立主体为查摘要误读预期标签，按原规则abort。6项已提交中4项接受、2项拒绝；首对拒绝存在全文范围判读反证，不把双方一致当成Provider必错。
 
@@ -32,7 +52,6 @@ pause_reason: "修正控制温度筛查已关闭：7请求/6原生双审，第7�
 
 temperature=0.2未达到采用门，产品默认入口未切换。新资格0；历史2/15、3/15、remaining11、完整15前段/后8/后4及教学对照各自保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习继续未完成。automation保持PAUSED。
 
-## 以下为历史记录
 
 ### 2026-10-11语义对照首次执行前快照（已由上方结果取代）
 

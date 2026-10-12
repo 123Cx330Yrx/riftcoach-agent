@@ -19,8 +19,8 @@
 **已完成修复：** 时钟waiting/finished/summary每组字段用一次观测；单任务原字节SHA核验已接入实际dispatch，新计划绑定其源码，异常不发布交接或进入Host等待。第7项只读干跑成功、146原件未改。历史测试使用核实的旧源码快照，新生产代码仍不能匹配旧冻结批；前提交CI失败与修复后待核状态分开记录。
 **本次校准结果：** 用户授权的1个新主体/1次六例合成校准完成，真实唯一final及10条公开工具调用核验通过，六项判定有完整依据，B4交叉引用联动修法为独立增量。11处引句及全部均值实核，Provider0/业务submit0/新资格0；只证明该组材料，不证明长文稳定性。c49f004c公共CI另暴露历史clock归档遗漏，已按旧SHA补齐、13项检查通过，公共CI仍待完整结果。
 **完整报告校准：** 复用原主体完成三篇16段新报告检查；正确稿无实质错，窄范围数字错与K3伪引均检出，7处引句及修法实核。新Agent0、Provider0、业务submit0；真实唯一final及15条公开读取留存，146旧原件不变。一次熟悉来源受控组不等于稳定率或产品资格。
-**新诊断已准备：** 三稿V2/H5/S8各一次baseline初评的精确包已固定，plan `66dcb5d0…08ee0a`；复用原传输/双审/只读封存，51项相关离线回归通过。原16逻辑段按现有解析生成18实际段号，正文和完整来源/policy保留；不编造新报告的历史初评。最多3GLM/0Flash、290304tokens、1800活动秒/86400Host秒、估价4.288512元非硬封顶。旧146原件未变；实读现有主体和FINAL_POLICY通路通过，不保证未来可用，发送前仍即时预检。Provider0/业务submit0，新run未创建。
-**当前下一动作：** 完成本准备提交的同HEAD公共CI确认；具体新批成本获授权后首次执行三项及真实全文双审，未授权前不启动。方案`docs/plans/2026-10-12-full-report-initial-diagnostic.md`，审计`data/evaluation/results/document_full_report_initial_preparation_20261012.json`。不同时改变温度/教学/source，不重买旧筛查。语义拒绝继续独立案，硬故障停批，结果决定机制修法或更广同版本回归。
+**三稿诊断已关闭：** 用户授权、冻结6265e14d、CI38226883176全绿后首次执行；V2 TCP建连超时，1次客户端尝试、known0/unknown1/receiptless1，H5/S8未发，无模型输出/Host派发/submit/新资格。严格replay与create-only seal通过，14本批和146旧批原件SHA保持；旧strict seal缺口不补。runner退出，automation暂停，无重试。
+**当前下一动作：** 用户切回系统代理后，公网解析/WLAN路由及一次TCP/TLS连接成功（0.125秒），无模型/HTTP调用；据此准备具体后续诊断范围和停止条件。该检查非根因、稳定性或API可用证明。本批不重开或补发，没有语义结果不改教学/温度/600秒时限；后续付费范围须另有明确覆盖。结果见`docs/plans/2026-10-12-full-report-initial-result.md`。
 **验收边界：** 软件回归及只读实件摘要检查不等于语义通过；旧计时回执不能回填。严格seal缺口明确保留。Provider调用、Host原生证据、语义真值和产品资格分别报告。
 **证据：** `docs/plans/2026-10-12-host-full-report-calibration.md`及同名公开结果目录；`docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
 

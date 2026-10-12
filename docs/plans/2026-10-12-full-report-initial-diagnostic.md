@@ -95,7 +95,7 @@ Operator：`C:/Users/33502/Documents/Agent/outputs/riftcoach-full-report-initial
 Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、
 独立评估及八维学习继续保留。旧146原件/缺strict seal、历史2/15与3/15等各自独立，新资格0。
 
-## 验证与执行状态
+## 准备阶段验证快照（已由关闭结果取代）
 
 离线验证记录及精确plan SHA见`data/evaluation/results/document_full_report_initial_preparation_20261012.json`。
 plan SHA `66dcb5d0f9a1fe43b8cf38442f34da9e4a13e17213fbd3414c2982eba608ee0a`，
@@ -107,3 +107,7 @@ current_input_readable=false与已采用FINAL_POLICY的current_route_and_final_a
 准备包不是付费授权；本轮Provider0、业务submit0。当前尚未启动新run，automation保持PAUSED。
 必要成本授权来自仓库`AGENTS.md`的“Honor earlier authorization for its actual target, scope and cost boundary”，
 以及前一完整报告校准方案明确的新批成本边界。先完成本包可审查准备，再请求这一次新成本决定。
+
+## 实际关闭状态
+
+用户授权后，在冻结6265e14d与同HEAD全绿CI38226883176上首次执行。首项TCP建连超时，1次客户端尝试、known0/unknown1/receiptless1，后2项未发送，无模型输出/Host审查/新增资格；严格只读封存通过，自动任务已暂停。未重试或补发。详见[关闭结果](2026-10-12-full-report-initial-result.md)。上述准备阶段“尚未启动/待授权”仅为历史快照。
