@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "关系四次初评已关闭：3项双审、最后一项600秒超时；严格封存，automation PAUSED，候选未采用。"
+pause_reason: "付费批已关闭、automation PAUSED；离线诊断、观测补强与U1/U2独立材料校准完成，继续无付费验证准备。"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,11 @@ R4基线第6段被双方判误报，R4候选正确保留；T9基线两处真错�
 
 ## 当前行动
 
-本批完成关闭，不重开。下一项仅做无付费方案裁决：从已封存结果区分正确稿范围误报与旧H5关系修法错误，明确新增验证的信息价值，再形成可审查的具体范围；不直接采用候选或追加付费批。任何新成本另行授权。
+用户要求查明最后一项超时后继续推进。已确认父进程600秒截止，但原件不足以区分链路静默、SSE心跳/不完整帧或本地阻塞；30.672秒仅是最后保存进度，并非精确断流时刻。同期日志无法定责；真实本地SDK/HTTP复现已区分静默、心跳与EOF。新增可选无正文观测已在四条本地路径验证，6项边界测试通过，未改冻结worker或生产默认。见[诊断与后续实现](plans/2026-10-12-relation-timeout-diagnosis.md)。历史根因保持undetermined，不靠重试填补证据。
+
+无付费方案裁决已继续：T9正文预先包含“不等于数值未区分”，且错误类型为“相同”而非H5“接近”，成功不能充分代表旧故障改善。U1/U2两篇完整26段材料只差第14段一句，正文不预写目标关系修法，完整来源证据保留；实际构造器核全文索引与不变来源通过。复用原独立主体的一次全文开发校准已完成：U1正确保留，U2仅第14段需修，与预存主审一致；真实native唯一终答、20条公开命令、作者原件与材料SHA已核。见`data/evaluation/results/host_relation_repair_calibration_20261012/close-audit.json`。这只确认开发材料，不证明GLM修法改善或资格。
+
+下一项：以这组校准材料准备观察完整初评修法的新对照入口，先离线绑定run外观测、有效路由和实际输入，再形成可审查的有界验证包。选择理由是隔离原H5“接近”修法风险与正确保留，不能仅补买旧T9缺失一臂；若基线不复现，不能宣称机制改善。不开旧批、不采用候选或自动追加付费批，任何新成本另行授权；普通离线推进不重复确认。
 
 正式同版本15、自然生成/工具/编辑/终评消费、8E以及Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。历史库存不拼资格。
 
