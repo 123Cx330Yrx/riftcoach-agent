@@ -229,3 +229,9 @@
 /scripts/audit_correction_consumption.py text eol=lf
 /tests/test_correction_consumption.py text eol=lf
 /data/evaluation/results/correction_consumption_audit_20261012.json -text
+
+# Isolated, unadmitted relation-teaching candidate and offline audit.
+/scripts/report_relation_contrast.py text eol=lf
+/scripts/check_relation_contrast.py text eol=lf
+/tests/test_report_relation_contrast.py text eol=lf
+/data/evaluation/results/relation_contrast_preparation_20261012.json -text
