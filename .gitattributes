@@ -208,3 +208,9 @@
 /data/evaluation/results/document_full_report_network_result_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/document_full_report_network_close_audit_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/host_explicit_cwd_probe_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Only the never-sent report initials; freeze new source/package bytes.
+/scripts/document_full_report_remaining_initial.py text eol=lf
+/tests/test_document_full_report_remaining_initial.py text eol=lf
+/data/evaluation/fixtures/document_full_report_remaining_initial_20261012/** -text
+/data/evaluation/results/document_full_report_remaining_preparation_20261012.json -text

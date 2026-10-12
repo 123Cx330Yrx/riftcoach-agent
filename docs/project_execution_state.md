@@ -23,7 +23,9 @@ pause_reason: "网络后续批首项模型正常返回，但独立审查误用�
 
 明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。
 
-下一动作：依据明确路径的真实启动证据，确定后续语义诊断的最小范围和成本。旧V2只有Provider结果，不能补签或当合格；H5/S8未执行。已关闭批次不重开，不自动另开付费批，报告/来源/policy/教学/温度不变。
+未发送的H5/S8两稿后续包已固定：[两稿方案](plans/2026-10-12-full-report-remaining-initial.md)，plan `ca02d0de57430af4bd7cf64b66ab730ad231e9782bf9e3e0487ee016f2de394a`。原V2不在包中，request/material与旧准备包逐字节一致。实际observe已接入本入口私有的绝对cwd/Python dispatch，保留原checkpoint与artifact门、不改旧helper。19项相关离线检查通过（原14/新5），26+14+146旧原件和冻结源码保持，原主体当前native读取预检通过。
+
+下一动作：完成本准备提交和同HEAD公共CI确认，将这两篇的具体范围交用户决定；最多2GLM/0Flash、193536tokens、1200活动秒/86400Host秒，保守估价2.859008元非硬封顶。授权且CI全绿后唯一首次执行真实全文双审。V2未认证缺口保留，不重买/重评/补签，两个新结果也不拼成完整三稿或15。当前新run不存在，Provider0/submit0，automation暂停。
 
 前一TCP超时批unknown1/费用未知继续单列；旧温度批strict seal缺口保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格。temperature0.2未采用；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习仍未完成。
 

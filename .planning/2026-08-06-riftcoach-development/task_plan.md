@@ -22,7 +22,8 @@
 **三稿诊断已关闭：** 用户授权、冻结6265e14d、CI38226883176全绿后首次执行；V2 TCP建连超时，1次客户端尝试、known0/unknown1/receiptless1，H5/S8未发，无模型输出/Host派发/submit/新资格。严格replay与create-only seal通过，14本批和146旧批原件SHA保持；旧strict seal缺口不补。runner退出，automation暂停，无重试。
 **网络后续批已关闭：** 用户确认后，11d1f9e0/CI38232745159全绿首次执行，V2模型97/pass但独立命令误用不存在的backend工作目录，OS error267后原生routing_failed终答。按规则停批，1调用/15927known/unknown0/receiptless0，后2未发，认证/submit/资格0；26原件/24公开JSON严格seal成功。旧14+146原件和冻结源码保持，automation暂停。主审审查未完成，不补签。
 **交接修正已实核：** AGENTS补明确cwd/Python和原样dispatch要求；主审路径检查后，复用原主体另做中性routing-probe，5条公开命令exit0、同checkpoint两次读取/作者check-answer/唯一native final实核。Provider0/业务submit0，不是旧任务重派或语义认证。证据host_explicit_cwd_probe_20261012.json。
-**当前下一动作：** 根据已验证启动通路确定后续语义诊断最小范围与成本；V2未认证、H5/S8未执行，旧批不重开补签，不自动另开付费批。保持报告/来源/policy/教学/温度，结果见docs/plans/2026-10-12-full-report-network-result.md。
+**未发两稿已准备：** H5/S8各一次初评，V2不在包；精确request/material保持，实际observe私有dispatch输出已验证绝对cwd/Python与命令，不改旧helper。原入口14/新入口5项通过，26+14+146原件/库存和冻结源码不变，native当前读取预检通过。方案docs/plans/2026-10-12-full-report-remaining-initial.md，plan `ca02d0de57430af4bd7cf64b66ab730ad231e9782bf9e3e0487ee016f2de394a`。
+**当前下一动作：** 提交并核同HEAD公共CI，取得上述两篇具体范围授权后首次执行；最多2GLM/0Flash、193536tokens、1200活动秒/86400Host秒、2.859008元非硬封顶。Provider0/业务submit0，新run未建，自动任务暂停。旧V2不补签或重买，不拼完整三稿/15；硬故障停批，无重试。
 **验收边界：** 软件回归及只读实件摘要检查不等于语义通过；旧计时回执不能回填。严格seal缺口明确保留。Provider调用、Host原生证据、语义真值和产品资格分别报告。
 **证据：** `docs/plans/2026-10-12-host-full-report-calibration.md`及同名公开结果目录；`docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
 

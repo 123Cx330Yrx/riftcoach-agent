@@ -1,3 +1,9 @@
+## 2026-10-12 未发送H5/S8两稿初评准备
+
+新包只保留旧批始终未发送的H5/S8，request/material与原包逐字节一致，V2排除且未认证缺口保留。私有入口复用原builder/runner/transport/Host门，仅新run/授权身份、旧事故与真实路径探针证据，以及实际dispatch中明确cwd/Python命令。未改冻结helper或旧源码。
+
+原入口14项通过，新入口5项最终通过（15.75秒）：首轮唯一失败是旧测试替身假设python字面命令，新私有替身改为真实artifact/native接线，不放宽产品校验。两项顺序执行、目录异常不发布dispatch/不进入Host等待、旧授权拒绝、字节保真、只读seal均覆盖。26+14+146原件/库存和冻结源码保持，主体当前预检通过但不保证未来。Provider0/submit0/资格0；具体最多2GLM、2.859008元非硬封顶待范围确认，同HEAD公共CI另核。方案与准备审计已固定。
+
 ## 2026-10-12 网络后续批首项成功传输，Host目录错误停批
 
 明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。

@@ -1,3 +1,9 @@
+## 2026-10-12 路径修正进入实际dispatch，未发范围独立
+
+仅在AGENTS要求明确路径不等于执行器发出的任务包含路径。本次新入口为私有runner替换私有checkpoint模块的dispatch包装，先验证完整原件，再给实际生成命令加当前绝对Python和已核cwd，禁止推断/backend；共享helper及旧源码不变。真实observe离线覆盖两项正常与目录失效在dispatch/wait前停止，旧替身的裸python字面断言不再适用，修正仅在新测试。
+
+V2虽有97/pass，未完成独立审查，不能纳入合格计数；H5/S8未发送可单列新授权范围，不能用两篇结果填补V2认证或宣称三稿均通过。沿旧请求/完整来源/policy和参数不变，下一步实际意见决定真错检出与修法问题，不能把目录修复当语义改良。
+
 ## 2026-10-12 原生身份预检不证明子任务命令启动
 
 明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。
