@@ -1,3 +1,11 @@
+## 2026-10-12 四次关系教学对照准备完成，未启动付费
+
+从原产品格式报告编写R4/T9，两稿各26段。完整policy与来源、当前输入全文经一次复用主体独立校准，真实native final/19公开工具调用已实读；R4无真错、T9第14/15段需修，第6段仅advisory。主审先存意见、重算五组均值及全对关系，再核全部独立修法。派发正文加密，按既有FINAL policy验证路由/API终答；原日志的压缩摘要未冒充判断。材料校准不是业务submit。
+
+新私有document_relation_request/diagnostic接当前600秒worker及run外作者库存门；SDK实际发送候选全文而非恢复投影。首次测试1失败是误将启动后的剩余秒数要求完全一致，按总600秒合同修正。新增26项通过、联合旧路径66项通过；绑定校准原件后最终29项通过。固定包9文件verify成功，plan SHA 8b93463e04a5d4321727ba06188914047d12215d097a12fc0091eabb2e3d0dda。路径实际启动/当前native前检成功；未来不可缓存代替。
+
+最多新4 GLM初评/Flash0、387072tokens、2400活动秒/86400Host秒、估价5.718016元非硬封顶的方案已具体化，未授权/未创建run或waiter。项目Provider/HTTP/业务submit/资格0，新Agent0，复用开发校准1，automation实核PAUSED。提交前公共CI未绑定，不能称已绿。下一项请求具体新范围确认；旧资格库存/原件不拼不改。证据见relation-initial-comparison方案及document_relation_preparation_20261012.json。
+
 ## 2026-10-12 撤回来源先行安排并隔离关系教学候选
 
 接线前查ADR0110及重跑只读audit_editor_responsibility，确认source_patch曾正确修27却漏18；盲编辑曾过但终评失败。上一轮下一动作漏核相关历史，应撤回，不实现/重开该路线；14项结构对照仍有效。H5错误位于初评，编辑侧改动不能修复该输出。

@@ -4,20 +4,20 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "来源先行安排已因历史反证撤回；关系教学仅完成离线接线，语义未证，自动任务暂停。"
+pause_reason: "关系教学四次初评对照准备完成；候选语义未证，新付费范围未授权，自动任务暂停。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-12 接线前核对ADR0110和10月8日责任审计，撤回上一轮“来源先行替代完整初评”的下一动作：该编辑能力已有真实漏检，且移除首评会失去首次业务检出后的修订机会。之前14项结构对照仍有效，原H5双审拒绝不变；不是用旧漏检断言H5的内部成因。
+2026-10-12 新开发完整报告成对诊断的无付费准备完成。R4保留正确反向比较与区间重叠；T9仅在两段引入明确均值/全称错误，两稿各26个实际请求段。复用原独立主体做一次全文开发校准，真实终答已核；R4无实质错误、T9两处需修，第6段仅可读性建议。熟悉来源、非holdout；校准不认证未来Provider答复。
 
-已完成隔离的关系教学候选及离线接线，只扩展一个虚构示例，区分均值方向、逐行组间比较与因果。原15的完整来源/schema、模型参数和编辑请求不变，保留完整初评→编辑→终评。新12项、原教学9项及结构审计4项共25项通过；真实Workflow/Router/共享预算使用脚本回复，含五调用/坏编辑停止/终评拒绝/空编辑仍终評。这不是模型质量、自然生成、600秒worker或产品发布实测。结果见[关系教学准备](plans/2026-10-12-relation-contrast-preparation.md)及`data/evaluation/results/relation_contrast_preparation_20261012.json`。
+新私有600秒worker只改变教学例，模型/来源/schema/参数保持；实际子进程SDK边界、run外作者文件、语义拒绝继续和硬故障停止已离线覆盖。联合旧入口/工作区/关系工作流66项通过，绑定校准原件后新入口最终29项通过。本机绝对cwd/Python启动及当前真实native预检通过，未来付费前仍须即时核验。见[具体方案](plans/2026-10-12-relation-initial-comparison.md)及`data/evaluation/results/document_relation_preparation_20261012.json`。
 
 ## 当前行动
 
-下一项：准备新开发完整报告的成对初评对照，覆盖正确反向比较、区间重叠与真错；按当前600秒身份/worker做精确请求接线，只改变该教学例，并复用run外作者答案/库存门。先完成无付费材料/通路/失败分支准备，再固定具体新批成本及确认覆盖范围。候选未经语义验证、未采用；不以此重开/重买H5/V2/S8或替换正式15合同。候选仍错则否定，双方都过不宣称改进，不循环追加同义教学。
+下一项：对固定方案取得新四次付费范围的明确确认，并绑定本次精确HEAD全绿CI后首次执行；此刻没有授权文件、waiter或业务run。固定包`data/evaluation/fixtures/document_relation_initial_20261012`，plan SHA `8b93463e04a5d4321727ba06188914047d12215d097a12fc0091eabb2e3d0dda`。最多4 GLM-5.3/high初评、Flash0、387072tokens、2400活动秒/86400 Host秒，估价5.718016元非硬计费封顶；无生成/编辑/fresh/重试/补发/资格。候选仍错则否定；两臂皆过无改善证据；仅窄开发支持也不授予正式15资格。来源先行替代首评方案已撤回，不恢复。
 
-本轮Provider/HTTP/native/业务submit/资格0；自动任务PAUSED，新付费run未创建。旧47/26/14/146原件及各自缺口、历史2/15、3/15、remaining11、分段15与教学对照分别保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。公共CI结果待绑定实际提交确认，不沿用旧绿。
+本轮项目Provider/HTTP/业务submit/资格0，复用独立开发任务1、新Agent0；automation实核PAUSED。旧47/26/14/146原件及各自缺口、历史2/15、3/15、remaining11、分段15及教学对照分别保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。本次提交公共CI须按实际HEAD查询，不能沿用旧绿。
 
 ## 以下为历史记录
 
