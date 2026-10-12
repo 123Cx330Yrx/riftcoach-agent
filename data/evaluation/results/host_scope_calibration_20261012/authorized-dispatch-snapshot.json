@@ -1,0 +1,13 @@
+{
+  "authorization": "允许，新建并完成这次独立校准",
+  "agent_path": "/root/host_scope_calibration",
+  "dispatch_tool": "collaboration.spawn_agent",
+  "fork_turns": "none",
+  "materials_sha256": "100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b",
+  "task_sha256": "f8b2460420c55bbec847d360db660a9db8a9b798f267a45c70ba627771b9a93a",
+  "primary_pre_dispatch_sha256": "d795e518bfb1d41b8599f31f453bdf1fa301d00c34d90888fd9fc8d5c09dae6a",
+  "recorded_at": "2026-10-12T07:40:07.224150+00:00",
+  "provider_calls": 0,
+  "independent_final_received": false,
+  "native_event_id": null
+}

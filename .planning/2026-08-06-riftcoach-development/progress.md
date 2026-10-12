@@ -9107,3 +9107,10 @@ receiptless=0。第二项发送前检测到 `role_development_checkout_changed_a
 ## 2026-10-12 修正控制筛查关闭与执行修复
 
 额度恢复后接续同一runner，实际累计7请求/117826 known tokens/unknown0/receiptless0；6项native双审，4接受/2拒绝。第7项因独立主体读到预期标签而abort，3项未执行。严格replay在完成6项native核验后报semantic_clock_inconsistent：第5、7等待回执分别15ms、46ms非原子采样偏差，strict seal未生成；146份原件未改。已修后续时钟单次采样，新增label-free单任务摘要核验，原消费者容差不变。首对双拒绝与实际policy及后文范围存在反证，原记录保留，不归罪Provider或改标签。详见 `docs/plans/2026-10-12-corrected-temperature-screening-result.md`；新资格0，自动任务PAUSED，完整15与产品消费依赖不变。
+
+
+## 2026-10-12 新主体六例合成全文校准完成
+
+用户明确允许新建1个主体并完成一次校准；/root/host_scope_calibration以fork_turns=none接收固定task/material，唯一原生final已从实际日志提取并create-only留存。六判定与派发前主审一致，11处引句/全部均值实核，完整解释和修法逐项成立；B4第8段自指联动为独立增量，主审原件不改。10条公开工具调用只读task/material，final前重读完成；没有OS隔离证明。Provider0、业务submit0、新资格0。证据及具体下一包方案见docs/plans/2026-10-12-host-scope-calibration.md；校准审计SHA56b2d90a2c4aa3bdb56c272567257699a29d85374c69a628e43a5c941c8a161c。
+
+c49f004c/CI38217756199旧时间诊断测试发现clock未纳入已有历史归档；补入原SHA9b9388e6…6d32文本并参数化篡改检查，13项通过。旧决策不改，公共CI未全绿。下一步只做三份新完整游戏报告材料准备；不把合成校准当真实长文稳定率，不重买旧温度筛查。旧7调用/6审/strict seal缺口、正式15及下游依赖均保留，automation实读PAUSED。

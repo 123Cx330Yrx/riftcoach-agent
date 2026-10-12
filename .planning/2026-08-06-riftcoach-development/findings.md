@@ -6964,3 +6964,10 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 ## 2026-10-12 修正控制筛查关闭与执行修复
 
 额度恢复后接续同一runner，实际累计7请求/117826 known tokens/unknown0/receiptless0；6项native双审，4接受/2拒绝。第7项因独立主体读到预期标签而abort，3项未执行。严格replay在完成6项native核验后报semantic_clock_inconsistent：第5、7等待回执分别15ms、46ms非原子采样偏差，strict seal未生成；146份原件未改。已修后续时钟单次采样，新增label-free单任务摘要核验，原消费者容差不变。首对双拒绝与实际policy及后文范围存在反证，原记录保留，不归罪Provider或改标签。详见 `docs/plans/2026-10-12-corrected-temperature-screening-result.md`；新资格0，自动任务PAUSED，完整15与产品消费依赖不变。
+
+
+## 2026-10-12 合成Host校准：规则应用与修法直接影响
+
+新主体在六份九段合成报告上区分了后文消歧、明确窄范围真错、泛指/全称、观察/未来因果和影响行动的未决口径。主审逐项核来源而非仅数一致票，未见本组六例实质误报漏检。独立指出B4改第4段后还须修第8段对其口径的错误自指；这是直接影响，不能误当修法扩张，也不能事后修改主审预先意见冒充早已覆盖。T9同样需要同步陈述。
+
+证据只来自一次受控短合成组，policy已有近似教学，集中呈现也可能突出差异；不能推断长文长度是旧失败原因，不能选择温度或恢复旧认证。下一准备组采用完整来源/完整新报告并加入正确概括与别处真错共存的样本，检验复杂任务迁移而非原样重试。公开唯一final、工具调用、准备/授权快照及对照见data/evaluation/results/host_scope_calibration_20261012/。

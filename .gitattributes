@@ -180,3 +180,7 @@
 /scripts/audit_document_sampling_candidate_path.py text eol=lf
 /data/evaluation/results/document_sampling_candidate_path_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/plans/2026-10-11-bounded-sampling-screening-preparation.md text eol=lf
+
+# Prospective synthetic calibration materials have exact dispatch byte hashes.
+/data/evaluation/fixtures/host_scope_calibration_20261012/* text eol=lf
+/data/evaluation/results/host_scope_calibration_20261012/* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -17,9 +17,10 @@
 **当前起点：** 修正控制温度筛查已关闭：7请求、6原生双审（4接受/2拒绝）、第7项有回执无合规独立终答、3项未发；known117826/unknown0/receiptless0，新资格0。停止原因是Host误读标签，非Provider失败。严格replay又在旧时钟等式失败，未生成strict seal；原件保持。
 **反证与决策：** 首对双拒绝与全文block14及实际policy甲1存在判读冲突，不能把Host一致当温度效果。两种温度只在两个修正final正例得到合规配对通过，采用门未完成；不再原样购买此筛查。
 **已完成修复：** 时钟waiting/finished/summary每组字段用一次观测；单任务原字节SHA核验已接入实际dispatch，新计划绑定其源码，异常不发布交接或进入Host等待。第7项只读干跑成功、146原件未改。历史测试使用核实的旧源码快照，新生产代码仍不能匹配旧冻结批；前提交CI失败与修复后待核状态分开记录。
-**当前下一动作：** 完成本次接线/历史测试修复的检查与提交，随后准备新的去标签审查流程校准，先解决Host对既有全文规则的应用一致性；不重开已关闭批、不补签或补发、不以受污染主体认证新任务。后续付费依新方案和明确成本授权，不沿用旧预算。
+**本次校准结果：** 用户授权的1个新主体/1次六例合成校准完成，真实唯一final及10条公开工具调用核验通过，六项判定有完整依据，B4交叉引用联动修法为独立增量。11处引句及全部均值实核，Provider0/业务submit0/新资格0；只证明该组材料，不证明长文稳定性。c49f004c公共CI另暴露历史clock归档遗漏，已按旧SHA补齐、13项检查通过，公共CI仍待完整结果。
+**当前下一动作：** 准备三份新的完整游戏报告受控材料（正确概括、明确窄范围错误、正确概括与别处真错共存），保持完整来源及policy，检查复杂任务迁移。具体决定与失败分支见校准方案；当前本地准备不发新独立任务或Provider，不沿用已完成的一次校准或旧批成本授权。
 **验收边界：** 软件回归及只读实件摘要检查不等于语义通过；旧计时回执不能回填。严格seal缺口明确保留。Provider调用、Host原生证据、语义真值和产品资格分别报告。
-**证据：** `docs/plans/2026-10-12-corrected-temperature-screening-result.md`、`data/evaluation/results/corrected_temperature_screening_close_audit_20261012.json`及其146份原件SHA；上一r2结果继续单列历史。
+**证据：** `docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
 
 ## Dependencies and Follow-through
 
@@ -40,7 +41,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical当前行动为准：收口已接线的校验与历史测试修复，继而准备新的Host全文规则校准，不再原样重买温度筛查；修正控制批已关闭，strict seal未通过，禁止补发或回填。正式同版本15、自然消费、8E及下游依赖保留。
+以canonical当前行动为准：六例合成校准已完成，准备完整游戏报告负担下的三份新受控材料，不再原样重买温度筛查；修正控制批已关闭，strict seal未通过，禁止补发或回填。正式同版本15、自然消费、8E及下游依赖保留。
 
 ## History
 

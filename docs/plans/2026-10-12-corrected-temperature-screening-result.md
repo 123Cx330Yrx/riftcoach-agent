@@ -105,3 +105,10 @@ operator目录：`C:/Users/33502/Documents/Agent/outputs/riftcoach-corrected-tem
 本次实际接线/checkpoint/semantic/sampling回归54项通过；修复后的remaining4/8历史回归17项通过，共71项。
 初轮因旧dispatch替身报TypeError、历史夹具尝试重建混合换行失败均已定位修复；最终分组退出0。
 两类未来plan已实建并确认新helper/source绑定，未创建业务run。治理及diff检查通过；新提交公共CI待核。
+
+
+### 后续合成校准（不改变本批裁决）
+
+用户授权的一位全新Host已完成六份新合成材料检查，原生终答与工具读取边界真实核验，判定及修法逐项有来源支持；B4交叉引用联动修法为独立增量。详见`docs/plans/2026-10-12-host-scope-calibration.md`。仅为新合成组规则应用证据，不重评旧六项、不补签第七项，不修复本批strict seal缺口；下一步准备完整报告负担下的新受控材料。
+
+c49f004c的公共CI进一步发现时间诊断归档清单遗漏clock；按原SHA加入历史文本并验证13项通过。旧回执和旧决策均未改，公共CI未全绿。
