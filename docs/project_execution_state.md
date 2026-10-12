@@ -21,7 +21,9 @@ pause_reason: "三稿初评诊断首项TCP建连超时，1尝试/unknown1/后2�
 
 用户切回系统代理后，UTC09:44:31检查解析为公网地址、路由走WLAN，TCP/TLS一次连接0.125秒成功；无HTTP/模型请求。后续路由证据另存`data/evaluation/results/document_full_report_route_followup_20261012.json`，原seal/audit不改。仅证明当前连接路径，非持续稳定性或模型API验证。
 
-下一动作：依据切换后的网络路径准备具体后续诊断范围及停止条件；不重开本批或沿余量补发。后续付费执行须有具体范围授权。没有语义新证据，不改变教学/温度；语义采用门和独立产品依赖仍保留。
+后续三稿包已完成可执行准备：[网络切换后方案](plans/2026-10-12-full-report-network-followup.md)，plan `fb573b77b24b882ef917569781a7bb0c5d616cceb2a10c28da6eda4453758c6a`。逐字节核三稿request/material与旧准备包一致，原builder/runner和冻结源码未改；新run/授权身份固定旧失败及网络切换证据，不能使用旧授权。18项相关离线检查通过，14+146份旧原件SHA保持。原独立主体当前native读取通路预检通过，不保证将来可用；无新Agent/业务派发/模型调用。
+
+下一动作：提交并核本准备HEAD公共CI，将最多3次GLM/0Flash、290304tokens、1800活动秒/86400Host秒、4.288512元非硬封顶的具体后续范围交用户决定；获得覆盖本范围的明确授权且CI全绿后才首次执行。新run不存在，automation保持PAUSED。保持报告/来源/policy/教学/温度及双审标准，旧批不重开或沿余量补发。
 
 temperature=0.2未达到采用门，产品默认入口未切换。历史2/15、3/15、remaining11、完整15前段/后8/后4与教学对照各自独立；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习未完成。
 

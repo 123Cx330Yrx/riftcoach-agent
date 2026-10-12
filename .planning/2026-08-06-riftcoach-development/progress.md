@@ -1,3 +1,9 @@
+## 2026-10-12 网络切换后的三稿后续包准备
+
+切回系统代理后的公网DNS/WLAN及TCP/TLS证据已固定。新入口只设置新run/授权身份并绑定原失败/路由记录，复用原三稿builder/runner/transport/native与封存门，不复制执行循环或改旧源码。三份request/material逐字节保持，18项离线回归通过（54.57秒），含旧授权拒绝、证据篡改拒绝、新旧包隔离及真实旧执行路径替身。14+146旧原件SHA和旧冻结源码保持。
+
+原独立主体只读预检通过，current_input_readable=false/current_route_and_final_available=true如实留存；不保证未来可用。新Agent0/Provider0/业务submit0/资格0，未创建run。plan fb573b77b24b882ef917569781a7bb0c5d616cceb2a10c28da6eda4453758c6a；最多3次GLM、4.288512元非硬封顶，具体方案和准备审计已形成，等待具体范围授权及同HEAD公共CI。旧unknown1及费用未知仍保留。
+
 ## 2026-10-12 三稿初评首项建连失败，整批封存
 
 后续用户切回系统代理，UTC09:44:31公网DNS/WLAN路由与一次TCP/TLS0.125秒成功已核，无HTTP/模型调用。另存document_full_report_route_followup_20261012.json，不改既有seal/close audit；路径变化不等于根因已证或业务API验证。
