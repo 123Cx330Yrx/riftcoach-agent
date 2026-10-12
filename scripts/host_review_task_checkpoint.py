@@ -81,12 +81,26 @@ def check_answer(path, expected_sha256, answer_raw):
     return answer_raw
 
 
-def dispatch(path, expected_sha256):
+def dispatch(path, expected_sha256, *, document_artifacts=False):
     value,_ = read(path,expected_sha256)
     # Emit the exact command so an operator/reviewer need not retype a digest.
     quoted_path = "'"+str(Path(path).resolve()).replace("'","''")+"'"
     command = ('python -m scripts.host_review_task_checkpoint read --checkpoint '
         +quoted_path+' --checkpoint-sha '+expected_sha256)
+    artifact_instructions = ''
+    if document_artifacts:
+        from scripts.verify_host_review_artifacts import verify
+        verify(path, expected_sha256)
+        artifact_instructions = (
+            '\nVerify this document task without opening batch configuration:\n'
+            'python -m scripts.verify_host_review_artifacts --checkpoint '
+            +quoted_path+' --checkpoint-sha '+expected_sha256+'\n'
+            'Request/response SHA values hash original file bytes, not reserialized JSON. '
+            'The printed stage SHA is for comparison with the pinned task. '
+            'This does not perform full-source review or native certification. '
+            'If verification fails, report the error to the operator; do not investigate '
+            'batch builders, expected labels, primary notes or other Host judgments. '
+            'The operator diagnoses routing without supplying a verdict.\n')
     return (
         'Current task checkpoint: '+str(Path(path).resolve())+'\n'
         'Expected checkpoint SHA256: '+expected_sha256+'\n'
@@ -100,6 +114,7 @@ def dispatch(path, expected_sha256):
         'never fills or repairs your opinion. Return your own exact JSON as native final. '
         'If checkpoint/task cannot be read or match, report that routing failure; do not resume '
         'another task. No Provider calls, report edits or old-batch submissions.'
+        +artifact_instructions
     )
 
 
@@ -112,6 +127,7 @@ def main():
     parser.add_argument('--purpose',choices=('review','routing-probe'),default='review')
     parser.add_argument('--checkpoint-sha')
     parser.add_argument('--answer-file',type=Path)
+    parser.add_argument('--document-artifacts',action='store_true')
     args = parser.parse_args()
     if args.action == 'publish':
         if not args.task_file or not args.reviewer_id:parser.error('publish requires task-file and reviewer-id')
@@ -121,7 +137,8 @@ def main():
         if args.action == 'read':
             value,task = read(args.checkpoint,args.checkpoint_sha)
             print(json.dumps(dict(checkpoint=value,task=task),ensure_ascii=False))
-        elif args.action == 'dispatch':print(dispatch(args.checkpoint,args.checkpoint_sha))
+        elif args.action == 'dispatch':print(dispatch(args.checkpoint,args.checkpoint_sha,
+            document_artifacts=args.document_artifacts))
         else:
             if not args.answer_file:parser.error('answer-file required')
             print(check_answer(args.checkpoint,args.checkpoint_sha,args.answer_file.read_bytes()).decode('utf-8'))

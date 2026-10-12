@@ -1,5 +1,8 @@
 import json
 from pathlib import Path
+import shlex
+import subprocess
+import sys
 
 import pytest
 
@@ -58,3 +61,24 @@ def test_changed_artifacts_fail_without_rewriting_or_falling_back(tmp_path, file
     with pytest.raises(ValueError, match=match):
         helper.verify(pin, sha)
     assert {p.name: p.read_bytes() for p in tmp_path.iterdir()} == before
+
+
+def test_document_dispatch_command_runs_and_corruption_prevents_dispatch(tmp_path):
+    pin, sha = make_artifacts(tmp_path)
+    text = checkpoint.dispatch(pin, sha, document_artifacts=True)
+    command = next(line for line in text.splitlines()
+        if line.startswith('python -m scripts.verify_host_review_artifacts '))
+    args = shlex.split(command)
+    result = subprocess.run([sys.executable, *args[1:]], check=True,
+        capture_output=True, text=True, encoding='utf-8')
+    assert json.loads(result.stdout) == helper.verify(pin, sha)
+    response = tmp_path/'response.json'
+    response.write_bytes(response.read_bytes() + b' ')
+    with pytest.raises(ValueError, match='response_sha256'):
+        checkpoint.dispatch(pin, sha, document_artifacts=True)
+
+
+def test_generic_dispatch_does_not_require_document_artifacts(tmp_path):
+    pin, sha = make_artifacts(tmp_path)
+    (tmp_path/'response.json').unlink()
+    assert 'verify_host_review_artifacts' not in checkpoint.dispatch(pin, sha)

@@ -1,6 +1,5 @@
 """Never-sent inventory, isolated plumbing and frozen prior rejection; offline only."""
 from copy import deepcopy
-import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace as NS
@@ -16,30 +15,28 @@ from tests import test_full15_resumption_evidence as fixtures
 
 
 @pytest.fixture(scope='module', autouse=True)
-def portable_frozen_hashes():
-    manifest = json.loads((adapter.runner.ROOT /
+def frozen_prior_root(tmp_path_factory):
+    from tests.frozen_document_prior import materialize, projected_hash
+    repo = adapter.runner.ROOT
+    manifest = json.loads((repo /
         'tests/fixtures/document_remaining4_frozen_newlines.json').read_bytes())
-    sealed = json.loads((adapter.runner.ROOT / adapter.PREVIOUS_SEAL).read_bytes())
+    sealed = json.loads((repo / adapter.PREVIOUS_SEAL).read_bytes())
     frozen = sealed['public_json_contents']['plan.json']['preparation_plan']['source_sha256']
     assert manifest['previous_closed_seal_sha256'] == adapter.PREVIOUS_SHA
     assert manifest['production_override'] is False
     assert {p: v['frozen_raw_sha256'] for p, v in manifest['source'].items()} == frozen
-    original = adapter.runner._sha
-    def test_hash(path):
-        path = Path(path)
-        try:
-            relative = path.resolve().relative_to(adapter.runner.ROOT.resolve()).as_posix()
-        except ValueError:
-            return original(path)
-        entry = manifest['source'].get(relative)
-        if entry is not None:
-            normalized = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
-            if normalized == entry['lf_sha256']:
-                return entry['frozen_raw_sha256']
-        return original(path)
+    snapshot = materialize(repo, manifest, (adapter.PREVIOUS_SEAL, adapter.base.PREVIOUS_SEAL,),
+        tmp_path_factory.mktemp('remaining4-historical-program'))
+    original_prior = adapter.prior
     with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(adapter.runner, '_sha', test_hash)
-        yield original
+        patch.setattr(adapter.runner, '_sha', projected_hash(
+            adapter.runner._sha, snapshot, manifest))
+        patch.setattr(adapter, 'prior', lambda root=repo: original_prior(
+            snapshot if Path(root).resolve() == repo.resolve() else root))
+        original_base_prior = adapter.base.prior
+        patch.setattr(adapter.base, 'prior', lambda root=repo: original_base_prior(
+            snapshot if Path(root).resolve() == repo.resolve() else root))
+        yield snapshot, original_prior
 
 
 @pytest.fixture(scope='module')
@@ -129,9 +126,9 @@ def test_four_handoff_edit_fresh_semantic_continue_and_hard_stop(
             evidence.seal(tmp_path, output, event_source=host)
 
 
-def test_changed_prior_or_sent_inventory_cannot_enter(monkeypatch):
+def test_changed_prior_or_sent_inventory_cannot_enter(monkeypatch, frozen_prior_root):
     original_sha = adapter.runner._sha
-    target = (adapter.runner.ROOT / adapter.PREVIOUS_SEAL).resolve()
+    target = (frozen_prior_root[0] / adapter.PREVIOUS_SEAL).resolve()
     monkeypatch.setattr(adapter.runner, '_sha', lambda path:
         '0' * 64 if Path(path).resolve() == target else original_sha(path))
     with pytest.raises(ValueError, match='remaining4_prior_seal_changed'):
@@ -146,7 +143,7 @@ def test_changed_prior_or_sent_inventory_cannot_enter(monkeypatch):
         adapter.selected_controls('remaining8')
 
 
-def test_production_rejects_normalized_sources(tmp_path, monkeypatch, portable_frozen_hashes):
+def test_production_rejects_normalized_sources(tmp_path, monkeypatch, frozen_prior_root):
     previous = adapter.prior()
     for seal_name in (adapter.PREVIOUS_SEAL, adapter.base.PREVIOUS_SEAL):
         target = tmp_path / seal_name
@@ -155,7 +152,13 @@ def test_production_rejects_normalized_sources(tmp_path, monkeypatch, portable_f
     for name in previous['source_sha256']:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes((adapter.runner.ROOT / name).read_bytes().replace(b'\r\n', b'\n'))
-    monkeypatch.setattr(adapter.runner, '_sha', portable_frozen_hashes)
+        target.write_bytes((frozen_prior_root[0] / name).read_bytes().replace(b'\r\n', b'\n'))
     with pytest.raises(ValueError, match='frozen_program_changed'):
         adapter.prior(tmp_path)
+
+
+def test_production_prior_rejects_changed_current_program(frozen_prior_root):
+    # This is the real unpatched prior function against the current checkout.
+    # A successful historical inventory fixture never certifies today's code.
+    with pytest.raises(ValueError, match='frozen_program_changed'):
+        frozen_prior_root[1](adapter.runner.ROOT)

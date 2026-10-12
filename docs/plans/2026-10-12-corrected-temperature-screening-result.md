@@ -63,13 +63,34 @@ claim-scope:1与claim-scope:4的事实、知识、用户原话、确定性来源
 它只读取该checkpoint、task及同目录issued-request/response/stage：请求与响应按原始文件字节算SHA，
 报告按原文算SHA，stage按现有稳定投影算SHA。不加载批次标签配置，不搜索其他任务，
 不输出意见、不写原件、不授予语义或native认证。已对本批未认证第七项实读验证摘要一致；这不补回其资格。
-后续dispatch应直接给出该命令；若不匹配，向operator报具体绑定错误，不让盲审者自行翻批次配置。
+现已在实际`observe`生成dispatch时先调用校验，再给出该精确命令；若不匹配，在创建dispatch/Host等待前停止，向operator报具体绑定错误，不让盲审者自行翻批次配置。semantic和sampling未来plan的source清单均已纳入checkpoint与校验器，旧计划不重建覆盖。
 全文material/policy阅读、作者check-answer、原生事件submit仍不可省；此helper也不能阻止有全文件权限的主体主动越界。
 
 下一工作包先解决盲审执行的可操作边界和上述全文判读争议，完成无付费干跑与独立检查后，
 再提出能区分剩余解释的具体验证方案。不得重开本批、补发后三项或沿用污染主体认证新任务。
 正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、
 Memory、身份运维、两树整合及八维学习均未完成，原依赖保留。automation保持PAUSED。
+
+### 本次接线与后续技术决定
+
+对未认证第7项的固定checkpoint运行新dispatch命令，request/response/report摘要核验成功，
+stage投影与pin task一致；全部146原件前后SHA一致，Provider0、审查0、native认证0。
+只读干跑记录位于operator的`dispatch-wiring-offline-audit.json`，
+SHA `35931d80278904cb1ac488573c6d09d225711215dc8037e509b9823a2749fc63`。
+
+前提交`bfd68cbf`/CI`38215203511`四个pytest分片均在remaining4历史测试setup报
+`remaining8_frozen_program_changed`；打包、DB迁移、web检查通过。旧测试拿当前源码去核旧封存，
+时钟修复后自然不匹配。测试现以提交内核过旧seal/LF摘要的历史源码资料构造临时快照，
+沿用仅限该临时目录的旧换行投影；当前执行代码继续独立测试，生产SHA门不改。
+另加当前新代码及未投影LF副本仍被生产prior拒绝的反例，不宣称旧批可在新HEAD严格回放。
+
+这次明确选择：保留已有完整来源和业务policy，不再添加同义教学或重买原五对温度筛查。
+先校准Host如何应用现有规则，再决定Provider机制试验是否有可判定的真值。
+后续新校准需将“后文明确消歧”“明确全称与事实冲突”“全文仍有实质歧义”分开，
+主审与新独立主体各自引用完整来源和实际policy，记录所判命题及可核事实冲突。
+若只剩措辞偏好，不升级事实门；若仍无法一致适用既有规则，保留未决并停止据此选温度。
+这些是新流程验证的判定分支，不是对旧六项的重新裁决或未来通过承诺。
+现有helper只减少查源码的必要，不具备操作系统文件隔离能力，也不能证明Host今后不会越界。
 
 ## 证据与检查
 
@@ -80,3 +101,7 @@ SHA `862367d9ef801651f065720b97573e73bc7000c2e03dc54022337b3c57ca0aba`；明确�
 operator目录：`C:/Users/33502/Documents/Agent/outputs/riftcoach-corrected-temperature-screening-20261012-v2`。
 时钟/新核验入口/原checkpoint相关33项、筛查及提交封存链回归17项通过，共50项。
 治理和`git diff --check`通过；没有因本次修复重发Provider。CI仅作代码回归，不弥补本批strict seal或产品资格。
+
+本次实际接线/checkpoint/semantic/sampling回归54项通过；修复后的remaining4/8历史回归17项通过，共71项。
+初轮因旧dispatch替身报TypeError、历史夹具尝试重建混合换行失败均已定位修复；最终分组退出0。
+两类未来plan已实建并确认新helper/source绑定，未创建业务run。治理及diff检查通过；新提交公共CI待核。

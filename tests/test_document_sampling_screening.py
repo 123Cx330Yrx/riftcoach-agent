@@ -261,14 +261,13 @@ def _observe_fixture(monkeypatch, tmp_path, fail_at=None, reject_at=None):
         lambda cell, inputs, request, response: (
             SimpleNamespace(score=96, verdict='pass'),
             {'stage': cell['stage'], 'report': material_for(cell), 'journal': {}}))
-    monkeypatch.setattr(runner, 'task_for', lambda directory, key: '{}')
-    # Observe must still publish a checkpoint; create a valid immutable fixture
-    # at the expected path and return its digest.
-    def publish(path, source, reviewer):
-        Path(path).write_bytes(Path(source).read_bytes())
-        return _sha(Path(path).read_bytes())
-    monkeypatch.setattr(runner.checkpoint, 'publish', publish)
-    monkeypatch.setattr(runner.checkpoint, 'dispatch', lambda path, pin: 'fixture-dispatch')
+    # Exercise the real immutable checkpoint and artifact verification. Only
+    # the semantic/native judgment below is synthetic.
+    from scripts.codex_review_event_source import review_task
+    def task_for(directory, key):
+        required = json.loads((directory/key.replace(':', '-')/'review-required.json').read_bytes())
+        return review_task(required['binding'], 'Offline fixture review only.')
+    monkeypatch.setattr(runner, 'task_for', task_for)
     monkeypatch.setattr(runner, 'validate_submission',
         lambda directory, key, submission, source: key != rows[reject_at][0]['key']
         if reject_at is not None else True)
@@ -280,7 +279,6 @@ def _observe_fixture(monkeypatch, tmp_path, fail_at=None, reject_at=None):
             primary_accepted=True, independent_accepted=accepted,
             host_disagreement=not accepted, semantic_accepted=accepted,
             new_qualification=0))
-    monkeypatch.setattr(runner, 'task_for', lambda directory, key: '{}')
 
     def material_for(cell):
         return 'offline fixture report for ' + cell['key']

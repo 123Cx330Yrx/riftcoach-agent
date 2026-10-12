@@ -141,6 +141,12 @@ class OfflineNativeHost:
         folder=directory/key.replace(':','-')
         pin=digest((folder/'task-checkpoint.json').read_bytes())
         _,task=read_checkpoint(folder/'task-checkpoint.json',pin)
+        from scripts.verify_host_review_artifacts import verify
+        dispatch = (folder/'dispatch.txt').read_text(encoding='utf-8')
+        assert 'python -m scripts.verify_host_review_artifacts ' in dispatch
+        assert pin in dispatch
+        assert verify(folder/'task-checkpoint.json',pin)['stage_sha256'] == stage_identity(
+            runner.read(folder/'stage.json'))
         bound=task['binding']
         stage=runner.read(folder/'stage.json')
         index=len(self.turns)+1
@@ -216,6 +222,25 @@ def test_fifteen_once_semantic_continue_hard_stop_and_strict_seal(prepared,tmp_p
         if fault=='transport':
             assert result['accounting']['known_tokens']==30
             assert result['accounting']['unknown_usage_calls']==1 and result['accounting']['receiptless_calls']==1
+
+
+def test_bad_artifacts_stop_before_dispatch_or_host_wait(prepared,tmp_path,monkeypatch):
+    plan,rows=setup_run(tmp_path,monkeypatch,prepared)
+    provider=OfflineProvider()
+    host=OfflineNativeHost(plan,tmp_path)
+    original_publish=runner.checkpoint.publish
+    def corrupt_after_pin(path,*args,**kwargs):
+        pin=original_publish(path,*args,**kwargs)
+        response=path.parent/'response.json'
+        response.write_bytes(response.read_bytes()+b' ')
+        return pin
+    monkeypatch.setattr(runner.checkpoint,'publish',corrupt_after_pin)
+    result=runner.observe(tmp_path,plan,rows,provider,host.source,adjudicate=host.adjudicate)
+    folder=tmp_path/rows[0][0]['key'].replace(':','-')
+    assert result['first_deviation']['code']=='host_artifacts_response_sha256'
+    assert len(provider.calls)==1 and not host.turns and not result['completed']
+    assert not (folder/'dispatch.txt').exists()
+    assert not (folder/'review-wait-start.json').exists()
 
 
 def test_authorization_budget_head_expiry_and_no_cost_reauthorization(prepared):

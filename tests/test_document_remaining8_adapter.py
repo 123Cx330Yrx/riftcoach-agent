@@ -1,6 +1,5 @@
 """Unsent inventory and real handoff/replay plumbing; models/Host are synthetic."""
 from copy import deepcopy
-import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace as NS
@@ -17,32 +16,25 @@ from tests import test_full15_resumption_evidence as fixtures
 
 
 @pytest.fixture(scope='module', autouse=True)
-def portable_frozen_hashes():
-    # Test-only projection of the previously verified Windows raw bytes. Linux
-    # imports equivalent LF files; production prior() still requires raw SHA.
-    manifest = json.loads((adapter.runner.ROOT /
+def frozen_prior_root(tmp_path_factory):
+    from tests.frozen_document_prior import materialize, projected_hash
+    repo = adapter.runner.ROOT
+    manifest = json.loads((repo /
         'tests/fixtures/document_remaining8_frozen_newlines.json').read_bytes())
-    seal = json.loads((adapter.runner.ROOT / adapter.PREVIOUS_SEAL).read_bytes())
-    frozen = seal['public_json_contents']['plan.json']['preparation_plan']['source_sha256']
+    sealed = json.loads((repo / adapter.PREVIOUS_SEAL).read_bytes())
+    frozen = sealed['public_json_contents']['plan.json']['preparation_plan']['source_sha256']
     assert manifest['previous_closed_seal_sha256'] == adapter.PREVIOUS_SHA
     assert manifest['production_override'] is False
     assert {p: v['frozen_raw_sha256'] for p, v in manifest['source'].items()} == frozen
-    original = adapter.runner._sha
-    def test_hash(path):
-        path = Path(path)
-        try:
-            relative = path.resolve().relative_to(adapter.runner.ROOT.resolve()).as_posix()
-        except ValueError:
-            return original(path)
-        entry = manifest['source'].get(relative)
-        if entry is not None:
-            normalized = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
-            if normalized == entry['lf_sha256']:
-                return entry['frozen_raw_sha256']
-        return original(path)
+    snapshot = materialize(repo, manifest, (adapter.PREVIOUS_SEAL,),
+        tmp_path_factory.mktemp('remaining8-historical-program'))
+    original_prior = adapter.prior
     with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(adapter.runner, '_sha', test_hash)
-        yield original
+        patch.setattr(adapter.runner, '_sha', projected_hash(
+            adapter.runner._sha, snapshot, manifest))
+        patch.setattr(adapter, 'prior', lambda root=repo: original_prior(
+            snapshot if Path(root).resolve() == repo.resolve() else root))
+        yield snapshot, original_prior
 
 
 @pytest.fixture(scope='module')
@@ -152,7 +144,7 @@ def test_prior_seal_digest_failure_stops_preparation_before_provider(monkeypatch
 
 
 def test_production_prior_still_rejects_normalized_frozen_sources(
-        tmp_path, monkeypatch, portable_frozen_hashes):
+        tmp_path, monkeypatch, frozen_prior_root):
     previous = adapter.prior()
     seal = tmp_path / adapter.PREVIOUS_SEAL
     seal.parent.mkdir(parents=True)
@@ -160,8 +152,14 @@ def test_production_prior_still_rejects_normalized_frozen_sources(
     for name in previous['source_sha256']:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes((adapter.runner.ROOT / name).read_bytes().replace(b'\r\n', b'\n'))
-    monkeypatch.setattr(adapter.runner, '_sha', portable_frozen_hashes)
+        target.write_bytes((frozen_prior_root[0] / name).read_bytes().replace(b'\r\n', b'\n'))
     # No production newline fallback and no fixture consulted by the adapter.
     with pytest.raises(ValueError, match='frozen_program_changed'):
         adapter.prior(tmp_path)
+
+
+def test_production_prior_rejects_changed_current_program(frozen_prior_root):
+    # This is the real unpatched prior function against the current checkout.
+    # A successful historical inventory fixture never certifies today's code.
+    with pytest.raises(ValueError, match='frozen_program_changed'):
+        frozen_prior_root[1](adapter.runner.ROOT)

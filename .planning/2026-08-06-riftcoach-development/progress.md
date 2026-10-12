@@ -1,3 +1,11 @@
+## 2026-10-12 单任务核验实际接线与历史测试修复
+
+实际observe先验证固定文档原件再发布dispatch，给出精确checkpoint/SHA命令；失败不生成交接文件或Host等待。semantic/sampling未来plan均绑定checkpoint和helper源码，generic交接保持兼容。第7项原件只读干跑成功，stage与pin task一致、146原件未变；Provider0、审查0、认证0，不补旧资格。记录见operator dispatch-wiring-offline-audit.json（SHA35931d80…49fc63）。
+
+前提交bfd68cbf/CI38215203511失败原因实读为四个分片的remaining4历史setup使用新时钟源码核旧指纹；不是Provider故障。测试改用提交内两份历史源码及原seal/LF摘要构造临时历史目录，换行投影仅限该目录；生产prior继续拒绝当前新代码和未投影LF副本。接线/checkpoint/semantic/sampling54项通过，修复后的remaining4/8历史回归17项通过，共71项；治理/diff通过。当前修复的公共CI另行确认，不冒称前CI通过。
+
+下一步准备新的去标签Host规则校准，先区分后文消歧、明确全称真错和全文未决歧义；保留旧审查争议，不原样重买温度筛查。helper不是权限隔离或语义能力证明。正式15、自然消费、8E及下游依赖未变。
+
 ## 2026-10-11 有界温度筛查 r2 硬停止与封存
 
 - 按 HEAD `465daf92bfaecb47e800ebc343bd23f21c553220`、CI `38141643942`、plan/package `8c8fc50de3159dfc42bd02f2a3c53276dc5f537d9dfda2395de4f16f441b94d7` 启动唯一 runner `112000`。sample-1 baseline/candidate 为 74/78 needs_revision，sample-2 baseline/candidate 为 96/95 pass；4 个阶段均完成主审和真实独立 native 审查。

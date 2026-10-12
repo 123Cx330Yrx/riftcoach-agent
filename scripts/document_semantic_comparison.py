@@ -268,8 +268,10 @@ def observe(directory, plan, rows, provider, event_source, *, adjudicate=wait_re
                 stream.write(task+'\n')
             pin = checkpoint.publish(folder/'task-checkpoint.json',folder/'independent-task.json',
                 plan['review_principals']['independent']['principal_id'])
+            dispatch_text = checkpoint.dispatch(folder/'task-checkpoint.json',pin,
+                document_artifacts=True)
             with (folder/'dispatch.txt').open('x',encoding='utf-8') as stream:
-                stream.write(checkpoint.dispatch(folder/'task-checkpoint.json',pin)+'\n')
+                stream.write(dispatch_text+'\n')
             write_new_json(folder/'review-wait-start.json',dict(kind='semantic_review',**bound))
             submission = clock._wait(dict(kind='semantic_review', **bound),
                 lambda seconds: adjudicate(directory,cell['key'],seconds))
