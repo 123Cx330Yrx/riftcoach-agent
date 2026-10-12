@@ -9114,3 +9114,8 @@ receiptless=0。第二项发送前检测到 `role_development_checkout_changed_a
 用户明确允许新建1个主体并完成一次校准；/root/host_scope_calibration以fork_turns=none接收固定task/material，唯一原生final已从实际日志提取并create-only留存。六判定与派发前主审一致，11处引句/全部均值实核，完整解释和修法逐项成立；B4第8段自指联动为独立增量，主审原件不改。10条公开工具调用只读task/material，final前重读完成；没有OS隔离证明。Provider0、业务submit0、新资格0。证据及具体下一包方案见docs/plans/2026-10-12-host-scope-calibration.md；校准审计SHA56b2d90a2c4aa3bdb56c272567257699a29d85374c69a628e43a5c941c8a161c。
 
 c49f004c/CI38217756199旧时间诊断测试发现clock未纳入已有历史归档；补入原SHA9b9388e6…6d32文本并参数化篡改检查，13项通过。旧决策不改，公共CI未全绿。下一步只做三份新完整游戏报告材料准备；不把合成校准当真实长文稳定率，不重买旧温度筛查。旧7调用/6审/strict seal缺口、正式15及下游依赖均保留，automation实读PAUSED。
+
+
+## 2026-10-12 完整报告Host校准完成
+
+三篇新完整报告校准完成。每篇16段2619—2641字符，共享19173字符原来源，完整policy与源消息逐字未改；78项计算实核并保留8.805→8.81与旧摘要8.8的舍入差异。用户最新继续后复用既有主体，新增Agent0，一次新task/真实唯一final完成，15条公开工具调用只读两文件且未截断。V2无实质错，H5中单范围错及S8的K3伪引均检出，7处引句和修法逐项核实。Provider0/业务submit0/资格0，146旧原件未变。公开审计SHA6ac2e8e0c8962f6268269d37a9c6ee930c325047da91dc4d730a900ffe78042b。停止追加同类Host校准，下一步准备最多三次新Provider初评诊断，尚未发送或借旧预算。

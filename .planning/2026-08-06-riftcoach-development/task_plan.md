@@ -18,9 +18,10 @@
 **反证与决策：** 首对双拒绝与全文block14及实际policy甲1存在判读冲突，不能把Host一致当温度效果。两种温度只在两个修正final正例得到合规配对通过，采用门未完成；不再原样购买此筛查。
 **已完成修复：** 时钟waiting/finished/summary每组字段用一次观测；单任务原字节SHA核验已接入实际dispatch，新计划绑定其源码，异常不发布交接或进入Host等待。第7项只读干跑成功、146原件未改。历史测试使用核实的旧源码快照，新生产代码仍不能匹配旧冻结批；前提交CI失败与修复后待核状态分开记录。
 **本次校准结果：** 用户授权的1个新主体/1次六例合成校准完成，真实唯一final及10条公开工具调用核验通过，六项判定有完整依据，B4交叉引用联动修法为独立增量。11处引句及全部均值实核，Provider0/业务submit0/新资格0；只证明该组材料，不证明长文稳定性。c49f004c公共CI另暴露历史clock归档遗漏，已按旧SHA补齐、13项检查通过，公共CI仍待完整结果。
-**当前下一动作：** 准备三份新的完整游戏报告受控材料（正确概括、明确窄范围错误、正确概括与别处真错共存），保持完整来源及policy，检查复杂任务迁移。具体决定与失败分支见校准方案；当前本地准备不发新独立任务或Provider，不沿用已完成的一次校准或旧批成本授权。
+**完整报告校准：** 复用原主体完成三篇16段新报告检查；正确稿无实质错，窄范围数字错与K3伪引均检出，7处引句及修法实核。新Agent0、Provider0、业务submit0；真实唯一final及15条公开读取留存，146旧原件不变。一次熟悉来源受控组不等于稳定率或产品资格。
+**当前下一动作：** 停止增加同类Host校准，准备最多三次只初评的新Provider诊断；同三份新报告/完整来源/policy/当前基线配置，绑定请求、预算、真实双审与收尾。先区分Provider实际错误和Host误拒，不同时改变温度/教学/source，不重买旧筛查。新付费执行待具体方案与成本授权。
 **验收边界：** 软件回归及只读实件摘要检查不等于语义通过；旧计时回执不能回填。严格seal缺口明确保留。Provider调用、Host原生证据、语义真值和产品资格分别报告。
-**证据：** `docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
+**证据：** `docs/plans/2026-10-12-host-full-report-calibration.md`及同名公开结果目录；`docs/plans/2026-10-12-host-scope-calibration.md`、`data/evaluation/results/host_scope_calibration_20261012/close-audit.json`；旧批`docs/plans/2026-10-12-corrected-temperature-screening-result.md`及其146份原件SHA继续单列历史，不回填或拼资格。
 
 ## Dependencies and Follow-through
 
@@ -41,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical当前行动为准：六例合成校准已完成，准备完整游戏报告负担下的三份新受控材料，不再原样重买温度筛查；修正控制批已关闭，strict seal未通过，禁止补发或回填。正式同版本15、自然消费、8E及下游依赖保留。
+以canonical当前行动为准：六例合成校准已完成，三份完整报告校准已完成，准备最多三次新Provider诊断的具体请求/预算/收尾路径，不再原样重买温度筛查；修正控制批已关闭，strict seal未通过，禁止补发或回填。正式同版本15、自然消费、8E及下游依赖保留。
 
 ## History
 

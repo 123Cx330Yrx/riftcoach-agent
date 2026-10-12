@@ -184,3 +184,5 @@
 # Prospective synthetic calibration materials have exact dispatch byte hashes.
 /data/evaluation/fixtures/host_scope_calibration_20261012/* text eol=lf
 /data/evaluation/results/host_scope_calibration_20261012/* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/fixtures/host_full_report_calibration_20261012/* text eol=lf
+/data/evaluation/results/host_full_report_calibration_20261012/* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
