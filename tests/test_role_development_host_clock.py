@@ -244,3 +244,37 @@ def test_invalid_host_budget_cannot_create_clock(tmp_path,value):
     with pytest.raises(ValueError,match='budget_invalid'):
         DevelopmentHostClock(tmp_path,max_host_seconds=value)
     assert not (tmp_path/'development-host-clock').exists()
+
+
+@pytest.mark.parametrize('interrupt', [False, True])
+def test_receipt_and_summary_use_one_time_observation_despite_scheduler_delays(tmp_path, interrupt):
+    now = [100.0]
+    def delayed_read():
+        now[0] += .05  # A scheduler tick larger than the unchanged .01 tolerance.
+        return now[0]
+    arm = tmp_path/'claim-scope-4'
+    arm.mkdir()
+    stage = arm/'initial.json'
+    write_new_json(stage, dict(stage='initial', report='offline', journal=None))
+    plan = dict(host_review_timing=dict(mode=TIMING_MODE, adopted=True,
+        max_host_seconds=4000), cases=[dict(key='claim-scope:4', request_sha256='b'*64)],
+        batch_budget=dict(max_seconds=900))
+    clock = DevelopmentHostClock(tmp_path, max_host_seconds=4000,
+        wall_clock=delayed_read, qualification_adopted=True, plan_sha256='a'*64)
+    def callback(_path, _remaining):
+        now[0] += 1000
+        if interrupt:
+            raise ValueError('operator_stop')
+        return 'returned'
+    if interrupt:
+        with pytest.raises(ValueError, match='operator_stop'):
+            clock.adjudicate(stage, 900, callback)
+    else:
+        assert clock.adjudicate(stage, 900, callback) == 'returned'
+    # Exercise the existing strict consumer, not just the producer arithmetic.
+    assert validate_adopted_timing(tmp_path, plan, saved_plan_sha256='a'*64)['waits'] == 1
+    summary = clock.summary()
+    assert abs(summary['wall_elapsed_seconds'] - summary['active_elapsed_seconds']
+               - summary['host_elapsed_seconds']) < 1e-9
+    now[0] += 3
+    assert clock() >= summary['active_elapsed_seconds'] + 3

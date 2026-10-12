@@ -4,25 +4,22 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "有界温度筛查 r2 在 sample-3:baseline 发生 assembly_rejected/tool_call_arguments receiptless 硬停止；5次调用、4个native审查、5项未执行，严格 replay/seal 完成，新资格0；候选温度与完整15均未验证。"
+pause_reason: "修正控制温度筛查已关闭：7请求/6原生双审，第7项Host误读标签未认证，3项未发；严格replay因旧时钟回执15/46ms不一致失败，未生成strict seal；新资格0。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-11 有界温度筛查 r2 已按明确授权启动唯一 runner，但在第五次 Provider 请求处发生流式工具参数组装失败，按硬故障规则关闭整批。冻结 HEAD `465daf92bfaecb47e800ebc343bd23f21c553220`、同提交全绿 CI `38141643942`、plan/package SHA `8c8fc50de3159dfc42bd02f2a3c53276dc5f537d9dfda2395de4f16f441b94d7`；run 为 `document-sampling-screening-20261011-r2`。
+2026-10-12 修正控制温度筛查已按授权执行并关闭。冻结HEAD `51923f4b95e0e17f6bec9aea8d622fd65e2fbce4`、CI `38160991496`、plan `1c9b0eebb5ac6a2957ccb9fc3a47369a2ea1554ab0aef20fb1051dc61c24237a`。实际7 HTTP、known117826 tokens、unknown0、receiptless0。额度补充后接续同一runner，未重发；第7项独立主体为查摘要误读预期标签，按原规则abort。6项已提交中4项接受、2项拒绝；首对拒绝存在全文范围判读反证，不把双方一致当成Provider必错。
 
-前两对样本完成真实请求和主/独立全文审查：sample-1 baseline/candidate 得分 74/78、均为 needs_revision 且预期 accept 未命中；sample-2 baseline/candidate 得分 96/95、final 均 pass，双审接受且 ReportAssessment 四项全真。实际账目为 5 次 HTTP/attempted、84081 known tokens、unknown=0、receiptless=1；活动 338.234 秒、Host 4486.266 秒。失败项是 `sample-3:baseline` 的 `ProviderResponseError`，证据为 `assembly_rejected/tool_call_arguments`，无可发布 JSON；它计入实际调用并作为 receiptless 硬停止处理，不归因 429/401/503，也不重试或重评。
+严格只读replay走完6项native核验后，在时钟门失败；旧回执两处残差15ms/46ms超过10ms门槛。**没有strict seal**，146份原件SHA保持不变，事故审计明确标记未通过。修复后续时钟字段多次取样问题，新增不加载标签配置的单任务摘要核验入口；没有更改旧回执、旧裁决、预算或采用标准。
 
-严格只读 replay 成功（native_reviews=4），create-only seal 已生成，SHA `bc2a89ad08b6c3390dfb2ed9e09df5b0d9ad0d17d362e7033dce02d848d666de`；close audit 位于 operator 输出目录，SHA `5823f23dc76c5cfde27eb9d740e8ed7416c41544c70c3325d28efb80cef99f7b`。未执行 `sample-3:temperature-02`、sample-4 两项、sample-5 两项；`new_qualification=0`。原件、运行记录和冻结 checkout 未修改，历史 2/15、3/15、remaining11 及完整15保持独立。
+证据：[本轮结果与执行修复](plans/2026-10-12-corrected-temperature-screening-result.md)、`data/evaluation/results/corrected_temperature_screening_close_audit_20261012.json`（SHA `862367d9ef801651f065720b97573e73bc7000c2e03dc54022337b3c57ca0aba`）。此前r2的重复issues键transport失败与本次隔离/计时失败分开，历史不重写。
 
 ## 当前行动
 
+先完成无付费的盲审执行边界与全文判读一致性检查，再根据能区分剩余解释的证据准备下一方案。已实现只读`verify_host_review_artifacts`，后续dispatch给出精确命令，绑定异常由operator定位，独立作者不翻预期标签配置。首对正确控制的历史accept、本次双拒绝及policy甲1/乙1的冲突已有逐字差异审计；旧记录不回填。本批禁止重开、重评、补发后三项，受污染主体不能继续认证新任务；新的付费方案不沿用剩余预算。
 
-2026-10-12 免费控制审计进一步发现 r2 五个样本中两个预设 accept（claim-scope:4 initial、scope:3 final）与历史封存的 semantic_accepted=false 冲突；只有 observed:3 final 有历史支持的正确控制，另两个 reject 控制仍需按初评语义解释。原温度筛查控制集不足，未重建前不发 Provider。详见 `docs/plans/2026-10-12-temperature-control-audit.md`。 已完成一份五例修正候选清单（3个历史正确稿、2个历史真错稿），仅作下一次方案输入，见 `docs/plans/2026-10-12-corrected-control-candidate.md`。 已完成新的 10 请求准备文件（估价约14.29504元、非硬封顶），仍未授权、未调用，见 `docs/plans/2026-10-12-corrected-temperature-screening-preparation.md`。
-
-2026-10-12 免费回放已核实 `sample-3:baseline` 的流式参数失败：334 个原始片段按顺序完整拼接（626 字节、正常闭合），但 JSON 含两个 `issues` 成员。普通解析会以后一个空数组覆盖前一个真实 issue；现有严格重复键门正确拒绝并保留不可发布片段，因此不修改接收器、不放宽门，也不重开 r2。另发现 sample-1 的预设 accept 与双审发现的真实 block 4 错误冲突，温度控制标签不能按预设成立。详见 `docs/plans/2026-10-12-stream-argument-diagnosis.md`。
-
-2026-10-11 有界温度筛查 r2 已结束于 `sample-3:baseline` transport hard stop。候选温度效果未完成验证，不改变默认产品入口，不授予正式15资格。后续如要继续，必须基于 clean checkout、同提交 CI 和新的明确授权重新准备新 run；不得使用本批剩余预算或重开本批。正式同版本15、自然消费、8E、Coach/Training、Worker/DB/API/UI/journal、前端、Memory、身份运维、两树整合和八维学习继续未完成。
+temperature=0.2未达到采用门，产品默认入口未切换。新资格0；历史2/15、3/15、remaining11、完整15前段/后8/后4及教学对照各自保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习继续未完成。automation保持PAUSED。
 
 ## 以下为历史记录
 

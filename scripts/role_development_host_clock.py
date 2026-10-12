@@ -63,7 +63,7 @@ class DevelopmentHostClock:
         outcome = 'interrupted'
         try:
             write_new_json(self._directory / (stem + '-waiting.json'), dict(
-                binding=binding, active_elapsed_seconds=self(),
+                binding=binding, active_elapsed_seconds=started-self._started-self._host_seconds,
                 wall_elapsed_seconds=started - self._started,
                 remaining_host_seconds=available))
             value = callback(available)
@@ -79,7 +79,10 @@ class DevelopmentHostClock:
                 outcome=outcome, binding=binding,
                 host_elapsed_seconds=finished - started,
                 cumulative_host_seconds=self._host_seconds,
-                active_elapsed_seconds=self(), wall_elapsed_seconds=finished-self._started))
+                # One observation per receipt: a second clock read can include
+                # scheduler delay and contradict the stored wall/host totals.
+                active_elapsed_seconds=finished-self._started-self._host_seconds,
+                wall_elapsed_seconds=finished-self._started))
 
     def adjudicate(self, path, remaining, review):
         if remaining <= 0:
@@ -100,9 +103,10 @@ class DevelopmentHostClock:
     def summary(self):
         if self._waiting_since is not None:
             raise ValueError('development_host_wait_unfinished')
-        return dict(mode=TIMING_MODE, active_elapsed_seconds=self(),
+        elapsed = self._wall()-self._started
+        return dict(mode=TIMING_MODE, active_elapsed_seconds=elapsed-self._host_seconds,
             host_elapsed_seconds=self._host_seconds,
-            wall_elapsed_seconds=self._wall()-self._started,
+            wall_elapsed_seconds=elapsed,
             completed_host_waits=self._sequence, qualification_adopted=self._adopted,
             plan_sha256=self._plan_sha256)
 

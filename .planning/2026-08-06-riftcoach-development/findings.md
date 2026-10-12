@@ -6951,3 +6951,8 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 ## 2026-10-12 修正控制筛查准备
 
 五例控制离线绑定和 10 请求重建通过；新准备文件固定 5 对 baseline/temperature-02、最多 10 次 GLM-5.3/high、967680 tokens、3000 active 秒，估价约14.29504元且非硬封顶。Provider0；执行仍需新的明确成本授权、同 HEAD CI 与即时 native 预检。详见 `docs/plans/2026-10-12-corrected-temperature-screening-preparation.md`。
+
+
+## 2026-10-12 修正控制筛查关闭与执行修复
+
+额度恢复后接续同一runner，实际累计7请求/117826 known tokens/unknown0/receiptless0；6项native双审，4接受/2拒绝。第7项因独立主体读到预期标签而abort，3项未执行。严格replay在完成6项native核验后报semantic_clock_inconsistent：第5、7等待回执分别15ms、46ms非原子采样偏差，strict seal未生成；146份原件未改。已修后续时钟单次采样，新增label-free单任务摘要核验，原消费者容差不变。首对双拒绝与实际policy及后文范围存在反证，原记录保留，不归罪Provider或改标签。详见 `docs/plans/2026-10-12-corrected-temperature-screening-result.md`；新资格0，自动任务PAUSED，完整15与产品消费依赖不变。
