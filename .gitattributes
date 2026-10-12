@@ -214,3 +214,6 @@
 /tests/test_document_full_report_remaining_initial.py text eol=lf
 /data/evaluation/fixtures/document_full_report_remaining_initial_20261012/** -text
 /data/evaluation/results/document_full_report_remaining_preparation_20261012.json -text
+
+/data/evaluation/results/document_full_report_remaining_close_audit_20261012.json -text
+/data/evaluation/results/document_full_report_remaining_host_evidence_20261012.json -text

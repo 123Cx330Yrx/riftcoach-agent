@@ -4,10 +4,32 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "网络后续批首项模型正常返回，但独立审查误用工作目录导致原生路由失败；整批封存，后2项未发，认证0/新资格0，自动任务暂停。"
+pause_reason: "两稿初评已关闭：H5双审拒绝错误修法；S8已返回未派审。作者答案额外落入run导致strict seal失败，自动任务暂停。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 H5/S8两稿已按用户确认首次执行，冻结 `ceb3a5add6eeee6fc0648a1b2ac2e1b27e194798`，CI `38240151033` 全绿。实际2 GLM/2 HTTP、known33883 tokens、unknown0/receiptless0，合同估价0.416824元，非实际账单。
+
+H5输出82/needs_revision；主审与原独立主体真实全文审查均拒绝wrong_correction：正确检出中单2.50/.50不接近，却把胜场3/2、负场0/1的实际样本区分改成“并未分开”。一项native双审/一次成功submit，不是原稿已修好。S8输出74/needs_revision，返回K3伪引问题及修法，但未完成主审全文审查、未独立派发或提交，不计通过。
+
+独立作者把自己的答案写入H5 run目录，超出冻结白名单；H5提交前未检查库存，S8已发出后才发现。保留S8返回并helper abort，runner111236于UTC11:50:02退出。strict seal内部replay在semantic_unexpected_run_file停止，**没有strict seal**；47本批与旧26/14/146原件库存/SHA保持。H5 native另行只读核验成功，不替代整批严格回放。自动任务PAUSED。
+
+结果见[两稿实际结果](plans/2026-10-12-full-report-remaining-result.md)；关闭审计 `data/evaluation/results/document_full_report_remaining_close_audit_20261012.json` SHA `d992caef63334db960e6a8d50167214a5c2b29277d85e86836b4a5deaa5f3578`；H5阶段证据SHA `e9e12dc4e6431a666fa877dcb6932b25397f2cdeb584e78154b0d02530304f62`。主审一次notes多字段在写入前被拒，格式修正后同一判断首次提交；无重审或模型重发。
+
+## 当前行动
+
+主线仍是完整来源支持的正确报告及修法进入真实Agent消费。本次获得真错检出后的错误修法反例；没有证据支持调整网络、温度或600秒时限。明确cwd/Python已实际生效，但read/help路径探针和不写作者文件的离线替身没有验证完整审查到封存链路。
+
+下一动作：先做无付费的审查工作区/库存边界修复，未来生成dispatch指定run外作者答案路径，在提交/下一请求前核库存，覆盖真实写答案、check-answer、native、submit、strict seal整链。AGENTS已明确要求，生成器及运行门尚未实现，不宣称修好了。再依据H5与既有全文反例决定修法机制；不立即另开付费批或重买已执行项。
+
+本批关闭不补签、不重开、不删额外原件以通过封存。V2未认证、S8无双审、旧温度批strict seal缺口与前TCP批unknown1各自保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格；新增资格0。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 未发送两稿准备快照
+
+
 
 2026-10-12 系统代理切换后的三稿诊断已执行并关闭。冻结 `11d1f9e0a1bc6eccfb370e2029db0cd8e7849758`、同HEAD全绿CI `38232745159`。V2模型正常返回97/pass（issues空、advisory block4），但独立主体以不存在的backend子目录作为工作目录，第一条命令OS error267，未读取checkpoint即输出唯一routing_failed原生终答。按规则abort整批，H5/S8未发。不是网络或Provider语义失败。
 
@@ -29,7 +51,7 @@ pause_reason: "网络后续批首项模型正常返回，但独立审查误用�
 
 前一TCP超时批unknown1/费用未知继续单列；旧温度批strict seal缺口保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格。temperature0.2未采用；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习仍未完成。
 
-## 以下为历史记录
+
 
 ### 2026-10-12 网络后续批执行前快照
 

@@ -88,6 +88,15 @@ alone does not prove command startup. Relay the full generated dispatch plus
 these concrete paths rather than paraphrasing its execution location. This
 does not authorize redelivery, a second final, or reopening a closed batch.
 
+For future full-source Host tasks, the generated dispatch must also name a
+verified author-answer path outside every run evidence directory. Authors write
+only their own answer there, then use that exact file for check-answer and their
+single native final. The operator must validate run inventory before accepting
+submission or permitting the next paid request. Validate the actual author-file
+write -> check-answer -> native import -> submit -> strict seal path; a read/help
+probe or a fixture that directly synthesizes an event is not that coverage.
+Do not move/delete an unexpected historical run file to make a closed seal pass.
+
 ## Stage and product boundaries
 
 - There are exactly nine main stages, 0 through 8. Do not add, remove, reorder,

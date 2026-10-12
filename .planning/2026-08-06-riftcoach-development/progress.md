@@ -1,3 +1,9 @@
+## 2026-10-12 两稿实际执行与库存故障关闭
+
+ceb3a5ad/CI38240151033全绿后唯一runner111236首次执行，2GLM/2HTTP、input26595/output7288、known33883/unknown0/receiptless0，合同估价0.416824元非账单。H5 82/needs_revision检出真错但修法错误，主审/独立全文审查同拒；16公开命令exit0、作者check-answer/唯一native实核，成功submit1。S8 74/needs_revision仅返回，无全文双审或提交。
+
+独立作者答案写入run超白名单，主审提交前未核库存，S8已发后发现；保留返回并abort，UTC11:50:02 exit1。strict seal在inventory失败，47原件不变，旧26/14/146及冻结源码保持。原notes多binding被写前拒，修正本地入参后同一判断首次提交，无模型重发/重审。自动任务PAUSED。已保存失败审计和H5阶段证据；后续无付费修完整工作区/库存链路，当前仅AGENTS约束已补，未宣称生成器修复完成。
+
 ## 2026-10-12 未发送H5/S8两稿初评准备
 
 新包只保留旧批始终未发送的H5/S8，request/material与原包逐字节一致，V2排除且未认证缺口保留。私有入口复用原builder/runner/transport/Host门，仅新run/授权身份、旧事故与真实路径探针证据，以及实际dispatch中明确cwd/Python命令。未改冻结helper或旧源码。
