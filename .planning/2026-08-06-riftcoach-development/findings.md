@@ -1,3 +1,11 @@
+## 2026-10-12 校准材料到真实初评请求的保真边界
+
+三稿校准的16逻辑段不等于业务解析器段号：标题与表格拆分为18段。逐逻辑块字节保持、请求文档可逆恢复；不能沿用校准第11段定位真实工具issue。来源比较只允许三个绑定新报告的摘要变化，原始值、知识、用户原话、确定性全文和policy全部精确保持。新稿没有旧initial journal，Host task必须如实表达，不能借复用adapter把不存在的历史stage塞入材料。
+
+新方案只用旧sampling身份的baseline通道，SDK仍为GLM-5.3/high、1.0/.95/32768/600秒，metadata不下发；不构成新的温度对照或产品采用。独立主体已看过这些原稿，故是熟悉来源开发诊断，不能声称盲测稳定率；它不接触本次Provider意见的主审裁决或预期标签。标签留在主流程，对照不能代替全文反证。
+
+本机native只读预检在FINAL_POLICY下允许旧dispatch正文不可读，但必须当前原生路由及终答可读取；本轮如实记录current_input_readable=false/current_route_and_final_available=true。此证据不保证下一次turn可用，也不替代逐项唯一final核验或发送前预检。旧批strict seal缺口仍保留。
+
 ## 2026-10-12 交接调用点与旧源码测试的边界
 
 新增helper不等于运行流程使用它。已在真实observe的dispatch调用点启用文档校验，并把命令生成移到create-only文件打开之前，避免失败遗留空dispatch；新回归通过真正的校验入口，不再用只接旧参数的dispatch替身。实件干跑仅算摘要核验，全文判读和native仍各自必需。

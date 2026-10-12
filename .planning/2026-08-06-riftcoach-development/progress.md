@@ -1,3 +1,11 @@
+## 2026-10-12 三稿初评诊断可执行准备
+
+已固定新三稿V2/H5/S8各一次初评的准备包，plan SHA `66dcb5d0f9a1fe43b8cf38442f34da9e4a13e17213fbd3414c2982eba608ee0a`；新增适配器复用原私有runner/基线传输/业务validator/真实native门/严格replay，不另复制运行器。完整来源与校准逐字段相等，仅更新依赖新报告的3个摘要；policy字节相等。16逻辑块拼接后既有解析器生成18实际段号，后续按请求定位，不改报告正文。
+
+51项相关回归通过（271.55秒），包含三份真实worker/SDK路径禁网络、真实业务验证器、native事件替身、语义拒绝继续、transport/native/checkpoint/abort硬停、摘要异常不dispatch、授权前不读凭据及create-only只读封存。首轮一条测试期待新门报错，实际旧业务门更早拒绝不一致来源；修正断言，未放宽校验。无独立工程Agent审查，不将这些替身记为真实语义结果。
+
+Codex0.153.4只读预检核主/独立身份与当前FINAL_POLICY终答通路可用；current_input_readable=false如实保留，发送前仍须即时核验。旧146原件摘要及库存实核相同，Provider0/业务submit0/新资格0，新run不存在。审计SHA `daf29d4f89882128d9357d68a1f0ccc7a61fc6fcfc32b6312506784898702c6b`，方案`docs/plans/2026-10-12-full-report-initial-diagnostic.md`。最多3GLM/0Flash、290304tokens、1800活动秒/86400Host秒、4.288512元保守估价非硬封顶；新付费授权待用户决定，不沿用旧余量。24e2af1b公共CI打包/DB/web通过、四pytest仍运行；本准备提交另核同HEAD CI。
+
 ## 2026-10-12 单任务核验实际接线与历史测试修复
 
 实际observe先验证固定文档原件再发布dispatch，给出精确checkpoint/SHA命令；失败不生成交接文件或Host等待。semantic/sampling未来plan均绑定checkpoint和helper源码，generic交接保持兼容。第7项原件只读干跑成功，stage与pin task一致、146原件未变；Provider0、审查0、认证0，不补旧资格。记录见operator dispatch-wiring-offline-audit.json（SHA35931d80…49fc63）。

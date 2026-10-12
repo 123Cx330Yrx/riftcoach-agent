@@ -23,7 +23,11 @@ pause_reason: "修正控制温度筛查已关闭：7请求/6原生双审，第7�
 
 三份新完整游戏报告的校准已完成：每篇16段约2600字、共享19173字符来源，policy不变，78项计算和7处引句实核。复用同一独立主体，新Agent0，唯一新turn/final真实核验；15条公开读取只涉及固定task/materials且无截断。正确稿不误报，明确中单范围错误与伪造K3固定阈值均检出，修法保留正确内容。证据见[完整报告校准](plans/2026-10-12-host-full-report-calibration.md)与`data/evaluation/results/host_full_report_calibration_20261012/close-audit.json`（SHA `6ac2e8e0c8962f6268269d37a9c6ee930c325047da91dc4d730a900ffe78042b`）。这是一次受控开发组，非稳定率、长度因果或业务资格；Provider0/业务submit0，旧146原件不变。
 
-下一动作：停止增加同类Host校准，准备最多三次只做初评的新Provider诊断，使用这三份新报告的完整来源和同policy/当前基线配置，绑定请求、预算、真实双审与只读收尾。目标是区分实际Provider错误与Host误拒，再决定修法或恢复更广回归；不同时改温度、教学、source表示，不原样重买旧温度筛查。当前尚无新付费run或成本授权，先完成具体离线准备；旧批不重开、不重评补签、不补发，strict seal缺口保留。
+三次只做初评的新Provider诊断已完成离线准备：[可执行方案](plans/2026-10-12-full-report-initial-diagnostic.md)，精确包`data/evaluation/fixtures/document_full_report_initial_20261012/`，plan SHA `66dcb5d0f9a1fe43b8cf38442f34da9e4a13e17213fbd3414c2982eba608ee0a`。沿既有私有runner和baseline传输，顺序V2/H5/S8，完整来源和policy不变，16校准逻辑段保留为2649/2655/2671字符的正文，既有解析器生成18实际段号。初评不编造历史stage/journal，标签不进Provider或独立任务。最多3 GLM/0 Flash、290304tokens、1800活动秒/86400Host秒、估价4.288512元非硬封顶，无编辑/fresh/重试。51项离线worker/SDK/native替身/停止/只读封存回归通过，旧146原件实核未变。准备审计`data/evaluation/results/document_full_report_initial_preparation_20261012.json` SHA `daf29d4f89882128d9357d68a1f0ccc7a61fc6fcfc32b6312506784898702c6b`。
+
+准备阶段用指定Codex0.153.4实读现有主/独立身份与native-final通路通过；旧dispatch正文不可读（current_input_readable=false），已采用FINAL_POLICY下当前终答通路可用，不承诺未来可用，也不代替发送前即时预检。未派新Agent或业务审查；Provider0/业务submit0，新run不存在。24e2af1b/CI38222204055实查打包、DB、web通过，四pytest分片仍运行，查询EOF不计CI失败。当前适配器尚无独立工程Agent复核，离线替身不是真实质量证据。
+
+下一动作：完成本准备提交的同HEAD公共CI确认，取得上述具体新批成本授权后，沿唯一runner首次执行三次初评及真实全文双审；授权之前不启动。目标是区分实际Provider错误与Host误拒，再决定修法或更广同版本回归，不同时改温度/教学/source，不原样重买旧温度筛查。旧批不重开、不重评补签、不补发，strict seal缺口保留。
 
 
 temperature=0.2未达到采用门，产品默认入口未切换。新资格0；历史2/15、3/15、remaining11、完整15前段/后8/后4及教学对照各自保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习继续未完成。automation保持PAUSED。
