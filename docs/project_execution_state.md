@@ -4,14 +4,14 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；无新付费授权，普通无付费项目工作继续；职责分离仅完成离线研究准备，尚未授权或实测。"
+pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；用户已授权六次职责分离开发对照；新入口离线验证通过，待新HEAD公共CI及最终绑定；尚未实测。"
 ---
 
 # RiftCoach 当前执行状态
 
 2026-10-14。后端`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`。
 主树未完成前端保持；0—8及当前8E checkpoint不变。J1/J2等旧批已关闭，automation PAUSED，
-无新付费授权；不重启旧批、不补签、不拼资格。用户要求以核心语义问题为主线持续推进。
+用户明确“授权，继续”覆盖六次新职责对照；不重启旧批、不补签、不拼资格。用户要求以核心语义问题为主线持续推进。
 
 ## 当前行动
 
@@ -23,9 +23,9 @@ pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；
 见[方案、覆盖/资源与失败决策](plans/2026-10-14-review-duty-design.md)。
 
 6份请求及manifest在`data/evaluation/fixtures/review_duty_probe_20261014`，
-`prepare_review_duty_probe.py`可离线逐字重建，尚无发送适配器/授权/run/Host任务。
-拟6次GLM-5.3/high、Flash0，580608tokens/3600活动秒/86400Host秒，单次600秒；
-按现有价格快照最大预算估价8.577024元非账单硬封顶。当前没有付费执行权限。
+`prepare_review_duty_probe.py`可离线逐字重建，原请求保持；新隔离发送适配器已完成，已取得六次授权，尚无业务run/模型发送。
+已授权6次GLM-5.3/high、Flash0，580608tokens/3600活动秒/86400Host秒，单次600秒；
+按现有价格快照最大预算估价8.577024元非账单硬封顶。授权记录签发UTC2026-10-13T16:45:50.259394，24小时截止不延展；只允许这一批。
 即使开发对照有正向信号，也先验证互补职责/真实编辑消费和5→7调用的合同变化，不直接重启15。
 
 **独立产品工作已补齐取消/失败任务的用量API与工作台展示。**
@@ -35,9 +35,11 @@ pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；
 浏览器是本地HTTP替身，数据库链路模型/来源也是替身；分段验证，不声称自然消费或整体产品验收。
 见[实现、运行手册与限制](plans/2026-10-14-terminal-usage-consumption.md)。
 
-下一动作：对已准备的六次职责对照作明确的新成本决定；授权后才完成新身份执行绑定与首次发送，
-不得借旧身份/旧四次授权。独立产品工作不因旧失败永久冻结；本包公共CI须核实际新提交。
-上一提交0aac0952的CI38424719839最近查询前端/打包/Postgres/分片0通过，其余三片仍运行，未报全绿。
+下一动作：完成六次新入口验证并绑定其新提交的公共CI；全绿后首次run，逐项真实原生双审及封存。
+入口 `scripts.document_review_duty_diagnostic`，Operator `C:/Users/33502/Documents/Agent/outputs/riftcoach-review-duty-20261014`。
+17项新入口离线检查通过，含真实loopback SDK及作者文件/check-answer/native替身/submit/seal；原独立主体已恢复可用，行政确认不算业务审查。
+上一提交5026c28f/CI38431162686暴露另一份OpenAPI路径清单漏登记usage端点；已补齐，相关47项回归通过。
+0aac0952/CI38424719839已全绿。两者均不替代本次新入口CI。
 
 ## 保留的结论与依赖
 
