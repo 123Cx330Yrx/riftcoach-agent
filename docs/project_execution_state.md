@@ -21,7 +21,9 @@ J1基线97/pass、候选95/pass均正确保留；J2基线70/needs_revision、候
 
 无付费同版本/消费检查已完成：原15 time600的system与J1 baseline逐字相同，但旧资格绑定另一编辑协议并拒绝当前15请求；baseline本身已有whole-text教学，未取得产品资格。四份实际意见的全部issue字段进入编辑请求，可读性marker按合同只留journal。10项作者编辑夹具核完整新成稿/终评绑定：J2两处都修才恢复正确控制，单修/空编辑仍留错；没有真实编辑/终评或新语义授予。见[接线裁决与实施范围](plans/2026-10-13-post-joint-consumption.md)及`data/evaluation/results/post_joint_consumption_20261013.json`。
 
-下一项：实现隔离的前瞻三阶段证据入口，保留现有workflow和每任务5调用/401920tokens/900秒共享账本，补齐case/stage路径下的run外作者、库存、实际观测与submit/replay/seal门，并做无付费整链验证。旧完整15入口缺这些新门，不能直接执行；默认产品未接time600，Worker阶段间取消仍待接线。停止更换熟悉报告重买教学对照；不删初评、不换schema、不设关键词语义门。本批授权不转移到新调用；普通授权内工程继续，8E及下游未完成。
+前瞻三阶段证据入口已实现并完成离线验证，见[实现与运行边界](plans/2026-10-13-full-chain-evidence.md)。隔离复用旧状态机和共享账本，run外作者/观测及case/stage库存贯穿提交、下一发送、子进程交接和只读replay/seal。新30项三阶段/边界测试及4项真实loopback SDK/worker测试通过；旧源码/包、86本批与372旧批原件保持。准备文件`full_chain_evidence_preparation_20261013.json`未授权、未创建业务run，没有付费execute CLI。
+
+下一项：复用原独立主体做新入口的真实无付费三阶段Host演练，业务响应明确使用离线夹具，实核作者check-answer/唯一native/submit/严格seal，再完成具体版本与资格接缝准备。当前native事件测试是替身，不冒充真实演练或质量资格。默认产品未接time600，Worker阶段间取消与自然消费仍待接线；不直接执行旧full15、不重买熟悉报告教学对照。本批授权不转移到新调用，8E及全部下游未完成。
 
 ## 保留的旧批结论与产品依赖
 

@@ -287,3 +287,8 @@
 /scripts/audit_post_joint_consumption.py text eol=lf
 /tests/test_post_joint_consumption.py text eol=lf
 /data/evaluation/results/post_joint_consumption_20261013.json -text
+
+# Prospective full-chain gates; preserve source and preparation bytes.
+/scripts/full_chain_*.py text eol=lf
+/tests/test_full_chain_*.py text eol=lf
+/data/evaluation/results/full_chain_evidence_preparation_20261013.json -text

@@ -1,3 +1,13 @@
+## 2026-10-13 前瞻三阶段证据入口实现与离线验证
+
+新增full_chain_evidence、模块内依赖路由和双角色observed worker，隔离复用旧full15状态机/回放，不改历史源码。精确cwd/Python实际启动、case/stage任务路径、run外作者与观测、库存/链接检查接入提交前、native读取后原提交锁内、等待/接受、下一发送及子进程交接；evidence-guard固定作者原字节/checkpoint/观测SHA，关闭后严格只读replay和目录外create-only seal。旧plan在开锁前拒绝，错误任务路径不写入。
+
+30个新三阶段/边界用例及4个真实loopback worker/SDK用例全部通过。执行记录：核心29项492.95秒；新增启动/原模块隔离2项10.44秒；最后路径边界补充后，完整正例/准备与双角色传输6项107.02秒定向复验通过。三阶段分别硬故障停批、语义拒绝继续下一独立项；Host等待不占活动秒，final剩余350秒与下一case600秒实核。首次测试失败来自替身重复turn ID及测试进程启动后修改了故障注入条件，修正测试并重新运行；没有修改业务或历史判断。
+
+真实的是作者文件、check-answer CLI、导入/提交/锁/回放代码，以及4次本机HTTP和SDK/worker；native事件和业务响应是明确离线替身。外部Provider/HTTP、真实Host派发、新Agent、业务submit和资格均0。保存原15/51源码准备绑定full_chain_evidence_preparation_20261013.json，execution_authorized/execution_ready=false；无业务run、无授权、无付费execute CLI，最坏预算不是新成本申请。
+
+实核旧69/73/73源码及材料包、本批86与旧372（共458）原件库存/SHA不变，主树前端未动、automation保持PAUSED。上轮7f6b9a13/CI38381908450现已success；2b16e135/38384159698本次查询仍in_progress，不替当前提交宣称已绿。下一项是真实无付费三阶段Host演练与版本/资格接缝准备，原主体、完整dispatch、作者自己的JSON及唯一native保持；默认产品/自然消费/阶段间取消与8E全部后续未完成。
+
 ## 2026-10-13 实际意见消费与同版本接线检查完成
 
 新增只读audit_post_joint_consumption及机器结果，固定已提交J1/J2 seal/close SHA并核完整实际材料。四项真实意见经既有time600编辑构造器消费，全部issue字段保持；optional advisories依既有合同只留journal，不升级必要编辑。10项作者注入组装核完整终评request SHA/全部非正文输入/未改文本：J2两处都修才恢复J1，单修或空编辑不修复其余错误；语义授予始终false，没有真实模型编辑。
