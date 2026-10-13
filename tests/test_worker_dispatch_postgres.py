@@ -12,6 +12,7 @@ import pytest
 from app.evaluation.golden_coarse_source_projection import VERSION
 from app.product.native_coach_composition import build_correction_scope_coach_application
 from app.product.run_receipts import FileRunReceiptStore
+from app.product.dispatch_trace import with_dispatch_trace
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.reviewer_roles import RoleRoutedProvider
 from app.runtime.store import RuntimeTraceStore
@@ -81,6 +82,7 @@ def test_api_cancel_fences_real_database_worker_before_next_model_send(
         knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs")),
         runs_root=tmp_path,
     )
+    application = with_dispatch_trace(application)
     executor = RecentReviewTaskExecutor(application_service=application,
         evidence_verifier=RecentReviewTerminalEvidenceVerifier(tmp_path))
     result = ReviewWorker(repository=repository, executor=executor, worker_id="dispatch-pg-worker",
@@ -115,18 +117,18 @@ def test_api_cancel_fences_real_database_worker_before_next_model_send(
     assert "failed" not in event_kinds
 
     receipt = FileRunReceiptStore(tmp_path).read_receipt(run_id)
-    if not cancelled or cancel_after == 5:
-        trace = RuntimeTraceStore(tmp_path, run_id).read_trace(receipt.trace_reference)
-        starts = [e for e in trace.events if e.signal.kind == "provider_call_started"]
-        assert len(starts) == expected_calls
-        assert trace.usage.provider_calls_attempted == expected_calls
-        assert trace.usage.provider_responses_observed == expected_calls
-        assert trace.usage.observed_input_tokens == expected_calls * 10
-        assert trace.usage.observed_output_tokens == expected_calls * 10
-    else:
-        # This test proves dispatch/visibility fencing. Early cancellation still
-        # lacks a durable usage Trace; do not claim journal completeness here.
+    assert receipt.trace_reference is not None
+    trace = RuntimeTraceStore(tmp_path, run_id).read_trace(receipt.trace_reference)
+    starts = [e for e in trace.events if e.signal.kind == "provider_call_started"]
+    assert len(starts) == expected_calls
+    assert trace.usage.provider_calls_attempted == expected_calls
+    assert trace.usage.provider_responses_observed == expected_calls
+    assert trace.usage.observed_input_tokens == expected_calls * 10
+    assert trace.usage.observed_output_tokens == expected_calls * 10
+    if cancelled and cancel_after < 5:
         assert receipt.runtime_status.value == "failed" and not receipt.report_available
+        assert receipt.terminal_reason == "task_dispatch_stopped"
+        assert trace.events[-1].signal.failure_code == "task_dispatch_stopped"
     if cancelled:
         assert stored.artifact_reference is None and stored.publication_status is None
         assert not stored.report_available

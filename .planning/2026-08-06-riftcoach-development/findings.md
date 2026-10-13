@@ -1,3 +1,9 @@
+## 2026-10-13 可信停止须保留原记录器，不能重新拼Trace
+
+发送前停止必须继续以终止性异常穿过Harness，避免被当作模型故障恢复；Runtime只有拿到可信guard绑定的本run记录器才可持久化。启动身份捕获一次，事件原顺序/时间保留；Provider或观察器自行抛相同异常但没有绑定不能取得可信Trace，未知用量不补零。
+
+除runtime.py外，native_coach_composition.py也被组件指纹绑定，直接改构造触发启动拒绝。保留两者原字节，将任务控制适配放到普通构造及显式的应用包装层；不更新旧manifest来借旧资格覆盖新代码。该包装使用V1私有依赖，是有限范围接缝，不能任意套未知子类或冒充历史native入口已原地升级。
+
 ## 2026-10-13 取消控制与审计持久化是两个不同边界
 
 真实SQL/API证明取消会挡住下一次Provider发送及最终可见性，但DispatchStopped继承RuntimeObservationError，Runtime按观察器损坏返回observation_failed，提前取消的用量Trace没有持久化。不能由delegate次数正确推导journal完整，也不能把缺失用量填0。正常或最后一次响应期间取消仍有Trace；问题发生在提前中止路径，需要保持真正的观察失败默认拒绝。

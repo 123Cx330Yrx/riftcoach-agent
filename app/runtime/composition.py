@@ -133,7 +133,8 @@ class RuntimeCompositionRoot:
                 **({"include_deterministic_facts": True} if contract.descriptor().get("include_deterministic_source_facts") else {})),
             coach_contract=contract,
         )
-        return AgentRuntimeV1(
+        from .dispatch_runtime import DispatchAwareRuntime
+        return DispatchAwareRuntime(
             runs_root=runs_root, catalog=self.skill_catalog, provider=provider,
             execution_factory=factory, context_builder=context_builder or CoachContextBuilder(coach_contract=contract),
             prompt_program_resolver=self.prompt_program_resolver,
@@ -230,7 +231,8 @@ class RuntimeCompositionRoot:
                 "runtime_profile does not match the Runtime Provider"
             )
 
-        return AgentRuntimeV1(
+        from .dispatch_runtime import DispatchAwareRuntime
+        return DispatchAwareRuntime(
             runs_root=runs_root,
             catalog=self.skill_catalog,
             provider=provider,

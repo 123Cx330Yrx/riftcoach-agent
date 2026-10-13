@@ -13,10 +13,14 @@ from .observer import RuntimeObservationError
 class DispatchStopped(RuntimeObservationError):
     """A trusted execution fence prevents the next Provider-start observation.
 
-    Use the existing terminal observation path so Harness recovery cannot treat
+    Use the existing terminal observation type so Harness recovery cannot treat
     cancellation as a malformed model response and start another evaluation.
-    Worker resolves the actual cancellation/lost-lease/error outcome.
+    The send boundary attaches its actual observer before propagation. A
+    dispatch-aware Runtime can then seal the existing recorder, while Worker
+    resolves the actual cancellation/lost-lease/error outcome.
     """
+
+    observer: object | None = None
 
 
 _guard: ContextVar[Callable[[], None] | None] = ContextVar(

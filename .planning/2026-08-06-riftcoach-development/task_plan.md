@@ -15,14 +15,13 @@
 
 ## Active Work Package
 
-**目标与依据：** 继续保留三处语义问题及新15撤回决定；先修复已在post-joint-consumption记录、现已复现的独立运行缺口：收到取消/失去租约后，真实Agent不得继续发下一次模型请求。
-**机制与实际路径：** 旧Worker只在executor返回后处理租约结果；Provider启动观察前增加执行上下文内的租约检查，复用现有heartbeat/CAS终态，周期续租与发送前检查串行，取消/丢失不可被后续ACTIVE覆盖。上下文退出即释放，不改模型输入、业务预算、冻结workflow或资格标准。
-**具体实施：** `app/runtime/dispatch_control.py`、`app/runtime/observer.py`及`app/workers/review_worker.py`；真实应用回归在`tests/test_worker_dispatch_control.py`。不修改已登记的ObservedLLMProvider代码或Prompt Program指纹来伪装旧证据覆盖。
-**当前证据：** 修改前的观察函数在第一次调用后取消仍发送完整5次；新边界按取消位置只发送1/3/4次，未取消的完整5阶段保留。相关Worker/观察/应用125项44.69秒通过，收尾23项及4项定向复验通过；业务、DB使用替身，后台heartbeat是真线程，无模型请求。54源码绑定与700原件SHA不变。
-**验收与边界：** 复核旧源码/700原件、相称测试/治理/提交已做；但4be52567公共CI38413626331四个pytest分片在旧应用heartbeat断言失败。两套应用回归已修正检查次数及终态LOST注入时点，113项本地验证通过，须核后继公共CI。正在进行的HTTP仍保留结果；只阻断下一次发送，不承诺打断已发请求。原budget先预留的未发尝试仍保守保留，不伪记第二次实际调用/用量。现有同步Runtime链路之外的自建线程执行须显式传递上下文。
-**新增验证：** 独立Postgres17中真实API/Worker/应用6项通过：第1/3/4次后取消只发1/3/4次，末次取消禁止报告可见，另一owner不得取消，正常五次及幂等保持。关闭guard的内存反例仍发五次，被测试拒绝。模型/来源为替身；没有浏览器或time600自然消费证明。Docker两个失效socket目录已备份恢复，产品卷/15432保留且healthy，测试只迁移独立临时库。
-**新失败与下一动作：** 提前取消的receipt为observation_failed、trace_reference为空；取消继承观察错误使Runtime丢失用量汇总Trace。下一项区分可信取消和真实观察故障，保存已经发生的事件并继续禁止发布/下一发送；先明确与旧冻结源码/证据的隔离，不能以取消成功完成journal验收。CI38416151132另发现时间审计Worker摘要漂移及native终态LOST夹具提前注入，已以历史SHA一致归档和第三次响应后LOST修正，25项通过，后继公共CI待核。
-**主阻断：** 责任拆分路线不实施：旧删除反例不能否定全新诊断生产者，但也没有新增机制依据支持它修复原文误读；三处语义问题仍未解决。无新候选/付费队列，automation PAUSED，8E及下游未完成。
+**目标与依据：** 已阻止取消后的下一发送；本包补齐提前停止丢失用量Trace的明确缺陷。三处语义问题仍未解决，新15提议撤回，普通无付费工程工作继续。
+**实际机制：** 可信发送guard绑定实际observer；新DispatchAwareRuntime捕获本次启动身份并复用原记录器/终态写盘路径。保存已发生调用与用量，未发不计调用、未知不填0；Worker独立裁定取消/失去租约/数据库错误。真实观察故障继续默认拒绝。
+**接线与隔离：** 普通RuntimeCompositionRoot接适配器；冻结native构造由显式with_dispatch_trace包装后使用。直接改native构造会触发组件指纹门，已恢复原字节；没有改旧manifest、frozen runtime或候选默认。适配器依赖V1私有接缝，未知子类拒绝，升级需复验。
+**证据：** 最终210项相关回归通过（50.47秒）；独立Postgres17/FastAPI/Worker/显式包装应用6项通过（15.14秒），第1/3/4次取消保留对应Trace，SQL/事件/owner/幂等/报告门保持。0发送、失租、DB错误、真实记录器故障、写盘错误、未绑定停止、unknown用量、并发身份隔离均覆盖。模型/来源为替身，不是自然消费或浏览器验证。
+**历史与环境：** 最新执行准备54份源码及700历史原件SHA不变，旧修复就绪审计逐字段相同。测试容器已删除；原产品Postgres卷/15432保持。Docker恢复及前两次CI修复详见取消工作记录。
+**当前与下一动作：** 取消Trace实现和本地验证完成，下一项核本次提交公共CI。上一提交d5009705/CI38420884219查询时前端、打包、Postgres及pytest分片2成功，其余三个分片仍运行中，不报全绿。用量查询/UI消费与time600自然生成继续作为后续依赖。
+**主阻断：** 责任拆分缺新增语义修复依据，当前不实施；三处旧语义问题不因运行修复改变。无新候选/付费队列，automation PAUSED，8E及下游未完成。
 
 ## Dependencies and Follow-through
 
@@ -43,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：发送/可见性已有真实数据库验证，下一项处理提前取消的用量Trace缺口及本次公共CI。三处语义问题继续阻断新15；责任拆分没有被选为修复，执行准备保留但付费提议已撤回，automation PAUSED，8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：提前取消Trace已在显式应用/真实数据库链路验证，下一项核本次公共CI。三处语义问题继续阻断新15；责任拆分没有被选为修复，执行准备保留但付费提议已撤回，automation PAUSED，8E及全部产品依赖未完成。
 
 ## History
 

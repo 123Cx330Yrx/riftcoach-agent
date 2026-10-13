@@ -97,7 +97,7 @@ RecentReviewTaskExecutor → 现有correction-scope应用；数据库为独立�
 owner隔离、取消幂等和报告HTTP门均核实。关闭发送前guard的内存反例在第一次取消后仍发
 满五次，测试如预期失败；不是仅验证最终状态。没有改生产函数做这项对照。
 
-**新发现、未修复：提前取消的用量Trace缺口。** 第1/3/4次取消时API/SQL正确cancelled，
+**当时发现的提前取消用量Trace缺口（后续修复见下节）。** 第1/3/4次取消时API/SQL正确cancelled，
 本地receipt为failed/observation_failed且trace_reference为空。DispatchStopped继承
 RuntimeObservationError，旧Runtime以观察器损坏路径返回，未持久化已观察调用的汇总Trace。
 因此先前“在途响应保留”仅能支持发送边界和原Provider回执，不足以声称产品用量日志完整。
@@ -109,3 +109,34 @@ Trace/用量或把缺失当0。取消控制还不能作为完整journal验收，
 目录同级备份，重建后Docker29.7.2正常，原Postgres卷/15432映射保留且healthy；没有恢复出厂
 或读取模型凭据。测试仅对独立临时数据库迁移，未对产品库downgrade。恢复证据位于
 `C:/Users/33502/Documents/Agent/outputs/riftcoach-local-runtime-20261013/recovery.json`。
+
+## 可信停止的Trace持久化修复
+
+发送前取消与观察器损坏原本共用异常通路；既有Runtime在收到`RuntimeObservationError`时
+返回无Trace的失败。本轮保留终止性异常，防止Harness误把停止当模型错误而继续请求，
+但在可信发送guard抛出时绑定本次真实observer。新增`DispatchAwareRuntime`只接管这个
+停止：核本run/事件sink/原记录器，复用启动时实际身份和`_finish_failure`落盘路径，
+保存原序号、时间、事件和用量；终止码为`task_dispatch_stopped`。Worker仍独立裁定
+cancelled、ownership_lost或数据库错误；失败Runtime不生成报告、不把未发尝试记作调用。
+
+普通`RuntimeCompositionRoot`及旧offline Coach构造已接适配器。native构造文件本身也
+受Prompt Program指纹绑定，初始直接替换该构造器的做法被启动校验拒绝，现已恢复原字节。
+这些冻结的opt-in构造需显式使用`app/product/dispatch_trace.py::with_dispatch_trace`：
+用相同依赖构造新应用/Runtime，不修改原实例、不接受任意子类。真实数据库回归使用的
+就是这一显式路径；没有声称未包装的历史native入口也已修复，也未将候选设为Worker默认。
+适配器依赖V1的私有observer/终态接口，这是当前冻结核心的窄接缝，未来升级须重新验证。
+
+最终相关Runtime/观察/应用/Worker共210项通过（50.47秒），包含14项新增适配器测试。
+独立临时Postgres17的6项API整链通过（15.14秒）：所有正常/取消场景均核完整Trace，
+第1/3/4次取消分别只保存1/3/4次真实响应及对应tokens，SQL/事件/报告HTTP门仍正确。
+发送前零调用、失去租约、数据库错误亦有完整应用回归；未知用量保持null，观察/记录器
+故障和Provider自行抛出的未绑定停止仍无可信Trace，写盘错误保持失败。
+原事件与同步sink逐项相同、身份只解析一次、同Runtime并发及后续run隔离均通过。
+测试中的一处诊断preparer最初使用错误调用签名，已修正并通过上述最终整组，未改生产门。
+
+准备中的54份去重源码、700份历史原件及修复就绪审计逐字段实核不变；冻结`runtime.py`
+SHA仍为`be2999404b5275afd5110db02ff6ac6da9e3e673223a43188cc02d850233da2c`。
+没有更新旧manifest、准备或标签。测试容器已按本任务label核实并删除，原产品库未迁移。
+本轮没有模型/新Host/付费调用；automation保持PAUSED。上述是取消控制和本地持久化证据，
+并非浏览器消费、time600自然生成或模型语义质量。三处旧语义问题、新15撤回及全部下游
+依赖保持；公共CI须按实际提交单独核验。

@@ -204,9 +204,10 @@ def test_actual_coach_budget_stops_with_only_one_delegate_send(no_network, coars
     assert not repo.succeed_with_evidence_calls and not repo.fail_calls
 
 
-@pytest.mark.parametrize("after", [1, 3, 4, 6])
+@pytest.mark.parametrize("fault", ["cancel", "lost", "error"])
+@pytest.mark.parametrize("after", [0, 1, 3, 4, 6])
 def test_real_application_path_blocks_next_generation_edit_or_fresh(
-    tmp_path, no_network, coarse_script_sources, after,
+    tmp_path, no_network, coarse_script_sources, after, fault,
 ):
     from pathlib import Path
     from app.product.native_coach_composition import build_correction_scope_coach_application
@@ -216,8 +217,12 @@ def test_real_application_path_blocks_next_generation_edit_or_fresh(
     from tests.test_reviewer_role_proposal import providers
     from tests.test_native_editor_product_budget import SummaryBuilder
     from tests.test_role_coach_application import run
+    from app.product.run_receipts import FileRunReceiptStore
+    from app.runtime.store import RuntimeTraceStore
+    from app.product.dispatch_trace import with_dispatch_trace
 
-    repo = SwitchingRepository("cancel")
+    repo = SwitchingRepository(fault, initially=after == 0)
+    run_id = repo.claim.run_id
 
     class Factory:
         def __init__(self):
@@ -243,14 +248,32 @@ def test_real_application_path_blocks_next_generation_edit_or_fresh(
         runs_root=tmp_path,
     )
 
+    app = with_dispatch_trace(app)
+
     class Executor(EvidenceExecutor):
         def execute(self, task):
             run(app, task.run_id)
             return super().execute(task)
 
-    assert worker(repo, Executor()).run_once().status is (Outcome.CANCELLED if after < 5 else Outcome.SUCCEEDED)
+    execution = worker(repo, Executor())
+    if fault == "error" and after < 5:
+        with pytest.raises(ReviewWorkerError, match="^task_lease_update_failed$"):
+            execution.run_once()
+    else:
+        outcome = {"cancel": Outcome.CANCELLED, "lost": Outcome.OWNERSHIP_LOST}[fault] if after < 5 else Outcome.SUCCEEDED
+        assert execution.run_once().status is outcome
     expected = ["generation", "generation", "review", "revision", "review"][:after]
     assert [a["role"] for a in factory.created.attempts] == expected
     assert len(repo.succeed_with_evidence_calls) == int(after > 5)
-    assert len(repo.cancel_calls) == int(after < 5)
+    assert len(repo.cancel_calls) == int(after < 5 and fault == "cancel")
     assert len(list(tmp_path.rglob("final_report.md"))) == int(after > 5)
+    receipt = FileRunReceiptStore(tmp_path).read_receipt(run_id)
+    assert receipt.trace_reference is not None
+    trace = RuntimeTraceStore(tmp_path, run_id).read_trace(receipt.trace_reference)
+    assert trace.usage.provider_calls_attempted == len(expected)
+    assert trace.usage.provider_responses_observed == len(expected)
+    assert trace.usage.observed_input_tokens == len(expected) * 10
+    assert trace.usage.observed_output_tokens == len(expected) * 10
+    if after < 5:
+        assert receipt.terminal_reason == "task_dispatch_stopped"
+        assert trace.events[-1].signal.failure_code == "task_dispatch_stopped"
