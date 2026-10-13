@@ -1,3 +1,11 @@
+## 2026-10-13 U1/U2观测完整初评准备完成
+
+已校准两稿接新私有入口，保留600秒/high/32768/重试0，只有system教学不同。run外观测绑定实际请求/worker/路由，父进程冻结观测文件SHA；作者提交、下一发送和只读replay/seal实核绑定。真实loopback四路径和合成Host完整链联合新旧入口50项通过（157.74秒）。准备期修复Windows环境变量大小写查询、Pydantic私有模块注册、marker导出和工作区重复安装，没有付费故障或旧原件改写。
+
+固定9文件包verify通过，plan SHA 2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f。本机绝对cwd/Python实际启动、真实native当前预检通过，codex0.153.4；未来须即时重核。新Provider/HTTP/业务run/native作者任务/Agent/资格0；旧73原件清单SHA不变，automation PAUSED。39c798b6的CI38274465147已success。本次提交必须查询本次CI。
+
+下一动作为对可审查固定新范围取得明确成本授权并绑定全绿CI后首次执行：4GLM初评/Flash0、387072tokens、2400活动秒/86400Host秒、每请求600秒、估价5.718016元非硬账单封顶。旧关闭批授权不复用。候选仍错否定，基线不复现/两臂皆过不称改善；正式15/自然消费/8E与全部既有下游依赖保持。见relation-repair-observed-comparison方案及document_relation_repair_preparation_20261013.json。
+
 ## 2026-10-12 超时追查及持续推进观测补强
 
 用户要求查明最后一项后继续推进。冻结代码与原件核实：600079ms来自父进程communicate deadline，非供应商错误回执；SDK逐读timeout不随总剩余时间递减。最后进度仅每64事件保存，不能把30.672秒写成精确断流时间。同期WLAN/System/VPN日志没有该请求可定责关联，历史根因undetermined。模型入口有明确direct上下文，GitHub代理不自动带入。

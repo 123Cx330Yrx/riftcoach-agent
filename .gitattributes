@@ -261,3 +261,10 @@
 /data/evaluation/results/host_relation_repair_calibration_20261012/** -text
 # Preserve the pre-review Windows original bytes while recognizing its CRLF.
 /data/evaluation/results/host_relation_repair_calibration_20261012/primary-before-independent.json whitespace=cr-at-eol
+
+# Prospective observed relation-repair package; keep frozen raw-byte bindings.
+/scripts/document_relation_observed_request.py text eol=lf
+/scripts/document_relation_repair_diagnostic.py text eol=lf
+/tests/test_document_relation_repair_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_relation_repair_20261013/** -text
+/data/evaluation/results/document_relation_repair_preparation_20261013.json -text

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "付费批已关闭、automation PAUSED；离线诊断、观测补强与U1/U2独立材料校准完成，继续无付费验证准备。"
+pause_reason: "U1/U2新对照的观测/路由接线与无付费准备完成；新四次成本范围尚未授权，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -21,7 +21,9 @@ R4基线第6段被双方判误报，R4候选正确保留；T9基线两处真错�
 
 无付费方案裁决已继续：T9正文预先包含“不等于数值未区分”，且错误类型为“相同”而非H5“接近”，成功不能充分代表旧故障改善。U1/U2两篇完整26段材料只差第14段一句，正文不预写目标关系修法，完整来源证据保留；实际构造器核全文索引与不变来源通过。复用原独立主体的一次全文开发校准已完成：U1正确保留，U2仅第14段需修，与预存主审一致；真实native唯一终答、20条公开命令、作者原件与材料SHA已核。见`data/evaluation/results/host_relation_repair_calibration_20261012/close-audit.json`。这只确认开发材料，不证明GLM修法改善或资格。
 
-下一项：以这组校准材料准备观察完整初评修法的新对照入口，先离线绑定run外观测、有效路由和实际输入，再形成可审查的有界验证包。选择理由是隔离原H5“接近”修法风险与正确保留，不能仅补买旧T9缺失一臂；若基线不复现，不能宣称机制改善。不开旧批、不采用候选或自动追加付费批，任何新成本另行授权；普通离线推进不重复确认。
+2026-10-13 新U1/U2对照入口已接线，run外观测绑定原请求/worker/有效路由，提交、下一发送及严格replay/seal均核SHA；完整响应缺观测或篡改硬停止。新旧入口联合50项通过；本机路径启动/当前真实native预检通过，原批73原件不变。固定包9文件、plan SHA `2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f`，见[新方案](plans/2026-10-13-relation-repair-observed-comparison.md)及`data/evaluation/results/document_relation_repair_preparation_20261013.json`。本轮Provider/业务run/新native作者任务/新Agent/资格均0；旧39c798b6公共CI38274465147已绿，本次提交须核自己的CI。
+
+下一项：取得这个新四次GLM-5.3/high初评范围的明确成本授权并绑定新HEAD全绿CI后首次执行。上限387072tokens、2400活动秒/86400Host秒、每请求600秒、估价5.718016元非硬账单封顶；无重试/补发。旧已关闭R4/T9授权不能复用。选择理由是隔离H5同类“接近”修法与正确保留；基线不复现或两臂皆过不称机制改善，候选仍错则否定。尚未采用候选，正式15/自然消费/8E不因离线通过推进；普通授权内工程步骤不重复确认。
 
 正式同版本15、自然生成/工具/编辑/终评消费、8E以及Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。历史库存不拼资格。
 

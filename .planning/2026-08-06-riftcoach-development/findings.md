@@ -1,3 +1,9 @@
+## 2026-10-13 观测必须绑定实际发送与后续消费
+
+独立采样器本身通过不能证明新入口已使用它；现已实跑新worker→SDK→本地HTTP→父进程路径，并将run外观测SHA接入提交、下一请求和严格封存。静默和SSE心跳仍都触发原硬截止，字节活动能区分两者；EOF仍失败、完整返回仍成功。缺失/篡改观测在合成Host全链中阻止继续，硬失败尾项的不可用观测可以保留为失败事实。它仍不能证明历史上游根因、真实GLM修法或新资格。
+
+Windows os.environ键查询不区分大小写，NO_PROXY存在时查询no_proxy也为真；实际子进程测试发现父字典预检漏掉这一差异，改查发出的键字典后通过。Pydantic延期字段还要求私有bridge在sys.modules注册；仅load_private存在函数不足以证明worker可运行。新旧联合50项通过支持工程接线，下一需要的信息是新校准材料上完整初评的实际修法，旧授权不覆盖该新成本范围。
+
 ## 2026-10-12 事件级进度不能证明网络是否静默
 
 原桥每64事件/里程碑保存，HTTP receive_response_body.started涵盖整个响应体，advance_duration只累计已返回迭代；缺少最后一组不等于精确停流。父进程达到整次deadline可先于SDK单次read timeout杀掉worker，failure/close记录因此缺失。真实本地SDK显示65事件后静默和持续80个注释心跳均只保存64事件并deadline；EOF有明确missing_terminal。更正旧“30.7秒后无新事件”为“30.7秒最后保存进度”。
