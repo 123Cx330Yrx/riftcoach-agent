@@ -4,10 +4,12 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "U1/U2授权批已关闭；独立Host usageLimitExceeded硬故障停止，automation PAUSED；后续无付费方案裁决继续。"
+pause_reason: "用户要求就近停顿并转移阵地；执行暂停于原checkpoint，automation PAUSED。无付费失败裁决和完整编辑反例已完成，待用户恢复后准备新范围方案。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-13 用户明确要求“就近停顿，我即将转移阵地”，本轮停在无付费失败裁决完成后的保存点。主阶段仍未完成，metadata保留in_progress；执行暂停，automation实核PAUSED，不启动下一工作包。实际后端为`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；恢复先读本文件最新块、`.planning/.active_plan`与活动计划，不复制或合并主树的未完成前端工作。
 
 2026-10-13 已授权U1/U2对照终态：3次GLM-5.3/high初评已发，3次完整响应，2次真实双审提交；U2基线独立Host在native final前发生workspace usageLimitExceeded，按硬故障规则abort，U2候选未发。执行HEAD e1fff5e932dcfb36f0df17533dda34b4da101381、公共CI38334154675全绿、原授权期限与固定包保持。批次已关闭，automation实核PAUSED，无重试/补发，新增资格0。
 
@@ -17,7 +19,9 @@ U1两臂95/pass均获双方接受，无改善证据。U2基线96/pass、issues�
 
 ## 当前行动
 
-本批关闭审计、封存和状态更新已完成，治理与差异检查通过。下一项仅基于已有U2漏检、H5修法与完整输入做无付费方案裁决，区分漏检和错误修法的任务机制；闭批不重开，未来新付费范围另需明确授权。Host额度恢复不能成为重试或补签理由。
+无付费方案裁决已完成：H5错误修法与U2漏检的实际公开输出均能通过现有结构校验；U1/U2完整实际输入只差第14段正文及其绑定，policy、身份、全部事实/知识、schema与采样参数相同，原始行值与computed比较一致。新6项完整报告编辑反例证明正确修法可逐字得到U1，但错误关系/范围/因果及空编辑也能组装并绑定完整终评，均没有语义通过。保留完整初评/来源/编辑/终评，不选换schema、删初评、关键词门或任意接近阈值。见[方案裁决](plans/2026-10-13-relation-review-failure-decision.md)及`relation_review_failure_decision_20261013.json`。
+
+当前停顿，等待用户在转移后的工作区明确恢复。恢复后唯一下一动作是无付费准备能同时区分真实检出、修法新增断言与正确全文保留的新范围方案，不继续只跑正确稿或追加相似提醒。关系候选仍未采用，U2候选未发，模型内部根因未证；闭批不重开，未来新付费范围另需具体授权。Host额度恢复不能成为重试或补签理由。额度筛查证据保存在原Host的`C:/Users/33502/Documents/Agent/outputs/riftcoach-quota-screening-20261013/`，不作为新工作区的运行前提。
 
 旧T9已确认父进程600秒总截止，上游根因undetermined；30.672秒仅是最后保存进度。本批Host额度故障不补足旧超时根因，也不认证旧缺失项。
 

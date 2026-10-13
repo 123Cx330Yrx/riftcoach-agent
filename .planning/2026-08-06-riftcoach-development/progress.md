@@ -1,3 +1,13 @@
+## 2026-10-13 无付费失败裁决完成，按用户要求暂停交接
+
+新增只读audit_relation_review_failures及结果，使用提交内完整材料和封存公开响应，无本机run依赖。H5实际错误修法、U2实际漏检pass及U1正确pass均通过既有结构校验但没有语义授予；U2仍仅主审拒绝，原独立Host失败不补签。U1/U2只差14段“并不”，全文policy、全部非正文输入、schema/采样相同，实际发送的完整文档与两份来源核对一致。原行值重算中单早死2.50/.50且all_pairs=greater；全部五局2.50/2.67和中单补刀8.81/9.01均overlap，不能换范围或把因果未知替代描述。
+
+真实现有编辑组装及完整终评请求中，新增6项完整U1/U2反例：正确关系修法逐字得到U1，错误非区分/错范围/因果/空编辑也能组装，正确U1空编辑保持。所有项无语义通过，使用明确作者替身，无Provider/HTTP/native/业务提交/资格。4项新测试及4项原消费回归通过。首次审计调用误把dict送入文本digest、把内容绑定ID当序号，均在离线测试中发现并修复，未改原件或模型判断。
+
+方案选择：保留完整初评/来源/编辑/终评，排除换schema、删初评、关键词或接近阈值作为充分修复。关系候选在错误稿上的表现仍未知，模型根因未证；按用户最新要求暂停，用户明确恢复后才无付费准备能够同时区别实际检出、修法新增断言和正确全文保留的新范围方案，不重开闭批、不默认付费。见relation-review-failure-decision方案与同名机器结果；旧原件/缺口、正式15/自然消费/8E和全后续依赖保持。
+
+用户要求“就近停顿，我即将转移阵地”，本轮仅保存、校验并交接，不启动下一工作包。checkpoint保持8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption；执行暂停，主阶段未完成，automation实核PAUSED。转移后先核后端分支codex/rq192-provider-stream-contract-ci、canonical最新块与.planning/.active_plan；本轮审计只依赖提交内材料，原Host额度筛查仍保存在outputs/riftcoach-quota-screening-20261013。
+
 ## 2026-10-13 U1/U2授权批关闭：3已发、2双审、Host额度故障
 
 用户确认后绑定e1fff5e9及全绿CI38334154675，唯一runner于02:30:39Z启动、02:58:09Z退出1。U1 baseline与relation-contrast均95/pass、双方真实接受；advisory分别4/6与6，无事实修法改善证据。U2 baseline完整返回96/pass、issues空，主审核第14段四局中单早死胜3/2、负0/1、均值2.50/.50及all_pairs=greater后判missed_error。独立Host任务15公开命令exit0、作者文件存在，却在native final前workspace usageLimitExceeded，final_count0；未submit、未补签。按reviewer_unavailable abort，U2候选未发。
