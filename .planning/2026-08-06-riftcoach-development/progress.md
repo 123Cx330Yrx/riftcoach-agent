@@ -1,3 +1,11 @@
+## 2026-10-13 两分支接续与J1/J2执行准备完成
+
+用户明确回项目，筛查两个分支后由原主会话唯一执行。分支(13)的旧批收尾、失败裁决和提案提交均已在当前后端；(12)新建后只有容量失败，继承历史不另算执行。8f271698/CI38355387193全绿、治理通过。恢复原主体时行政唤醒后MESSAGE接续固定同task；原中断与行政回合如实保留，不冒充全程单回合。
+
+J1/J2全文校准完成并实读真实native：J1保留，J2需修14/15段，逐行/范围/引用/修法均核；10公开命令成功、所有完整材料可见、作者create-only/json.load/最终SHA和唯一final一致。新私有runner/worker、授权版本及run外观测/答案路径完成；69项联合离线测试通过，含真实loopback SDK/worker、硬故障停批、旧入口隔离、只读replay/seal。固定9文件包plan e890e28f41a35586fb589fac62bf2fb05b1cf01833613a5d858012d07b2a7d6c，CLI准备/verify及绝对路径/当前native预检通过。旧66/73/47/26/14/146原件与两批冻结source SHA全部不变。
+
+具体方案见relation-joint-initial-comparison，机器准备结果document_relation_joint_preparation_20261013.json；拟四次初评估价5.718016元非硬封顶，新付费未授权，尚无run/Provider/业务submit/资格。旧automation PAUSED，不重开旧批。下一动作固定新提交CI并取得新范围成本授权；同版本15及全部产品后续不变。
+
 ## 2026-10-13 恢复项目，完整报告联合检查提案完成
 
 随后已固定新开发校准task/material，向原主体尝试一次原样派发。工具拒绝恢复已卸载multi-agent v2子主体，要求先恢复原主会话01a1248f-e18c-7282-92bf-7ceb2eb5dce4；没有送达或启动native任务。未新建主体/补交旧U2，不重复派发。精确任务、材料、dispatch摘要及工具错误见relation_joint_preparation_20261013.json；后续从原主会话恢复本次新任务。

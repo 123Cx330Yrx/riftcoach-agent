@@ -1,0 +1,51 @@
+{
+  "id": "amsg_01a13463-037c-7e80-9f41-9ebfd499d542",
+  "task": null,
+  "raw": {
+    "session": {
+      "id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+      "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+            "depth": 1,
+            "agent_path": "/root/host_scope_calibration",
+            "agent_nickname": "Plato",
+            "agent_role": null
+          }
+        }
+      },
+      "agent_path": "/root/host_scope_calibration"
+    },
+    "dispatch": {
+      "timestamp": "2026-10-13T08:31:06.620Z",
+      "ordinal": 1207,
+      "type": "response_item",
+      "payload": {
+        "type": "agent_message",
+        "id": "amsg_01a13463-037c-7e80-9f41-9ebfd499d542",
+        "author": "/root",
+        "recipient": "/root/host_scope_calibration",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Message Type: NEW_TASK\nTask name: /root/host_scope_calibration\nSender: /root\nPayload:\n"
+          },
+          {
+            "type": "encrypted_content",
+            "encrypted_content": "gAAAAABqzexJ8X-iGLPoMhLQ-mX2Ml0e3a6XSsyaLhXO3Ulmh74vTDyM3hPpEtTJRvyDS5rZoE517IZx94KVAs77X3yD9Kjjmf1KXHf6Z-MyawZiDZv4ZAr4Rkke_P-h0l6u8KLGxJvUoWTonVy3jIBLQkTdofjLfwsAhvNqpX3X-XPpfDT2jZn0-Me3e8ybenXcpfjhhDTISz7qxqfe_SBWTUZTPnEJyb8TOMe5ddciJU0vRXkc5lD78-aJXaEmSvux5JHokdQ0Bh1FAxGZ_WNlqg68Ow6IRoA4Q7OAOROK1H1CaGAmlGGkXIkge0ybBRk--xD0433xLM4n1JGmkIFEBAxfC8tbkAPZRO7_GKIiaoP2H7xLTW30oMn7fmevd-v9FDVYDQZ4af6kD0cJRo_xGx1FoyOTLTi-du2hhfjltX8fTcZC6j9exH6W6-l5UQYJwclC-8_f7vP71e1kElyaRi8BBryUdMxfsq3_G2dk15Q1XNd6Jy8IX2NknOFnd1C-xz6iwMe6MhTGtl__1cthKSKHhqe7DR92tWqFcQ15HSTemfYlyWLHKPnyKI21gSpaLsmnO_eJV2zDBTqFBNJRMW8aIOUyOA=="
+          }
+        ],
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a13462-fba7-7821-860c-03b51332bbd2",
+          "create_time": 1791880266.6203833
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "user_input_order": 53
+      }
+    }
+  }
+}

@@ -268,3 +268,11 @@
 /tests/test_document_relation_repair_diagnostic.py text eol=lf
 /data/evaluation/fixtures/document_relation_repair_20261013/** -text
 /data/evaluation/results/document_relation_repair_preparation_20261013.json -text
+
+# Joint full-report scope: preserve native originals and frozen package bytes.
+/scripts/document_relation_joint_request.py text eol=lf
+/scripts/document_relation_joint_diagnostic.py text eol=lf
+/tests/test_document_relation_joint_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_relation_joint_20261013/** -text
+/data/evaluation/results/host_relation_joint_calibration_20261013/** -text
+/data/evaluation/results/document_relation_joint_preparation_20261013.json -text
