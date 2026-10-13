@@ -4,28 +4,28 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "用户已恢复项目；J1/J2独立校准、新入口与69项离线检查完成。新范围成本尚未授权，执行须绑定新HEAD/同HEAD绿CI。旧批关闭，旧automation PAUSED。"
+pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；无新付费授权，普通无付费项目工作可继续。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-13 已完成两个分支对话接续，原主会话为唯一执行入口。分支(13)的266e5df9、05470874、8f271698已在当前后端；分支(12)新建后因模型容量不足中断，无独立新增交付。后端仍为`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；主树未完成前端保持。保存点8f271698/公共CI38355387193已实核全绿。
+2026-10-13 J1/J2四次初评已完成并关闭，原主会话唯一执行。执行HEAD `1708c0cd4e338bec4caff27612c78c406be3dc83` / 公共CI `38372269298`全绿，原授权未改、未延展，执行中源码与包冻结。后端为`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；两分支成果已接续，主树未完成前端保持。
+
+## 本批结果与限制
+
+J1基线97/pass、候选95/pass均正确保留；J2基线70/needs_revision、候选72/needs_revision均检出14/15段真错，解释、来源、修法及其余正确内容保留获双方接受。4个真实native final与作者原件相同，4次submit成功，全部initial、report_assessment=null。**基线没有复现旧漏检/错误修法，两臂皆过无改善证据，关系教学候选不采用。** 熟悉来源非holdout；没有真实编辑或自然消费，不授资格。
+
+严格replay/create-only seal成功，86个本批原件及run外4份观测/作者SHA不变，73冻结源码与9文件包不变。actual/HTTP各4，known67128tokens（52504输入/14624输出），unknown0/receiptless0/未发0；按合同估价0.829504元非核实账单。模型活动332.094秒、Host2173.172秒分别在上限内；无重试/补发。runner正常退出，automation实核PAUSED。见[关闭结果](plans/2026-10-13-relation-joint-result.md)、`data/evaluation/results/document_relation_joint_close_audit_20261013.json`及严格封存/真实native证据。
 
 ## 当前行动
 
-J1/J2新材料全文独立校准已完成：各26段，J1正确保留，J2仅14/15段为均值接近及逐对全称真错。主审实读完整来源及两条修法，与原独立主体一致；未添因果、不误改正确统计。唯一native final与作者原件相同，原任务及恢复后10条公开命令exit0，完整读取与最终SHA实核。用户转移暂停是正常中断；恢复用经同意的行政唤醒再MESSAGE接续同task，行政确认不算审查final。见`data/evaluation/results/host_relation_joint_calibration_20261013/close-audit.json`。熟悉来源不是holdout，也不证明Provider质量。
-
-新私有入口`python -m scripts.document_relation_joint_diagnostic`及worker已独立接线，旧源码不改。固定9文件包`data/evaluation/fixtures/document_relation_joint_20261013`，plan SHA `e890e28f41a35586fb589fac62bf2fb05b1cf01833613a5d858012d07b2a7d6c`。69项新旧联合检查通过：真实本地SDK/worker四类流式结果、旧授权与身份漂移拒绝、观测完整性、Host提交/下一发送及严格只读封存。CLI准备/复验、绝对cwd/Python启动和当前native预检通过；新增Provider/业务run/submit/资格0。准备记录为`data/evaluation/results/document_relation_joint_preparation_20261013.json`。
-
-下一步：提交固定准备并核新HEAD公共CI，按[新执行方案](plans/2026-10-13-relation-joint-initial-comparison.md)取得本范围具体成本授权后执行。拟J1/J2各baseline与relation-contrast，共最多4 GLM-5.3/high初评、Flash0、387072tokens、2400活动秒/86400Host秒、每请求600秒/32768输出；估价5.718016元非硬账单封顶。新授权最长24小时且绑定精确HEAD/CI/plan，不沿用旧授权或余额、不默认新付费。首次run前仍须clean exact HEAD、包/源码未变、无run/execution、授权有效、即时native及绝对启动预检。候选仍错否定，两臂皆过或基线未复现无改善证据，不授资格。
+停止继续更换熟悉固定报告做同类教学付费对照。下一项：无付费核对当前运行组合与既有同版本15/自然消费合同，列清质量、接线及共享预算缺口，复用已有消费反例后形成具体验证范围。保留完整来源→初评→编辑→完整终评，不恢复删初评、换schema或关键词阈值作为语义修复；本批授权不能转移到新调用或编辑。普通授权内工程继续，不因批次monitor暂停而把项目改成完成。
 
 ## 保留的旧批结论与产品依赖
 
-U1/U2旧批已关闭：e1fff5e9/CI38334154675执行，3次GLM完整响应、2次双审；U1两臂95/pass正确保留无改善证据，U2基线96/pass漏检14段2.50/.50真错，独立Host usageLimitExceeded无native final、未submit，候选未发。严格replay/seal通过；actual/HTTP3、known45600tokens、unknown0/receiptless0、未发1、估价0.492880元非核实账单。旧66/73/47/26/14/146原件及冻结源码本轮逐项SHA复核不变，不补签/补买/拼资格。旧automation保持PAUSED。
+旧六批66/73/47/26/14/146，共372个原件库存/SHA逐项保持，旧两包69/73个冻结source不变；历史缺口不补签、不重买、不拼资格。U1/U2旧3已发2双审，U2基线漏检、独立usageLimitExceeded无native final、候选未发；旧H5错误修法双方拒绝；旧T9父600秒截止已证，上游根因undetermined，30.672秒只是最后保存进度。新成功不能撤销旧失败或认证未审项。
 
-旧H5检出后修法新增错误，U2漏检；此前无付费完整输入与6项实际编辑消费反例裁决继续有效，结构通过不等于语义正确。关系教学候选未采用。旧T9父进程600秒总截止已确认，上游根因undetermined；30.672秒仅最后保存进度，不能冒充断流时间。
-
-正式同版本15、自然生成/工具/编辑/终评消费、8E，以及Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习均继续保留；未以本次准备宣布阶段完成。
+主阶段8E仍未完成。正式同版本15、自然生成/工具/编辑/终评、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习均继续保留。新候选、正式资格、Owner理解、产品/部署成熟度分别核验，不能由本次初评通过概括为全部完成。
 
 ## 以下为历史记录
 

@@ -276,3 +276,9 @@
 /data/evaluation/fixtures/document_relation_joint_20261013/** -text
 /data/evaluation/results/host_relation_joint_calibration_20261013/** -text whitespace=cr-at-eol
 /data/evaluation/results/document_relation_joint_preparation_20261013.json -text whitespace=cr-at-eol
+
+# Closed joint comparison: preserve original-byte and native evidence hashes.
+/data/evaluation/results/document_relation_joint_result_20261013.json -text
+/data/evaluation/results/document_relation_joint_close_audit_20261013.json -text
+/data/evaluation/results/document_relation_joint_host_evidence_20261013.json -text
+/data/evaluation/results/document_relation_joint_close_state_20261013.json -text

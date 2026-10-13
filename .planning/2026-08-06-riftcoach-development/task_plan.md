@@ -11,27 +11,18 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：用户已要求“回项目继续”。后端保存点8f271698/CI38355387193全绿；新范围无付费准备已完成，主阶段未完成，旧批automation保持PAUSED。
+执行状态：J1/J2授权批已关闭；执行1708c0cd/CI38372269298全绿，4完整响应/4真实双审/4submit。原件和历史缺口保留，automation PAUSED；主阶段8E未完成，普通无付费项目工作继续。
 
 ## Active Work Package
 
 **目标：** 让真实事实错误被检出后得到正确修法，取得同版本质量证据并接入真实Agent消费。
-**起点：** H5正确检出中单早死均值不接近，却给出错误否定区分的修法；原生双方拒绝。S8仅有响应未认证，所有旧资格/封存缺口独立保留。
-**最新终态：** U1/U2授权批在e1fff5e9/CI38334154675执行并关闭，3已发/2双审/1Host不可用/1未发。U1两臂正确保留无改善证据；U2基线漏检第14段2.50/.50真错，独立Host usageLimitExceeded无native final，未submit；U2候选未发。严格replay/seal、66原件与三项run外观测SHA通过；旧73/47/26/14/146原件不变。见`docs/plans/2026-10-13-relation-repair-result.md`及同批close audit。以下准备与先前批结果按各自日期保留。
-**本包已完成：** 新私有入口指定run外作者答案，提交与下一请求前核库存和作者/native一致；33项相关离线检查通过，含等待/分离提交失败传播及受锁发布。唯一新短报告完成真实作者落盘/check-answer/native/submit/严格seal，14公开命令exit0、26演练原件不变。transport明确为模拟；项目Provider/HTTP/tokens0、业务submit0、资格0，未重审旧任务。结果见 `docs/plans/2026-10-12-host-workspace-repair.md`。
-**本包新证据：** H5原始双审拒绝不变；原H5/V2自由章节在两种编辑表示下4项格式失败。新合成Coach格式14项对照证明结构与引用编号不能过滤错误替换；4项离线测试通过。实际编辑没有照抄修法的policy冲突；不选换schema/加引用作为语义修复。见 `docs/plans/2026-10-12-correction-consumption-audit.md`。
-**准备阶段裁决：** 来源先行替代初评安排漏核ADR0110/10月8日真实漏检证据，已撤回，未建设/执行。现隔离关系教学候选只扩展均值方向/逐行比较/因果对照；保持完整初评、编辑、终评与全部来源/schema，25项相关离线检查通过。当时尚无模型语义证据，本批实际结果见下。见 `docs/plans/2026-10-12-relation-contrast-preparation.md`。
-**执行前准备：** 两份新开发完整报告各26段，完整来源与policy的独立校准完成；R4正确保留、T9两处真错需修。新600秒私有worker/Host工作区接线完成；联合66项、最终新入口29项通过，当前绝对路径及真实native预检通过。包及材料/校准原件SHA固定，方案见 `docs/plans/2026-10-12-relation-initial-comparison.md`。这不是Provider语义、完整15或实际消费成功。
-**本批执行结果：** 用户确认迁移后1039fb50/CI38258297688全绿，4次初评全部发送：R4基线误报被双方拒绝，R4候选正确保留，T9基线检出两处真错且修法正确，T9候选600秒超时。严格回放/封存通过，3项真实native、73原件SHA不变；actual/HTTP各4、known50893tokens、unknown1/receiptless1、未发0。见 `docs/plans/2026-10-12-relation-initial-result.md`。
-**用户续查已完成：** 最后一项由父进程600秒截止终止，历史根因undetermined；30.672秒是最后保存进度，不能冒充断流时间。真实本地SDK/HTTP验证静默与心跳原日志同形、EOF异形。已继续实现run外可选无正文采样，四条本地worker路径和6项边界测试通过，未改生产/冻结入口。见 `docs/plans/2026-10-12-relation-timeout-diagnosis.md`。
-**语义方案已继续：** T9正文已有“不等于数值未区分”提示，错误为“相同”而非H5“接近”，不能充分代表旧故障。U1/U2新开发完整拟稿各26段，只差一句均值接近判断；去掉正文预写的目标修法，保留完整来源和all_pairs，源索引按全文重建并验证。材料已保存，非执行包/独立校准/质量证据。
-**独立校准结果：** 原主体完成唯一新开发任务；U1保留、U2仅14段需修，与预存主审一致。唯一native终答、20公开命令、全文分段输出、作者原件/材料SHA实核；源根32/31/25及最小修法正确。非holdout、Provider质量或资格。结果见`data/evaluation/results/host_relation_repair_calibration_20261012/close-audit.json`；准备JSON保留校准前快照。
-**新对照准备完成：** U1/U2新私有入口已绑定run外字节观测、实际路由与请求SHA，Host提交/下一发送/严格回放封存全程复核。新旧入口联合50项通过；路径与当前native预检通过。固定9文件包plan SHA `2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f`；实际模型/业务run/新作者任务0，旧73原件不变。见`docs/plans/2026-10-13-relation-repair-observed-comparison.md`。
-**本轮裁决完成：** 三份公开实际输出复验：正确保留、漏检pass与错误修法都能通过结构门。U1/U2全部非正文输入、policy、schema/采样相同，仅14段正文与绑定变化；原行值重算与computed相等。新6项完整文档消费反例中正确修法逐字得到U1，错误关系/范围/因果和空编辑也能组装并进入完整终评请求，均semantic_approval=false。新增4项及既有消费4项通过；Provider/HTTP/native/资格0。见`docs/plans/2026-10-13-relation-review-failure-decision.md`。
-**新范围提案完成：** J1/J2全文各26段，只差14/15段两句，联合检出与修法并保留正确对照；四个请求、完整来源、两臂仅system差异及容量已核。3项测试通过，执行尚未就绪，未独立校准/接线/授权，模型调用0。见`docs/plans/2026-10-13-relation-joint-review-proposal.md`。
-**当前下一动作：** J1/J2原主体全文校准、真实native/作者原件审计、新私有入口及69项联合离线检查完成。固定9文件包plan=e890e28f41a35586fb589fac62bf2fb05b1cf01833613a5d858012d07b2a7d6c；先固定提交及同HEAD公共CI，再取得新四次初评具体成本授权。未创建授权/run/Provider调用。方案：docs/plans/2026-10-13-relation-joint-initial-comparison.md。旧批关闭、旧automation PAUSED。
-**依赖与边界：** automation实核PAUSED；原authorization/issued_at/截止保持。known45600tokens、估价0.492880元非核实账单，unknown0/receiptless0。错误稿候选一臂未发，旧H5修法机制未证改善，候选未采用、新资格0；旧73/47/26/14/146原件及缺口保持，不补签或拼资格。主体恢复不能补发本批。
-**验收与失败决策：** 方案必须能表达正确保留、真实错误和修法新增断言的反例，且实际编辑消费可达；不能由结构通过推断语义可靠。证据反驳当前设计就改设计，不自动付费重试。
+**最新证据：** J1两臂正确保留；J2两臂均检出14/15段真错，逐项解释、来源、修法和其余正确内容通过真实双审。全部initial、report_assessment=null，无真实编辑。四次native唯一终答/作者原件与checkpoint实核，strict replay/seal成功，86原件及4观测SHA不变。
+**本批成本：** 4 GLM-5.3/high、4 HTTP、Flash0、67128known tokens、unknown0/receiptless0/未发0；估价0.829504元非核实账单，活动332.094秒/Host2173.172秒。唯一runner正常退出，原授权未延长，无重试补发。
+**方案裁决：** 基线没有复现旧漏检/错误修法，两臂皆过无改善证据，关系教学候选不采用。不再更换熟悉固定报告重买同类教学对照；不删初评、不换schema、不用关键词或接近阈值代替语义。现有完整来源/初评/编辑/终评链保持。
+**具体证据：** `docs/plans/2026-10-13-relation-joint-result.md`；`data/evaluation/results/document_relation_joint_result_20261013.json`与close_audit、host_evidence、close_state。授权前准备和校准只按原日期解释，不冒充业务运行结果。
+**下一动作：** 无付费核对当前运行组合与既有同版本15/自然消费合同，列清质量、接线及共享预算缺口，复用已有消费反例后形成具体验证范围；不自动另开模型批或实际编辑。
+**依赖与边界：** 本批73源码/9文件包、旧两包69/73源码及旧六批372原件SHA不变。旧U2无native/候选未发、H5错误修法、T9上游根因undetermined不撤销；新证据熟悉来源非holdout，不拼资格。正式15、自然消费、8E及全部下游仍未完成。
+**验收与失败决策：** 方案需同时覆盖正确保留、真错检出、修法新增断言及真实编辑消费；结构通过不能推语义可靠。已有授权内普通步骤直接执行，涉及新模型成本时先形成具体可审查范围。
 
 ## Dependencies and Follow-through
 
@@ -52,7 +43,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：用户已恢复，新联合提案无付费准备完成；新校准、入口和离线验证完成，下一步为固定提交CI及新范围成本授权。旧批闭批/缺失项、候选未采用、automation PAUSED及正式15和全部下游依赖保持。
+以canonical和上方工作卡为准：J1/J2批次完成但无教学改善证据；下一步是无付费核对同版本15与自然消费合同/当前组合的具体缺口。旧原件和缺失项、候选未采用、automation PAUSED及全部产品依赖保持。
 
 ## History
 
