@@ -274,5 +274,5 @@
 /scripts/document_relation_joint_diagnostic.py text eol=lf
 /tests/test_document_relation_joint_diagnostic.py text eol=lf
 /data/evaluation/fixtures/document_relation_joint_20261013/** -text
-/data/evaluation/results/host_relation_joint_calibration_20261013/** -text
-/data/evaluation/results/document_relation_joint_preparation_20261013.json -text
+/data/evaluation/results/host_relation_joint_calibration_20261013/** -text whitespace=cr-at-eol
+/data/evaluation/results/document_relation_joint_preparation_20261013.json -text whitespace=cr-at-eol
