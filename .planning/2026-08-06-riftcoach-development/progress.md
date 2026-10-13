@@ -1,3 +1,11 @@
+## 2026-10-13 修复就绪审计：撤回新15付费提议
+
+用户质疑重新展开15例的依据后，撤回37.167104元付费提议；不是再次请求确认。只读固定public seal重建3份失败上下文和2份相邻正确对照，完整请求全部相同，三个旧错误响应仍结构合法、semantic_approval=false。两处误报及一处修复覆盖分歧没有新增语义修复证据；原scope:4主审接受/独立拒绝保留，不回写共识。
+
+新增audit_full15_repair_readiness与机器结果，具体首偏离/反证取舍见full15-repair-readiness方案。canonical、活动工作卡和原执行文档已一致撤回；执行/资格工程准备和原件保留，不成当前付费队列。本轮没有Provider、Host任务、授权、业务run或新资格；automation PAUSED。修法尚未选定，不能重复旧重评、字段或同义教学后声称修好；其余产品依赖保持。
+
+禁止socket连接/读取data/runs后复现保存结果逐字段相等；既有alignment审计另核700原件SHA及3份新准备/资格/验证SHA不变，预定run/Operator均不存在。治理检查和diff检查通过；审计不重新认证历史native，也不把零成本离线核验当语义修复。
+
 ## 2026-10-13 固定15完整链路执行准备完成，无新增付费
 
 新增full_chain_execution复用FullChainEvidence私有状态机，固定新run/Operator/原主体和53业务源码，35次预算实接发送门（25 GLM-5.3/high、10 Flash，3,386,880tokens、13,500活动秒/86,400 Host秒），保留每case900秒共享。新授权原件SHA与24小时期限在密钥前、后续发送、Host等待和子进程IO复查；先核同HEAD CI/native/绝对路径及重建准备，再create-only占位，任何已开始痕迹不重开。资格入口显式选择相同执行配置；旧配置不能混用，旧冻结runner/历史标签/准备原件保持。

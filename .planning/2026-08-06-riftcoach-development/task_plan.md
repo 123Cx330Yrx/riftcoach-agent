@@ -15,20 +15,13 @@
 
 ## Active Work Package
 
-**目标：** 让真实事实错误被检出后得到正确修法，取得同版本质量证据并接入真实Agent消费。
-**最新证据：** J1两臂正确保留；J2两臂均检出14/15段真错，逐项解释、来源、修法和其余正确内容通过真实双审。全部initial、report_assessment=null，无真实编辑。四次native唯一终答/作者原件与checkpoint实核，strict replay/seal成功，86原件及4观测SHA不变。
-**本批成本：** 4 GLM-5.3/high、4 HTTP、Flash0、67128known tokens、unknown0/receiptless0/未发0；估价0.829504元非核实账单，活动332.094秒/Host2173.172秒。唯一runner正常退出，原授权未延长，无重试补发。
-**方案裁决：** 基线没有复现旧漏检/错误修法，两臂皆过无改善证据，关系教学候选不采用。不再更换熟悉固定报告重买同类教学对照；不删初评、不换schema、不用关键词或接近阈值代替语义。现有完整来源/初评/编辑/终评链保持。
-**具体证据：** `docs/plans/2026-10-13-relation-joint-result.md`；`data/evaluation/results/document_relation_joint_result_20261013.json`与close_audit、host_evidence、close_state。授权前准备和校准只按原日期解释，不冒充业务运行结果。
-**无付费接续结果：** 四份实际意见的issue完整进入编辑，advisories按既有合同只留journal；10项作者编辑夹具绑定完整终评，J2必须同时修14/15才恢复正确稿。原15同输入/time600教学与J1 baseline相同；旧资格入口逐项拒绝当前组合。机器证据`post_joint_consumption_20261013.json`，没有真实模型编辑/终评或资格。
-**工程结果：** 隔离前瞻三阶段入口完成，保留旧workflow/共享预算/原件，增加作者原字节及观测SHA、白名单库存和提交锁内复核。30项新三阶段/故障/路径检查及4项真实loopback子进程SDK检查通过；外部Provider/HTTP0，native使用替身，准备无授权、无run、无付费execute CLI。见`docs/plans/2026-10-13-full-chain-evidence.md`。
-**真实演练：** 两个独立离线案例已关闭并严格封存，3真实native/submit；第一initial范围分歧、第二revision的本地固定reason与计数修法错配。第二报告四项标志为true但stage拒绝，final未发；真实三阶段正例未完成。28/48原件、53/54源码与旧458原件保持，外部Provider/HTTP0，无资格，automation PAUSED。见full-chain-host-rehearsal方案及两份close audit。
-**对齐与修复：** 原15全文/差分和来源已逐项裁决：10例所在批通过、3语义拒绝/分歧、2operator未认证，三批700原件保持。中单话题下“五局窗口”与显式合并辅助分母分开，不改旧标签或Host判断。当前组合15输入/实际policy/schema/editor/time600/transport/Host门及52源码形成准备指纹，未授资格。完整编辑响应包修复计数reason错配；12项回归含实际journal和三阶段接线通过，旧53/54源码保持，无第三次真实演练。见`docs/plans/2026-10-13-original15-alignment.md`及机器审计。
-**资格入口：** 新`qualify_full_chain_controls`只读复用全链严格回放/native，绑定准备SHA、单批15 distinct/35阶段、完整语义/编辑/fresh、实际HTTP观测、同HEAD公共CI和原件不变；41项离线测试16.41秒通过，正例为替身。实际旧三批及两次演练seal均拒绝/SHA不变；当前准备未授权、新增资格0、产品默认不注册。见`docs/plans/2026-10-13-full-chain-qualification.md`。
-**执行准备：** 新full_chain_execution隔离复用三阶段状态机，35次上限真正进入batch budget；53业务源码、完整15输入与配置绑定。授权/24小时期限/原件SHA、固定run与Operator排他占位、密钥前CI/native/绝对路径、发送及子进程授权复查、资格配置已接通。74项离线测试251.13秒通过，替身native/业务与真实文件IO；本机路径启动和既有主体native-final读取预检通过，没有新业务任务/run/模型调用。见`docs/plans/2026-10-13-full-chain-execution.md`及validation记录。
-**下一动作：** 对这个已准备的单批取得新成本授权，再绑定精确HEAD全绿CI首次执行：最多25 GLM-5.3/high+10 Flash、3,386,880tokens、13,500活动秒/86,400 Host秒，合同估价37.167104元非硬封顶。回答当前组合单批15固定控制是否成立，不能预设旧语义失败已修好；任一缺项/语义失败不授资格，不自动再跑。旧资格不放宽、标签不回写，不重启旧批、不第三次简化演练或拼历史。
-**依赖与边界：** 本批73源码/9文件包、旧两包69/73源码及旧六批372原件SHA不变。旧U2无native/候选未发、H5错误修法、T9上游根因undetermined不撤销；新证据熟悉来源非holdout，不拼资格。正式15、自然消费、8E及全部下游仍未完成。
-**验收与失败决策：** 方案需同时覆盖正确保留、真错检出、修法新增断言及真实编辑消费；结构通过不能推语义可靠。已有授权内普通步骤直接执行，涉及新模型成本时先形成具体可审查范围。
+**目标与依据：** 撤回把执行准备就绪当作重新展开15例依据的决定，核清原语义失败是否获得实际修复；用户本轮“继续”只接续无付费审计。
+**起点与新增证据：** 35次执行/资格入口已有离线验证，但3份旧失败和2份正确对照的完整请求与当前重建结果全部相同；旧错误响应仍结构合法，semantic_approval=false。两处误报、一处修复覆盖分歧未获新修复证据，原主审/独立意见及700原件保持。
+**已完成路径：** 只读固定public seal → 当前完整请求构造器 → 比较全部请求字段 → 当前结构校验 → 引用原Host记录；不重签、不请求模型、不新建Host任务。脚本及结果见`audit_full15_repair_readiness.py`和`full15_repair_readiness_20261013.json`。
+**方案裁决：** 撤回37.167104元新整批提议，准备原件及工程代码保留但退出当前执行队列。J1/J2无改善证据；不再同义教学、恢复失败重评/scope_checks原型、删初评或换字段后碰运气。具体反证与取舍见`docs/plans/2026-10-13-full15-repair-readiness.md`。
+**交付与验收：** 原件不变、完整请求比较可复现、canonical/本卡/原执行提议一致撤回、相称检查与提交。无新付费、新资格或产品阶段完成；结构校验不是语义裁判。
+**下一动作：** 在三类真实失败及已反证路线约束下选择具体修法干预，说明实际任务约束的变化及可否定观察；当前尚未选定有新机制依据的修法，不创建新模型成本队列。普通无付费工作仍获授权。
+**依赖与失败边界：** 旧15三批10通过/3语义拒绝分歧/2operator未认证不拼资格；两个真实Host演练仍缺final正例，不开第三次简化演练。旧H5错误修法、U2漏检及native缺失、T9上游根因未知均保留。automation PAUSED；自然消费、阶段间取消和下方产品依赖继续保留，工程进展不能抵消语义阻断。
 
 ## Dependencies and Follow-through
 
@@ -49,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：原15对齐、完整响应夹具、资格入口和35次完整链路执行准备已完成离线实现；下一步处理这个具体单批的新成本授权及同HEAD CI。真实三阶段Host正例及同组合质量仍欠缺；旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
+以canonical和上方工作卡为准：本轮修复就绪审计已证当前完整请求未变；新15付费提议撤回，工程准备保留。下一项是有历史反证约束的具体修法选择，当前没有已证明修法或新付费队列；automation PAUSED，8E及全部产品依赖保持未完成。
 
 ## History
 

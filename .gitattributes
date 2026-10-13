@@ -308,3 +308,7 @@
 /data/evaluation/results/full_chain_execution_preparation_20261013.json -text whitespace=cr-at-eol
 /data/evaluation/results/full_chain_execution_qualification_20261013.json -text
 /data/evaluation/results/full_chain_execution_validation_20261013.json -text
+
+# Offline repair-readiness audit; retain the historical/request byte bindings.
+/scripts/audit_full15_repair_readiness.py text eol=lf
+/data/evaluation/results/full15_repair_readiness_20261013.json -text
