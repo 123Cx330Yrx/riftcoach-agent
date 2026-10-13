@@ -1,3 +1,9 @@
+## 2026-10-13 真实Host演练关闭，保留两处语义阻断
+
+原独立主体完成3次真实作者文件/check-answer/唯一native/submit。第一案例初评：主审接受、独立认为四中单证据不能支持“这5局”结论而拒绝，未发revision/final。不同计数工程案例：initial双方接受；revision双方拒绝unsupported_explanation，正确after未使沿用的“mixed-sample means”理由成立；成稿四个ReportAssessment均true，final未发。这是本地夹具继承reason遗漏，不是模型错误。两runner exit0、严格replay/create-only seal通过，28/48原件和53/54源码不变；外部Provider/HTTP/真实业务tokens0，synthetic分别1/30和2/60，不计实际调用或费用。
+
+3个新增离线用例通过（original+禁网2项208.51秒；explicit1项204.75秒），native仍是测试替身；真实final正例缺口未填。历史458原件复核不变，原15有5处争议字符串但不自动改标签，当前15身份均被旧资格拒绝。证据在full_chain_host_rehearsal_20261013，下一项无付费厘清范围命题和前瞻版本绑定；不补发/重买/拼资格。53abb5f4公共CI38387480676已success，本次新提交另核；8E与全部产品依赖仍未完成。
+
 ## 2026-10-13 前瞻三阶段证据入口实现与离线验证
 
 新增full_chain_evidence、模块内依赖路由和双角色observed worker，隔离复用旧full15状态机/回放，不改历史源码。精确cwd/Python实际启动、case/stage任务路径、run外作者与观测、库存/链接检查接入提交前、native读取后原提交锁内、等待/接受、下一发送及子进程交接；evidence-guard固定作者原字节/checkpoint/观测SHA，关闭后严格只读replay和目录外create-only seal。旧plan在开锁前拒绝，错误任务路径不写入。

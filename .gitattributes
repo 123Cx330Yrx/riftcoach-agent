@@ -292,3 +292,5 @@
 /scripts/full_chain_*.py text eol=lf
 /tests/test_full_chain_*.py text eol=lf
 /data/evaluation/results/full_chain_evidence_preparation_20261013.json -text
+/data/evaluation/fixtures/full_chain_host_count_20261013.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/full_chain_host_rehearsal_20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
