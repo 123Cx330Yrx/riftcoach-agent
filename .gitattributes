@@ -282,3 +282,8 @@
 /data/evaluation/results/document_relation_joint_close_audit_20261013.json -text
 /data/evaluation/results/document_relation_joint_host_evidence_20261013.json -text
 /data/evaluation/results/document_relation_joint_close_state_20261013.json -text
+
+# Offline post-joint consumption evidence and its audit source.
+/scripts/audit_post_joint_consumption.py text eol=lf
+/tests/test_post_joint_consumption.py text eol=lf
+/data/evaluation/results/post_joint_consumption_20261013.json -text

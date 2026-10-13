@@ -20,7 +20,8 @@
 **本批成本：** 4 GLM-5.3/high、4 HTTP、Flash0、67128known tokens、unknown0/receiptless0/未发0；估价0.829504元非核实账单，活动332.094秒/Host2173.172秒。唯一runner正常退出，原授权未延长，无重试补发。
 **方案裁决：** 基线没有复现旧漏检/错误修法，两臂皆过无改善证据，关系教学候选不采用。不再更换熟悉固定报告重买同类教学对照；不删初评、不换schema、不用关键词或接近阈值代替语义。现有完整来源/初评/编辑/终评链保持。
 **具体证据：** `docs/plans/2026-10-13-relation-joint-result.md`；`data/evaluation/results/document_relation_joint_result_20261013.json`与close_audit、host_evidence、close_state。授权前准备和校准只按原日期解释，不冒充业务运行结果。
-**下一动作：** 无付费核对当前运行组合与既有同版本15/自然消费合同，列清质量、接线及共享预算缺口，复用已有消费反例后形成具体验证范围；不自动另开模型批或实际编辑。
+**无付费接续结果：** 四份实际意见的issue完整进入编辑，advisories按既有合同只留journal；10项作者编辑夹具绑定完整终评，J2必须同时修14/15才恢复正确稿。原15同输入/time600教学与J1 baseline相同；旧资格入口逐项拒绝当前组合。机器证据`post_joint_consumption_20261013.json`，没有真实模型编辑/终评或资格。
+**下一动作：** 实现隔离的前瞻initial/revision/final证据入口，复用现有workflow及共享预算，适配run外作者/checkpoint、case/stage库存、实际请求观测，贯穿submit/下一发送/replay/seal；先做无付费整链与故障验证，禁止直接复用缺门的旧full15执行入口。具体范围见`docs/plans/2026-10-13-post-joint-consumption.md`。
 **依赖与边界：** 本批73源码/9文件包、旧两包69/73源码及旧六批372原件SHA不变。旧U2无native/候选未发、H5错误修法、T9上游根因undetermined不撤销；新证据熟悉来源非holdout，不拼资格。正式15、自然消费、8E及全部下游仍未完成。
 **验收与失败决策：** 方案需同时覆盖正确保留、真错检出、修法新增断言及真实编辑消费；结构通过不能推语义可靠。已有授权内普通步骤直接执行，涉及新模型成本时先形成具体可审查范围。
 
@@ -43,7 +44,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：J1/J2批次完成但无教学改善证据；下一步是无付费核对同版本15与自然消费合同/当前组合的具体缺口。旧原件和缺失项、候选未采用、automation PAUSED及全部产品依赖保持。
+以canonical和上方工作卡为准：接线审计已完成，下一步是前瞻三阶段证据入口的无付费实现与整链验证；不是再次审计或重买教学对照。旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
 
 ## History
 

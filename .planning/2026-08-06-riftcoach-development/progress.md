@@ -1,3 +1,13 @@
+## 2026-10-13 实际意见消费与同版本接线检查完成
+
+新增只读audit_post_joint_consumption及机器结果，固定已提交J1/J2 seal/close SHA并核完整实际材料。四项真实意见经既有time600编辑构造器消费，全部issue字段保持；optional advisories依既有合同只留journal，不升级必要编辑。10项作者注入组装核完整终评request SHA/全部非正文输入/未改文本：J2两处都修才恢复J1，单修或空编辑不修复其余错误；语义授予始终false，没有真实模型编辑。
+
+原15从既有冻结输入重建，time600 system逐字等于J1 baseline；旧qualification对15项当前request均拒绝，不能混用协议。实际共享预算仍5调用/401920tokens/900秒。核实旧full15作者/观测门缺失、默认产品无time600 builder、Worker取消仅在executor返回后处理；分开质量、执行门与自然产品接线，不以构造器通过推资格。
+
+7项新检查加原失败反例4项与共享预算25项，共36通过；治理及git diff --check通过。首次新测试将journal带quote建议与原始marker直接相比而失败，已修正审计断言，未改业务。实核本批86与旧372原件库存/SHA无变化，旧源码/包保留。本轮Provider/HTTP/native任务/业务submit/资格均0，automation仍PAUSED，主树前端未动。7f6b9a13/CI38381908450本轮查询仍in_progress，不作已绿结论。
+
+下一项已收敛为前瞻initial/revision/final证据入口的无付费实现：case/stage作者路径/库存/观测贯穿提交及下一发送、严格replay/seal，保留现有workflow与共享账本。实施范围见post-joint-consumption方案；不再次购买熟悉报告教学对照，不直接执行旧full15，新付费仍需新具体范围。阶段8E及全部下游未完成。
+
 ## 2026-10-13 J1/J2授权四次初评完成并严格封存
 
 用户明确确认后，在1708c0cd/同HEAD公共CI38372269298全绿下唯一执行。J1两臂97/95 pass均正确保留；J2两臂70/72 needs_revision均检出14/15段且修法正确。四项全文主审与原独立主体真实终答均接受，4submit成功，无额外Agent/重试/补发；全部initial、report_assessment=null。两臂同篇除system和variant外实际请求一致。基线未复现旧故障，无教学改善证据，候选不采用、不授资格。
