@@ -1,3 +1,9 @@
+## 2026-10-13 原15逐项裁决和完整响应夹具修复
+
+实读两base、15差分及完整来源，区分中单话题下五局窗口与显式包括辅助的混合分母，保留原accept/reject标签与旧Host分歧。三个关闭批的15初评均已发：10例所在批通过、3语义拒绝/分歧、2operator认证缺口；700原件SHA逐项保持，不拼资格。新audit_original15_alignment输出逐项原件/请求/来源SHA、Decimal事实复算及当前组合15输入、policy/schema、editor、time600/transport、Host/作者/观测和52源码准备指纹；prepared非授权或资格。15个当前policy/schema与原历史初评相同，旧资格拒绝是另一旧身份隔离，不能靠放宽通过。
+
+计数reason错配修复在新full_chain_bound_fixture及完整响应包，旧两个runner/fixture未改。12项定向测试174.05秒通过，含完整revision进入实际journal和终评、原三阶段作者文件/check-answer/import/submit/replay/seal接线；native/业务响应仍替身。旧演练53/54源码均未变，无第三次真实简化演练、无新付费或新资格。详细15行矩阵与决定见docs/plans/2026-10-13-original15-alignment.md。下一项为当前组合资格验证入口的离线实现；真实Host final正例、同组合质量及自然消费仍缺，automation PAUSED，8E/下游保留。
+
 ## 2026-10-13 真实Host演练关闭，保留两处语义阻断
 
 原独立主体完成3次真实作者文件/check-answer/唯一native/submit。第一案例初评：主审接受、独立认为四中单证据不能支持“这5局”结论而拒绝，未发revision/final。不同计数工程案例：initial双方接受；revision双方拒绝unsupported_explanation，正确after未使沿用的“mixed-sample means”理由成立；成稿四个ReportAssessment均true，final未发。这是本地夹具继承reason遗漏，不是模型错误。两runner exit0、严格replay/create-only seal通过，28/48原件和53/54源码不变；外部Provider/HTTP/真实业务tokens0，synthetic分别1/30和2/60，不计实际调用或费用。

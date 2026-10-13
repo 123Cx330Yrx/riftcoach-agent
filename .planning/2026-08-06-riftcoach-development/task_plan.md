@@ -23,7 +23,8 @@
 **无付费接续结果：** 四份实际意见的issue完整进入编辑，advisories按既有合同只留journal；10项作者编辑夹具绑定完整终评，J2必须同时修14/15才恢复正确稿。原15同输入/time600教学与J1 baseline相同；旧资格入口逐项拒绝当前组合。机器证据`post_joint_consumption_20261013.json`，没有真实模型编辑/终评或资格。
 **工程结果：** 隔离前瞻三阶段入口完成，保留旧workflow/共享预算/原件，增加作者原字节及观测SHA、白名单库存和提交锁内复核。30项新三阶段/故障/路径检查及4项真实loopback子进程SDK检查通过；外部Provider/HTTP0，native使用替身，准备无授权、无run、无付费execute CLI。见`docs/plans/2026-10-13-full-chain-evidence.md`。
 **真实演练：** 两个独立离线案例已关闭并严格封存，3真实native/submit；第一initial范围分歧、第二revision的本地固定reason与计数修法错配。第二报告四项标志为true但stage拒绝，final未发；真实三阶段正例未完成。28/48原件、53/54源码与旧458原件保持，外部Provider/HTTP0，无资格，automation PAUSED。见full-chain-host-rehearsal方案及两份close audit。
-**下一动作：** 无付费厘清原15实际范围命题及前瞻标签/版本绑定，保留原标签和审查不回写；当前15请求仍被旧资格入口拒绝。工程完整响应夹具绑定修复与真实final正例单列缺口，不新开第三次简化演练冲通过，不新增付费。
+**对齐与修复：** 原15全文/差分和来源已逐项裁决：10例所在批通过、3语义拒绝/分歧、2operator未认证，三批700原件保持。中单话题下“五局窗口”与显式合并辅助分母分开，不改旧标签或Host判断。当前组合15输入/实际policy/schema/editor/time600/transport/Host门及52源码形成准备指纹，未授资格。完整编辑响应包修复计数reason错配；12项回归含实际journal和三阶段接线通过，旧53/54源码保持，无第三次真实演练。见`docs/plans/2026-10-13-original15-alignment.md`及机器审计。
+**下一动作：** 在当前准备组合上实现资格验证入口，离线核完整15覆盖、同组合身份/源码、逐项审查、必要编辑/fresh及严格关闭/native证据，拒绝拼旧成功或未认证材料，再形成必要实测范围。旧资格入口不放宽、旧标签不回写，不直接执行旧full15，不新增付费。
 **依赖与边界：** 本批73源码/9文件包、旧两包69/73源码及旧六批372原件SHA不变。旧U2无native/候选未发、H5错误修法、T9上游根因undetermined不撤销；新证据熟悉来源非holdout，不拼资格。正式15、自然消费、8E及全部下游仍未完成。
 **验收与失败决策：** 方案需同时覆盖正确保留、真错检出、修法新增断言及真实编辑消费；结构通过不能推语义可靠。已有授权内普通步骤直接执行，涉及新模型成本时先形成具体可审查范围。
 
@@ -46,7 +47,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：真实演练关闭但三阶段正例欠缺，下一步厘清原15范围命题与前瞻版本绑定。旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
+以canonical和上方工作卡为准：原15范围裁决/版本准备及完整响应夹具修复完成，下一步为当前组合资格验证入口的离线实现。真实三阶段Host正例及同组合质量仍欠缺；旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
 
 ## History
 

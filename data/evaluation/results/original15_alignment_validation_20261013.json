@@ -1,0 +1,43 @@
+{
+  "kind": "OFFLINE-original15-alignment-validation-v1",
+  "tests": {
+    "command": "python -m pytest tests/test_full_chain_bound_fixture.py tests/test_full_chain_host_rehearsal.py -k 'not original and not explicit' -q --tb=short",
+    "passed": 12,
+    "deselected": 2,
+    "seconds": 174.05,
+    "native_events": "synthetic",
+    "business_responses": "synthetic"
+  },
+  "historical_rehearsals": [
+    {
+      "run": "document-full-chain-host-offline-20261013",
+      "seal_sha256": "63e009ffd6f03fe16aa033918a10b4e0bfbc9142b95c11d96b039f8f1ee8aa83",
+      "originals": 28,
+      "sources": 53,
+      "all_originals_and_sources_unchanged": true,
+      "native_reimported": false
+    },
+    {
+      "run": "document-full-chain-count-host-offline-20261013",
+      "seal_sha256": "a0a3a6f9b0a4023aac2a38133b7bac6d829a818ca3a14b2a544307ae6d60f2d3",
+      "originals": 48,
+      "sources": 54,
+      "all_originals_and_sources_unchanged": true,
+      "native_reimported": false
+    }
+  ],
+  "original15_originals_verified": 700,
+  "artifact_sha256": {
+    "scripts/full_chain_bound_fixture.py": "8078bdc36789e36377a8a1becfd4136c08bae99523e500fa6a4ce022f4b07dc7",
+    "data/evaluation/fixtures/full_chain_bound_count_20261013.json": "22d57d1668360237af11fff965831f14c60640a423d51576887b994046aa846a",
+    "scripts/audit_original15_alignment.py": "ae5080f9c6c09f7ba884ea153b5f2a5694c9f1524f420656f1cc16fe963890d6",
+    "data/evaluation/results/original15_alignment_20261013.json": "2b080fe02ebf7322c1e69ff43bcd876898be6141cd419c0bb8094f0f18dd9cea",
+    "tests/test_full_chain_bound_fixture.py": "b200729d0c778351a4c820d047baa7f4142ed4b3024f04cf2dd2711ec5a31fe7",
+    "tests/test_full_chain_host_rehearsal.py": "4c31938acae1facff3139c0695011119a3881fda9b2eb7dbfd9304641c25e1ba"
+  },
+  "governance_passed": true,
+  "external_provider_calls": 0,
+  "external_http_requests": 0,
+  "new_host_tasks": 0,
+  "new_qualification": 0
+}

@@ -294,3 +294,9 @@
 /data/evaluation/results/full_chain_evidence_preparation_20261013.json -text
 /data/evaluation/fixtures/full_chain_host_count_20261013.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/full_chain_host_rehearsal_20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Original15 alignment and complete-response fixture byte bindings.
+/scripts/audit_original15_alignment.py text eol=lf
+/data/evaluation/fixtures/full_chain_bound_count_20261013.json -text
+/data/evaluation/results/original15_alignment_20261013.json -text
+/data/evaluation/results/original15_alignment_validation_20261013.json -text

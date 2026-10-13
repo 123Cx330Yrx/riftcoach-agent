@@ -11,12 +11,15 @@ from scripts.full_chain_host_rehearsal import Rehearsal, ROOT, KEY, VERSION, no_
 from scripts.codex_review_event_source import CodexHostReviewEventSource
 
 
-@pytest.mark.parametrize('profile', ['original', 'explicit'])
+@pytest.mark.parametrize('profile', ['original', 'explicit', 'bound'])
 def test_offline_adapter_three_stages_before_real_host_dispatch(tmp_path, profile):
     cls, key, version = Rehearsal, KEY, VERSION
     if profile == 'explicit':
         from scripts.full_chain_explicit_host_rehearsal import ExplicitRehearsal, driver
         cls, key, version = ExplicitRehearsal, driver.KEY, driver.VERSION
+    if profile == 'bound':
+        from scripts.full_chain_bound_fixture import BoundRehearsal, VERSION as bound_version, FIXTURE
+        cls, key, version = BoundRehearsal, 'host-io-count:1', bound_version
     session = cls(directory=tmp_path/'run', answers=tmp_path/'authors', observations=tmp_path/'obs')
     plan = session.prepare(root_thread_id='test-root', independent_thread_id='test-child')
     assert plan['sequence'] == [key] and plan['kind'] == version
@@ -35,6 +38,15 @@ def test_offline_adapter_three_stages_before_real_host_dispatch(tmp_path, profil
         required = session.evidence.read(path)
         bound, stage = required['binding'], required['binding']['stage']
         folder = path.parent
+        if profile == 'bound' and stage == 'revision':
+            bundle = session.evidence.read(ROOT / FIXTURE)
+            actual = session.evidence.read(folder / 'stage.json')
+            expected = bundle['responses']['revision']['tool_calls'][0]['arguments']
+            assert json.loads(actual['journal']['raw']) == expected
+            op = actual['journal']['operations'][0]
+            assert {k: op[k] for k in ('before', 'after', 'reason')} == expected['edits']['block_4'][0]
+            assert session.runner.digest(actual['report']) == bundle['revised_report_sha256']
+            assert actual['journal']['semantic_approval'] is False
         pin = session.publish_task(path)
         task = json.loads((folder/'independent-task.json').read_text(encoding='utf-8'))
         assert task['instructions'].startswith('OFFLINE business-response rehearsal.')
