@@ -554,8 +554,20 @@ def test_new_application_in_actual_executor_and_worker_fences_terminal(tmp_path,
     from app.workers.review_worker import ReviewWorker
     from tests.test_reliable_review_worker import Repository, NOW
 
-    disposition = TaskHeartbeatDisposition.LOST if outcome == "ownership_lost" else TaskHeartbeatDisposition.ACTIVE
-    repository = Repository(dispositions=[disposition])
+    deps = dependencies()
+
+    class TerminalFenceRepository(Repository):
+        def heartbeat(self, **kwargs):
+            # Lose ownership only after the complete model path. A LOST first
+            # heartbeat now correctly prevents the first model dispatch.
+            self.dispositions = [
+                TaskHeartbeatDisposition.LOST
+                if outcome == "ownership_lost" and len(deps["provider"].requests) == 5
+                else TaskHeartbeatDisposition.ACTIVE
+            ]
+            return super().heartbeat(**kwargs)
+
+    repository = TerminalFenceRepository()
     original = repository.claim
     memory = binding(original.run_id).model_copy(update={"owner_id": original.owner_id})
     memory_repository = FakeRepository(MemoryContextSnapshot(binding=memory, records=()))
@@ -579,7 +591,6 @@ def test_new_application_in_actual_executor_and_worker_fences_terminal(tmp_path,
     repository.claim = original.model_copy(update={
         "schema_version": schema, "request_payload": payload, "request_fingerprint": fingerprint, **updates,
     })
-    deps = dependencies()
     deps["provider"].second_verdict = "fail" if outcome == "rejected" else "pass"
     application = build_coach_application(
         runs_root=tmp_path, **deps, memory_repository=memory_repository,
@@ -602,7 +613,8 @@ def test_new_application_in_actual_executor_and_worker_fences_terminal(tmp_path,
     ).run_once()
     assert len(deps["provider"].requests) == 5
     assert not repository.fail_calls
-    assert len(repository.heartbeats) == 1
+    # Five send preflights and the terminal fence; periodic renewals may add more.
+    assert len(repository.heartbeats) >= len(deps["provider"].requests) + 1
     receipt, receipt_ref = FileRunReceiptStore(tmp_path).read_receipt_with_reference(original.run_id)
     assert memory_repository.calls == ([memory] if schema == "2.0" else [])
     if outcome == "ownership_lost":

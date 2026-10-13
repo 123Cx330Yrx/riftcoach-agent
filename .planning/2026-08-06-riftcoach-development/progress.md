@@ -1,3 +1,11 @@
+## 2026-10-13 取消控制公共CI失败收尾
+
+实核4be52567/CI38413626331：四个pytest分片都在旧应用/Worker组合测试的heartbeat计数断言失败（6 != 1）；前端、打包、Postgres迁移通过。Windows本地相同节点复现，非Linux特有问题。上轮125项选择漏掉这两套更早应用回归。
+
+修正test_coach_application_composition与test_offline_coach_runtime：每次实际发送前及终态均须检查，允许后台续租；终态所有权丢失在五个响应后注入，保持禁止提交/对话投影。发送前丢失/取消/数据库异常仍由原控制测试验证零发送。两应用套件、Worker控制和可靠Worker113项22.38秒通过，生产代码与CI配置未动，后继公共CI待核。
+
+本轮另实读三个旧响应、完整政策及已有责任拆分反例，未发现新合同冲突或选定语义修法；没有把删修法/引用绑定/同义教学当新候选。Provider、新Host、业务run、资格均0，旧批与automation PAUSED保持。
+
 ## 2026-10-13 发送前取消/租约检查，语义问题继续保留
 
 按post-joint-consumption已记录的独立缺口，新增执行上下文guard，在Provider启动观察前复核租约；周期与发送前heartbeat串行，取消/丢失不可被后续ACTIVE覆盖，DB故障停止发送并交原Worker终态处理。保留ObservedLLMProvider、模型请求/政策/schema/预算及旧manifest，不借旧组件身份认证新行为。Context退出恢复；在途HTTP结果保留，不声称即时杀死已发请求。

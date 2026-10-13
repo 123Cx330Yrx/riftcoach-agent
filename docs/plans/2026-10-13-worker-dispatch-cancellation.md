@@ -59,3 +59,22 @@ workflow源码保持。任务控制改动需以下新的运行回归，不以旧
 700历史原件SHA实核不变；无需修改旧准备、冻结workflow、标签或历史审查结论。
 
 Owner理解、真实模型质量与部署成熟度未由本次代码回归认证，8E及全部下游保持未完成。
+
+## 公共CI失败与应用回归修正
+
+`4be52567`的[CI38413626331](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38413626331)
+四个pytest分片均在`test_coach_application_composition`的同一参数化测试失败：旧断言要求
+整个任务只有一次heartbeat，实际五次发送前检查加终态检查为六次。前端、打包、Postgres
+迁移检查成功。上一轮定向验证遗漏了这两套更早的应用/Worker组合测试，不能称公共CI已通过。
+
+本地原断言复现`6 != 1`。查全部heartbeat计数断言后，同时修正
+`test_coach_application_composition.py`与`test_offline_coach_runtime.py`：正常/质量拒绝
+路径要求每次实际发送及终态至少各有一次检查，允许后台周期续租；失去所有权的夹具改为
+完成五次模型响应后才返回LOST，继续验证结束时不能提交或投影对话终态。旧夹具首次
+heartbeat即LOST在新语义下会阻断首次发送，不能再用它测试结束时的失去所有权。
+发送前取消/丢失/数据库异常的零发送断言由`test_worker_dispatch_control.py`保留覆盖。
+没有改生产guard、放宽租约门、跳过测试或调整CI配置。
+
+两套应用测试、Worker控制及可靠Worker共113项通过（22.38秒），全部使用替身Provider/DB，
+应用测试禁止网络。检查没有模型调用、新Host任务或历史证据修改；新提交的公共CI须单独
+核验。这是上一运行修复的收尾，三处语义问题仍未修复。

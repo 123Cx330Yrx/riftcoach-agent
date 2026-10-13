@@ -303,7 +303,14 @@ def test_actual_application_and_worker_verify_evidence_and_ownership(tmp_path, l
         compiler=compiler, runtime=runtime, receipt_writer=FileRunReceiptStore(tmp_path))
     executor = RecentReviewTaskExecutor(application_service=application,
         evidence_verifier=RecentReviewTerminalEvidenceVerifier(tmp_path))
-    repository = Repository(dispositions=[Disposition.LOST if lost else Disposition.ACTIVE])
+    class TerminalFenceRepository(Repository):
+        def heartbeat(self, **kwargs):
+            # This scenario tests terminal ownership, not loss before send.
+            self.dispositions = [Disposition.LOST
+                                 if lost and len(provider.requests) == 5 else Disposition.ACTIVE]
+            return super().heartbeat(**kwargs)
+
+    repository = TerminalFenceRepository()
     product_request = RecentReviewProductRequest(riot_id="Demo#TEST", routing_region="asia")
     payload = product_request.model_dump(mode="json")
     repository.claim = repository.claim.model_copy(update={"request_payload": payload,
@@ -311,7 +318,7 @@ def test_actual_application_and_worker_verify_evidence_and_ownership(tmp_path, l
     outcome = ReviewWorker(repository=repository, executor=executor, worker_id="worker-reliable-1", clock=lambda: NOW,
                            lease_policy=TaskLeasePolicy(lease_seconds=360, heartbeat_seconds=60)).run_once()
     assert len(provider.requests) == 5, outcome
-    assert len(repository.heartbeats) == 1
+    assert len(repository.heartbeats) >= len(provider.requests) + 1
     assert not repository.fail_calls
     if lost:
         assert outcome.status.value == "ownership_lost"
