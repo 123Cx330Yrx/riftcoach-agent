@@ -28,6 +28,7 @@ from app.tasks.reliable_runtime import (
 )
 from app.workers.polling import PollingPolicy
 from app.tasks.observability import TaskObservability
+from app.runtime.dispatch_control import DispatchStopped, bind_dispatch_guard
 
 
 Clock = Callable[[], datetime]
@@ -120,6 +121,7 @@ class _LeaseMaintainer:
         self._clock = clock
         self._stop = Event()
         self._lock = Lock()
+        self._beat_lock = Lock()
         self._disposition = TaskHeartbeatDisposition.ACTIVE
         self._error: BaseException | None = None
         self._thread = Thread(
@@ -158,22 +160,54 @@ class _LeaseMaintainer:
                 self._stop.set()
                 return
 
-    def _beat(self) -> TaskHeartbeatDisposition:
-        result = self._repository.heartbeat(
-            task_id=self._task.task_id,
-            worker_id=self._lease.worker_id,
-            lease_generation=self._lease.generation,
-            lease_token=self._lease.private_token,
-            now=self._clock(),
-            lease_seconds=self._policy.lease_seconds,
-        )
-        if not isinstance(result, TaskHeartbeatResult) or (
-            result.task_id != self._task.task_id
-        ):
-            raise TypeError("repository returned an invalid heartbeat result")
+    def require_dispatch_allowed(self) -> None:
         with self._lock:
-            self._disposition = result.disposition
-        return result.disposition
+            error, disposition = self._error, self._disposition
+        if error is not None:
+            raise DispatchStopped("task_lease_unavailable") from None
+        if disposition is not TaskHeartbeatDisposition.ACTIVE:
+            raise DispatchStopped("task_dispatch_fenced")
+        try:
+            # Read current DB state even if the periodic heartbeat is not due;
+            # cancellation can arrive between two fast model stages.
+            disposition = self._beat()
+        except Exception:
+            raise DispatchStopped("task_lease_unavailable") from None
+        if disposition is not TaskHeartbeatDisposition.ACTIVE:
+            raise DispatchStopped("task_dispatch_fenced")
+
+    def _beat(self) -> TaskHeartbeatDisposition:
+        # A send preflight and the background renewer share the same fence.
+        # Never let a later ACTIVE reply undo an observed cancellation/loss.
+        with self._beat_lock:
+            with self._lock:
+                if self._error is not None:
+                    raise RuntimeError("lease heartbeat failed") from None
+                if self._disposition is TaskHeartbeatDisposition.LOST:
+                    return self._disposition
+            try:
+                result = self._repository.heartbeat(
+                    task_id=self._task.task_id,
+                    worker_id=self._lease.worker_id,
+                    lease_generation=self._lease.generation,
+                    lease_token=self._lease.private_token,
+                    now=self._clock(),
+                    lease_seconds=self._policy.lease_seconds,
+                )
+                if not isinstance(result, TaskHeartbeatResult) or (
+                    result.task_id != self._task.task_id
+                ):
+                    raise TypeError("repository returned an invalid heartbeat result")
+            except BaseException as error:
+                with self._lock:
+                    self._error = error
+                self._stop.set()
+                raise
+            with self._lock:
+                if (result.disposition is not TaskHeartbeatDisposition.ACTIVE
+                        or self._disposition is TaskHeartbeatDisposition.ACTIVE):
+                    self._disposition = result.disposition
+                return self._disposition
 
 
 class ReviewWorker:
@@ -348,7 +382,12 @@ class ReviewWorker:
         terminal: object | None = None
         execution_failed = False
         try:
-            terminal = self._executor.execute(claimed)
+            with bind_dispatch_guard(maintainer.require_dispatch_allowed):
+                terminal = self._executor.execute(claimed)
+        except DispatchStopped:
+            # The final fenced disposition below determines the task outcome.
+            # No model error, retry, or synthetic terminal result is produced.
+            execution_failed = True
         except Exception:
             execution_failed = True
             self._observe(

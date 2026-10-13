@@ -1,3 +1,11 @@
+## 2026-10-13 发送前取消/租约检查，语义问题继续保留
+
+按post-joint-consumption已记录的独立缺口，新增执行上下文guard，在Provider启动观察前复核租约；周期与发送前heartbeat串行，取消/丢失不可被后续ACTIVE覆盖，DB故障停止发送并交原Worker终态处理。保留ObservedLLMProvider、模型请求/政策/schema/预算及旧manifest，不借旧组件身份认证新行为。Context退出恢复；在途HTTP结果保留，不声称即时杀死已发请求。
+
+实际应用对照：替换为修改前观察函数后，第1次生成结束取消仍发送满5次，新回归如预期失败；新控制在第1/3/4次后取消分别只发1/3/4次，正常路径5次。Worker/观察/完整应用相关125项44.69秒通过，使用synthetic模型和DB、实际后台线程及文件IO；随后加固两处测试，23项8.95秒通过；取消后无final_report的应用路径4项再验通过（4.80秒）。未发后续尝试仍占原预算器保守预留，实际delegate/Provider-start只计已发送项，不制造用量。
+
+readiness审计逐字段不变，54源码绑定及700旧原件SHA保持。三处语义问题没有修复证据，未增加引用字段或同义教学；新15撤回、automation PAUSED、Provider/新Host/新资格0。完整说明在docs/plans/2026-10-13-worker-dispatch-cancellation.md，真实DB/API/UI与自然消费仍待验证。
+
 ## 2026-10-13 修复就绪审计：撤回新15付费提议
 
 用户质疑重新展开15例的依据后，撤回37.167104元付费提议；不是再次请求确认。只读固定public seal重建3份失败上下文和2份相邻正确对照，完整请求全部相同，三个旧错误响应仍结构合法、semantic_approval=false。两处误报及一处修复覆盖分歧没有新增语义修复证据；原scope:4主审接受/独立拒绝保留，不回写共识。

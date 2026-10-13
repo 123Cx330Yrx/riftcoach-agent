@@ -1,3 +1,9 @@
+## 2026-10-13 阻止发布不能代替阻止后继发送
+
+真实应用的旧观察边界在第一次模型调用后设置取消，仍走完generation/generation/review/revision/review，Worker最后才取消提交。把租约前置条件放到Provider启动观察前，才能在同步链路中挡住下一次发送；只是更新executor结束后的取消逻辑不能减少后续请求。
+
+修改共用ObservedLLMProvider会使现有Prompt Program指纹漂移，完整应用测试能发现。最终把任务控制前置条件放在独立的运行观察入口并恢复该组件原件，没有放宽resolver或更新旧manifest。不同线程/执行的ContextVar隔离、并发heartbeat串行、取消状态不回退、旧receipt清空均须覆盖；原预算先于观察预留，预算尝试计数不可冒充实际发送。
+
 ## 2026-10-13 工程准备就绪没有改变旧失败的模型任务
 
 三份旧失败（claim-scope:4 initial、scope:4 initial、scope:3 final）和两份正确对照的完整请求均与当前重建结果相同。比较仅补入发送前已有的预算metadata标记，不忽略正文/来源/政策/schema/采样。新执行门改变了预算与证据约束，没有改变这些语义任务；旧响应仍结构合法，随机重跑通过不能证明修复。由此撤回新整批成本提议，而非把无机制干预的重跑当回归。

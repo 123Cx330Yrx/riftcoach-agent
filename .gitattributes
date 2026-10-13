@@ -312,3 +312,7 @@
 # Offline repair-readiness audit; retain the historical/request byte bindings.
 /scripts/audit_full15_repair_readiness.py text eol=lf
 /data/evaluation/results/full15_repair_readiness_20261013.json -text
+
+# Execution-local dispatch control, independent of frozen model request code.
+/app/runtime/dispatch_control.py text eol=lf
+/tests/test_worker_dispatch_control.py text eol=lf
