@@ -13,6 +13,19 @@ export interface LocaleStore {
 }
 
 export const enCatalog = {
+  "product.cancelled_title": "Review cancelled",
+  "product.cancelled_body": "The task was cancelled. No report is published; earlier usage may still have been recorded.",
+  "product.failed_title": "Review stopped",
+  "product.failed_body": "The task could not finish. Recorded usage is separate from report availability.",
+  "coach.stopped_body": "The task stopped, so no coaching brief is available.",
+  "usage.title": "Task usage",
+  "usage.calls": "Model calls sent",
+  "usage.tokens": "Total tokens",
+  "usage.estimate": "Estimated cost",
+  "usage.unknown": "Unknown",
+  "usage.unavailable": "No verified usage record is available. This does not mean zero usage.",
+  "usage.observed": "Recorded tokens: {{tokens}}. The total is incomplete.",
+  "usage.boundary": "Includes work before cancellation. Estimates are not a provider bill.",
   "locale.label": "Language",
   "locale.current_language": "English",
   "locale.chinese": "中文",
@@ -385,6 +398,19 @@ export const enCatalog = {
 export type MessageKey = keyof typeof enCatalog
 
 export const zhCnCatalog = {
+  "product.cancelled_title": "复盘已取消",
+  "product.cancelled_body": "任务已取消，报告不再发布；取消前可能已产生用量。",
+  "product.failed_title": "复盘已中断",
+  "product.failed_body": "任务未能完成。已记录的用量与报告是否可用分别显示。",
+  "coach.stopped_body": "任务已停止，本次不展示教练建议。",
+  "usage.title": "任务用量",
+  "usage.calls": "已发送模型调用",
+  "usage.tokens": "总 Token 数",
+  "usage.estimate": "估算费用",
+  "usage.unknown": "未知",
+  "usage.unavailable": "暂无可信用量记录，不代表没有消耗。",
+  "usage.observed": "已记录 {{tokens}} Token，总量尚不完整。",
+  "usage.boundary": "包含取消前已发生的消耗；估算费用不等于供应商账单。",
   "locale.label": "语言",
   "locale.current_language": "中文",
   "locale.chinese": "中文",

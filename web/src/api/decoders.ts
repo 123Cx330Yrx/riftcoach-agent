@@ -26,6 +26,7 @@ import type {
   RecentSummaryWire,
   RoutingRegionWire,
   RunWire,
+  RunUsageWire,
   RunTimelineEventWire,
   RunTimelineMatchWire,
   RunTimelineWire,
@@ -475,6 +476,19 @@ function decodeUsage(value: unknown): RuntimeUsageWire {
     pricing_profile_id: nullable(row.pricing_profile_id, (item) => safeId(item, "run.usage.pricing_profile_id")),
     pricing_profile_version: nullable(row.pricing_profile_version, (item) => normalizedText(item, "run.usage.pricing_profile_version", 32)),
     cost_observation: enumeration(row.cost_observation, ["complete", "partial", "unknown", "not_configured"] as const, "run.usage.cost_observation"),
+  }
+}
+
+export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageWire {
+  const row = record(value, "run_usage")
+  exact(row, ["schema_version", "run_id", "task_status", "usage"], "run_usage")
+  const runId = safeId(row.run_id, "run_usage.run_id")
+  if (runId !== safeId(expectedRunId, "expected run")) throw new Error("usage run binding mismatch")
+  return {
+    schema_version: literal(row.schema_version, "1.0", "run_usage.schema_version"),
+    run_id: runId,
+    task_status: enumeration(row.task_status, ["succeeded", "failed", "cancelled"] as const, "run_usage.task_status"),
+    usage: nullable(row.usage, decodeUsage),
   }
 }
 

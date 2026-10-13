@@ -228,6 +228,13 @@ export interface RunWire {
   readonly report_available: boolean
 }
 
+export interface RunUsageWire {
+  readonly schema_version: "1.0"
+  readonly run_id: string
+  readonly task_status: "succeeded" | "failed" | "cancelled"
+  readonly usage: RuntimeUsageWire | null
+}
+
 export interface RecentMetricRowWire {
   readonly cs_per_min: number
   readonly gold_per_min: number

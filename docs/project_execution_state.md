@@ -4,10 +4,53 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；无新付费授权，普通无付费项目工作可继续。"
+pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；无新付费授权，普通无付费项目工作继续；职责分离仅完成离线研究准备，尚未授权或实测。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-14。后端`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`。
+主树未完成前端保持；0—8及当前8E checkpoint不变。J1/J2等旧批已关闭，automation PAUSED，
+无新付费授权；不重启旧批、不补签、不拼资格。用户要求以核心语义问题为主线持续推进。
+
+## 当前行动
+
+**核心语义问题仍未解决，已完成一项有明确反证条件的职责分离诊断准备。**
+重读三份原始公开失败响应后，确认两处误报并非简单缺数字/没读到全文；模型已看到正确数字
+和限定，却仍升级措辞建议。现选择检验事实正确性与任务完成度职责混合这一假设，不宣称根因。
+三份原失败上下文各准备full/facts两臂，只有system职责及离线身份标记不同，全文/来源/Schema/
+修法保持；旧身份明确拒绝候选。一次配对不能证稳定性，两臂皆过不证明改善，任一候选实错即否定。
+见[方案、覆盖/资源与失败决策](plans/2026-10-14-review-duty-design.md)。
+
+6份请求及manifest在`data/evaluation/fixtures/review_duty_probe_20261014`，
+`prepare_review_duty_probe.py`可离线逐字重建，尚无发送适配器/授权/run/Host任务。
+拟6次GLM-5.3/high、Flash0，580608tokens/3600活动秒/86400Host秒，单次600秒；
+按现有价格快照最大预算估价8.577024元非账单硬封顶。当前没有付费执行权限。
+即使开发对照有正向信号，也先验证互补职责/真实编辑消费和5→7调用的合同变化，不直接重启15。
+
+**独立产品工作已补齐取消/失败任务的用量API与工作台展示。**
+新owner限定`GET /runs/{run_id}/usage`复用完整性核验，只返回用量；报告门保持。
+部分/缺失总量显示未知，可信零调用才显示0；取消不再误称质量审查失败。
+52项后端检查（含6项真实临时Postgres整链）、32项前端单测、6项Chromium检查及类型检查通过。
+浏览器是本地HTTP替身，数据库链路模型/来源也是替身；分段验证，不声称自然消费或整体产品验收。
+见[实现、运行手册与限制](plans/2026-10-14-terminal-usage-consumption.md)。
+
+下一动作：对已准备的六次职责对照作明确的新成本决定；授权后才完成新身份执行绑定与首次发送，
+不得借旧身份/旧四次授权。独立产品工作不因旧失败永久冻结；本包公共CI须核实际新提交。
+上一提交0aac0952的CI38424719839最近查询前端/打包/Postgres/分片0通过，其余三片仍运行，未报全绿。
+
+## 保留的结论与依赖
+
+原15的10通过/3语义拒绝或分歧/2未认证各属其批；scope:4原分歧不回写。
+三处语义失败和37.167104元新15提议撤回保持，旧修复就绪审计及700原件不变。
+J1/J2四完整响应/四双审、两臂皆过，无改善证据；候选不采用。详情与所有历史缺口见下方快照。
+正式同版本15、自然消费、Coach/Training、四块联动、完整journal、前端审美头像、Memory、
+身份运维、两树整合、独立评估与学习继续保留。代码/Owner理解/质量资格/部署成熟度分别验收。
+
+## 以下为历史记录
+
+### 2026-10-13 取消Trace完成时状态快照（当前行动以上方为准）
+
 
 2026-10-13 J1/J2四次初评已完成并关闭，原主会话唯一执行。执行HEAD `1708c0cd4e338bec4caff27612c78c406be3dc83` / 公共CI `38372269298`全绿，原授权未改、未延展，执行中源码与包冻结。后端为`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；两分支成果已接续，主树未完成前端保持。
 

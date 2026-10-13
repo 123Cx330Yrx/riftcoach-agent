@@ -125,6 +125,13 @@ def test_api_cancel_fences_real_database_worker_before_next_model_send(
     assert trace.usage.provider_responses_observed == expected_calls
     assert trace.usage.observed_input_tokens == expected_calls * 10
     assert trace.usage.observed_output_tokens == expected_calls * 10
+    usage_response = owner.get(f"/runs/{run_id}/usage")
+    assert usage_response.status_code == 200
+    assert usage_response.json()["task_status"] == expected_status
+    assert usage_response.json()["usage"]["provider_calls_attempted"] == expected_calls
+    assert usage_response.json()["usage"]["input_tokens"] == expected_calls * 10
+    assert usage_response.json()["usage"]["output_tokens"] == expected_calls * 10
+    assert other.get(f"/runs/{run_id}/usage").status_code == 404
     if cancelled and cancel_after < 5:
         assert receipt.runtime_status.value == "failed" and not receipt.report_available
         assert receipt.terminal_reason == "task_dispatch_stopped"

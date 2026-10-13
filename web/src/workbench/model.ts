@@ -6,6 +6,7 @@ import type {
   ProductStateValueWire,
   PublicationStatusWire,
   RoutingRegionWire,
+  RuntimeUsageWire,
   TaskEventKindWire,
   TaskStatusWire,
   VerificationStatusWire,
@@ -182,6 +183,7 @@ export interface LiveWorkbenchView {
   readonly summary?: WorkbenchRecentSummary
   readonly timeline?: WorkbenchTimeline
   readonly run?: WorkbenchRun
+  readonly usage?: RuntimeUsageWire | null
   readonly report?: WorkbenchCoachReport
   readonly evidence?: WorkbenchEvidence
   readonly events: readonly WorkbenchTaskEvent[]

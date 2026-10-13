@@ -316,3 +316,7 @@
 # Execution-local dispatch control, independent of frozen model request code.
 /app/runtime/dispatch_control.py text eol=lf
 /tests/test_worker_dispatch_control.py text eol=lf
+
+# Offline review-duty preparation retains exact request and source digests.
+/scripts/prepare_review_duty_probe.py text eol=lf
+/data/evaluation/fixtures/review_duty_probe_20261014/** -text

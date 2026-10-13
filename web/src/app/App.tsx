@@ -22,6 +22,7 @@ import { CoachBrief } from "../components/CoachBrief"
 import { AccountAccess } from "../components/AccountAccess"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
+import { RunUsagePanel } from "../components/RunUsagePanel"
 import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
@@ -370,6 +371,7 @@ function ReadyWorkbench({
             <div className="context-rail__header"><span>{t("context.channel")}</span><small>{t("context.safe_projection")}</small></div>
             <TrainingPanel profile={selectedProfile} training={view.training} />
             <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
+            {view.usage !== undefined && <RunUsagePanel usage={view.usage} />}
             <section className="source-summary panel" aria-labelledby="source-summary-title">
               <p className="eyebrow">{t("common.source_posture")}</p>
               <h3 id="source-summary-title">{t("source.claim_title")}</h3>
