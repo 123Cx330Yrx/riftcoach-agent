@@ -4,12 +4,12 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "用户要求就近停顿并转移阵地；执行暂停于原checkpoint，automation PAUSED。无付费失败裁决和完整编辑反例已完成，待用户恢复后准备新范围方案。"
+pause_reason: "用户已恢复项目；新联合检出/修法/保留的无付费提案完成，待新材料独立全文校准及独立执行接线。旧批关闭、automation PAUSED，新付费未授权。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-13 用户明确要求“就近停顿，我即将转移阵地”，本轮停在无付费失败裁决完成后的保存点。主阶段仍未完成，metadata保留in_progress；执行暂停，automation实核PAUSED，不启动下一工作包。实际后端为`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；恢复先读本文件最新块、`.planning/.active_plan`与活动计划，不复制或合并主树的未完成前端工作。
+2026-10-13 用户已要求“回项目继续”，解除本会话的转移暂停。实核后端`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`，保存点05470874的公共CI38350944790全绿。已完成新联合检查材料的无付费提案，未启动付费run；旧自动任务保持PAUSED。
 
 2026-10-13 已授权U1/U2对照终态：3次GLM-5.3/high初评已发，3次完整响应，2次真实双审提交；U2基线独立Host在native final前发生workspace usageLimitExceeded，按硬故障规则abort，U2候选未发。执行HEAD e1fff5e932dcfb36f0df17533dda34b4da101381、公共CI38334154675全绿、原授权期限与固定包保持。批次已关闭，automation实核PAUSED，无重试/补发，新增资格0。
 
@@ -21,7 +21,9 @@ U1两臂95/pass均获双方接受，无改善证据。U2基线96/pass、issues�
 
 无付费方案裁决已完成：H5错误修法与U2漏检的实际公开输出均能通过现有结构校验；U1/U2完整实际输入只差第14段正文及其绑定，policy、身份、全部事实/知识、schema与采样参数相同，原始行值与computed比较一致。新6项完整报告编辑反例证明正确修法可逐字得到U1，但错误关系/范围/因果及空编辑也能组装并绑定完整终评，均没有语义通过。保留完整初评/来源/编辑/终评，不选换schema、删初评、关键词门或任意接近阈值。见[方案裁决](plans/2026-10-13-relation-review-failure-decision.md)及`relation_review_failure_decision_20261013.json`。
 
-当前停顿，等待用户在转移后的工作区明确恢复。恢复后唯一下一动作是无付费准备能同时区分真实检出、修法新增断言与正确全文保留的新范围方案，不继续只跑正确稿或追加相似提醒。关系候选仍未采用，U2候选未发，模型内部根因未证；闭批不重开，未来新付费范围另需具体授权。Host额度恢复不能成为重试或补签理由。额度筛查证据保存在原Host的`C:/Users/33502/Documents/Agent/outputs/riftcoach-quota-screening-20261013/`，不作为新工作区的运行前提。
+新J1/J2各26段，互相只差第14段均值接近及第15段补刀全称关系两句；正确全文和错误稿完整来源保持。四个真实请求构造通过身份/容量/双臂投影检查，3项测试通过；两处作者修法才能逐字得到正确稿，单处修法仍留真错。见[联合方案](plans/2026-10-13-relation-joint-review-proposal.md)及`data/evaluation/fixtures/document_relation_joint_proposal_20261013/proposal.json`。拟最多4次GLM初评、估价5.718016元非硬封顶，但尚未独立校准、未接新runner、未获新成本授权，execution_ready=false。
+
+唯一下一动作：恢复原独立主体对新材料的完整校准路由，只发新任务完整材料，不带主审标签；旧U2任务不恢复或补签。原线程可只读定位，最后旧任务为额度失败。对固定新task的一次派发被工具拒绝：已卸载的multi-agent v2子主体须先恢复原主会话01a1248f-e18c-7282-92bf-7ceb2eb5dce4；没有送达或启动新任务。新材料/task/派发SHA及失败结果见`data/evaluation/results/relation_joint_preparation_20261013.json`。恢复该主会话后复用原主体，不新建替代主体、不重发旧U2、不先发Provider；不据历史故障推断当前仍限额。旧额度筛查证据仍在原Host的`C:/Users/33502/Documents/Agent/outputs/riftcoach-quota-screening-20261013/`。
 
 旧T9已确认父进程600秒总截止，上游根因undetermined；30.672秒仅是最后保存进度。本批Host额度故障不补足旧超时根因，也不认证旧缺失项。
 

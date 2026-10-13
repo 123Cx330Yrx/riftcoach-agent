@@ -11,7 +11,7 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：按用户2026-10-13“就近停顿，我即将转移阵地”要求暂停，主阶段未完成，automation实核PAUSED。后端`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`；转移后先核实际checkout/branch并读取canonical最新块，等待用户明确恢复。
+执行状态：用户已要求“回项目继续”。后端保存点05470874/CI38350944790全绿；当前继续无付费准备，主阶段未完成，旧批automation保持PAUSED。
 
 ## Active Work Package
 
@@ -28,7 +28,8 @@
 **独立校准结果：** 原主体完成唯一新开发任务；U1保留、U2仅14段需修，与预存主审一致。唯一native终答、20公开命令、全文分段输出、作者原件/材料SHA实核；源根32/31/25及最小修法正确。非holdout、Provider质量或资格。结果见`data/evaluation/results/host_relation_repair_calibration_20261012/close-audit.json`；准备JSON保留校准前快照。
 **新对照准备完成：** U1/U2新私有入口已绑定run外字节观测、实际路由与请求SHA，Host提交/下一发送/严格回放封存全程复核。新旧入口联合50项通过；路径与当前native预检通过。固定9文件包plan SHA `2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f`；实际模型/业务run/新作者任务0，旧73原件不变。见`docs/plans/2026-10-13-relation-repair-observed-comparison.md`。
 **本轮裁决完成：** 三份公开实际输出复验：正确保留、漏检pass与错误修法都能通过结构门。U1/U2全部非正文输入、policy、schema/采样相同，仅14段正文与绑定变化；原行值重算与computed相等。新6项完整文档消费反例中正确修法逐字得到U1，错误关系/范围/因果和空编辑也能组装并进入完整终评请求，均semantic_approval=false。新增4项及既有消费4项通过；Provider/HTTP/native/资格0。见`docs/plans/2026-10-13-relation-review-failure-decision.md`。
-**当前下一动作：** 当前暂停，保存本轮裁决与完整编辑反例后交接。用户明确恢复后，无付费准备能同时区分真实检出、修法新增断言与正确全文保留的新范围方案。保留完整初评/来源/编辑/终评；不选换schema、删初评、关键词或接近阈值门，也不因U1皆过采用关系候选。当前批次不重开、不重试/补发；任何新付费范围另需具体授权，普通授权内工程步骤不重复确认。
+**新范围提案完成：** J1/J2全文各26段，只差14/15段两句，联合检出与修法并保留正确对照；四个请求、完整来源、两臂仅system差异及容量已核。3项测试通过，执行尚未就绪，未独立校准/接线/授权，模型调用0。见`docs/plans/2026-10-13-relation-joint-review-proposal.md`。
+**当前下一动作：** 恢复原独立主体对新材料的完整校准路由，派新任务不带主审标签；原主体线程只读可定位，但一次新任务派发被工具拒绝，须先恢复原主会话01a1248f-e18c-7282-92bf-7ceb2eb5dce4。固定新task/material及路由结果已保存，没有送达/启动；保留未校准，不新建替代主体、不续交旧U2答案、不先发Provider。后续新runner/授权/观测与库存接线全部就绪后才申请具体新成本授权。
 **依赖与边界：** automation实核PAUSED；原authorization/issued_at/截止保持。known45600tokens、估价0.492880元非核实账单，unknown0/receiptless0。错误稿候选一臂未发，旧H5修法机制未证改善，候选未采用、新资格0；旧73/47/26/14/146原件及缺口保持，不补签或拼资格。主体恢复不能补发本批。
 **验收与失败决策：** 方案必须能表达正确保留、真实错误和修法新增断言的反例，且实际编辑消费可达；不能由结构通过推断语义可靠。证据反驳当前设计就改设计，不自动付费重试。
 
@@ -51,7 +52,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：无付费失败裁决及完整编辑反例已完成；按用户要求暂停交接，用户恢复后才准备同时区分检出、修法与正确保留的新范围方案。U1/U2闭批、U2基线Host失败与候选未发分别保留；候选未采用、automation PAUSED，正式同版本15及所有下游依赖保持。
+以canonical和上方工作卡为准：用户已恢复，新联合提案无付费准备完成；下一步恢复原主体的新材料全文校准路由。旧批闭批/缺失项、候选未采用、automation PAUSED及正式15和全部下游依赖保持。
 
 ## History
 
