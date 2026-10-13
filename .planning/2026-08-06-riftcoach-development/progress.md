@@ -1,3 +1,9 @@
+## 2026-10-13 当前组合固定15资格验证入口
+
+新增qualify_full_chain_controls，准备绑定原15组合及验证器/指定主体；验证单个关闭批的15 distinct、5 accept/10 reject所需35阶段，复用FullChainEvidence完整plan/source/receipt/editor/final/native/作者/观测回放。实际HTTP观测必须具备单次2xx完整采样，synthetic sidecar不能替代；同HEAD clean及公共CI沿用原门。前后原件快照不变、seal完全相同才可create-only输出固定审查集资格，自然任务/生产/付费授权保持false。旧入口及所有冻结脚本未改。
+
+41项定向测试16.41秒通过。正例使用synthetic replay/native边界，不是真实资格；实际读取三个原批和两个演练seal均拒绝，SHA不变。准备与验证记录在full_chain_qualification_preparation_20261013.json/full_chain_qualification_validation_20261013.json；新增实际资格、模型调用、Host任务、Agent均0。下一项将全链执行与资格检查/35阶段范围/预算/停止规则/真实Host final证据方式形成具体可执行方案，先论证实测决策价值再处理新成本授权；无第三次简化演练、旧授权不迁移，8E与下游保留。
+
 ## 2026-10-13 原15逐项裁决和完整响应夹具修复
 
 实读两base、15差分及完整来源，区分中单话题下五局窗口与显式包括辅助的混合分母，保留原accept/reject标签与旧Host分歧。三个关闭批的15初评均已发：10例所在批通过、3语义拒绝/分歧、2operator认证缺口；700原件SHA逐项保持，不拼资格。新audit_original15_alignment输出逐项原件/请求/来源SHA、Decimal事实复算及当前组合15输入、policy/schema、editor、time600/transport、Host/作者/观测和52源码准备指纹；prepared非授权或资格。15个当前policy/schema与原历史初评相同，旧资格拒绝是另一旧身份隔离，不能靠放宽通过。

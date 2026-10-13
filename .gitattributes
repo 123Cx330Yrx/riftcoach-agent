@@ -300,3 +300,8 @@
 /data/evaluation/fixtures/full_chain_bound_count_20261013.json -text
 /data/evaluation/results/original15_alignment_20261013.json -text
 /data/evaluation/results/original15_alignment_validation_20261013.json -text
+
+# Prospective fixed-control qualification, distinct from historical admission.
+/scripts/qualify_full_chain_controls.py text eol=lf
+/data/evaluation/results/full_chain_qualification_preparation_20261013.json -text
+/data/evaluation/results/full_chain_qualification_validation_20261013.json -text
