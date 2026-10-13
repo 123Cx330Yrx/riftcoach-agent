@@ -4,10 +4,28 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "U1/U2新对照的观测/路由接线与无付费准备完成；新四次成本范围尚未授权，automation PAUSED。"
+pause_reason: "U1/U2授权批已关闭；独立Host usageLimitExceeded硬故障停止，automation PAUSED；后续无付费方案裁决继续。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-13 已授权U1/U2对照终态：3次GLM-5.3/high初评已发，3次完整响应，2次真实双审提交；U2基线独立Host在native final前发生workspace usageLimitExceeded，按硬故障规则abort，U2候选未发。执行HEAD e1fff5e932dcfb36f0df17533dda34b4da101381、公共CI38334154675全绿、原授权期限与固定包保持。批次已关闭，automation实核PAUSED，无重试/补发，新增资格0。
+
+U1两臂95/pass均获双方接受，无改善证据。U2基线96/pass、issues空漏检第14段：仅四局中单早死胜场3/2、负场0/1，均值2.50/.50、差2.00、all_pairs=greater，与“均值接近”冲突。主审拒绝，但没有独立native final或submit；缺失修法不能算错误修法，未发候选也不能判语义。候选保持未采用，熟悉来源非holdout。见[结果与决策](plans/2026-10-13-relation-repair-result.md)。
+
+严格只读replay/create-only seal成功，2项真实native实核、66原件SHA不变；三项run外观测绑定有效。actual/HTTP各3，known45600tokens（input39196/output6404），unknown0/receiptless0、未发1；已知估价0.492880元，实际账单未核。旧73/47/26/14/146份原件与缺口逐项保留，不补签或拼资格。机器结果见`data/evaluation/results/document_relation_repair_close_audit_20261013.json`。
+
+## 当前行动
+
+本批关闭审计、封存和状态更新已完成，治理与差异检查通过。下一项仅基于已有U2漏检、H5修法与完整输入做无付费方案裁决，区分漏检和错误修法的任务机制；闭批不重开，未来新付费范围另需明确授权。Host额度恢复不能成为重试或补签理由。
+
+旧T9已确认父进程600秒总截止，上游根因undetermined；30.672秒仅是最后保存进度。本批Host额度故障不补足旧超时根因，也不认证旧缺失项。
+
+正式同版本15、自然生成/工具/编辑/终评消费、8E，以及Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-13 新批授权前准备状态（已被上方关闭结果替代）
 
 2026-10-12 关系教学四次初评对照已关闭。用户明确确认后迁移到1039fb50184aebdcbc9401da3b33b594b92919b7及全绿CI38258297688，原授权/原期限保留。4次GLM-5.3/high均发送，3次完整响应并真实双审，T9候选第四次600秒超时；无重试/补发，新增资格0，automation已实核PAUSED。
 

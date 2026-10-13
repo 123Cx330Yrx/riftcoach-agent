@@ -1,3 +1,11 @@
+## 2026-10-13 U1/U2授权批关闭：3已发、2双审、Host额度故障
+
+用户确认后绑定e1fff5e9及全绿CI38334154675，唯一runner于02:30:39Z启动、02:58:09Z退出1。U1 baseline与relation-contrast均95/pass、双方真实接受；advisory分别4/6与6，无事实修法改善证据。U2 baseline完整返回96/pass、issues空，主审核第14段四局中单早死胜3/2、负0/1、均值2.50/.50及all_pairs=greater后判missed_error。独立Host任务15公开命令exit0、作者文件存在，却在native final前workspace usageLimitExceeded，final_count0；未submit、未补签。按reviewer_unavailable abort，U2候选未发。
+
+严格只读replay/create-only seal成功，实读2项真实native，66原件库存/SHA不变，3项run外观测有效。actual/HTTP各3，known input39196/output6404/total45600，unknown0/receiptless0/未发1；已知估价0.492880元，实际账单未核。活动165.109秒/Host1477.500秒；旧73/47/26/14/146原件逐项不变。automation实核PAUSED，无重试/补发、新资格0，候选未采用。收尾只读委派尝试在工作前因模型容量失败，没有承担独立审查；由主执行者完成核验。结果与关闭审计见relation-repair-result计划及document_relation_repair_close_audit_20261013.json。
+
+U1两臂皆过不能称改善；U2没有修法，不能称错误修法复现；U2候选未发不能判语义。后续仅用现有完整输入和H5/U2证据做无付费方案裁决；当前闭批不重开，未来新成本范围另有授权。正式15/自然消费/8E及全部下游依赖保持。
+
 ## 2026-10-13 U1/U2观测完整初评准备完成
 
 已校准两稿接新私有入口，保留600秒/high/32768/重试0，只有system教学不同。run外观测绑定实际请求/worker/路由，父进程冻结观测文件SHA；作者提交、下一发送和只读replay/seal实核绑定。真实loopback四路径和合成Host完整链联合新旧入口50项通过（157.74秒）。准备期修复Windows环境变量大小写查询、Pydantic私有模块注册、marker导出和工作区重复安装，没有付费故障或旧原件改写。
