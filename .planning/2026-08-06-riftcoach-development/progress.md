@@ -1,3 +1,11 @@
+## 2026-10-13 固定15完整链路执行准备完成，无新增付费
+
+新增full_chain_execution复用FullChainEvidence私有状态机，固定新run/Operator/原主体和53业务源码，35次预算实接发送门（25 GLM-5.3/high、10 Flash，3,386,880tokens、13,500活动秒/86,400 Host秒），保留每case900秒共享。新授权原件SHA与24小时期限在密钥前、后续发送、Host等待和子进程IO复查；先核同HEAD CI/native/绝对路径及重建准备，再create-only占位，任何已开始痕迹不重开。资格入口显式选择相同执行配置；旧配置不能混用，旧冻结runner/历史标签/准备原件保持。
+
+74项离线检查251.13秒通过，含实际作者文件/check-answer/native导入/submit/replay（native与业务为替身）、真实预算拦截、授权负例/首次执行顺序以及两种资格配置只读回放；执行占位补留native预检记录后8项定向复验18.48秒通过。本机绝对cwd/Python启动、原主从身份及native-final读取预检通过；当前input_readable=false、route/final_available=true，按既定FINAL_POLICY成立，不保证未来可用。无业务run/Operator/新授权/新Host任务/模型调用/新资格；automation实核PAUSED。准备与验证记录见full_chain_execution_preparation/qualification/validation_20261013.json。
+
+决策只问当前组合能否取得单批完整15固定控制证据，不重复关系教学对照，不拿工程通过证明旧三处语义失败已修好，不做第三次简化演练。下一步对具体方案取得新成本授权并绑定精确HEAD全绿CI，合同估价37.167104元非硬账单上限；失败如实保留并重新裁决，不自动再跑。自然消费、8E与全部产品依赖保留，见docs/plans/2026-10-13-full-chain-execution.md。
+
 ## 2026-10-13 当前组合固定15资格验证入口
 
 新增qualify_full_chain_controls，准备绑定原15组合及验证器/指定主体；验证单个关闭批的15 distinct、5 accept/10 reject所需35阶段，复用FullChainEvidence完整plan/source/receipt/editor/final/native/作者/观测回放。实际HTTP观测必须具备单次2xx完整采样，synthetic sidecar不能替代；同HEAD clean及公共CI沿用原门。前后原件快照不变、seal完全相同才可create-only输出固定审查集资格，自然任务/生产/付费授权保持false。旧入口及所有冻结脚本未改。

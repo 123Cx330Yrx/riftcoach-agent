@@ -1,3 +1,11 @@
+## 2026-10-13 完整15的35阶段必须落实到真实预算及同配置回放
+
+旧full15准备沿用每例可能编辑的45次宽预算；实际既定5正确稿只initial、10错误稿initial/revision/final，合法成功路径最多25 review+10 edit。仅把文档改成35不足以约束实际发送。新前瞻配置收紧真实runner的batch max_calls/max_tokens并绑定源码，保留case共享900秒；通过更小替身预算在第二次后阻止第三次发送，验证作用点就在真实send门。没有修改旧冻结runner或历史数据。
+
+新执行配置不能只改变执行端而让replay继续重建旧plan：FullChainEvidence的私有prepare、证据CLI和资格验证按同一显式profile实例化，新入口和资格代码也加入source冻结。作者/观测检查仍复用原实现。首次授权须绑定整个准备原始SHA与精确HEAD/CI，排他占位路径同样绑定，防止换Operator绕过失败后的首次执行限制；密钥加载前完成门控，占位后失败不清理重试。
+
+既有native-final合同预检允许当前input不可读但route/final可用；本次真实读取正是该组合，不能表述成所有输入/未来final均可用。每业务stage仍须实读同checkpoint、作者check-answer、唯一native final后submit，前置预检不授业务认证。旧语义反证与两项认证缺口仍存在，本执行包没有改善模型的证据。
+
 ## 2026-10-13 同组合资格需要完整回放，工程valid观测不能直接授予模型资格
 
 已有full-chain replay能重建实际请求/修订/终评并重新读取native，所以资格汇总不应再复制状态机。真正新增的检查是固定完整15、必要35stage、同组合/指定主体、单批完整关闭与实际HTTP采样；依赖原作者/观测SHA和回放原件，不信result里的成功布尔值。旧三批分散成功和两个简化演练均无法满足；缺认证不等于模型失败，更不能通过资格脚本补签。

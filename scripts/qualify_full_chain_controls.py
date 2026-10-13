@@ -34,15 +34,22 @@ def pinned(path, expected):
     return read(path)
 
 
-def prepare():
+def prepare(*, execution_profile=None):
     alignment = audit()
-    return dict(kind=VERSION, combination_sha256=alignment['combination_sha256'],
+    value = dict(kind=VERSION, combination_sha256=alignment['combination_sha256'],
         combination=alignment['prepared_combination'],
         validator_source_sha256={'scripts/qualify_full_chain_controls.py': sha(Path(__file__))},
         principal_ids=dict(PRINCIPALS),
         required_distinct_inputs=15, required_batches=1, historical_credit=False,
         execution_authorized=False, execution_ready=False, review_controls_qualified=False,
         actual_product_task_qualified=False, production_admitted=False)
+    if execution_profile is not None:
+        from scripts.full_chain_execution import VERSION as profile, SOURCES
+        if execution_profile != profile:
+            fail('execution_profile')
+        value.update(execution_profile=profile,
+            execution_source_sha256={p: sha(ROOT/p) for p in SOURCES})
+    return value
 
 
 def require_plan(saved, preparation):
@@ -80,6 +87,14 @@ def require_plan(saved, preparation):
     # not a business-run dependency. All business dependencies must match.
     source = dict(combination['source_sha256'])
     source.pop('scripts/audit_original15_alignment.py')
+    if preparation.get('execution_profile') is not None:
+        from scripts.full_chain_execution import VERSION as profile, RUN_ID, budget_for
+        if (preparation['execution_profile'] != profile or plan.get('execution_profile') != profile
+                or plan.get('run_id') != RUN_ID or plan.get('budget') != budget_for(plan)):
+            fail('execution_profile')
+        source.update(preparation['execution_source_sha256'])
+    elif 'execution_profile' in plan:
+        fail('execution_profile')
     if plan.get('source_sha256') != source:
         fail('source_binding')
     if (not isinstance(saved['execution_head'], str)
@@ -148,7 +163,8 @@ def require_http_observations(session, sealed, stages):
 
 def validate(*, preparation_path, preparation_sha, directory, seal_path, seal_sha, codex_executable):
     preparation = pinned(preparation_path, preparation_sha)
-    if preparation != prepare():
+    profile = preparation.get('execution_profile')
+    if preparation != prepare(execution_profile=profile):
         fail('preparation_changed')
     sealed = pinned(seal_path, seal_sha)
     stages = require_coverage(sealed, preparation)
@@ -158,7 +174,11 @@ def validate(*, preparation_path, preparation_sha, directory, seal_path, seal_sh
     paths = plan['evidence_paths']
     if Path(paths['directory']) != directory:
         fail('directory_binding')
-    session = FullChainEvidence(**paths)
+    if profile is not None:
+        from scripts.full_chain_execution import ControlledFullChain
+        session = ControlledFullChain(**paths)
+    else:
+        session = FullChainEvidence(**paths)
     # A closed run already owns this lock. Refuse before replay could create it.
     if not (directory/'submission-close.lock').is_file():
         fail('closed_lock_missing')
@@ -179,7 +199,7 @@ def validate(*, preparation_path, preparation_sha, directory, seal_path, seal_sh
         fail('seal_replay_changed')
     require_coverage(rebuilt, preparation)
     if (before != session.snapshot() or sha(preparation_path) != preparation_sha
-            or sha(seal_path) != seal_sha or preparation != prepare()):
+            or sha(seal_path) != seal_sha or preparation != prepare(execution_profile=profile)):
         fail('evidence_changed_during_validation')
     return dict(kind=VERSION + '-result', combination_sha256=preparation['combination_sha256'],
         qualification_preparation_sha256=preparation_sha, validator_source_sha256=preparation['validator_source_sha256'],
@@ -197,6 +217,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('prepare', 'validate'))
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--execution-profile')
     for name in ('preparation', 'directory', 'seal', 'codex-executable'):
         parser.add_argument('--' + name, type=Path)
     for name in ('preparation-sha', 'seal-sha'):
@@ -208,7 +229,7 @@ def main():
     if args.action == 'prepare':
         if output.resolve().is_relative_to(ROOT / 'data/runs'):
             fail('output_inside_run')
-        result = prepare()
+        result = prepare(execution_profile=args.execution_profile)
     else:
         if any(getattr(args, name) is None for name in
                 ('preparation', 'preparation_sha', 'directory', 'seal', 'seal_sha', 'codex_executable')):

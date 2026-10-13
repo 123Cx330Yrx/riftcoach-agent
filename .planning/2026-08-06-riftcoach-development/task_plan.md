@@ -25,7 +25,8 @@
 **真实演练：** 两个独立离线案例已关闭并严格封存，3真实native/submit；第一initial范围分歧、第二revision的本地固定reason与计数修法错配。第二报告四项标志为true但stage拒绝，final未发；真实三阶段正例未完成。28/48原件、53/54源码与旧458原件保持，外部Provider/HTTP0，无资格，automation PAUSED。见full-chain-host-rehearsal方案及两份close audit。
 **对齐与修复：** 原15全文/差分和来源已逐项裁决：10例所在批通过、3语义拒绝/分歧、2operator未认证，三批700原件保持。中单话题下“五局窗口”与显式合并辅助分母分开，不改旧标签或Host判断。当前组合15输入/实际policy/schema/editor/time600/transport/Host门及52源码形成准备指纹，未授资格。完整编辑响应包修复计数reason错配；12项回归含实际journal和三阶段接线通过，旧53/54源码保持，无第三次真实演练。见`docs/plans/2026-10-13-original15-alignment.md`及机器审计。
 **资格入口：** 新`qualify_full_chain_controls`只读复用全链严格回放/native，绑定准备SHA、单批15 distinct/35阶段、完整语义/编辑/fresh、实际HTTP观测、同HEAD公共CI和原件不变；41项离线测试16.41秒通过，正例为替身。实际旧三批及两次演练seal均拒绝/SHA不变；当前准备未授权、新增资格0、产品默认不注册。见`docs/plans/2026-10-13-full-chain-qualification.md`。
-**下一动作：** 将正式同组合验证的全链执行与资格检查、35阶段范围、预算、唯一run/主体、停止规则及真实Host final覆盖方式形成具体可执行方案并离线验证；说明新实测能回答什么后再处理新成本授权。旧资格不放宽、旧标签不回写，不直接执行旧full15、不新开第三次简化演练、不把旧语义失败宣称已修复。
+**执行准备：** 新full_chain_execution隔离复用三阶段状态机，35次上限真正进入batch budget；53业务源码、完整15输入与配置绑定。授权/24小时期限/原件SHA、固定run与Operator排他占位、密钥前CI/native/绝对路径、发送及子进程授权复查、资格配置已接通。74项离线测试251.13秒通过，替身native/业务与真实文件IO；本机路径启动和既有主体native-final读取预检通过，没有新业务任务/run/模型调用。见`docs/plans/2026-10-13-full-chain-execution.md`及validation记录。
+**下一动作：** 对这个已准备的单批取得新成本授权，再绑定精确HEAD全绿CI首次执行：最多25 GLM-5.3/high+10 Flash、3,386,880tokens、13,500活动秒/86,400 Host秒，合同估价37.167104元非硬封顶。回答当前组合单批15固定控制是否成立，不能预设旧语义失败已修好；任一缺项/语义失败不授资格，不自动再跑。旧资格不放宽、标签不回写，不重启旧批、不第三次简化演练或拼历史。
 **依赖与边界：** 本批73源码/9文件包、旧两包69/73源码及旧六批372原件SHA不变。旧U2无native/候选未发、H5错误修法、T9上游根因undetermined不撤销；新证据熟悉来源非holdout，不拼资格。正式15、自然消费、8E及全部下游仍未完成。
 **验收与失败决策：** 方案需同时覆盖正确保留、真错检出、修法新增断言及真实编辑消费；结构通过不能推语义可靠。已有授权内普通步骤直接执行，涉及新模型成本时先形成具体可审查范围。
 
@@ -48,7 +49,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：原15对齐、完整响应夹具和当前组合资格入口已完成离线实现；下一步把正式验证形成具体可执行方案。真实三阶段Host正例及同组合质量仍欠缺；旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
+以canonical和上方工作卡为准：原15对齐、完整响应夹具、资格入口和35次完整链路执行准备已完成离线实现；下一步处理这个具体单批的新成本授权及同HEAD CI。真实三阶段Host正例及同组合质量仍欠缺；旧原件和缺失项、关系候选未采用、automation PAUSED及全部产品依赖保持。
 
 ## History
 

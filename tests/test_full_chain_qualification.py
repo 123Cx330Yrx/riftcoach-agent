@@ -125,10 +125,18 @@ def test_http_receipt_shape_cannot_be_replaced_by_fixture(tmp_path, fault):
 
 
 @pytest.mark.parametrize('fault', [None, 'native_missing', 'seal_changed', 'mutation', 'ci_wrong_head'])
-def test_validation_orchestration_reads_native_and_never_writes_run(tmp_path, monkeypatch, prepared, fault):
+@pytest.mark.parametrize('execution_profile', [False, True])
+def test_validation_orchestration_reads_native_and_never_writes_run(tmp_path, monkeypatch, prepared, fault, execution_profile):
     # Boundary orchestration uses a synthetic replay backend. Existing real
     # FullChainEvidence integration tests cover native/author/receipt replay.
     preparation, saved = deepcopy(prepared)
+    if execution_profile:
+        from scripts import full_chain_execution as execution
+        preparation = q.prepare(execution_profile=execution.VERSION)
+        plan = saved['preparation_plan']
+        plan.update(execution_profile=execution.VERSION, run_id=execution.RUN_ID,
+                    budget=execution.budget_for(plan))
+        plan['source_sha256'].update(preparation['execution_source_sha256'])
     run = tmp_path/'run'; run.mkdir()
     saved['preparation_plan']['evidence_paths'].update(directory=str(run), answers=str(tmp_path/'answers'),
         observations=str(tmp_path/'obs'))
@@ -154,8 +162,10 @@ def test_validation_orchestration_reads_native_and_never_writes_run(tmp_path, mo
         def __init__(self, executable): seen.append('native-open')
         def __enter__(self): return self
         def __exit__(self, *args): seen.append('native-close')
-    monkeypatch.setattr(q, 'prepare', lambda:deepcopy(preparation))
+    monkeypatch.setattr(q, 'prepare', lambda **kwargs:deepcopy(preparation))
     monkeypatch.setattr(q, 'FullChainEvidence', lambda **kwargs:session)
+    if execution_profile:
+        monkeypatch.setattr(execution, 'ControlledFullChain', lambda **kwargs:session)
     monkeypatch.setattr(q, 'require_http_observations', lambda *args:seen.append('observations'))
     monkeypatch.setattr(q, 'verify_public_ci', lambda run_id:'b'*40 if fault == 'ci_wrong_head' else 'a'*40)
     monkeypatch.setattr(q, 'CodexReadOnlyClient', Native)

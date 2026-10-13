@@ -305,3 +305,6 @@
 /scripts/qualify_full_chain_controls.py text eol=lf
 /data/evaluation/results/full_chain_qualification_preparation_20261013.json -text
 /data/evaluation/results/full_chain_qualification_validation_20261013.json -text
+/data/evaluation/results/full_chain_execution_preparation_20261013.json -text whitespace=cr-at-eol
+/data/evaluation/results/full_chain_execution_qualification_20261013.json -text
+/data/evaluation/results/full_chain_execution_validation_20261013.json -text
