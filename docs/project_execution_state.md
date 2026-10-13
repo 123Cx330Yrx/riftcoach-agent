@@ -4,48 +4,43 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "J1/J2授权四次初评已关闭，4完整响应/4真实双审；两臂皆过无改善证据，候选不采用。批次automation已PAUSED；用户已授权六次职责分离开发对照；新入口离线验证通过，待新HEAD公共CI及最终绑定；尚未实测。"
+pause_reason: "六次职责对照已硬停止并封存：2次HTTP，1完整双审，第二次HTTP429，4未发。候选无有效回答，职责分离未被检验；本批automation PAUSED，不重试或重启15。"
 ---
 
 # RiftCoach 当前执行状态
 
 2026-10-14。后端`D:/riftcoach-agent-rq192-pr`、分支`codex/rq192-provider-stream-contract-ci`。
-主树未完成前端保持；0—8及当前8E checkpoint不变。J1/J2等旧批已关闭，automation PAUSED，
-用户明确“授权，继续”覆盖六次新职责对照；不重启旧批、不补签、不拼资格。用户要求以核心语义问题为主线持续推进。
+主树未完成前端保持；0—8及当前8E checkpoint不变。
 
 ## 当前行动
 
-**核心语义问题仍未解决，已完成一项有明确反证条件的职责分离诊断准备。**
-重读三份原始公开失败响应后，确认两处误报并非简单缺数字/没读到全文；模型已看到正确数字
-和限定，却仍升级措辞建议。现选择检验事实正确性与任务完成度职责混合这一假设，不宣称根因。
-三份原失败上下文各准备full/facts两臂，只有system职责及离线身份标记不同，全文/来源/Schema/
-修法保持；旧身份明确拒绝候选。一次配对不能证稳定性，两臂皆过不证明改善，任一候选实错即否定。
-见[方案、覆盖/资源与失败决策](plans/2026-10-14-review-duty-design.md)。
+**核心语义问题未解决；六次full/facts职责对照已因HTTP429停止并封存。**
+执行HEAD `85a37432a7b1613f13de9ca527379cb37dba17d9` / 公共CI `38433654680`全绿后唯一启动。
+第一项full初评正确检出“每一个指标均被拉低”的真错，全文解释/修法/正确保留获真实双方接受；
+本轮基线未复现旧误报。第二项facts收到HTTP429，8.703秒失败，没有模型流式事件或有效回答；
+余下4项未发。429具体原因未确定，不能归因为已证实限速/余额不足，也不是600秒超时。
 
-6份请求及manifest在`data/evaluation/fixtures/review_duty_probe_20261014`，
-`prepare_review_duty_probe.py`可离线逐字重建，原请求保持；新隔离发送适配器已完成，已取得六次授权，尚无业务run/模型发送。
-已授权6次GLM-5.3/high、Flash0，580608tokens/3600活动秒/86400Host秒，单次600秒；
-按现有价格快照最大预算估价8.577024元非账单硬封顶。授权记录签发UTC2026-10-13T16:45:50.259394，24小时截止不延展；只允许这一批。
-即使开发对照有正向信号，也先验证互补职责/真实编辑消费和5→7调用的合同变化，不直接重启15。
+严格只读replay、create-only seal通过，1真实native及作者原件匹配；43份本批原件/外部观测/作者
+库存与SHA不变，执行包13件及冻结源码保持。另核8个历史批次760原件与53份full-chain源码不变，
+旧readiness逐字段一致。actual/HTTP各2，known17250tokens，unknown1/receiptless1/未发4；
+已知部分合同估价0.223940元，失败调用用量与总账单未知。无重试、补发、补签或新资格。
+本批automation已实核PAUSED；封存详情见[关闭结果](plans/2026-10-14-review-duty-result.md)。
 
-**独立产品工作已补齐取消/失败任务的用量API与工作台展示。**
-新owner限定`GET /runs/{run_id}/usage`复用完整性核验，只返回用量；报告门保持。
-部分/缺失总量显示未知，可信零调用才显示0；取消不再误称质量审查失败。
-52项后端检查（含6项真实临时Postgres整链）、32项前端单测、6项Chromium检查及类型检查通过。
-浏览器是本地HTTP替身，数据库链路模型/来源也是替身；分段验证，不声称自然消费或整体产品验收。
-见[实现、运行手册与限制](plans/2026-10-14-terminal-usage-consumption.md)。
+**判断与下一动作：** facts无有效回答，职责分离假设尚未被检验，既不作改善结论也不作语义否定。
+先只读核对已有服务端可用性/限额证据，区分上游429原因；不以另一次付费请求探活，不自动重开批。
+同时保留[职责方案](plans/2026-10-14-review-duty-design.md)的反证条件与互补职责/真实编辑消费依赖；
+若需新实测，须另有具体可检查的批次方案与授权。产品5→7调用不能静默扩容。
 
-下一动作：完成六次新入口验证并绑定其新提交的公共CI；全绿后首次run，逐项真实原生双审及封存。
-入口 `scripts.document_review_duty_diagnostic`，Operator `C:/Users/33502/Documents/Agent/outputs/riftcoach-review-duty-20261014`。
-17项新入口离线检查通过，含真实loopback SDK及作者文件/check-answer/native替身/submit/seal；原独立主体已恢复可用，行政确认不算业务审查。
-上一提交5026c28f/CI38431162686暴露另一份OpenAPI路径清单漏登记usage端点；已补齐，相关47项回归通过。
-0aac0952/CI38424719839已全绿。两者均不替代本次新入口CI。
+已完成的独立产品工作为取消/失败用量owner API与工作台展示；未知不填0、报告门保持。
+52后端（含6真实临时Postgres）、32前端、6浏览器及类型检查通过；模型/来源与浏览器网络为替身，
+分段验证不等于自然消费或整体产品验收。见[实现与限制](plans/2026-10-14-terminal-usage-consumption.md)。
+本次只更新关闭证据和状态；执行版本64项检查及公共CI不替代收尾提交自身的CI。
 
 ## 保留的结论与依赖
 
 原15的10通过/3语义拒绝或分歧/2未认证各属其批；scope:4原分歧不回写。
-三处语义失败和37.167104元新15提议撤回保持，旧修复就绪审计及700原件不变。
-J1/J2四完整响应/四双审、两臂皆过，无改善证据；候选不采用。详情与所有历史缺口见下方快照。
+三处语义失败和37.167104元新15提议撤回保持；J1/J2两臂皆过无改善证据，候选不采用。
+熟悉来源非holdout，职责局部pass非产品pass，接受初评意见不表示原错误报告修好。
 正式同版本15、自然消费、Coach/Training、四块联动、完整journal、前端审美头像、Memory、
 身份运维、两树整合、独立评估与学习继续保留。代码/Owner理解/质量资格/部署成熟度分别验收。
 

@@ -325,3 +325,5 @@
 /scripts/document_review_duty_diagnostic.py text eol=lf
 /tests/test_document_review_duty_diagnostic.py text eol=lf
 /data/evaluation/fixtures/document_review_duty_20261014/** -text
+/data/evaluation/results/document_review_duty_result_20261014.json -text
+/data/evaluation/results/document_review_duty_close_audit_20261014.json -text

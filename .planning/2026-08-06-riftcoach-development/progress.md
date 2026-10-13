@@ -1,3 +1,9 @@
+## 2026-10-14 职责对照第二次HTTP429；严格关闭，无重试
+
+执行85a37432/CI38433654680全绿后唯一run。2实际HTTP：首项full初评82/needs_revision正确检出全称真错，主审与原独立native均接受；第二项facts在8.703秒HTTP429失败，0模型流式事件，无有效回答，4项未发。基线未复现旧误报，候选未检验，不宣称改善/语义否定/资格。
+
+只读replay及create-only seal通过，唯一native与独立作者原件匹配。43份本批原件（34 run + 8观测 + 1作者）库存/SHA不变；13件执行包及冻结源码保持，8个旧批760原件、53源码及readiness逐字段核验通过。known17250、unknown1/receiptless1，已知部分估价0.223940元，总账单未知。automation工具已设PAUSED并实读确认。结果见docs/plans/2026-10-14-review-duty-result.md。不再发送；下一步只读查已有429服务端证据，产品依赖保持。
+
 ## 2026-10-14 六次职责对照已授权，完成隔离执行准备
 
 用户“授权，继续”覆盖六次full/facts开发初评，8.577024元合同上界估价非硬封顶；Operator记录原签发UTC2026-10-13T16:45:50.259394及24小时截止，不延展、不转给新15。原七件请求保持；新增identity/observed worker/diagnostic及13件执行包，复用严格native双审、独占run、作者run外写入和inventory，六项均initial。部分职责pass不授产品资格。
