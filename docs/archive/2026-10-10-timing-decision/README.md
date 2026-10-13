@@ -17,3 +17,9 @@ runner归档在后继time600接入前取4de565dc，仍与同一冻结裁决摘�
 旧10例seal SHA76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30均未改。
 当前audit仍运行实际预算反例/旧transport拒绝，只有历史源码摘要从这些固定归档核验，
 不能将今天600实现摘要写入旧裁决。其余未变化的源码仍现场重算；归档或原JSON变化拒绝。
+
+2026-10-13补充：发送前取消控制改变了共享Worker，旧裁决重建因此在公共CI失败。
+从`4be52567^:app/workers/review_worker.py`提取原源码，UTF-8/LF摘要
+`3f52620f6f12bf08cf0fa0517b066ac591b6d6f4a2211a7c9036314e6afe2bc5`
+与原裁决记录完全一致，新增`app__workers__review_worker.py.txt`，不执行归档。
+只有该项摘要改变；原裁决JSON及旧seal未重写。归档篡改拒绝测试覆盖该文件。

@@ -78,3 +78,34 @@ heartbeat即LOST在新语义下会阻断首次发送，不能再用它测试结�
 两套应用测试、Worker控制及可靠Worker共113项通过（22.38秒），全部使用替身Provider/DB，
 应用测试禁止网络。检查没有模型调用、新Host任务或历史证据修改；新提交的公共CI须单独
 核验。这是上一运行修复的收尾，三处语义问题仍未修复。
+
+## 后继CI与真实数据库/API验证
+
+`4eb471fe`/CI38416151132又暴露两处遗漏：历史时间裁决重建使用了变更后的Worker摘要；
+native应用测试也在第一次heartbeat注入LOST，却仍要求完整三次调用。前者从Git取回
+与原裁决SHA完全一致的Worker源码，仅增加可核归档；后者在第三次响应后才注入LOST，
+仍禁止原子Evidence提交和对话投影。原裁决/业务回执、生产代码、租约门和模型规则未改。
+时间审计及native应用25项通过，历史时间审计逐字重建成功。
+
+新增`tests/test_worker_dispatch_postgres.py`并接入公共Postgres测试任务。实际使用
+FastAPI TestClient → ReviewTaskService → PostgresTaskRepository → ReviewWorker →
+RecentReviewTaskExecutor → 现有correction-scope应用；数据库为独立临时Postgres17容器，
+模型及比赛来源为既有替身。不是time600自然消费、真实模型质量、浏览器操作或8E资格。
+
+六项数据库场景通过：正常五次；第1/3/4次响应期间经API取消后只发1/3/4次；第5次期间
+取消仍禁止对外报告；另一owner取消返回404且正常五次不受影响。SQL状态、生命周期事件、
+owner隔离、取消幂等和报告HTTP门均核实。关闭发送前guard的内存反例在第一次取消后仍发
+满五次，测试如预期失败；不是仅验证最终状态。没有改生产函数做这项对照。
+
+**新发现、未修复：提前取消的用量Trace缺口。** 第1/3/4次取消时API/SQL正确cancelled，
+本地receipt为failed/observation_failed且trace_reference为空。DispatchStopped继承
+RuntimeObservationError，旧Runtime以观察器损坏路径返回，未持久化已观察调用的汇总Trace。
+因此先前“在途响应保留”仅能支持发送边界和原Provider回执，不足以声称产品用量日志完整。
+上述六项只验发送/可见性；正常及最后一次取消另验完整Trace计数。没有为使测试通过而伪造
+Trace/用量或把缺失当0。取消控制还不能作为完整journal验收，后续需将可信取消与真实观察
+失败区分，保存已发生事件，同时保留观察故障拒绝、旧冻结源码与原件的隔离。
+
+本机Docker启动另遇`sailor-ingest.sock`无法重命名。官方stop后无后台进程，两个运行socket
+目录同级备份，重建后Docker29.7.2正常，原Postgres卷/15432映射保留且healthy；没有恢复出厂
+或读取模型凭据。测试仅对独立临时数据库迁移，未对产品库downgrade。恢复证据位于
+`C:/Users/33502/Documents/Agent/outputs/riftcoach-local-runtime-20261013/recovery.json`。

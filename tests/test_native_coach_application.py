@@ -132,8 +132,17 @@ def test_native_observed_worker_requires_atomic_evidence_before_conversation_tur
     from tests.test_memory_aware_context_builder import FakeRepository, binding
     from tests.test_reliable_review_worker import Repository, NOW
 
-    disposition = TaskHeartbeatDisposition.LOST if outcome == 'ownership_lost' else TaskHeartbeatDisposition.ACTIVE
-    repository = Repository(dispositions=[disposition])
+    factory = Factory(reject=outcome == 'rejected')
+
+    class TerminalFenceRepository(Repository):
+        def heartbeat(self, **kwargs):
+            provider = factory.providers.get(original.run_id)
+            completed = provider is not None and len(provider.requests) == 3
+            self.dispositions = [TaskHeartbeatDisposition.LOST
+                if outcome == 'ownership_lost' and completed else TaskHeartbeatDisposition.ACTIVE]
+            return super().heartbeat(**kwargs)
+
+    repository = TerminalFenceRepository()
     original = repository.claim
     memory = binding(original.run_id).model_copy(update={
         'owner_id': original.owner_id, 'relationship_role': RelationshipRole.OBSERVED})
@@ -151,7 +160,6 @@ def test_native_observed_worker_requires_atomic_evidence_before_conversation_tur
     summary.summary['metadata']['matches_requested'] = summary.summary['request']['count'] = 5
     for row in summary.summary['matches']:
         row.update(champion_id=75, queue_id=420, game_version='16.16.804.9184')
-    factory = Factory(reject=outcome == 'rejected')
     for row in summary.summary['matches']:
         row.setdefault('objective_events', [])  # The older report-only fixture omits this collection.
     application = build_native_coach_application(summary_builder=summary, provider_factory=factory,
@@ -174,6 +182,7 @@ def test_native_observed_worker_requires_atomic_evidence_before_conversation_tur
         terminal_turn_writer=SimpleNamespace(write=write_turn)).run_once()
     assert not repository.succeed_calls and not repository.fail_calls
     assert len(factory.providers[original.run_id].requests) == 3
+    assert len(repository.heartbeats) >= 4  # Three send checks plus the terminal fence.
     if outcome == 'ownership_lost':
         assert result.status.value == 'ownership_lost'
         assert not repository.succeed_with_evidence_calls and not turns

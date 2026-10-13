@@ -1,3 +1,11 @@
+## 2026-10-13 Docker恢复、真实数据库取消验证与后继CI
+
+Docker启动失败来自无法访问的本地socket；官方停止后将Docker/run与docker-secrets-engine运行目录同级备份并重建，服务端29.7.2恢复，原Postgres数据卷/15432映射保留且healthy。未恢复出厂、未读取模型凭据。六项真实Postgres/API/Worker/既有correction-scope应用测试通过，模型和来源为替身；取消1/3/4后只发1/3/4、末次取消禁止公开、其他owner不能取消、正常与取消幂等通过。内存关闭发送guard后第一次取消仍发五次，测试正确拒绝。
+
+新发现提前取消丢失Runtime汇总Trace：receipt为failed/observation_failed、无trace_reference。发送已停止不等于用量日志完整；当前测试不为缺失造0或伪Trace，下一项修复该独立工程缺口。当前没有time600自然消费/UI或新资格。
+
+CI38416151132的已完成失败分片分别定位历史Worker摘要漂移、native应用首次LOST却期望三次调用；历史源取自4be52567父版本并逐字SHA核与原裁决一致，新增归档，不重写旧结果；native夹具在三次响应后LOST。时间审计/native应用25项通过，时间裁决原件逐字重建成功；新提交CI待核。原三处语义问题不变；新生产者自包含诊断的责任拆分缺新增选择依据，不建候选或付费队列，automation实核PAUSED。
+
 ## 2026-10-13 取消控制公共CI失败收尾
 
 实核4be52567/CI38413626331：四个pytest分片都在旧应用/Worker组合测试的heartbeat计数断言失败（6 != 1）；前端、打包、Postgres迁移通过。Windows本地相同节点复现，非Linux特有问题。上轮125项选择漏掉这两套更早应用回归。

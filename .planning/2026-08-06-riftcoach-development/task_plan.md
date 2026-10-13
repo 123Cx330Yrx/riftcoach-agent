@@ -20,7 +20,9 @@
 **具体实施：** `app/runtime/dispatch_control.py`、`app/runtime/observer.py`及`app/workers/review_worker.py`；真实应用回归在`tests/test_worker_dispatch_control.py`。不修改已登记的ObservedLLMProvider代码或Prompt Program指纹来伪装旧证据覆盖。
 **当前证据：** 修改前的观察函数在第一次调用后取消仍发送完整5次；新边界按取消位置只发送1/3/4次，未取消的完整5阶段保留。相关Worker/观察/应用125项44.69秒通过，收尾23项及4项定向复验通过；业务、DB使用替身，后台heartbeat是真线程，无模型请求。54源码绑定与700原件SHA不变。
 **验收与边界：** 复核旧源码/700原件、相称测试/治理/提交已做；但4be52567公共CI38413626331四个pytest分片在旧应用heartbeat断言失败。两套应用回归已修正检查次数及终态LOST注入时点，113项本地验证通过，须核后继公共CI。正在进行的HTTP仍保留结果；只阻断下一次发送，不承诺打断已发请求。原budget先预留的未发尝试仍保守保留，不伪记第二次实际调用/用量。现有同步Runtime链路之外的自建线程执行须显式传递上下文。
-**主阻断与下一动作：** 收尾上述已复现的CI失败；同时三处语义问题尚无已证明修法。本轮实读实际政策/响应及历史责任拆分反例后，没有找到新的确定性合同冲突，不把删修法、增加引用字段或同义教学重新排队。运行回归不算语义修复；语义干预仍未选定，不创建新付费队列。automation PAUSED，8E及下游未完成。
+**新增验证：** 独立Postgres17中真实API/Worker/应用6项通过：第1/3/4次后取消只发1/3/4次，末次取消禁止报告可见，另一owner不得取消，正常五次及幂等保持。关闭guard的内存反例仍发五次，被测试拒绝。模型/来源为替身；没有浏览器或time600自然消费证明。Docker两个失效socket目录已备份恢复，产品卷/15432保留且healthy，测试只迁移独立临时库。
+**新失败与下一动作：** 提前取消的receipt为observation_failed、trace_reference为空；取消继承观察错误使Runtime丢失用量汇总Trace。下一项区分可信取消和真实观察故障，保存已经发生的事件并继续禁止发布/下一发送；先明确与旧冻结源码/证据的隔离，不能以取消成功完成journal验收。CI38416151132另发现时间审计Worker摘要漂移及native终态LOST夹具提前注入，已以历史SHA一致归档和第三次响应后LOST修正，25项通过，后继公共CI待核。
+**主阻断：** 责任拆分路线不实施：旧删除反例不能否定全新诊断生产者，但也没有新增机制依据支持它修复原文误读；三处语义问题仍未解决。无新候选/付费队列，automation PAUSED，8E及下游未完成。
 
 ## Dependencies and Follow-through
 
@@ -41,7 +43,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：模型发送前取消/租约检查已完成离线验证；下一项回到语义修法选择，三处语义问题继续阻断新15。执行准备保留但付费提议已撤回，automation PAUSED，8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：发送/可见性已有真实数据库验证，下一项处理提前取消的用量Trace缺口及本次公共CI。三处语义问题继续阻断新15；责任拆分没有被选为修复，执行准备保留但付费提议已撤回，automation PAUSED，8E及全部产品依赖未完成。
 
 ## History
 
