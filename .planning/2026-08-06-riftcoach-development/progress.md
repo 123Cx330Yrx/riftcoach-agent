@@ -1,3 +1,11 @@
+## 2026-10-14 自然任务调用链与预算零付费审计完成
+
+实际代码核明两次生成是模型选知识工具、读取结果成稿；双初审直接pass共4次，修订双fresh最少6次，追加工具轮次为5/7次。新增audit_natural_review_duty_budget：三种实际AgentLoop/本地RAG路径及真实CoachBudget门，socket阻断，外部调用0；第6次前硬停、剩50秒裁50、到期/token不足拒发。结果natural_review_duty_budget_audit_20261014.json只含计数/元数据/SHA。既有role应用14项通过（9.62秒）。这些是软件路径证据，不是假造候选集成或模型通过。
+
+方案已具体化于2026-10-14-natural-review-duty-budget.md：推荐保留动态检索及互补职责，显式候选max_calls 5→6，保留401920/900/单请求300秒及high模型。尚未批准/实施；追加检索后仍可超预算，不承诺6次覆盖全部任务。确定性预取与合并职责是需重新评估的替代，不能当等价省调用；并发不省调用。人工Host门与开发time600身份仍需产品设计/资格，不因扩大一格调用自动解决。下一动作是用户作预算取舍，确认后先零付费设计接线，无新付费授权。
+
+仅新增审计/方案和当前记录；生产源码/合同、旧封存及canonical历史保持。automation PAUSED，8E和所有产品依赖保持。
+
 ## 2026-10-14 初审逐字补丁真实链完成并封存
 
 用户“授权继续”后，新授权绑定505aff8f/CI38564530018，CI全绿且即时路径/native/854源码与三文件包检查通过，唯一waiter启动。facts72/needs_revision发现4/14段两个早死组别真错并给两个精确补丁；completion95/pass。完整意见及兼容clear、实际整稿四项验收均获双方接受，程序唯一应用，facts-fresh和completion-fresh均96/pass并由双方按同一新稿重新审查接受。六个stage唯一派单、run外作者/check-answer/完整native及主审notes导入链核实，无Flash、重试、补发。

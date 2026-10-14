@@ -12,26 +12,27 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 - Status: in_progress
 
 执行状态：初审逐字补丁固定报告链已真实通过并封存；automation PAUSED。熟悉单例不授资格，
-自然6调用超过产品5上限，8E未完成，无下一付费批授权。
+自然修订最少6调用超过产品5上限；零付费审计已完成，6次候选待决定，8E未完成，无新付费授权。
 
 ## Active Work Package
 
-**目标与结果：** 验证正确互补意见能够进入实际改稿并通过同稿fresh，本例已完成。
-**实际路径：** 冻结505aff8f/CI38564530018全绿及有效新授权后唯一执行；facts72/needs_revision、
-completion95/pass、兼容clear、完整实际稿四项Host验收、唯一程序应用、facts/completion fresh均96/pass。
-六项均由主审与既有独立审查完整来源并接受；无Flash、无重试补发。
-**语义证据：** 两处中单早死比较改为胜2.5/败0.5，混合败2.67及四局限制明确，其余内容保留；
-新稿SHA 0da0c6299711cb8feff3c135b86768c3d94c82e159110c709b5fef7a3ac3d2c3，两fresh相同。
-**关闭证据：** 4HTTP/65839tokens、估价0.797132元非账单；unknown/receiptless/未发0。
-严格replay/create-only seal、103原件/6native作者/4观测/控制库存通过，854源码/3件包及旧证据保持。
-见[关闭结果与取舍](../../docs/plans/2026-10-14-review-duty-direct-patch-result.md)。
-**方案去留：** 保留作为有单例真实消费证据的开发方向；不是稳定改善、holdout或产品自动语义保证。
-初审补丁仍可能内容错误，结构预览不认证语义。旧Flash失败链、原15失败/分歧不重判或拼资格。
-**当前依赖：** 自然任务两生成+四审查=6调用，仍超产品5/401920/900；完整审查职责和fresh不省略。
-**下一动作：** 零付费核对自然任务路径与预算方案，形成具体可审查取舍，不另开付费批。
-**失败与范围：** 本批已永久关闭，automation暂停；不修改原件、补字段重买或扩大产品预算。
-**产品交付：** 正式同版本15、自然Coach/Training/四块联动、journal、前端头像审美、Memory、身份运维、
-两树整合、独立评估和学习继续保留；代码、Owner理解、来源资格与公开成熟度分别验收。
+**目标与结果：** 查明自然任务为何需要两次生成，并形成完整职责下的预算取舍；零付费审计已完成。
+**实际路径：** RecentReview编译 → 同一BudgetedProvider → AgentLoop选择知识工具 → 本地执行 → 模型读取成稿。
+一轮工具后双初审pass共4次；程序补丁加双fresh最少6次，追加工具轮次为5/7次。
+**证据：** 实际AgentLoop/ToolRuntime/本地RAG三路径探针；共享预算第6次、900秒到期、token不足拒发，
+剩50秒timeout裁为50。14项既有产品组装回归通过；模型为替身，外部调用0，不证明自然补丁接线或质量。
+详见[具体取舍与实施边界](../../docs/plans/2026-10-14-natural-review-duty-budget.md)。
+**推荐与待决定：** 显式候选max_calls从5改6，保留401920tokens/900秒/单请求300秒和现有模型high；
+尚未采用或实施。6只容纳最短修订；更多工具轮次仍可拒绝，不能保证任意任务成功。
+**其他方案：** 保持5则常规修订停止；确定性预检索会改变Agent检索；合并职责回同一次请求需要重新验证；
+并发不减少调用数。推荐保留当前有单例支持的职责分离和动态检索，不删completion/跳fresh/另开账本。
+**实质依赖：** 开发600秒身份和六个Host门不能直接移植；产品发布语义、独立身份及同版本资格仍缺。
+**下一动作：** 用户决定6次候选后，先做零付费身份/发布语义设计与接线；新付费需具体新方案，不挪旧授权。
+**已完成证据保留：** 固定报告development_chain_pass，facts72/needs_revision→两补丁→双fresh96/pass；
+4HTTP/65839tokens、103原件及6native/作者严格封存，854源码/3包保持；熟悉单例非holdout或产品准入。
+见[关闭结果](../../docs/plans/2026-10-14-review-duty-direct-patch-result.md)。旧失败/分歧和原15裁决不重判。
+**范围：** 生产代码/预算未改、automation保持PAUSED、无新业务run或Host任务；正式15、自然Coach/Training、
+四块联动/journal、前端头像审美、Memory、身份运维、两树整合、独立评估、学习保留，8E不推进。
 
 ## Dependencies and Follow-through
 
@@ -52,9 +53,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：已授权逐字补丁固定报告验证通过并严格封存，automation已暂停。
-下一动作零付费核对自然任务6调用与产品5上限的方案取舍，不另开付费批；正式同版本15、
-真实自然消费、8E及全部产品依赖仍未完成。
+以canonical和上方工作卡为准：自然调用路径与预算零付费审计完成，下一步是明确6次候选取舍。
+批准后先做独立身份/产品发布语义设计与接线；不恢复旧付费批或直接购买正式15。8E及全部依赖保持。
 
 ## History
 

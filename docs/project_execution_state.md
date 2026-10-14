@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "逐字补丁固定报告开发链通过并封存，automation PAUSED；熟悉单例非资格，自然6调用仍超过产品5上限，无下一付费批授权。"
+pause_reason: "逐字补丁固定报告开发链通过并封存，automation PAUSED；熟悉单例非资格；自然修订最少6次超过产品5上限，6次候选待用户决定，无新付费授权。"
 ---
 
 # RiftCoach 当前执行状态
@@ -36,9 +36,15 @@ unknown/receiptless/发送未知0、未发0。活动318.515秒、Host3959.876秒
 不重启原15、不授资格，不把旧失败或分歧改为通过。旧Flash链3HTTP/48960tokens、严格block_N
 失败与raw范围扩展诊断继续保留，见[旧链关闭结果](plans/2026-10-14-review-duty-chain-result.md)。
 
-**下一动作：零付费核对自然任务路径与预算的方案取舍，形成具体可审查结果。**
-自然任务两次生成加四次审查仍为6调用，超过产品5/401920/900；不删职责、跳fresh或静默扩容。
-本批不再发送，没有下一付费批授权；正式同版本15和真实自然消费尚未完成，8E不推进。
+**零付费自然路径与预算审计已完成；下一动作是6次候选的显式预算取舍。**
+一次模型选工具、一次读取结果成稿后，双初审直接通过共4次，修订并双fresh最少6次；
+追加工具轮次为5/7次，无工具虽少一次却缺当前必要知识证据。实际AgentLoop/本地RAG探针通过，
+共享预算器第6次发送前硬停；剩50秒裁为50、到期/token不足拒发。14项既有应用回归通过。
+见[具体取舍与实施边界](plans/2026-10-14-natural-review-duty-budget.md)及机器审计natural_review_duty_budget_audit_20261014。
+推荐显式候选max_calls由5改6，401920tokens/900秒/产品单次300秒及模型high保持；尚未批准或实施。
+6次只容纳最短修订，不保证更多工具轮次；开发600秒身份及人工Host验收不能直接移植为产品能力。
+不删职责或跳fresh、不另开账本；用户决定后先做零付费独立身份/发布语义设计与接线，新付费另案。
+本批永久关闭、automation保持PAUSED；原15/全部后续产品依赖保持，8E不推进。
 
 ## 保留的真实结果与依赖
 
