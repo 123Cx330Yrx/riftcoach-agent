@@ -327,3 +327,9 @@
 /data/evaluation/fixtures/document_review_duty_20261014/** -text
 /data/evaluation/results/document_review_duty_result_20261014.json -text
 /data/evaluation/results/document_review_duty_close_audit_20261014.json -text
+
+# Separately authorized recharge follow-up; old evidence remains frozen.
+/scripts/document_review_duty_followup_request.py text eol=lf
+/scripts/document_review_duty_followup_diagnostic.py text eol=lf
+/tests/test_document_review_duty_followup_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_review_duty_followup_20261014/** -text

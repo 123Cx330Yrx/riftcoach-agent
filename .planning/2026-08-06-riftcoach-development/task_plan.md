@@ -19,7 +19,7 @@
 **路径与证据：** 三对full/facts仅system职责及新身份不同；第二项HTTP429使诊断中止。full首项正确检出全称真错且未复现旧误报，facts没有有效回答，不能选择或否定职责分离。见[关闭结果](../../docs/plans/2026-10-14-review-duty-result.md)。
 **关闭：** 严格replay/create-only seal及唯一真实native通过；43本批原件含外部观测/作者不变，8个历史批次760文件/53冻结源码/readiness保持。已知17250tokens、0.223940元部分估价，失败用量与总账单未知。不重试/补发/补签/新资格。
 **反证与依赖：** 职责分离尚未检验；任一facts实错否定候选，两臂皆过无改善证据。正向开发差异仍需互补职责和真实编辑消费；产品5→7不能静默扩容，新15仍未准入。
-**下一动作：** 只读核对已有服务端可用性/限额证据，查明429可证部分；现有无正文观测不能区分具体原因，不用付费探活或自动新批。
+**下一动作：** 用户确认余额耗尽且已充值。五次新初评已准备（首组facts、余两组full/facts），原请求逐字不变；最多5次/483840tokens/3000活动秒，估价7.14752元。新范围待单独确认及新HEAD公共CI/即时native绑定，旧授权不重用；详见[具体方案](../../docs/plans/2026-10-14-review-duty-followup.md)。未发送，automation PAUSED。
 **独立完成：** 取消/失败用量owner API与UI分段验证已完成，保持报告门与未知语义，详见既有工作记录；不替代核心质量证据。
 
 ## Dependencies and Follow-through
@@ -41,7 +41,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：职责诊断因传输故障关闭，核心假设未检验；先按只读证据核429，不自动付费重试。automation PAUSED，三处语义问题继续阻断新15，8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：职责诊断因传输故障关闭，核心假设未检验；用户已报告充值；五次新初评准备完成，按上方明确新范围推进，旧批不重开。automation PAUSED，三处语义问题继续阻断新15，8E及全部产品依赖未完成。
 
 ## History
 
