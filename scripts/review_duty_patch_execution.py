@@ -62,7 +62,8 @@ def preparation(inputs, *, primary, independent):
     plan.update(kind=VERSION, limits=dict(LIMITS), slots=list(SLOTS),
         initial_requests={d: duty.request_sha(direct.review_request(inputs, d)) for d in duty.DUTIES})
     for path in ('scripts/review_duty_direct_patch.py', 'scripts/review_duty_patch_execution.py',
-                 'scripts/review_duty_patch_replay.py'):
+                 'scripts/review_duty_patch_replay.py', 'scripts/review_duty_patch_transport.py',
+                 'scripts/review_duty_patch_launch.py'):
         plan['source_sha256'][path] = sha(ROOT/path)
     return json.loads(canonical_json(plan))
 
@@ -74,7 +75,7 @@ class DevelopmentChain(_execution.DevelopmentChain):
     def snapshot(self):
         # Same strict evidence rules, with separate model slots and Host stages.
         allowed = {'plan.json', 'result.json', 'closure.json', 'development-host-clock',
-                   'preview.json', 'application.json', *SLOTS}
+                   'preview.json', 'application.json', 'phase-result.json', *SLOTS}
         stages = (*SLOTS, 'compatibility', 'edit')
         allowed.update('host-'+s for s in stages)
         for s in stages:
@@ -101,14 +102,24 @@ class DevelopmentChain(_execution.DevelopmentChain):
         return result
 
     def _record(self, name, value):
+        self.phase = 'record:'+name
         self._before()
         write_new_json(self.directory/name, value)
         self._pin()
 
+    def _host(self, key, *args):
+        self.phase = 'host:'+key
+        return super()._host(key, *args)
+
+    def _phase_record(self, outcome):
+        write_new_json(self.directory/'phase-result.json', dict(phase=self.phase, outcome=outcome))
+
     def _review(self, duty_name, stage, inputs):
         slot = duty_name+'-'+stage
+        self.phase = 'request:'+slot
         prepared = direct.review_request(inputs, duty_name, stage)
         exchange = self._call(slot, prepared)
+        self.phase = 'parse:'+slot
         response = exchange.response
         if (response.provider != 'zhipu' or response.model != 'glm-5.3'
                 or response.finish_reason != 'tool_calls' or (response.content or '').strip()
@@ -131,6 +142,14 @@ class DevelopmentChain(_execution.DevelopmentChain):
         return opinion, accepted
 
     def _run_chain(self):
+        self.phase, outcome = 'initialize', 'hard_failure'
+        try:
+            outcome = self._chain()
+            return outcome
+        finally:
+            self._phase_record(outcome)
+
+    def _chain(self):
         opinions, verdicts = [], []
         for name in duty.DUTIES:
             opinion, accepted = self._review(name, 'initial', self.inputs)
@@ -140,6 +159,7 @@ class DevelopmentChain(_execution.DevelopmentChain):
                 return 'initial_rejected'
         if all(v == 'pass' for v in verdicts):
             return 'initial_both_pass_no_edit'
+        self.phase = 'preview'
         assembly = direct.preview(self.inputs, opinions)
         preview = dict(report=assembly.report, journal=assembly.journal,
             proposals=[asdict(p) for p in opinions])
@@ -156,6 +176,7 @@ class DevelopmentChain(_execution.DevelopmentChain):
         if not self._host('edit', 'edit', 'revision', material, pin, edit_pin, assembly.report):
             return 'edit_rejected'
         # Recompute rather than accepting text supplied by a judge/callback.
+        self.phase = 'application-validation'
         if direct.preview(self.inputs, opinions) != assembly:
             raise ValueError('direct_patch_preview_changed')
         application = dict(version=VERSION, report=assembly.report,

@@ -189,7 +189,7 @@ def test_cancellation_at_last_boundary_after_application_prevents_fresh(tmp_path
     assert (session.directory/'application.json').exists()
     replayed = replay_session(session)
     assert replayed['outcome'] == 'hard_failure'
-    assert replayed['first_stop_key'] is None and replayed['exact_failure_phase_available'] is False
+    assert replayed['first_stop_key'] == 'request:facts-fresh' and replayed['exact_failure_phase_available'] is True
     assert replayed['last_attempt_slot'] == 'completion-initial'
 
 
@@ -233,3 +233,32 @@ def test_wrong_external_closure_digest_rejected(tmp_path, sample):
     with pytest.raises(ValueError, match='closure_digest'):
         replay.replay(session.directory, closure_sha256='0'*64, inputs=session.inputs,
             event_source=session.gate.event_source, observe=session.observe)
+
+
+@pytest.mark.parametrize('fault,at,phase', [
+    ('bad_anchor', 'facts-initial', 'preview'),
+    ('bad_channel', 'facts-initial', 'parse:facts-initial'),
+    ('timeout', 'completion-initial', 'request:completion-initial'),
+    ('cancel', 'edit', 'record:application.json'),
+])
+def test_first_failure_phase_is_reconstructed_not_last_request(tmp_path, sample, fault, at, phase):
+    session, _, _, _ = setup(tmp_path, sample, fault=fault, at=at)
+    assert session.run()['outcome'] == 'hard_failure'
+    assert replay_session(session)['first_stop_key'] == phase
+    record = json.loads((session.directory/'phase-result.json').read_bytes())
+    assert record == dict(phase=phase, outcome='hard_failure')
+
+
+def test_wrong_phase_rejected_even_with_supplied_new_closure_digest(tmp_path, sample):
+    session, _, _, _ = setup(tmp_path, sample, fault='timeout')
+    assert session.run()['outcome'] == 'hard_failure'
+    phase = session.directory/'phase-result.json'
+    phase.write_text(json.dumps(dict(phase='host:edit', outcome='hard_failure')), encoding='utf-8')
+    # A trusted envelope alone cannot replace reconstruction of the actual path.
+    closure = session.directory/'closure.json'
+    value = json.loads(closure.read_bytes())
+    value['files'][str(phase)] = execution.sha(phase)
+    closure.write_text(json.dumps(value), encoding='utf-8')
+    session.closure_sha256 = execution.sha(closure)
+    with pytest.raises(ValueError, match='failure_phase'):
+        replay_session(session)

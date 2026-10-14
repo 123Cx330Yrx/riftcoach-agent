@@ -87,14 +87,46 @@
 重新读取原生事件、作者/观测、预算账本和时间。它额外核2400秒限制，避免误用旧回放硬编码的
 2700秒。信任根由关闭时调用者留存的closure SHA传入；不从现盘重算并自认可信。
 replay无写入；seal仅在所有证据目录外create-only写结果，重复写入拒绝。
-旧结果格式没有单独记录程序应用故障的精确阶段；新回放在硬失败时保留last_attempt_slot，
-将first_stop_key置空并明确exact_failure_phase_available=false，不能把最后模型请求当最早故障。
-后续外层执行准备须补齐该阶段定位，当前不冒称完整付费关闭审计已就绪。
+51b0dd8a首版没有记录程序应用故障的精确阶段，硬失败时曾明确标未知。后继接线版新增
+create-only phase-result.json，记录请求/解析/Host/预览/应用记录等实际停止阶段和outcome；
+它进入原件库存及closure摘要。回放沿同一路径重建并逐字核对阶段，不根据最后请求推测，
+即使调用者提供新closure摘要，错误阶段也拒绝。早期证据不回填这个新字段。
 
 离线测试实际经过作者文件→check-answer子进程→原生导入器→submit→跨实例replay/seal；
 响应与native内容明确SCRIPTED，HTTP没有真实观测就保持未知。故障覆盖包括原件/作者/native
 篡改、应用后发送前取消、四slot回执/观测/超时/预算失败、语义拒绝和旧模块同进程不变。
-这证明执行接线而非真实Host业务可用或模型质量；新候选尚未绑定并验证公网transport/授权启动适配。
+这证明执行接线而非真实Host业务可用或模型质量；公网适配的零付费覆盖见下节。
+
+## 授权启动与真实子进程的零付费接线
+
+新增review_duty_patch_transport与review_duty_patch_launch，私有复用既有传输/启动器，
+未修改847冻结源码配置。模型传输身份只允许GLM-5.3/high/time600，子进程入口明确切到
+新模块；父进程、启动子进程前和子进程创建SDK client前都核同一guard。新传输没有guard
+即拒绝，不能把候选字段附在旧请求上绕过身份。子进程清代理，NO_PROXY仍为open.bigmodel.cn，
+用户网络不变。完整响应、真实HTTP观测及失败尾项复用既有生命周期，禁止自动重试。
+
+新授权身份review-duty-direct-patch-launch-v1-authorization，固定未来run与三文件包路径，
+与旧批次分开。原24小时、同HEAD公共CI全绿、clean exact HEAD、源码/包SHA、实际cwd/Python
+及即时native检查保持；独占claim后才读取模型配置。Host-only edit加入task/submit/abort，
+不加入模型slot。最大4 GLM、0 Flash、387072tokens、2400活动秒、86400Host秒；合同包络
+估价5.718016元，非账单硬上限。此处是实现与待审范围，不签发或延展任何授权。
+
+临时目录测试实际走新launch→guard→新worker→SDK→本机HTTP→观测→原生导入→外层audit/seal。
+正常4HTTP/6Host门，以及首项/末项缺流结束的硬失败均核；失败保留未知用量，停止后续发送。
+作者/checkpoint、controls/来源/native变更、并发claim只能一次、旧授权拒绝、过期后只读审计、
+精确阶段重建和错误阶段拒绝均覆盖。运行时内容、授权/HEAD/CI和native为SCRIPTED；child的
+guard及SHA校验实际执行，只有测试目录配置和synthetic checkout身份由测试替换。
+网络审计钩子拒绝非127.0.0.1连接，不读取真实密钥；测试通过不代表公网或真实质量成功。
+
+只读准备审计已保存于data/evaluation/results/review_duty_patch_readiness_20261014.json，
+入口prepare_review_duty_patch_readiness：854份源码配置、完整输入/原稿/双initial请求SHA、
+阶段图和预算均绑定；实际绝对Python/cwd启动及现有原生主体血缘/route/final可用性通过。
+当前input直读false，future_input_guaranteed=false；没有业务审查，未来仍须即时核验。
+旧847源码/3件包/64原件SHA全部保持。产物execution_ready/authorized均false，不是运行授权。
+
+当前未创建新业务执行包、授权、run、waiter或Host任务，automation保持PAUSED。下一准备应
+核本提交公共CI，再单独形成新批三文件包、冻结准备与授权请求；真实审查和公网质量仍缺，
+不能直接启动旧批或把离线通过计入资格。
 
 ## 预算、失败决定与下一接缝
 
@@ -106,9 +138,9 @@ replay无写入；seal仅在所有证据目录外create-only写结果，重复�
 不删completion、不跳fresh、不改模型、不把Host当免费的生产替代者，也不静默升到6或7次。
 
 离线接缝把原生导入、补丁兼容与完整预览验收绑定到同一原始输出，唯一应用和两fresh共用
-预算/取消门；测试用替身不增加真实业务证据。下一动作是**核新候选身份到现有公网transport、
-授权启动/控制库存和外层seal的最小适配范围，完成零付费接线验证后再给可审查的执行准备**。
-不直接复用旧授权/启动器，不创建真实run或waiter，不把此模块的prepared状态称为执行ready。
+预算/取消门；新传输/授权启动/外层seal已零付费接线，测试用替身不增加真实业务证据。
+独立只读准备审计已完成；下一动作是**核本提交公共CI，再单独形成新批正式冻结准备**。
+不直接复用旧授权，不创建真实run或waiter，不把代码中的prepared/ready字段当本批已授权。
 若未来新初审仍产出错误补丁、正确内容被改坏、协议不合格或fresh拒绝，则当前候选失败停止；
 不得以修补个别限定词或补schema字段继续购买。单例正向也仅为开发信号，不授原15资格。
 

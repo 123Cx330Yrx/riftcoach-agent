@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定报告链已失败封存；逐字补丁离线执行/原生导入接缝已实现，真实语义及公网启动未证，6调用不符合产品5上限。automation PAUSED，无新付费授权。"
+pause_reason: "固定报告链已失败封存；逐字补丁启动/子进程接线经零付费回环验证，真实语义及公网未证，6调用不符合产品5上限。automation PAUSED，无新付费授权。"
 ---
 
 # RiftCoach 当前执行状态
@@ -38,8 +38,15 @@ runner退出1、无重试补发，automation已PAUSED。机器证据`review_duty
 隔离复用旧状态机，共享4调用/387072tokens/2400活动秒；应用记录只绑定四份前置Host验收，
 后续两fresh不倒灌。作者文件/check-answer子进程/native导入、取消/篡改/回执失败和跨实例只读
 replay/create-only seal由SCRIPTED测试验证；无新真实模型或业务Host。847/3/64旧SHA保持。
-**下一动作：核新身份到公网transport、授权启动/控制库存及外层seal的最小适配，并做零付费接线验证。**
-当前模块无付费CLI、运行包或执行授权，不把离线接线称为执行ready；automation仍PAUSED。
+**新身份的授权启动、真实子进程与外层seal已完成零付费接线。**
+新guard独立于旧授权，Host-only edit不扩模型slot；回环四请求正常与首/末项流中断路径通过。
+阶段记录加入closure并重建核对，不再用最后请求代替最早停止点。父/子守卫和观测实跑，
+但授权/HEAD/CI/native内容是SCRIPTED，不能当实际执行或业务质量证据。见同一机制文档。
+**只读准备审计完成：854份源码配置/完整输入与请求SHA、阶段图/预算已记录。**
+实际Python/cwd与既有原生主体route/final可用性通过；input直读false，未来须即时核。
+证据review_duty_patch_readiness_20261014.json，ready/authorized均false，不是业务审查或授权。
+**下一动作：核本提交公共CI，再单独形成新批三文件包与正式冻结准备。**
+当前只有启动代码，没有新业务运行包、授权、run/waiter或真实Host派单；automation仍PAUSED。
 固定报告4调用，自然任务仍6次，超过产品5上限；不跳职责或fresh、不扩产品预算。
 初审新增修订负担的真实质量尚未验证。
 本例只支持互补初审可行，不支持编辑成功、稳定改善、holdout、产品准入或原15资格；8E未完成。

@@ -1,3 +1,13 @@
+## 2026-10-14 逐字补丁启动/worker与关闭阶段接线
+
+从51b0dd8a继续，新增review_duty_patch_transport/launch，私有复用冻结流式传输和授权启动器。新传输只允许四次GLM/high，无Flash；guard在父/启动子进程前/子进程SDK client前重核，独立新授权身份不接受旧批授权。Host-only edit可原样task/submit/abort，不扩大模型slot。phase-result.json记录实际请求/解析/Host/预览/应用停止点并入closure，回放重建核对，不再把最后模型请求误报为失败点。
+
+76项新启动及执行接缝检查全过（367.58秒）；额外5项精确阶段/错误阶段检查全过（15.80秒）。真实worker/SDK/回环HTTP整链6项全过（147.20秒）：正常4请求/6Host门，首项/末项流不完整停止并保留未知用量，真实guard和观测贯穿外层audit/seal，私有reasoning不入证据。共87项不同检查；没有真实GLM或业务Host判断，授权/HEAD/CI/native内容为SCRIPTED，测试网络禁止非127.0.0.1。
+
+只读准备脚本prepare_review_duty_patch_readiness实跑，产物review_duty_patch_readiness_20261014.json SHA607ea5a0a868ed64e8e9172c36c290a8724647287c9b8d917692b392496fd27f。854源码配置、完整输入/请求SHA、阶段/预算、旧847/3/64库存绑定；实际绝对Python/cwd启动及现有主体route/final可用性通过。input直读false/future不保证，不计业务审查；ready/authorized均false，没有新业务包/授权/run/waiter或派单。
+
+估价包络4GLM/387072tokens/2400活动秒/86400Host秒、5.718016元非账单硬上限；产品自然6>5缺口保持。automation实核PAUSED。51b0dd8a公共CI38559954526最近查询仍in_progress；新提交公共CI另核。下一步核本提交CI，再单独形成新批三文件包和正式冻结准备，执行仍需新的精确授权及即时预检。旧失败/缺口、原15/8E及下游依赖不变。
+
 ## 2026-10-14 逐字补丁离线原生与执行接缝
 
 从684f76f3继续，新增review_duty_patch_execution/replay和SCRIPTED整链测试。通过私有模块复用旧预算、取消、NativeGate、run外作者/观测库存；初审完整意见与精确补丁、两意见兼容、完整新稿四项验收后create-only应用，再对同稿发双fresh。模型最多四次GLM，程序应用无Flash Exchange，产品5调用合同不变。

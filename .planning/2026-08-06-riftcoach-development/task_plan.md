@@ -11,7 +11,7 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：固定报告互补链已失败关闭。初审逐字补丁的新候选已接通离线原生导入/唯一应用/双fresh与回放，真实质量及公网授权启动未完成；automation PAUSED，8E未完成。
+执行状态：固定报告互补链已失败关闭。逐字补丁候选已接通独立授权启动/真实worker及外层seal，并经零付费回环验证；真实质量、公网执行和新批准备未完成，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
@@ -22,7 +22,9 @@
 **方案裁决：** [地址合同免费核查](../../docs/plans/2026-10-14-editor-contract-decision.md)已完成；数组旧合同也有缺block实错，不再做同能力适配。保留严格block_N及实际新稿Host四项验收，结构不能证明内容正确。
 **离线候选：** [初审逐字补丁](../../docs/plans/2026-10-14-reviewer-authored-patches-design.md)将精确after的生产移入初审，程序原样应用，消除第二模型改写环节。60份完整请求与59项相关检查通过；错误初审补丁仍可能合法，语义修复未证。
 **执行接缝：** 隔离复用NativeGate和旧生命周期，四模型slot/最多六Host门；应用记录固定前四验收，双fresh绑定同稿；共享预算/取消、原件/作者/观测/native核验与跨实例只读回放、create-only seal已实现。测试响应和native为SCRIPTED，无新真实业务证据。
-**下一动作：** 核新身份到现有公网transport、授权启动/控制库存及外层seal的最小适配，先完成零付费接线验证，再形成可审查准备；不复用旧授权、创建真实run/waiter或启动付费批。
+**启动接线：** 新传输身份/guard/worker和独立授权启动复用旧控制库存及封存；Host-only edit独立于四模型slot；新phase记录进入closure并在回放重建。真实SDK/HTTP仅回环，授权、CI/HEAD和native内容是SCRIPTED，不等于公网或真实审查。
+**只读准备：** review_duty_patch_readiness_20261014.json记录854源码、完整输入/请求、阶段图与预算；实际Python/cwd及原生route/final可用，input直读false。ready/authorized均false，无新业务任务。
+**下一动作：** 核本提交公共CI，再单独形成新批三文件包与正式冻结准备；不复用旧授权、创建真实run/waiter或启动付费批。
 **范围与失败决策：** 旧批永久关闭，strict门及真实成稿/fresh保持。新原型固定报告4调用图不等于执行授权；自然任务6调用仍超过产品5/401920/900，不静默扩容或删除职责。坏补丁、意见冲突或fresh失败均须终止，不自动修补。
 **独立产品成果：** 取消/失败用量owner API与UI证据复用；不冒充当前组合自然Worker消费。正式同版本15及下游依赖保持。
 
@@ -45,7 +47,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：逐字补丁离线执行接缝已实现，下一步为新身份到transport和外层授权启动的零付费适配核查。没有真实质量或产品预算准入证据；旧批保持封存、automation PAUSED，原15/8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：逐字补丁启动/worker/封存接线已零付费验证，只读准备审计完成；下一步核公共CI并单独形成新批冻结准备。没有真实质量或产品预算准入证据；旧批保持封存、automation PAUSED，原15/8E及全部产品依赖未完成。
 
 ## History
 

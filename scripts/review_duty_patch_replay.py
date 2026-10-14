@@ -14,12 +14,21 @@ _ledger, _clock = _replay.check_ledger, _replay.check_clock
 
 
 class Reader(_replay.Reader):
+    def _host(self, key, *args):
+        self.phase = 'host:'+key
+        return super()._host(key, *args)
+
     def _record(self, name, value):
+        self.phase = 'record:'+name
         path = self.directory/name
         if not path.exists():
             raise _replay.IncompleteTail()
         if _replay.read(path) != value:
             raise ValueError('duty_replay_direct_patch_artifact')
+
+    def _phase_record(self, outcome):
+        if _replay.read(self.directory/'phase-result.json') != dict(phase=self.phase, outcome=outcome):
+            raise ValueError('duty_replay_failure_phase')
 
 
 def check_ledger(session, result):
@@ -57,12 +66,11 @@ def replay(directory, *, closure_sha256, inputs, event_source, observe):
     if record['outcome'] == 'edit_rejected':
         record['first_stop_key'] = 'edit'
     if record['outcome'] == 'hard_failure':
-        # The legacy result has no distinct deterministic-application failure
-        # phase. Its last request is not necessarily the failed operation.
         result = _replay.read(Path(directory)/'result.json')
         record['last_attempt_slot'] = result['attempts'][-1]['slot'] if result['attempts'] else None
-        record['first_stop_key'] = None
-        record['exact_failure_phase_available'] = False
+        phase = _replay.read(Path(directory)/'phase-result.json')
+        record['first_stop_key'] = phase['phase']
+        record['exact_failure_phase_available'] = True
     return record
 
 
