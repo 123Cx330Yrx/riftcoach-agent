@@ -200,3 +200,15 @@ def test_exact_request_identity_rejects_changed_policy_schema_and_expanded_timeo
             replace(issued,messages=(replace(issued.messages[0],content='changed'),*issued.messages[1:])),
             replace(issued,tools=())]:
         with pytest.raises(ValueError): execution.check_issued(prepared,bad)
+
+
+def test_empty_evidence_root_redirect_is_rejected_before_send(tmp_path,sample):
+    session,sent,_,_=setup(tmp_path,sample)
+    target=tmp_path/'elsewhere';target.mkdir()
+    try:
+        session.observations.symlink_to(target,target_is_directory=True)
+    except OSError:
+        pytest.skip('This host cannot create directory symlinks')
+    with pytest.raises(ValueError,match='linked_evidence_root'):
+        session.snapshot()
+    assert not sent

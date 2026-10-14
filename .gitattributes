@@ -333,3 +333,13 @@
 /scripts/document_review_duty_followup_diagnostic.py text eol=lf
 /tests/test_document_review_duty_followup_diagnostic.py text eol=lf
 /data/evaluation/fixtures/document_review_duty_followup_20261014/** -text
+
+# Prospective duty transport/replay byte bindings, distinct from closed batches.
+/scripts/review_duty_execution.py text eol=lf
+/scripts/review_duty_transport.py text eol=lf
+/scripts/review_duty_replay.py text eol=lf
+/scripts/prepare_review_duty_execution.py text eol=lf
+/tests/test_review_duty_transport.py text eol=lf
+/tests/test_review_duty_replay.py text eol=lf
+/tests/test_review_duty_execution.py text eol=lf
+/data/evaluation/results/review_duty_transport_preparation_20261014.json -text

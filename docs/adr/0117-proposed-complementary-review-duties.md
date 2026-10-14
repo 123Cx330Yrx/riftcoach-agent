@@ -131,3 +131,18 @@ not the proposal's adoption status. The real observed worker, cross-process
 strict replay/seal and authorization/CI/native/startup wrapper are still pending.
 The saved development-core preparation is explicitly execution_ready=false.
 The same-process revalidation API is not a durable strict replay certificate.
+
+
+## 2026-10-14 transport and durable replay update
+
+The isolated observed child transport now reuses the existing SDK stream lifecycle
+with separate development identities and exact prepared/issued request binding.
+Only child environment copies receive direct routing. Public output, request
+receipts and per-call ledger states persist without private reasoning.
+The durable reader requires an operator-retained closure digest, reconstructs the
+edit/fresh sequence and ledger, refetches native events and rejects inventory drift.
+Its seal is external and create-only. These supersede the prior transport/replay
+implementation gaps, not the Proposed status or live semantic evidence limits.
+
+The production authorization/startup/unique-claim and Host handoff wrapper plus
+complete transitive freeze remain pending. No new paid batch is authorized.

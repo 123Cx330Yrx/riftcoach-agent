@@ -1,4 +1,4 @@
-"""Pin a zero-network development-core preparation; not a paid executable package."""
+"""Pin zero-network transport/replay preparation; not a paid executable package."""
 import argparse
 from dataclasses import replace
 import json
@@ -14,7 +14,7 @@ SOURCE = 'data/evaluation/fixtures/document_review_duty_followup_20261014/duty-3
 AUDIT = 'data/evaluation/results/document_review_duty_followup_close_audit_20261014.json'
 
 
-def prepare():
+def load_inputs():
     audit = json.loads((ROOT/AUDIT).read_bytes())
     expected = {Path(p):v for p,v in audit['package_file_sha256'].items()}
     material_path = ROOT/SOURCE
@@ -25,19 +25,29 @@ def prepare():
     inputs = execution.duty.TimedDocumentWorkflow.build_inputs(replace(source,report=material['report']))
     if inputs.data_json != material['current_input_json']:
         raise ValueError('duty_execution_full_input_changed')
+    return inputs
+
+
+def prepare():
+    inputs = load_inputs()
+    material_path = ROOT/SOURCE
+    material = json.loads(material_path.read_bytes())
     plan = execution.preparation(inputs,primary='01a1248f-e18c-7282-92bf-7ceb2eb5dce4',
         independent='01a12f0c-bb7c-74e3-ad92-775eefbe399a')
-    return dict(kind='complementary-review-development-core-preparation-v1',plan=plan,
+    return dict(kind='complementary-review-transport-preparation-v1',plan=plan,
         plan_sha256=__import__('hashlib').sha256(execution.canonical_json(plan)).hexdigest(),
         input_snapshot=dict(path=SOURCE,sha256=sha(material_path),source_key=material['source_key'],
             provenance='Reuse complete input only; no historical Provider opinion or Host label supplied.'),
         source_sha256={p:sha(ROOT/p) for p in ('scripts/prepare_review_duty_execution.py',
-            'tests/test_review_duty_execution.py',*plan['source_sha256'])},
+            'tests/test_review_duty_execution.py','tests/test_review_duty_transport.py',
+            'tests/test_review_duty_replay.py',*plan['source_sha256'])},
         provider_calls=0,new_host_tasks=0,production_admitted=False,
         execution_ready=False,execution_authorized=False,
-        remaining_execution_dependencies=['Real observed worker/transport adapter with source-bound child startup',
-            'Cross-process strict read-only replay and create-only seal',
-            'Pinned new authorization, same-head public CI, native and cwd/Python preflight'],
+        implemented_layers=['Sequential shared-budget core','Observed isolated worker',
+            'Operator-pinned cross-process read-only replay and external create-only seal'],
+        supersedes_development_preparation='data/evaluation/results/review_duty_execution_preparation_20261014.json',
+        remaining_execution_dependencies=['Complete transitive source/package freeze; pinned new authorization, '
+            'same-head public CI, immediate native and cwd/Python preflight, unique execution claim and Host handoff wrapper'],
         estimates=dict(maximum_calls=5,glm_high=4,flash_high=1,maximum_tokens=483840,
             maximum_active_seconds=2700,maximum_host_seconds=86400,uncached_cny='5.8609664',hard_billing_cap=False))
 

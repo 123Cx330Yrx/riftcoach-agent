@@ -1,3 +1,13 @@
+## 2026-10-14 互补职责observed worker与跨进程严格回放
+
+新增review_duty_transport/replay，独立开发transport身份私有复用原stream生命周期；父/子请求绑定、只清子进程代理、SDK high/max_retries=0、600/300秒父期限与kill/reap保持。response保留公开字段顺序，新增receipt/call-state与Operator需另存SHA的closure；新进程重建双意见、实际编辑、新稿fresh、停止顺序和预算/Host时钟，重取native与作者。replay零写入，外部seal create-only；缺失/未知不算成功。
+
+测试先发现JSON整数/浮点重序列化SHA误报（6项transport失败），修复为核实际issued字节；随后兼容材料重建发现公开response排序破坏原样意见字符串（7项replay失败），修复公开响应保存顺序与从prepared恢复issued允许字段。稳定代码后67项相关整组通过（438.17秒）；最终新增空根路径重定向拦截、HTTP未知/未发/停止点字段复核，13项受影响检查通过（111.80秒，55项未选）；新增根目录链接负例实跑通过，共68个不同场景通过。三职责的完整/中断SDK+loopback HTTP与五阶段真实子进程整链均通过；整链核5HTTP/6审查门/150夹具tokens和实际新稿fresh。所有模型内容及native事件均明确SCRIPTED，Provider公网/真实Host业务审查0。
+
+新准备plan SHA=7703a20328c1eca57d43cef1a453045151fc982b125a3edeeaf164a481730c57，文件review_duty_transport_preparation_20261014.json；旧核心准备保留历史。当前execution_ready=false，下一步为外层唯一执行claim、完整transitive冻结、新授权/同HEAD公共CI/native/绝对cwd/Python预检及Host交接wrapper。本轮没有新费用授权，不重启15或改产品5→7预算。222f19fa/CI38526956068与50ad7143/CI38529958480现均全绿，本轮提交另核。
+
+131本批原件/观测/作者、11件包、77源码、旧53源码、8旧批760原件和旧职责43原件/readiness、canonical历史SHA均实核保持；automation PAUSED，8E/原三处语义稳定性未完成。
+
 ## 2026-10-14 互补职责顺序开发链、原生兼容裁决与共享预算
 
 新增review_duty_execution/review_duty_host_gate及输入准备脚本。两initial、原生兼容裁决、一次编辑、两fresh共用真实预算类和Host时钟；每个Host任务按checkpoint和run外作者导入native事件，编辑保留四项报告核验。首轮测试期间源码变化被冻结门拦住；稳定源码后40项整组通过，新增报告核验/观测库存负例及公开响应留存改动分别受影响复核通过，共45场景。完整正例实际写作者文件、跑check-answer CLI、经原生导入器处理显式事件夹具；无真实Host审查或模型调用。

@@ -1,3 +1,9 @@
+## 2026-10-14 持久化必须保留实际请求字节和公开意见顺序
+
+两个已复现的软件问题影响跨进程验证，而非模型语义：请求timeout_s=20经过类型适配器成为20.0，重序列化改变SHA；公共JSON写入器sort_keys重排tool arguments，改变后续compatibility/edit输入里的原样意见字符串。分别核issued原始字节并从prepared恢复只允许变化的字段、以create-only未排序公开响应留存解决。旧证据字节与旧判断不变。
+
+仅加载result并重新snapshot会把当前文件当可信原件。新replay需要调用者另存的closure SHA，再核精确库存、已审native/author/checkpoint/observations，重构编辑和两fresh及预算时钟；测试夹具native仍不能证明真实业务审查。最终外层必须在Operator文件保留该关闭摘要，补完整source/package冻结、实时授权/CI/native/路径门及唯一claim后才具备付费入口。当前准备不把这项依赖藏在ready=true里。
+
 ## 2026-10-14 兼容性是绑定两份意见的独立审查命题
 
 “clear”参数本身不证明兼容。新开发链为两份Provider原意见及完整来源另建Host任务，绑定材料SHA及两份原文；主/独立判断均通过现有身份合同，独立native必须与run外作者原文一致。该Host任务不消费新增GLM调用，也不把其他Host意见送给独立审查。任何冲突停止编辑，不通过分数投票取舍。

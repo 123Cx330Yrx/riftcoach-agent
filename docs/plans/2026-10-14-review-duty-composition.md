@@ -95,3 +95,39 @@ ReportAssessment全部通过。错误回执也先保留公开响应、结算匹�
 预留保留。观测库存中的孤立文件会阻止下一步。保存的开发核准备为
 `data/evaluation/results/review_duty_execution_preparation_20261014.json`，摘要
 `44c798178929b4ea70f3d3284bcf6e6d354cc5c6f7e8ec60a3aea3e8da50bb7d`，明确不具备付费执行条件。
+
+
+## 2026-10-14 真实子进程传输与跨进程回放
+
+本节接续并替代上节“真实worker/跨进程封存未接”的实现状态；付费入口仍未就绪。
+`scripts/review_duty_transport.py`私有加载既有stream bridge，使用独立开发transport身份，
+不改变旧生产校验器或历史worker。父/子进程核当前stage的完整prepared/issued请求；
+仅共享预算标记和缩短timeout允许变化。子进程复用真实SDK、零重试、high、600/300秒
+父进程deadline及kill/reap，direct代理清理只作用于子进程环境副本。
+
+run内新增精确白名单的transport回执、独立receipt和call-state；body-free HTTP观测保持在run外。
+每次submit、下一发送和回放都核原件与观测SHA。硬失败尾项可保留缺失但不能算完整响应成功；
+意外文件/链接、请求和身份漂移仍拒绝。公开response不保存私有reasoning。
+
+`scripts/review_duty_replay.py`用Operator在关闭时另存的closure SHA作为起点，在新进程重新构造
+原请求、两份原样意见、兼容材料、真实编辑组装、新稿两fresh和停止顺序；重取每项独立native，
+核run外作者/checkpoint和观测。逐项重算同一预算账本的已知/未知预留及Host/活动时钟，
+不从当前磁盘临时重建一个库存并直接信任。缺少可信closure SHA或不完整关闭记录时拒绝封存。
+replay不创建锁/临时证据；seal重新replay，只允许在三个证据根及data/runs之外create-only输出。
+HTTP不可用时保持null，不能用脚本调用数冒充真实HTTP次数。所有结果production_admitted=false。
+
+关闭调用者应保留session.closure_sha256到run外Operator记录；尚未接外层wrapper，当前不运行真实批。
+只读CLI使用明确--run、--closure-sha、--codex-executable，可选run外--seal。新进程测试用显式
+SCRIPTED native事件；真实native客户端是正式CLI唯一来源，测试事件不能作为业务审查。
+
+本轮发现两处持久化问题：超时整数读回浮点导致重新序列化SHA不同；排序公开响应中的工具参数
+导致兼容/编辑输入的原样意见字符串变化。分别改为核实际issued字节、从prepared恢复允许字段，
+以及create-only保留公开响应字段顺序。不是通过放宽旧证据SHA消除失败。
+
+新的开发准备记录为`data/evaluation/results/review_duty_transport_preparation_20261014.json`。
+旧44c79817…准备只保留历史，不再作为当前源码的可执行摘要。下一步仍须完整transitive源码/包冻结、
+新授权绑定、同HEAD公共CI、即时native及绝对cwd/Python启动预检、唯一执行占位和Host交接wrapper。
+本轮没有请求新授权，没有付费调用，automation保持PAUSED；本机HTTP测试不证明三处语义问题已解决。
+
+本轮稳定代码相关整组67项通过（438.17秒），受影响收尾13项通过（111.80秒），共68个不同场景通过；公网Provider=0。
+新准备plan SHA为`7703a20328c1eca57d43cef1a453045151fc982b125a3edeeaf164a481730c57`。

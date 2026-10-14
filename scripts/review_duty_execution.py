@@ -7,6 +7,7 @@ from copy import deepcopy
 from dataclasses import replace
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 import time
@@ -62,6 +63,16 @@ def public_response(response):
         usage=dict(input_tokens=response.usage.input_tokens, output_tokens=response.usage.output_tokens))
 
 
+def write_response(path, response):
+    # Preserve tool-argument insertion order: the exact opinion string is later
+    # embedded in compatibility/edit inputs. Sorting here breaks durable replay.
+    with path.open('xb') as file:
+        file.write(json.dumps(public_response(response),ensure_ascii=False,
+            allow_nan=False,separators=(',',':')).encode('utf-8'))
+        file.flush()
+        os.fsync(file.fileno())
+
+
 class Limits:
     grounded = True
     def descriptor(self):
@@ -90,12 +101,23 @@ class BoundProvider:
         raw = request_bytes(request)
         with (self.folder / 'issued-request.json').open('xb') as file:
             file.write(raw)
-        exchange = self.send(request, self.folder)
+        try:
+            exchange = self.send(request, self.folder)
+        except BaseException as error:
+            response = getattr(error, 'observed_response', None)
+            if isinstance(response, ChatResponse):
+                write_response(self.folder/'response.json', response)
+            raise
         if not isinstance(exchange, Exchange):
             raise ValueError('duty_execution_receipt_required')
         # Retain complete public output even when its receipt/identity is rejected.
         if isinstance(exchange.response, ChatResponse):
-            write_new_json(self.folder/'response.json', public_response(exchange.response))
+            write_response(self.folder/'response.json', exchange.response)
+        receipt = exchange.receipt_request_sha256
+        write_new_json(self.folder/'receipt.json', dict(
+            issued_request_sha256=hashlib.sha256(request_bytes(exchange.issued_request)).hexdigest(),
+            receipt_request_sha256=receipt if isinstance(receipt,str) and re.fullmatch(r'[0-9a-f]{64}',receipt) else None,
+            response_sha256=sha(self.folder/'response.json') if (self.folder/'response.json').exists() else None))
         if (exchange.issued_request != request or request_bytes(exchange.issued_request) != raw
                 or exchange.receipt_request_sha256 != hashlib.sha256(raw).hexdigest()):
             error = ValueError('duty_execution_receipt_changed')
@@ -117,7 +139,10 @@ def preparation(inputs, *, primary, independent):
         'scripts/review_duty_composition.py', 'scripts/host_review_workspace.py',
         'scripts/host_review_task_checkpoint.py', 'scripts/codex_review_event_source.py',
         'scripts/review_independence_contract.py', 'scripts/role_development_host_clock.py',
-        'scripts/report_block_keyed_editor.py', 'app/runtime/coach_budget.py')}
+        'scripts/report_block_keyed_editor.py', 'app/runtime/coach_budget.py',
+        'scripts/review_duty_transport.py', 'scripts/review_duty_replay.py',
+        'scripts/full_chain_modules.py', 'scripts/full_chain_observed_transport.py',
+        'scripts/stream_observation.py', 'app/evaluation/golden_stream_bridge.py')}
     return json.loads(canonical_json(plan))
 
 
@@ -162,19 +187,25 @@ class DevelopmentChain:
     def snapshot(self):
         result = {}
         for root in (self.directory, self.workspace.answers, self.observations):
+            if root.resolve() != root or root.is_symlink():
+                raise ValueError('duty_execution_linked_evidence_root')
             if root.exists():
                 for p in root.rglob('*'):
                     if p.resolve() != p.absolute() or p.is_symlink() or p.is_file() and p.stat().st_nlink != 1:
                         raise ValueError('duty_execution_linked_evidence')
                     if root == self.directory:
                         relative = p.relative_to(root).as_posix()
-                        allowed = {'plan.json', 'result.json', 'development-host-clock'}
+                        allowed = {'plan.json', 'result.json', 'closure.json', 'development-host-clock'}
                         allowed.update(SLOTS)
                         allowed.update('host-'+k for k in (*SLOTS, 'compatibility'))
                         valid = (relative in allowed or re.fullmatch(
                             r'development-host-clock/(policy|[0-9]{4}-(waiting|finished))\.json', relative)
                             or any(relative == s+'/'+f for s in SLOTS for f in
-                                ('prepared-request.json','issued-request.json','response.json'))
+                                ('prepared-request.json','issued-request.json','response.json','receipt.json','call-state.json'))
+                            or any(relative in (s+'/transport',s+'/transport/stream-001') or
+                                relative in {s+'/transport/stream-001/'+f for f in
+                                    ('reservation.json','result.json','progress.json','progress.tmp','failure.json','rejected-tool-output.json')}
+                                for s in SLOTS)
                             or any(relative == 'host-'+s+'/'+f for s in (*SLOTS,'compatibility') for f in
                                 ('material.json','independent-task.json','task-checkpoint.json','dispatch.txt','submission.json')))
                         if not valid:
@@ -194,8 +225,9 @@ class DevelopmentChain:
         if self.snapshot() != self.inventory:
             raise ValueError('duty_execution_inventory_changed')
         for attempt in self.attempts:
-            if attempt['complete']:
-                checked = self.observe(Path(attempt['folder']), self.observations, complete_required=True)
+            if attempt['complete'] or attempt.get('observation_verified'):
+                checked = self.observe(Path(attempt['folder']), self.observations,
+                    complete_required=attempt['complete'] or attempt.get('response_present',False))
                 if checked != attempt['observation']:
                     raise ValueError('duty_execution_observation_changed')
         expected = {}
@@ -226,7 +258,16 @@ class DevelopmentChain:
         self.attempts.append(attempt)
         self.adapter.prepared, self.adapter.folder = prepared, folder
         self._pin()
-        exchange = SharedBudgetReviewSender(self.budget)(prepared)
+        started = self.clock()
+        before = dict(calls=self.budget.calls, known_tokens=self.budget.tokens,
+            unknown_reserved_tokens=self.budget.reserved_tokens)
+        try:
+            exchange = SharedBudgetReviewSender(self.budget)(prepared)
+        finally:
+            write_new_json(folder/'call-state.json', dict(before=before,
+                after=dict(calls=self.budget.calls, known_tokens=self.budget.tokens,
+                    unknown_reserved_tokens=self.budget.reserved_tokens),
+                active_started=started, active_finished=self.clock()))
         # Complete responses always require valid observations, even if later parsing fails.
         attempt.update(complete=True, observation=self.observe(folder, self.observations, complete_required=True))
         self._pin()
@@ -320,6 +361,13 @@ class DevelopmentChain:
             timing=self.clock.summary(), production_admitted=False, restart_allowed=False)
         write_new_json(self.directory/'result.json', result)
         try:
+            self._pin()
+            # The caller must retain this digest outside the run. Replayers must
+            # receive it explicitly, never accept a newly computed trust root.
+            write_new_json(self.directory/'closure.json', dict(kind='review-duty-closure-v1',
+                plan_sha256=self.pin, directory=str(self.directory), answers=str(self.workspace.answers),
+                observations=str(self.observations), python=str(self.workspace.python), files=self.inventory))
+            self.closure_sha256 = sha(self.directory/'closure.json')
             self._pin()
         except ValueError:
             if outcome != 'hard_failure':
