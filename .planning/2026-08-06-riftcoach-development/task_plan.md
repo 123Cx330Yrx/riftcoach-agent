@@ -11,18 +11,18 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：互补职责顺序开发链已接独立observed worker和跨进程只读replay/create-only seal；外层执行wrapper及完整冻结待接。零付费/零新真实Host，automation PAUSED，8E未完成。
+执行状态：外层唯一启动、授权/CI/native/实际路径门、Host交接与完整冻结准备已接。待具体新授权及本提交公共CI全绿；零付费/零新真实Host，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标：** 让同一完整报告的事实/完成度意见经真实接受和兼容裁决后进入一次编辑，再以实际新稿完成两fresh；原三处语义问题未证明稳定解决。
-**已完成路径：** 两initial/兼容Host/编辑/两fresh共用预算；新增独立真实子进程transport、run外HTTP观测、公开响应/receipt/call-state持久化。回放从Operator已留存closure SHA出发，重建实际编辑/fresh和停止顺序，重取native及作者，外部create-only seal。见[接线说明](../../docs/plans/2026-10-14-review-duty-composition.md)。
-**证据：** 新transport覆盖三职责的SDK/本机HTTP完整及中断路径；跨进程重建覆盖成功、拒绝/冲突、硬失败和改件拒绝。67项整组及最终13项受影响复核通过，共68个不同场景；详见progress。HTTP是loopback，native是显式SCRIPTED事件；不能当真实模型/Host或语义改善证据。旧原件/源码/历史实核保持。
-**下一动作：** 补完整transitive源码/包冻结、外层新授权/同HEAD CI/native/cwd/Python预检、唯一执行占位与Host交接wrapper。当前新准备仍execution_ready=false；旧44c79817…准备只留历史，无新付费授权。
-**范围：** 固定报告最多4GLM+1Flash、483840tokens/2700活动秒/86400Host秒，估价5.8609664元非硬账单封顶；产品5→7不静默扩容。
-**失败决策：** 双initial pass跳过编辑；语义拒绝/冲突/坏编辑/fresh失败停止本链；身份/协议/transport/观测/预算硬故障无重试。不把不完整尾项或局部pass算成功。
-**CI：** 222f19fa/CI38526956068已全绿；50ad7143/CI38529958480现已全绿，新提交另核。查询失败不等于CI失败。
-**独立产品成果：** 取消/失败用量owner API与UI已有证据复用；不冒充当前组合自然Worker消费，正式同版本15及下游依赖保持。
+**目标：** 同一完整报告的事实/完成度意见经真实接受和兼容裁决后进入一次编辑，以实际新稿完成两fresh；原三处语义问题未证明稳定解决。
+**已完成路径：** 顺序执行核心、独立observed worker、跨进程回放，再接新授权/同HEAD CI/native/实际Python-cwd启动、独占claim与Host mailbox；父子进程核完整847源码/配置和三文件包，关闭保留外部可信摘要。见[执行准备](../../docs/plans/2026-10-14-review-duty-launch.md)。
+**证据：** 92项相关整组通过，收尾受影响验证见progress；实际路径/native准备探针通过。模型/native内容为SCRIPTED、本机HTTP为loopback，不是语义改善或真实业务Host证据。旧原件/源码/历史保持。
+**下一动作：** 取得此固定报告开发链的新费用授权，同提交公共CI全绿后只执行一次。准备SHA=6d583ac31d8c2861c7193200d47141bf817120ec3feb7214ad0b18e258079a24；execution_ready=true而authorized=false。旧授权及两个旧开发准备不能借用。
+**范围：** 最多4GLM+1Flash、483840tokens/2700活动秒/86400Host秒，估价5.8609664元非账单硬封顶；产品5→7不静默扩容。
+**失败决策：** 双initial pass跳过编辑；语义拒绝/冲突/坏编辑/fresh失败或任一身份/协议/transport/观测/预算故障停止。无重试/补发，不把缺失或职责局部pass算成功。
+**CI：** 222f19fa/CI38526956068与50ad7143/CI38529958480全绿；269c2c7b及本轮提交另核，查询失败不等于CI失败。
+**独立产品成果：** 取消/失败用量owner API与UI证据复用；不冒充当前组合自然Worker消费。正式同版本15及下游依赖保持。
 
 ## Dependencies and Follow-through
 
@@ -43,7 +43,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：下一步完成外层执行wrapper及完整冻结准备。新付费范围尚未授权，automation PAUSED；旧批不重开，原15/8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：下一步在具体新授权与当前提交公共CI全绿后执行已冻结的固定报告开发链。automation PAUSED；旧批不重开，原15/8E及全部产品依赖未完成。
 
 ## History
 

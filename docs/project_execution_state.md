@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "互补职责已接真实observed worker和跨进程回放封存；外层授权/启动/Host交接wrapper待接。automation PAUSED，语义稳定性未证。"
+pause_reason: "互补职责外层启动/Host交接和完整执行准备已接；待新授权及当前提交公共CI全绿。automation PAUSED，语义稳定性未证。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,22 +14,24 @@ pause_reason: "互补职责已接真实observed worker和跨进程回放封存�
 
 ## 当前行动
 
-**互补职责开发链已接真实子进程传输和跨进程回放封存。**
-独立transport身份核完整prepared/issued请求，复用SDK high/零重试、父进程600/300秒deadline及回收；
-代理清理仅作用于子进程。公开响应/回执/每次预算状态在run内，body-free HTTP观测在run外。
-关闭时产生库存closure；新进程须携带Operator另存的SHA，重新构造双意见、编辑新稿、两fresh及停止顺序，
-重取native、核作者/checkpoint/观测，并重算已知/未知预算与Host时钟。seal在证据根外create-only。
-修复了数值JSON读回和字段排序造成的字节绑定漂移；未放宽旧SHA或重判历史。
-见[实现与验证范围](plans/2026-10-14-review-duty-composition.md)及[Proposed ADR0117](adr/0117-proposed-complementary-review-duties.md)。
-67项整组及最终13项受影响复核通过，共68个不同场景；测试模型与native内容均为显式夹具，不作真实业务证明。
+**互补职责固定报告链的外层执行准备已补齐，尚未执行新的真实批。**
+唯一create-only claim在读取密钥之前建立；新授权/同HEAD公共CI/clean checkout/实际绝对Python与cwd/
+即时native通过后才允许首次发送。父子进程重复核授权与847份项目源码/配置、三文件输入包。
+完整Host dispatch、run外作者、主审submit及独立native导入接到同一链；等待、下一发送及关闭
+核库存与原件。Operator另存closure及控制文件摘要，外层严格回放/固定目标seal在原授权过期后
+仍可只读复核；不能恢复发送。见[具体准备和操作合同](plans/2026-10-14-review-duty-launch.md)。
+92项相关整组通过；最终受影响复核见progress。实际Python/cwd启动、既有独立主体路由/final可用性
+预检通过；未来任务可读性仍须即时验证。模型和native业务内容均为SCRIPTED测试，不能算语义证明。
 
-**下一动作：补外层唯一执行占位、授权/CI/native/绝对cwd/Python预检与Host交接wrapper，再冻结完整可审执行包。**
-当前完整transitive源码/包冻结尚未完成，execution_ready=false；没有付费execute入口或新费用授权。
-新的开发准备记录为`data/evaluation/results/review_duty_transport_preparation_20261014.json`；
-旧44c79817…核心准备保留历史，不能作为当前源码授权摘要。固定报告最多4 GLM/high加1 Flash/high，
-483840tokens/2700活动秒，估价5.8609664元非硬账单封顶。completion与真实改文/fresh仍未实测。
-222f19fa/CI38526956068现已全绿；50ad7143/CI38529958480现已全绿，本轮新提交还须核自己的CI。
-automation保持PAUSED；本轮外部Provider调用与新真实Host业务审查均0，8E未完成。
+**下一动作：取得本固定报告链的新费用授权，并在本提交公共CI全绿后由原主执行一次。**
+准备文件`data/evaluation/results/review_duty_launch_preparation_20261014.json`，
+SHA `6d583ac31d8c2861c7193200d47141bf817120ec3feb7214ad0b18e258079a24`。
+外层execution_ready=true、execution_authorized=false；旧44c79817/7703a203准备仅作历史。
+最多4 GLM-5.3/high+1 Flash/high、483840tokens/2700活动秒/86400Host秒，估价5.8609664元非硬账单封顶。
+两initial均pass直接结束；语义拒绝/冲突/错误编辑/fresh失败或任一硬故障停止，不重试。
+completion与真实改文/fresh仍未实测，原三处问题未证明稳定解决，原15和产品预算不因此开放。
+automation保持PAUSED，本轮Provider公网调用0、新真实Host业务审查0，8E未完成。
+222f19fa/CI38526956068与50ad7143/CI38529958480全绿；269c2c7b及本轮提交仍须核各自CI。
 
 ## 保留的真实结果与依赖
 

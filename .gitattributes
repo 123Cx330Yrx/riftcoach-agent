@@ -343,3 +343,9 @@
 /tests/test_review_duty_replay.py text eol=lf
 /tests/test_review_duty_execution.py text eol=lf
 /data/evaluation/results/review_duty_transport_preparation_20261014.json -text
+
+# Fixed-report launch package and source digests are byte-exact.
+/scripts/review_duty_launch.py text eol=lf
+/tests/test_review_duty_launch.py text eol=lf
+/data/evaluation/fixtures/review_duty_chain_20261014/** -text
+/data/evaluation/results/review_duty_launch_preparation_20261014.json -text

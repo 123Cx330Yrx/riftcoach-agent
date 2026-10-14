@@ -1,3 +1,13 @@
+## 2026-10-14 固定报告外层授权、唯一启动与Host交接准备
+
+新增review_duty_launch，先核准备/24小时授权/同HEAD公共CI/clean checkout/实际绝对Python与cwd/即时native，独占execution.json后才读密钥。父进程启动worker前和子进程读配置/SDK client前重核冻结；新增完整Host mailbox，完整dispatch与主审Decision/独立native分开，run外作者和已审事件持续校验。控制记录篡改也在下一发送前截断。外部exit保留closure/controls摘要，外层只读replay/固定create-only seal在原claim时间验证授权，不允许过期恢复发送；现有/空目录/悬空链接不重开。
+
+首轮20通过、1测试装配失败（替换构造器后才导入Reader类），调整测试导入顺序。随后92项相关整组全部通过（439.59秒）；收尾下一发送控制库存和悬空run链接拦截后，24项受影响launch检查通过（111.01秒），共94个不同场景。包括并发执行最多一次secret读取、父/真实子进程拒绝无效guard、正常五阶段/六Host门及错误event/作者/源码/abort/已接受控制记录篡改停止、过期后只读复核与篡改native拒绝。模型/native内容仍SCRIPTED，本机HTTP是loopback，Provider公网与新增真实Host业务任务0。
+
+实际绝对Python/cwd启动与既有原生路由/final预检通过，Operator/preparation-native-paths.json保留；当前input直接可读性false，final路由可用，不保证未来任务可读，execute仍须即时复核。三文件执行包新建，847份项目源码/配置冻结，准备文件review_duty_launch_preparation_20261014.json SHA=6d583ac31d8c2861c7193200d47141bf817120ec3feb7214ad0b18e258079a24；内部plan SHA=1769413b8c4b7d4ba073c88f0f785765ae03aa8a46d8d2be5af4e909f0008f72。外层ready=true/authorized=false，旧两开发准备只保留历史。
+
+授权仍仅为待确认的最多4 GLM-5.3/high+1 Flash/high、483840tokens/2700活动秒/86400Host秒、估价5.8609664元非账单硬封顶。没有授权issuer、真实run、执行claim、waiter或费用请求。原三处语义稳定性及实际改文/fresh仍未验证；下一步要新授权及当前提交公共CI全绿。旧原件/源码/历史已复核保持，automation PAUSED，原15/8E/产品后续依赖未完成。
+
 ## 2026-10-14 互补职责observed worker与跨进程严格回放
 
 新增review_duty_transport/replay，独立开发transport身份私有复用原stream生命周期；父/子请求绑定、只清子进程代理、SDK high/max_retries=0、600/300秒父期限与kill/reap保持。response保留公开字段顺序，新增receipt/call-state与Operator需另存SHA的closure；新进程重建双意见、实际编辑、新稿fresh、停止顺序和预算/Host时钟，重取native与作者。replay零写入，外部seal create-only；缺失/未知不算成功。

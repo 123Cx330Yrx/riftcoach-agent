@@ -219,10 +219,12 @@ class DevelopmentChain:
             raise ValueError('duty_execution_existing_evidence_changed')
         self.inventory = current
 
-    def check(self):
+    def check(self, *, allow_new=()):
         self.workspace.validate_paths()
         self._validate_plan()
-        if self.snapshot() != self.inventory:
+        current = self.snapshot()
+        if (any(current.get(p) != h for p,h in self.inventory.items())
+                or not set(current).difference(self.inventory).issubset({str(p) for p in allow_new})):
             raise ValueError('duty_execution_inventory_changed')
         for attempt in self.attempts:
             if attempt['complete'] or attempt.get('observation_verified'):

@@ -76,7 +76,13 @@ def direct_environment(environ):
     return result
 
 
-def attach_observation(bridge, *, root, prepared_path, prepared_sha):
+def check_execution_guard(guard, prepared):
+    if guard is not None:
+        from scripts.review_duty_launch import require_guard
+        require_guard(*guard, prepared=prepared)
+
+
+def attach_observation(bridge, *, root, prepared_path, prepared_sha, execution_guard=None):
     child = bridge.run_child
 
     def run_child(command, raw, **kwargs):
@@ -95,8 +101,11 @@ def attach_observation(bridge, *, root, prepared_path, prepared_sha):
         command[at] = 'scripts.review_duty_transport'
         command += ['--observation', str(side/'sampling'), '--prepared', str(prepared_path),
                     '--prepared-sha', prepared_sha]
+        if execution_guard is not None:
+            command += ['--execution-guard', str(execution_guard[0]), '--execution-guard-sha', execution_guard[1]]
         started, complete = time.monotonic(), False
         try:
+            check_execution_guard(execution_guard, prepared_path)
             response = child(command, raw, **{**kwargs, 'environ':env})
             complete = True
             return response
@@ -127,10 +136,11 @@ def attach_observation(bridge, *, root, prepared_path, prepared_sha):
 
 class Sender:
     """Caller owns authorization, cancellation and the shared budget gate."""
-    def __init__(self, *, settings_for_model, observation_root):
+    def __init__(self, *, settings_for_model, observation_root, execution_guard=None):
         self.settings = settings_for_model
         self.root = observed.outside_runs(observation_root)
         self.used = set()
+        self.execution_guard = execution_guard
 
     def __call__(self, request, folder):
         folder = Path(folder).resolve()
@@ -139,8 +149,9 @@ class Sender:
         self.used.add(folder)
         path = folder/'prepared-request.json'
         pin = sha(path)
+        check_execution_guard(self.execution_guard, path)
         bridge = attach_observation(isolated_bridge(path, pin), root=self.root,
-            prepared_path=path, prepared_sha=pin)
+            prepared_path=path, prepared_sha=pin, execution_guard=self.execution_guard)
         transport = transport_for(request)
         raw = bridge.validate_request(request, transport_id=transport)
         if (folder/'issued-request.json').read_bytes() != raw:
@@ -198,6 +209,10 @@ def verify(folder, root, *, complete_required):
 
 def worker(args):
     import openai
+    if bool(args.execution_guard) != bool(args.execution_guard_sha):
+        raise ValueError('duty_transport_guard_pair')
+    guard = (args.execution_guard, args.execution_guard_sha) if args.execution_guard else None
+    check_execution_guard(guard, args.prepared)
     observed.route_record(os.environ)
     bridge = isolated_bridge(args.prepared, args.prepared_sha)
     if args.worker.resolve() != args.prepared.parent/'transport/stream-001':
@@ -206,6 +221,8 @@ def worker(args):
     write_new_json(observer.directory/'anchor.json', dict(parent_clock_started=observer.started))
     original = openai.OpenAI
     def client(**kwargs):
+        # Repeat at client creation after stdin parsing and before any HTTP.
+        check_execution_guard(guard, args.prepared)
         kwargs['http_client'].event_hooks['request'].append(observer.on_request)
         kwargs['http_client'].event_hooks['response'].append(observer.on_response)
         return original(**kwargs)
@@ -231,6 +248,8 @@ def main():
     parser.add_argument('--observation', required=True, type=Path)
     parser.add_argument('--prepared', required=True, type=Path)
     parser.add_argument('--prepared-sha', required=True)
+    parser.add_argument('--execution-guard', type=Path)
+    parser.add_argument('--execution-guard-sha')
     parser.add_argument('--started', required=True, type=float)
     parser.add_argument('--deadline', required=True, type=float)
     parser.add_argument('--transport-id', required=True, choices=TRANSPORTS)

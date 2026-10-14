@@ -113,6 +113,35 @@ def test_request_pin_and_legacy_isolation(tmp_path,requests):
         bridge.validate_request(requests['facts'],transport_id=subject.REVIEW)
 
 
+@pytest.mark.parametrize('boundary',['parent','child'])
+def test_invalid_execution_guard_blocks_before_http(tmp_path,monkeypatch,requests,boundary):
+    from app.providers.errors import ProviderError
+    folder=tmp_path/'facts';folder.mkdir()
+    prepared=requests['facts'];request=replace(prepared,timeout_s=20)
+    (folder/'prepared-request.json').write_bytes(request_bytes(prepared))
+    (folder/'issued-request.json').write_bytes(request_bytes(request))
+    guard=tmp_path/'guard.json';guard.write_text('{}')
+    launched=[]
+    original=subject.legacy.subprocess.Popen
+    def start(command,**kwargs):
+        launched.append(command)
+        assert '--execution-guard' in command and '--execution-guard-sha' in command
+        # No real key is provided, and any socket connection is independently forbidden.
+        at=command.index('-m')
+        child="import sys; sys.addaudithook(lambda e,a: (_ for _ in ()).throw(RuntimeError('NETWORK_FORBIDDEN')) if e=='socket.connect' else None); from scripts.review_duty_transport import main; main()"
+        return original([*command[:at],'-c',child,*command[at+2:]],**kwargs)
+    monkeypatch.setattr(subject.legacy.subprocess,'Popen',start)
+    if boundary=='child':
+        # Bypass only the parent process's guard to exercise the real child's own check.
+        monkeypatch.setattr(subject,'check_execution_guard',lambda *a:None)
+    sender=subject.Sender(settings_for_model=lambda name:NS(model=name,api_key='OFFLINE',
+        base_url='https://open.bigmodel.cn/api/paas/v4'),observation_root=tmp_path/'observations',
+        execution_guard=(guard,'0'*64))
+    with pytest.raises((ValueError,ProviderError)):sender(request,folder)
+    assert len(launched)==(1 if boundary=='child' else 0)
+    assert not list((tmp_path/'observations').rglob('observation.json'))
+
+
 def test_five_stage_chain_uses_real_worker_and_replays(tmp_path,monkeypatch):
     from tests.test_review_duty_execution import setup, PASS
     from tests.test_coarse_revision_editor import BEFORE, AFTER

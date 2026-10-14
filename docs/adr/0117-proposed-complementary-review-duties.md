@@ -146,3 +146,23 @@ implementation gaps, not the Proposed status or live semantic evidence limits.
 
 The production authorization/startup/unique-claim and Host handoff wrapper plus
 complete transitive freeze remain pending. No new paid batch is authorized.
+
+## 2026-10-14 launch boundary and frozen preparation
+
+The launch wrapper now gates secret access on a pinned 24-hour grant, clean
+exact-HEAD public CI, actual absolute Python/cwd startup and native preflight,
+then reserves one create-only execution claim. Parent/child guards revalidate
+the grant and conservative project source/package inventory before IO. Host
+mailbox controls preserve full dispatch, separate primary notes and native-only
+independent import; inventory or identity faults stop later sends. The external
+close record retains the original closure digest and control inventory. Read-only
+audit validates the grant at claim time and repeats full source/package/native
+checks; it never authorizes resumed sends after expiry.
+
+This closes the implementation gaps above. The three-file package and 847-file
+project source/config freeze are described in
+[the launch proposal](../plans/2026-10-14-review-duty-launch.md). Ninety-two related
+tests passed, with final affected checks recorded in progress. Actual Python/cwd
+and existing native route/final availability were checked without a new business
+dispatch. Scripted model/native bodies remain fixtures. A new paid grant and
+same-commit public CI success are still required; the ADR remains Proposed.
