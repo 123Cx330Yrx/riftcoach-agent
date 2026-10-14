@@ -1,3 +1,9 @@
+## 2026-10-14 兼容性是绑定两份意见的独立审查命题
+
+“clear”参数本身不证明兼容。新开发链为两份Provider原意见及完整来源另建Host任务，绑定材料SHA及两份原文；主/独立判断均通过现有身份合同，独立native必须与run外作者原文一致。该Host任务不消费新增GLM调用，也不把其他Host意见送给独立审查。任何冲突停止编辑，不通过分数投票取舍。
+
+实际编辑的接受仍需要facts_and_sources_correct/correct_content_preserved/identity_and_goal_preserved/true_errors_fixed四项报告核验。请求回执失配也必须先保留完整公开响应，再停止；不能因身份失败丢失已返回的已知用量或用未知尾项伪装无调用。依赖注入整链可证明顺序/预算/停止与原生导入机制，不能代替真实transport、Worker租约或跨进程封存。
+
 ## 2026-10-14 职责分离必须同时改变校验合同和下游消费
 
 已复现native_missing_knowledge_citation_unreported：完整审查要求知识引用，但facts明确排除是否引用/消费义务，直接复用完整validator会错挡合法局部pass。新隔离validator显式保留事实引用有效性及协议/来源/安全检查，不采用吞异常方式；前三facts真实样本未触发此边界，旧结果不重判。completion自身解释/修法仍须事实正确，marker教学也须限定本次职责，避免又把事实审查塞回完成度。

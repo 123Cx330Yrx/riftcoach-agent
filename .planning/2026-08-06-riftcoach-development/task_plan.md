@@ -11,17 +11,18 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：互补职责离线原型完成，缺引用合同冲突已用反例定位并隔离修正；19新测试及47相关回归通过，30完整请求零发送。旧五次批已关闭，automation PAUSED，8E未完成。
+执行状态：互补职责顺序开发链、原生兼容裁决、同一预算账本及停止路径已完成离线接线；45新增场景通过（整组与受影响增量验证）。真实transport与跨进程封存仍未接，零付费/零新真实Host，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标：** 让完整报告的事实与任务完成度意见能安全进入一次真实编辑，并对实际新稿覆盖全部职责；原两误报/一修法分歧仍未证明稳定解决。
-**路径与证据：** 新隔离原型完成同稿/来源/request绑定、原样双意见、实际block组装和两fresh构造；旧完整校验器缺引用门不适用于facts-only的反例已复现。见[离线结果及执行范围](../../docs/plans/2026-10-14-review-duty-composition.md)、Proposed ADR0117及源码SHA审计。
-**已完成：** 上批closeout CI38507399305全绿；本轮19项新测试、47相关回归，15输入共30请求零发送。旧131原件/11包/77源码、旧53源码/8批760原件/43旧职责原件/readiness及canonical历史保持。
-**反证与依赖：** completion未实测、caller clear未认证、没有真实改文/fresh。两职责可能重复或冲突，结构pass不能发布。facts三次双接受只是熟悉来源开发信号；full分歧保持，原15未重启。
-**下一动作：** 实现隔离开发入口的请求/回执身份、真实native接受/兼容裁决、run外观测、共享账本及取消/停止转换；离线整链验证后冻结可审执行包。最小固定报告提案4GLM+1Flash、483840tokens/2700活动秒、估价5.8609664元；尚未准备执行或授权新费用。
-**失败决策：** 双initial pass跳过编辑；不接受的意见/冲突/坏修法/fresh失败否定此例充分性；native/协议/transport/预算硬故障停止，不重试/补发。自然产品5→7不能静默扩容。
-**独立完成：** 取消/失败用量owner API与UI分段验证证据复用；正式同版本15及自然Worker/DB/API/UI消费仍是后续依赖。
+**目标：** 让完整报告的事实/完成度意见经真实接受和兼容裁决后进入一次编辑，再以新稿完成两fresh；原三处问题未证明稳定解决。
+**路径与证据：** review_duty_execution沿两initial/兼容Host/编辑/两fresh顺序运行；review_duty_host_gate复用原生导入/checkpoint/run外作者，编辑保留四项ReportAssessment。同一CoachBudgetedProvider账本与DevelopmentHostClock，原样意见和实际新稿绑定保持。见[接线说明](../../docs/plans/2026-10-14-review-duty-composition.md)。
+**已完成：** 45新场景含真作者文件/CLI与native事件夹具、故障停止、错误回执公开响应留存/用量结算、未知预留、观测库存和取消。完整输入准备摘要44c79817…50bb7d，execution_ready=false；19原型/47相关回归复用。旧证据/冻结源码/历史不变。
+**反证与依赖：** 所有新Provider与native事件来自显式夹具；无真实模型或Host审查。当前仅同进程闭合证据重核，未实现跨进程严格replay/seal。完成度语义、真实编辑/fresh仍未知，caller clear只在新链通过绑定的兼容裁决后使用。
+**下一动作：** 接真实observed worker与跨进程只读replay/create-only seal，完成新授权/同HEAD CI/native/cwd/Python外层preflight后冻结可执行包。现仅固定报告5请求/483840tokens/2700活动秒、估价5.8609664元提案，无新费用授权。
+**失败决策：** 双initial pass跳过编辑；任一语义拒绝/冲突/坏编辑/fresh不通过停止本链；身份/协议/transport/观测/预算硬故障不重试。自然产品5→7不静默扩容。
+**CI：** 上批closeout CI38507399305成功；222f19fa/CI38526956068仍运行，查询失败不等于CI失败；本轮提交另核。
+**独立完成：** 取消/失败用量owner API和UI分段证据复用，不冒充此组合生产Worker消费；正式同版本15及全部后续依赖保留。
 
 ## Dependencies and Follow-through
 

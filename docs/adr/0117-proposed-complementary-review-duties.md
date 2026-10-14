@@ -113,3 +113,21 @@ source; a success only supports further development, not original15 qualificatio
 Natural Coach/Training, four-part linkage, journal/UI, frontend aesthetics/avatars,
 Memory, identity operations, both-tree integration, independent evaluation and
 learning remain in the active plan. This prototype completes none of those gates.
+
+## 2026-10-14 development-chain implementation update
+
+The sequential dependency-injected core now implements two initial reviews,
+a separately bound native Host compatibility judgment, one edit and two fresh
+reviews. Native import, author/checkpoint binding and the existing four-field
+ReportAssessment protect the edit decision. The actual CoachBudgetedProvider
+and DevelopmentHostClock share one ledger and active clock; errors stop later
+sends and retain public responses/known usage even for receipt mismatch.
+Forty-five scripted scenarios have passed in the whole-set and affected follow-up
+checks. Events and transport are explicit fixtures, not newly executed Host/model
+reviews. The earlier standalone composition remains unchanged.
+
+This supersedes the earlier absence of a sequential core/compatibility binding,
+not the proposal's adoption status. The real observed worker, cross-process
+strict replay/seal and authorization/CI/native/startup wrapper are still pending.
+The saved development-core preparation is explicitly execution_ready=false.
+The same-process revalidation API is not a durable strict replay certificate.

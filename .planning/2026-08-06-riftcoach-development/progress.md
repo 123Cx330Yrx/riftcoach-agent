@@ -1,3 +1,9 @@
+## 2026-10-14 互补职责顺序开发链、原生兼容裁决与共享预算
+
+新增review_duty_execution/review_duty_host_gate及输入准备脚本。两initial、原生兼容裁决、一次编辑、两fresh共用真实预算类和Host时钟；每个Host任务按checkpoint和run外作者导入native事件，编辑保留四项报告核验。首轮测试期间源码变化被冻结门拦住；稳定源码后40项整组通过，新增报告核验/观测库存负例及公开响应留存改动分别受影响复核通过，共45场景。完整正例实际写作者文件、跑check-answer CLI、经原生导入器处理显式事件夹具；无真实Host审查或模型调用。
+
+来源沿旧duty-3完整输入，准备摘要44c79817…50bb7d，execution_ready=false。仍缺真实observed worker、跨进程严格replay/seal、外层授权与CI/native/启动预检；下一步接这三项，不重买initial。完整响应在错误回执时也保留公开原件，已知用量结算，未知预留不释放。旧证据/源码/canonical历史保持，automation暂停。222f19fa的CI38526956068尚在运行，一次TLS查询失败未判CI失败。
+
 ## 2026-10-14 互补职责离线合同与实际组装路径
 
 新增隔离原型、19项测试、零网络审计及Proposed ADR0117。事实专责缺引用pass被旧完整校验器拒绝的合同反例已复现；新显式职责校验保留未知引用/来源/协议/安全门。两份原样意见绑定同稿后进入旧block editor实际组装，新稿再构建两fresh。caller clear仍无真实认证，结构双pass不发布。19新测试及47相关回归通过，30完整请求零发送；上批closeout CI38507399305全绿。

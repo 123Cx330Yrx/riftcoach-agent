@@ -63,3 +63,35 @@ fresh不带旧意见；结构双pass始终不能打开产品发布门。
 以后必须复用`CoachBudgetedProvider`的同一账本/时钟和真实Worker取消/租约门。
 仅提高调用数而保留token/时间上限也可能走不完；当前不能承诺自然任务完成。
 automation保持暂停；本提案未请求也未取得新付费授权。8E和下游产品依赖保持未完成。
+
+## 2026-10-14 后续接线：同进程开发链与原生兼容裁决
+
+`scripts/review_duty_execution.py`新增固定报告的顺序执行核心，
+`scripts/review_duty_host_gate.py`复用现有Codex原生事件导入、checkpoint和run外作者文件。
+每次初评、实际编辑及fresh独立审查；两初评通过且需要编辑时另作一次Host兼容裁决，
+只提供两份Provider原意见、完整报告/来源，不泄露主审或其他Host判断。
+兼容裁决本身没有新增GLM请求。主/独立均接受且无冲突才能调用一次编辑。
+
+初评双pass跳过编辑；任何意见被拒绝、兼容冲突、坏编辑或fresh未通过即终止该固定报告链。
+错误请求/回执、观测缺失、预算、取消、身份/作者/库存漂移截断后续发送。关闭目录和同一实例
+不能重启。响应公开存储剔除reasoning，故障只记录异常类别，不记录SDK异常文本。
+
+执行核心使用真实`CoachBudgetedProvider`和`SharedBudgetReviewSender`，只在该实例覆盖开发
+预算；沿同一账本保留实际用量与未知预留，共享活动时钟，复用`DevelopmentHostClock`记录Host等待。
+每个实际发出的请求必须等于当前完整prepared请求，只允许共享预算标记和缩短timeout；
+回执SHA绑定实际issued字节，失败后的已知用量仍结算，未知用量不释放。
+
+此处依赖注入的sender、观测读取及Host交接用于离线整链测试，尚未接真实observed worker、
+外层新授权/同提交CI/native preflight、持久化严格replay/seal或付费CLI。
+当前同进程`replay`会重核原件和重新读取各个native事件，但不冒充跨进程严格封存。
+这是开发执行核心，`execution_ready=false`。实际产品Worker的租约/取消仍需在真实发送边界接线；
+测试中的停止钩子只证明该接口会截断后续调用，不是生产Worker验收。
+
+接下来的执行准备只剩上述真实适配和闭合审计；本轮不申请或消耗新模型费用。
+
+
+本次新增45项场景通过（40项整组及受影响增量复核）；实际编辑接受还要求原有四项
+ReportAssessment全部通过。错误回执也先保留公开响应、结算匹配身份的已知用量；超时未知
+预留保留。观测库存中的孤立文件会阻止下一步。保存的开发核准备为
+`data/evaluation/results/review_duty_execution_preparation_20261014.json`，摘要
+`44c798178929b4ea70f3d3284bcf6e6d354cc5c6f7e8ec60a3aea3e8da50bb7d`，明确不具备付费执行条件。

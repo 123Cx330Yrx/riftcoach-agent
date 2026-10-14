@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "互补职责离线原型已完成；真实编辑消费与语义稳定性未证。付费批已关闭、automation PAUSED；继续隔离开发入口及可审执行准备。"
+pause_reason: "互补职责开发链/原生兼容裁决和共享预算已完成离线接线；真实transport及跨进程封存待接。付费批关闭、automation PAUSED，语义稳定性未证。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,12 +14,15 @@ pause_reason: "互补职责离线原型已完成；真实编辑消费与语义�
 
 ## 当前行动
 
-**互补职责离线合同已落地，明确修复了缺引用义务与事实专责校验之间的冲突。**
-新隔离原型保留完整来源、同稿两份原样意见，复用block editor实际组装并为新稿构建两份fresh。
-19项新测试及47项预算/editor回归通过；15份完整输入构建30份请求，Provider发送0。
-旧live身份拒绝这些请求，局部或结构双pass均不授产品资格；caller clear尚不是已认证冲突裁决。
-见[实现与下一验证范围](plans/2026-10-14-review-duty-composition.md)及
-[Proposed ADR0117](adr/0117-proposed-complementary-review-duties.md)。
+**互补职责已推进到顺序开发链：原生兼容裁决、同一预算账本和故障截断已接通。**
+两initial→Host兼容裁决→一次编辑→两fresh沿完整报告/来源执行。独立判断从现有native导入器读取，
+与checkpoint及run外作者文件匹配；编辑接受保留四项ReportAssessment。意见/冲突/坏编辑/fresh拒绝即停止。
+45项新增场景经整组及增量复核通过，含实际组装、作者文件/CLI/native事件夹具、错误回执公开响应保留、
+已知用量结算/未知预留、观测库存、取消/超时及停止后无后续发送。Provider及新真实Host任务均0。
+前轮19项原型/47相关回归证据复用；本轮未将fixture结论当真实质量证明。
+见[实现与验证范围](plans/2026-10-14-review-duty-composition.md)、
+[Proposed ADR0117](adr/0117-proposed-complementary-review-duties.md)及
+`data/evaluation/results/review_duty_execution_preparation_20261014.json`。
 
 上批五次初评已封存：执行400deee0/CI38499719533全绿；关闭提交8a69e4ec/CI38507399305全绿。
 5HTTP/完整双审，三facts双接受；首组无同批full，第二组两臂皆正确，第三组full保留修法分歧。
@@ -28,11 +31,14 @@ pause_reason: "互补职责离线原型已完成；真实编辑消费与语义�
 131本批原件/观测/作者、11件包、77源码、旧53源码、8旧批760原件及旧职责43原件/readiness保持。
 旧429业务码/未知用量不补填。详情保留在[关闭结果](plans/2026-10-14-review-duty-followup-result.md)。
 
-**下一动作：接好隔离开发入口的身份、真实接受/兼容裁决、观测与共享预算停止路径，完成离线整链后冻结可审执行包。**
-最小提案是一份完整固定报告的两initial、至多一次实际编辑、两fresh，最多4 GLM/high加1 Flash/high，
-483840tokens/2700活动秒，合同上界估价5.8609664元非硬账单封顶。仅提案，尚无可执行包或新费用授权。
-completion新政策尚未实测；双initial pass不强迫编辑，语义拒绝/冲突及硬故障均按该链停止规则处理。
-自然产品最坏7调用，现5/401920/900合同不能静默扩容；本轮不改变生产入口，automation保持PAUSED。
+**下一动作：给已验证的开发链接真实observed worker，并完成跨进程只读replay/create-only seal及外层执行preflight。**
+本轮已绑定上批duty-3完整输入，准备摘要44c79817…50bb7d；仅复用输入，无旧意见/Host标签。
+核心使用依赖注入sender/observations/交接钩子；现同进程重核不是跨进程严格封存，execution_ready=false。
+真实发送前仍须新费用授权、同HEAD公共CI、真实native及绝对cwd/Python预检。当前222f19fa的
+CI38526956068仍在运行（曾查询TLS超时，未当CI失败）；本轮提交也须核自己的CI。
+固定报告最多4 GLM/high加1 Flash/high，483840tokens/2700活动秒，估价5.8609664元非账单硬上限。
+completion新政策与真实改文/fresh尚未实测，原三处问题未证明稳定解决；自然产品5/401920/900不扩容。
+automation保持PAUSED；本轮未申请或消耗新模型费用，8E未完成。
 
 已完成的独立产品工作为取消/失败用量owner API与工作台展示；未知不填0、报告门保持。
 52后端（含6真实临时Postgres）、32前端、6浏览器及两幅截图验证已有证据复用；不替代当前组合自然消费。
