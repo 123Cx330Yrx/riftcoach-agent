@@ -2,32 +2,36 @@
 
 ## Goal
 
-在既定阶段 0—8 和采用标准内，把可靠的模型分析接入真实 Agent 教练任务。
-当前 ShowMaker 观摩任务不是整个产品；自然 Coach、本人 Training、四块联动及前端等仍在原路线内。
-方法入口：`docs/plans/2026-09-22-agent-delivery-method.md`。事实入口：`docs/project_execution_state.md`。
+在既定阶段0—8和采用标准内，把可靠的模型分析接入真实Agent教练任务。
+ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块联动及前端仍在原路线内。
+方法入口：`docs/plans/2026-09-22-agent-delivery-method.md`；事实入口：`docs/project_execution_state.md`。
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
+当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：固定报告互补链已失败关闭。逐字补丁候选接线经零付费回环验证，新三文件包与854源码正式准备已完成；尚无新授权、真实质量或公网执行证据，automation PAUSED，8E未完成。
+执行状态：初审逐字补丁固定报告链已真实通过并封存；automation PAUSED。熟悉单例不授资格，
+自然6调用超过产品5上限，8E未完成，无下一付费批授权。
 
 ## Active Work Package
 
-**目标：** 使正确的互补意见能进入合法且不改坏范围的实际编辑；当前真实链未完成该目标。
-**实际路径与证据：** e9754afe/CI38537476729全绿后唯一执行，facts78/needs_revision、completion93/pass、compatibility clear均双接受；Flash返回14/4而非block_14/block_4，原入口只读复现block_keyed_selector。详见[关闭结果](../../docs/plans/2026-10-14-review-duty-chain-result.md)。
-**结果：** 3HTTP/48960tokens，合同估价0.4309744元非账单；64本批原件、3native及观测通过严格replay/seal；847源码/三文件包及历史保持。两fresh未发，无编辑Host或ReportAssessment。
-**反证：** 正确意见不能推出编辑成功；raw文本另将中单各2局限制扩展到两口径。后者为主审关闭后观察，非独立编辑验收。
-**方案裁决：** [地址合同免费核查](../../docs/plans/2026-10-14-editor-contract-decision.md)已完成；数组旧合同也有缺block实错，不再做同能力适配。保留严格block_N及实际新稿Host四项验收，结构不能证明内容正确。
-**离线候选：** [初审逐字补丁](../../docs/plans/2026-10-14-reviewer-authored-patches-design.md)将精确after的生产移入初审，程序原样应用，消除第二模型改写环节。60份完整请求与59项相关检查通过；错误初审补丁仍可能合法，语义修复未证。
-**执行接缝：** 隔离复用NativeGate和旧生命周期，四模型slot/最多六Host门；应用记录固定前四验收，双fresh绑定同稿；共享预算/取消、原件/作者/观测/native核验与跨实例只读回放、create-only seal已实现。测试响应和native为SCRIPTED，无新真实业务证据。
-**启动接线：** 新传输身份/guard/worker和独立授权启动复用旧控制库存及封存；Host-only edit独立于四模型slot；新phase记录进入closure并在回放重建。真实SDK/HTTP仅回环，授权、CI/HEAD和native内容是SCRIPTED，不等于公网或真实审查。
-**只读准备：** review_duty_patch_readiness_20261014.json记录854源码、完整输入/请求、阶段图与预算；实际Python/cwd及原生route/final可用，input直读false。ready/authorized均false，无新业务任务。
-**正式准备：** [新批范围与操作合同](../../docs/plans/2026-10-14-review-duty-direct-patch-launch.md)及review_duty_patch_launch_preparation_20261014.json已创建；SHA a27cdfb32f305fba8221359cab436a8857d9866f648c02158420cd1877e3b9fb，854源码/三文件包绑定。输入/请求/旧库存与真实路径/native预检通过，input直读false，不计业务审查。
-**下一动作：** 核最终提交同HEAD公共CI并取得此新批明确授权，随后按冻结准备即时预检后唯一执行。最多4GLM/high、0Flash、5.718016元估算非账单硬封顶；尚无授权/run/claim/waiter或派单，不复用旧授权。
-**范围与失败决策：** 旧批永久关闭，strict门及真实成稿/fresh保持。新原型固定报告4调用图不等于执行授权；自然任务6调用仍超过产品5/401920/900，不静默扩容或删除职责。坏补丁、意见冲突或fresh失败均须终止，不自动修补。
-**独立产品成果：** 取消/失败用量owner API与UI证据复用；不冒充当前组合自然Worker消费。正式同版本15及下游依赖保持。
+**目标与结果：** 验证正确互补意见能够进入实际改稿并通过同稿fresh，本例已完成。
+**实际路径：** 冻结505aff8f/CI38564530018全绿及有效新授权后唯一执行；facts72/needs_revision、
+completion95/pass、兼容clear、完整实际稿四项Host验收、唯一程序应用、facts/completion fresh均96/pass。
+六项均由主审与既有独立审查完整来源并接受；无Flash、无重试补发。
+**语义证据：** 两处中单早死比较改为胜2.5/败0.5，混合败2.67及四局限制明确，其余内容保留；
+新稿SHA 0da0c6299711cb8feff3c135b86768c3d94c82e159110c709b5fef7a3ac3d2c3，两fresh相同。
+**关闭证据：** 4HTTP/65839tokens、估价0.797132元非账单；unknown/receiptless/未发0。
+严格replay/create-only seal、103原件/6native作者/4观测/控制库存通过，854源码/3件包及旧证据保持。
+见[关闭结果与取舍](../../docs/plans/2026-10-14-review-duty-direct-patch-result.md)。
+**方案去留：** 保留作为有单例真实消费证据的开发方向；不是稳定改善、holdout或产品自动语义保证。
+初审补丁仍可能内容错误，结构预览不认证语义。旧Flash失败链、原15失败/分歧不重判或拼资格。
+**当前依赖：** 自然任务两生成+四审查=6调用，仍超产品5/401920/900；完整审查职责和fresh不省略。
+**下一动作：** 零付费核对自然任务路径与预算方案，形成具体可审查取舍，不另开付费批。
+**失败与范围：** 本批已永久关闭，automation暂停；不修改原件、补字段重买或扩大产品预算。
+**产品交付：** 正式同版本15、自然Coach/Training/四块联动、journal、前端头像审美、Memory、身份运维、
+两树整合、独立评估和学习继续保留；代码、Owner理解、来源资格与公开成熟度分别验收。
 
 ## Dependencies and Follow-through
 
@@ -48,7 +52,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：逐字补丁新批冻结准备完成，下一步核最终提交同HEAD公共CI及取得具体新批授权后唯一执行。没有真实质量或产品预算准入证据；旧批保持封存、automation PAUSED，原15/8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：已授权逐字补丁固定报告验证通过并严格封存，automation已暂停。
+下一动作零付费核对自然任务6调用与产品5上限的方案取舍，不另开付费批；正式同版本15、
+真实自然消费、8E及全部产品依赖仍未完成。
 
 ## History
 
