@@ -124,8 +124,9 @@ guard及SHA校验实际执行，只有测试目录配置和synthetic checkout身
 当前input直读false，future_input_guaranteed=false；没有业务审查，未来仍须即时核验。
 旧847源码/3件包/64原件SHA全部保持。产物execution_ready/authorized均false，不是运行授权。
 
-当前未创建新业务执行包、授权、run、waiter或Host任务，automation保持PAUSED。下一准备应
-核本提交公共CI，再单独形成新批三文件包、冻结准备与授权请求；真实审查和公网质量仍缺，
+上述只读审计时未创建新业务包。随后已单独形成三文件包与854源码正式准备，具体SHA、预算、
+实际路径/native预检及运行合同见[新批准备](2026-10-14-review-duty-direct-patch-launch.md)。
+尚无新授权、run、claim、waiter或Host任务，automation保持PAUSED；真实审查和公网质量仍缺，
 不能直接启动旧批或把离线通过计入资格。
 
 ## 预算、失败决定与下一接缝
@@ -139,8 +140,9 @@ guard及SHA校验实际执行，只有测试目录配置和synthetic checkout身
 
 离线接缝把原生导入、补丁兼容与完整预览验收绑定到同一原始输出，唯一应用和两fresh共用
 预算/取消门；新传输/授权启动/外层seal已零付费接线，测试用替身不增加真实业务证据。
-独立只读准备审计已完成；下一动作是**核本提交公共CI，再单独形成新批正式冻结准备**。
-不直接复用旧授权，不创建真实run或waiter，不把代码中的prepared/ready字段当本批已授权。
+只读审计及新批正式冻结准备已完成；下一动作是**核最终提交同HEAD公共CI并取得具体新批授权，
+随后按冻结准备即时预检后唯一执行**。不复用旧授权，不提前创建真实run或waiter，
+不把代码中的prepared/ready字段当本批已授权。
 若未来新初审仍产出错误补丁、正确内容被改坏、协议不合格或fresh拒绝，则当前候选失败停止；
 不得以修补个别限定词或补schema字段继续购买。单例正向也仅为开发信号，不授原15资格。
 

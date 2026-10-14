@@ -1,3 +1,11 @@
+## 2026-10-14 逐字补丁新批正式准备完成
+
+从f046e04f继续，以新prepare入口create-only生成三文件包和review_duty_patch_launch_preparation_20261014.json；SHA a27cdfb32f305fba8221359cab436a8857d9866f648c02158420cd1877e3b9fb，plan fdfc041c2889b199681f533e3dbd033ad35aa48c47e9a1d062615210f0afc5e7。854源码配置与readiness逐项一致，完整输入/原稿/plan一致，初审请求逐字匹配新builder；旧847源码/3件包/64原件SHA保持。
+
+Operator riftcoach-review-duty-direct-patch-20261014保存create-only preparation-native-paths与preparation-complete。实际绝对Python/cwd子进程和既有主体血缘/route/final预检通过，input直读false/future不保证，不算业务审查。没有新授权、run/claim/waiter、付费请求或Host派单；automation实核PAUSED。
+
+新增2026-10-14-review-duty-direct-patch-launch.md列明最多4GLM/high、0Flash、387072tokens/2400活动秒/86400Host秒和5.718016元合同估价非账单硬上限；保留完整补丁双审、兼容、实际整稿四项验收、唯一应用、同稿双fresh及所有失败即停。两initial均pass不记编辑消费成功；自然任务6>5缺口保持。f046e04f/CI38562682178查询仍运行中；本资料提交同HEAD公共CI另核。下一动作是最终CI与新的明确授权后即时预检唯一执行，不能复用旧批授权。
+
 ## 2026-10-14 逐字补丁启动/worker与关闭阶段接线
 
 从51b0dd8a继续，新增review_duty_patch_transport/launch，私有复用冻结流式传输和授权启动器。新传输只允许四次GLM/high，无Flash；guard在父/启动子进程前/子进程SDK client前重核，独立新授权身份不接受旧批授权。Host-only edit可原样task/submit/abort，不扩大模型slot。phase-result.json记录实际请求/解析/Host/预览/应用停止点并入closure，回放重建核对，不再把最后模型请求误报为失败点。

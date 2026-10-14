@@ -1,3 +1,9 @@
+## 2026-10-14 正式准备与执行授权分别绑定
+
+新prepare记录的execution_ready=true表示启动入口准备，不代表公共CI、付费授权或业务Host已通过。854源码与三文件包固定于准备SHA，最终clean HEAD/同HEAD CI及有效期另由新授权绑定；本轮文档与数据提交不改变源码库存。授权前实际路径/native快照只证明当时可启动和route/final可用，input直读false仍须保留，不能替代首次执行的即时预检或未来完整业务审查。
+
+完整输入/plan与readiness及两初审与builder逐字一致已实核。旧847/3/64原件保持；新包只重用完整来源和固定原稿，没有借旧意见、标签或跨批成功拼资格。具体新提案见2026-10-14-review-duty-direct-patch-launch.md，automation暂停，无新付费授权。
+
 ## 2026-10-14 Host-only阶段与模型slot必须分开
 
 移除Flash调用后仍需独立验收完整实际稿。直接复用旧启动器的slot白名单会漏掉edit Host命令；若为修命令而把edit加回模型slot，又会把候选预算/子进程允许路径扩错。本轮只扩Host命令集合，模型slot仍四个，guard拒绝edit作为模型prepared路径。

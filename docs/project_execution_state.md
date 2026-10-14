@@ -45,8 +45,14 @@ replay/create-only seal由SCRIPTED测试验证；无新真实模型或业务Host
 **只读准备审计完成：854份源码配置/完整输入与请求SHA、阶段图/预算已记录。**
 实际Python/cwd与既有原生主体route/final可用性通过；input直读false，未来须即时核。
 证据review_duty_patch_readiness_20261014.json，ready/authorized均false，不是业务审查或授权。
-**下一动作：核本提交公共CI，再单独形成新批三文件包与正式冻结准备。**
-当前只有启动代码，没有新业务运行包、授权、run/waiter或真实Host派单；automation仍PAUSED。
+**新批三文件包与正式冻结准备已完成，尚未授权执行。**
+见[具体范围与操作合同](plans/2026-10-14-review-duty-direct-patch-launch.md)。准备SHA为
+a27cdfb32f305fba8221359cab436a8857d9866f648c02158420cd1877e3b9fb，绑定854源码配置和三文件包；
+完整输入、原稿、plan与readiness相同，两initial逐字匹配builder，旧847/3/64库存保持。
+实际路径与原生route/final再次预检通过，input直读false；此为行政预检，不是业务审查。
+最多4GLM/high、0Flash、387072tokens/2400活动秒/86400Host秒，估价5.718016元非账单硬封顶。
+**下一动作：核最终提交同HEAD公共CI并取得上述新批明确授权，随后按冻结准备即时预检后唯一执行。**
+f046e04f/CI38562682178查询时仍运行中；资料提交CI另核。没有新授权、run/claim/waiter或Host派单；automation仍PAUSED。
 固定报告4调用，自然任务仍6次，超过产品5上限；不跳职责或fresh、不扩产品预算。
 初审新增修订负担的真实质量尚未验证。
 本例只支持互补初审可行，不支持编辑成功、稳定改善、holdout、产品准入或原15资格；8E未完成。
