@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定报告互补链已失败封存；地址合同取舍完成，保留严格block_N，不回退数组或补键。生成语义修复未选定，automation PAUSED。"
+pause_reason: "固定报告链已失败封存；初审逐字补丁仅离线原型，语义与原生验收未证，6调用不符合产品5上限。automation PAUSED，无新付费授权。"
 ---
 
 # RiftCoach 当前执行状态
@@ -30,8 +30,13 @@ runner退出1、无重试补发，automation已PAUSED。机器证据`review_duty
 **零付费地址合同裁决已完成：保留严格block_N，不新建数组适配器。**
 数组合同也有缺block的真实失败；两种表示均不能证明替换内容正确。现有实际新稿四项Host验收、
 拒绝后不发fresh的控制路径保留，不能当自动产品语义保证。见[方案取舍](plans/2026-10-14-editor-contract-decision.md)。
-**下一动作：针对替换内容的来源限定保持，提出有区分性反证的机制对照；当前尚无被支持的生成修复。**
-不重复地址变形、同义提示或旧例答案注入；未形成可区分机制前不准备新付费批。完整新稿验收保持。
+**新候选仅离线：初审直接提出逐字补丁，程序原样应用，完整新稿再双职责fresh。**
+已实现隔离请求/问题库存绑定/原稿坐标预览，原15的60份请求完整来源保持，最大输入上界55508；
+人工错误补丁反例仍可结构组装，故不认证语义。59项不同相关检查通过，运行源码与旧原件保持。
+见[机制、反证与边界](plans/2026-10-14-reviewer-authored-patches-design.md)。旧意见不补字段、不转为新候选证据。
+**下一动作：离线接通原生补丁/兼容/实际新稿验收与唯一应用、两fresh的共享预算及取消门。**
+当前只有纯预览，无真实Host或发送接线；固定报告调用图4次，自然任务仍6次，超过产品5上限，
+不跳职责或fresh、不扩产品预算、不创建新付费包。初审新增修订负担的真实质量尚未验证。
 本例只支持互补初审可行，不支持编辑成功、稳定改善、holdout、产品准入或原15资格；8E未完成。
 
 ## 保留的真实结果与依赖

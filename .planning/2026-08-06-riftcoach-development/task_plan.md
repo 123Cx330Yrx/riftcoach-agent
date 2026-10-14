@@ -11,7 +11,7 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：固定报告互补链已关闭；两initial及兼容双审接受，第三次Flash编辑因裸数字键违反block_N协议硬停。无合法新稿或fresh，automation PAUSED，8E未完成。
+执行状态：固定报告互补链已失败关闭。初审逐字补丁的新候选仅完成离线请求和预览，原生验收/执行接缝与真实质量未完成；automation PAUSED，8E未完成。
 
 ## Active Work Package
 
@@ -20,8 +20,9 @@
 **结果：** 3HTTP/48960tokens，合同估价0.4309744元非账单；64本批原件、3native及观测通过严格replay/seal；847源码/三文件包及历史保持。两fresh未发，无编辑Host或ReportAssessment。
 **反证：** 正确意见不能推出编辑成功；raw文本另将中单各2局限制扩展到两口径。后者为主审关闭后观察，非独立编辑验收。
 **方案裁决：** [地址合同免费核查](../../docs/plans/2026-10-14-editor-contract-decision.md)已完成；数组旧合同也有缺block实错，不再做同能力适配。保留严格block_N及实际新稿Host四项验收，结构不能证明内容正确。
-**下一动作：** 针对替换内容的来源限定保持形成有区分性反证的机制对照；生成修复尚未选定，不以地址变形、同义提示或旧例答案进入付费准备，不创建新授权/run。
-**范围与失败决策：** 本批永久关闭；既定strict门不降级，真实成稿/fresh仍是必要证据。产品5/401920/900不静默扩容为7，未选机制不申请新付费批。
+**离线候选：** [初审逐字补丁](../../docs/plans/2026-10-14-reviewer-authored-patches-design.md)将精确after的生产移入初审，程序原样应用，消除第二模型改写环节。60份完整请求与59项相关检查通过；错误初审补丁仍可能合法，语义修复未证。
+**下一动作：** 离线接通原生意见/补丁兼容/实际新稿验收与唯一应用、两fresh的共享预算及取消门；复用既有NativeGate与生命周期，不以caller布尔值替代原生认证。接缝完成前不冻结付费包。
+**范围与失败决策：** 旧批永久关闭，strict门及真实成稿/fresh保持。新原型固定报告4调用图不等于执行授权；自然任务6调用仍超过产品5/401920/900，不静默扩容或删除职责。坏补丁、意见冲突或fresh失败均须终止，不自动修补。
 **独立产品成果：** 取消/失败用量owner API与UI证据复用；不冒充当前组合自然Worker消费。正式同版本15及下游依赖保持。
 
 ## Dependencies and Follow-through
@@ -43,7 +44,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：地址合同取舍已完成，下一步是来源限定保持的机制对照。当前尚无被支持的生成修复；批已严格封存，automation PAUSED，不重开或补发，原15/8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：逐字补丁离线原型完成，下一步为原生验收与执行控制接缝。没有真实质量或产品预算准入证据；旧批保持封存、automation PAUSED，原15/8E及全部产品依赖未完成。
 
 ## History
 
