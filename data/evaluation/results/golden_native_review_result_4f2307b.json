@@ -1,0 +1,435 @@
+{
+  "schema_version": "1.0",
+  "implementation_sha": "4f2307b8c3f1e6a2b5a77e0a529cc60065f8e75f",
+  "ci_run": 35417428624,
+  "scope": "five_analyst_development_controls_not_holdout_or_production",
+  "cases": [
+    {
+      "control": "positive",
+      "run": "data/runs/inference_development/native-review-4f2307b-positive-v2",
+      "result": {
+        "attempted_calls": 1,
+        "automatic_path_pass": true,
+        "completed_calls": 1,
+        "expected_report": "accept",
+        "final_score": 97,
+        "final_verdict": "pass",
+        "id": "observed_01",
+        "initial_control": {
+          "expected_report": "accept",
+          "id": "observed_01",
+          "matched": true,
+          "score": 97,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": false,
+          "valid": true,
+          "verdict": "pass"
+        },
+        "input_tokens": 11976,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 5096,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "score": 97,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": false,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "pass"
+      },
+      "calls": [
+        {
+          "state": "complete",
+          "elapsed_ms": 46656,
+          "first_visible_content_ms": 24796,
+          "finish_reason": "stop",
+          "input_tokens": 11976,
+          "output_tokens": 5096
+        }
+      ],
+      "file_sha256": {
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/plan.json": "efca0df5537235a47de72c5c20e24bb0d22873036b1d96c6d9686d57eeb6313e",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/receipt.json": "c7c1f0e47f9a5c404cd48ff5fd1e8e1e57215261dc40692e6935e9ea3cf3324b",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/initial-evaluation.json": "249df837f07ecaa87d0183046ff3b7363d490f66725f8e22561ba81838c10567",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/input.json": "63468e04275741ef68da7de00b0e970e4bd5dd5b15b78c6ba3dbe2cad5bc6390",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/request-001.json": "28482b7cb3f91445f2c9a9f6ca4d7fc6ab642dfb3a19ebf38b799b20833b0e5a",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/response-001.json": "078e6a0bde1e170fcd36a5887a1880648c7a29915fbfe8ca5b79793b60c81c42",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/result.json": "49dcb33bfd659c0323fd6926f0cb89ef3fa5e54b7157f84f97c6243a3d3daead",
+        "data/runs/inference_development/native-review-4f2307b-positive-v2/observed_01/streams/stream-001/result.json": "fa1eb7f606361c0acde2cd51025d01ae8dd2ed3ec90f585b2d454d7d4f7b9e9f"
+      },
+      "complete_explanations_and_revision_read": true,
+      "development_semantic_outcome": "accepted"
+    },
+    {
+      "control": "future",
+      "run": "data/runs/inference_development/native-review-4f2307b-future-v2",
+      "result": {
+        "attempted_calls": 3,
+        "automatic_path_pass": true,
+        "completed_calls": 3,
+        "expected_report": "reject",
+        "final_score": 98,
+        "final_verdict": "pass",
+        "id": "observed_02_future",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "observed_02_future",
+          "matched": true,
+          "score": 78,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 37908,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 14730,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 78,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "calls": [
+        {
+          "state": "complete",
+          "elapsed_ms": 85344,
+          "first_visible_content_ms": 52000,
+          "finish_reason": "stop",
+          "input_tokens": 11994,
+          "output_tokens": 7892
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 18672,
+          "first_visible_content_ms": 7047,
+          "finish_reason": "stop",
+          "input_tokens": 13903,
+          "output_tokens": 1880
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 55171,
+          "first_visible_content_ms": 25343,
+          "finish_reason": "stop",
+          "input_tokens": 12011,
+          "output_tokens": 4958
+        }
+      ],
+      "file_sha256": {
+        "data/runs/inference_development/native-review-4f2307b-future-v2/plan.json": "c85281e080cf663af70c065883a9937bc1b862f20053ec2d83fee5e50b541a8a",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/receipt.json": "26b5c01a516d17dbbaeb78f6c947ca4c71c95d5785b9d237eae2967219fce0b7",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/initial-evaluation.json": "6ef2de9283e854e36be58c23bbd7427a8f206d1edba5f0cd9f73b3d029522501",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/input.json": "423e0b492a95e36715e0c098d9c899768f442b56ddb7068ff4cc68cf71be7dc7",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/request-001.json": "9072c4d497f57981d0fc58d14e3d9a0027e7dc0fda7bae908f41bccc45288a8f",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/request-002.json": "58441e26b9e65386c668473a0094906faf6d0803c4be8ac46deb9b118d4ede22",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/request-003.json": "298d4988f31a759dac36f7045d8c00086ed9cf1e59581e2b990b6a4dc648f528",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/response-001.json": "e24210ce5a511b887a80cca424e3852547bb9fa968207c09b4800c00fa3dbac1",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/response-002.json": "24ace2b99a18772e9758f212dd79bbcace7e046f3ff1060092bc08ed6d03cf47",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/response-003.json": "66e36ed3b7e19ef5803325e31be809e74ef055dd2c5aad2147b250f9248fce6b",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/result.json": "d5b763638e4969dbf3ab37993b9cd76d2086f4a74855af5ae2a0f82dfa30e53b",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/revised-report.md": "8e03dd1c8728d381582a7d04f164ea1634cdd39f26088c925c0785e888c134df",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/streams/stream-001/result.json": "4ffa93afec022e1dcdc3261966810cd708cbc28a94d4ed1ab99e773cdb7f4c95",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/streams/stream-002/result.json": "86e74d8ffb6cf5eee5ca80fbbf2951f8ead21b3b04d638e46f09db76ac447e74",
+        "data/runs/inference_development/native-review-4f2307b-future-v2/observed_02_future/streams/stream-003/result.json": "ad55281cf827365a32950a28fa71776e1a00a28aba46fa30f8b8900c6550046b"
+      },
+      "complete_explanations_and_revision_read": true,
+      "development_semantic_outcome": "accepted"
+    },
+    {
+      "control": "identity",
+      "run": "data/runs/inference_development/native-review-4f2307b-identity-v2",
+      "result": {
+        "attempted_calls": 3,
+        "automatic_path_pass": true,
+        "completed_calls": 3,
+        "expected_report": "reject",
+        "final_score": 100,
+        "final_verdict": "pass",
+        "id": "observed_03_reader_identity",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "observed_03_reader_identity",
+          "matched": true,
+          "score": 80,
+          "semantic_approval": false,
+          "suggested_category_matched": true,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 37329,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 16862,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 80,
+        "semantic_approval": false,
+        "suggested_category_matched": true,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "calls": [
+        {
+          "state": "complete",
+          "elapsed_ms": 91110,
+          "first_visible_content_ms": 62985,
+          "finish_reason": "stop",
+          "input_tokens": 11977,
+          "output_tokens": 8265
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 17266,
+          "first_visible_content_ms": 6000,
+          "finish_reason": "stop",
+          "input_tokens": 13379,
+          "output_tokens": 1847
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 76625,
+          "first_visible_content_ms": 47953,
+          "finish_reason": "stop",
+          "input_tokens": 11973,
+          "output_tokens": 6750
+        }
+      ],
+      "file_sha256": {
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/plan.json": "eeefcac5dcc3f9702bf88ea862f26c52244693f51c598fab812ac0712d7cd407",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/receipt.json": "3aa38e546269550d69dcce097285a106d2c0021d3cba47e155d92966f9b2a3a3",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/initial-evaluation.json": "e88ed8ae603a2cb8602173eed51400c16ddb38368fca130272eefe499b20757e",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/input.json": "5ea36f7952b86c39a6686d432eb4803aa43c9adac216ba443280b4bc6c4967f1",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/request-001.json": "328fed4b0ad6890a08898e650d9045a9cc207b7adb268a9de6bc56c981b11542",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/request-002.json": "a9982106c6220322076603ab06f851af5d681cf7e60e47a842592c6ce27ed4f5",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/request-003.json": "0e679e94e1044089352d95f01a41f3723a4f5df8d2225006623f4ef84ce27fe8",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/response-001.json": "066fea17400f4a98b4650bd5e82d345f1a02c8dcd130c8a26d89797b7f0cc9ae",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/response-002.json": "2a7d6eb4394f9b7afb2be65ec3955454eb7bc051860bfb1af77f48cd3c06a519",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/response-003.json": "72b0ec5b956b6d310c52be95cc2bf19189621e0bc0c848ce47dcb536aec523c2",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/result.json": "c2f6989d7ab8c340397026d3d311405f22f735c0c7a873bc90298ad6949daab5",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/revised-report.md": "5b27282b2c92d53efca916316efc7da9aece8925112c1454abb57d817d680aca",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/streams/stream-001/result.json": "26bb394d6452c12704e96d10f2302e79dee6450ef271d99a246a37e29d235627",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/streams/stream-002/result.json": "7ebc49ead00e8a6d594bbbe93e0e1821bfb3611ad338b3f2e5fd2c732f9602b2",
+        "data/runs/inference_development/native-review-4f2307b-identity-v2/observed_03_reader_identity/streams/stream-003/result.json": "bf78122c8868aad8cae1ab2fb6b9bbf532a4b69bb1e49c36ef279872ed3f3a16"
+      },
+      "complete_explanations_and_revision_read": true,
+      "development_semantic_outcome": "accepted"
+    },
+    {
+      "control": "date",
+      "run": "data/runs/inference_development/native-review-4f2307b-date-v2",
+      "result": {
+        "attempted_calls": 3,
+        "automatic_path_pass": true,
+        "completed_calls": 3,
+        "expected_report": "reject",
+        "final_score": 97,
+        "final_verdict": "pass",
+        "id": "observed_04_official_date",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "observed_04_official_date",
+          "matched": true,
+          "score": 92,
+          "semantic_approval": false,
+          "suggested_category_matched": true,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 37820,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 16313,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 92,
+        "semantic_approval": false,
+        "suggested_category_matched": true,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "calls": [
+        {
+          "state": "complete",
+          "elapsed_ms": 89094,
+          "first_visible_content_ms": 56391,
+          "finish_reason": "stop",
+          "input_tokens": 12008,
+          "output_tokens": 8054
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 18984,
+          "first_visible_content_ms": 7578,
+          "finish_reason": "stop",
+          "input_tokens": 13822,
+          "output_tokens": 1936
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 69391,
+          "first_visible_content_ms": 41937,
+          "finish_reason": "stop",
+          "input_tokens": 11990,
+          "output_tokens": 6323
+        }
+      ],
+      "file_sha256": {
+        "data/runs/inference_development/native-review-4f2307b-date-v2/plan.json": "e45ca6235814aea09d1cae80cd0d803bc942abab0c695b39301c142dbf174c41",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/receipt.json": "f9d8a3f1a4a2f4c584a1ed6dcfb9c60d14e31e809ac030bce8b5191c1d783eca",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/initial-evaluation.json": "a4f7b5ee4ad421ddac9c9a085a3f0643b102411c6e06d2209a1df2b082f48752",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/input.json": "3dc63cce9dcfb45fdf7989872159784ba15b8820fe9e7bb44ab2681d1fbcb6c6",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/request-001.json": "0cc036f3a4897404b724c13e72d548edd3ba82c576f5cad3aa7ef785aa2c2c4a",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/request-002.json": "1a62b1fb3adbc8549602017098e2f373a8b5fa5a45d2c3a4bb1ca809fc2da4e8",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/request-003.json": "9399caf7066b883fb03bac6ed9d95b4f5f215af6b53c5a18977f96f7100c15cb",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/response-001.json": "9052ab10c32446fe711d6ab194fe152e4c96874e7f8fc64e851814980215457b",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/response-002.json": "b03a2a8ecca97b4d45d5d029e22d4d641273d98548cff5c011470cddf42e75cc",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/response-003.json": "767b090310be900ee9115f6181fb84aedc7e72d29227bcebd7c5375af63cac33",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/result.json": "ffe33269c8aa01983558daa868787a7d3bd0990fbf390698b9324bc1ae245ec0",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/revised-report.md": "3d5ac6dc9df217d43ea84cf3224ae254ae6283ddc4e4691397e0d5bc28e80118",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/streams/stream-001/result.json": "c41b331e31960393cd2c5e012f51408e5de252256954ea3f1e6295dd93e44d5c",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/streams/stream-002/result.json": "ea9c9e4625e1e9b6e7dbccf0235959dd05bb614f9b310bc2e59a2f81c56f684e",
+        "data/runs/inference_development/native-review-4f2307b-date-v2/observed_04_official_date/streams/stream-003/result.json": "be73143fe37a8f4765e4ee0696571afaff580de1453e1e354a39e8c883048077"
+      },
+      "complete_explanations_and_revision_read": true,
+      "development_semantic_outcome": "accepted"
+    },
+    {
+      "control": "heading",
+      "run": "data/runs/inference_development/native-review-4f2307b-heading-v2",
+      "result": {
+        "attempted_calls": 3,
+        "completed_calls": 3,
+        "error_type": "JSONDecodeError",
+        "expected_report": "reject",
+        "id": "observed_05_heading_ability",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "observed_05_heading_ability",
+          "matched": true,
+          "score": 88,
+          "semantic_approval": false,
+          "suggested_category_matched": true,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 37551,
+        "interrupted": false,
+        "matched": false,
+        "output_tokens": 16241,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 88,
+        "semantic_approval": false,
+        "stop_reason": "protocol_or_execution_failure",
+        "suggested_category_matched": true,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": false,
+        "verdict": "needs_revision"
+      },
+      "calls": [
+        {
+          "state": "complete",
+          "elapsed_ms": 84047,
+          "first_visible_content_ms": 55125,
+          "finish_reason": "stop",
+          "input_tokens": 11989,
+          "output_tokens": 7736
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 17922,
+          "first_visible_content_ms": 6437,
+          "finish_reason": "stop",
+          "input_tokens": 13562,
+          "output_tokens": 1876
+        },
+        {
+          "state": "complete",
+          "elapsed_ms": 59250,
+          "first_visible_content_ms": 33781,
+          "finish_reason": "stop",
+          "input_tokens": 12000,
+          "output_tokens": 6629
+        }
+      ],
+      "file_sha256": {
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/plan.json": "6709b5eaf2253b1074f77b8fe36470e058cdb80b51298cd09a9ecacde76411bc",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/receipt.json": "deaeca126256a55d07ca355915c5f550b3cc005e52dc23077f9a6e25da2b5ddb",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/initial-evaluation.json": "6109b30ee44a5822ec335fd9c4ba4cd8253669e27f9badb0ba70544e873b53a9",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/input.json": "d24c4d9323fbd03913b73f605277a65bd1034a9102e1aa0eb7c6c257059a79dd",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/request-001.json": "846acccd45db5d84515949f149bcf1a0bd604a783d256515aa6fd3a09edf4ae4",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/request-002.json": "c187f879d2116895a06fa45311777e5e2e086023de56ed0a86f54550a5d43440",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/request-003.json": "c2badcc872d1c6ad84436063a290cce969095d5a53008bb9b9baa2fe5ad93497",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/response-001.json": "9b6f88c27c5a0de7efb74b24e02a8c38c184ff3b4f0fa096296b436a8f2cbd85",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/response-002.json": "c0d71d1a5bef9935057c7bd54662a540fe502cfc22080d1e52c58865ab19cfd3",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/response-003.json": "25b6bef421a976a239f63ce429e3f168f6f287d18512ac69bfbdff4394f23307",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/result.json": "e52d65d5220cd003f2991174a63d168ff145d28b692e34d0c0028b50db25bdef",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/revised-report.md": "89cdbfc69651875fdd79b332c37a51ef271de103ed600cbd54742358e4b2d3a5",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/streams/stream-001/result.json": "63d439b17a53c4fcdb841826205bfe51328f2949a1c6b73478154e0d87405284",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/streams/stream-002/result.json": "1e0aa6e7bab96f0b1191681b43726f9976ad2f7dfb21e9edb80b9736daab0d2e",
+        "data/runs/inference_development/native-review-4f2307b-heading-v2/observed_05_heading_ability/streams/stream-003/result.json": "af245286f6390771aa8f88c33eb5e4f44ea76af8f24826073ff0f93c2deb7697"
+      },
+      "complete_explanations_and_revision_read": true,
+      "development_semantic_outcome": "rejected"
+    }
+  ],
+  "known_input_tokens": 162584,
+  "known_output_tokens": 69242,
+  "calls": 13,
+  "cumulative_provider_requests_at_least": 220,
+  "unknown_usage_calls": 0,
+  "production_admitted": false,
+  "stage8e": "in_progress",
+  "diagnosis": {
+    "last_response_complete": true,
+    "json_object_mode_already_sent": true,
+    "transport_timeout_or_output_exhaustion": false,
+    "trailing_text": "\n``结束。",
+    "unmodified_response_rejected": true,
+    "diagnostic_only_prefix_verdict": "pass",
+    "diagnostic_only_prefix_host_accepted": true,
+    "prefix_semantically_accepted": false,
+    "semantic_defects": [
+      {
+        "block": 2,
+        "actual": "## 1. 总体结论",
+        "wrong_explanation": "Describes the changed block4 title instead."
+      },
+      {
+        "block": 3,
+        "wrong": "辅助1局0负",
+        "actual": "辅助1局0胜、1负; same error repeated in summary"
+      },
+      {
+        "block": 9,
+        "wrong": "未把辅助局混入",
+        "actual": "Block11 also explicitly describes the auxiliary match; this location claim is inaccurate."
+      }
+    ],
+    "first_heading_review_typo": "Block3 writes 2胜3胜; report is 2胜3负. Preserved, not silently accepted.",
+    "revised_report_correct": true,
+    "changed_nonblank_content_blocks": [
+      4
+    ],
+    "reassessment_not_reached": "evaluate catches validation failure then calls strict _decoded(raw); JSONDecodeError terminates before the one allowed complete reassessment.",
+    "next_action": "Offline qualify complete-object plus unstructured-tail admission to provisional reassessment only; preserve all original values and tail, strict final acceptance unchanged. Do not infer semantic repair from syntax repair."
+  }
+}

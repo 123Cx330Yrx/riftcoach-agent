@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "2.3.17",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.5.17",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "1.11.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "2bde5a1837837c8de1728ddbc207f6303306c50fbbf91305abdf7dd43f2210cd"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_fact_pack_probe",
+      "source": "app.evaluation.coach_report:build_fact_pack",
+      "sha256": "3543f202fd5f835220d41f44689717a576aa2b678eef2478f7d32594dfbf3f47"
+    },
+    {
+      "component_id": "evaluator_system",
+      "source": "app.evaluation.coach_report:EVALUATOR_SYSTEM_PROMPT",
+      "sha256": "89fd896882cf7c843fa7d6eea12e19cbbf3a42872526cb4952366166632b48a2"
+    },
+    {
+      "component_id": "evaluation_prompt_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_evaluation_prompt",
+      "sha256": "33231a75a65588e3cf1df2466dd7765d1f86cab6f587b20f6544914ce659e13b"
+    },
+    {
+      "component_id": "evaluation_repair_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_repair_prompt",
+      "sha256": "9eb1a1d41c34f43d4ad98b544fc6119f1de97788b2990706c8d0179eb18d4308"
+    },
+    {
+      "component_id": "reviser_system",
+      "source": "app.evaluation.coach_report:REVISER_SYSTEM_PROMPT",
+      "sha256": "c4cad848b17c8231b413e3ed0deb8be0eb0e0049323ac57701c542a15290c872"
+    },
+    {
+      "component_id": "revision_prompt_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_revision_prompt",
+      "sha256": "49a33b0445c63e4a0af5e4dd66e8906c360009b337eec306b78f2dfdcd1e1de6"
+    },
+    {
+      "component_id": "inference_implementation",
+      "source": "app.evaluation.golden_inference_audit:inference_implementation",
+      "sha256": "686d64b508235d19222e9b1186fa513bb374892fcd6004e45595a2ea1de35cf4"
+    },
+    {
+      "component_id": "inference_v2_implementation",
+      "source": "app.evaluation.golden_inference_audit_v2:inference_v2_implementation",
+      "sha256": "6a8db4b17ff62a1b33a37d92ccdc8118675f0bb5ff1b9f029afdb3fa538fb673"
+    },
+    {
+      "component_id": "inference_v3_implementation",
+      "source": "app.evaluation.golden_inference_audit_v3:inference_v3_implementation",
+      "sha256": "cadab248fac3437f6f0f72f93e9227c201f73898f93e3d8607577faca232605c"
+    },
+    {
+      "component_id": "contextual_decoder",
+      "source": "app.evaluation.golden_inference_audit_v3:contextual_decoder",
+      "sha256": "0c128d0694cc3888637df34479b025bc44fd38fdec60a0855c882eb05fa8cfeb"
+    },
+    {
+      "component_id": "coverage_implementation",
+      "source": "app.evaluation.golden_inference_coverage:coverage_implementation",
+      "sha256": "3d706c6960fd531d324d0e318697325a2d8b855554ca42c07c2e25864c5d7eb1"
+    },
+    {
+      "component_id": "scope_implementation",
+      "source": "app.evaluation.golden_inference_scope:scope_implementation",
+      "sha256": "be6f1420735aa6976b4ed5c7ca8c2642a8ce019449fac82acd9fc808f9a5eee4"
+    },
+    {
+      "component_id": "scope_v2_implementation",
+      "source": "app.evaluation.golden_inference_scope_v2:scope_v2_implementation",
+      "sha256": "132ef7741ebf60ed1c843b99076df38f29e80f3f7713aa5b31f12d87785ec8a5"
+    },
+    {
+      "component_id": "scope_v3_implementation",
+      "source": "app.evaluation.golden_inference_scope_v3:scope_v3_implementation",
+      "sha256": "935bcf70cdcf53c49644ec046dca8dd91dad6c2e63e599d895d4ff607069e4bf"
+    },
+    {
+      "component_id": "scope_v4_implementation",
+      "source": "app.evaluation.golden_inference_scope_v4:scope_v4_implementation",
+      "sha256": "479b93ca57988cfc7fc32ecb75e0645e279a4350034fafc653185c4a45f7f6da"
+    },
+    {
+      "component_id": "compact_coverage_implementation",
+      "source": "app.evaluation.golden_inference_scope_v4:compact_coverage_implementation",
+      "sha256": "9928e261e2ed2f643f79ec40c560cb5c531d38129f0f0354a95615b18358be8e"
+    },
+    {
+      "component_id": "scope_v5_implementation",
+      "source": "app.evaluation.golden_inference_scope_v5:scope_v5_implementation",
+      "sha256": "5418fa0231fb3051153e2610327c223e706887924e74b164e5d5c0a4c013bce7"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "app.evaluation.golden_fact_runtime:evaluation_schema",
+      "sha256": "620f6671584f8a0f0a6d6b42609cea4ecef26991f426647beed9b9f14fddd032"
+    },
+    {
+      "component_id": "golden_fact_candidate",
+      "source": "app.evaluation.golden_fact_runtime:golden_fact_candidate",
+      "sha256": "92d231a68602f4518cfbe0c415207faab0b2e3a60fb86f350053c9dc97656679"
+    },
+    {
+      "component_id": "golden_fact_operations",
+      "source": "app.evaluation.golden_fact_runtime:golden_fact_operations",
+      "sha256": "eb5afd4fba167d37ec3e4eea8fe46f5748a4d72dba5d44fa566bd518bd522a7e"
+    },
+    {
+      "component_id": "golden_fact_requests",
+      "source": "app.evaluation.golden_fact_runtime:golden_fact_requests",
+      "sha256": "bceb8e89861924d78ba53aa0b866cf0d2df5a31967b019c826a09afc24748c7a"
+    },
+    {
+      "component_id": "golden_fact_diagnostics",
+      "source": "app.evaluation.golden_fact_runtime:golden_fact_diagnostics",
+      "sha256": "4cac4b43bf26ba80b8b1437611394fd06903cf1c0854e1e60eb6c07970b95335"
+    },
+    {
+      "component_id": "golden_scope_diagnostics",
+      "source": "app.evaluation.golden_fact_runtime:golden_scope_diagnostics",
+      "sha256": "5718ffe150459a72c07840beea053bf1b278fe179e4f6e654a465171e442ccfe"
+    },
+    {
+      "component_id": "golden_fact_runtime",
+      "source": "app.evaluation.golden_fact_runtime:golden_fact_runtime",
+      "sha256": "0c2aa1e9b3871718255a76b02cbb847e6af9639155b01821d18673ee8123b41d"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.coach_contract:v1.3.17",
+      "sha256": "7f1ca3c6b5efe2a449d8ecadb0e98a8591f2eb5e2d2d91563ad2af571d62aa02"
+    }
+  ],
+  "program_sha256": "59131183087855152a0f93dae5be69d6ade73b8cee6bb48f79a4ec8c39f84d0e"
+}

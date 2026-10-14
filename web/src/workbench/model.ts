@@ -6,6 +6,7 @@ import type {
   ProductStateValueWire,
   PublicationStatusWire,
   RoutingRegionWire,
+  RuntimeUsageWire,
   TaskEventKindWire,
   TaskStatusWire,
   VerificationStatusWire,
@@ -53,7 +54,7 @@ export interface WorkbenchRecentMetricRow {
   readonly goldPerMinute: number
   readonly damagePerMinute: number
   readonly visionScore: number
-  readonly deathsBefore15: number
+  readonly deathsBefore15: number | null
 }
 
 export interface WorkbenchRecentSummary {
@@ -182,6 +183,7 @@ export interface LiveWorkbenchView {
   readonly summary?: WorkbenchRecentSummary
   readonly timeline?: WorkbenchTimeline
   readonly run?: WorkbenchRun
+  readonly usage?: RuntimeUsageWire | null
   readonly report?: WorkbenchCoachReport
   readonly evidence?: WorkbenchEvidence
   readonly events: readonly WorkbenchTaskEvent[]

@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-09-04T00:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 3,
+    "matches_received": 3,
+    "matches_analyzed": 3
+  },
+  "player": {
+    "game_name": "CinderAtlas",
+    "tag_line": "L9",
+    "riot_id": "CinderAtlas#L9",
+    "puuid_prefix": "glm53-low-anon..."
+  },
+  "request": {
+    "count": 3,
+    "queue": 420,
+    "region": "americas"
+  },
+  "recent_summary": {
+    "games_analyzed": 3,
+    "wins": 1,
+    "losses": 2,
+    "win_rate": 33.33,
+    "main_role": "JUNGLE",
+    "main_champions": ["熔岩练习者", "曙光练习者"],
+    "averages": {
+      "cs_per_min": 5.8,
+      "deaths_before_15": 1.33
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 6.4,
+        "deaths_before_15": 0.0
+      },
+      "losses": {
+        "cs_per_min": 5.5,
+        "deaths_before_15": 2.0
+      }
+    },
+    "champion_summary": [
+      {"champion": "熔岩练习者", "games": 2, "wins": 1, "win_rate": 50.0},
+      {"champion": "曙光练习者", "games": 1, "wins": 0, "win_rate": 0.0}
+    ],
+    "role_summary": [
+      {"role": "JUNGLE", "games": 3, "wins": 1, "win_rate": 33.33}
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "GLM53_LOW_SYNTH_417",
+      "game_duration_seconds": 1920,
+      "champion_id": 940417,
+      "champion_name": "熔岩练习者",
+      "role": "JUNGLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.4,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_LOW_SYNTH_418",
+      "game_duration_seconds": 1860,
+      "champion_id": 940418,
+      "champion_name": "曙光练习者",
+      "role": "JUNGLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 5.6,
+      "deaths_before_15": 2
+    },
+    {
+      "match_id": "GLM53_LOW_SYNTH_419",
+      "game_duration_seconds": 1740,
+      "champion_id": 940419,
+      "champion_name": "熔岩练习者",
+      "role": "JUNGLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 5.4,
+      "deaths_before_15": 2
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

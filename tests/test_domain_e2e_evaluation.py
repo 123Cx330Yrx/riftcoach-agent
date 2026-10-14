@@ -10,6 +10,9 @@ from pydantic import ValidationError
 
 from app.evaluation.domain_e2e import (
     DomainDatasetRole,
+    EvaluationAttemptDiagnostics,
+    EvaluationIssueCount,
+    EvaluationSeverityCount,
     FailureCode,
     LayerVerdict,
     evaluate_domain_candidate,
@@ -205,6 +208,83 @@ def test_candidate_schema_rejects_raw_prompt_or_exception_text(tmp_path: Path):
 
     with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
         load_domain_candidate(path)
+
+
+def test_evaluation_diagnostics_are_strict_body_free_counts():
+    attempt = EvaluationAttemptDiagnostics(
+        attempt_id=0,
+        score=80,
+        verdict="needs_revision",
+        passed_check_count=2,
+        issue_category_counts=(
+            EvaluationIssueCount(name="fact_error", count=1),
+            EvaluationIssueCount(name="prompt_injection", count=2),
+        ),
+        severity_counts=(
+            EvaluationSeverityCount(name="high", count=2),
+            EvaluationSeverityCount(name="low", count=1),
+        ),
+    )
+    serialized = attempt.model_dump_json()
+    payload = json.loads(serialized)
+    assert "fact_error" in serialized
+
+    def nested_keys(value):
+        if isinstance(value, dict):
+            return set(value).union(
+                *(nested_keys(row) for row in value.values())
+            )
+        if isinstance(value, list):
+            return set().union(*(nested_keys(row) for row in value))
+        return set()
+
+    assert nested_keys(payload).isdisjoint({
+        "quote",
+        "evidence",
+        "explanation",
+        "suggested_correction",
+        "summary",
+        "report",
+        "prompt",
+        "reasoning",
+        "request_id",
+    })
+
+    unsafe_payload = attempt.model_dump(mode="json") | {
+        "summary": "must not be exposed"
+    }
+    with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
+        EvaluationAttemptDiagnostics.model_validate(unsafe_payload)
+    with pytest.raises(ValidationError):
+        EvaluationIssueCount.model_validate(
+            {"name": "fact_error", "count": 1, "quote": "private body"}
+        )
+
+
+def test_evaluation_diagnostic_counts_require_canonical_unique_order():
+    common = {
+        "attempt_id": 0,
+        "score": 80,
+        "verdict": "needs_revision",
+        "passed_check_count": 1,
+        "severity_counts": (),
+    }
+    with pytest.raises(ValidationError, match="canonical enum order"):
+        EvaluationAttemptDiagnostics(
+            **common,
+            issue_category_counts=(
+                EvaluationIssueCount(name="other", count=1),
+                EvaluationIssueCount(name="fact_error", count=1),
+            ),
+        )
+    with pytest.raises(ValidationError, match="must be unique"):
+        EvaluationAttemptDiagnostics(
+            **common,
+            issue_category_counts=(
+                EvaluationIssueCount(name="fact_error", count=1),
+                EvaluationIssueCount(name="fact_error", count=2),
+            ),
+        )
 
 
 def test_held_out_usage_requires_role_and_frozen_confirmation(tmp_path: Path):

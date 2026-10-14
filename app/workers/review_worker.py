@@ -12,7 +12,13 @@ from uuid import UUID
 
 from pydantic import TypeAdapter, ValidationError
 
-from app.tasks.models import ReviewTask, TaskStatus, TaskTerminal, WorkerId
+from app.tasks.models import (
+    ReviewTask,
+    TaskPublicationMode,
+    TaskStatus,
+    TaskTerminal,
+    WorkerId,
+)
 from app.tasks.ports import TaskRepository
 from app.tasks.reliable_runtime import (
     TaskCheckpointPhase,
@@ -22,6 +28,7 @@ from app.tasks.reliable_runtime import (
 )
 from app.workers.polling import PollingPolicy
 from app.tasks.observability import TaskObservability
+from app.runtime.dispatch_control import DispatchStopped, bind_dispatch_guard
 
 
 Clock = Callable[[], datetime]
@@ -114,6 +121,7 @@ class _LeaseMaintainer:
         self._clock = clock
         self._stop = Event()
         self._lock = Lock()
+        self._beat_lock = Lock()
         self._disposition = TaskHeartbeatDisposition.ACTIVE
         self._error: BaseException | None = None
         self._thread = Thread(
@@ -152,22 +160,54 @@ class _LeaseMaintainer:
                 self._stop.set()
                 return
 
-    def _beat(self) -> TaskHeartbeatDisposition:
-        result = self._repository.heartbeat(
-            task_id=self._task.task_id,
-            worker_id=self._lease.worker_id,
-            lease_generation=self._lease.generation,
-            lease_token=self._lease.private_token,
-            now=self._clock(),
-            lease_seconds=self._policy.lease_seconds,
-        )
-        if not isinstance(result, TaskHeartbeatResult) or (
-            result.task_id != self._task.task_id
-        ):
-            raise TypeError("repository returned an invalid heartbeat result")
+    def require_dispatch_allowed(self) -> None:
         with self._lock:
-            self._disposition = result.disposition
-        return result.disposition
+            error, disposition = self._error, self._disposition
+        if error is not None:
+            raise DispatchStopped("task_lease_unavailable") from None
+        if disposition is not TaskHeartbeatDisposition.ACTIVE:
+            raise DispatchStopped("task_dispatch_fenced")
+        try:
+            # Read current DB state even if the periodic heartbeat is not due;
+            # cancellation can arrive between two fast model stages.
+            disposition = self._beat()
+        except Exception:
+            raise DispatchStopped("task_lease_unavailable") from None
+        if disposition is not TaskHeartbeatDisposition.ACTIVE:
+            raise DispatchStopped("task_dispatch_fenced")
+
+    def _beat(self) -> TaskHeartbeatDisposition:
+        # A send preflight and the background renewer share the same fence.
+        # Never let a later ACTIVE reply undo an observed cancellation/loss.
+        with self._beat_lock:
+            with self._lock:
+                if self._error is not None:
+                    raise RuntimeError("lease heartbeat failed") from None
+                if self._disposition is TaskHeartbeatDisposition.LOST:
+                    return self._disposition
+            try:
+                result = self._repository.heartbeat(
+                    task_id=self._task.task_id,
+                    worker_id=self._lease.worker_id,
+                    lease_generation=self._lease.generation,
+                    lease_token=self._lease.private_token,
+                    now=self._clock(),
+                    lease_seconds=self._policy.lease_seconds,
+                )
+                if not isinstance(result, TaskHeartbeatResult) or (
+                    result.task_id != self._task.task_id
+                ):
+                    raise TypeError("repository returned an invalid heartbeat result")
+            except BaseException as error:
+                with self._lock:
+                    self._error = error
+                self._stop.set()
+                raise
+            with self._lock:
+                if (result.disposition is not TaskHeartbeatDisposition.ACTIVE
+                        or self._disposition is TaskHeartbeatDisposition.ACTIVE):
+                    self._disposition = result.disposition
+                return self._disposition
 
 
 class ReviewWorker:
@@ -257,6 +297,14 @@ class ReviewWorker:
                 "worker.recovery_batch",
                 {"candidate_count": len(recovered)},
             )
+        replay_batch = getattr(self._terminal_turn_writer, "replay_pending_batch", None)
+        if callable(replay_batch):
+            try:
+                replay_batch(limit=8)
+            except Exception:
+                # A bad/tampered artifact remains pending and is retried on a
+                # later pass; it must not prevent unrelated queued work.
+                self._observe("worker.terminal_replay_failed", {})
         claim_started = time.perf_counter()
         try:
             claimed = self._repository.claim_next(
@@ -334,7 +382,12 @@ class ReviewWorker:
         terminal: object | None = None
         execution_failed = False
         try:
-            terminal = self._executor.execute(claimed)
+            with bind_dispatch_guard(maintainer.require_dispatch_allowed):
+                terminal = self._executor.execute(claimed)
+        except DispatchStopped:
+            # The final fenced disposition below determines the task outcome.
+            # No model error, retry, or synthetic terminal result is produced.
+            execution_failed = True
         except Exception:
             execution_failed = True
             self._observe(
@@ -369,14 +422,49 @@ class ReviewWorker:
             return self._commit_failure(claimed)
 
         try:
-            accepted = self._repository.succeed(
-                task_id=claimed.task_id,
-                worker_id=self._worker_id,
-                lease_generation=lease.generation,
-                lease_token=lease.private_token,
-                now=self._clock(),
-                terminal=terminal,
-            )
+            if claimed.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                # Evidence-bound tasks may only cross the terminal boundary
+                # through the atomic snapshot+task+event repository method.
+                # An executor that has not produced the complete publication
+                # payload is a configuration error, never a reason to fall
+                # back to the legacy succeed() path.
+                commit = getattr(self._repository, "succeed_with_evidence", None)
+                pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                publication_reference = getattr(
+                    terminal, "publication_reference", None
+                )
+                summary_digest = getattr(terminal, "summary_digest", None)
+                if (
+                    not callable(commit)
+                    or pending_snapshot is None
+                    or not isinstance(publication_reference, dict)
+                    or not isinstance(summary_digest, str)
+                ):
+                    self._observe(
+                        "worker.evidence_publication_missing",
+                        {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+                    )
+                    raise ReviewWorkerError("task_terminal_update_failed")
+                accepted = commit(
+                    task_id=claimed.task_id,
+                    worker_id=self._worker_id,
+                    lease_generation=lease.generation,
+                    lease_token=lease.private_token,
+                    now=self._clock(),
+                    terminal=terminal,
+                    pending_snapshot=pending_snapshot,
+                    publication_reference=publication_reference,
+                    summary_digest=summary_digest,
+                )
+            else:
+                accepted = self._repository.succeed(
+                    task_id=claimed.task_id,
+                    worker_id=self._worker_id,
+                    lease_generation=lease.generation,
+                    lease_token=lease.private_token,
+                    now=self._clock(),
+                    terminal=terminal,
+                )
         except Exception:
             self._observe(
                 "worker.terminal_update_failed",

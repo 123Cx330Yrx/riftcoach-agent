@@ -1,0 +1,44 @@
+{
+  "material_sha256": "100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b",
+  "cases": {
+    "Q7": {
+      "decision": "no_material_error",
+      "basis": "第8段明确消歧第4段的省略；全样本早死3/3正确。第5段泛指均值不能补成所有指标下降，表中方向均真实。"
+    },
+    "B4": {
+      "decision": "requires_correction",
+      "blocks": [
+        4
+      ],
+      "basis": "明确仅中单3/1被写成完全相同；后文全样本3/3不能撤销明确窄范围断言。只修该比较。"
+    },
+    "R3": {
+      "decision": "requires_correction",
+      "blocks": [
+        5
+      ],
+      "basis": "明确每一个包含视野和早死；混合视野35>25、早死3>2，方向写反。保留正确表格与其他内容。"
+    },
+    "K6": {
+      "decision": "no_material_error",
+      "basis": "中单负组早死1比胜组3少且两局均负，有行级支持；明确不确定因果，不补造因果零效应。"
+    },
+    "N2": {
+      "decision": "requires_correction",
+      "blocks": [
+        1
+      ],
+      "basis": "标题明确声称已证明未来因果零效果；K1无干预或未来数据，正文免责声明不能撤销标题。"
+    },
+    "T9": {
+      "decision": "requires_correction",
+      "blocks": [
+        4,
+        8
+      ],
+      "basis": "共同基线被用于两套分组，但仅全样本胜负均3，中单3/1；正文明确未给口径迁移规则。需澄清/分开基线，不能代选3而放过。若独立审有其他完整解释，保留讨论，不强制同意。"
+    }
+  },
+  "not_native_certification": true,
+  "frozen_before_independent_dispatch": true
+}

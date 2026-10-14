@@ -10,14 +10,15 @@ interface CoachBriefProps {
 
 export function CoachBrief({ productState, report }: CoachBriefProps) {
   const { t } = useI18n()
-  if (productState.state === "rejected") {
+  const stopped = productState.taskStatus === "cancelled" || productState.taskStatus === "failed"
+  if (productState.state === "rejected" || stopped) {
     return (
       <section className="coach-brief coach-brief--withheld panel" id="coach-brief" aria-labelledby="withheld-title">
         <span className="coach-brief__sigil"><Glyph name="withheld" /></span>
         <div>
           <p className="eyebrow">{t("coach.quality_control")}</p>
           <h3 id="withheld-title">{t("coach.withheld_title")}</h3>
-          <p>{t("coach.withheld_body")}</p>
+          <p>{t(stopped ? "coach.stopped_body" : "coach.withheld_body")}</p>
         </div>
       </section>
     )

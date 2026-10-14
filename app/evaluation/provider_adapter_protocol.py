@@ -17,7 +17,9 @@ from app.evaluation.coach_report import (
     evaluation_response_contract,
 )
 from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
     ModelRuntimeProfile,
+    require_candidate_evaluation_request_policy,
     require_registered_model_runtime_profile,
 )
 from app.providers.errors import ProviderError, ProviderResponseError
@@ -218,11 +220,16 @@ class AdapterProtocolSliceRunner:
         code_sha: str,
         max_calls: int = _PROTOCOL_MAX_CALLS,
         runtime_profile: ModelRuntimeProfile | None = None,
+        request_policy: CandidateEvaluationRequestPolicy | None = None,
         clock: Callable[[], float] = time.monotonic,
         now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
     ) -> None:
         if max_calls != _PROTOCOL_MAX_CALLS:
             raise ValueError("adapter protocol slice requires exactly 3 calls.")
+        if runtime_profile is not None and request_policy is not None:
+            raise ValueError(
+                "runtime_profile and request_policy are mutually exclusive"
+            )
         if runtime_profile is not None:
             runtime_profile = require_registered_model_runtime_profile(
                 runtime_profile
@@ -234,12 +241,25 @@ class AdapterProtocolSliceRunner:
                 raise ValueError(
                     "runtime_profile does not match the protocol Provider"
                 )
+        if request_policy is not None:
+            request_policy = require_candidate_evaluation_request_policy(
+                request_policy,
+                provider_id=getattr(provider, "provider_name", None),
+                model=getattr(provider, "model_name", None),
+            )
         self._budget = ExternalCallBudget(max_calls=max_calls)
         self._provider = BudgetedProvider(provider=provider, budget=self._budget)
         self._code_sha = code_sha
         self._runtime_profile = runtime_profile
+        self._request_policy = request_policy
         self._clock = clock
         self._now = now
+
+    @property
+    def request_policy(self) -> CandidateEvaluationRequestPolicy | None:
+        """Return the explicit candidate policy, if this is an eval run."""
+
+        return self._request_policy
 
     def run(self) -> AdapterProtocolSliceReport:
         cases: list[AdapterProtocolCaseResult] = []
@@ -271,7 +291,10 @@ class AdapterProtocolSliceRunner:
         output_digest: str | None = None
         try:
             response = self._provider.chat(
-                _structured_request(runtime_profile=self._runtime_profile)
+                _structured_request(
+                    runtime_profile=self._runtime_profile,
+                    request_policy=self._request_policy,
+                )
             )
             decoded = decode_structured_response(
                 response=response,
@@ -320,22 +343,38 @@ class AdapterProtocolSliceRunner:
                     timeout_s=(
                         self._runtime_profile.agent_timeout_s
                         if self._runtime_profile is not None
-                        else 30.0
+                        else (
+                            self._request_policy.agent_timeout_s
+                            if self._request_policy is not None
+                            else 30.0
+                        )
                     ),
                     temperature=(
                         self._runtime_profile.temperature
                         if self._runtime_profile is not None
-                        else 0.0
+                        else (
+                            self._request_policy.temperature
+                            if self._request_policy is not None
+                            else 0.0
+                        )
                     ),
                     max_tokens=(
                         self._runtime_profile.max_output_tokens
                         if self._runtime_profile is not None
-                        else None
+                        else (
+                            self._request_policy.max_output_tokens
+                            if self._request_policy is not None
+                            else None
+                        )
                     ),
                     top_p=(
                         self._runtime_profile.top_p
                         if self._runtime_profile is not None
-                        else None
+                        else (
+                            self._request_policy.top_p
+                            if self._request_policy is not None
+                            else None
+                        )
                     ),
                     metadata={
                         "probe_scope": "adapter_protocol",
@@ -345,7 +384,11 @@ class AdapterProtocolSliceRunner:
                                 "runtime_profile_version": self._runtime_profile.version,
                             }
                             if self._runtime_profile is not None
-                            else {}
+                            else (
+                                self._request_policy.metadata()
+                                if self._request_policy is not None
+                                else {}
+                            )
                         ),
                     },
                 )
@@ -406,7 +449,12 @@ class AdapterProtocolSliceRunner:
 def _structured_request(
     *,
     runtime_profile: ModelRuntimeProfile | None = None,
+    request_policy: CandidateEvaluationRequestPolicy | None = None,
 ) -> ChatRequest:
+    if runtime_profile is not None and request_policy is not None:
+        raise ValueError(
+            "runtime_profile and request_policy are mutually exclusive"
+        )
     contract = evaluation_response_contract()
     schema_text = json.dumps(
         contract.schema_dict(),
@@ -434,19 +482,33 @@ def _structured_request(
         tool_choice=ToolChoiceMode.NONE,
         response_contract=contract,
         temperature=(
-            runtime_profile.temperature if runtime_profile is not None else 0.0
+            runtime_profile.temperature
+            if runtime_profile is not None
+            else (request_policy.temperature if request_policy is not None else 0.0)
         ),
         max_tokens=(
             runtime_profile.max_output_tokens
             if runtime_profile is not None
-            else 512
+            else (
+                request_policy.max_output_tokens
+                if request_policy is not None
+                else 512
+            )
         ),
         timeout_s=(
             runtime_profile.llm_tool_timeout_s
             if runtime_profile is not None
-            else 30.0
+            else (
+                request_policy.llm_tool_timeout_s
+                if request_policy is not None
+                else 30.0
+            )
         ),
-        top_p=(runtime_profile.top_p if runtime_profile is not None else None),
+        top_p=(
+            runtime_profile.top_p
+            if runtime_profile is not None
+            else (request_policy.top_p if request_policy is not None else None)
+        ),
         metadata={
             "probe_scope": "adapter_protocol",
             **(
@@ -455,7 +517,11 @@ def _structured_request(
                     "runtime_profile_version": runtime_profile.version,
                 }
                 if runtime_profile is not None
-                else {}
+                else (
+                    request_policy.metadata()
+                    if request_policy is not None
+                    else {}
+                )
             ),
         },
     )

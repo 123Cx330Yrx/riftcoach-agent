@@ -1,0 +1,11 @@
+{
+  "stage_assessment": {
+    "stage": "initial",
+    "stage_sha256": "f2cf3c864b4f23975bdbb19565a6fbcdc03b34150ce1427db81540ca0fd2ff25",
+    "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "source_review": "这是独立的离线工程用例，不是原15质量样本或模型能力证据。本次实际source/input、16段完整报告、四条issued-request消息及schema、response、stage/journal均已读取。完整政策、知识、用户原话、确定性报告、事实与出处和generation事实逐字/结构核对；原精度重算三个cohort共39项均值/中位数、HALF_UP胜负均值、all_pairs及role_contrasts全部正确。所有事实表/出处表按显式编号恢复为完整输入，选中来源31/32的value与computed/完整事实出处相等，request/response/report绑定一致，stage正文未编辑，raw/parsed_review和实际响应相同。\n\n第4段明确写五局三胜两负、60%，与事实冲突。五局完整纳入、无遗漏，薇古丝和辛德拉win=true，卡蜜尔、艾尼维亚和洛克win=false，故两胜三负、2/5=40%。本次唯一issue的对象、范围、分类、来源和解释正确，建议只修三胜两负/60%并保留身份及五局范围正确，没有借修数字改写其他结论。80/needs_revision与medium/fact_error相容；不以分数给原报告通过。\n\n其余全文逐段检查：第6段四局中单8.95/9.64/8.38/8.66、辛德拉14/5/10和1430.11正确，没有补写能力或稳定性。第8段辅助卡蜜尔实际角色、单局1/13/11、早死7正确，K1支持早死窗口定位和不凭单局推能力。第10段明确仅四局中单，两胜两負，补刀均值8.805/9.01、伤害1286.755/617.52精确，辅助不纳入此段比较，未把四局结论扩大至五局或用相关性证明因果。\n\n第12段艾尼维亚死亡25:35/29:27与timeline一致；时间线定位、录像判断走位决策符合K5，资源分配/参团时机为待验假设符合K2。第14段未知训练目标不代选位置、不把观摩对象混同阅读者，若选择中单的条件练习有K4支持，缺基准不设固定数值阈值有K3支持。第16段Riot五局、实际queue_id420、生成日期、timeline、DataDragon静态映射与来源一致；没有外部OP.GG资料，不编造外部排名或版本因果。K1–K5已在正文实际使用，非只列来源。标题和引言没有追加事实。\n\n实际响应仅一次submit_report_review、无额外正文，issue_resolutions为空符合独立初评；advisories为空，不要求替正确段强添标记。未发现漏报其他实质问题、误报、无依据解释、错误修法、来源错配或身份改变。接受当前初评，defects=[]，report_assessment=null；未将尚未编辑的报告视作通过，不授资格。",
+    "accepted": true,
+    "defects": []
+  },
+  "report_assessment": null
+}

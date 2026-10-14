@@ -307,6 +307,7 @@ class CandidateCreateDisposition(StrEnum):
     IDEMPOTENCY_CONFLICT = "idempotency_conflict"
     IDENTITY_UNAVAILABLE = "identity_unavailable"
     SOURCE_INVALID = "source_invalid"
+    MEASUREMENT_ALREADY_OFFERED = "measurement_already_offered"
 
 
 class CandidateCreateResult(CandidateDomainModel):

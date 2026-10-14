@@ -29,6 +29,7 @@ from app.providers.errors import ProviderResponseError
 from app.providers.models import ChatResponse, TokenUsage
 from app.rag.retriever import LocalKnowledgeRetriever
 from app.tools.adapters import build_knowledge_tools, build_llm_tools
+from app.tools.errors import ToolError
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 from scripts.run_review_harness import main as run_harness_main
@@ -145,7 +146,7 @@ class ChatCoachGeneratorTests(unittest.TestCase):
             prompt_builder=lambda summary, report, evidence: "prompt",
         )
 
-        with self.assertRaisesRegex(RuntimeError, "no_fake_response"):
+        with self.assertRaises(ToolError) as captured:
             adapter.generate(
                 GenerationRequest(
                     player_summary={},
@@ -153,6 +154,9 @@ class ChatCoachGeneratorTests(unittest.TestCase):
                     knowledge=KnowledgeEvidence.empty(),
                 )
             )
+        self.assertEqual("no_fake_response", captured.exception.code)
+        self.assertEqual("llm.chat", captured.exception.tool_name)
+        self.assertNotIn("no_fake_response", str(captured.exception))
 
 
 class ChatEvaluationAdapterTests(unittest.TestCase):

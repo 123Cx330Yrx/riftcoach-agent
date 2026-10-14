@@ -12,7 +12,7 @@ class RiotClient:
     the Tool Runtime adapter rather than this HTTP transport.
     """
 
-    def __init__(self, api_key: str | None = None, region: str | None = None):
+    def __init__(self, api_key: str | None = None, region: str | None = None, *, before_request=None):
         # Legacy scripts may still rely on local .env discovery. Deployment
         # composition passes both values explicitly and must not perform an
         # implicit dotenv read after its configuration has been validated.
@@ -28,9 +28,12 @@ class RiotClient:
             raise RuntimeError("RIOT_API_KEY is missing. Please set it in .env.")
 
         self.session = requests.Session()
+        self._before_request = before_request
         self.session.headers.update({"X-Riot-Token": self.api_key})
 
     def _get(self, url: str, timeout_s: float = 15):
+        if self._before_request is not None:
+            self._before_request()
         response = self.session.get(url, timeout=timeout_s)
         response.raise_for_status()
         return response.json()

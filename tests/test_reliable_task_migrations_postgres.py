@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from alembic import command
 from alembic.config import Config
 from alembic.script import ScriptDirectory
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 
 from app.persistence.task_event_record import ReviewTaskEventRecord
 from app.persistence.task_record import ReviewTaskRecord
@@ -23,7 +23,7 @@ from app.tasks.reliable_runtime import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0011_evidence_product_api"
+HEAD = "0014_message_projection_status"
 
 
 def alembic_config() -> Config:
@@ -54,6 +54,21 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.c.occurred_at.type.timezone is True
     assert event.c.event_cursor.identity is not None
     assert task.c.status.type.length == 24
+    assert task.c.publication_mode.type.length == 32
+    assert task.c.publication_mode.server_default is not None
+    assert task.c.publication_reference.type.__class__ is JSONB
+    assert task.c.publication_reference.type.none_as_null is True
+    assert task.c.summary_digest.type.length == 64
+    assert task.c.first_snapshot_id.type.__class__ is UUID
+    assert task.c.first_snapshot_digest.type.length == 64
+    assert {
+        "ck_review_tasks_publication_mode_allowed",
+        "ck_review_tasks_publication_reference_shape",
+        "ck_review_tasks_summary_digest_format",
+        "ck_review_tasks_first_snapshot_digest_format",
+        "ck_review_tasks_first_snapshot_binding_shape",
+        "ck_review_tasks_legacy_publication_fields_empty",
+    } <= {constraint.name for constraint in task.constraints}
 
     assert {
         "lease_generation",
@@ -108,6 +123,14 @@ def test_reliable_runtime_offline_sql_has_stable_schema_and_bootstrap(
     assert "CONSTRAINT ck_review_tasks_reliable_lifecycle_shape" in sql
     assert "CONSTRAINT fk_review_task_events_task_identity" in sql
     assert "CREATE INDEX ix_review_tasks_expired_lease" in sql
+    assert "ADD COLUMN publication_mode VARCHAR(32) DEFAULT 'legacy' NOT NULL" in sql
+    assert "CONSTRAINT ck_review_tasks_publication_mode_allowed" in sql
+    assert "ADD COLUMN publication_reference JSONB" in sql
+    assert "ADD COLUMN summary_digest VARCHAR(64)" in sql
+    assert "ADD COLUMN first_snapshot_id UUID" in sql
+    assert "ADD COLUMN first_snapshot_digest VARCHAR(64)" in sql
+    assert "CONSTRAINT ck_review_tasks_publication_reference_shape" in sql
+    assert "CONSTRAINT ck_review_tasks_first_snapshot_binding_shape" in sql
     assert "CREATE INDEX ix_review_task_events_owner_cursor" in sql
     assert "INSERT INTO review_task_events" in sql
     assert "snapshot_imported" in sql

@@ -55,11 +55,14 @@ class PostgresMemoryContextRepository:
                         raise MemoryContextRepositoryError(
                             "memory_context_unavailable"
                         )
+                    # READ COMMITTED permits a concurrent replacement between
+                    # SELECTs. Bind both training projections to this one Plan.
+                    plan = _active_plan(session, binding)
                     records = [
                         *_preference_records(session, binding),
-                        *_plan_records(session, binding),
+                        *_plan_records(plan),
                         *_profile_records(session, binding),
-                        *_progress_records(session, binding),
+                        *_progress_records(session, binding, plan),
                         *_review_records(session, binding),
                         *_message_records(session, binding),
                     ]
@@ -245,13 +248,13 @@ def _review_records(
     )
 
 
-def _plan_records(
+def _active_plan(
     session: Session,
     binding: MemoryContextBinding,
-) -> tuple[MemoryContextRecord, ...]:
+) -> TrainingPlanRecord | None:
     if binding.relationship_role is not RelationshipRole.SELF:
-        return ()
-    row = session.scalar(
+        return None
+    return session.scalar(
         sa.select(TrainingPlanRecord).where(
             TrainingPlanRecord.owner_id == binding.owner_id,
             TrainingPlanRecord.relationship_id == binding.relationship_id,
@@ -261,6 +264,9 @@ def _plan_records(
             TrainingPlanRecord.hidden_at.is_(None),
         )
     )
+
+
+def _plan_records(row: TrainingPlanRecord | None) -> tuple[MemoryContextRecord, ...]:
     if row is None:
         return ()
     return (
@@ -280,26 +286,15 @@ def _plan_records(
 def _progress_records(
     session: Session,
     binding: MemoryContextBinding,
+    plan: TrainingPlanRecord | None,
 ) -> tuple[MemoryContextRecord, ...]:
-    if binding.relationship_role is not RelationshipRole.SELF:
-        return ()
-    plan_id = session.scalar(
-        sa.select(TrainingPlanRecord.plan_id).where(
-            TrainingPlanRecord.owner_id == binding.owner_id,
-            TrainingPlanRecord.relationship_id == binding.relationship_id,
-            TrainingPlanRecord.player_subject_id == binding.player_subject_id,
-            TrainingPlanRecord.relationship_role == "self",
-            TrainingPlanRecord.status == "active",
-            TrainingPlanRecord.hidden_at.is_(None),
-        )
-    )
-    if plan_id is None:
+    if binding.relationship_role is not RelationshipRole.SELF or plan is None:
         return ()
     rows = session.scalars(
         sa.select(TrainingProgressRecord)
         .where(
             TrainingProgressRecord.owner_id == binding.owner_id,
-            TrainingProgressRecord.plan_id == plan_id,
+            TrainingProgressRecord.plan_id == plan.plan_id,
             TrainingProgressRecord.status == "active",
             TrainingProgressRecord.hidden_at.is_(None),
         )
@@ -307,7 +302,7 @@ def _progress_records(
             TrainingProgressRecord.metric_key.asc(),
             TrainingProgressRecord.observed_at.desc(),
             TrainingProgressRecord.created_at.desc(),
-            TrainingProgressRecord.progress_id.asc(),
+            TrainingProgressRecord.progress_id.desc(),
         )
     ).all()
     latest = []

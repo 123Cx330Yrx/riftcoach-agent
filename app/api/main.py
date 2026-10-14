@@ -99,6 +99,7 @@ from app.api.lifecycle_models import (
     OwnerDataExportResponse,
 )
 from app.api.evidence_models import EvidenceSnapshotResponse, ProductStateResponse
+from app.api.run_usage_models import RunUsageResponse
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -2409,6 +2410,32 @@ def create_app(
                 status_code=500,
                 run_id=task.run_id,
             )
+
+    @app.get(
+        "/runs/{run_id}/usage",
+        response_model=RunUsageResponse,
+        responses={404: {"model": ErrorResponse}, 409: {"model": ErrorResponse},
+                   500: {"model": ErrorResponse}, 503: {"model": ErrorResponse}},
+    )
+    def get_run_usage(run_id: str, actor: ActorContext = Depends(trusted_actor)):
+        task = owned_run_task(actor, run_id)
+        if isinstance(task, JSONResponse):
+            return task
+        if not task.status.is_terminal:
+            return _error_response("run_not_ready", status_code=409, run_id=task.run_id)
+        try:
+            result = query_service.get_run(task.run_id)
+            if not isinstance(result, RunView) or result.run_id != task.run_id:
+                raise ValueError("usage query returned an invalid identity")
+            return RunUsageResponse(run_id=task.run_id, task_status=task.status, usage=result.usage)
+        except RunQueryError as exc:
+            # A cancelled queued task may never have started a Runtime. A missing
+            # receipt on a successful task, or any corrupt Trace, is not normal.
+            if exc.code == "run_not_found" and task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
+                return RunUsageResponse(run_id=task.run_id, task_status=task.status)
+            return _error_response("run_integrity_failed", status_code=500, run_id=task.run_id)
+        except Exception:
+            return _error_response("run_integrity_failed", status_code=500, run_id=task.run_id)
 
     @app.get(
         "/runs/{run_id}",

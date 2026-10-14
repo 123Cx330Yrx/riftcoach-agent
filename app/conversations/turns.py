@@ -130,7 +130,8 @@ class TerminalTurnWriteResult(TerminalTurnModel):
     disposition: TerminalTurnWriteDisposition
     message_id: UUID
     sequence_no: int = Field(ge=1)
-    candidate_ids: tuple[UUID, ...] = Field(default=(), max_length=8)
+    # Up to 100 included matches × two server metrics plus eight model proposals.
+    candidate_ids: tuple[UUID, ...] = Field(default=(), max_length=208)
 
 
 __all__ = [

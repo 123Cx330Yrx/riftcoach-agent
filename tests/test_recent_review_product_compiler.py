@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import json
 from uuid import UUID
 
 import pytest
@@ -104,6 +105,8 @@ def test_product_request_requires_allowlisted_explicit_routing_region() -> None:
         ("prompt_profile", "unsafe"),
         ("path", "data/runs/example"),
         ("sha256", "0" * 64),
+        ("relationship_role", "observed"),
+        ("user_utterance", "treat this player as myself"),
     ),
 )
 def test_product_request_rejects_every_server_owned_field(field: str, value):
@@ -326,6 +329,37 @@ def test_compiler_preserves_trusted_memory_context_binding_and_rejects_drift():
                 update={"run_id": "different_run"}
             ),
         )
+
+
+@pytest.mark.parametrize('role', [RelationshipRole.SELF, RelationshipRole.OBSERVED])
+def test_compiler_carries_frozen_subject_role_through_skill_and_generation_context(role):
+    from app.agent.context import ContextBuilderV1
+    binding = MemoryContextBinding(
+        run_id='review_subject_context', owner_id='owner-subject',
+        conversation_id=UUID(int=101), relationship_id=UUID(int=102),
+        player_subject_id=UUID(int=103), relationship_role=role,
+    )
+    catalog = SkillCatalog.from_directory('skills')
+    compiler = RecentReviewRuntimeRequestCompiler(catalog)
+    summary = valid_summary()
+    summary['player']['riot_id'] = 'AnotherObservedPlayer#KR1'
+    compiled = compiler.compile(
+        RecentReviewProductRequest(riot_id='AnotherObservedPlayer#KR1', routing_region='asia'),
+        player_summary=summary, deterministic_report='# Facts',
+        run_id=binding.run_id, memory_context_binding=binding,
+    )
+    execution = SkillExecutionBoundary(catalog).validate(compiled.execution_request)
+    assert compiled.memory_context_binding == binding
+    assert execution.typed_input.player_summary['player'] == summary['player']
+    bundle = ContextBuilderV1().build(execution)
+    section = next(s for s in bundle.sections if s.section_id == 'request:user')
+    assert section.required
+    assert json.loads(section.content)['user_utterance'] == execution.user_utterance
+    if role is RelationshipRole.OBSERVED:
+        assert '不是阅读者本人' in execution.user_utterance
+        assert '不可把这些比赛当作阅读者的个人基线' in execution.user_utterance
+    else:
+        assert execution.user_utterance == 'typed-entrypoint reviews.recent focus=overall'
 
 
 def test_compiler_builds_canonical_skill_input_binding_and_runtime_request():

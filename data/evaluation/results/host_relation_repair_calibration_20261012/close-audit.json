@@ -1,0 +1,71 @@
+{
+  "kind": "host-relation-repair-material-calibration-close-v1",
+  "recorded_at": "2026-10-12T15:57:57.419419+00:00",
+  "status": "completed_development_calibration",
+  "material_sha256": "77f22cafa8f28ba3149b786f9bec6113a8a2ee857e85c0110cb9b85b0e82bac8",
+  "task_sha256": "dd31cff2b1f04d99a315a773815e54c7919dc31ed12339f69858ffbe73f918de",
+  "new_agents": 0,
+  "independent_tasks": 1,
+  "project_provider_calls": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "native": {
+    "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "turn_id": "01a130cc-90c2-73b3-b1c1-b39609a4e323",
+    "dispatch_id": "amsg_01a130cc-9247-7541-b145-df84654e775c",
+    "message_id": "msg_000e89440ad38b1c016acd020c7fe087d091b3ae648c363452",
+    "api_status": "completed",
+    "api_final_count": 1,
+    "phase": "final_answer",
+    "source_line": 902,
+    "final_text_sha256": "cde56921fae4424ccb08abf6a164d1720cc76ff91ae4643f461d0baf91805185",
+    "dispatch_body_readable": false,
+    "route_and_final_verified": true
+  },
+  "visible_read_audit": {
+    "public_tool_calls": 20,
+    "all_exit_zero": true,
+    "native_outputs_untruncated": true,
+    "commands_inspected": true,
+    "full_input_source_chunks_match_normalizing_console_newlines": true,
+    "complete_policy_reports_deterministic_visible": true,
+    "only_task_material_and_own_answer": true,
+    "rehash_and_json_load_before_final_verified": true,
+    "os_sandbox_proven": false,
+    "author_matches_final_except_terminal_newline": true
+  },
+  "primary_post_review": {
+    "case_results": [
+      {
+        "case_id": "U1",
+        "decision": "no_material_error",
+        "issue_blocks": []
+      },
+      {
+        "case_id": "U2",
+        "decision": "requires_correction",
+        "issue_blocks": [
+          14
+        ]
+      }
+    ],
+    "source_roots_and_rows_verified": true,
+    "all_corrections_reviewed": true,
+    "correct_content_preserved": true,
+    "agreement": true
+  },
+  "files": {
+    "author-answer.json": "3ff7c98a8da446d77b90a3ba0138755c93a79319491ad152f6f8ab0f54c33ab4",
+    "independent-final-event.jsonl": "b8f8f0bf1cce5d8defa0ab0436c050eef6ffa4afba29cf3f67edd89b5457d466",
+    "independent-final.txt": "cde56921fae4424ccb08abf6a164d1720cc76ff91ae4643f461d0baf91805185",
+    "primary-before-independent.json": "e2c6ba04cc95055218fd29fb0a407365afb72da36f9f41ef5613d8d81c49bec5",
+    "public-tools.jsonl": "0cdb753562523b4edf8301358bb164991df48d2a26be38a7efd3b98621e1a747"
+  },
+  "limitations": [
+    "Familiar-source development calibration; not holdout, Provider quality or qualification.",
+    "Native dispatch body is encrypted; verified route and API-selected final, without claiming decrypted body.",
+    "Public read commands and exact output checks are not an OS sandbox.",
+    "Preparation JSON remains the pre-calibration author snapshot."
+  ]
+}

@@ -123,7 +123,7 @@ def test_catalog_rejects_non_secure_evaluation_program(tmp_path: Path) -> None:
     payload = _payload(evaluation_version="1.0.0")
     _write_manifest(tmp_path, payload)
 
-    with pytest.raises(PromptProgramCatalogError, match="1.1.0"):
+    with pytest.raises(PromptProgramCatalogError, match="secure Evaluation contract"):
         PromptProgramCatalog.from_directory(tmp_path)
 
 
