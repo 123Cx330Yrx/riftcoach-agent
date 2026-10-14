@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "六次职责对照已硬停止并封存：2次HTTP，1完整双审，第二次HTTP429，4未发。候选无有效回答，职责分离未被检验；本批automation PAUSED，不重试或重启15。"
+pause_reason: "五次职责初评已完成封存，3项facts双接受、1项full修法分歧；仅开发信号，无产品资格。付费批已关闭且automation PAUSED；离线互补职责/编辑消费合同可继续。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,35 +14,36 @@ pause_reason: "六次职责对照已硬停止并封存：2次HTTP，1完整双�
 
 ## 当前行动
 
-**核心语义问题未解决；六次full/facts职责对照已因HTTP429停止并封存。**
-执行HEAD `85a37432a7b1613f13de9ca527379cb37dba17d9` / 公共CI `38433654680`全绿后唯一启动。
-第一项full初评正确检出“每一个指标均被拉低”的真错，全文解释/修法/正确保留获真实双方接受；
-本轮基线未复现旧误报。第二项facts收到HTTP429，8.703秒失败，没有模型流式事件或有效回答；
-余下4项未发。429具体原因未确定，不能归因为已证实限速/余额不足，也不是600秒超时。
+**充值后五次full/facts初评已完成；职责分离获得有限开发信号，原三处语义问题尚未证明稳定解决。**
+执行400deee0/公共CI38499719533全绿后唯一run。5次HTTP、5完整响应及真实双审，4意见双接受；
+三项facts均双接受，第三组full保留主审接受/独立wrong_correction拒绝，不能算通过。
 
-严格只读replay、create-only seal通过，1真实native及作者原件匹配；43份本批原件/外部观测/作者
-库存与SHA不变，执行包13件及冻结源码保持。另核8个历史批次760原件与53份full-chain源码不变，
-旧readiness逐字段一致。actual/HTTP各2，known17250tokens，unknown1/receiptless1/未发4；
-已知部分合同估价0.223940元，失败调用用量与总账单未知。无重试、补发、补签或新资格。
-本批automation已实核PAUSED；封存详情见[关闭结果](plans/2026-10-14-review-duty-result.md)。
+首组facts正确检出全称真错，无同批full，不跨批证明改善；第二组两臂均正确，无改善证据。
+第三组两臂均发现正文/摘要错组：full修正数字后仍否定“胜负分界点”，主独立对其语义有分歧；
+facts同时修正文和摘要，保留本样本差异并只限制因果推论，双方接受。一次熟悉来源的差异
+不能证明稳定性、内部成因或旧问题全修好；全部initial/report_assessment=null，没有实际编辑/fresh。
+见[完整结果与下一步](plans/2026-10-14-review-duty-followup-result.md)。
 
-**判断与下一动作：** 用户已确认当时GLM余额耗尽且已充值，账户侧解释补齐；旧回执仍无业务错误码，不回填1113或账单。旧收尾7efa0e9d/CI38442621895已全绿。
-充值后五次新初评已离线准备：第一组facts、第二/三组full/facts，逐字保持原请求，旧第一组full不再购买。
-第一组无同批基线，不作跨批改善/资格拼接；候选假设仍未检验。
-见[五次具体方案与预算](plans/2026-10-14-review-duty-followup.md)：最多5 GLM-5.3/high、Flash0，
-483840tokens/3000活动秒/86400Host秒，单次600秒，合同估价上界7.14752元非账单硬封顶。
-17项新入口离线检查通过；新范围待单独确认及新HEAD公共CI/即时native绑定，不重用旧授权。
-尚无新业务run/发送，automation保持PAUSED。下一动作是确认该五次范围后唯一执行，不额外买探活。
+关闭后严格replay/create-only seal通过，5真实native、作者与checkpoint匹配；131份本批原件/
+外部观测/作者及11件包、77源码、旧53源码不变，8旧批760原件/旧职责43原件/readiness保持。
+actual/HTTP各5，known95176tokens，unknown/receiptless/未发0，合同估价1.368768元非核实账单。
+模型活动618.985秒、Host1960.718秒；runner退出0。无重试、补发、补签或新资格，automation实核PAUSED。
+旧429账户侧余额耗尽/充值由用户确认，旧回执业务码和未知用量不回填。
+
+**下一动作：离线准备互补职责和真实编辑消费合同。** 复用现有Workflow/Worker，具体核职责覆盖、
+同稿SHA绑定、完整意见进编辑、fresh对新稿覆盖全部职责、冲突/缺失拒绝发布及共享预算/取消。
+形成可审查的最小真实编辑验证材料和费用；不再原样购买initial，不以facts局部pass替代任务完成度。
+本批五次授权已完成，不开新付费批；产品5→7调用不能静默扩容，必要合同/ADR及新费用范围须明确。
 
 已完成的独立产品工作为取消/失败用量owner API与工作台展示；未知不填0、报告门保持。
 52后端（含6真实临时Postgres）、32前端、6浏览器及类型检查通过；模型/来源与浏览器网络为替身，
 分段验证不等于自然消费或整体产品验收。见[实现与限制](plans/2026-10-14-terminal-usage-consumption.md)。
-本次只更新关闭证据和状态；执行版本64项检查及公共CI不替代收尾提交自身的CI。
+本次收尾为结果和文档变更；执行HEAD绿灯不替代收尾提交自身CI。
 
 ## 保留的结论与依赖
 
 原15的10通过/3语义拒绝或分歧/2未认证各属其批；scope:4原分歧不回写。
-三处语义失败和37.167104元新15提议撤回保持；J1/J2两臂皆过无改善证据，候选不采用。
+37.167104元新15提议撤回保持；J1/J2两臂皆过无改善证据，关系教学候选不采用。
 熟悉来源非holdout，职责局部pass非产品pass，接受初评意见不表示原错误报告修好。
 正式同版本15、自然消费、Coach/Training、四块联动、完整journal、前端审美头像、Memory、
 身份运维、两树整合、独立评估与学习继续保留。代码/Owner理解/质量资格/部署成熟度分别验收。
