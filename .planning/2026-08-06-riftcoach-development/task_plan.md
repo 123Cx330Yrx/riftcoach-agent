@@ -11,17 +11,16 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：外层唯一启动、授权/CI/native/实际路径门、Host交接与完整冻结准备已接。待具体新授权及本提交公共CI全绿；零付费/零新真实Host，automation PAUSED，8E未完成。
+执行状态：固定报告互补链已关闭；两initial及兼容双审接受，第三次Flash编辑因裸数字键违反block_N协议硬停。无合法新稿或fresh，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标：** 同一完整报告的事实/完成度意见经真实接受和兼容裁决后进入一次编辑，以实际新稿完成两fresh；原三处语义问题未证明稳定解决。
-**已完成路径：** 顺序执行核心、独立observed worker、跨进程回放，再接新授权/同HEAD CI/native/实际Python-cwd启动、独占claim与Host mailbox；父子进程核完整847源码/配置和三文件包，关闭保留外部可信摘要。见[执行准备](../../docs/plans/2026-10-14-review-duty-launch.md)。
-**证据：** 92项相关整组通过，收尾受影响验证见progress；实际路径/native准备探针通过。模型/native内容为SCRIPTED、本机HTTP为loopback，不是语义改善或真实业务Host证据。旧原件/源码/历史保持。
-**下一动作：** 取得此固定报告开发链的新费用授权，同提交公共CI全绿后只执行一次。准备SHA=6d583ac31d8c2861c7193200d47141bf817120ec3feb7214ad0b18e258079a24；execution_ready=true而authorized=false。旧授权及两个旧开发准备不能借用。
-**范围：** 最多4GLM+1Flash、483840tokens/2700活动秒/86400Host秒，估价5.8609664元非账单硬封顶；产品5→7不静默扩容。
-**失败决策：** 双initial pass跳过编辑；语义拒绝/冲突/坏编辑/fresh失败或任一身份/协议/transport/观测/预算故障停止。无重试/补发，不把缺失或职责局部pass算成功。
-**CI：** 222f19fa/CI38526956068与50ad7143/CI38529958480全绿；269c2c7b及本轮提交另核，查询失败不等于CI失败。
+**目标：** 使正确的互补意见能进入合法且不改坏范围的实际编辑；当前真实链未完成该目标。
+**实际路径与证据：** e9754afe/CI38537476729全绿后唯一执行，facts78/needs_revision、completion93/pass、compatibility clear均双接受；Flash返回14/4而非block_14/block_4，原入口只读复现block_keyed_selector。详见[关闭结果](../../docs/plans/2026-10-14-review-duty-chain-result.md)。
+**结果：** 3HTTP/48960tokens，合同估价0.4309744元非账单；64本批原件、3native及观测通过严格replay/seal；847源码/三文件包及历史保持。两fresh未发，无编辑Host或ReportAssessment。
+**反证：** 正确意见不能推出编辑成功；raw文本另将中单各2局限制扩展到两口径。后者为主审关闭后观察，非独立编辑验收。
+**下一动作：** 零付费核查编辑地址合同与语义消费的方案取舍；区分协议约束和语义保持的机制，不自动补键、不原样再买initial或编辑，不创建新授权/run。
+**范围与失败决策：** 本批永久关闭；既定strict门不降级，真实成稿/fresh仍是必要证据。产品5/401920/900不静默扩容为7，未选机制不申请新付费批。
 **独立产品成果：** 取消/失败用量owner API与UI证据复用；不冒充当前组合自然Worker消费。正式同版本15及下游依赖保持。
 
 ## Dependencies and Follow-through
@@ -43,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：下一步在具体新授权与当前提交公共CI全绿后执行已冻结的固定报告开发链。automation PAUSED；旧批不重开，原15/8E及全部产品依赖未完成。
+以canonical和上方工作卡为准：零付费核查编辑地址合同与语义消费的方案取舍。当前批已严格封存，automation PAUSED；不重开或补发，原15/8E及全部产品依赖未完成。
 
 ## History
 
