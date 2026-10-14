@@ -102,9 +102,9 @@
   },
   "manifest_sha256": "39c2e155509115ef2a36b1860b414717f76cd07643d45cc8a6138d89c71533d1",
   "validation": {
-    "passed": 124,
+    "passed": 125,
     "duration_seconds": 46.38,
-    "new_candidate_tests": 22,
+    "new_candidate_tests": 23,
     "network": "socket blocked in candidate tests",
     "suites": [
       "tests/test_natural_duty_candidate.py",
@@ -113,7 +113,8 @@
       "tests/test_role_runtime_trace.py",
       "tests/test_prompt_program.py",
       "tests/test_review_duty_direct_patch.py"
-    ]
+    ],
+    "latest_candidate_suite": "23 passed in 20.45s"
   },
   "model_evidence": "scripted responses only; no live quality claim",
   "paid_requests": 0,

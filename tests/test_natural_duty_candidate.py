@@ -72,11 +72,12 @@ class Responses(ScriptedProductProvider):
                     data = next(m.content for m in request.messages if (m.content or '').startswith('[UNTRUSTED DATA]\n'))
                     data = json.loads(data.split('\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])
                     root = data['source_roots']['roots'][0][0]
+                    bad_after = BEFORE.replace('15', '99') if self.mode == 'bad_semantic' else AFTER
                     value.update(score=70, verdict='needs_revision', issues=[dict(block=4,source_ids=[root],
                         severity='medium',category='fact_error',explanation='Scripted diagnostic only.',
                         suggested_correction='Scripted exact repair.')], repairs=[dict(issue_ids=[1],edits={
                         'block_4':[dict(before=BEFORE if self.mode!='bad_anchor' else 'missing synthetic anchor',
-                        after=AFTER,reason='Scripted diagnostic only.')]})])
+                        after=bad_after,reason='Scripted diagnostic only.')]})])
             elif self.mode=='fresh_reject' and marker['duty']=='facts':
                 value.update(score=0, verdict='fail')
             response = ChatResponse(provider='zhipu',model=self.model_name,content=None,
@@ -244,6 +245,16 @@ def test_terminal_workflow_cannot_reopen_or_rewrite_evidence(tmp_path):
     with pytest.raises(ValueError): flow.stop('pretend_success')
     assert before == {p.name:p.read_bytes() for p in flow.journal_root.iterdir()}
     assert len(f.providers['candidate'].attempts) == 4
+
+
+def test_semantically_wrong_but_structurally_valid_patch_stays_unqualified(tmp_path):
+    app, f, flows = application(tmp_path, mode='bad_semantic')
+    result = run(app)
+    flow = flows[0]
+    assert flow.outcome == 'candidate_repaired_pass_unqualified'
+    assert flow.assembly.report != flow.original.source.report
+    assert result.publication_status.value == 'rejected'
+    assert result.output is None or result.output.report is None
 
 
 def test_corrupt_program_manifest_stops_before_provider(tmp_path, monkeypatch):

@@ -67,7 +67,7 @@ git diff --check
 ```
 
 模型响应是手写替身，真实运行AgentLoop、ToolRuntime、本地RAG、共享预算和Trace落盘；
-不联网、不产生模型费用。覆盖4/6调用、额外检索、坏锚点/fresh拒绝、transport/receipt/model
+不联网、不产生模型费用。覆盖4/6调用、额外检索、坏锚点/fresh拒绝、结构合法但语义错误的补丁仍拒发布、transport/receipt/model
 故障、1/4/5次后取消、第7次拒发、900秒/剩50秒/tokens/未知预留、旧身份隔离、指纹漂移、
 终态重入、revision来源和原稿篡改、实际fresh稿被替换、伪造Trace。旧补丁测试覆盖重复和重叠。
 结果记录见 `data/evaluation/results/natural_duty_six_offline_20261014.json`。

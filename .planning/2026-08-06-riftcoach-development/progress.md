@@ -16,7 +16,7 @@ postgres通过，四pytest分片均在remaining4历史快照setup遇到同一app
 6次最短修订，追加检索不足两个fresh slot时应用前停止。保留401920/900/单请求300及high。
 所有双pass候选仍拒发布，内部结果明确unqualified；没有Host语义认证、默认入口或付费transport。
 
-最终相关124项通过（46.38秒，其中新候选22项），零模型费用。预算、取消、身份/回执、
+最终相关125项通过（其中新候选23项；包含结构合法但语义错误补丁仍拒发布的边界测试），零模型费用。预算、取消、身份/回执、
 来源/稿件篡改、指纹漂移、终态重入与既有补丁回归覆盖。真实质量未证；机器记录为
 natural_duty_six_offline_20261014.json，设计ADR0118及natural-duty-six-implementation。
 原目录854源码/3包/103原件与seal保持，automation PAUSED，canonical历史尾段保持。
