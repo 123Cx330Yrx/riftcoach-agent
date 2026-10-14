@@ -11,16 +11,17 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：五次职责初评已完成封存；执行400deee0/CI38499719533全绿，5HTTP/完整双审，4意见双接受、1项full修法分歧。三项facts均双接受，只有开发信号；automation PAUSED，8E未完成。
+执行状态：互补职责离线原型完成，缺引用合同冲突已用反例定位并隔离修正；19新测试及47相关回归通过，30完整请求零发送。旧五次批已关闭，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标：** 消除两处误报和一处修法覆盖分歧，保留真错检出；尚未证明稳定解决。
-**路径与证据：** 首组facts正确但无同批full；第二组两臂皆正确无改善证据；第三组full修法主独立分歧，facts修正文/摘要并保留描述性差异，获双方接受。见[关闭结果](../../docs/plans/2026-10-14-review-duty-followup-result.md)。
-**关闭：** 5真实native及作者匹配、严格replay/seal通过；131本批原件、11件包、77源码、8旧批760原件及旧职责43原件/53源码/readiness保持。95176tokens、1.368768元合同估价，实际账单未核；无重试/补发/新资格。
-**反证与依赖：** facts未出现实错不等于准入；full分歧不抹平，前两组无改善证明。熟悉来源非holdout，原15三处语义问题仍未关闭，未有实际编辑/fresh或自然消费。产品5→7不能静默扩容。
-**下一动作：** 离线准备互补职责/真实编辑消费合同，沿现有Workflow/Worker核同稿绑定、全部职责、编辑意见传递、新稿fresh、冲突发布门及预算/取消。形成最小真实编辑验证材料和具体费用，停止原样initial循环；本批授权已完成，不开新付费批。
-**独立完成：** 取消/失败用量owner API与UI分段验证已有证据复用，保持报告门与未知语义，不替代质量证据。
+**目标：** 让完整报告的事实与任务完成度意见能安全进入一次真实编辑，并对实际新稿覆盖全部职责；原两误报/一修法分歧仍未证明稳定解决。
+**路径与证据：** 新隔离原型完成同稿/来源/request绑定、原样双意见、实际block组装和两fresh构造；旧完整校验器缺引用门不适用于facts-only的反例已复现。见[离线结果及执行范围](../../docs/plans/2026-10-14-review-duty-composition.md)、Proposed ADR0117及源码SHA审计。
+**已完成：** 上批closeout CI38507399305全绿；本轮19项新测试、47相关回归，15输入共30请求零发送。旧131原件/11包/77源码、旧53源码/8批760原件/43旧职责原件/readiness及canonical历史保持。
+**反证与依赖：** completion未实测、caller clear未认证、没有真实改文/fresh。两职责可能重复或冲突，结构pass不能发布。facts三次双接受只是熟悉来源开发信号；full分歧保持，原15未重启。
+**下一动作：** 实现隔离开发入口的请求/回执身份、真实native接受/兼容裁决、run外观测、共享账本及取消/停止转换；离线整链验证后冻结可审执行包。最小固定报告提案4GLM+1Flash、483840tokens/2700活动秒、估价5.8609664元；尚未准备执行或授权新费用。
+**失败决策：** 双initial pass跳过编辑；不接受的意见/冲突/坏修法/fresh失败否定此例充分性；native/协议/transport/预算硬故障停止，不重试/补发。自然产品5→7不能静默扩容。
+**独立完成：** 取消/失败用量owner API与UI分段验证证据复用；正式同版本15及自然Worker/DB/API/UI消费仍是后续依赖。
 
 ## Dependencies and Follow-through
 

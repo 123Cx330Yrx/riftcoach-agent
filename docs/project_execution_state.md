@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "五次职责初评已完成封存，3项facts双接受、1项full修法分歧；仅开发信号，无产品资格。付费批已关闭且automation PAUSED；离线互补职责/编辑消费合同可继续。"
+pause_reason: "互补职责离线原型已完成；真实编辑消费与语义稳定性未证。付费批已关闭、automation PAUSED；继续隔离开发入口及可审执行准备。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,39 +14,37 @@ pause_reason: "五次职责初评已完成封存，3项facts双接受、1项full
 
 ## 当前行动
 
-**充值后五次full/facts初评已完成；职责分离获得有限开发信号，原三处语义问题尚未证明稳定解决。**
-执行400deee0/公共CI38499719533全绿后唯一run。5次HTTP、5完整响应及真实双审，4意见双接受；
-三项facts均双接受，第三组full保留主审接受/独立wrong_correction拒绝，不能算通过。
+**互补职责离线合同已落地，明确修复了缺引用义务与事实专责校验之间的冲突。**
+新隔离原型保留完整来源、同稿两份原样意见，复用block editor实际组装并为新稿构建两份fresh。
+19项新测试及47项预算/editor回归通过；15份完整输入构建30份请求，Provider发送0。
+旧live身份拒绝这些请求，局部或结构双pass均不授产品资格；caller clear尚不是已认证冲突裁决。
+见[实现与下一验证范围](plans/2026-10-14-review-duty-composition.md)及
+[Proposed ADR0117](adr/0117-proposed-complementary-review-duties.md)。
 
-首组facts正确检出全称真错，无同批full，不跨批证明改善；第二组两臂均正确，无改善证据。
-第三组两臂均发现正文/摘要错组：full修正数字后仍否定“胜负分界点”，主独立对其语义有分歧；
-facts同时修正文和摘要，保留本样本差异并只限制因果推论，双方接受。一次熟悉来源的差异
-不能证明稳定性、内部成因或旧问题全修好；全部initial/report_assessment=null，没有实际编辑/fresh。
-见[完整结果与下一步](plans/2026-10-14-review-duty-followup-result.md)。
+上批五次初评已封存：执行400deee0/CI38499719533全绿；关闭提交8a69e4ec/CI38507399305全绿。
+5HTTP/完整双审，三facts双接受；首组无同批full，第二组两臂皆正确，第三组full保留修法分歧。
+只有熟悉来源单次开发信号；全部initial，没有真实编辑/fresh，原三处问题尚未证明稳定解决。
+95176tokens，合同估价1.368768元非核实账单；unknown/receiptless/未发0。
+131本批原件/观测/作者、11件包、77源码、旧53源码、8旧批760原件及旧职责43原件/readiness保持。
+旧429业务码/未知用量不补填。详情保留在[关闭结果](plans/2026-10-14-review-duty-followup-result.md)。
 
-关闭后严格replay/create-only seal通过，5真实native、作者与checkpoint匹配；131份本批原件/
-外部观测/作者及11件包、77源码、旧53源码不变，8旧批760原件/旧职责43原件/readiness保持。
-actual/HTTP各5，known95176tokens，unknown/receiptless/未发0，合同估价1.368768元非核实账单。
-模型活动618.985秒、Host1960.718秒；runner退出0。无重试、补发、补签或新资格，automation实核PAUSED。
-旧429账户侧余额耗尽/充值由用户确认，旧回执业务码和未知用量不回填。
-
-**下一动作：离线准备互补职责和真实编辑消费合同。** 复用现有Workflow/Worker，具体核职责覆盖、
-同稿SHA绑定、完整意见进编辑、fresh对新稿覆盖全部职责、冲突/缺失拒绝发布及共享预算/取消。
-形成可审查的最小真实编辑验证材料和费用；不再原样购买initial，不以facts局部pass替代任务完成度。
-本批五次授权已完成，不开新付费批；产品5→7调用不能静默扩容，必要合同/ADR及新费用范围须明确。
+**下一动作：接好隔离开发入口的身份、真实接受/兼容裁决、观测与共享预算停止路径，完成离线整链后冻结可审执行包。**
+最小提案是一份完整固定报告的两initial、至多一次实际编辑、两fresh，最多4 GLM/high加1 Flash/high，
+483840tokens/2700活动秒，合同上界估价5.8609664元非硬账单封顶。仅提案，尚无可执行包或新费用授权。
+completion新政策尚未实测；双initial pass不强迫编辑，语义拒绝/冲突及硬故障均按该链停止规则处理。
+自然产品最坏7调用，现5/401920/900合同不能静默扩容；本轮不改变生产入口，automation保持PAUSED。
 
 已完成的独立产品工作为取消/失败用量owner API与工作台展示；未知不填0、报告门保持。
-52后端（含6真实临时Postgres）、32前端、6浏览器及类型检查通过；模型/来源与浏览器网络为替身，
-分段验证不等于自然消费或整体产品验收。见[实现与限制](plans/2026-10-14-terminal-usage-consumption.md)。
-本次收尾为结果和文档变更；执行HEAD绿灯不替代收尾提交自身CI。
+52后端（含6真实临时Postgres）、32前端、6浏览器及两幅截图验证已有证据复用；不替代当前组合自然消费。
+见[实际消费证据](plans/2026-10-14-terminal-usage-consumption.md)。
 
 ## 保留的结论与依赖
 
-原15的10通过/3语义拒绝或分歧/2未认证各属其批；scope:4原分歧不回写。
-37.167104元新15提议撤回保持；J1/J2两臂皆过无改善证据，关系教学候选不采用。
-熟悉来源非holdout，职责局部pass非产品pass，接受初评意见不表示原错误报告修好。
+原15的10通过/3语义拒绝或分歧/2未认证分布保留，scope:4原分歧不回写。
+37.167104元原15方案撤回保持；J1/J2两臂皆过无改善证据，关系教学候选不采用。
+熟悉来源非holdout，职责局部pass非产品pass；离线组装不表示真实模型正确改文。
 正式同版本15、自然消费、Coach/Training、四块联动、完整journal、前端审美头像、Memory、
-身份运维、两树整合、独立评估与学习继续保留。代码/Owner理解/质量资格/部署成熟度分别验收。
+身份运维、两树整合、独立评估和学习保留；代码/Owner理解/来源资格/公开成熟度分别验收。
 
 ## 以下为历史记录
 
