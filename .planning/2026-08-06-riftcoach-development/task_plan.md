@@ -25,7 +25,8 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **发布判断：** 所有候选成功仍返回FAIL给Harness，另记内部unqualified outcome；未伪造Host验收。
 工程接线不证明自动语义冲突检测或真实质量；详见ADR0118及natural-duty-six-implementation。
 **旧证据：** 原冻结854源码/3包/103原件及seal一致，不修改旧裁决；固定报告通过仅开发证据。
-**下一动作：** 零付费整理自动语义裁决反例与同版本资格设计，明确错意见/错修法/冲突/双审漏判的拒绝策略。
+**下一动作：** 先修CI38590893161历史快照夹具的3份缺失源码副本并复核公共CI；再继续零付费语义反例与同版本资格设计。
+四分片均因同一setup摘要错误提前退出，本机124项不代表全库通过；旧摘要与生产拒绝门保持。
 发布门关闭，不另开付费批；6次已确认，不重复请求。所有原15、自然产品、前端和学习依赖保留。
 
 ## Dependencies and Follow-through
@@ -47,7 +48,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：六次候选接线和离线验证完成，下一步是自动语义裁决反例与同版本资格设计。
+以canonical和上方工作卡为准：六次候选接线已有124项离线验证；先完成公共CI历史夹具修复，再推进自动语义裁决反例与同版本资格设计。
 不恢复旧付费批，不直接购买正式15；发布门关闭，8E及全部依赖保持。
 
 ## History

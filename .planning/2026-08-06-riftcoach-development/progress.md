@@ -1,3 +1,14 @@
+## 2026-10-15 恢复检查与公共CI历史夹具修复
+
+恢复时新候选8d06f442和原后端5b19e3ee工作树干净。公共CI38590893161的web/packaging/
+postgres通过，四pytest分片均在remaining4历史快照setup遇到同一app/model_runtime摘要错误，
+因fail-fast停在约20%，公共全库未通过。补齐test-only archive中固定51923f4b提交的3份共享
+源码原LF文本，分别匹配remaining4/8原摘要；既有archive条目/两份摘要清单/生产prior保持。
+17项相关适配器回归全部通过（141.08秒），涵盖历史库存、手递交/封存、故障及生产拒绝当前
+改变代码；47/46份历史source逐项摘要通过。治理和diff检查通过，未改产品实现。
+原854源码/3包/103原件及seal再次一致；automation PAUSED，无新付费调用。修复提交后重新
+核公共CI，再继续零付费语义反例与同版本资格设计；原124项记录不冒充全库通过。
+
 ## 2026-10-14 用户确认六次自然候选，独立接线完成
 
 在D:/riftcoach-natural-duty-six、codex/natural-duty-six实施合同1.6.0/Skill0.7.0/Program4.0.0。

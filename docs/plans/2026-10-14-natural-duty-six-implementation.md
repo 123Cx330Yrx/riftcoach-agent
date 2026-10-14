@@ -80,3 +80,11 @@ manifest有新SHA，这不替旧封存重新签名。canonical历史尾段保持
 在新分支继续零付费整理自动语义裁决的反例与同版本资格设计，明确错误意见、坏修法、语义
 冲突、双审漏判如何被实际拒绝。保持发布门关闭；先用既有原例决定方案，避免按每个字段
 补丁后另购一批。新付费验证另列可审查输入、完整停止条件和成本，不挪用任何旧授权。
+
+## 2026-10-15 公共CI恢复
+
+8d06f442的CI38590893161：web、packaging和postgres通过，四pytest分片均在历史remaining4
+快照setup提前停止。124项本机结果保持，但没有公共全库通过。历史test-only archive缺少本次
+变更的model_runtime、coach_contract、reviewer_roles旧源码，materialize回退读取当前文件。
+补齐固定51923f4b提交的3份原LF文本，分别匹配remaining4和remaining8既有摘要；原归档条目、
+摘要清单、生产prior拒绝逻辑及原封存均不改。检查记录见natural_duty_ci_recovery_20261015.json。
