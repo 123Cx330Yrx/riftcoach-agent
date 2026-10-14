@@ -88,3 +88,8 @@ manifest有新SHA，这不替旧封存重新签名。canonical历史尾段保持
 变更的model_runtime、coach_contract、reviewer_roles旧源码，materialize回退读取当前文件。
 补齐固定51923f4b提交的3份原LF文本，分别匹配remaining4和remaining8既有摘要；原归档条目、
 摘要清单、生产prior拒绝逻辑及原封存均不改。检查记录见natural_duty_ci_recovery_20261015.json。
+
+同一公共回归随后暴露旧 timing 快照还引用 `app/runtime/coach_contract.py` 的历史指纹；该共享文件
+在候选中新增1.6.0合同入口，不能用当前文件重算旧裁决。已从固定提交51923f4b提取原LF字节，
+加入 timing 源码归档并纳入 `FROZEN_SOURCES`；旧 timing JSON、seal、原件与生产拒绝逻辑均未改。
+本机候选加历史回归140项、治理检查和 timing 审计通过，等待同提交公共CI复核。
