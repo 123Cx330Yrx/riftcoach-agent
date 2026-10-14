@@ -11,28 +11,22 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：初审逐字补丁固定报告链已真实通过并封存；automation PAUSED。熟悉单例不授资格，
-自然修订最少6调用超过产品5上限；零付费审计已完成，6次候选待决定，8E未完成，无新付费授权。
+执行状态：用户已确认6次候选并完成零付费接线；新worktree codex/natural-duty-six，旧冻结目录保留。
+结构及模型双pass不授语义资格，候选始终拒发布；无新付费授权，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标与结果：** 查明自然任务为何需要两次生成，并形成完整职责下的预算取舍；零付费审计已完成。
-**实际路径：** RecentReview编译 → 同一BudgetedProvider → AgentLoop选择知识工具 → 本地执行 → 模型读取成稿。
-一轮工具后双初审pass共4次；程序补丁加双fresh最少6次，追加工具轮次为5/7次。
-**证据：** 实际AgentLoop/ToolRuntime/本地RAG三路径探针；共享预算第6次、900秒到期、token不足拒发，
-剩50秒timeout裁为50。14项既有产品组装回归通过；模型为替身，外部调用0，不证明自然补丁接线或质量。
-详见[具体取舍与实施边界](../../docs/plans/2026-10-14-natural-review-duty-budget.md)。
-**推荐与待决定：** 显式候选max_calls从5改6，保留401920tokens/900秒/单请求300秒和现有模型high；
-尚未采用或实施。6只容纳最短修订；更多工具轮次仍可拒绝，不能保证任意任务成功。
-**其他方案：** 保持5则常规修订停止；确定性预检索会改变Agent检索；合并职责回同一次请求需要重新验证；
-并发不减少调用数。推荐保留当前有单例支持的职责分离和动态检索，不删completion/跳fresh/另开账本。
-**实质依赖：** 开发600秒身份和六个Host门不能直接移植；产品发布语义、独立身份及同版本资格仍缺。
-**下一动作：** 用户决定6次候选后，先做零付费身份/发布语义设计与接线；新付费需具体新方案，不挪旧授权。
-**已完成证据保留：** 固定报告development_chain_pass，facts72/needs_revision→两补丁→双fresh96/pass；
-4HTTP/65839tokens、103原件及6native/作者严格封存，854源码/3包保持；熟悉单例非holdout或产品准入。
-见[关闭结果](../../docs/plans/2026-10-14-review-duty-direct-patch-result.md)。旧失败/分歧和原15裁决不重判。
-**范围：** 生产代码/预算未改、automation保持PAUSED、无新业务run或Host任务；正式15、自然Coach/Training、
-四块联动/journal、前端头像审美、Memory、身份运维、两树整合、独立评估、学习保留，8E不推进。
+**目标与结果：** 解决最短自然修订6次与旧5次合同的工程矛盾，独立候选接线完成；不承诺质量准入。
+**实际路径：** RecentReview → Runtime单一共享预算 → AgentLoop/本地RAG → 双初审 → 程序预览/唯一应用 → 双fresh。
+**边界：** 新1.6.0合同6/401920/900/单请求300；其余high模型和单次输入输出保持，无Flash编辑请求。
+追加检索导致不足两fresh slot时停止；未知预留计入预算，取消后下一发送前停止。
+**证据：** 新候选22项与相关旧回归；真实产品对象和本地工具、替身模型且socket禁止。
+覆盖预算/取消、坏补丁、身份/回执/Trace篡改及来源/原稿/新稿绑定；完整结果见机器验证记录。
+**发布判断：** 所有候选成功仍返回FAIL给Harness，另记内部unqualified outcome；未伪造Host验收。
+工程接线不证明自动语义冲突检测或真实质量；详见ADR0118及natural-duty-six-implementation。
+**旧证据：** 原冻结854源码/3包/103原件及seal一致，不修改旧裁决；固定报告通过仅开发证据。
+**下一动作：** 零付费整理自动语义裁决反例与同版本资格设计，明确错意见/错修法/冲突/双审漏判的拒绝策略。
+发布门关闭，不另开付费批；6次已确认，不重复请求。所有原15、自然产品、前端和学习依赖保留。
 
 ## Dependencies and Follow-through
 
@@ -53,8 +47,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：自然调用路径与预算零付费审计完成，下一步是明确6次候选取舍。
-批准后先做独立身份/产品发布语义设计与接线；不恢复旧付费批或直接购买正式15。8E及全部依赖保持。
+以canonical和上方工作卡为准：六次候选接线和离线验证完成，下一步是自动语义裁决反例与同版本资格设计。
+不恢复旧付费批，不直接购买正式15；发布门关闭，8E及全部依赖保持。
 
 ## History
 

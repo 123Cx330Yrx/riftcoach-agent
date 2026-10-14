@@ -131,6 +131,9 @@ class RoleRoutedProvider:
     def require_selected_provider(self, provider, role):
         require_role_provider(provider, role)
 
+    def validate_request(self, request, *, transport_id):
+        return validate_request(request, transport_id=transport_id)
+
     def chat(self, request):
         self.last_exchange = None
         if self._failed:
@@ -143,7 +146,7 @@ class RoleRoutedProvider:
             self.require_selected_provider(selected, role)
             transport = self.transport_for_role(role)
             expected_identity = self.request_identity(request)
-            raw = validate_request(request, transport_id=transport)
+            raw = self.validate_request(request, transport_id=transport)
             previous = getattr(selected, "last_exchange", None)
             self._calls += 1
             attempt = dict(ordinal=self._calls, role=role,
@@ -159,7 +162,7 @@ class RoleRoutedProvider:
             exchange = getattr(selected, "last_exchange", None)
             if (not isinstance(exchange, Exchange) or exchange is previous or exchange.response is not response
                     or exchange.receipt_request_sha256 != attempt["request_sha256"]
-                    or hashlib.sha256(validate_request(exchange.issued_request, transport_id=transport)).hexdigest() != attempt["request_sha256"]):
+                    or hashlib.sha256(self.validate_request(exchange.issued_request, transport_id=transport)).hexdigest() != attempt["request_sha256"]):
                 raise ProviderResponseError(provider=self.provider_name, code="role_fresh_receipt_required")
             self.last_exchange = exchange
             attempt["status"] = "completed"

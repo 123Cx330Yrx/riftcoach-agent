@@ -1,3 +1,17 @@
+## 2026-10-14 用户确认六次自然候选，独立接线完成
+
+在D:/riftcoach-natural-duty-six、codex/natural-duty-six实施合同1.6.0/Skill0.7.0/Program4.0.0。
+复用真实RecentReview/Runtime/AgentLoop/本地RAG/共享预算/取消/Trace/receipt；4次直接通过，
+6次最短修订，追加检索不足两个fresh slot时应用前停止。保留401920/900/单请求300及high。
+所有双pass候选仍拒发布，内部结果明确unqualified；没有Host语义认证、默认入口或付费transport。
+
+最终相关124项通过（46.38秒，其中新候选22项），零模型费用。预算、取消、身份/回执、
+来源/稿件篡改、指纹漂移、终态重入与既有补丁回归覆盖。真实质量未证；机器记录为
+natural_duty_six_offline_20261014.json，设计ADR0118及natural-duty-six-implementation。
+原目录854源码/3包/103原件与seal保持，automation PAUSED，canonical历史尾段保持。
+新分支只同步受影响的四个旧runtime manifest源码行及program SHA，不重签旧实验。
+下一动作零付费语义反例与同版本资格设计；6次已确认，不再请求此预算决定。8E和全部依赖不变。
+
 ## 2026-10-14 自然任务调用链与预算零付费审计完成
 
 实际代码核明两次生成是模型选知识工具、读取结果成稿；双初审直接pass共4次，修订双fresh最少6次，追加工具轮次为5/7次。新增audit_natural_review_duty_budget：三种实际AgentLoop/本地RAG路径及真实CoachBudget门，socket阻断，外部调用0；第6次前硬停、剩50秒裁50、到期/token不足拒发。结果natural_review_duty_budget_audit_20261014.json只含计数/元数据/SHA。既有role应用14项通过（9.62秒）。这些是软件路径证据，不是假造候选集成或模型通过。

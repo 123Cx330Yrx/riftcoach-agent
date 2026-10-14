@@ -4,12 +4,13 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "逐字补丁固定报告开发链通过并封存，automation PAUSED；熟悉单例非资格；自然修订最少6次超过产品5上限，6次候选待用户决定，无新付费授权。"
+pause_reason: "六次自然职责候选已获确认并完成零付费接线；发布门关闭、自动语义质量未证；旧批封存、automation PAUSED，无新付费授权。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-14。后端 `D:/riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`。
+2026-10-14。候选实施 `D:/riftcoach-natural-duty-six`，分支 `codex/natural-duty-six`。
+原后端 `D:/riftcoach-agent-rq192-pr` 保留冻结源码与封存回放。
 主树未完成前端保持；0—8及当前8E checkpoint不变。
 
 ## 当前行动
@@ -36,15 +37,22 @@ unknown/receiptless/发送未知0、未发0。活动318.515秒、Host3959.876秒
 不重启原15、不授资格，不把旧失败或分歧改为通过。旧Flash链3HTTP/48960tokens、严格block_N
 失败与raw范围扩展诊断继续保留，见[旧链关闭结果](plans/2026-10-14-review-duty-chain-result.md)。
 
-**零付费自然路径与预算审计已完成；下一动作是6次候选的显式预算取舍。**
-一次模型选工具、一次读取结果成稿后，双初审直接通过共4次，修订并双fresh最少6次；
-追加工具轮次为5/7次，无工具虽少一次却缺当前必要知识证据。实际AgentLoop/本地RAG探针通过，
-共享预算器第6次发送前硬停；剩50秒裁为50、到期/token不足拒发。14项既有应用回归通过。
-见[具体取舍与实施边界](plans/2026-10-14-natural-review-duty-budget.md)及机器审计natural_review_duty_budget_audit_20261014。
-推荐显式候选max_calls由5改6，401920tokens/900秒/产品单次300秒及模型high保持；尚未批准或实施。
-6次只容纳最短修订，不保证更多工具轮次；开发600秒身份及人工Host验收不能直接移植为产品能力。
-不删职责或跳fresh、不另开账本；用户决定后先做零付费独立身份/发布语义设计与接线，新付费另案。
-本批永久关闭、automation保持PAUSED；原15/全部后续产品依赖保持，8E不推进。
+**用户已明确确认6次候选；零付费独立身份与真实Runtime接线完成。**
+基于1e0e48af在独立worktree实施1.6.0合同/Skill0.7.0/Program4.0.0；共享账本6次/
+401920tokens/900秒/实际单请求300秒，Flash/high生成、GLM/high审查，程序应用补丁并双fresh。
+双初审pass共4次，普通修订6次；追加检索后不足两个fresh slot则应用前停止。
+真实Trace、用量/未知预留和取消围栏复用。详见[实施与边界](plans/2026-10-14-natural-duty-six-implementation.md)、
+ADR0118及natural_duty_six_offline_20261014.json；阻断socket的替身测试不是真实模型质量证据。
+原稿/来源/fresh稿被改、旧time600/身份混用、坏补丁、fresh拒绝和预算/transport故障停止。
+
+候选双pass也仅存内部unqualified结果，Harness始终拒发布。结构兼容不冒充自动语义判断，
+不生成四项Host验收。四个旧runtime资产只同步新分支共享源码指纹，不重新签历史原件。
+原目录854源码/3件包/103原件及seal实核保持，automation PAUSED，没有新付费run。
+
+**下一动作：零付费整理自动语义裁决反例与同版本资格设计。**
+明确错意见/错修法、语义冲突和双审漏判如何拒绝，再决定具体资格验证；发布门保持关闭。
+不拼旧成功资格，不重开原15或旧批；新付费需独立具体方案和授权。6次确认不再询问。
+完整自然Coach/Training与8E及全部后续依赖保持。
 
 ## 保留的真实结果与依赖
 
@@ -55,7 +63,7 @@ unknown/receiptless/发送未知0、未发0。活动318.515秒、Host3959.876秒
 
 原15的10通过/3语义拒绝或分歧/2未认证及scope:4分歧保持；37.167104元原15方案撤回保持。
 J1/J2两臂皆过无改善证据，关系教学候选不采用；原三处语义问题尚未证明稳定解决。
-产品5/401920/900不静默扩成7调用。取消/失败用量owner API与UI既有分段证据复用，
+旧产品5/401920/900保持；显式新候选获准6次，不静默扩成7调用。取消/失败用量owner API与UI既有分段证据复用，
 不替代当前组合自然消费，见[实际消费证据](plans/2026-10-14-terminal-usage-consumption.md)。
 正式同版本15、自然Coach/Training、四块联动、完整journal、前端审美头像、Memory、
 身份运维、两树整合、独立评估和学习保留；代码/Owner理解/来源资格/公开成熟度分别验收。

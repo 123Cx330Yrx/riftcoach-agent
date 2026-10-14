@@ -30,6 +30,14 @@ source links for requirement recovery, not as another always-read history.
 Past statements such as "当前只复盘" describe their date; the latest user request
 controls the current task. Current facts must be checked against code/receipts.
 
+## Natural-duty candidate routing, 2026-10-14
+
+Current six-call candidate implementation is `D:/riftcoach-natural-duty-six`,
+branch `codex/natural-duty-six`, forked from backend `1e0e48af`. Read its canonical
+state for this authorized offline implementation. The original backend remains
+the frozen replay location; do not copy shared source over it or restart closed
+experiments. Main-checkout frontend work remains separate.
+
 ## Verified local runtime, 2026-09-28
 
 Docker Desktop and the backend checkout's existing PostgreSQL volume are now

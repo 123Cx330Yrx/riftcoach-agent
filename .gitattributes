@@ -349,3 +349,11 @@
 /tests/test_review_duty_launch.py text eol=lf
 /data/evaluation/fixtures/review_duty_chain_20261014/** -text
 /data/evaluation/results/review_duty_launch_preparation_20261014.json -text
+
+# Prospective six-call candidate assets, distinct from frozen historical runs.
+/app/evaluation/natural_duty_*.py text eol=lf
+/app/product/natural_duty_candidate.py text eol=lf
+/scripts/refresh_natural_duty_manifest.py text eol=lf
+/tests/test_natural_duty_candidate.py text eol=lf
+/examples/runtime_profiles/natural_duty_v1/** text eol=lf
+/data/evaluation/results/natural_duty_six_offline_20261014.json text eol=lf

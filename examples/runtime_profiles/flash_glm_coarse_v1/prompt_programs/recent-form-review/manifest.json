@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "6703eef81f8dbc2d9c2e1bf6c001346831aac33190ab681c47c797d4b89271df"
+      "sha256": "1c7dfaa2f33bfe71039e6abdceeda9f6fc5a81a81aebf40c2ea38bc6b9b46a1b"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -237,7 +237,7 @@
     {
       "component_id": "app.runtime.reviewer_roles",
       "source": "app/runtime/reviewer_roles.py",
-      "sha256": "86ff1e4d610ad88c43d70416ae2896fd8c290498c3cc8a541971ec8fe515bd77"
+      "sha256": "0b04efcd220454457235e4f3960971d22351dbed4c90aed2f71f1121aac68093"
     },
     {
       "component_id": "app.runtime.coach_budget",
@@ -262,12 +262,12 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "d529c35866e4b04ca93090f3b6c81588a5c0860b3b45db0d0b0d31d726a30fd6"
+      "sha256": "4c3a7587ecfa3b31393dca6cc3bd94a536958ab507a1707081d43e4ebca66a03"
     },
     {
       "component_id": "app.model_runtime",
       "source": "app/model_runtime.py",
-      "sha256": "11172402ee1e934e35dcacbf396ac5ffb259f2bda1f9e8e41f53f4f1afd10931"
+      "sha256": "d4b8fc440c9ed33ae646a2054b930b59e278920d139e77f1760fcec95499f836"
     },
     {
       "component_id": "app.evaluation.golden_role_coarse",
@@ -292,12 +292,12 @@
     {
       "component_id": "app.prompt_program.resolver",
       "source": "app/prompt_program/resolver.py",
-      "sha256": "2136a6017a92ca2d3a1211c0980fb9db9734cfa19ea2009d63bcede6ca804527"
+      "sha256": "aa4ba62ffd9dd10de194cade4805d3a5cb70205aa84c5e24c926cc3489495ca6"
     },
     {
       "component_id": "app.prompt_program.models",
       "source": "app/prompt_program/models.py",
-      "sha256": "3bfbdde60230bbeb578f9ece742f7bf5a7b94be9ee639b76749e4d512da691cf"
+      "sha256": "c39989a2fd42c1d7393164492881a1d477cb690f6acc428120a21354f0f6a91f"
     },
     {
       "component_id": "app.evaluation.golden_review_source_catalog",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "734d893c69e6d5186ced1444cd250d303049cfd9a2e55a5a8d37303f08758727"
+  "program_sha256": "5353340a01114533149ebafccfa393cae66542e0e6877925c8849662fe9ca2c2"
 }

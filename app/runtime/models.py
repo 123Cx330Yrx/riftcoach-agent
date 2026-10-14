@@ -586,15 +586,20 @@ class RuntimeTrace(RuntimeContractModel):
         role_descriptor = None
         snapshot = self.identity.coach_contract
         if snapshot is not None and (
-            snapshot.contract_id == "recent-form-review-roles-v1"
+            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1"}
             or snapshot.version in {"1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5"}
         ):
             # Only this exact opt-in contract permits per-request model roles.
             # Its digest binds the model/profile/transport role map; a caller
             # cannot grant itself mixed-model access by changing a label.
             from .coach_contract import ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT, LEGACY_NOTE_ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, BOUNDARY_EXAMPLES_COACH_CONTRACT
+            candidates = (ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT, LEGACY_NOTE_ROLE_COACH_CONTRACT,
+                COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, BOUNDARY_EXAMPLES_COACH_CONTRACT)
+            if snapshot.contract_id == 'natural-duty-direct-patch-time300-v1':
+                from app.evaluation.natural_duty_contract import CONTRACT as natural_duty
+                candidates += (natural_duty,)
             role_contract = next((contract for contract in
-                (ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT, LEGACY_NOTE_ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, BOUNDARY_EXAMPLES_COACH_CONTRACT)
+                candidates
                 if snapshot == contract.snapshot()), None)
             if role_contract is None:
                 raise ValueError("trace role contract is not the trusted contract")
