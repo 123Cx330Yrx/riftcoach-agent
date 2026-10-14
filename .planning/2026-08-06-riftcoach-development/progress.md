@@ -1,3 +1,9 @@
+## 2026-10-14 编辑地址合同免费裁决完成
+
+基线ba5922e4，比较既有数组/block_N、无段号锚点、逐段工具、来源ID和远端约束的能力与实际反证。保留严格block_N；数组有缺block历史失败，地址表示不能保证替换范围，不新增同能力适配器、不自动补旧键、不为同义提醒重买。新决策2026-10-14-editor-contract-decision.md说明实际组装→四项Host验收→双fresh边界；生成修法尚未选定，不申请新付费批。
+
+现有test_report_block_keyed_editor/test_review_bound_editor/test_review_duty_composition/test_review_duty_execution共112项通过，150.65秒；覆盖地址/锚点、原样意见与实际新稿绑定、错误内容不获结构认证、编辑拒绝后不发送fresh及失败停止。均为离线脚本化证据，未做真实模型质量复测。847冻结源码配置、3件执行包和64本批原件逐一SHA一致；治理及git diff --check通过。本包仅文档，无新模型调用/业务Host任务，automation维持暂停，旧批不重开。下一动作针对替换内容来源限定的机制对照，原15/8E及下游依赖保持。
+
 ## 2026-10-14 固定报告互补链真实执行在编辑协议门关闭
 
 用户确认后e9754afe/CI38537476729全绿，唯一waiter进入run。facts78/needs_revision、completion93/pass及兼容clear分别完成主审和既有独立的真实全文审查；3个checkpoint、run外作者/check-answer、唯一多行native final及实际事件导入均核。两初审接受不表示错误原稿合格。

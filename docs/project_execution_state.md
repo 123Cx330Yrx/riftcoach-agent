@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定报告互补链在编辑段落键协议处硬停并封存；无合法新稿或fresh。automation PAUSED，下一步零付费编辑合同与语义消费取舍。"
+pause_reason: "固定报告互补链已失败封存；地址合同取舍完成，保留严格block_N，不回退数组或补键。生成语义修复未选定，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -27,9 +27,11 @@ unknown/receiptless/发送未知0，fresh两项未发。活动224.360秒、Host1
 严格只读replay与固定create-only seal通过，3份真实native/作者/观测及64份本批原件SHA一致。
 runner退出1、无重试补发，automation已PAUSED。机器证据`review_duty_chain_close_audit_20261014.json`。
 
-**下一动作：零付费核查编辑地址合同与语义消费的方案取舍。**
-正确初审与兼容意见尚不足以保证实际编辑；不自动补键或原样重跑，不以加一句提示直接换新付费批。
-保留严格协议门、来源/身份和完整新稿验收，先用本次公开失败证据区分协议约束与语义保持的修法。
+**零付费地址合同裁决已完成：保留严格block_N，不新建数组适配器。**
+数组合同也有缺block的真实失败；两种表示均不能证明替换内容正确。现有实际新稿四项Host验收、
+拒绝后不发fresh的控制路径保留，不能当自动产品语义保证。见[方案取舍](plans/2026-10-14-editor-contract-decision.md)。
+**下一动作：针对替换内容的来源限定保持，提出有区分性反证的机制对照；当前尚无被支持的生成修复。**
+不重复地址变形、同义提示或旧例答案注入；未形成可区分机制前不准备新付费批。完整新稿验收保持。
 本例只支持互补初审可行，不支持编辑成功、稳定改善、holdout、产品准入或原15资格；8E未完成。
 
 ## 保留的真实结果与依赖
