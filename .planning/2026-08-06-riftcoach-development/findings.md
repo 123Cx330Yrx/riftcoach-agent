@@ -1,3 +1,12 @@
+## 2026-10-15 批次恢复须保留原始检查点与阶段库存边界
+
+原manifest请求摘要未排序，新Responses receipt摘要排序，两者不能直接混比；控制层分别绑定
+原manifest摘要、transport摘要、文件SHA和wire SHA，12份原件保持。重启必须使用当时返回的checkpoint SHA。
+单次receipt写失败不等于已知用量消失；仅在本次request/profile身份和所有存活计量一致时恢复known，
+冲突继续unknown。历史slot不仅不能改旧文件，也不能新增原本缺失的“合法名字”；等待判读后调用
+证据已冻结，native导入阶段仅允许增加当前submission。seal前还需重读旧native与作者，不能事后发现
+差异却已写成功封存。上述反例通过离线替身核验，不是新的模型质量或真实原生业务判断。
+
 ## 2026-10-15 Responses SDK结束迭代不等于底层EOF
 
 实际OpenAI SDK2.54.0的Stream在[DONE]分支break后finally close，没有继续耗尽底层字节。

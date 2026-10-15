@@ -2,6 +2,12 @@
 /data/evaluation/fixtures/natural_duty_observed_source_20261015/*.json -text
 /data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf
 
+# Prospective research batch control and its offline evidence.
+/scripts/reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_native.py text eol=lf
+/data/evaluation/results/reviewer_profile_batch_offline_20261015.json text eol=lf
+
 # Offline reviewer screen: preserve bound source/report/request and review bytes.
 /data/evaluation/fixtures/reviewer_profile_screen_20261015/** -text
 /scripts/prepare_reviewer_profile_screen.py text eol=lf

@@ -163,9 +163,9 @@ YJ API公开配置列出gpt-6.1-sol，但该模型端点仅标Chat Completions�
 
 ## 本包结束条件与后续边界
 
-已完成可审查的路线、两稿四请求、材料复核、第三方公开接入核对，以及最小单次适配的离线验证。
+已完成可审查的路线、两稿四请求、材料复核、第三方公开接入核对、单次适配及四次控制层的离线验证。
 没有选定迁移或新付费批。下一动作是以具体wire、固定分组、费用及安全凭证方式确定执行条件，
-再完成批次冻结、精确HEAD公共CI和新授权绑定；不得把单次适配写成四次launcher已ready。
+再绑定账号/独立审查上下文、精确clean HEAD公共CI和新授权；不得把可注入的控制层写成付费launcher已ready。
 漏检、误拒、错误修法、协议失败、超时和未知用量分别报告；任一结果不能只导向无限重试。
 
 原产品5次、已确认候选6次、GLM角色合同、automation PAUSED、发布关闭、旧封存和缺口保持。
@@ -205,4 +205,36 @@ tests/test_reviewer_responses_supervisor.py --tb=short --show-capture=no`（合�
 这不是新厂商资格或旧批native业务复核。模型调用0、真实密钥使用0；四请求/报告/原manifest字节保持。
 未验证第三方high、真实上游、固定账号分组、实际扣费、输入tokenizer或语义效果；公共CI须绑定后继提交。
 页面pro组预算0.364544元仍只是建议，selected_execution_profile/actual_channel_estimate继续null，
-execution_ready/authorized/qualified继续false。仅有单次transport，尚无四次预算/人工判读/授权冻结launcher。
+execution_ready/authorized/qualified继续false。该单次提交当时只有transport；四次控制层的后继实现见下节。
+
+## 四次控制层与原生判读的离线接线（2026-10-15 后继）
+
+本次将“发一次后判读，再决定是否继续”落实在`scripts/reviewer_profile_batch.py`，复用上节
+单次sender和既有NativeGate。没有另写模型适配、产品Runtime或通用工作流。prepare只生成离线提案；
+create/load、send_next、submit_review、status/close形成固定四slot控制，源码不提供密钥发现或付费CLI。
+
+- 顺序固定为r01-facts、r01-completion、r02-facts、r02-completion。完整回执只进入awaiting_review，
+  主审与独立全文判读通过才可进入下一项。漏检/误伤/错误修法或操作失败终止；第四项后没有第五次。
+- 每次64000输入/32768总输出/300秒，最多387072tokens。共享1200秒采用保守的监督进程elapsed，
+  包括清理、排除人工等待，不能称真实模型计费秒数。已知失败计量保留，冲突/缺回执记未知预留，
+  可信发送前取消记未发送；只有request/profile身份和存活计量一致才能恢复已知数值。
+- 原manifest摘要不排序，新transport摘要排序：分别保存原manifest摘要、transport摘要、文件字节SHA
+  和wire SHA，不能把两种摘要混比。12份原件不改；源码/HEAD/实际Python及依赖身份随计划冻结并重核。
+- 外层create-only claim先于sender；调用目录留给单次监督器独占创建。每次append checkpoint固定
+  原件库存和前一SHA，恢复必须持有当时返回的SHA；不事后重算新根。status/load严格只读。
+  若断电留下claim或未登记文件，不能回到ready，不能补发；缺完整检查点时报告证据不可恢复，保留原件。
+- 默认真实NativeGate要求原生事件源，调用方必须显式提供执行前检查。独立任务带完整稿、请求、来源、
+  政策和公开工具结果，没有标签或主审意见；作者文件在operator之外。新增ExactNativeGate比较真实
+  native final文本UTF8字节与作者文件，JSON同值但末尾LF不同也拒绝。旧原生模块与旧缺口保持。
+- submit、下一发送、恢复及关闭重读已审native和作者；sender/原生IO期间改动旧证据不能被新checkpoint
+  重新盖章。唯一seal create-only，始终qualified/publication_allowed=false。
+
+本轮130项相关检查通过：批控制32项、原生及实际接线13项、已有材料/单次适配85项。
+验证见`reviewer_profile_batch_offline_20261015.json`：包含调度、真实worker/SDK/监督器/批控制接线、
+实际NativeGate导入与checkpoint/check-answer路径。HTTP和native历史均为明确标注的离线替身，
+不声称发生真实原生业务审查。测试记录不进入研究原件；没有真实模型调用、真实密钥或新增依赖。
+工程审查Agent读过预期标签；未来业务独立判读必须使用未读标签/主意见的上下文，不沿用其当前工程记忆。
+
+目前仍缺真正的授权/账户/CI绑定入口；测试before_send或sender可注入性不能代替这些条件。
+下一步的具体待定项只有账号固定分组、安全凭证、网络与费用授权、冻结提交公共CI及独立审查身份。
+完成后按本控制层逐次筛选，四项通过仅用于是否继续投入的判断，不授权产品迁移、完整编辑/fresh或原15资格。
