@@ -2,6 +2,7 @@
 from dataclasses import replace
 import json
 from pathlib import Path
+import re
 import socket
 
 import pytest
@@ -78,6 +79,20 @@ class Responses(ScriptedProductProvider):
                         suggested_correction='Scripted exact repair.')], repairs=[dict(issue_ids=[1],edits={
                         'block_4':[dict(before=BEFORE if self.mode!='bad_anchor' else 'missing synthetic anchor',
                         after=bad_after,reason='Scripted diagnostic only.')]})])
+                    if self.mode == 'empty_source_ids':
+                        value['issues'][0]['source_ids'] = []
+                    elif self.mode == 'wrong_target_block':
+                        block = build_inputs(self.req).source.blocks[5][1]
+                        value['repairs'][0]['edits'] = {'block_6': [dict(before=block,
+                            after=block+' OFFLINE unrelated change.', reason='Scripted wrong target.')]}
+                    elif self.mode == 'removed_knowledge_citations':
+                        edits = {}
+                        for number, (_, block) in enumerate(build_inputs(self.req).source.blocks, 1):
+                            after = re.sub(r'\[K\d+\]', '', block).replace(BEFORE, AFTER)
+                            if after != block:
+                                edits[f'block_{number}'] = [dict(before=block, after=after,
+                                    reason='Scripted citation deletion.')]
+                        value['repairs'][0]['edits'] = edits
             elif self.mode=='fresh_reject' and marker['duty']=='facts':
                 value.update(score=0, verdict='fail')
             response = ChatResponse(provider='zhipu',model=self.model_name,content=None,
@@ -247,14 +262,35 @@ def test_terminal_workflow_cannot_reopen_or_rewrite_evidence(tmp_path):
     assert len(f.providers['candidate'].attempts) == 4
 
 
-def test_semantically_wrong_but_structurally_valid_patch_stays_unqualified(tmp_path):
-    app, f, flows = application(tmp_path, mode='bad_semantic')
+@pytest.mark.parametrize('mode', ['bad_semantic', 'empty_source_ids', 'wrong_target_block',
+                                  'removed_knowledge_citations'])
+def test_structurally_valid_semantic_gaps_stay_unqualified_after_both_fresh_pass(tmp_path, mode):
+    app, f, flows = application(tmp_path, mode=mode)
     result = run(app)
     flow = flows[0]
     assert flow.outcome == 'candidate_repaired_pass_unqualified'
     assert flow.assembly.report != flow.original.source.report
     assert result.publication_status.value == 'rejected'
     assert result.output is None or result.output.report is None
+    assert len(f.providers['candidate'].attempts) == 6
+    assert not FileRunReceiptStore(tmp_path).read_receipt('candidate').report_available
+    outcome = json.loads((flow.journal_root/'outcome.json').read_bytes())
+    assert not outcome['host_semantics_verified'] and not outcome['publication_allowed']
+    fresh = [r for r in f.providers['candidate'].reviewer.requests
+             if r.metadata[duty.MARKER]['stage'] == 'fresh']
+    assert len(fresh) == 2
+    for name, request in zip(duty.DUTIES, fresh):
+        assert request.messages == make_request(flow.expected_fresh, name, 'fresh').messages
+    if mode == 'bad_semantic':
+        assert BEFORE.replace('15', '99') in flow.assembly.report
+    elif mode == 'wrong_target_block':
+        assert BEFORE in flow.assembly.report and AFTER not in flow.assembly.report
+    elif mode == 'removed_knowledge_citations':
+        assert re.search(r'\[K\d+\]', flow.original.source.report)
+        assert not re.search(r'\[K\d+\]', flow.assembly.report)
+    else:
+        raw = json.loads((flow.journal_root/'facts-initial.json').read_bytes())['raw']
+        assert json.loads(raw)['issues'][0]['source_ids'] == []
 
 
 def test_corrupt_program_manifest_stops_before_provider(tmp_path, monkeypatch):

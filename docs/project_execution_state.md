@@ -9,7 +9,7 @@ pause_reason: "六次自然职责候选已获确认并完成零付费接线；�
 
 # RiftCoach 当前执行状态
 
-2026-10-14。候选实施 `D:/riftcoach-natural-duty-six`，分支 `codex/natural-duty-six`。
+2026-10-15。候选实施 `D:/riftcoach-natural-duty-six`，分支 `codex/natural-duty-six`。
 原后端 `D:/riftcoach-agent-rq192-pr` 保留冻结源码与封存回放。
 主树未完成前端保持；0—8及当前8E checkpoint不变。
 
@@ -49,17 +49,24 @@ ADR0118及natural_duty_six_offline_20261014.json；阻断socket的替身测试�
 不生成四项Host验收。四个旧runtime资产只同步新分支共享源码指纹，不重新签历史原件。
 原目录854源码/3件包/103原件及seal实核保持，automation PAUSED，没有新付费run。
 
-**2026-10-15 恢复核对：先修公共CI的历史夹具缺口。**
-8d06f442与原后端5b19e3ee均干净；CI38590893161的web/packaging/postgres通过，
-四pytest分片都在remaining4历史快照setup遇到app/model_runtime.py摘要不符，提前停止，
-不能把本机124项通过视为公共全库通过。原因是历史夹具回退读取了本轮已变更的3份共享源码。
-现从原固定51923f4b提交补齐测试归档副本，逐项匹配remaining4/8原LF摘要；不修改历史摘要、
-生产验证器或封存裁决。见natural_duty_ci_recovery_20261015.json。修复后先核公共CI。
+**2026-10-15 公共CI恢复完成。**
+b79d2c83 / CI38601405819四个pytest分片、web、打包、Postgres及聚合检查全部通过。
+固定51923f4b的3份历史夹具源码及timing使用的coach_contract归档补齐，原摘要/JSON/seal不改。
+本机140项、timing审计和治理检查通过；这个公共全绿只绑定b79d2c83，后继提交另核。
 
-**后续动作：零付费整理自动语义裁决反例与同版本资格设计。**
-明确错意见/错修法、语义冲突和双审漏判如何拒绝，再决定具体资格验证；发布门保持关闭。
-不拼旧成功资格，不重开原15或旧批；新付费需独立具体方案和授权。6次确认不再询问。
-完整自然Coach/Training与8E及全部后续依赖保持。
+**离线语义反例与原15请求清单已完成。**
+空来源/错目标段/补丁删除引用与已有错数字反例，即使替身双fresh均pass，真实应用对象仍保留
+完整意见/实际稿并返回unqualified，receipt无报告、Harness拒发布。职责/补丁/候选84项、清单4项通过。
+这证明发布隔离，不证明自动语义检出；空来源/无引用/跨段修改仍按实际用户要求与来源适用性判断。
+新清单核真实Program/Skill/源码指纹，保留原15输入/5正确10错误标签，构造30个完整time300初审请求。
+fresh SHA待实际新稿，ready/authorized/qualified全false，无真实Provider/Host调用。
+见[语义边界与方案取舍](plans/2026-10-15-natural-duty-semantic-qualification.md)及
+natural_duty_qualification_inventory_20261015.json；旧分歧/封存不重判或拼资格。
+
+**后续动作：按六项开发Host义务的缺口选择可检验的自动策略。**
+先核本包公共CI；按上述映射明确兼容与完整新稿质量如何被自动策略承担，再决定最小必要开发验证。
+不把开发Host当免费运行时服务，不靠字段硬门证明语义，也不直接重买完整15。
+新付费需具体方案和新授权，6次确认不再询问；automation PAUSED，8E及所有产品/学习依赖保持。
 
 ## 保留的真实结果与依赖
 

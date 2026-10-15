@@ -357,3 +357,6 @@
 /tests/test_natural_duty_candidate.py text eol=lf
 /examples/runtime_profiles/natural_duty_v1/** text eol=lf
 /data/evaluation/results/natural_duty_six_offline_20261014.json text eol=lf
+/scripts/audit_natural_duty_qualification.py text eol=lf
+/tests/test_natural_duty_qualification_inventory.py text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_20261015.json text eol=lf
