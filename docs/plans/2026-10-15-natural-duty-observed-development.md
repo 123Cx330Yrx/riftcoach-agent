@@ -96,3 +96,15 @@ completed_unqualified仅表示模型链完成；stopped_unqualified、failed、c
 发送前磁盘检查结束后按同一共享预算拒发或缩短timeout，未另起900秒时钟。
 对应第4响应后改三类原件、899→901拒发及899→899.5缩短到0.5秒反例均通过。
 后续完整响应缺观测仍可只读回放为invalid_receipts，不能把错误账目转换成成功。
+
+
+## 2026-10-15 公共CI续查与Docker复发恢复
+
+准备提交4d37e344的CI38685915747分片2在旧保留研究方案重建断言失败；其余分片、Web、Postgres、打包通过。
+仅natural_duty_contract.py源码摘要变化，方案请求、预算、契约保持。旧方案不能跟随新transport重写；
+测试从452972e7固定原LF源码，校旧SHA后在临时目录重建历史库存，仍由当前请求构造核全部原请求和预算。
+本机修复前1项失败（6.08秒）、后相关24项通过（38.02秒），socket阻断；准备重建相等且SHA3c7a6501保持。
+无运行源码改动、凭据读取、新run或模型调用，automation PAUSED，旧裁决不改；等待修复提交自身公共CI。
+Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运行目录，原容器ebffdb0a8f3e和业务卷保持，
+29.7.2/healthy/15432/SELECT1/0014_message_projection_status已核；未证明上游永久修复。
+详见data/evaluation/results/natural_duty_preservation_ci_recovery_20261015.json及outputs/riftcoach-docker-recovery-20261015续记录。

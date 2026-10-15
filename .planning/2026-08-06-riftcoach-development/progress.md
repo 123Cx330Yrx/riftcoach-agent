@@ -9650,3 +9650,15 @@ OBSERVED、空Memory和历史时间，不注入旧报告或预选知识；两份
 当前六份manifest更新，原15案例/标签/30请求逐字保持，新清单未ready/authorized/qualified。治理、编译与diff已核。
 专用execute仍需具体新费用授权和同HEAD公共CI；估价5.7595904元为历史未缓存报价下保守估计，非账单硬上限。
 发布门和automation PAUSED保持，Docker/原Postgres健康。详见docs/plans/2026-10-15-natural-duty-observed-development.md。
+
+
+## 2026-10-15 公共CI续查与Docker复发恢复
+
+准备提交4d37e344的CI38685915747分片2在旧保留研究方案重建断言失败；其余分片、Web、Postgres、打包通过。
+仅natural_duty_contract.py源码摘要变化，方案请求、预算、契约保持。旧方案不能跟随新transport重写；
+测试从452972e7固定原LF源码，校旧SHA后在临时目录重建历史库存，仍由当前请求构造核全部原请求和预算。
+本机修复前1项失败（6.08秒）、后相关24项通过（38.02秒），socket阻断；准备重建相等且SHA3c7a6501保持。
+无运行源码改动、凭据读取、新run或模型调用，automation PAUSED，旧裁决不改；等待修复提交自身公共CI。
+Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运行目录，原容器ebffdb0a8f3e和业务卷保持，
+29.7.2/healthy/15432/SELECT1/0014_message_projection_status已核；未证明上游永久修复。
+详见data/evaluation/results/natural_duty_preservation_ci_recovery_20261015.json及outputs/riftcoach-docker-recovery-20261015续记录。

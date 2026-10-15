@@ -123,10 +123,26 @@ def test_plan_deduplicates_only_identical_requests_and_costs_each_once(materials
         Decimal(total['input_token_reservation'])*8 + Decimal(total['output_token_reservation'])*28) / 1000000
 
 
-def test_saved_proposal_rebuilds_without_execution_or_quality_credit():
-    result = plan.proposal()
+def test_saved_proposal_rebuilds_without_execution_or_quality_credit(tmp_path, monkeypatch):
     saved = plan.ROOT/'data/evaluation/results/natural_duty_preservation_diagnostic_plan_20261015.json'
-    assert json.loads(saved.read_bytes()) == result
+    expected = json.loads(saved.read_bytes())
+    archive = json.loads((plan.ROOT/'tests/fixtures/natural_duty_preservation_sources.json').read_bytes())
+    assert archive['source_commit'] == '452972e781d16b2e716b51c067f19443b28344cf'
+    assert set(archive['source_text_lf']) == {'app/evaluation/natural_duty_contract.py'}
+    # Rebuild the closed plan's source inventory from its actual historical
+    # text, not the later live transport. Request construction still exercises
+    # current code and must reproduce every original request and budget.
+    for name, source_sha in expected['source_sha256'].items():
+        text = archive['source_text_lf'].get(name)
+        if text is None:
+            text = (plan.ROOT/name).read_text(encoding='utf-8')
+        assert plan.digest(text) == source_sha, name
+        path = tmp_path/name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(text.encode('utf-8'))
+    monkeypatch.setattr(plan, 'ROOT', tmp_path)
+    result = plan.proposal()
+    assert expected == result
     assert result['provider_calls'] == result['new_host_tasks'] == 0
     assert all(r['execution'] is r['model_result'] is r['independent_result'] is None for r in result['requests'])
     assert not any(result[k] for k in ('execution_ready','execution_authorized','qualified',
