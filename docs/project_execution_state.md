@@ -78,10 +78,21 @@ natural_duty_qualification_inventory_20261015.json；旧分歧/封存不重判�
 见natural_duty_preservation_pairs_20261015.json及同名dataset，模型/独立结果为空，旧标签保持。
 b4803823/CI38672321102最近查询仍运行，web/packaging/Postgres已过；不报告本版公共全绿。
 
-**后续动作：核提交CI，明确最小开发实测的身份、判据和完整执行边界。**
-成对材料已把合法删错/保留损失分开；基线看不到修改历史，不将不可见历史计作它的漏检，
-不把差异当作仅补输入的因果证据，也不预设新稿整篇通过。新身份/实际应用绑定及独立审查仍待。
-新付费需具体方案和新授权，6次确认不再询问；automation PAUSED，8E及所有产品/学习依赖保持。
+**有条件的最小诊断方案已完成，尚未具备实测条件。**
+新offline-preservation-diagnostic-v1把新稿score/verdict/issues与原稿相对preservation_notes分开，
+无原稿时notes=null；有原稿时保存公开依据，不自动扣分、改判或授ReportAssessment。两臂均
+被旧Provider拒收，全文/来源/标签隔离及超限拒绝保持；旧原型与1.6.0不变。
+核心12个唯一请求覆盖未改真错和同稿三历史；仅有支持后再进入8个等义/去重控制，重复基线
+不重买、不当独立样本。全上限20次/1523372tokens/6000活动秒，合同快照估价25.294176元
+非账单硬上限；Host总墙钟最多86400秒，不代替产品6/401920/900。新增7项与既有17项共24项
+socket阻断检查通过。见[诊断设计](plans/2026-10-15-preservation-diagnostic-design.md)及
+natural_duty_preservation_diagnostic_plan_20261015.json；模型/独立结果为空，ready/authorized/qualified全false。
+f3717d27/CI38673691931最近查询仍运行，web/packaging/Postgres已过，未报本版全绿。
+
+**后续动作：核实既有独立作者路由，独立审材料与判据，完成零付费执行边界接线。**
+原独立线程只读可见notLoaded及旧完成回合，不能当当前路由预检。无新Agent、Host任务或付费run；
+若p01实质损失前提不成立，零发送结束提案。身份/原件观测/native/预算/封存验证及最终CI完成后，
+才请求绑定具体方案的新费用授权；不重复询问6次候选确认。automation PAUSED，8E及全部依赖保持。
 
 ## 保留的真实结果与依赖
 

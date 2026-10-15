@@ -1,3 +1,28 @@
+## 2026-10-15 最小保留诊断设计与离线请求（零付费）
+
+恢复核候选f3717d27、原后端5b19e3ee工作树干净；原execution-exit/seal仍development_chain_pass，
+automation实读PAUSED。CI38673691931绑定f3717d27仍运行，web/packaging/Postgres成功，未报全绿。
+活动Agent仅root；原独立线程只读状态notLoaded、最近旧completion-fresh已完成；没有派发新任务。
+
+判据审查发现旧原型将相对原稿损失写入普通issues，可能混淆保留义务与实际任务缺项。本次新增
+独立offline-preservation-diagnostic-v1纯请求：新稿score/verdict/issues保留各自职责，另设公开
+preservation_notes，final_only必须null、比较臂必须有说明；不是ReportAssessment或通过布尔值。
+新稿真问题不能藏到notes，原稿相对损失不自动改变新稿分数/结论。两臂均旧Provider拒收，无sender。
+
+固定先p06未改真错，再p01/p02/p03同终稿三历史；核心12个唯一请求有支持后才进p04/p05的8控制。
+共享基线只发一次，4个重复被排除，不计独立重复。20次上限输入868012+输出655360=1523372tokens，
+单请求300秒，总活动6000秒；Host在内总墙钟86400秒。合同快照估价25.294176元非当前账单/硬扣费限。
+这不是自然产品6/401920/900；不改旧产品、候选、材料、旧请求原型或历史标签。
+
+新增7项加原17项共24项socket阻断测试通过（48.71秒），完整来源/标签隔离、旧身份拒收、组合
+超限拒绝、观察输出分离、精确SHA去重、预算及结果重建均覆盖；不证明语义遵从。编译/diff通过。
+结果natural_duty_preservation_diagnostic_plan_20261015.json无模型/独立/应用回执，ready/authorized/qualified
+全false。方案docs/plans/2026-10-15-preservation-diagnostic-design.md列独立反驳材料前提、非焦点意见、
+分歧/未知/拒绝/故障硬停、首次guard根及只读seal边界。当前没有请求费用批准或启动waiter/run。
+
+下一动作是核既有独立作者路由并独立审材料/判据，完成隔离执行边界的零付费接线，再核最终CI
+和冻结manifest后才提出新付费授权。canonical历史字节e6706926…保持；8E、原15和全部下游依赖保持。
+
 ## 2026-10-15 成对保留/删错材料完成（零付费）
 
 恢复b4803823工作树干净，CI38672321102仍运行；后续查询web/packaging/Postgres通过，四分片未完。
