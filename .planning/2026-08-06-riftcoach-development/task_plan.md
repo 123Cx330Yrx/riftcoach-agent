@@ -16,15 +16,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 保持六次候选真实Worker/SQL/API用量与拒发布边界，修正发送前取消时内部预算多记未发调用的问题。
-**依据与起点：** 1.6.0应用接线及离线取消已完成；现有数据库测试用旧五次correction-scope组合，不能替代当前组合。
-**路径：** API任务 → Postgres领取/owner取消 → RecentReviewTaskExecutor → 自然候选DispatchAwareRuntime → Trace/receipt → SQL终态 → owner用量API。
-**实施：** 复用本地RAG与脚本替身Provider，数据库整链接公共job；观察层证明本次未发停止，预算只撤销对应预留，已发未知保留；无生产路由注册。
-**验收：** 初审4次、修订6次均不发布；第1/4/5/6次取消阻止下一发送，已发生tokens保留；外人取消/读取404、报告409、终态不重领。
-**依赖：** 只用新建可丢弃Postgres。用户补充要求修Docker启动错误；先修已定位的运行socket残留，不动产品卷/镜像/数据或凭据。
-**失败分支：** 真正实现缺陷按实际路径修复；软件替身测试不能改变自动语义结论、同版本15或资格门。
-**当前状态：** 续查发现内部预算比Trace多记未发调用；三处旧实现失败见证已修复，138项软件回归和7场景Postgres再次通过（28.25秒，无skip）。41项历史/旧应用与4项清单回归也通过，共190项。已发送未知不撤销；当前manifest刷新、历史budget归档，原件保持。Docker/原产品库healthy，独立测试库已删除。
-**下一动作：** 核本修复对应公共CI，按实际失败最小修复；本包不产生模型质量/自然消费资格或新付费队列。结果见docs/plans/2026-10-15-natural-duty-worker-consumption.md。
+**目标：** 一份公开历史ShowMaker观摩任务，补真实Agent取知识、自然成稿、自动补丁及双fresh在共享预算内的开发验证入口。
+**依据与起点：** 发送前取消修复452972e7的CI38680020527全部通过；独立方案审查支持自然单任务的信息增量。旧helper与transport不能直接用于此候选。
+**路径：** typed观摩/OBSERVED Memory → 真实Runtime/Agent工具/本地RAG → Flash成稿 → GLM双职责/程序逐字补丁/双fresh → 原进程回执/Trace → 拒发布 → 事后完整双审。
+**实施：** 固定两份公开来源原字节与历史投影时间；实际capture第一请求；专用6次/300秒传输、独占claim、冻结核验、run外观测和只读replay；不另造Agent运行栈。
+**验收：** 离线实际应用4/6调用、额外检索、身份/授权/请求漂移/缺观测/超时/重开拒绝；旧应用与历史回放保持。真实质量需要未来新授权后的模型回执及完整双审。
+**依赖：** 同HEAD公共CI全绿与具体新费用授权；6/401920/900，单次300，估价5.7595904元非账单硬上限。没有旧授权迁移、waiter或新付费run；automation PAUSED。
+**失败分支：** 语义错误、预算不适配、工程故障和事后分歧分开保留；不凑次数、强行修订、扩额、跳fresh或重试。
+**当前状态：** 零付费入口与专用传输已完成；新增入口24项及传输23项、当前候选/原15清单30项、历史remaining8/4回放17项通过。独立工程复核两项根绑定/时间缺口已修并证伪，无剩余工程阻断。
+**下一动作：** 离线验证及历史原件核对已完成，提交推送PR10并核精确HEAD公共CI；通过后才请求本包新费用授权。见docs/plans/2026-10-15-natural-duty-observed-development.md。
 
 **上一包已结束：** 原稿保留诊断的p01信息减少成立，实质损害与合法压缩未决。
 主审stop、独立unresolved，真实native与作者原件逐字一致；不写成双方一致stop。
@@ -34,7 +34,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **不变边界：** 用户已确认候选6/401920/900/单请求300，其余high模型及输入输出保持；
 候选双pass仍unqualified且拒发布，不伪造Host验收。原产品5不变，无第7次、无新费用授权。
 原后端5b19e3ee干净、旧854源码/3包/103原件及全部旧裁决保留，automation PAUSED。
-646e5f1b/CI38678469201最近仍运行，web/packaging/Postgres已过；不宣称后继全绿。
+452972e7/CI38680020527全部公共检查通过；新准备提交须有自己的公共CI。
 
 ## Dependencies and Follow-through
 
@@ -55,7 +55,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：Docker恢复、六次候选真实Worker/SQL/API验证已完成；核取消记账修复对应公共CI。
+以canonical和上方工作卡为准：Docker、真实Worker/SQL/API及取消记账修复已核；完成自然观摩单任务零付费准备及新提交CI。
 原稿保留提案已关闭，不再排transport或新付费授权；发布门关闭，8E及全部依赖保持。
 
 ## History

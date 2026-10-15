@@ -44,7 +44,9 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         return provider
 
     def workflow(_runtime, budget):
-        run_id = budget.provider._delegate.candidate_run_id
+        routed = budget.provider._delegate
+        routed.candidate_budget = budget
+        run_id = routed.candidate_run_id
         return NaturalDutyWorkflow(SharedBudgetReviewSender(budget),
             journal_root=Path(runs_root)/run_id/'natural-duty-journal')
 

@@ -121,8 +121,48 @@ class NaturalDutyProvider(RoleRoutedProvider):
     role_for_request = staticmethod(role_for_request)
     validate_request = staticmethod(request_bytes)
 
+    def __init__(self, generator, reviewer, *, source_projection=None):
+        from app.evaluation.golden_coarse_source_projection import VERSION as coarse
+        from app.evaluation.golden_explicit_source_projection import VERSION as explicit
+        if source_projection not in (None, coarse, explicit):
+            raise ValueError('natural_duty_source_projection')
+        self.source_projection = explicit if source_projection is None else source_projection
+        self.require_selected_provider(generator, 'generation')
+        self.require_selected_provider(reviewer, 'review')
+        if generator is reviewer or generator.capabilities != reviewer.capabilities:
+            raise ValueError('natural_duty_provider_composition')
+        self.generator, self.reviewer = generator, reviewer
+        self.capabilities = generator.capabilities
+        self.last_exchange, self.attempts = None, []
+        self._calls, self._failed = 0, False
+
+    def require_selected_provider(self, provider, role):
+        from app.runtime.reviewer_roles import profile_for_role
+        if role not in ('generation', 'review'):
+            raise ValueError('natural_duty_provider_role')
+        profile = profile_for_role(role)
+        if (provider.provider_name != 'zhipu' or provider.model_name != profile.model
+                or getattr(provider, 'thinking_profile_id', None) != profile.profile_id
+                or type(getattr(provider, 'sdk_max_retries', None)) is not int
+                or provider.sdk_max_retries != 0 or getattr(provider, 'runtime_profile', None) is not None
+                or getattr(provider, 'transport_id', self.transport_for_role(role)) != self.transport_for_role(role)):
+            raise ValueError('natural_duty_child_identity')
+
     def transport_for_role(self, role):
         return VERSION+':'+role
+
+    def chat(self, request):
+        budget = getattr(self, 'candidate_budget', None)
+        if budget is not None:
+            # The observer's pre-send guard may perform disk/CI checks after
+            # CoachBudgetedProvider calculated its original remaining time.
+            remaining = budget.contract.descriptor()['execution_timeout_s'] - (budget.clock()-budget.started)
+            if remaining <= 0:
+                from app.providers.errors import ProviderResponseError
+                self._failed = True
+                raise ProviderResponseError(provider='zhipu', code='timeout')
+            request = replace(request, timeout_s=min(request.timeout_s, remaining))
+        return super().chat(request)
 
 
 def component_fingerprints(skill):
@@ -134,7 +174,7 @@ def component_fingerprints(skill):
         'scripts/report_timed_document_workflow.py', 'scripts/report_contrast_review.py',
         'scripts/report_document_view.py', 'scripts/report_document_workflow.py',
         'app/evaluation/source_patch_editor.py', 'app/runtime/dispatch_runtime.py',
-        'app/runtime/dispatch_control.py')
+        'app/runtime/dispatch_control.py', 'app/runtime/natural_duty_provider_factory.py')
     rows = {r.component_id:r for r in base(skill)}
     for path in paths:
         key = path.replace('/', '.').replace('.py', '')

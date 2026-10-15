@@ -72,7 +72,7 @@
     {
       "component_id": "app.evaluation.golden_stream_bridge",
       "source": "app/evaluation/golden_stream_bridge.py",
-      "sha256": "421be22ffd72cc5cf1c9c7e275fe319a0b76d16d79ca06811e4f5aed24ec313b"
+      "sha256": "5f70227212a7e890b730e2e108676092f7459f775c5ad75dcebd3a26a6bda3b2"
     },
     {
       "component_id": "app.runtime.review_sender",
@@ -82,7 +82,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "2201ac93da00c8229c5e6afdfacca142c4019040d72bc5f0dd4daefb41d68ad7"
+      "sha256": "a1d38d03eeb5fd79d1111b728c2b0627228342b2b0360bfa45221415df5b6b51"
     },
     {
       "component_id": "app.runtime.native_coach_contract",
@@ -272,7 +272,7 @@
     {
       "component_id": "app.evaluation.natural_duty_contract",
       "source": "app/evaluation/natural_duty_contract.py",
-      "sha256": "0e05e465628b8b92b408d96f0e45db4b17c55c5cffb88423d6cf603c6d3949f6"
+      "sha256": "fdd267f8d783a8e4600408cd9dba7eae5d2e025abd12b7d8edbf541eb4486019"
     },
     {
       "component_id": "app.evaluation.natural_duty_workflow",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "19452caa419a2fc86deaa0ff6b33e99c1553de3e720942ad07ca48c87336cf3f"
+      "sha256": "57f39ec7cc18951f4e58936c4dffd8494add442a842ea83f46b74a7fa9ae205d"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -335,10 +335,15 @@
       "sha256": "6411b74357fcb29011b78b3a62836d207a42b7bd243fcc3778562b68c3c52eae"
     },
     {
+      "component_id": "app.runtime.natural_duty_provider_factory",
+      "source": "app/runtime/natural_duty_provider_factory.py",
+      "sha256": "d47c079163ca49adc0aa903b0edc332a8ed540e8b4b0d078f75b924635e4a671"
+    },
+    {
       "component_id": "coach_execution_contract",
       "source": "app.evaluation.natural_duty_contract:v1.6.0",
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "7c9f3d9f27ffa684bba896530571462269e0278714faa9a5f7f67bfd7ae0f3fe"
+  "program_sha256": "e678102956edfca5394dc4c44483a8a24839b5a3f6703dcd7c21d0ae08f7f0d2"
 }

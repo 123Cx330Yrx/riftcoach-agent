@@ -1,4 +1,8 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
+/data/evaluation/fixtures/natural_duty_observed_source_20261015/*.json -text
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json text eol=lf
+/data/evaluation/fixtures/natural_duty_observed_preparation_20261015/*.json text eol=lf
 /data/evaluation/results/golden_document_remaining11_scan_preparation_20261009.json text eol=lf
 /data/evaluation/results/golden_document_checkpoint_tails_preparation_20261009.json text eol=lf
 /data/evaluation/results/golden_document_checkpoint_tails_readiness_20261009.json text eol=lf

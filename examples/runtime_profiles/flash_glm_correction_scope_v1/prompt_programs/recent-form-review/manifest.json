@@ -72,7 +72,7 @@
     {
       "component_id": "app.evaluation.golden_stream_bridge",
       "source": "app/evaluation/golden_stream_bridge.py",
-      "sha256": "421be22ffd72cc5cf1c9c7e275fe319a0b76d16d79ca06811e4f5aed24ec313b"
+      "sha256": "5f70227212a7e890b730e2e108676092f7459f775c5ad75dcebd3a26a6bda3b2"
     },
     {
       "component_id": "app.runtime.review_sender",
@@ -82,7 +82,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "2201ac93da00c8229c5e6afdfacca142c4019040d72bc5f0dd4daefb41d68ad7"
+      "sha256": "a1d38d03eeb5fd79d1111b728c2b0627228342b2b0360bfa45221415df5b6b51"
     },
     {
       "component_id": "app.runtime.native_coach_contract",
@@ -325,5 +325,5 @@
       "sha256": "68f341bda79cc3c0b8d2e94fdfb02baa1e7b5572b3c4c16770aa61fa8f0b6193"
     }
   ],
-  "program_sha256": "16690e8a3b08f9ad4b45a77f77524e984a1763a61cc058b6277ad940f519c90f"
+  "program_sha256": "75529c368d64979ce92b4f92e1d39920f37b07f164b4ea0082ebc092b21ce74d"
 }
