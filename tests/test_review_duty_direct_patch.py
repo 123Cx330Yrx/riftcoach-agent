@@ -2,6 +2,7 @@
 from copy import deepcopy
 from dataclasses import replace
 import json
+import re
 import socket
 
 from jsonschema import Draft202012Validator
@@ -169,6 +170,27 @@ def test_wrong_reviewer_patch_is_a_counterexample_not_a_false_success(sample, af
     assert after in result.report
     assert not result.journal['semantic_approval']
     assert not result.journal['native_acceptance_verified']
+    assert result.journal['full_final_review_required']
+
+
+@pytest.mark.parametrize('boundary', ['empty_source_ids', 'wrong_target_block', 'removed_knowledge_citations'])
+def test_structurally_legal_semantic_boundaries_stay_unqualified(sample, boundary):
+    inputs, value = sample
+    if boundary == 'removed_knowledge_citations':
+        inputs = report_inputs(inputs, re.sub(r'\[K\d+\]', '', inputs.source.report))
+    raw = repaired(value)
+    if boundary == 'empty_source_ids':
+        raw['issues'][0]['source_ids'] = []
+    elif boundary == 'wrong_target_block':
+        block = inputs.source.blocks[5][1]
+        raw['repairs'][0]['edits'] = {
+            'block_6': [dict(before=block, after=block + ' OFFLINE错目标段见证。',
+                             reason='The issue is structurally mapped but this block is unrelated.')]
+        }
+    result = direct.preview(inputs, pair(inputs, raw))
+    assert result.report != inputs.source.report
+    assert not result.journal['semantic_approval']
+    assert not result.journal['production_admitted']
     assert result.journal['full_final_review_required']
 
 
