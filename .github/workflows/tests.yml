@@ -301,6 +301,7 @@ jobs:
             tests/test_reliable_task_recovery_postgres.py \
             tests/test_task_product_vertical_postgres.py \
             tests/test_worker_dispatch_postgres.py \
+            tests/test_natural_duty_worker_postgres.py \
             tests/test_async_task_api_postgres.py \
             tests/test_evidence_snapshot_repository_postgres.py \
             tests/test_evidence_product_api_postgres.py \

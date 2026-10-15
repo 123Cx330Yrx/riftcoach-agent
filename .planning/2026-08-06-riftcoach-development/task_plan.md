@@ -16,24 +16,25 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标与结果：** 最小保留机制诊断设计及离线请求已完成：终稿质量与相对原稿保留分别输出，核心12个请求有支持后才进入8个控制；未具备实测条件、无付费授权。
-**实际路径：** RecentReview → Runtime单一共享预算 → AgentLoop/本地RAG → 双初审 → 程序预览/唯一应用 → 双fresh。
-**边界：** 新1.6.0合同6/401920/900/单请求300；其余high模型和单次输入输出保持，无Flash编辑请求。
-追加检索导致不足两fresh slot时停止；未知预留计入预算，取消后下一发送前停止。
-**证据：** b79d2c83/CI38601405819全绿。职责/补丁/候选84项及清单4项离线通过；真实应用对象、替身模型且socket禁止。
-错数字/空来源/错目标段/删除引用即使双fresh pass也不发布，保留意见与实际改文；不是自动语义检出证据。
-15个原输入/原标签按1.6.0构造30个完整初审请求，实际新稿前不填fresh SHA；清单ready/authorized/qualified全false。
-**发布判断：** 所有候选成功仍返回FAIL给Harness，另记内部unqualified outcome；未伪造Host验收。
-工程接线不证明自动语义冲突检测或真实质量；详见ADR0118及natural-duty-six-implementation。
-**旧证据：** 原冻结854源码/3包/103原件及seal一致，不修改旧裁决；固定报告通过仅开发证据。
-**方案取舍：** 空来源、无引用、跨段修改按完整上下文判断，不加字段一刀切门。非重叠不能证明语义兼容；开发Host不作免费运行时服务。
-**本包证据：** 不同原稿/同一新稿在当前fresh中不可区分，比较原型输入可区分；完整来源/两稿、旧Provider拒收及超限拒绝已验证。30个同稿形状探针最大55916，新增8项+清单4项通过；不是语义检出或真实fresh证据。
-**成对材料证据：** 原五局来源/任务/知识完整保留，数值前提复算；24个请求形状、20个不同摘要（基线8/比较12）、最大46578。新增9项+原探针8项通过；注释/ID不进入请求，整篇预期与模型/独立结果均空。
-**诊断准备：** offline-preservation-diagnostic-v1两臂旧Provider拒收，notes与终稿五字段分开，全文/标签隔离保持。20次去重上限1523372tokens/6000活动秒，合同估价25.294176元非账单硬限；新增7项及原17项共24项socket阻断检查通过。详见docs/plans/2026-10-15-preservation-diagnostic-design.md，ready/authorized/qualified全false。
-**下一动作：** 核实既有独立作者路由并独立审材料/判据，再完成隔离transport、原件观测/native/预算及只读seal的零付费接线；不新建Agent，完成最终CI和冻结准备后才请求新费用授权。
-**失败决策：** 只证明信息可见性；若超限则拒绝，不裁剪全文。若比较输入无法表达正确保留与合理纠错，不进入模型开发验证；表达可行也不能推断语义准确率。
-f3717d27/CI38673691931最近查询仍运行，web/packaging/Postgres已过，未报后继全绿；旧历史夹具缺口已修且原摘要/封存保持。
-发布门关闭，不另开付费批；6次已确认，不重复请求。所有原15、自然产品、前端和学习依赖保留。
+**目标：** 验证六次候选在真实Worker/SQL/API中停止后仍保留实际用量，同时未认证报告不可见。
+**依据与起点：** 1.6.0应用接线及离线取消已完成；现有数据库测试用旧五次correction-scope组合，不能替代当前组合。
+**路径：** API任务 → Postgres领取/owner取消 → RecentReviewTaskExecutor → 自然候选DispatchAwareRuntime → Trace/receipt → SQL终态 → owner用量API。
+**实施：** 复用本地RAG与脚本替身Provider，新增当前组合Postgres整链回归并接公共数据库job；无生产路由注册。
+**验收：** 初审4次、修订6次均不发布；第1/4/5/6次取消阻止下一发送，已发生tokens保留；外人取消/读取404、报告409、终态不重领。
+**依赖：** 只用新建可丢弃Postgres。用户补充要求修Docker启动错误；先修已定位的运行socket残留，不动产品卷/镜像/数据或凭据。
+**失败分支：** 真正实现缺陷按实际路径修复；软件替身测试不能改变自动语义结论、同版本15或资格门。
+**当前状态：** 7场景真实Postgres/Worker/API全部通过（26.69秒），无skip；公共数据库job已接线。Docker两个运行socket目录同时备份重建后恢复，原产品库healthy，独立测试库已删除。
+**下一动作：** 核本提交公共CI并按实际失败最小修复；本包不产生模型质量/自然消费资格或新付费队列。结果见docs/plans/2026-10-15-natural-duty-worker-consumption.md。
+
+**上一包已结束：** 原稿保留诊断的p01信息减少成立，实质损害与合法压缩未决。
+主审stop、独立unresolved，真实native与作者原件逐字一致；不写成双方一致stop。
+预设门未满足，20请求零发送结束、无sender/run；原设计/标签/材料保留，不换例继续本批。
+详见docs/plans/2026-10-15-preservation-material-decision.md；10项来源/原生边界检查通过。
+
+**不变边界：** 用户已确认候选6/401920/900/单请求300，其余high模型及输入输出保持；
+候选双pass仍unqualified且拒发布，不伪造Host验收。原产品5不变，无第7次、无新费用授权。
+原后端5b19e3ee干净、旧854源码/3包/103原件及全部旧裁决保留，automation PAUSED。
+49d7ddd2/CI38675972603最近仍运行，web/packaging/Postgres已过；不宣称后继全绿。
 
 ## Dependencies and Follow-through
 
@@ -54,8 +55,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：诊断设计与离线请求已完成，核实既有独立作者路由、独立审材料/判据并完成零付费执行边界接线；最终准备就绪前不请求费用批准或发送模型请求。
-不恢复旧付费批，不直接购买正式15；发布门关闭，8E及全部依赖保持。
+以canonical和上方工作卡为准：Docker恢复、六次候选真实Worker/SQL/API验证已完成；核本提交公共CI，失败时沿实际路径修复。
+原稿保留提案已关闭，不再排transport或新付费授权；发布门关闭，8E及全部依赖保持。
 
 ## History
 

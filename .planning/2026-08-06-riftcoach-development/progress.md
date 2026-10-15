@@ -1,3 +1,26 @@
+## 2026-10-15 材料审查零发送关闭、六次候选数据库消费与Docker恢复
+
+主审先写stop，既有独立作者完整审查后返回unresolved；checkpoint44b54d86、材料a7845247，
+独立作者/native final同SHA ec7c3847，主审原件86f0ace0。p01非重复正确比较删除成立，但实质
+损害与合法压缩未决；按预设门零发送关闭20请求提案，原材料/标签/设计不改，不接transport。
+5份原件字节归档；10项socket阻断来源/作者/真实native导入边界检查通过（3.03秒）。
+原生路由及final可核，当前input仍不可直读；不声称OS隔离、模型结果或双方一致stop。
+
+随后复用独立作者完成7场景普通工程测试。主执行者使用专属postgres:17-alpine真实执行，
+全部通过（26.69秒，无skip）：4/6调用仍unqualified且不发布，1/4/5/6次取消无后继发送，
+已知10/10tokens每次保留、owner用量可见、外人404、正文409、终态不重领。接公共Postgres job。
+未修改生产代码/注册默认入口；模型和Riot为替身，不等于自然模型消费或语义质量。
+
+用户同时要求修Docker启动故障。日志定位两处AF_UNIX残留socket无法重命名；单目录修复失败
+会留下新的socket，官方停止后同时备份重建两目录才恢复。Docker29.7.2、原Postgres原卷、
+15432/healthy/容器内SELECT1及迁移0014_message_projection_status已核，未重置或修改用户网络。
+临时测试库核专属标签后stop并自动删除。恢复记录outputs/riftcoach-docker-recovery-20261015。
+
+决策及结果见preservation-material-decision与natural-duty-worker-consumption两方案文档、对应
+material_decision/worker_postgres结果JSON。canonical历史字节e6706926保持，原后端5b19e3ee干净，
+automation PAUSED。49d7ddd2公共CI最近分片2及web/packaging/Postgres成功，三分片尚未结束；
+本次提交另核，不称公共全绿。下一动作核本提交CI；8E、原15及全部产品/学习依赖保留。
+
 ## 2026-10-15 最小保留诊断设计与离线请求（零付费）
 
 恢复核候选f3717d27、原后端5b19e3ee工作树干净；原execution-exit/seal仍development_chain_pass，

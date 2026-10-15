@@ -360,3 +360,11 @@
 /scripts/audit_natural_duty_qualification.py text eol=lf
 /tests/test_natural_duty_qualification_inventory.py text eol=lf
 /data/evaluation/results/natural_duty_qualification_inventory_20261015.json text eol=lf
+
+# Exact public author/native artifacts from the source-only material review.
+/data/evaluation/fixtures/preservation_material_review_20261015/** -text
+/data/evaluation/results/natural_duty_preservation_material_decision_20261015.json -text
+/scripts/preservation_material_review.py text eol=lf
+/tests/test_preservation_material_review.py text eol=lf
+/tests/test_natural_duty_worker_postgres.py text eol=lf
+/data/evaluation/results/natural_duty_worker_postgres_20261015.json text eol=lf
