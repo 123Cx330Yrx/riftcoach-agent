@@ -6,6 +6,9 @@
 /data/evaluation/fixtures/reviewer_profile_screen_20261015/** -text
 /scripts/prepare_reviewer_profile_screen.py text eol=lf
 /tests/test_reviewer_profile_screen.py text eol=lf
+/scripts/reviewer_responses_*.py text eol=lf
+/tests/test_reviewer_responses_*.py text eol=lf
+/data/evaluation/results/reviewer_responses_offline_20261015.json text eol=lf
 /data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json text eol=lf
 /data/evaluation/fixtures/natural_duty_observed_preparation_20261015/*.json text eol=lf
 /data/evaluation/results/golden_document_remaining11_scan_preparation_20261009.json text eol=lf

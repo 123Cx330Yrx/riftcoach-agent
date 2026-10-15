@@ -1,3 +1,17 @@
+## 2026-10-15 单次Responses研究适配及离线边界
+
+在8bc45457新增隔离的Responses编解码和单次进程监督，不注册产品provider，不修改旧智谱源码。
+全文/工具schema原样映射，strict=false、high、32768、auto及零重试明确；流式真实工具与业务validator分别检查。
+已知/未知计量分开，output不重复加reasoning；拒绝/截断/失败及检查点写失败仍保留可见已知用量。
+进程硬300秒覆盖stdin/read/close，最多5秒回收宽限单列；发送前取消0HTTP，发送后未知不填零。
+独立工程复核发现并修复额外正文/refusal事件、EOF与末次取消问题。真实SDK2.54.0在DONE即close，
+现先读完底层尾部再交出DONE，拒绝尾部事件/断流；不将SDK迭代结束冒称真实EOF。
+85项断网检查通过（41.53秒），含完整4份wire、实际SDK/SSE、真实子进程及实际worker到业务检查/父回执。
+普通工程独立审查复用既有Agent，28项进程监督测试通过；不算旧批native业务复核。
+结果见reviewer_responses_offline_20261015.json；模型调用/真实密钥使用0，旧材料/manifest保持。
+下一步为固定分组/费用/安全凭证接入的具体执行条件；单次适配不是四次launcher已ready。
+selected_execution_profile仍null、未授权/未qualified，公共CI未验证；GLM/生产/PAUSED/8E与全部依赖保持。
+
 ## 2026-10-15 两稿四请求的离线准备及第三方参数核对
 
 在f0a737f0基础完成prepare_reviewer_profile_screen与8项断网测试（8.83秒）。固定公开材料SHA保持，

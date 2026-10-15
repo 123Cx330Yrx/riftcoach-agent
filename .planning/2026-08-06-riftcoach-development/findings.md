@@ -1,3 +1,14 @@
+## 2026-10-15 Responses SDK结束迭代不等于底层EOF
+
+实际OpenAI SDK2.54.0的Stream在[DONE]分支break后finally close，没有继续耗尽底层字节。
+直接要求closed而不核EOF会遗漏尾部；直接要求EOF又会把正常DONE误拒绝，离线反例均已复现。
+单次研究适配现将观察器置于底层，用薄SSE包装在交出DONE前读到真实EOF，额外事件/断流拒绝；
+这一读取仍受父进程单次deadline约束。正文/refusal事件也不能因terminal省掉它们而被忽略。
+
+拒绝是合法API终态但不是本审查所需工具结果，应读到其真实usage后拒收；不能见refusal就丢掉
+可得用量。usage检查点落盘失败而worker结果保存了真实总数时仍留known但整体拒绝；互相冲突保持unknown。
+这些是本地运输/记账结论，不证明第三方模型真实身份、high执行、价格或审查正确率。
+
 ## 2026-10-15 网页参数声明与可执行审查合同需要逐项对应
 
 天机阁Sol详情确实列tools、tool_choice、JSON/Schema与SSE，不应笼统称没有工具/流式说明。

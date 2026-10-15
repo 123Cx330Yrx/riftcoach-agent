@@ -117,7 +117,7 @@ Claude Opus 5.5/Fable 5.1 拒绝强制工具选择，需要 auto+strict tool 或
 漏检、误伤、错误修法停止；协议/超时/未知用量记证据不足并停止，不改词续购或自动换下一个模型。
 均通过只支持继续评估投入，不证明优于GLM、可靠率、完整编辑/fresh、自然任务或原15资格。
 本地输入估算未核新模型tokenizer，四文件是业务请求，不是已验证的Responses wire。
-没有sender或实际通道选择，manifest保持execution_ready/authorized/qualified全false。
+该准备快照没有sender或实际通道选择；后继单次适配见下节，manifest仍保持execution_ready/authorized/qualified全false。
 
 ## 用户现有第三方接入与参数核对
 
@@ -163,11 +163,46 @@ YJ API公开配置列出gpt-6.1-sol，但该模型端点仅标Chat Completions�
 
 ## 本包结束条件与后续边界
 
-已完成可审查的路线、两稿四请求、材料复核及第三方公开接入核对；没有选定迁移或新付费批。
-下一动作是针对拟固定通道准备最小Responses请求/回执转换和离线边界检查，再以具体wire、分组、
-费用与真实网络提出有界执行决定。不得把业务请求文件存在写成执行已ready，也不先建设通用评测框架。
+已完成可审查的路线、两稿四请求、材料复核、第三方公开接入核对，以及最小单次适配的离线验证。
+没有选定迁移或新付费批。下一动作是以具体wire、固定分组、费用及安全凭证方式确定执行条件，
+再完成批次冻结、精确HEAD公共CI和新授权绑定；不得把单次适配写成四次launcher已ready。
 漏检、误拒、错误修法、协议失败、超时和未知用量分别报告；任一结果不能只导向无限重试。
 
 原产品5次、已确认候选6次、GLM角色合同、automation PAUSED、发布关闭、旧封存和缺口保持。
 正式同版本15、自然Coach/Training、四块联动/journal、前端/头像、Memory、身份运维、两树整合、
 独立评估及学习仍是既有依赖。比较完成不推进8E，也不表示此前工程投入都失效。
+
+## 单次Responses适配的离线实现（2026-10-15）
+
+问题是将现有完整审查任务交给另一种API，同时准确区分“收到工具结果”“审查合同合法”和
+“内容判断正确”。前两层由本次代码验证；第三层仍需真实结果与人工全文判读，不能靠JSON通过替代。
+
+`scripts/reviewer_responses_transport.py`只映射本研究所需协议，`reviewer_responses_process.py`只监督
+一次请求。没有新增依赖、产品provider注册、模型路由、通用批框架或旧智谱代码修改。
+数据流为：四份已保存业务请求之一 → 重建来源并验证绑定 → 完整Responses wire → 实际SDK流 →
+单个真实function_call及原schema → 原direct-patch业务validator → 公开工具原文/无正文回执。
+
+- 全文/顺序/schema可选字段保留，显式strict=false、auto、parallel_tool_calls=false、high、32768；
+  不传GLM采样参数。base/model固定为本候选，分组必须显式填写且禁auto；填写分组不证明账号实际路由。
+- 不从环境发现OpenAI API/admin/webhook/org/project凭证；调用者显式传入单次key，仅经stdin进入worker。
+  HTTPX trust_env=false、redirect关闭、SDK零重试。它不改变系统网络，也不能绕过或证明TUN状态。
+- 真实工具id/name/arguments、增量/done/最终清单及序号必须一致；reasoning output_index可以占前项。
+  正文JSON、拒绝、多工具、重复/缺终态、身份变更、预算超限均不能成功。拒绝读完终态用量再拒收。
+- input/output/total必须为真实非负整数且一致；output已含reasoning，不加两次。可选明细缺失保持null；
+  已知总数与未知分开，失败/取消也保留已有计量；相互冲突的计量标unknown并保留观察值，不能求和冒充账单。
+- 复用StreamObservation，仅记录时间/HTTP/字节/EOF/close等，不记正文/reasoning/秘密。SDK2.54.0在
+  [DONE]即close，因此薄的字节包装先读到真实EOF再交出DONE；额外尾部事件和尾部断流均失败。
+- 单次目录create-only，取消/硬300秒涵盖子进程启动、stdin写入、连接/读取、终态和关闭；
+  kill后的最多5秒回收宽限单列，回收失败不成功。发送前取消0HTTP；启动后缺有效观测保持未知。
+  成功回执要求worker正常退出、计量一致、一次HTTP200、真实EOF和关闭。回执写失败不丢已知计量。
+
+结果为`data/evaluation/results/reviewer_responses_offline_20261015.json`。本机Python3.11.9 /
+OpenAI SDK2.54.0 / HTTPX0.28.1，85项断网检查41.53秒通过；实际SDK+HTTPX替身SSE、真实子进程及
+真实worker→业务validator→父回执均覆盖。独立工程审查复用既有Agent，28项监督测试及已发现问题复核完成。
+运行：`python -m pytest -q tests/test_reviewer_profile_screen.py tests/test_reviewer_responses_transport.py
+tests/test_reviewer_responses_supervisor.py --tb=short --show-capture=no`（合成一行）。
+
+这不是新厂商资格或旧批native业务复核。模型调用0、真实密钥使用0；四请求/报告/原manifest字节保持。
+未验证第三方high、真实上游、固定账号分组、实际扣费、输入tokenizer或语义效果；公共CI须绑定后继提交。
+页面pro组预算0.364544元仍只是建议，selected_execution_profile/actual_channel_estimate继续null，
+execution_ready/authorized/qualified继续false。仅有单次transport，尚无四次预算/人工判读/授权冻结launcher。
