@@ -190,6 +190,11 @@ def test_natural_duty_worker_keeps_usage_but_never_publishes(
     assert usage.json()["run_id"] == run_id
     assert usage.json()["task_status"] == expected_status
     assert usage.json()["usage"] == trace.usage.model_dump(mode="json")
+    if expected_calls >= 4:
+        outcome = json.loads((tmp_path / run_id / "natural-duty-journal" / "outcome.json").read_bytes())
+        assert outcome["calls"] == expected_calls
+        assert outcome["known_tokens"] == 20 * expected_calls
+        assert outcome["unknown_reserved_tokens"] == 0
 
     if cancelled:
         assert stored.publication_status is None

@@ -196,6 +196,15 @@ def test_real_dispatch_fence_stops_next_send_with_trace(tmp_path,stop_after):
     assert trace.usage.provider_calls_attempted==stop_after
     assert not receipt.report_available
     assert result is None or result.output is None or result.output.report is None
+    budget = flows[0].send.provider
+    assert budget.calls == stop_after and budget.tokens == 20 * stop_after
+    assert budget.reserved_tokens == 0 and budget.stopped
+    outcome_path = flows[0].journal_root/'outcome.json'
+    if outcome_path.exists():
+        outcome = json.loads(outcome_path.read_bytes())
+        assert outcome['calls'] == stop_after
+        assert outcome['known_tokens'] == 20 * stop_after
+        assert outcome['unknown_reserved_tokens'] == 0
 
 
 def budget_fixture(clock=lambda: 0):

@@ -62,3 +62,27 @@ python -m pytest tests/test_natural_duty_worker_postgres.py -q --tb=short --show
 原稿保留提案已零调用关闭；本项工程通过不能补足其材料前提或自动语义质量。
 下一步核本提交公共CI；仍须按原标准完成同版本15、自然Coach/Training、四块联动/journal、
 前端审美头像、Memory、身份运维、两树整合、独立评估与学习，automation保持PAUSED。
+
+## 续查：取消前未发送的预算预留
+
+独立工程审查发现内部账本与真实发送不同：第1/4/5次完整响应后取消，实际调用和Trace仍为
+1/4/5，外层预算却先为下一次请求加计数和预留，候选outcome因此会记成5/6调用及未知tokens。
+公开API用量和取消围栏原本正确；缺陷影响内部预算及终态证据，不是实际超发或账单错误。
+新增三个断言先在旧实现全部复现失败，再修改真实共享预算与观察层。
+
+ObservedLLMProvider每次chat入口清空停止证明，只在delegate调用前的start观察阶段捕获
+绑定本observer的可信dispatch stop。CoachBudgetedProvider仅凭本次同一异常证明撤销该次
+计数与预留，仍保持stopped；复用旧异常、delegate异常、完成观察失败不获得此证明。
+已发但无可信用量仍保留未知预留，不按异常名称或cancelled状态抹零。
+
+138项候选/发送围栏/预算/观察/Program回归通过（57.87秒）；7项真实Postgres场景再次通过
+（28.25秒，无skip），新增outcome与真实Trace/owner API一致的断言。临时数据库单独创建并
+核专属标签后删除，原产品库健康。普通工程独立审查未发现新可操作问题，不作业务Host认证。
+五份当前Program清单更新两项源码摘要；旧budget原LF文本从固定51923f4b追加到测试及timing
+归档，原决策/封存摘要不改。41项历史/旧应用回归通过（214.71秒）。当前源码另存零发送
+清单natural_duty_qualification_inventory_dispatch_fix_20261015.json，4项检查通过（14.08秒），
+确认仅两源码和Program摘要变化，原15的输入/标签/30请求不变；旧清单保留，新旧均未授权/
+ready/qualified。共190项通过，完整结果见natural_duty_dispatch_budget_20261015.json。
+
+模型合同、六次上限、发布拒绝及旧费用授权不变；历史资格清单保持其原源码绑定，未来真实
+方案必须重新绑定最终源码，不能把这次软件修复当成语义资格。

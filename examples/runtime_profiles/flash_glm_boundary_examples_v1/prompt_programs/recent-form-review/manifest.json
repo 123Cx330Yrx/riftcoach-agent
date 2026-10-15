@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "9c2183a069c5dd06ba2f722ff4c9dfacabd8960001e961b35ceb573755460f8f"
+      "sha256": "7e6326e1cdf428082edd0f360ea31cbfd32df48f0218a6b95f2d74c3273cef46"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -252,7 +252,7 @@
     {
       "component_id": "app.runtime.observed_provider",
       "source": "app/runtime/observed_provider.py",
-      "sha256": "5e452840d8c5c0c4a4654ae3e72a8d5046f886f3ecb297c45d06e86c038cc40b"
+      "sha256": "4303ca5c3008bb84292b703ab69ec34d45420de57ea1905dfcc5f8de07438e9b"
     },
     {
       "component_id": "app.runtime.recorder",
@@ -340,5 +340,5 @@
       "sha256": "ecd91dc4a12e203b7f14e19fe43712361e40b4c3a090022770a2aae0d0f984c9"
     }
   ],
-  "program_sha256": "a77ee49bcf070bc04981240360110463d1dd7478f982bbc2b7399c905b66b873"
+  "program_sha256": "dd1ccd038fc24ebe679b47b4967f1e0b622923a60057548af928401a0d3ab97e"
 }
