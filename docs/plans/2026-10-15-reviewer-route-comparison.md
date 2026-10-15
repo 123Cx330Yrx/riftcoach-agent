@@ -1,6 +1,6 @@
 # 审查路线比较：保留 GLM 采用决定，不启动厂商迁移
 
-2026-10-15。只读机制核对与官方资料比较完成；无新模型请求、无产品切换、无替代 provider 实施。
+2026-10-15。机制/官方资料比较后，已准备离线筛选材料并核第三方公开配置；无新模型请求、无产品切换、无替代 provider 实施。
 基线代码为 `5306c6bb9c781c90a40b6d4f9c5c7e5e41523e71`，当前 8E 未完成。
 
 ## 本轮决定与授权范围
@@ -99,11 +99,73 @@ Claude Opus 5.5/Fable 5.1 拒绝强制工具选择，需要 auto+strict tool 或
 [OpenAI 用量](https://developers.openai.com/api/docs/guides/reasoning)、
 [Claude 用量](https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost)。
 
+## 两份完整材料与四请求的离线准备
+
+材料在 `data/evaluation/fixtures/reviewer_profile_screen_20261015`，脚本为
+`scripts/prepare_reviewer_profile_screen.py`。从固定公开材料重建两份历史请求的完整可见业务输入，
+再派生两份全文：r01为合法观摩建议；r02仅把第5节block19改为依据第三方比赛要求阅读者本人
+未来五局训练并用本人死亡下降验收。原稿到r01的四处变化在evaluation逐项保留；不是新的模型生成。
+报告、来源、双职责政策、schema均完整，不用局部句子代替全文。请求中没有预期标签或作者意见。
+
+独立作者按checkpoint七项原件完成全文审查，原文件以SHA40350d15a99bbe27d2289de7f50ecf5a9943011ae593f827edd42ad989ff9445归档。
+主审随后重读全文/完整来源、两政策与schema，均认为材料usable；主审在回件后复核，不宣称两份互盲判断。
+这是普通开发材料复核，不是旧批重判或native业务认证。两职责可能修同一段而补丁重叠；
+分别正确不证明现有组合应用成功。未来有据的新问题可以否定材料前提，不能为保标签忽略。
+
+拟顺序r01-facts、r01-completion、r02-facts、r02-completion；每次完整审查结果后才考虑后继。
+最多4次、零重试、每次64000输入预留/32768总输出/300秒，共387072tokens/1200模型秒。
+漏检、误伤、错误修法停止；协议/超时/未知用量记证据不足并停止，不改词续购或自动换下一个模型。
+均通过只支持继续评估投入，不证明优于GLM、可靠率、完整编辑/fresh、自然任务或原15资格。
+本地输入估算未核新模型tokenizer，四文件是业务请求，不是已验证的Responses wire。
+没有sender或实际通道选择，manifest保持execution_ready/authorized/qualified全false。
+
+## 用户现有第三方接入与参数核对
+
+用户没有官方API账户，只有个人Plus及第三方服务，并提供YJ API与天机阁网址供检查。
+Plus不当API额度；原$1.82272仅官方预算参考，已在生成器/manifest与实际通道字段分开。
+只读快照见包内channel-check.json；仅公开GET与浏览器页面读取，没有密钥读取、POST或模型请求。
+
+YJ API公开配置列出gpt-6.1-sol，但该模型端点仅标Chat Completions；未证Responses，而非断言其不支持。
+天机阁明确列Responses，浏览器实际展示`client.responses.create`及`https://yujianwudi.top/v1`。
+其模型详情参数表列tools、tool_choice(auto/none/required)、stream(SSE)、response_format等，
+不是完全没文档。但切换Responses后表仍保留相同max_tokens/response_format等聊天字段，
+不能把这张通用表直接作为本项目wire合同。新手文档未说明high、Responses回执或流式终态细节。
+
+| 项目 | 已看到的声明 | 本项目需要核实/实现的内容 |
+|---|---|---|
+| 推理 | 官方Sol支持high，站方通用表未列 | Responses用reasoning.effort=high，实际通道是否接受/保留仍未验证 |
+| 工具结果 | tools/tool_choice在表中 | output中的真实function_call、正确name和arguments；纯JSON文本不能冒充工具调用 |
+| 输出上限 | 表中max_tokens | Responses使用max_output_tokens；包含推理预算，实际截断及计量待回执核对 |
+| Schema | 表称支持JSON/Schema | 保持现有可选block字段；显式strict=false避免自动严格化改变合同，收到结果后完整校验 |
+| 流与用量 | stream/SSE在表中 | completed/incomplete/failed终态、完整input/output和推理明细；断线后不得把未知记零 |
+| 身份 | 多分组及自动回退链 | 固定分组与模型；GPT-pro是站方分组名，不等于OpenAI reasoning.mode=pro |
+
+依据：[站方模型详情](https://yujianwudi.top/pricing)、[站方文档](https://doc.yujianwudi.top/)、
+[官方Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol)、
+[函数调用](https://developers.openai.com/api/docs/guides/function-calling)、
+[推理及计量](https://developers.openai.com/api/docs/guides/reasoning)。实际打开对照，网页兼容声明不是已跑通回执。
+
+| 天机阁分组 | 页面输入/输出元每百万 | 四次无缓存预算页面估价 | 站方显示成功率 |
+|---|---:|---:|---:|
+| GPT-plus | 0.2 / 1 | 0.182272元 | 96.17% |
+| GPT-pro | 0.4 / 2 | 0.364544元 | 99.13% |
+| GPT-企业专线 | 0.5 / 2.5 | 0.455680元 | 95.82% |
+
+列表最低价来自plus组，不是企业组价。站方总览标最近24小时、排除业务拒绝且包含当前小时，
+分组无障碍说明却另写30 day uptime，样本数/端点/推理配置不明，不能计算本项目可靠率或宣称质量。
+费用是页面标准显示的条件估价，账户充值兑换、真实扣账及实际tokens未核，不是账单硬上限。
+建议下一接入准备优先固定天机阁GPT-pro，原因是已声明所需端点、报价低且当前展示调用表现较好；
+不因分组名认定真实上游或性能保证。这是建议，selected_execution_profile仍null，未采用迁移/授权付费。
+
+浏览器在用户切TUN后恢复过，随后也有调试超时及登录中断，不能证明此前由系统代理造成。
+用户要求用完提醒切回；已提醒，未修改网络、未验证其已切回。真实请求前须核当时路径，不能把
+清除HTTP_PROXY/NO_PROXY当作已绕过TUN；GitHub进程代理与模型路径继续分开。
+
 ## 本包结束条件与后续边界
 
-已完成可审查的路线、能力、成本与代码接入差异比较；没有选定迁移，没有新实施或付费批。
-下一步如准备诊断，应先固定完整材料、合法正例、真实反例、原判据及次数/成本，比较哪个
-检查最能改变决策；本表不是发送清单，也不因此先建设新的通用评测框架。
+已完成可审查的路线、两稿四请求、材料复核及第三方公开接入核对；没有选定迁移或新付费批。
+下一动作是针对拟固定通道准备最小Responses请求/回执转换和离线边界检查，再以具体wire、分组、
+费用与真实网络提出有界执行决定。不得把业务请求文件存在写成执行已ready，也不先建设通用评测框架。
 漏检、误拒、错误修法、协议失败、超时和未知用量分别报告；任一结果不能只导向无限重试。
 
 原产品5次、已确认候选6次、GLM角色合同、automation PAUSED、发布关闭、旧封存和缺口保持。

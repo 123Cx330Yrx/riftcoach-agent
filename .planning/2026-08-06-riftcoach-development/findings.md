@@ -1,3 +1,16 @@
+## 2026-10-15 网页参数声明与可执行审查合同需要逐项对应
+
+天机阁Sol详情确实列tools、tool_choice、JSON/Schema与SSE，不应笼统称没有工具/流式说明。
+但切到Responses仍显示max_tokens/response_format等同一表；Python示例只用responses.create与output_text。
+本项目要读取真实function_call、name/arguments及完整终态/usage，不能只保存output_text或照搬聊天字段。
+官方支持high不证明中转执行high；分组GPT-pro也不等于reasoning.mode=pro。模型列表、通用表和成功率
+分别是可发现性、兼容声明与站方传输统计，不是本项目质量或真实上游保证。
+
+截图0.2/1是plus组最低价，pro为0.4/2，企业组0.5/2.5元每百万；页面统计pro99.13%、企业95.82%，
+不能按“企业”名推稳定性。总览24小时与分组可访问说明30day存在口径歧义，样本数未展示。
+依据及未证项见reviewer-route-comparison与reviewer_profile_screen_20261015/channel-check.json。
+双稿材料可筛漏检/误伤/错误修法，但同段双职责补丁可能重叠；检出正确不证明组合可应用。
+
 ## 2026-10-15 比较模型不等于采用迁移，SDK兼容不等于合同兼容
 
 实际请求已覆盖观摩边界和建议依据，不能把重复提醒称为确定修法；训练模板压力与K3迁移仍未证因果。
