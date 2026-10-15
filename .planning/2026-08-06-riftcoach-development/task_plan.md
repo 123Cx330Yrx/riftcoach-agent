@@ -11,37 +11,30 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：用户已确认6次候选并完成零付费接线；新worktree codex/natural-duty-six，旧冻结目录保留。
-结构及模型双pass不授语义资格，候选始终拒发布；无新付费授权，automation PAUSED，8E未完成。
+执行状态：本次自然观摩真实开发验证已失败关闭；候选不准入，automation PAUSED，8E未完成。
 
 ## Active Work Package
 
-**目标：** 一份公开历史ShowMaker观摩任务，补真实Agent取知识、自然成稿、自动补丁及双fresh在共享预算内的开发验证入口。
-**依据与起点：** 发送前取消修复452972e7的CI38680020527全部通过；独立方案审查支持自然单任务的信息增量。旧helper与transport不能直接用于此候选。
-**路径：** typed观摩/OBSERVED Memory → 真实Runtime/Agent工具/本地RAG → Flash成稿 → GLM双职责/程序逐字补丁/双fresh → 原进程回执/Trace → 拒发布 → 事后完整双审。
-**实施：** 固定两份公开来源原字节与历史投影时间；实际capture第一请求；专用6次/300秒传输、独占claim、冻结核验、run外观测和只读replay；不另造Agent运行栈。
-**验收：** 离线实际应用4/6调用、额外检索、身份/授权/请求漂移/缺观测/超时/重开拒绝；旧应用与历史回放保持。真实质量需要未来新授权后的模型回执及完整双审。
-**依赖：** 同HEAD公共CI全绿与具体新费用授权；6/401920/900，单次300，估价5.7595904元非账单硬上限。没有旧授权迁移、waiter或新付费run；automation PAUSED。
-**失败分支：** 语义错误、预算不适配、工程故障和事后分歧分开保留；不凑次数、强行修订、扩额、跳fresh或重试。
-**当前状态：** 准备提交4d37e344已推送；CI38685915747旧方案源码绑定测试失败，其他分片及非pytest检查通过。已从原提交归档LF源码，在临时目录重建历史库存；当前请求/预算仍逐字段核旧方案，原记录不改。修复前1失败、后相关24项通过（38.02秒），准备包重新生成完全相等。Docker残留运行socket复发已恢复，原卷/容器保持。
-**下一动作：** 提交该历史测试修复并核新精确HEAD公共CI；通过后才请求本包新费用授权。见docs/plans/2026-10-15-natural-duty-observed-development.md和natural_duty_preservation_ci_recovery_20261015.json。
+**目标：** 找到观摩任务实际行动越界及双职责漏检的机制，保留现有真实Runtime/工具/预算/发布围栏。
+**已完成：** 已确认单任务在f606ecb4/CI38704482702全绿后唯一执行；4HTTP/59574tokens/229.531秒，
+自主4次知识检索/5片段；两初审pass后结束，无编辑/双fresh。API拒发布；46原件只读replay通过。
+**反证：** 初稿block24把只限观摩写成输局补刀≥8和训练后成效；主审与独立均拒绝，双模型初审漏检。
+**原生缺口：** 独立作者比唯一native final多末尾LF，JSON同值但严格字节失败；原件和缺口均保留，未补签。
+**路径：** 零付费对照typed请求→生成任务/知识→事实与完成度政策→实际动作；核执行者、指标归属、
+可控动作及证据支持。用完整正确例/真实越界例区分机制，再决定任务表示或判断合同的最小修复。
+**验收：** 必须保留合法条件观摩选项，不能靠隐藏数字/只匹配本句通过；旧身份、来源、范围边界不退化。
+**失败决策：** 本批已结束，不重试、不换例续购、不将工程通过称语义合格；当前没有下一付费批授权。
+**下一动作：** 执行上述零付费机制核对，形成可审查选择；本轮结果见docs/plans/2026-10-15-natural-duty-observed-result.md。
 
-**上一包已结束：** 原稿保留诊断的p01信息减少成立，实质损害与合法压缩未决。
-主审stop、独立unresolved，真实native与作者原件逐字一致；不写成双方一致stop。
-预设门未满足，20请求零发送结束、无sender/run；原设计/标签/材料保留，不换例继续本批。
-详见docs/plans/2026-10-15-preservation-material-decision.md；10项来源/原生边界检查通过。
-
-**不变边界：** 用户已确认候选6/401920/900/单请求300，其余high模型及输入输出保持；
-候选双pass仍unqualified且拒发布，不伪造Host验收。原产品5不变，无第7次、无新费用授权。
-原后端5b19e3ee干净、旧854源码/3包/103原件及全部旧裁决保留，automation PAUSED。
-452972e7/CI38680020527全部公共检查通过；新准备提交须有自己的公共CI。
+原稿保留提案的主审stop/独立unresolved、原15及所有旧失败/封存保持；不重判、拼资格或重启。
+当前候选6/401920/900/300是已确认开发合同，原产品5次不变。原后端冻结与主树前端仍分离。
 
 ## Dependencies and Follow-through
 
 已解除工程回归：旧repair关闭批预览现回读封存；相关31项及后继公共检查均通过。
 tasks指纹遗漏发布模式、证据终态恢复载荷缺失已修复，公共真实DB218项通过。Docker与本机
 Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1:15432绕过Windows保留端口；
-原卷保留、healthy/SELECT1/迁移head已核。配置见workspace_map，当前模型组合消费尚未实测。
+原卷保留、healthy/SELECT1/迁移head已核。配置见workspace_map；当前组合已完成一份自然观摩真实消费，业务验收拒绝，不能外推产品可用。
 
 | 后续工作 | 何时推进及验收 |
 |---|---|
@@ -55,7 +48,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：Docker、真实Worker/SQL/API及取消记账修复已核；完成自然观摩单任务零付费准备及新提交CI。
+以canonical和上方工作卡为准：自然观摩单任务及事后双审已经结束，继续零付费机制核对；不重开本批。
 原稿保留提案已关闭，不再排transport或新付费授权；发布门关闭，8E及全部依赖保持。
 
 ## History

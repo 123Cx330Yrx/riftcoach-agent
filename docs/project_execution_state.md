@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "六次自然职责候选已获确认并完成零付费接线；发布门关闭、自动语义质量未证；旧批封存、automation PAUSED，无新付费授权。"
+pause_reason: "自然观摩单任务已执行并失败关闭：双初审漏检观摩/训练边界；作者/native末尾LF差异保留。发布门关闭，automation PAUSED，本批不重试。"
 ---
 
 # RiftCoach 当前执行状态
@@ -15,15 +15,20 @@ pause_reason: "六次自然职责候选已获确认并完成零付费接线；�
 
 ## 当前行动
 
-**2026-10-15：自然观摩准备已推送；公共CI发现的旧方案历史源码绑定已修复。**
-4d37e344 / CI38685915747 的pytest分片2失败，其余分片、Web、Postgres与打包通过。
-唯一已见失败为封存方案源码摘要被拿去比较当前源码；现以原提交LF源码重建临时历史库存，
-仍用当前构造核全部20请求与预算，旧方案/裁决不改。修复前1项失败，修复后相关24项通过（38.02秒）。
-准备包重建逐字段相等，SHA3c7a6501保持；无运行源码改动、真实run或模型调用。
-下一动作：提交修复并核新精确HEAD公共CI，通过后才进入本包具体新费用授权；automation保持PAUSED。
-Docker启动再次遇到AF_UNIX残留，停止后备份重建两运行目录，原容器/卷及15432、SQL/迁移已恢复；
-尚无上游永久修复证据。详见natural_duty_preservation_ci_recovery_20261015.json及本机recovery续记录。
-当前8E与全部下游依赖保持，候选仍不允许发布；工程通过不能替代自动语义判断。
+**2026-10-15：自然观摩真实运行已结束，业务验收拒绝，未发布。**
+用户确认费用并在重启后恢复；冻结f606ecb4、CI38704482702全部8项success、771绑定文件一致。
+真实Agent自主检索4次/5片段，Flash2次生成、GLM2次初审，共4HTTP/59574tokens/229.531秒，
+估价0.4182756元非账单；无未知用量或缺回执，2slot未用。两initial均pass直接结束，无编辑/双fresh。
+主审先自写、独立随后同样reject：初稿block24把仅限观摩的练习写成输局CS≥8和训练后指标，
+双方确认两职责漏检。46份run原件与原stdout guard/closure只读replay通过，API拒发布保持。
+独立真实native可核，但作者多一个末尾LF：JSON同值、逐字节不同；原件不改，不要求第二final。
+唯一seal为closed_with_author_byte_mismatch，不冒称完整验收成功。27份控制/作者/公开阅读原件归档。
+详见[本轮结果与边界](plans/2026-10-15-natural-duty-observed-result.md)及natural_duty_observed_result_20261015.json。
+下一动作：零付费核对观摩动作的执行者、指标归属和证据如何贯穿请求/生成/双职责，先用完整
+正反例区分机制再选修法；不按数字或字段修补后补购，本批关闭。automation保持PAUSED，8E未完成。
+Docker重启复发已备份重建两运行目录，原容器/卷、15432、SQL和迁移恢复；永久上游修复未证。
+
+以下为本轮授权和真实执行之前的历史准备及既有结果；其中待CI/待授权不再是当前行动。
 
 ### 自然观摩单任务的零付费准备
 

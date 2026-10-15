@@ -372,3 +372,8 @@
 /tests/test_preservation_material_review.py text eol=lf
 /tests/test_natural_duty_worker_postgres.py text eol=lf
 /data/evaluation/results/natural_duty_worker_postgres_20261015.json text eol=lf
+
+# Preserve closed observed-run evidence, including original newline differences.
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/** -text
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/execution-stdout.log whitespace=cr-at-eol
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf

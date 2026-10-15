@@ -1,3 +1,15 @@
+## 2026-10-15 重启后自然观摩真实执行与失败关闭
+
+精确f606ecb4/CI38704482702八项全绿，771文件准备重建一致；既有独立作者行政恢复及实际cwd/Python通过。
+用户费用确认和重启恢复按原时间窗记录；唯一执行4HTTP/59574tokens/229.531秒，估价0.4182756元。
+真实检索4次/5片段，Flash生成后GLM双initial pass；无修订/fresh，API保持rejected。46原件只读replay通过。
+主审先写reject，独立全源同样reject：block24的观摩练习变为CS≥8和训练后个人成效，两初审漏检。
+真实native事件导入成功，但作者11150B比native11149B多末尾LF；严格字节失败，两原件和缺口保留，
+无裁剪/第二final。create-only seal为closed_with_author_byte_mismatch；27控制/作者/公开阅读文件原字节归档。
+本批结束，不重试或补购；下一动作零付费核执行者/指标/行动证据的整链机制，不按单句特判。
+Docker重启同类socket复发，确认停机后备份两运行目录并重建；原卷/容器/15432/SQL/迁移恢复。
+详见natural-duty-observed-result方案与natural_duty_observed_result_20261015.json；automation PAUSED，8E未完成。
+
 ## 2026-10-15 发送前取消预算与实际调用对齐
 
 普通工程独立审查找到P2账本差异，主审先以第1/4/5响应后的取消断言全部复现失败。
