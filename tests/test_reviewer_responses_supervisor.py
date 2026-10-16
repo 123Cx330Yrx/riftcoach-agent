@@ -222,6 +222,18 @@ def test_child_without_observation_does_not_invent_zero_usage(tmp_path, business
     assert_reaped(receipt, launches)
 
 
+def test_worker_failure_code_is_preserved_before_usage_mismatch(tmp_path, business, launches):
+    directory = tmp_path / 'worker-code'
+    command = worker("write('worker-result.json', {'ok': False, 'code': 'sdk_or_stream_failed', 'failure_category': 'connect_error', 'usage': None})")
+    receipt = run(business, directory, command=command, timeout_s=10)
+    assert not receipt['ok']
+    assert receipt['code'] == 'worker_rejected'
+    assert receipt['worker_code'] == 'sdk_or_stream_failed'
+    assert receipt['failure_category'] == 'connect_error'
+    assert receipt['usage'] is None and receipt['usage_state'] == 'unknown'
+    assert_reaped(receipt, launches)
+
+
 @pytest.mark.parametrize('changes', [
     {'closed': False}, {'eof': False}, {'http_requests': 2}, {'response_status': 500},
 ])

@@ -21,6 +21,7 @@ MODEL = 'gpt-6.1-sol'
 BASE_URL = 'https://yujianwudi.top/v1'
 TOOL = 'submit_report_review'
 MAX_OUTPUT = 32768
+PROXY_12000 = 'http://127.0.0.1:12000'
 
 
 class TransportError(ValueError):
@@ -32,11 +33,45 @@ class Profile:
     group: str
     base_url: str = BASE_URL
     model: str = MODEL
+    route: str = 'direct-no-proxy'
 
     def __post_init__(self):
         if (self.base_url != BASE_URL or self.model != MODEL or
-                self.group not in ('GPT-plus', 'GPT-pro', 'GPT-企业专线')):
+                self.group not in ('GPT-plus', 'GPT-pro', 'GPT-企业专线') or
+                self.route not in ('direct-no-proxy', 'proxy-12000')):
             raise TransportError('profile_not_supported')
+
+
+def classify_exception(error):
+    """Map SDK/network failures to a small, non-sensitive public vocabulary."""
+    current, seen = error, set()
+    while current is not None and id(current) not in seen:
+        seen.add(id(current))
+        if isinstance(current, httpx.ProxyError):
+            return 'proxy_error'
+        if isinstance(current, httpx.ConnectTimeout):
+            return 'connect_timeout'
+        if isinstance(current, httpx.ConnectError):
+            return 'connect_error'
+        if isinstance(current, httpx.ReadTimeout):
+            return 'read_timeout'
+        if isinstance(current, httpx.ReadError):
+            return 'read_error'
+        if isinstance(current, httpx.RemoteProtocolError):
+            return 'protocol_error'
+        if isinstance(current, httpx.WriteError):
+            return 'write_error'
+        if isinstance(current, httpx.PoolTimeout):
+            return 'pool_timeout'
+        name = type(current).__name__
+        if name == 'APITimeoutError':
+            return 'connect_timeout'
+        if name == 'APIConnectionError':
+            return 'connect_error'
+        if name == 'APIStatusError':
+            return 'protocol_error'
+        current = getattr(current, '__cause__', None) or getattr(current, '__context__', None)
+    return 'sdk_error'
 
 
 def digest(value):
@@ -309,15 +344,19 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
     observer = StreamObservation(observation_dir)
     stream = client = None
     code = 'ok'
+    failure_category = None
     def on_response(response):
         observer.on_response(response)
         if response.status_code == 200:
             response.stream = TailCheckedStream(response.stream)
     try:
+        client_transport = transport
+        if client_transport is None and profile.route == 'proxy-12000':
+            client_transport = httpx.HTTPTransport(proxy=PROXY_12000, retries=0)
         client = OpenAI(api_key=api_key, base_url=profile.base_url, max_retries=0,
             admin_api_key='', organization='', project='', webhook_secret='',
             http_client=httpx.Client(timeout=timeout_s, trust_env=False, follow_redirects=False,
-                transport=transport, event_hooks=dict(request=[observer.on_request],
+                transport=client_transport, event_hooks=dict(request=[observer.on_request],
                                                      response=[on_response])))
         stream = client.responses.create(**wire)
         for event in stream:
@@ -326,8 +365,10 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
             raise TransportError('terminal_missing')
     except TransportError as error:
         code = str(error)
-    except Exception:
+    except Exception as error:
+        failure_category = classify_exception(error)
         code = 'sdk_or_stream_failed'
+        observer.mark_failure(failure_category)
     finally:
         for resource in (stream, client):
             if resource is not None:
@@ -341,7 +382,8 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
                          observer.values['response_status'] != 200 or not observer.values['closed'] or
                          not observer.values['eof']):
         code = 'observation_invalid'
-    return dict(ok=code == 'ok', code=code, usage=decoder.usage,
+    return dict(ok=code == 'ok', code=code, failure_category=failure_category,
+        usage=decoder.usage,
         usage_conflict=decoder.usage_conflict, public_tool_call=decoder.public_tool_call,
         response_id=decoder.response_id, terminal=decoder.terminal,
         business_validated=False, semantic_approval=False, upstream_identity_verified=False)

@@ -126,6 +126,10 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     worker_usage = worker.get('usage') if worker else None
     usage_conflict = bool(worker and worker.get('usage_conflict') is True or
         valid_saved_usage(usage) and valid_saved_usage(worker_usage) and usage != worker_usage)
+    worker_code = worker.get('code') if isinstance(worker, dict) and isinstance(worker.get('code'), str) else None
+    failure_category = (worker.get('failure_category')
+                        if isinstance(worker, dict) and isinstance(worker.get('failure_category'), str)
+                        else None)
     # A failed checkpoint write must not discard already observed totals that
     # survived in the final worker result. It still disqualifies acceptance.
     if usage is None and valid_saved_usage(worker_usage):
@@ -138,10 +142,10 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     if code == 'worker_finished':
         if process.returncode != 0 or write_failed or not worker:
             code = 'worker_failed'
-        elif usage_conflict or worker_usage != checkpoint_usage or not valid_saved_usage(checkpoint_usage):
-            code = 'usage_receipt_mismatch'
         elif worker.get('ok') is not True:
             code = 'worker_rejected'
+        elif usage_conflict or worker_usage != checkpoint_usage or not valid_saved_usage(checkpoint_usage):
+            code = 'usage_receipt_mismatch'
         elif (usage is None or not observation or observation.get('http_requests') != 1 or
               observation.get('response_status') != 200 or observation.get('closed') is not True or
               observation.get('eof') is not True or
@@ -156,6 +160,7 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
             except Exception:
                 code = 'supervisor_failed'
     receipt = dict(version='research-responses-single-call-v1', ok=code == 'ok', code=code,
+        worker_code=worker_code, failure_category=failure_category,
         request_sha256=digest(business), wire_sha256=digest(wire), profile=asdict(profile),
         usage=usage, usage_state='unknown' if usage_conflict else
             'known' if usage is not None else 'not_sent' if process is None else 'unknown',

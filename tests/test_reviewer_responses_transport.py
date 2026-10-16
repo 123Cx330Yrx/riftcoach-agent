@@ -327,6 +327,14 @@ def handler(request):
         headers={'content-type': 'text/event-stream'})
 def offline_collect(*args, **kwargs):
     return collect(*args, **kwargs, transport=httpx.MockTransport(handler))
+
+
+def test_profile_route_is_explicit_and_classification_is_fixed():
+    assert transport.Profile(group='GPT-pro', route='proxy-12000').route == 'proxy-12000'
+    with pytest.raises(transport.TransportError, match='profile_not_supported'):
+        transport.Profile(group='GPT-pro', route='environment')
+    assert transport.classify_exception(httpx.ConnectError('private')) == 'connect_error'
+    assert transport.classify_exception(httpx.ConnectTimeout('private')) == 'connect_timeout'
 process.collect = offline_collect
 process.worker()
 '''.replace('VERDICT', repr(verdict))

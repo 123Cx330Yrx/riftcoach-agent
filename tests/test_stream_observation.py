@@ -67,3 +67,15 @@ def test_observation_write_failure_is_visible_and_does_not_mask_stream_result(tm
     monkeypatch.setattr(obs, '_save', fail)
     obs.close()
     assert obs.failure == 'observation_write_failed'
+
+
+def test_preheader_failure_is_recorded_as_fixed_category(tmp_path):
+    obs = StreamObservation(tmp_path / 'preheader')
+    request = httpx.Request('POST', 'https://example.invalid/responses')
+    obs.on_request(request)
+    obs.mark_failure('connect_error')
+    obs.close()
+    value = json.loads((obs.directory / 'observation.json').read_text())
+    assert value['phase'] == 'response_headers_failed'
+    assert value['exception_type'] == 'connect_error'
+    assert value['response_status'] is None

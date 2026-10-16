@@ -64,7 +64,8 @@ def source_identity():
         packages={name: installed_version(name) for name in ('openai', 'httpx', 'pydantic', 'jsonschema')})
 
 
-def prepare(operator, *, group, primary, independent, python=sys.executable):
+def prepare(operator, *, group, primary, independent, python=sys.executable,
+            route='direct-no-proxy'):
     """Build an offline proposal without creating directories or selecting a route."""
     operator = Path(operator).absolute()
     if operator.resolve() != operator or operator.is_relative_to(ROOT / 'data/runs'):
@@ -73,7 +74,7 @@ def prepare(operator, *, group, primary, independent, python=sys.executable):
         raise ValueError('batch_operator_exists')
     if Path(python).resolve() != Path(sys.executable).resolve():
         raise ValueError('batch_actual_interpreter_required')
-    profile = Profile(group=group)
+    profile = Profile(group=group, route=route)
     manifest, requests = screen.prepare()
     if read_json(screen.PACKAGE / 'manifest.json') != manifest:
         raise ValueError('batch_manifest_reconstruction')

@@ -49,6 +49,18 @@ class StreamObservation:
         with self.lock:
             self.values.update(values)
 
+    def mark_failure(self, category, *, phase='response_headers_failed'):
+        """Record a fixed pre-response failure without provider details."""
+        if category not in {
+                'connect_error', 'connect_timeout', 'proxy_error',
+                'tls_error', 'protocol_error', 'read_timeout', 'read_error',
+                'write_error', 'pool_timeout', 'sdk_error'}:
+            category = 'sdk_error'
+        with self.lock:
+            if self.values['response_status'] is None:
+                self.values.update(phase=phase, exception_type=category,
+                                   pending_read_since_ms=None)
+
     def on_request(self, request):
         timeout = request.extensions.get('timeout', {})
         bounded = {key: value for key in ('connect', 'read', 'write', 'pool')

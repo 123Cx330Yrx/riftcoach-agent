@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CI_RUN_RE = re.compile(r"[0-9]{1,32}\Z")
 HEX40_RE = re.compile(r"[0-9a-f]{40}\Z")
 NETWORK_PROFILE = "direct-no-proxy"
+NETWORK_PROFILES = ("direct-no-proxy", "proxy-12000")
 MODEL_PROFILE = "responses:gpt-6.1-sol:high:32768:no-retry"
 MAX_TIMEOUT_S = 300
 
@@ -233,7 +234,7 @@ def validate_preflight(
         raise LiveLaunchError("ci_head_mismatch")
     if preflight.ci_status != "success":
         raise LiveLaunchError("ci_not_green")
-    if preflight.network_profile != NETWORK_PROFILE or preflight.network_ready is not True:
+    if preflight.network_profile not in NETWORK_PROFILES or preflight.network_ready is not True:
         raise LiveLaunchError("network_preflight_failed")
     if preflight.model_profile != MODEL_PROFILE:
         raise LiveLaunchError("model_profile_mismatch")
@@ -315,7 +316,7 @@ def run_live_once(
     try:
         result = sender(
             business,
-            profile=Profile(group=checked.group),
+            profile=Profile(group=checked.group, route=checked.network_profile),
             api_key=api_key,
             directory=checked.operator,
             timeout_s=MAX_TIMEOUT_S,
