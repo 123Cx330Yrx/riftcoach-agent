@@ -247,7 +247,11 @@ def validate_preflight(
             raise LiveLaunchError("python_path_mismatch")
     except OSError:
         raise LiveLaunchError("python_path_mismatch") from None
-    _identity_file(preflight.codex_executable, code="codex_executable_required")
+    codex_executable = _identity_file(
+        preflight.codex_executable,
+        code="codex_executable_required",
+        allow_symlink=True,
+    )
     ci_proof = _identity_file(preflight.ci_proof, code="ci_proof_required")
     _check_ci_proof(ci_proof, expected_head=preflight.expected_head, expected_run=preflight.ci_run)
     _validate_no_existing_artifacts(operator)
@@ -264,7 +268,7 @@ def validate_preflight(
         network_ready=True,
         model_profile=preflight.model_profile,
         python_path=python_path,
-        codex_executable=_identity_file(preflight.codex_executable, code="codex_executable_required"),
+        codex_executable=codex_executable,
         ci_proof=ci_proof,
     )
 
