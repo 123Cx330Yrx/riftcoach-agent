@@ -75,12 +75,20 @@ class LivePreflight:
     ci_proof: Path | str | None = None
 
 
-def _fixed_path(value: Path | str, *, code: str) -> Path:
+def _fixed_path(
+    value: Path | str,
+    *,
+    code: str,
+    allow_symlink: bool = False,
+) -> Path:
     try:
         path = Path(value)
-        if not path.is_absolute() or path.resolve() != path:
+        if not path.is_absolute():
             raise LiveLaunchError(code)
-        return path
+        resolved = path.resolve()
+        if not allow_symlink and resolved != path:
+            raise LiveLaunchError(code)
+        return resolved if allow_symlink else path
     except LiveLaunchError:
         raise
     except (OSError, TypeError, ValueError):
@@ -121,18 +129,31 @@ def _git_is_clean() -> bool:
     return result.stdout == ""
 
 
-def _identity_file(value: Path | str | None, *, code: str) -> Path:
+def _identity_file(
+    value: Path | str | None,
+    *,
+    code: str,
+    allow_symlink: bool = False,
+) -> Path:
+    """Validate an absolute identity file and return its resolved target.
+
+    The Linux runner commonly exposes ``sys.executable`` through a symlink
+    (for example ``/usr/local/bin/python``).  That is still the same
+    executable identity once resolved, while CI receipts and operator files
+    must remain direct paths so a redirected evidence tree cannot be accepted.
+    """
     if value is None:
         raise LiveLaunchError(code)
-    path = _fixed_path(value, code=code)
+    path = _fixed_path(value, code=code, allow_symlink=allow_symlink)
     try:
-        if path.resolve() != path or not path.is_file():
+        resolved = path.resolve()
+        if (not allow_symlink and resolved != path) or not resolved.is_file():
             raise LiveLaunchError(code)
     except LiveLaunchError:
         raise
     except OSError:
         raise LiveLaunchError(code) from None
-    return path
+    return resolved
 
 
 def _check_ci_proof(path: Path, *, expected_head: str, expected_run: str) -> None:
@@ -216,7 +237,11 @@ def validate_preflight(
         raise LiveLaunchError("network_preflight_failed")
     if preflight.model_profile != MODEL_PROFILE:
         raise LiveLaunchError("model_profile_mismatch")
-    python_path = _identity_file(preflight.python_path, code="python_path_required")
+    python_path = _identity_file(
+        preflight.python_path,
+        code="python_path_required",
+        allow_symlink=True,
+    )
     try:
         if python_path != Path(sys.executable).resolve():
             raise LiveLaunchError("python_path_mismatch")
