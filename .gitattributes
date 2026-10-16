@@ -1,5 +1,37 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
+/data/evaluation/fixtures/natural_duty_observed_source_20261015/*.json -text
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf
+
+# Prospective research batch control and its offline evidence.
+/scripts/reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_native.py text eol=lf
+/data/evaluation/results/reviewer_profile_batch_offline_20261015.json text eol=lf
+
+# Offline reviewer screen: preserve bound source/report/request and review bytes.
+/data/evaluation/fixtures/reviewer_profile_screen_20261015/** -text
+/scripts/prepare_reviewer_profile_screen.py text eol=lf
+/tests/test_reviewer_profile_screen.py text eol=lf
+/scripts/reviewer_responses_*.py text eol=lf
+/tests/test_reviewer_responses_*.py text eol=lf
+/data/evaluation/results/reviewer_responses_offline_20261015.json text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json text eol=lf
+/data/evaluation/fixtures/natural_duty_observed_preparation_20261015/*.json text eol=lf
+/data/evaluation/results/golden_document_remaining11_scan_preparation_20261009.json text eol=lf
+/data/evaluation/results/golden_document_checkpoint_tails_preparation_20261009.json text eol=lf
+/data/evaluation/results/golden_document_checkpoint_tails_readiness_20261009.json text eol=lf
+/examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/data/evaluation/results/golden_coarse_tail_*.json text eol=lf
+/data/evaluation/results/golden_coarse_qualification_*.json text eol=lf
+# Correction-scope seals use raw-byte SHA-256 on Windows and public CI.
+/data/evaluation/results/golden_correction_scope_*.json text eol=lf
+/data/evaluation/results/golden_review_sampling_*.json text eol=lf
+/data/evaluation/manifests/correction_scope_continuation_campaign_v1.json text eol=lf
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
+
+# Historical instruction/state snapshots are bound to their original bytes.
+/docs/archive/2026-09-22-execution-method/*-before.md -text
+/docs/archive/2026-09-22-execution-method/delivery-method-first-pass.md -text whitespace=-blank-at-eol
 
 # Keep the immutable real-provider evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json text eol=lf
@@ -13,3 +45,349 @@
 
 # Keep the immutable GLM-5.3 Flash evaluation evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/zhipu_glm53_flash_*.json text eol=lf
+
+# These frozen Flash domain inputs are referenced by byte-level SHA-256 commitments.
+/data/evaluation/glm53_flash_domain_adoption_v1_input_plan.json text eol=lf
+/examples/fixtures/player_summary_glm53_flash_domain_v1.json text eol=lf
+/examples/fixtures/deterministic_report_glm53_flash_domain_v1.md text eol=lf
+
+# Preserve native evidence bytes; the new snapshots include original CRLF.
+/data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json text eol=lf
+/data/evaluation/datasets/golden_native_claim_scope_controls_v1.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_native_scope_result_5aa20b4.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json text eol=lf
+
+# Keep the new report-contract budget proof byte-reproducible on Windows and CI.
+/data/evaluation/contracts/glm53_report_contract_development_budget_v1.json text eol=lf
+
+# Preserve the original byte-hashed DeepSeek adoption fixtures on Windows.
+/examples/fixtures/player_summary_domain_adoption_v2.json text eol=lf
+/examples/fixtures/deterministic_report_domain_adoption_v2.md text eol=lf
+
+# Keep frozen portal prompt digests identical to their original Git bytes.
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-video-image-b2.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-wan3-first-frame-reopen-v1.txt text eol=lf
+
+# Pin byte-bound historical plans and fixtures; no evidence content changes.
+/data/evaluation/deepseek_v4_pro_domain_adoption_v2_input_plan.json text eol=lf
+/examples/fixtures/player_summary_resource_calibration_baseline.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_baseline.md text eol=lf
+/examples/fixtures/player_summary_resource_calibration_ceiling.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_ceiling.md text eol=lf
+/data/evaluation/deepseek_v4_pro_resource_calibration_development_profiles.json text eol=lf
+/data/evaluation/stage8/advanced_adoption_cases_v1.json text eol=lf
+/examples/fixtures/player_summary_demo.json text eol=lf
+/examples/fixtures/deterministic_report_demo.md text eol=lf
+/data/evaluation/history/skill_router_v1_single_skill_development_cases_1_0_0.json text eol=lf
+/data/evaluation/deepseek_v4_pro_domain_heldout_input_plan.json text eol=lf
+
+# Pin the prepared role-batch request and plan bytes before any real execution.
+/data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/** text eol=lf
+
+# Preserve the public projections of the completed role-development observations.
+/data/evaluation/results/golden_flash_source_pair_result_346213c.json text eol=lf
+/data/evaluation/results/golden_role_application_result_346213c.json text eol=lf
+
+# Bind the knowledge-time control plan and candidate manifests across platforms.
+/data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_result_883c23e.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_citation_result_6c3a3db.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_preparation_v2.json text eol=lf
+/examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/examples/runtime_profiles/flash_v2_native/prompt_programs/recent-form-review/manifest.json text eol=lf
+/examples/runtime_profiles/flash_glm_correction_scope_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/data/evaluation/results/golden_correction_scope_runtime_alignment_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_correction_scope_runtime_alignment_proposal_v1.json text eol=lf
+/data/evaluation/results/golden_correction_scope_runtime_alignment_result_v1.json text eol=lf
+/data/evaluation/results/golden_correction_scope_runtime_alignment_failure_audit_v1.json text eol=lf
+/data/evaluation/results/golden_correction_scope_runtime_alignment_strict_audit_v1.json text eol=lf
+
+# New offline diagnosis/paid preparation bind these exact source and evidence bytes.
+/app/evaluation/source_bound_report.py text eol=lf
+/scripts/check_source_bound_report.py text eol=lf
+/scripts/run_independent_edit_pair.py text eol=lf
+/scripts/run_review_model_comparison.py text eol=lf
+/data/evaluation/results/golden_source_responsibility_audit_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_result_58449abb.json text eol=lf
+/scripts/run_flash_knowledge_time_review_pair.py text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v1.json text eol=lf
+/data/evaluation/datasets/golden_source_time_reference_audit_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json text eol=lf
+/app/evaluation/source_patch_editor.py text eol=lf
+/scripts/check_source_patch_editor.py text eol=lf
+/scripts/run_source_patch_pair.py text eol=lf
+/data/evaluation/results/golden_source_patch_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_feasibility_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_omitted_source_metadata_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_result_v1.json text eol=lf
+/app/evaluation/golden_role_notes.py text eol=lf
+/data/evaluation/results/golden_role_note_contract_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_note_qualification_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_tool_delivery_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_context_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_context_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_result_v1.json text eol=lf
+
+# Boundary-example receipts and runnable identity use identical bytes on Windows/CI.
+/data/evaluation/results/golden_boundary_examples_*.json text eol=lf
+/examples/runtime_profiles/flash_glm_boundary_examples_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/data/evaluation/results/golden_review_boundary_examples_*.json text eol=lf
+
+# Preserve this closed diagnostic seal's original CRLF bytes on every checkout.
+/data/evaluation/results/golden_document_focused10_timing_metadata_20261010.json text eol=lf
+/data/evaluation/contracts/document_review_timing_decision_20261010.json text eol=lf
+/data/evaluation/results/golden_document_focused10_resumption_result_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_coarse_edit_diagnostic_result_20261001.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_coarse_inline_edit_result_20261001.json text eol=lf
+
+# Prospective revision protocol and its offline evidence use portable bytes.
+/app/evaluation/review_bound_editor.py text eol=lf
+/tests/test_review_bound_editor.py text eol=lf
+/data/evaluation/results/golden_review_bound_editor_offline_20261001.json text eol=lf
+/scripts/run_coarse_edit_diagnostic.py text eol=lf
+/scripts/run_review_bound_edit_diagnostic.py text eol=lf
+/tests/test_review_bound_edit_diagnostic.py text eol=lf
+/data/evaluation/results/golden_review_bound_edit_preparation_20261001.json text eol=lf
+/data/evaluation/results/golden_review_bound_edit_result_20261001.json text eol=lf
+
+# Current closed run and offline diagnostic are bound by raw-byte digests.
+/data/evaluation/results/golden_review_bound_original15_result_20261008.json text eol=lf
+/data/evaluation/results/golden_review_bound_scope_pair_diagnosis_20261008.json text eol=lf
+/data/evaluation/results/golden_scope_resolution_offline_20261008.json text eol=lf
+/data/evaluation/results/golden_scope_resolution_preparation_20261008.json text eol=lf
+/data/evaluation/results/review_bound_original15_qualification_20261008/*.json text eol=lf
+/data/evaluation/results/golden_scope_resolution_result_20261008.json text eol=lf
+
+# Preserve create-only time600 seals and their raw-byte audit bindings.
+/data/evaluation/results/golden_document_full15_time600_result_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full15_time600_close_audit_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the new closed eight-case seal, operator audit and prospective plan.
+/data/evaluation/results/golden_document_remaining8_time600_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining8_time600_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/document_remaining4_adapter.py text eol=lf
+
+# Preserve the closed four-case evidence and inert preparation byte digests.
+/data/evaluation/results/golden_document_remaining4_time600_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_time600_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_options_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/document_semantic_request.py text eol=lf
+/scripts/document_semantic_host_task.py text eol=lf
+/scripts/prepare_document_semantic_comparison.py text eol=lf
+/tests/test_document_semantic_comparison.py text eol=lf
+
+# Preserve this closed comparison and zero-call audits by their original bytes.
+/data/evaluation/results/document_semantic_comparison_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_comparison_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_sampling_boundary_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_sampling_reachability_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_comparison_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/audit_document_sampling_boundary.py text eol=lf
+/scripts/audit_document_sampling_reachability.py text eol=lf
+/scripts/audit_document_sampling_candidate_path.py text eol=lf
+/data/evaluation/results/document_sampling_candidate_path_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/plans/2026-10-11-bounded-sampling-screening-preparation.md text eol=lf
+
+# Prospective synthetic calibration materials have exact dispatch byte hashes.
+/data/evaluation/fixtures/host_scope_calibration_20261012/* text eol=lf
+/data/evaluation/results/host_scope_calibration_20261012/* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/fixtures/host_full_report_calibration_20261012/* text eol=lf
+/data/evaluation/results/host_full_report_calibration_20261012/* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Prospective three-report package: immutable raw bytes, stable new source files.
+/scripts/document_full_report_diagnostic.py text eol=lf
+/tests/test_document_full_report_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_full_report_initial_20261012/** -text
+/data/evaluation/results/document_full_report_initial_preparation_20261012.json -text
+
+# Closed initial diagnostic evidence: preserve exact sealed bytes.
+/data/evaluation/results/document_full_report_initial_result_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_initial_close_audit_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_route_followup_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Prospective network-route follow-up; old source and seals remain unchanged.
+/scripts/document_full_report_network_followup.py text eol=lf
+/tests/test_document_full_report_network_followup.py text eol=lf
+/data/evaluation/fixtures/document_full_report_network_followup_20261012/** -text
+/data/evaluation/results/document_full_report_network_preparation_20261012.json -text
+
+# Immutable closed network-followup evidence.
+/data/evaluation/results/document_full_report_network_result_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_network_close_audit_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/host_explicit_cwd_probe_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Only the never-sent report initials; freeze new source/package bytes.
+/scripts/document_full_report_remaining_initial.py text eol=lf
+/tests/test_document_full_report_remaining_initial.py text eol=lf
+/data/evaluation/fixtures/document_full_report_remaining_initial_20261012/** -text
+/data/evaluation/results/document_full_report_remaining_preparation_20261012.json -text
+
+/data/evaluation/results/document_full_report_remaining_close_audit_20261012.json -text
+/data/evaluation/results/document_full_report_remaining_host_evidence_20261012.json -text
+
+# Prospective Host workspace code and explicitly synthetic/native evidence.
+/scripts/host_review_workspace.py text eol=lf
+/scripts/document_full_report_workspace.py text eol=lf
+/tests/host_workspace_native_rehearsal.py text eol=lf
+/tests/test_host_review_workspace.py text eol=lf
+/data/evaluation/results/host_workspace_repair_20261012/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Read-only correction-consumption counterexample audit.
+/scripts/audit_correction_consumption.py text eol=lf
+/tests/test_correction_consumption.py text eol=lf
+/data/evaluation/results/correction_consumption_audit_20261012.json -text
+
+# Isolated, unadmitted relation-teaching candidate and offline audit.
+/scripts/report_relation_contrast.py text eol=lf
+/scripts/check_relation_contrast.py text eol=lf
+/tests/test_report_relation_contrast.py text eol=lf
+/data/evaluation/results/relation_contrast_preparation_20261012.json -text
+
+# Prospective relation comparison and standalone development calibration.
+/scripts/document_relation_request.py text eol=lf
+/scripts/document_relation_diagnostic.py text eol=lf
+/tests/test_document_relation_diagnostic.py text eol=lf
+/data/evaluation/fixtures/host_relation_material_calibration_20261012/** -text
+/data/evaluation/fixtures/document_relation_initial_20261012/** -text
+/data/evaluation/results/host_relation_material_calibration_20261012/** -text
+/data/evaluation/results/document_relation_preparation_20261012.json -text
+
+# Closed relation comparison: preserve native and raw-byte evidence.
+/data/evaluation/results/document_relation_initial_result_20261012.json -text
+/data/evaluation/results/document_relation_initial_close_audit_20261012.json -text
+/data/evaluation/results/document_relation_host_evidence_20261012.json -text
+
+# Offline timeout diagnosis and body-free observation source hashes.
+/scripts/stream_observation.py text eol=lf
+/scripts/diagnose_stream_stall_offline.py text eol=lf
+/tests/test_stream_observation.py text eol=lf
+/data/evaluation/results/document_relation_timeout_diagnosis_20261012.json -text
+/scripts/prepare_relation_repair_material.py text eol=lf
+/data/evaluation/fixtures/relation_repair_material_preparation_20261012.json -text
+/data/evaluation/fixtures/host_relation_repair_calibration_20261012/** -text
+/data/evaluation/results/host_relation_repair_calibration_20261012/** -text
+# Preserve the pre-review Windows original bytes while recognizing its CRLF.
+/data/evaluation/results/host_relation_repair_calibration_20261012/primary-before-independent.json whitespace=cr-at-eol
+
+# Prospective observed relation-repair package; keep frozen raw-byte bindings.
+/scripts/document_relation_observed_request.py text eol=lf
+/scripts/document_relation_repair_diagnostic.py text eol=lf
+/tests/test_document_relation_repair_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_relation_repair_20261013/** -text
+/data/evaluation/results/document_relation_repair_preparation_20261013.json -text
+
+# Joint full-report scope: preserve native originals and frozen package bytes.
+/scripts/document_relation_joint_request.py text eol=lf
+/scripts/document_relation_joint_diagnostic.py text eol=lf
+/tests/test_document_relation_joint_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_relation_joint_20261013/** -text
+/data/evaluation/results/host_relation_joint_calibration_20261013/** -text whitespace=cr-at-eol
+/data/evaluation/results/document_relation_joint_preparation_20261013.json -text whitespace=cr-at-eol
+
+# Closed joint comparison: preserve original-byte and native evidence hashes.
+/data/evaluation/results/document_relation_joint_result_20261013.json -text
+/data/evaluation/results/document_relation_joint_close_audit_20261013.json -text
+/data/evaluation/results/document_relation_joint_host_evidence_20261013.json -text
+/data/evaluation/results/document_relation_joint_close_state_20261013.json -text
+
+# Offline post-joint consumption evidence and its audit source.
+/scripts/audit_post_joint_consumption.py text eol=lf
+/tests/test_post_joint_consumption.py text eol=lf
+/data/evaluation/results/post_joint_consumption_20261013.json -text
+
+# Prospective full-chain gates; preserve source and preparation bytes.
+/scripts/full_chain_*.py text eol=lf
+/tests/test_full_chain_*.py text eol=lf
+/data/evaluation/results/full_chain_evidence_preparation_20261013.json -text
+/data/evaluation/fixtures/full_chain_host_count_20261013.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/full_chain_host_rehearsal_20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Original15 alignment and complete-response fixture byte bindings.
+/scripts/audit_original15_alignment.py text eol=lf
+/data/evaluation/fixtures/full_chain_bound_count_20261013.json -text
+/data/evaluation/results/original15_alignment_20261013.json -text
+/data/evaluation/results/original15_alignment_validation_20261013.json -text
+
+# Prospective fixed-control qualification, distinct from historical admission.
+/scripts/qualify_full_chain_controls.py text eol=lf
+/data/evaluation/results/full_chain_qualification_preparation_20261013.json -text
+/data/evaluation/results/full_chain_qualification_validation_20261013.json -text
+/data/evaluation/results/full_chain_execution_preparation_20261013.json -text whitespace=cr-at-eol
+/data/evaluation/results/full_chain_execution_qualification_20261013.json -text
+/data/evaluation/results/full_chain_execution_validation_20261013.json -text
+
+# Offline repair-readiness audit; retain the historical/request byte bindings.
+/scripts/audit_full15_repair_readiness.py text eol=lf
+/data/evaluation/results/full15_repair_readiness_20261013.json -text
+
+# Execution-local dispatch control, independent of frozen model request code.
+/app/runtime/dispatch_control.py text eol=lf
+/tests/test_worker_dispatch_control.py text eol=lf
+
+# Offline review-duty preparation retains exact request and source digests.
+/scripts/prepare_review_duty_probe.py text eol=lf
+/data/evaluation/fixtures/review_duty_probe_20261014/** -text
+/scripts/document_review_duty_identity.py text eol=lf
+/scripts/document_review_duty_request.py text eol=lf
+/scripts/document_review_duty_diagnostic.py text eol=lf
+/tests/test_document_review_duty_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_review_duty_20261014/** -text
+/data/evaluation/results/document_review_duty_result_20261014.json -text
+/data/evaluation/results/document_review_duty_close_audit_20261014.json -text
+
+# Separately authorized recharge follow-up; old evidence remains frozen.
+/scripts/document_review_duty_followup_request.py text eol=lf
+/scripts/document_review_duty_followup_diagnostic.py text eol=lf
+/tests/test_document_review_duty_followup_diagnostic.py text eol=lf
+/data/evaluation/fixtures/document_review_duty_followup_20261014/** -text
+
+# Prospective duty transport/replay byte bindings, distinct from closed batches.
+/scripts/review_duty_execution.py text eol=lf
+/scripts/review_duty_transport.py text eol=lf
+/scripts/review_duty_replay.py text eol=lf
+/scripts/prepare_review_duty_execution.py text eol=lf
+/tests/test_review_duty_transport.py text eol=lf
+/tests/test_review_duty_replay.py text eol=lf
+/tests/test_review_duty_execution.py text eol=lf
+/data/evaluation/results/review_duty_transport_preparation_20261014.json -text
+
+# Fixed-report launch package and source digests are byte-exact.
+/scripts/review_duty_launch.py text eol=lf
+/tests/test_review_duty_launch.py text eol=lf
+/data/evaluation/fixtures/review_duty_chain_20261014/** -text
+/data/evaluation/results/review_duty_launch_preparation_20261014.json -text
+
+# Prospective six-call candidate assets, distinct from frozen historical runs.
+/app/evaluation/natural_duty_*.py text eol=lf
+/app/product/natural_duty_candidate.py text eol=lf
+/scripts/refresh_natural_duty_manifest.py text eol=lf
+/tests/test_natural_duty_candidate.py text eol=lf
+/examples/runtime_profiles/natural_duty_v1/** text eol=lf
+/data/evaluation/results/natural_duty_six_offline_20261014.json text eol=lf
+/scripts/audit_natural_duty_qualification.py text eol=lf
+/tests/test_natural_duty_qualification_inventory.py text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_20261015.json text eol=lf
+
+# Exact public author/native artifacts from the source-only material review.
+/data/evaluation/fixtures/preservation_material_review_20261015/** -text
+/data/evaluation/results/natural_duty_preservation_material_decision_20261015.json -text
+/scripts/preservation_material_review.py text eol=lf
+/tests/test_preservation_material_review.py text eol=lf
+/tests/test_natural_duty_worker_postgres.py text eol=lf
+/data/evaluation/results/natural_duty_worker_postgres_20261015.json text eol=lf
+
+# Preserve closed observed-run evidence, including original newline differences.
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/** -text
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/execution-stdout.log whitespace=cr-at-eol
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf

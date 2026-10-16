@@ -28,6 +28,8 @@ class FileRunStoreTests(unittest.TestCase):
         self.assertEqual(self.manifest.status, loaded.status)
         self.assertEqual(self.manifest.config, loaded.config)
         self.assertTrue((self.runs_root / "review_example" / "manifest.json").is_file())
+        self.assertIsNone(loaded.failure_code)
+        self.assertNotIn("failure_code", json.loads(self.store.manifest_path.read_text(encoding="utf-8")))
 
     def test_write_artifact_registers_sha256_and_can_be_verified(self):
         self.store.create_run(self.manifest)

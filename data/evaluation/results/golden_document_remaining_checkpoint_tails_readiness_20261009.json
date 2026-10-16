@@ -1,0 +1,75 @@
+{
+  "kind": "document-remaining-checkpoint-tails-readiness-v1",
+  "run_id": "document-remaining-checkpoint-tails-20261009",
+  "plan_sha256": "d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4",
+  "execution_authorized": false,
+  "provider_calls": 0,
+  "run_exists": false,
+  "selected_keys": [
+    "claim-scope:6",
+    "observed:2",
+    "observed:3",
+    "observed:4",
+    "observed:5"
+  ],
+  "original_sources_unchanged": true,
+  "previous_closed_replay_unchanged": true,
+  "offline_checks": {
+    "primary_new_and_checkpoint": 20,
+    "independent_new_checkpoint_and_accepted": 41,
+    "counts_overlap": true,
+    "not_model_quality": true
+  },
+  "independent_code_review_native_event": {
+    "schema_version": "independent-source-v2",
+    "event_kind": "codex-collaboration-review-event-v1",
+    "state": "completed",
+    "event_id": "01a11fea-dc3d-72d0-a07e-90fde8f04f92/01a11ffc-b7e8-7a52-9d6c-c8e8e258d1ce/msg_02fea8690fadd9d9016ac8b58f72408195ada02c671dac7466",
+    "dispatch_id": "amsg_01a11ffc-b849-7330-94f5-7838c7d36f04",
+    "author_principal_id": "01a11fea-dc3d-72d0-a07e-90fde8f04f92",
+    "root_thread_id": "01a0c6c5-01d1-78d0-82fb-e567e0ab7150",
+    "binding": {
+      "plan_sha256": "d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4",
+      "key": "remaining-five-tail-adapter-code-review",
+      "stage": "final",
+      "response_sha256": "dd58135e8642848b63d0061c62bc3c6ffbb25874683a946bc88abd7cca2f2a93",
+      "report_sha256": "a6849e96532c0b4d0b7686419d314611549cdc6707ec1f1e009c949e8ba43317",
+      "request_sha256": "08a38409d08ec8238b528e383d099f31e9a7e83a67bcdd6ca1d13b2032a4a565"
+    },
+    "review_sha256": "c530e20ba224c9999b5473a218fcbb047988b0ae28d6c2e28aed4264e2411f1d",
+    "raw_event_sha256": "dbea888d1335dec68e1f15b2e2df8fe8646f9d41a8a8213408b6bba9d8128c1d",
+    "review": {
+      "binding": {
+        "key": "remaining-five-tail-adapter-code-review",
+        "plan_sha256": "d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4",
+        "report_sha256": "a6849e96532c0b4d0b7686419d314611549cdc6707ec1f1e009c949e8ba43317",
+        "request_sha256": "08a38409d08ec8238b528e383d099f31e9a7e83a67bcdd6ca1d13b2032a4a565",
+        "response_sha256": "dd58135e8642848b63d0061c62bc3c6ffbb25874683a946bc88abd7cca2f2a93",
+        "stage": "final"
+      },
+      "accepted": true,
+      "defects": [],
+      "source_review": "独立开发代码审查：两份代码原字节SHA与指定任务完全匹配。完整追踪适配器、复用observer/handoff/seal及checkpoint/native/预算校验，未发现剩余具体缺陷。四个隔离模块通过显式引用接线，不替换sys.modules或修改旧模块；旧冻结脚本相对d430046c无差异。先校验固定摘要的闭批封存及未执行库存，再复用完整历史初评验证并选取claim-scope:6、observed:2..5，scope:4不重买、不补签且credit=0。请求、GLM身份与业务政策保持原构造；新计划包含适配器源码摘要，五例共用10调用、967680 token与3000秒活动时间上限，历史初评注入不触发Provider。新observer使用隔离handoff重建checkpoint任务，继而沿原完整来源双审、四项报告旗标与原生final事件验证；缺失native/checkpoint、来源/请求变化及协议/预算失败硬停，有效语义拒绝只结束该例。交接提交与终结共用关闭锁，重复或晚提交拒绝；严格seal重建请求、来源、阶段、checkpoint、原生意见、终态和费用库存，abort不认证意见。run/handoff/seal CLI已核实可达，handoff仅暴露五例；公开离线测试使用合成IO且禁止读取私有data/runs。此结论仅接受该开发适配实现，不认证模型语义、未来Host可用性、产品资格或旧scope:4业务结果；本次未调用Provider、未读取主评意见、未修改旧批原件。 独立运行新适配器、旧checkpoint与旧accepted-tail三组离线测试：41 passed in 446.82秒。"
+    },
+    "host_review_evidence_policy": "native-final-attestation-v1"
+  },
+  "native_principals": {
+    "root_thread_id": "01a0c6c5-01d1-78d0-82fb-e567e0ab7150",
+    "independent_thread_id": "01a11fea-dc3d-72d0-a07e-90fde8f04f92",
+    "verified": true,
+    "independent_agent_path": "/root/sol_connectivity_check",
+    "input_readability": {
+      "thread_id": "01a11fea-dc3d-72d0-a07e-90fde8f04f92",
+      "turn_id": "01a11ffc-b7e8-7a52-9d6c-c8e8e258d1ce",
+      "dispatch_id": "amsg_01a11ffc-b849-7330-94f5-7838c7d36f04",
+      "current_input_readable": false,
+      "future_input_guaranteed": false,
+      "current_route_and_final_available": true,
+      "host_review_evidence_policy": "native-final-attestation-v1"
+    }
+  },
+  "host_future_availability_guaranteed": false,
+  "product_admitted": false,
+  "original15_qualified": false,
+  "review_controls_qualified": false
+}

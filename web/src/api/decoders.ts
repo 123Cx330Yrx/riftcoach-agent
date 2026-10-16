@@ -26,6 +26,7 @@ import type {
   RecentSummaryWire,
   RoutingRegionWire,
   RunWire,
+  RunUsageWire,
   RunTimelineEventWire,
   RunTimelineMatchWire,
   RunTimelineWire,
@@ -478,6 +479,19 @@ function decodeUsage(value: unknown): RuntimeUsageWire {
   }
 }
 
+export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageWire {
+  const row = record(value, "run_usage")
+  exact(row, ["schema_version", "run_id", "task_status", "usage"], "run_usage")
+  const runId = safeId(row.run_id, "run_usage.run_id")
+  if (runId !== safeId(expectedRunId, "expected run")) throw new Error("usage run binding mismatch")
+  return {
+    schema_version: literal(row.schema_version, "1.0", "run_usage.schema_version"),
+    run_id: runId,
+    task_status: enumeration(row.task_status, ["succeeded", "failed", "cancelled"] as const, "run_usage.task_status"),
+    usage: nullable(row.usage, decodeUsage),
+  }
+}
+
 export function decodeRun(value: unknown, expectedRunId: string): RunWire {
   const row = record(value, "run")
   exact(row, ["schema_version", "run_id", "runtime_status", "publication_status", "terminal_reason", "skill_name", "skill_version", "prompt_profile_id", "prompt_profile_version", "started_at_utc", "completed_at_utc", "elapsed_ms", "usage", "report_available"], "run")
@@ -509,7 +523,7 @@ function metricRow(value: unknown, path: string): RecentMetricRowWire {
     gold_per_min: number(row.gold_per_min, `${path}.gold_per_min`, { min: 0 }),
     damage_per_min: number(row.damage_per_min, `${path}.damage_per_min`, { min: 0 }),
     vision_score: number(row.vision_score, `${path}.vision_score`, { min: 0 }),
-    deaths_before_15: number(row.deaths_before_15, `${path}.deaths_before_15`, { min: 0 }),
+    deaths_before_15: nullable(row.deaths_before_15, (item) => number(item, `${path}.deaths_before_15`, { min: 0 })),
   }
 }
 

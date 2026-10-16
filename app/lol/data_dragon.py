@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 import requests
@@ -23,17 +24,28 @@ class DataDragonService:
         self,
         language: str = "zh_CN",
         cache_dir: str = "data/static/ddragon",
+        *,
+        version: str | None = None,
+        before_request=None,
     ):
+        if version is not None and (not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", version)):
+            raise ValueError("data_dragon_version_invalid")
         self.language = language
+        self._before_request = before_request
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
-        self.version = self._load_latest_version()
+        self.version = version if version is not None else self._load_latest_version()
 
         self.champions = self._load_champions()
         self.items = self._load_items()
         self.summoner_spells = self._load_summoner_spells()
         self.runes = self._load_runes()
+        if version is not None and any(
+            not isinstance(catalog, dict) or catalog.get("version") != version
+            for catalog in (self.champions, self.items, self.summoner_spells)
+        ):
+            raise ValueError("data_dragon_catalog_version_mismatch")
 
         self.champion_by_id = self._build_champion_by_id()
         self.spell_by_id = self._build_spell_by_id()
@@ -44,6 +56,8 @@ class DataDragonService:
             with cache_file.open("r", encoding="utf-8") as f:
                 return json.load(f)
 
+        if self._before_request is not None:
+            self._before_request()
         response = requests.get(url, timeout=20)
         response.raise_for_status()
         data = response.json()

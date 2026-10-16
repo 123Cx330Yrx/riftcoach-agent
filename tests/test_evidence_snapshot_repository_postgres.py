@@ -37,7 +37,7 @@ from tests.test_evidence_snapshot_contracts import bundle
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0011_evidence_product_api"
+HEAD = "0014_message_projection_status"
 NOW = datetime(2026, 8, 23, 10, 0, tzinfo=timezone.utc)
 TASK_ID = UUID("93000000-0000-4000-8000-000000000001")
 RUN_ID = "review_evidence_repository_1"
@@ -175,6 +175,54 @@ def create_running_task(repository: PostgresTaskRepository) -> None:
     assert result.task is not None
     claimed = repository.claim_next(worker_id="evidence-worker", now=NOW)
     assert claimed is not None and claimed.task_id == TASK_ID
+
+
+@pytest.mark.parametrize("abort", [False, True])
+def test_shared_session_snapshot_follows_outer_transaction(abort: bool) -> None:
+    from app.persistence.evidence_snapshot_repository import _append_snapshot_in_session
+    from app.persistence.task_record import ReviewTaskRecord
+
+    with migrated_repositories() as (tasks, evidence, factory):
+        create_running_task(tasks)
+        with factory() as session:
+            try:
+                with session.begin():
+                    task = session.scalar(sa.select(ReviewTaskRecord).where(
+                        ReviewTaskRecord.task_id == TASK_ID).with_for_update())
+                    original_updated = task.updated_at
+                    task.updated_at = NOW + timedelta(seconds=1)
+                    first = _append_snapshot_in_session(session, task, pending_snapshot("shared"))
+                    replay = _append_snapshot_in_session(session, task, pending_snapshot("shared"))
+                    assert first.snapshot == replay.snapshot
+                    assert replay.disposition is EvidenceSnapshotWriteDisposition.REPLAYED
+                    assert session.in_transaction()
+                    if abort:
+                        raise RuntimeError("injected failure after snapshot flush")
+            except RuntimeError:
+                if not abort:
+                    raise
+        with factory() as session:
+            task = session.get(ReviewTaskRecord, TASK_ID)
+            count = session.scalar(sa.select(sa.func.count()).select_from(EvidenceBundleSnapshotRecord))
+            assert count == (0 if abort else 1)
+            assert task.updated_at == (original_updated if abort else NOW + timedelta(seconds=1))
+        assert (evidence.get_latest(owner_id="owner-1", run_id=RUN_ID) is None) is abort
+
+
+def test_shared_session_rejects_foreign_locked_task() -> None:
+    from app.evidence.ports import EvidenceSnapshotRepositoryError
+    from app.persistence.evidence_snapshot_repository import _append_snapshot_in_session
+    from app.persistence.task_record import ReviewTaskRecord
+
+    with migrated_repositories() as (tasks, _evidence, factory):
+        create_running_task(tasks)
+        with factory() as session, session.begin():
+            task = session.scalar(sa.select(ReviewTaskRecord).where(
+                ReviewTaskRecord.task_id == TASK_ID).with_for_update())
+            foreign = pending_snapshot("foreign").model_copy(update={"owner_id": "owner-2"})
+            with pytest.raises(EvidenceSnapshotRepositoryError, match="evidence_task_not_found"):
+                _append_snapshot_in_session(session, task, foreign)
+            assert session.scalar(sa.select(sa.func.count()).select_from(EvidenceBundleSnapshotRecord)) == 0
 
 
 def test_repository_append_replay_refresh_latest_and_owner_scope() -> None:

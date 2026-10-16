@@ -177,6 +177,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/tasks/{task_id}/events",
         "/tasks/{task_id}/events/stream",
         "/runs/{run_id}",
+        "/runs/{run_id}/usage",
         "/runs/{run_id}/evidence",
         "/runs/{run_id}/product-state",
         "/runs/{run_id}/report",

@@ -1,0 +1,93 @@
+{
+  "kind": "host-relation-material-calibration-close-v1",
+  "recorded_at": "2026-10-12T13:09:24.602030+00:00",
+  "status": "completed_development_calibration",
+  "material_sha256": "53bea63165bc5eebfdbd8793c56e801b741f852b5f6738fea9b34a7fb6025f85",
+  "task_sha256": "61affed961e66a6543e890020fcd4fd4819b4490837fd5c3d650980a7c1290ab",
+  "new_agents": 0,
+  "independent_tasks": 1,
+  "project_provider_calls": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "native": {
+    "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "turn_id": "01a13031-f27a-78b3-8026-3b3278b5a7cf",
+    "dispatch_id": "amsg_01a13031-f4d6-7850-83f8-1ff3e2abed0f",
+    "message_id": "msg_0d3b9daa49f66152016accdb1f2e6c87d08c84c0e54c037645",
+    "api_status": "completed",
+    "api_final_count": 1,
+    "phase": "final_answer",
+    "source_line": 531,
+    "final_text_sha256": "a8b03fe3e01473be34604bb078d4818ffb48a1ead4b99559531a56313eb7609d",
+    "dispatch_body_readable": false,
+    "route_and_final_verified": true,
+    "duration_ms": 432955,
+    "compaction_present": true,
+    "raw_compaction_summary_not_used_as_judgment": true
+  },
+  "visible_read_audit": {
+    "public_tool_calls": 19,
+    "call_lines": [
+      407,
+      412,
+      419,
+      426,
+      431,
+      436,
+      441,
+      462,
+      467,
+      472,
+      477,
+      482,
+      487,
+      492,
+      497,
+      502,
+      511,
+      518,
+      525
+    ],
+    "all_outputs_untruncated": true,
+    "primary_read_all_visible_calls": true,
+    "only_task_material_and_own_answer": true,
+    "os_sandbox_proven": false,
+    "author_matches_final_except_terminal_newline": true
+  },
+  "primary_post_review": {
+    "case_results": [
+      {
+        "case_id": "R4",
+        "decision": "no_material_error",
+        "issue_blocks": []
+      },
+      {
+        "case_id": "T9",
+        "decision": "requires_correction",
+        "issue_blocks": [
+          14,
+          15
+        ]
+      }
+    ],
+    "exact_quotes_found": 2,
+    "source_roots_and_rows_verified": true,
+    "all_corrections_reviewed": true,
+    "correct_content_preserved": true,
+    "block6_advisory_not_fact_gate": true
+  },
+  "files": {
+    "author-answer.json": "1d46359a204d184c6bd9aa4592a6c67988c35f1add58d2e1e0acd9272bd542da",
+    "independent-final-event.jsonl": "1b0ad41f0d1971a7733da2e43fbcfe1d1c98d38c037bf8d80625685051fdd7cd",
+    "independent-final.txt": "a8b03fe3e01473be34604bb078d4818ffb48a1ead4b99559531a56313eb7609d",
+    "primary-before-independent.json": "2cf194cb473d1cb3e59cda8c38af5ec73cc42c967efd39211bc51d91ea17101a",
+    "public-tools.jsonl": "29a1207321f5e494ecff8d635b7d6f07dd4795f8151c79f660046945c821bd5e"
+  },
+  "limitations": [
+    "Familiar-source developer calibration, not holdout, business stage or future Provider approval.",
+    "Native dispatch body is encrypted; route and API-selected final were verified with existing FINAL policy.",
+    "A compaction summary is present in raw history; only the API-selected final was imported.",
+    "Visible tools establish observed reads/writes, not an OS sandbox."
+  ]
+}

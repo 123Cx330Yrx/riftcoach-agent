@@ -1,0 +1,1059 @@
+{
+  "kind": "document-relation-joint-close-state-v1",
+  "automation_id": "riftcoach",
+  "automation_status": "PAUSED",
+  "ci": {
+    "conclusion": "success",
+    "headSha": "1708c0cd4e338bec4caff27612c78c406be3dc83",
+    "jobs": [
+      {
+        "completedAt": "2026-10-13T08:56:08Z",
+        "conclusion": "success",
+        "databaseId": 115211905310,
+        "name": "web-checks",
+        "startedAt": "2026-10-13T08:52:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:28Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:32Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:35Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:40Z",
+            "conclusion": "success",
+            "name": "Set up Node for isolated evaluation dependencies",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:52Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:56Z",
+            "conclusion": "success",
+            "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:58Z",
+            "conclusion": "success",
+            "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+            "number": 7,
+            "startedAt": "2026-10-13T08:52:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:02Z",
+            "conclusion": "success",
+            "name": "Install fixture web dependencies without lifecycle scripts",
+            "number": 8,
+            "startedAt": "2026-10-13T08:52:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:25Z",
+            "conclusion": "success",
+            "name": "Install the isolated Chromium verification browser",
+            "number": 9,
+            "startedAt": "2026-10-13T08:53:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:55:46Z",
+            "conclusion": "success",
+            "name": "Verify the fixture web contract and production bundle",
+            "number": 10,
+            "startedAt": "2026-10-13T08:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:01Z",
+            "conclusion": "success",
+            "name": "Verify cinematic audit toolchain and planned ledger",
+            "number": 11,
+            "startedAt": "2026-10-13T08:55:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:01Z",
+            "conclusion": "success",
+            "name": "Check project governance continuity",
+            "number": 12,
+            "startedAt": "2026-10-13T08:56:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:01Z",
+            "conclusion": "success",
+            "name": "Enforce RAG v1 retrieval quality gate",
+            "number": 13,
+            "startedAt": "2026-10-13T08:56:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:02Z",
+            "conclusion": "success",
+            "name": "Enforce independent RAG 4M holdout gate",
+            "number": 14,
+            "startedAt": "2026-10-13T08:56:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:04Z",
+            "conclusion": "success",
+            "name": "Compile Python sources",
+            "number": 15,
+            "startedAt": "2026-10-13T08:56:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:04Z",
+            "conclusion": "success",
+            "name": "Enforce Harness SDK boundary",
+            "number": 16,
+            "startedAt": "2026-10-13T08:56:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:04Z",
+            "conclusion": "success",
+            "name": "Reject tracked local secrets and run data",
+            "number": 17,
+            "startedAt": "2026-10-13T08:56:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:06Z",
+            "conclusion": "success",
+            "name": "Run Harness dry-run fixture",
+            "number": 18,
+            "startedAt": "2026-10-13T08:56:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:06Z",
+            "conclusion": "success",
+            "name": "Post Set up Node for isolated evaluation dependencies",
+            "number": 34,
+            "startedAt": "2026-10-13T08:56:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:06Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 35,
+            "startedAt": "2026-10-13T08:56:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:06Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 36,
+            "startedAt": "2026-10-13T08:56:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:06Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-13T08:56:06Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905310"
+      },
+      {
+        "completedAt": "2026-10-13T08:53:16Z",
+        "conclusion": "success",
+        "databaseId": 115211905384,
+        "name": "packaging-smoke",
+        "startedAt": "2026-10-13T08:52:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:27Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:31Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:31Z",
+            "conclusion": "success",
+            "name": "Validate the Compose model",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:10Z",
+            "conclusion": "success",
+            "name": "Build and start the isolated API stack",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:14Z",
+            "conclusion": "success",
+            "name": "Run the no-I/O Linux package smoke",
+            "number": 5,
+            "startedAt": "2026-10-13T08:53:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:14Z",
+            "conclusion": "skipped",
+            "name": "Print bounded service diagnostics after smoke failure",
+            "number": 6,
+            "startedAt": "2026-10-13T08:53:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:14Z",
+            "conclusion": "success",
+            "name": "Inspect runtime image boundary",
+            "number": 7,
+            "startedAt": "2026-10-13T08:53:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:15Z",
+            "conclusion": "success",
+            "name": "Tear down package smoke resources",
+            "number": 8,
+            "startedAt": "2026-10-13T08:53:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:15Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 16,
+            "startedAt": "2026-10-13T08:53:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:15Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 17,
+            "startedAt": "2026-10-13T08:53:15Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905384"
+      },
+      {
+        "completedAt": "2026-10-13T09:14:26Z",
+        "conclusion": "success",
+        "databaseId": 115211905456,
+        "name": "pytest-shards (0)",
+        "startedAt": "2026-10-13T08:52:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:28Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:31Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:34Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:35Z",
+            "conclusion": "success",
+            "name": "Set up Node for isolated evaluation dependencies",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:46Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:50Z",
+            "conclusion": "success",
+            "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:52Z",
+            "conclusion": "success",
+            "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+            "number": 7,
+            "startedAt": "2026-10-13T08:52:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:56Z",
+            "conclusion": "success",
+            "name": "Install fixture web dependencies without lifecycle scripts",
+            "number": 8,
+            "startedAt": "2026-10-13T08:52:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:21Z",
+            "conclusion": "success",
+            "name": "Install the isolated Chromium verification browser",
+            "number": 9,
+            "startedAt": "2026-10-13T08:52:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:32Z",
+            "conclusion": "success",
+            "name": "Install media toolchain",
+            "number": 10,
+            "startedAt": "2026-10-13T08:53:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:23Z",
+            "conclusion": "success",
+            "name": "Run an isolated slice of the complete collected suite",
+            "number": 11,
+            "startedAt": "2026-10-13T08:53:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:24Z",
+            "conclusion": "success",
+            "name": "Retain collection and completion inventory",
+            "number": 12,
+            "startedAt": "2026-10-13T09:14:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:24Z",
+            "conclusion": "success",
+            "name": "Post Set up Node for isolated evaluation dependencies",
+            "number": 22,
+            "startedAt": "2026-10-13T09:14:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:24Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 23,
+            "startedAt": "2026-10-13T09:14:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:25Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 24,
+            "startedAt": "2026-10-13T09:14:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:14:25Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-13T09:14:25Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905456"
+      },
+      {
+        "completedAt": "2026-10-13T09:12:19Z",
+        "conclusion": "success",
+        "databaseId": 115211905570,
+        "name": "pytest-shards (1)",
+        "startedAt": "2026-10-13T08:52:27Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:29Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:33Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:38Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:41Z",
+            "conclusion": "success",
+            "name": "Set up Node for isolated evaluation dependencies",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:52Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:56Z",
+            "conclusion": "success",
+            "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:57Z",
+            "conclusion": "success",
+            "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+            "number": 7,
+            "startedAt": "2026-10-13T08:52:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:02Z",
+            "conclusion": "success",
+            "name": "Install fixture web dependencies without lifecycle scripts",
+            "number": 8,
+            "startedAt": "2026-10-13T08:52:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:29Z",
+            "conclusion": "success",
+            "name": "Install the isolated Chromium verification browser",
+            "number": 9,
+            "startedAt": "2026-10-13T08:53:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:47Z",
+            "conclusion": "success",
+            "name": "Install media toolchain",
+            "number": 10,
+            "startedAt": "2026-10-13T08:53:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:14Z",
+            "conclusion": "success",
+            "name": "Run an isolated slice of the complete collected suite",
+            "number": 11,
+            "startedAt": "2026-10-13T08:53:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:15Z",
+            "conclusion": "success",
+            "name": "Retain collection and completion inventory",
+            "number": 12,
+            "startedAt": "2026-10-13T09:12:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:15Z",
+            "conclusion": "success",
+            "name": "Post Set up Node for isolated evaluation dependencies",
+            "number": 22,
+            "startedAt": "2026-10-13T09:12:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:16Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 23,
+            "startedAt": "2026-10-13T09:12:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:16Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 24,
+            "startedAt": "2026-10-13T09:12:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:12:16Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-13T09:12:16Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905570"
+      },
+      {
+        "completedAt": "2026-10-13T09:23:54Z",
+        "conclusion": "success",
+        "databaseId": 115211905631,
+        "name": "pytest-shards (2)",
+        "startedAt": "2026-10-13T08:52:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:28Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:31Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:34Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:36Z",
+            "conclusion": "success",
+            "name": "Set up Node for isolated evaluation dependencies",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:47Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:51Z",
+            "conclusion": "success",
+            "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:52Z",
+            "conclusion": "success",
+            "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+            "number": 7,
+            "startedAt": "2026-10-13T08:52:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:57Z",
+            "conclusion": "success",
+            "name": "Install fixture web dependencies without lifecycle scripts",
+            "number": 8,
+            "startedAt": "2026-10-13T08:52:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:21Z",
+            "conclusion": "success",
+            "name": "Install the isolated Chromium verification browser",
+            "number": 9,
+            "startedAt": "2026-10-13T08:52:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:42Z",
+            "conclusion": "success",
+            "name": "Install media toolchain",
+            "number": 10,
+            "startedAt": "2026-10-13T08:53:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:51Z",
+            "conclusion": "success",
+            "name": "Run an isolated slice of the complete collected suite",
+            "number": 11,
+            "startedAt": "2026-10-13T08:53:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:52Z",
+            "conclusion": "success",
+            "name": "Retain collection and completion inventory",
+            "number": 12,
+            "startedAt": "2026-10-13T09:23:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:52Z",
+            "conclusion": "success",
+            "name": "Post Set up Node for isolated evaluation dependencies",
+            "number": 22,
+            "startedAt": "2026-10-13T09:23:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:52Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 23,
+            "startedAt": "2026-10-13T09:23:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:52Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 24,
+            "startedAt": "2026-10-13T09:23:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:23:52Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-13T09:23:52Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905631"
+      },
+      {
+        "completedAt": "2026-10-13T09:19:53Z",
+        "conclusion": "success",
+        "databaseId": 115211905767,
+        "name": "pytest-shards (3)",
+        "startedAt": "2026-10-13T08:52:27Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:29Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:34Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:39Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:43Z",
+            "conclusion": "success",
+            "name": "Set up Node for isolated evaluation dependencies",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:58Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:02Z",
+            "conclusion": "success",
+            "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:03Z",
+            "conclusion": "success",
+            "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+            "number": 7,
+            "startedAt": "2026-10-13T08:53:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:07Z",
+            "conclusion": "success",
+            "name": "Install fixture web dependencies without lifecycle scripts",
+            "number": 8,
+            "startedAt": "2026-10-13T08:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:43Z",
+            "conclusion": "success",
+            "name": "Install the isolated Chromium verification browser",
+            "number": 9,
+            "startedAt": "2026-10-13T08:53:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:54:12Z",
+            "conclusion": "success",
+            "name": "Install media toolchain",
+            "number": 10,
+            "startedAt": "2026-10-13T08:53:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:49Z",
+            "conclusion": "success",
+            "name": "Run an isolated slice of the complete collected suite",
+            "number": 11,
+            "startedAt": "2026-10-13T08:54:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:51Z",
+            "conclusion": "success",
+            "name": "Retain collection and completion inventory",
+            "number": 12,
+            "startedAt": "2026-10-13T09:19:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:51Z",
+            "conclusion": "success",
+            "name": "Post Set up Node for isolated evaluation dependencies",
+            "number": 22,
+            "startedAt": "2026-10-13T09:19:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:51Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 23,
+            "startedAt": "2026-10-13T09:19:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:51Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 24,
+            "startedAt": "2026-10-13T09:19:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:19:51Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-13T09:19:51Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905767"
+      },
+      {
+        "completedAt": "2026-10-13T08:55:02Z",
+        "conclusion": "success",
+        "databaseId": 115211905833,
+        "name": "postgres-migrations",
+        "startedAt": "2026-10-13T08:52:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:52:28Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:52:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:42Z",
+            "conclusion": "success",
+            "name": "Initialize containers",
+            "number": 2,
+            "startedAt": "2026-10-13T08:52:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:46Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 3,
+            "startedAt": "2026-10-13T08:52:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:50Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 4,
+            "startedAt": "2026-10-13T08:52:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:59Z",
+            "conclusion": "success",
+            "name": "Install project and test dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T08:52:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:52:59Z",
+            "conclusion": "success",
+            "name": "Check project governance continuity",
+            "number": 6,
+            "startedAt": "2026-10-13T08:52:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:53:01Z",
+            "conclusion": "success",
+            "name": "Verify reversible PostgreSQL migrations",
+            "number": 7,
+            "startedAt": "2026-10-13T08:52:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:54:58Z",
+            "conclusion": "success",
+            "name": "Run PostgreSQL control-plane tests",
+            "number": 8,
+            "startedAt": "2026-10-13T08:53:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:54:59Z",
+            "conclusion": "success",
+            "name": "Verify metadata matches the migration head",
+            "number": 9,
+            "startedAt": "2026-10-13T08:54:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:55:00Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 16,
+            "startedAt": "2026-10-13T08:55:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:55:00Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 17,
+            "startedAt": "2026-10-13T08:55:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:55:00Z",
+            "conclusion": "success",
+            "name": "Stop containers",
+            "number": 18,
+            "startedAt": "2026-10-13T08:55:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:55:00Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-13T08:55:00Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115211905833"
+      },
+      {
+        "completedAt": "2026-10-13T09:24:21Z",
+        "conclusion": "success",
+        "databaseId": 115224421685,
+        "name": "pytest",
+        "startedAt": "2026-10-13T09:23:57Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T09:23:59Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T09:23:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:00Z",
+            "conclusion": "success",
+            "name": "Require all unchanged gates and every shard to succeed",
+            "number": 2,
+            "startedAt": "2026-10-13T09:23:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:05Z",
+            "conclusion": "success",
+            "name": "Check out repository",
+            "number": 3,
+            "startedAt": "2026-10-13T09:24:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:05Z",
+            "conclusion": "success",
+            "name": "Set up Python",
+            "number": 4,
+            "startedAt": "2026-10-13T09:24:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:17Z",
+            "conclusion": "success",
+            "name": "Install inventory verifier dependencies",
+            "number": 5,
+            "startedAt": "2026-10-13T09:24:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:18Z",
+            "conclusion": "success",
+            "name": "Download every shard inventory",
+            "number": 6,
+            "startedAt": "2026-10-13T09:24:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:18Z",
+            "conclusion": "success",
+            "name": "Verify exact full-suite coverage and completed tests",
+            "number": 7,
+            "startedAt": "2026-10-13T09:24:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:18Z",
+            "conclusion": "success",
+            "name": "Post Set up Python",
+            "number": 13,
+            "startedAt": "2026-10-13T09:24:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:18Z",
+            "conclusion": "success",
+            "name": "Post Check out repository",
+            "number": 14,
+            "startedAt": "2026-10-13T09:24:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:24:18Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-10-13T09:24:18Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38372269298/job/115224421685"
+      }
+    ],
+    "status": "completed"
+  },
+  "host_evidence_sha256": "e4bc68538c35b4a4f04ad932bd9c5cbcd441f1d4db86dc950e62c0dd2ec0a540",
+  "close_audit_sha256": "3c53b9011171bcab999d8492c023631b708d6e435f5c6485a8858d7c3d4f9898",
+  "execution_exit": {
+    "exit_code": 0,
+    "finished_at": "2026-10-13T10:07:07.871970+00:00",
+    "runner_pid": 22276
+  }
+}

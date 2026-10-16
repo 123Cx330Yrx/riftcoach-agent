@@ -1,0 +1,192 @@
+{
+  "checks": [
+    {
+      "inline_valid": false,
+      "name": "actual_missing_sources",
+      "old_valid": false
+    },
+    {
+      "inline_valid": true,
+      "name": "synthetic_valid",
+      "old_valid": true
+    },
+    {
+      "inline_valid": true,
+      "name": "empty_keep",
+      "old_valid": true
+    },
+    {
+      "inline_valid": false,
+      "name": "missing_block",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "missing_before",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "missing_after",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "missing_source_ids",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "missing_reason",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "unknown_source",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "duplicate_sources",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "empty_sources",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "source_string",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "boolean_block",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "zero_block",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "large_block",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "empty_anchor",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "empty_reason",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "long_reason",
+      "old_valid": false
+    },
+    {
+      "inline_valid": true,
+      "name": "empty_after",
+      "old_valid": true
+    },
+    {
+      "inline_valid": false,
+      "name": "long_after",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "extra_edit_field",
+      "old_valid": false
+    },
+    {
+      "inline_valid": false,
+      "name": "extra_root_field",
+      "old_valid": false
+    }
+  ],
+  "conclusion": "Representation-only alternative; no evidence that inline schema improves model adherence.",
+  "exact_referent_substitution": true,
+  "inline_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "edits": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "after": {
+              "maxLength": 24000,
+              "title": "After",
+              "type": "string"
+            },
+            "before": {
+              "maxLength": 24000,
+              "minLength": 1,
+              "title": "Before",
+              "type": "string"
+            },
+            "block": {
+              "maximum": 64,
+              "minimum": 1,
+              "title": "Block",
+              "type": "integer"
+            },
+            "reason": {
+              "maxLength": 700,
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            },
+            "source_ids": {
+              "items": {
+                "enum": [
+                  22,
+                  23,
+                  24,
+                  25,
+                  31,
+                  32
+                ],
+                "type": "integer"
+              },
+              "maxItems": 48,
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array",
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "block",
+            "before",
+            "after",
+            "source_ids",
+            "reason"
+          ],
+          "title": "TextEdit",
+          "type": "object"
+        },
+        "maxItems": 512,
+        "title": "Edits",
+        "type": "array"
+      }
+    },
+    "required": [
+      "edits"
+    ],
+    "title": "EditSet",
+    "type": "object"
+  },
+  "inline_schema_sha256": "f8f16ef9f7718eaacc2d12e36c32f25237c29ecef7abf8f842b3522a6c922ba7",
+  "kind": "offline-single-local-ref-equivalence",
+  "old_schema_sha256": "a2ca4b6fba49f99516cea141bb854830655d8b93361cf53cf2cd4e3f4afa8e22",
+  "product_admitted": false,
+  "provider_calls": 0,
+  "real_response_remains_rejected": true
+}

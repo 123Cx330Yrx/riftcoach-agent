@@ -1,0 +1,67 @@
+{
+  "experiment": "review-target-layout-v1",
+  "conditions": [
+    {
+      "id": "attribution_original-baseline",
+      "layout": "baseline",
+      "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+      "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+      "expected_host_only": "reject",
+      "request_sha256": "73449ae1fda4ab0c20d46545a76615de5513789747feb00d34bc59fed76b44e4",
+      "input_ceiling": 44292,
+      "policy_sha256": "e748fcc2a8c5042f2320a020d8412826a587e79ba63193c7dd11e65d5da46508"
+    },
+    {
+      "id": "attribution_original-target_last",
+      "layout": "target_last",
+      "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+      "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+      "expected_host_only": "reject",
+      "request_sha256": "7de2dc72b56c39d1c69617f14dcfa26626c403a1fa94d2e35d7bce2ab8a26922",
+      "input_ceiling": 44292,
+      "policy_sha256": "e748fcc2a8c5042f2320a020d8412826a587e79ba63193c7dd11e65d5da46508"
+    },
+    {
+      "id": "attribution_corrected-target_last",
+      "layout": "target_last",
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+      "expected_host_only": "accept",
+      "request_sha256": "403f09154283bb7e15a210e06afb2bde533bb6323275dd5cab4e9f26a83a7022",
+      "input_ceiling": 44374,
+      "policy_sha256": "e748fcc2a8c5042f2320a020d8412826a587e79ba63193c7dd11e65d5da46508"
+    },
+    {
+      "id": "attribution_corrected-baseline",
+      "layout": "baseline",
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+      "expected_host_only": "accept",
+      "request_sha256": "dc2f2a8f560576551cad061a2694c9fc105dcdb8d206e172db6002d824f632d8",
+      "input_ceiling": 44374,
+      "policy_sha256": "e748fcc2a8c5042f2320a020d8412826a587e79ba63193c7dd11e65d5da46508"
+    }
+  ],
+  "dataset_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+  "model": "glm-5.3-flash",
+  "reasoning_effort": "high",
+  "stream_tool_arguments": true,
+  "route": "direct",
+  "max_calls": 4,
+  "max_seconds": 900,
+  "total_token_limit": 401920,
+  "max_seconds_per_call": 300,
+  "max_output_per_call": 32768,
+  "sdk_retries": 0,
+  "full_reservation": 308404,
+  "no_reassessment_or_revision": true,
+  "labels_sent_to_model": false,
+  "production_admitted": false,
+  "intervention": "Only reorder the source_index JSON member and the two existing user messages; preserve all values, rules and output contract.",
+  "decisions": {
+    "target_pair_correct_baseline_not": "Consider integration of this input layout, then same-version workflow and frozen coverage; not admission or causal proof.",
+    "both_pairs_correct": "Prior miss was not reproduced; cannot attribute an improvement to layout or qualify a candidate.",
+    "target_semantic_error": "Reject layout as a sufficient fix; no follow-up permutations or format changes in this batch.",
+    "protocol_or_execution_failure": "Stop remaining calls; preserve raw evidence and known/unknown usage; no retry."
+  }
+}

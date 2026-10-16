@@ -1,0 +1,123 @@
+{
+  "kind": "editor_responsibility_evidence_audit_v1",
+  "provider_calls": 0,
+  "input_sha256": {
+    "golden_native_editor_pair_result_483f91d.json": "913785b886fe2405d18ea20b1950ff9520513793953fbeeead2f8dd4d2e3a1e2",
+    "golden_blind_edit_result_6c22e93.json": "47977cf09df5b7a61e7908c32bfd84b8847c8af2ee599fca3e70003187bdbc18",
+    "golden_independent_edit_result_58449abb.json": "c7cb672cf27192413f9aacab437810693e55348e0f97111aaff65884b5190d26",
+    "golden_source_patch_pair_result_v1.json": "ba840bc71f762fad04834466dd98d37187321ae5c17a51d8b95b8f90ac7c0945",
+    "golden_mixed_review_tail_result_20261008.json": "9e97c02e7e10cee21fe03b4d5c190fff293ef22a9716029db1368ede4102bf1a"
+  },
+  "script_sha256": "2654ef7013f139c90d48f7f2a21112c13405c7bfcab83a2da177ab21eeacee44",
+  "method": "Read sealed public request fields and recorded host decisions; no private reasoning or new model results.",
+  "request_comparison": {
+    "full_edit_timeout": {
+      "data_fields": [
+        "computed_evidence",
+        "external_fact_paths",
+        "fact_tables",
+        "facts_and_provenance",
+        "generation_view",
+        "knowledge",
+        "original_report_markdown",
+        "provenance_tables",
+        "source_index",
+        "source_roots",
+        "user_utterance"
+      ],
+      "prior_review_fields": [],
+      "report_projection_sha256": "ad6b54161849d18ec4b3ba0e407615bf51e6fd0ee272449aba87f99e5443887f",
+      "system_sha256": "08078e3e052bece85f15ddf0ef77a7100ec2222dc5f19320a7eba0d23d1e4014",
+      "output_fields": [],
+      "tool": null,
+      "timeout_s": 300,
+      "max_tokens": 32768
+    },
+    "source_patch": {
+      "data_fields": [
+        "computed_evidence",
+        "external_fact_paths",
+        "fact_tables",
+        "facts_and_provenance",
+        "generation_view",
+        "knowledge",
+        "provenance_tables",
+        "source_index",
+        "source_roots",
+        "user_utterance"
+      ],
+      "prior_review_fields": [],
+      "report_projection_sha256": "ad6b54161849d18ec4b3ba0e407615bf51e6fd0ee272449aba87f99e5443887f",
+      "system_sha256": "7cc73301ca8b7c197c6b24ca3f190ef106c7291b4a18e2927ec0c06844144ed5",
+      "output_fields": [
+        "block",
+        "before",
+        "after",
+        "source_ids",
+        "reason"
+      ],
+      "tool": "submit_source_edits",
+      "timeout_s": 300,
+      "max_tokens": 32768
+    },
+    "mixed_tail": {
+      "data_fields": [
+        "accepted_review",
+        "computed_evidence",
+        "external_fact_paths",
+        "fact_tables",
+        "facts_and_provenance",
+        "generation_view",
+        "knowledge",
+        "provenance_tables",
+        "source_index",
+        "source_roots",
+        "user_utterance"
+      ],
+      "prior_review_fields": [
+        "accepted_review"
+      ],
+      "report_projection_sha256": "efb84c9644d5c363474e06829262e5221f353d3190efe4529bea0e0ae76145f3",
+      "system_sha256": "6d453c605b418e7eaf8eae0b1a037a8200bff67c375cdef4ce81627c9f7a2f3a",
+      "output_fields": [
+        "block",
+        "before",
+        "after",
+        "reason"
+      ],
+      "tool": "submit_review_edits",
+      "timeout_s": 300,
+      "max_tokens": 32768
+    }
+  },
+  "observed": {
+    "locator_dispositions": {
+      "locator_only": [
+        "apply",
+        "withdraw"
+      ],
+      "full_opinion": [
+        "apply",
+        "apply"
+      ]
+    },
+    "blind_edit_accepted": true,
+    "blind_complex_final_accepted": false,
+    "full_edit_semantics_observed": false,
+    "source_patch_corrected_block": 27,
+    "source_patch_remaining_unsupported_block": 18,
+    "mixed_edit_rejected": true,
+    "mixed_fresh_sent": false
+  },
+  "conclusions": {
+    "no_prior_opinion_is_sufficient": false,
+    "matched_four_field_no_opinion_control_in_reviewed_seals": false,
+    "old_timeout_proves_semantic_failure": false,
+    "old_opinion_is_proven_internal_cause": false,
+    "editor_only_change_repairs_initial_review": false,
+    "host_filtered_issues_are_autonomous_product_path": false
+  },
+  "decision": "Do not prepare another paid tail variant solely to remove prior opinions. Retain editor success evidence, preserve initial-review qualification, and evaluate changes at the failing complete initial-review task.",
+  "qualification_evaluated": false,
+  "production_admitted": false
+}

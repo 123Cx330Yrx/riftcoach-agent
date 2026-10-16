@@ -1,0 +1,202 @@
+{
+  "kind": "document-checkpoint-tail-host-interruption-v1",
+  "scope": "public-native-status-only",
+  "root_capacity_failed_turns": [
+    {
+      "turn_id": "01a11f6c-a464-79d1-a244-3378e5138d50",
+      "status": "failed",
+      "command_count": 1,
+      "error_code": "serverOverloaded"
+    },
+    {
+      "turn_id": "01a11f57-b336-7fc1-a5e8-9ad00827196c",
+      "status": "failed",
+      "command_count": 2,
+      "error_code": "serverOverloaded"
+    },
+    {
+      "turn_id": "01a11f55-5ece-7ea3-80ec-09275d9ad7a7",
+      "status": "failed",
+      "command_count": 0,
+      "error_code": "serverOverloaded"
+    },
+    {
+      "turn_id": "01a11f51-842e-7542-a7aa-ef30c20808b7",
+      "status": "failed",
+      "command_count": 1,
+      "error_code": "serverOverloaded"
+    },
+    {
+      "turn_id": "01a11f4e-cf12-7bb0-bd57-35d27bb4ed2d",
+      "status": "failed",
+      "command_count": 6,
+      "error_code": "serverOverloaded"
+    }
+  ],
+  "root_auth_failed_turns": [
+    {
+      "turn_id": "01a11fcf-1506-77d1-a9a6-800b6b71c28e",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fca-8102-75a2-a92f-cb1ebcac8173",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fc5-ecc4-7f72-97ac-eeb02cabb480",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fc1-5892-78e2-8cd8-d6c21b538402",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fbc-c46a-7ef3-99db-774ea233044c",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fb8-3062-7703-b051-75c380242aec",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fb3-9c49-7551-bebb-9e8c1aa303b8",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11faf-0804-7292-ab90-dfdbb8e23a2a",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11faa-73bc-7fc2-8304-eb6d56d7877e",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fa5-df96-7b30-b757-e46e67e61274",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11fa1-4bae-7452-9d71-3163ee695cc2",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f9c-b762-75f0-82a3-17802bdaac2c",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f98-2348-7380-ab22-d86a62d2c601",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f93-8f35-7690-bcbb-57cf8f5725d1",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f8e-fb04-7631-b5b4-558d30d4ff6d",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f8a-66de-7c31-8071-82b00eca9d07",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f85-d293-7a11-8f76-275fab32f368",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f81-3ea2-7de1-b965-e21cdb3019f9",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f7c-aa42-7721-a473-c26f453252e1",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f78-1628-74d0-a7fa-18c1e769fb12",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    },
+    {
+      "turn_id": "01a11f73-81e2-7052-b1f0-e3ea52ed0627",
+      "status": "failed",
+      "command_count": 0,
+      "http_status": 401,
+      "error": "Missing bearer or basic authentication in header"
+    }
+  ],
+  "independent_business_turn": {
+    "turn_id": "01a11f51-4e5e-7631-bd77-802b4ffc1ed2",
+    "status": "failed",
+    "error_code": "serverOverloaded",
+    "native_final_available": false
+  },
+  "resumption": {
+    "user_instruction": "现在应该可以正常继续",
+    "authorization_unchanged": true,
+    "first_start": true
+  },
+  "login_change_causality": "not_established",
+  "provider_calls": 1,
+  "certified_stages": 0,
+  "qualification_credit": 0,
+  "result_seal_sha256": "b87882fd3fc86bc1d3dc873930aabe090fc4b63e1ad1c3ae7405d31a32ca7700",
+  "current_automation_status": "PAUSED"
+}

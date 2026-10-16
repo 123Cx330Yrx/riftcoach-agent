@@ -1,0 +1,136 @@
+{
+  "kind": "natural-duty-six-offline-v1",
+  "verified_at": "2026-10-14T15:35:22.766392+00:00",
+  "base_commit": "1e0e48af39d1f0e95d6354f56a0437d3b60eaeb5",
+  "branch": "codex/natural-duty-six",
+  "authorization": "User confirmed six-call candidate with all other limits retained; offline design and wiring only.",
+  "contract": {
+    "contract_id": "natural-duty-direct-patch-time300-v1",
+    "version": "1.6.0",
+    "scope": "unadmitted_opt_in",
+    "target_runtime_profile_id": "natural-duty-high-v1",
+    "target_runtime_profile_version": "1.0.0",
+    "skill_version": "0.7.0",
+    "program_version": "4.0.0",
+    "request_policy_id": "natural-duty-direct-patch-time300-v1",
+    "request_policy_version": "1.0.0",
+    "request_policy": {
+      "provider_id": "zhipu",
+      "model": "flash-generation-glm53-dual-duty-patch-v1",
+      "agent_timeout_s": 330,
+      "llm_tool_timeout_s": 330,
+      "transport_timeout_s": 360,
+      "max_output_tokens": 32768,
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "max_retries": 0,
+      "deterministic_fallback_allowed": false
+    },
+    "report_contract_id": "coach-markdown-generation-revision-v2",
+    "retrieval_policy_id": "coaching-query-recovery-v1",
+    "context_policy_sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae",
+    "minimum_evidence_sources": 1,
+    "minimum_score": 85,
+    "max_revisions": 1,
+    "max_calls": 6,
+    "max_input_tokens": 64000,
+    "max_output_tokens": 32768,
+    "total_tokens": 401920,
+    "request_timeout_s": 300,
+    "agent_timeout_s": 330,
+    "execution_timeout_s": 900,
+    "extra_retries": 0,
+    "allow_deterministic_fallback": false,
+    "evaluation_contract_version": "4.0.0",
+    "missing_citation_policy": "existing-single-revision",
+    "evaluation_repair_policy": "none",
+    "reasoning_effort": "high",
+    "max_tool_calls": 8,
+    "max_context_tokens": 28000,
+    "include_deterministic_source_facts": true,
+    "position_policy_id": "golden-position-intent-v1",
+    "include_generation_facts": true,
+    "source_use_policy_id": "golden-source-advice-v1",
+    "compact_report_policy_id": "golden-concise-evidence-report-v1",
+    "inference_policy_id": "natural-duty-direct-patch-time300-v1",
+    "anchor_repair_policy": "shared-single-structured-repair",
+    "stream_transport_id": "natural-duty-direct-patch-time300-v1",
+    "model": "flash-generation-glm53-dual-duty-patch-v1",
+    "thinking_profile_id": "natural-duty-high-v1",
+    "roles": {
+      "generation": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "natural-duty-direct-patch-time300-v1:generation",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 300
+      },
+      "review": {
+        "provider": "zhipu",
+        "model": "glm-5.3",
+        "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "natural-duty-direct-patch-time300-v1:review",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 300
+      }
+    },
+    "source_projection": "native-explicit-source-projection-v1",
+    "revision_policy": "reviewer-authored-exact-patches",
+    "qualification_only": true,
+    "publication_policy": "always-reject-unqualified-candidate"
+  },
+  "snapshot": {
+    "contract_id": "natural-duty-direct-patch-time300-v1",
+    "version": "1.6.0",
+    "scope": "unadmitted_opt_in",
+    "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
+  },
+  "manifest_sha256": "39c2e155509115ef2a36b1860b414717f76cd07643d45cc8a6138d89c71533d1",
+  "validation": {
+    "passed": 125,
+    "duration_seconds": 46.38,
+    "new_candidate_tests": 23,
+    "network": "socket blocked in candidate tests",
+    "suites": [
+      "tests/test_natural_duty_candidate.py",
+      "tests/test_role_coach_application.py",
+      "tests/test_role_budget_failures.py",
+      "tests/test_role_runtime_trace.py",
+      "tests/test_prompt_program.py",
+      "tests/test_review_duty_direct_patch.py"
+    ],
+    "latest_candidate_suite": "23 passed in 20.45s"
+  },
+  "model_evidence": "scripted responses only; no live quality claim",
+  "paid_requests": 0,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automatic_host_semantics_verified": false,
+  "automation_status": "PAUSED",
+  "frozen_originals": {
+    "checkout": "D:\\riftcoach-agent-rq192-pr",
+    "audit_sha256": "99d330a7e857e218aa3693672c7ae4f5e3c3ca96413b232014e2ebdef90251bb",
+    "counts": {
+      "frozen_source_sha256": 854,
+      "package_file_sha256": 3,
+      "original_file_sha256": 103
+    },
+    "seal_sha256": "0d17d2b9e027ad45891a52c67c5becd3f4836768bbf5c4a91b08591f53428656"
+  },
+  "next_action": "Offline semantic counterexamples and same-version qualification design; no new paid batch."
+}

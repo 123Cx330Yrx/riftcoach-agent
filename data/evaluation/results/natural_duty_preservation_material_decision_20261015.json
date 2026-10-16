@@ -1,0 +1,79 @@
+{
+  "schema_version": "preservation-material-decision-v1",
+  "created_at": "2026-10-15T03:40:34.756051+00:00",
+  "source_head": "49d7ddd233cab7adc237eaf276d0f2ce0443c800",
+  "checkpoint_sha256": "44b54d86bdc93ff976d3f138f0fd9af39c1ebcc539ac36fbc2289c5252224572",
+  "material_sha256": "a78452472ec39191c801e66e2b45192b0a158f22a02cf8b9d2d619ee2d696780",
+  "helper_sha256": "757731f7e3ea12a36026213f1e8799ab601084c89f4c07881bbb83851d636f01",
+  "operator_root": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-preservation-material-review-20261015",
+  "archive": "data/evaluation/fixtures/preservation_material_review_20261015",
+  "artifacts": {
+    "author/primary.json": {
+      "sha256": "86f0ace01163d6d1dd7e044e82f538919d0d5ab492877dc89b7b5bcef7616f4e",
+      "bytes": 17304
+    },
+    "author/independent.json": {
+      "sha256": "ec7c38470392aa48efba4da86b06076d84a6efd8e9589d0a173bdaf53435aceb",
+      "bytes": 12017
+    },
+    "evidence/checkpoint.json": {
+      "sha256": "44b54d86bdc93ff976d3f138f0fd9af39c1ebcc539ac36fbc2289c5252224572",
+      "bytes": 2040
+    },
+    "evidence/material.json": {
+      "sha256": "a78452472ec39191c801e66e2b45192b0a158f22a02cf8b9d2d619ee2d696780",
+      "bytes": 244575
+    },
+    "evidence/native-import.json": {
+      "sha256": "8883952cb10bb5e8fdd0b0d24531ec8f6cb9082c2af31f0fafdefe5b7ca59b68",
+      "bytes": 22174
+    }
+  },
+  "native_event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a13d9e-ef53-79b0-9788-0b25b25bec5a/msg_03dcf471c005f16b016ad04a7078408196915125692411c32a",
+  "native_dispatch_id": "amsg_01a13d9e-f3df-7fb0-8a1f-f3c0c7b63c4f",
+  "current_input_readable": false,
+  "primary_recommendation": "stop",
+  "independent_recommendation": "unresolved",
+  "primary_written_before_reading_independent": true,
+  "decision": "stop_before_provider_execution",
+  "stopped_stage": "material_premise_review",
+  "reason": "p01 proves a nonredundant correct statistic was removed, but substantive harm versus legitimate compression remains unresolved; the predeclared prerequisite is not met.",
+  "agreements": [
+    "p01 has verified information reduction; substantive preservation failure is not established.",
+    "p02 is acceptable removal of a wrong cohort comparison; p03 has no change.",
+    "p04 preserves meaning; p05 removes only redundancy.",
+    "p06 retains a factual cohort error: mixed losses mean 8/3, not middle-only 0.5.",
+    "Same final report in p01/p02/p03 has the same absolute-quality judgment; historical observation is separate."
+  ],
+  "difference": "Primary recommends stop for the planned decision experiment. Independent returns unresolved materiality and allows exploratory descriptive value in a different objective; this is not unanimous stop wording, proof of harmlessness, or authorization to repurpose this batch.",
+  "review_limitations": [
+    "Familiar authored material, not holdout or model responses.",
+    "Opaque current dispatch input: native route, author, exact final and checkpoint attestation were verified; prompt text visibility was not proven.",
+    "No OS-level isolation claim; author provenance does not certify semantic correctness.",
+    "No model accuracy, ReportAssessment, product qualification or runtime publication evidence."
+  ],
+  "provider_calls": 0,
+  "provider_responses": 0,
+  "known_model_tokens": 0,
+  "unknown_provider_calls": 0,
+  "receiptless_provider_calls": 0,
+  "planned_unique_requests_not_sent": 20,
+  "execution_created": false,
+  "sender_implemented": false,
+  "execution_authorized": false,
+  "product_qualified": false,
+  "automation_status": "PAUSED",
+  "diagnostic_plan_preserved": true,
+  "verification": {
+    "source_only_tests_passed": 10,
+    "seconds": 3.03,
+    "socket_blocked": true,
+    "governance": "passed",
+    "public_ci": {
+      "run_id": 38675972603,
+      "head": "49d7ddd233cab7adc237eaf276d0f2ce0443c800",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  }
+}

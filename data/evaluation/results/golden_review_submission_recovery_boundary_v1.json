@@ -1,0 +1,35 @@
+{
+  "evidence_kind": "offline_existing_recovery_consumer_probe",
+  "original_raw_sha256": "c2bec44997f5448ea3ff98ad0bb4d4048a87748a3d39795e3f39b8bb4fabdde4",
+  "observations": [
+    {
+      "path": "unchanged_positional_raw",
+      "expected_issues": 1,
+      "actual_issues": 0,
+      "preserves_original_raw_identity": true,
+      "enumerated_issues_equal": false
+    },
+    {
+      "path": "named_projection_as_raw",
+      "expected_issues": 1,
+      "actual_issues": 1,
+      "preserves_original_raw_identity": false,
+      "enumerated_issues_equal": true
+    }
+  ],
+  "malformed_opinions_preserved_by_projection": [
+    "null",
+    "text",
+    "bad_source"
+  ],
+  "decision": "not_a_drop_in_replacement_do_not_open_live_candidate",
+  "sdk_probe_performed": false,
+  "sdk_probe_skip_reason": "existing_consumer_incompatibility_decides_against_direct_replacement",
+  "live_requests": 0,
+  "production_admitted": false,
+  "limitations": [
+    "A separate representation-aware recovery adapter could be designed, but has not been implemented.",
+    "No conclusion about model reliability, semantic coverage or latency follows from projection.",
+    "Existing object-based recovery is not claimed broken by these unsupported positional inputs."
+  ]
+}

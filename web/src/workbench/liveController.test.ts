@@ -7,6 +7,7 @@ import type {
   RecentSummaryWire,
   RunTimelineWire,
   RunWire,
+  RunUsageWire,
   EvidenceSnapshotWire,
   TaskEventPageWire,
   TaskEventWire,
@@ -116,6 +117,11 @@ class FakeApi implements LiveWorkbenchDataApi {
   async getEvents(_taskId: string, _runId: string, _signal: AbortSignal) { this.calls.push("events"); return events() }
   async getProductState(_taskId: string, _runId: string, _signal: AbortSignal) { this.calls.push("product"); return this.productValue }
   async getRun() { this.calls.push("run"); return this.runValue }
+  async getUsage(): Promise<RunUsageWire> {
+    this.calls.push("usage")
+    return { schema_version: "1.0", run_id: RUN_ID,
+      task_status: this.taskValue.status as RunUsageWire["task_status"], usage: null }
+  }
   async getSummary() { this.calls.push("summary"); return this.summaryValue }
   async getTimeline() { this.calls.push("timeline"); return this.timelineValue }
   async getReport() { this.calls.push("report"); return this.reportValue }
@@ -222,6 +228,29 @@ describe("generation-guarded live controller", () => {
 
     expect(controller.snapshot.state.client).toBe("ready")
     expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.task).toBeUndefined()
+  })
+
+  it.each(["cancelled", "failed"] as const)("loads only usage for %s tasks", async (status) => {
+    const api = new FakeApi()
+    api.taskValue = task(status)
+    api.productValue = { ...product("rejected"), task_status: status,
+      reason_code: status === "cancelled" ? "task_cancelled" : "task_failed" }
+    const controller = new LiveWorkbenchController({ api, streamFactory: streamHarness().factory })
+    await controller.start()
+    expect(controller.snapshot.state.client).toBe("ready")
+    expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.usage).toBeNull()
+    expect(api.calls).toContain("usage")
+    for (const hidden of ["run", "summary", "timeline", "report", "evidence"]) expect(api.calls).not.toContain(hidden)
+  })
+
+  it("rejects usage from a different task state", async () => {
+    const api = new FakeApi()
+    api.taskValue = task("cancelled")
+    api.productValue = { ...product("rejected"), task_status: "cancelled", reason_code: "task_cancelled" }
+    api.getUsage = async () => ({ schema_version: "1.0", run_id: RUN_ID, task_status: "succeeded", usage: null })
+    const controller = new LiveWorkbenchController({ api, streamFactory: streamHarness().factory })
+    await controller.start()
+    expect(controller.snapshot.state.client).toBe("error")
   })
 
   it("keeps reconnecting transport separate and authoritatively reloads terminal", async () => {

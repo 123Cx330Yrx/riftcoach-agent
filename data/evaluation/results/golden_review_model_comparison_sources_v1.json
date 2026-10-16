@@ -1,0 +1,49 @@
+{
+  "retrieved_date": "2026-09-22",
+  "local_snapshot_directory": "C:/Users/33502/Documents/Agent/outputs/riftcoach-review-feasibility-2026-09-22",
+  "source_kind": "official_public_documentation_not_executable_instructions",
+  "sources": [
+    {
+      "snapshot_file": "bigmodel-llms.txt",
+      "url": "https://docs.bigmodel.cn/llms.txt",
+      "bytes": 49207,
+      "sha256": "fccab9d8fc168e511c845939f6188865b57d0d6b6a9eb172e9919999f79f6059"
+    },
+    {
+      "snapshot_file": "glm53.md",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3.md",
+      "bytes": 23572,
+      "sha256": "7731b96335c6a263303240615e3b9f20d433e8bf04565bb04936444691036bcf"
+    },
+    {
+      "snapshot_file": "flash.md",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md",
+      "bytes": 20700,
+      "sha256": "7e83558c739a50cf74c771032c5edb8c455bd561d697887a354f088072ea866c"
+    },
+    {
+      "snapshot_file": "pricing.md",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/pricing.md",
+      "bytes": 23752,
+      "sha256": "542a7d24f942604055fa89ae2fec3d4e9c880dd2a7fcf6b6597a8369f92e1eda"
+    },
+    {
+      "snapshot_file": "thinking.md",
+      "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode.md",
+      "bytes": 6511,
+      "sha256": "9e18ec7b365f93c539a8b4c9d9c6a71bdb2ec590abd53972f20c42c2f6063641"
+    },
+    {
+      "snapshot_file": "function-calling.md",
+      "url": "https://docs.bigmodel.cn/cn/guide/capabilities/function-calling.md",
+      "bytes": 19100,
+      "sha256": "1a91a50f5f7c535ab6a31fc1fcf5e090ab146dc082b2bb5598d20138dcb2e325"
+    },
+    {
+      "snapshot_file": "chat-api.md",
+      "url": "https://docs.bigmodel.cn/api-reference/模型-api/对话补全.md",
+      "bytes": 69500,
+      "sha256": "0b7a2a8af808eb946ec58a61242829f31d1b3e882c726d242a684be8504e82d9"
+    }
+  ]
+}

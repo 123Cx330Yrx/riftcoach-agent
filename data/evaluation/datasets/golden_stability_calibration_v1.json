@@ -1,0 +1,98 @@
+{
+  "schema_version": "golden-stability-calibration-v1",
+  "purpose": "development_only_human_labeled_not_holdout",
+  "source_dataset_sha256": "8259711a1cb378658882195468e855e68e5a4253ebe0c3b8646050bf0dc73318",
+  "source_report_sha256": "3b4d530279951c54a79eaf330a0b03d841910ab6dc35b8f48402be285a9f8c6e",
+  "labels": {
+    "accept": "本条可保留；不代表整篇报告合格",
+    "reject": "本条存在无证据推断，应修订",
+    "clarify": "本条范围含混，应明确后再放行；不是事实造假"
+  },
+  "cases": [
+    {
+      "id": "selected_pairs",
+      "expected": "accept",
+      "scope": "selected_sample",
+      "claim": "本次选出的两场中路输局，每场伤害/分钟均低于两场中路赢局；仅描述这四场。",
+      "rationale": "逐行范围可复算，不外推。"
+    },
+    {
+      "id": "selected_means",
+      "expected": "accept",
+      "scope": "selected_sample",
+      "claim": "本次中路输局伤害均值617.52/分，赢局1286.755/分；该差异不能证明长期水平。",
+      "rationale": "均值正确且范围明确。"
+    },
+    {
+      "id": "stable_negation",
+      "expected": "accept",
+      "scope": "question_or_negation",
+      "claim": "目前不能认定伤害差距稳定；需在后续同位置对局继续观察。",
+      "rationale": "否定稳定性断言。"
+    },
+    {
+      "id": "stable_local_definition",
+      "expected": "accept",
+      "scope": "selected_sample",
+      "claim": "只在这四场中，差异方向稳定（指两场输局伤害均低于两场赢局）；不指未来规律。",
+      "rationale": "稳定被明确限定为样本内方向一致。"
+    },
+    {
+      "id": "long_term",
+      "expected": "reject",
+      "scope": "beyond_sample",
+      "claim": "这四场已经证明他长期在输局中输出不足。",
+      "rationale": "所选四局不能证明长期规律。"
+    },
+    {
+      "id": "future_without_keyword",
+      "expected": "reject",
+      "scope": "beyond_sample",
+      "claim": "以后他的中路输局也都会呈现同样的伤害差距。",
+      "rationale": "没有稳定字样仍然无依据地预测。"
+    },
+    {
+      "id": "disclaimer_conflict",
+      "expected": "reject",
+      "scope": "beyond_sample",
+      "claim": "样本仅四场，不过这足以确认他一贯在输局中输出偏低。",
+      "rationale": "免责声明不取消同句长期断言。"
+    },
+    {
+      "id": "causal_leap",
+      "expected": "reject",
+      "scope": "causal",
+      "claim": "两场中路输局伤害都更低，因此输出不足就是这两场失败的原因。",
+      "rationale": "相关结果不确立因果。"
+    },
+    {
+      "id": "original_stable",
+      "expected": "clarify",
+      "scope": "ambiguous",
+      "claim": "输局的稳定同位置差距主要体现在经济和伤害上。",
+      "rationale": "未说明稳定指样本内方向还是跨局可靠规律。"
+    },
+    {
+      "id": "original_reliable",
+      "expected": "clarify",
+      "scope": "ambiguous",
+      "claim": "经济和伤害是输局较稳定的差异项。",
+      "rationale": "需要给出对象、样本范围及稳定的含义。"
+    },
+    {
+      "id": "reliable_without_keyword",
+      "expected": "clarify",
+      "scope": "ambiguous",
+      "claim": "经济和伤害是可靠的胜负区分指标。",
+      "rationale": "可靠的适用范围及检验依据不明。"
+    },
+    {
+      "id": "persistent_heading",
+      "expected": "clarify",
+      "scope": "ambiguous",
+      "claim": "## 持续存在的输出差距",
+      "rationale": "标题本身暗示时间持续，但没有范围。"
+    }
+  ],
+  "source_hash_encoding": "utf8_lf_only"
+}

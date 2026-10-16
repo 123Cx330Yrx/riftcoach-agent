@@ -228,12 +228,19 @@ export interface RunWire {
   readonly report_available: boolean
 }
 
+export interface RunUsageWire {
+  readonly schema_version: "1.0"
+  readonly run_id: string
+  readonly task_status: "succeeded" | "failed" | "cancelled"
+  readonly usage: RuntimeUsageWire | null
+}
+
 export interface RecentMetricRowWire {
   readonly cs_per_min: number
   readonly gold_per_min: number
   readonly damage_per_min: number
   readonly vision_score: number
-  readonly deaths_before_15: number
+  readonly deaths_before_15: number | null
 }
 
 export interface RecentAveragesWire extends RecentMetricRowWire {

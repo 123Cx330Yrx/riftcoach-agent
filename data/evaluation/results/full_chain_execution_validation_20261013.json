@@ -1,0 +1,117 @@
+{
+  "kind": "OFFLINE-full-chain-execution-validation-v1",
+  "tests": [
+    {
+      "command": "python -m pytest tests/test_full_chain_execution.py tests/test_full_chain_qualification.py --tb=short -q",
+      "passed": 74,
+      "seconds": 251.13
+    },
+    {
+      "command": "python -m pytest tests/test_full_chain_execution.py -k execute_orders --tb=short -q",
+      "passed": 8,
+      "deselected": 20,
+      "seconds": 18.48,
+      "reason": "Final execution claim now retains the actual native preflight record"
+    }
+  ],
+  "evidence_layer": "Synthetic business responses and native events; actual author-file/check-answer/submit/replay IO. Not live quality or a real final-stage review.",
+  "preparation_sha256": "0970cce9247cc845628de517c19930b7d188cf7e5518b2a5695153fe2614a622",
+  "qualification_preparation_sha256": "b5b2c3b488a29c493c75794a289010331c30c618746b2b3b70cd1403eb5763f1",
+  "preparation_rebuilt": true,
+  "qualification_preparation_matches_embedded": true,
+  "original_combination_sha256": "86a765a974cadf8adc8456b65784f9bec098d316e2b54c81e82e9dc112d65fb9",
+  "historical_audit": [
+    {
+      "run": "document-full15-resumption-candidate-20261009-time600",
+      "seal": "data/evaluation/results/golden_document_full15_time600_result_20261010.json",
+      "seal_sha256": "30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576",
+      "head": "febe2e7f6dcbefa9fda0df73983fb95c0f3474ce",
+      "ci_run": "38048400763",
+      "originals": 302,
+      "certified_stages": 12,
+      "accounting": {
+        "calls": 13,
+        "known_tokens": 226429,
+        "unknown_usage_calls": 0,
+        "local_attempts_without_transport_receipt": 0,
+        "known_usage_estimated_uncached_cny": "2.5300928",
+        "unknown_usage_is_not_free": true
+      },
+      "local_originals_verified": true,
+      "native_reimported": false
+    },
+    {
+      "run": "document-remaining8-time600-20261010",
+      "seal": "data/evaluation/results/golden_document_remaining8_time600_result_20261011.json",
+      "seal_sha256": "75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8",
+      "head": "49010a337a79e1dc34e3a94ae89bca3b78dab8cf",
+      "ci_run": "38062139250",
+      "originals": 138,
+      "certified_stages": 5,
+      "accounting": {
+        "calls": 6,
+        "known_tokens": 98364,
+        "unknown_usage_calls": 0,
+        "local_attempts_without_transport_receipt": 0,
+        "known_usage_estimated_uncached_cny": "1.038154",
+        "unknown_usage_is_not_free": true
+      },
+      "local_originals_verified": true,
+      "native_reimported": false
+    },
+    {
+      "run": "document-remaining4-time600-20261011",
+      "seal": "data/evaluation/results/golden_document_remaining4_time600_result_20261011.json",
+      "seal_sha256": "a98734911f9384bd23f1b8e76bdd47513d6024add89c6a830b3155c13351feec",
+      "head": "89f2408c704db9af4221c8fd2ada6874bfc6ac62",
+      "ci_run": "38068536698",
+      "originals": 260,
+      "certified_stages": 12,
+      "accounting": {
+        "calls": 12,
+        "known_tokens": 202229,
+        "unknown_usage_calls": 0,
+        "local_attempts_without_transport_receipt": 0,
+        "known_usage_estimated_uncached_cny": "1.5370744",
+        "unknown_usage_is_not_free": true
+      },
+      "local_originals_verified": true,
+      "native_reimported": false
+    }
+  ],
+  "historical_file_sha256": {
+    "data/evaluation/results/golden_document_full15_time600_result_20261010.json": "30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576",
+    "data/evaluation/results/document_full15_time600_close_audit_20261010.json": "919c71272dc89e5ff972cc5f5df7b366e8010e43c2485b5d755e2f85384a06b1",
+    "data/evaluation/results/golden_document_remaining8_time600_result_20261011.json": "75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8",
+    "data/evaluation/results/document_remaining8_time600_close_audit_20261011.json": "97b0b89682c093963fef7a3dbc93bfb593dfe5b2b27287143e816b7a30aa1937",
+    "data/evaluation/results/golden_document_remaining4_time600_result_20261011.json": "a98734911f9384bd23f1b8e76bdd47513d6024add89c6a830b3155c13351feec",
+    "data/evaluation/results/document_remaining4_time600_close_audit_20261011.json": "27d8b6b4920a2d65de97284c01255aa31c04a543cc8e33cb8977edfa2e1d8d83"
+  },
+  "source_sha256": {
+    "scripts/full_chain_execution.py": "0aeea836ccf2a8e50526c63c7574e7fa9ebdb9924b77784a24cf0677b0b094e9",
+    "scripts/qualify_full_chain_controls.py": "95d02bbc616e9c8f835574768833def02fa820688a89183d470cce0a15f35eab",
+    "tests/test_full_chain_execution.py": "440c1990d848f3aa0bf8a406e7f3d950e10c7b42a8e091c118525191a3a60fd0",
+    "tests/test_full_chain_qualification.py": "38c7aee6337cd04a23696561a29fe0767442dc1e472b86c695e0e19416fc41df"
+  },
+  "actual_preflight": {
+    "cwd": "D:\\riftcoach-agent-rq192-pr",
+    "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+    "startup_verified": true,
+    "native_lineage_verified": true,
+    "independent_agent_path": "/root/host_scope_calibration",
+    "latest_turn_id": "01a13516-d8ff-7d22-855d-4031405831a5",
+    "current_input_readable": false,
+    "current_route_and_final_available": true,
+    "future_input_guaranteed": false,
+    "host_review_evidence_policy": "native-final-attestation-v1",
+    "explanation": "Read-only route/final policy preflight before authorization; not a new business task or future availability guarantee."
+  },
+  "automation_status": "PAUSED",
+  "business_run_exists": false,
+  "operator_exists": false,
+  "new_authorization_created": false,
+  "external_provider_calls": 0,
+  "new_native_tasks": 0,
+  "new_qualification": 0,
+  "production_admitted": false
+}

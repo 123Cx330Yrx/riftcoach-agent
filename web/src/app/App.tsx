@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -20,6 +22,7 @@ import { CoachBrief } from "../components/CoachBrief"
 import { AccountAccess } from "../components/AccountAccess"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
+import { RunUsagePanel } from "../components/RunUsagePanel"
 import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
@@ -68,6 +71,7 @@ import {
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
+const ObservationWorkbench = lazy(() => import("../components/ObservationWorkbench").then(module => ({ default: module.ObservationWorkbench })))
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -367,6 +371,7 @@ function ReadyWorkbench({
             <div className="context-rail__header"><span>{t("context.channel")}</span><small>{t("context.safe_projection")}</small></div>
             <TrainingPanel profile={selectedProfile} training={view.training} />
             <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
+            {view.usage !== undefined && <RunUsagePanel usage={view.usage} />}
             <section className="source-summary panel" aria-labelledby="source-summary-title">
               <p className="eyebrow">{t("common.source_posture")}</p>
               <h3 id="source-summary-title">{t("source.claim_title")}</h3>
@@ -676,6 +681,7 @@ function AppFrame({
           </m.main>
           <footer className="app-footer">
             <span>{t("app.footer_product")}</span>
+            <a href="/?view=observation">ShowMaker 观摩归档</a>
             <span>{mode === "live" ? t("app.footer_live") : t("app.footer_fixture")}</span>
           </footer>
         </div>
@@ -685,6 +691,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
+  if (window.location.search === "?view=observation") return <Suspense fallback={<main role="status">正在载入观摩工作台…</main>}><ObservationWorkbench /></Suspense>
   if (getWallpaperLabSurface()) {
     return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
   }

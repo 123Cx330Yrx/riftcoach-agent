@@ -1,0 +1,119 @@
+{
+  "kind": "document-relation-repair-preparation-v1",
+  "recorded_at": "2026-10-13T01:50:41.089339+00:00",
+  "status": "offline_prepared_new_cost_scope_not_authorized",
+  "plan_sha256": "2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f",
+  "package": "data/evaluation/fixtures/document_relation_repair_20261013",
+  "package_files": {
+    "plan.json": "8916115bfac493d0ab03ca25075592c005f46711105a91708ddadecce1474567",
+    "U1-baseline-initial/material.json": "4f3e1e8345074f22d201a1542c11b18719ebd66921c95fbdec9e2370997ed169",
+    "U1-baseline-initial/prepared-request.json": "1638efee97dd60dda031d8ba2aa0708d7f3daaf1fa9f92cc4d7c74267c738e50",
+    "U1-relation-contrast-initial/material.json": "b8fbe2e02bbdb6856ae62cf021a6350daa83afea47eb88ae2f9dafdae3b937e6",
+    "U1-relation-contrast-initial/prepared-request.json": "633d113be58d21841b97c7f1af203dab4784a882c6398fb23022df45511385bb",
+    "U2-baseline-initial/material.json": "b9523d29910351175600c884edd34387063af059fd52fc783e8b50072a176be3",
+    "U2-baseline-initial/prepared-request.json": "b521106c07118ef728b83c84b3e4aee50251f749688d823c1fffa26fb415393b",
+    "U2-relation-contrast-initial/material.json": "e1eb6c292be08a09aa05525d7dda984566692bdc0622d198a43b16e4da5efffd",
+    "U2-relation-contrast-initial/prepared-request.json": "bf87333ae2500d38dd60d43705cae4cd9cb01b5d123305b5cd61391c60e66232"
+  },
+  "sequence": [
+    "U1-baseline:initial",
+    "U1-relation-contrast:initial",
+    "U2-baseline:initial",
+    "U2-relation-contrast:initial"
+  ],
+  "budget": {
+    "estimated_uncached_cny": "5.718016",
+    "hard_billing_cap": false,
+    "max_active_seconds": 2400,
+    "max_calls": 4,
+    "max_host_seconds": 86400,
+    "max_tokens": 387072,
+    "per_request_output": 32768,
+    "per_request_seconds": 600,
+    "role_calls": {
+      "glm-5.3": 4,
+      "glm-5.3-flash": 0
+    }
+  },
+  "current_preflight": {
+    "native": {
+      "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "independent_thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+      "verified": true,
+      "independent_agent_path": "/root/host_scope_calibration",
+      "input_readability": {
+        "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+        "turn_id": "01a130cc-90c2-73b3-b1c1-b39609a4e323",
+        "dispatch_id": "amsg_01a130cc-9247-7541-b145-df84654e775c",
+        "current_input_readable": false,
+        "future_input_guaranteed": false,
+        "current_route_and_final_available": true,
+        "host_review_evidence_policy": "native-final-attestation-v1"
+      }
+    },
+    "paths": {
+      "cwd": "D:\\riftcoach-agent-rq192-pr",
+      "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe"
+    },
+    "future_preflight_required": true
+  },
+  "codex_version": "0.153.4",
+  "tests": {
+    "command": "python -B -m pytest tests/test_document_relation_repair_diagnostic.py tests/test_document_relation_diagnostic.py tests/test_stream_observation.py -q --disable-warnings --maxfail=1 --tb=short",
+    "passed": 50,
+    "elapsed_seconds": 157.74,
+    "scope": "Real loopback SDK/HTTP/process plus synthetic Host lifecycle; not live quality."
+  },
+  "startup_issues_fixed": [
+    "Windows os.environ case-insensitive membership: inspect emitted dictionary keys.",
+    "Register the isolated bridge namespace for Pydantic postponed field resolution.",
+    "Export the private comparison marker for full-source Host binding.",
+    "Reuse the already-installed private workspace object rather than install it twice."
+  ],
+  "observation": {
+    "required": true,
+    "outside_run": true,
+    "request_and_worker_binding": true,
+    "freshness_checked": true,
+    "parent_freezes_file_hashes": true,
+    "submit_next_send_replay_seal_verify": true,
+    "raw_bytes_and_exception_close_preserved": true,
+    "body_or_credentials_recorded": false,
+    "real_loopback_cases": [
+      "complete",
+      "silent",
+      "comments",
+      "eof"
+    ],
+    "route_contract": "direct/open.bigmodel.cn/process-proxies-cleared/NO_PROXY-exact",
+    "system_network_path_proven": false
+  },
+  "new_project_provider_calls": 0,
+  "new_project_http_requests": 0,
+  "new_business_runs": 0,
+  "new_native_author_tasks": 0,
+  "new_agents": 0,
+  "new_qualification": 0,
+  "old_closed_originals": {
+    "files": 73,
+    "inventory_sha256_unchanged": true
+  },
+  "automation_status": "PAUSED",
+  "earlier_commit_ci": {
+    "head": "39c798b60cc8b0132c26c6e41db09a3a96fe28d8",
+    "run": "38274465147",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "future_requirements": [
+    "New explicit authorization for U1/U2 four-call scope; old authorization rejected.",
+    "Exact new commit public CI success and clean HEAD.",
+    "Immediate native/path/interpreter preflight; current probe does not guarantee future availability."
+  ],
+  "limitations": [
+    "Familiar-source developer calibration, not holdout.",
+    "No live Provider semantic improvement or production admission.",
+    "Budget estimate is not a hard billing cap; missing usage remains unknown.",
+    "Original T9 timeout upstream root cause remains undetermined."
+  ]
+}

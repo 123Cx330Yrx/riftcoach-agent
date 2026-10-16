@@ -1,0 +1,20 @@
+[
+  {
+    "source": ".planning/2026-08-06-riftcoach-development/task_plan.md",
+    "archive": "docs/archive/2026-09-22-execution-method/task-plan-before.md",
+    "sha256": "347af3e4e8acf6c7a67b9cc18c0cbc2855299180b9d02f55f12eb8782329ac72",
+    "lines": 3596
+  },
+  {
+    "source": "docs/project_execution_state.md",
+    "archive": "docs/archive/2026-09-22-execution-method/execution-state-before.md",
+    "sha256": "d6418c258d62e97d10bd2b087f575643c8136d230bc903258d77199462a24680",
+    "lines": 5907
+  },
+  {
+    "source": "docs/plans/2026-09-22-agent-delivery-method.md",
+    "archive": "docs/archive/2026-09-22-execution-method/delivery-method-first-pass.md",
+    "sha256": "f591ca9a6c79b109a4fd7e78ab857232fe21958f787ba3650c7dce1e9f624754",
+    "lines": 107
+  }
+]
