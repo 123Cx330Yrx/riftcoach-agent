@@ -163,7 +163,12 @@ def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_
         from app.evaluation.golden_stream_bridge import TIMED_REVIEW_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, TimedReviewBridgeObservation
         expected = {k: dict(v, transport_id=TIMED_REVIEW_TRANSPORT_ID if k == 'review' else TIMED_FLASH_TRANSPORT_ID)
                     for k, v in role_descriptor().items()}
-        if roles != expected or request_role is not timed_role or observation_type is not TimedReviewBridgeObservation:
+        from app.evaluation.natural_duty_contract import VERSION as natural_version, role_for_request as natural_role
+        natural = {k: dict(v, transport_id=natural_version+':'+k)
+                   for k, v in role_descriptor().items() if k != 'revision'}
+        is_natural = (roles == natural and request_role is natural_role
+                      and observation_type is CapacityBridgeObservation)
+        if not is_natural and (roles != expected or request_role is not timed_role or observation_type is not TimedReviewBridgeObservation):
             raise ValueError('role_receipt_diagnostic_contract_invalid')
     for ordinal, file in enumerate(files, 1):
         record = _read(file)

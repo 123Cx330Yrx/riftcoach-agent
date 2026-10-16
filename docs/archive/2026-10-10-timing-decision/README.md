@@ -10,6 +10,7 @@
 | scripts/audit_document_review_timing.py | 892892c628af3cabffa339bc8c3b6251a267a1dbf04022334f79ca89b65175f3 |
 | app/evaluation/golden_stream_bridge.py | 9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345 |
 | scripts/run_full15_resumption_candidate.py | a846c02612a3c1319cc451b2b86c1db0124a574bd5a36ee13b3aa5c5e0e10e46 |
+| app/runtime/coach_contract.py | 6703eef81f8dbc2d9c2e1bf6c001346831aac33190ab681c47c797d4b89271df |
 
 runner归档在后继time600接入前取4de565dc，仍与同一冻结裁决摘要一致。
 

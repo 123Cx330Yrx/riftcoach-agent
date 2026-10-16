@@ -22,6 +22,7 @@ from .signals import (
     RuntimeFinishReason,
     RuntimeProviderPhase,
 )
+from .dispatch_control import DispatchStopped
 
 
 _HARNESS_PHASES = {
@@ -63,6 +64,15 @@ class ObservedLLMProvider:
         # that may have served an earlier run.  Only a fresh, fully observed
         # call can publish the delegate-owned object below.
         self._last_exchange = None
+        self._dispatch_stop = None
+
+    def stopped_before_send(self, error: BaseException) -> bool:
+        """Identify this invocation's trusted fence before delegate execution.
+
+        An exception type or a stale observer binding alone is not proof: the
+        delegate or completion observer can also fail after a request was sent.
+        """
+        return error is self._dispatch_stop
 
     @property
     def last_exchange(self):
@@ -93,6 +103,7 @@ class ObservedLLMProvider:
         return getattr(self._delegate, "sdk_max_retries", None)
 
     def chat(self, request: ChatRequest) -> ChatResponse:
+        self._dispatch_stop = None
         if not isinstance(request, ChatRequest):
             raise TypeError("request must be a ChatRequest")
 
@@ -119,10 +130,15 @@ class ObservedLLMProvider:
         )
         ordinal = self._next_ordinal
         self._next_ordinal += 1
-        observe_runtime_signal(
-            self._observer,
-            started,
-        )
+        try:
+            observe_runtime_signal(
+                self._observer,
+                started,
+            )
+        except DispatchStopped as stop:
+            if stop.observer is self._observer:
+                self._dispatch_stop = stop
+            raise
 
         try:
             response = self._delegate.chat(request)

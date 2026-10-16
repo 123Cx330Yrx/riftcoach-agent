@@ -197,6 +197,59 @@ def test_bad_role_before_dispatch_does_not_claim_call_or_reservation(tmp_path):
     assert budget.stopped and observer.signals == []
 
 
+def test_trusted_dispatch_stop_releases_only_the_unsent_envelope(tmp_path, monkeypatch):
+    from app.runtime.dispatch_control import DispatchStopped, bind_dispatch_guard
+
+    budget, router, observed, observer = build(tmp_path)
+    stop = DispatchStopped('offline fence')
+    def guard():
+        raise stop
+    with bind_dispatch_guard(guard), pytest.raises(DispatchStopped) as failure:
+        budget.chat(request())
+    assert failure.value is stop
+    assert (budget.calls, budget.tokens, budget.reserved_tokens, budget.stopped) == (0, 0, 0, True)
+    assert router.attempts == [] and observer.signals == []
+    assert_stopped_without_more_io(budget, [])
+
+    # Even the same exception object is no proof of an unsent subsequent call:
+    # a delegate can raise it after the start boundary has already been crossed.
+    sent = []
+    def delegate_failure(req):
+        sent.append(req)
+        raise stop
+    monkeypatch.setattr(router, 'chat', delegate_failure)
+    another = CoachBudgetedProvider(observed, coach_contract=ROLE_COACH_CONTRACT, clock=lambda: 0)
+    with pytest.raises(DispatchStopped):
+        another.chat(request())
+    assert another.calls == len(sent) == 1 and another.tokens == 0
+    assert another.reserved_tokens > 0 and another.stopped
+
+
+@pytest.mark.parametrize('during_completion', [False, True])
+def test_observation_failure_does_not_release_a_sent_envelope(tmp_path, monkeypatch, during_completion):
+    from app.runtime.dispatch_control import DispatchStopped
+
+    sent = []
+    monkeypatch.setattr(bridge, 'run_child', child(sent))
+    budget, router, observed, observer = build(tmp_path)
+    if during_completion:
+        original = observer.observe
+        def fail_completion(signal):
+            if isinstance(signal, ProviderCallCompletedSignal):
+                raise DispatchStopped('offline completion observer failure')
+            original(signal)
+        monkeypatch.setattr(observer, 'observe', fail_completion)
+    else:
+        def fail_delegate(req):
+            sent.append(req)
+            raise DispatchStopped('offline delegate failure')
+        monkeypatch.setattr(router, 'chat', fail_delegate)
+    with pytest.raises(DispatchStopped):
+        budget.chat(request())
+    assert budget.calls == len(sent) == 1 and budget.tokens == 0
+    assert budget.reserved_tokens > 0 and budget.stopped
+
+
 def test_whole_task_deadline_clamps_next_model_and_late_reply_keeps_usage(tmp_path, monkeypatch):
     now = [0.0]
     sent = []

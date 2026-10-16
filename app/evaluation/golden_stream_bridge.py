@@ -31,9 +31,13 @@ CAPACITY_TRANSPORT_ID = "golden-process-stream-high-32768-v1"
 REVIEW_MODEL_TRANSPORT_ID = "golden-glm53-review-high-32768-v1"
 TIMED_REVIEW_TRANSPORT_ID = "golden-glm53-review-time600-high-32768-v1"
 TIMED_FLASH_TRANSPORT_ID = "golden-flash-time600-pair-high-32768-v1"
-REVIEW_TRANSPORTS = (REVIEW_MODEL_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID)
+NATURAL_DUTY_VERSION = "natural-duty-direct-patch-time300-v1"
+NATURAL_FLASH_TRANSPORT_ID = NATURAL_DUTY_VERSION + ":generation"
+NATURAL_REVIEW_TRANSPORT_ID = NATURAL_DUTY_VERSION + ":review"
+NATURAL_TRANSPORTS = (NATURAL_FLASH_TRANSPORT_ID, NATURAL_REVIEW_TRANSPORT_ID)
+REVIEW_TRANSPORTS = (REVIEW_MODEL_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID, NATURAL_REVIEW_TRANSPORT_ID)
 TIMED_TRANSPORTS = (TIMED_FLASH_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID)
-TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS)
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS, *NATURAL_TRANSPORTS)
 
 
 def transport_profile(transport_id):
@@ -53,7 +57,7 @@ def transport_request_policy(transport_id):
             provider_id="zhipu", model="glm-5.3", agent_timeout_s=(630.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 330.0),
             llm_tool_timeout_s=(630.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 330.0), transport_timeout_s=(660.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 360.0),
             max_output_tokens=32768, temperature=1.0, top_p=0.95)
-    if transport_id in (CAPACITY_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID):
+    if transport_id in (CAPACITY_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, NATURAL_FLASH_TRANSPORT_ID):
         return CAPACITY_COACH_CONTRACT.request_policy
     if transport_id == EXPANDED_TRANSPORT_ID:
         return EXPANDED_COACH_CONTRACT.request_policy
@@ -65,9 +69,14 @@ def transport_limits(transport_id):
         raise ValueError("stream_transport_identity")
     if transport_id == TIMED_REVIEW_TRANSPORT_ID:
         return (32768, 600, 65536)
-    if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID):
+    if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, *NATURAL_TRANSPORTS):
         return (32768, 300, 65536)
     return (16384, 180, 32768) if transport_id == EXPANDED_TRANSPORT_ID else (8192, 90, 16384)
+
+
+def transport_max_calls(transport_id):
+    transport_profile(transport_id)
+    return 6 if transport_id in NATURAL_TRANSPORTS else 9
 # Persist only the bounded codes emitted by our ProviderError constructors.
 # Raw SDK messages and provider response bodies never enter a receipt.
 SAFE_PROVIDER_FAILURE_CODES = frozenset({
@@ -176,6 +185,14 @@ def _mapping(value):
 
 def validate_request(request, *, transport_id=TRANSPORT_ID):
     output_limit, seconds, _ = transport_limits(transport_id)
+    if transport_id in NATURAL_TRANSPORTS:
+        # Candidate identity belongs to both parent and child validation. Do not
+        # relabel a legacy request, even when its model and timeout would fit.
+        from app.evaluation.natural_duty_contract import request_bytes
+        return request_bytes(request, transport_id=transport_id)
+    if ("natural_duty_candidate" in request.metadata
+            or request.metadata.get("evaluation_policy_id") == NATURAL_DUTY_VERSION):
+        raise ProviderResponseError(provider="zhipu", code="stream_transport_identity")
     # Timing metadata is Host identity, never part of Provider messages. Both
     # role transports require it, including a GLM call truncated below 300s.
     from app.evaluation.document_review_timing_adapter import METADATA, role_for_request
@@ -202,8 +219,11 @@ def validate_request(request, *, transport_id=TRANSPORT_ID):
 def collect(request, opener, *, directory, started, deadline, clock=time.monotonic, allow_tool_content=False, transport_id=TRANSPORT_ID):
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request, transport_id=transport_id)
+    if transport_id in NATURAL_TRANSPORTS and (not math.isfinite(started) or not math.isfinite(deadline)
+            or not 0 < deadline - started <= request.timeout_s + .000001):
+        raise ValueError("stream_worker_deadline")
     _, seconds, max_events = transport_limits(transport_id)
-    value = TimedReviewBridgeObservation() if transport_id == TIMED_REVIEW_TRANSPORT_ID else CapacityBridgeObservation() if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID) else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
+    value = TimedReviewBridgeObservation() if transport_id == TIMED_REVIEW_TRANSPORT_ID else CapacityBridgeObservation() if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, *NATURAL_TRANSPORTS) else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
     durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model=transport_profile(transport_id).model,
         require_request_identity=True,
@@ -370,7 +390,7 @@ class GoldenProcessStreamProvider:
 
     def chat(self, request):
         raw = validate_request(request, transport_id=self.transport_id)
-        if self._failed or self._calls >= 9:
+        if self._failed or self._calls >= transport_max_calls(self.transport_id):
             raise ProviderResponseError(provider="zhipu", code="stream_bridge_exhausted")
         self._calls += 1
         directory = self._directory / f"stream-{self._calls:03d}"
@@ -379,10 +399,14 @@ class GoldenProcessStreamProvider:
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
             "stream_tool_arguments": self.stream_tool_arguments and bool(request.tools),
             "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)}
-        if self.transport_id in REVIEW_TRANSPORTS:
+        if self.transport_id in (*REVIEW_TRANSPORTS, *NATURAL_TRANSPORTS):
             reservation.update(model=self.model_name, thinking_profile_id=self.thinking_profile_id)
         write_new_json(directory / "reservation.json", reservation)
         environ = dict(os.environ)
+        if self.transport_id in NATURAL_TRANSPORTS:
+            for key in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
+                environ.pop(key, None)
+            environ.update(NO_PROXY="open.bigmodel.cn", no_proxy="open.bigmodel.cn")
         environ.update(LLM_API_KEY=self._settings.api_key, LLM_BASE_URL=self._settings.base_url,
                        LLM_MODEL=self.model_name, LLM_PROVIDER="zhipu")
         try:
@@ -482,7 +506,8 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID, *, stream_to
     def opener(request, hook):
         nonlocal client
         client = OpenAI(api_key=settings.api_key, base_url=settings.base_url, max_retries=0, timeout=request.timeout_s,
-                       http_client=DefaultHttpxClient(event_hooks={"request": [hook]}))
+                       http_client=DefaultHttpxClient(event_hooks={"request": [hook]},
+                           **({"trust_env": False} if transport_id in NATURAL_TRANSPORTS else {})))
         try:
             provider = ZhipuProvider.from_candidate_profile(client=client, model=settings.model,
                 profile=profile)

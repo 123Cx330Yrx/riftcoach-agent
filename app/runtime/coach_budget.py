@@ -4,6 +4,7 @@ import time
 
 from app.providers.errors import ProviderError, ProviderResponseError
 from app.providers.models import ChatResponse
+from .observed_provider import ObservedLLMProvider
 from .coach_contract import COACH_CONTRACT, require_coach_contract
 
 
@@ -70,6 +71,13 @@ class CoachBudgetedProvider:
             response = provider.chat(request)
         except BaseException as error:
             self.stopped = True
+            if (isinstance(provider, ObservedLLMProvider)
+                    and provider.stopped_before_send(error)):
+                # The trusted start fence ran before the delegate. Release only
+                # this unsent envelope; this run remains permanently stopped.
+                self.calls -= 1
+                self.reserved_tokens -= reservation
+                raise
             # A trusted transport/router may reject the receipt after receiving
             # a complete response. Only that response's matching actual identity
             # can settle the reservation; usage from another model stays unknown.

@@ -2,6 +2,7 @@
 from copy import deepcopy
 from dataclasses import replace
 import json
+import re
 import socket
 
 from jsonschema import Draft202012Validator
@@ -170,6 +171,43 @@ def test_wrong_reviewer_patch_is_a_counterexample_not_a_false_success(sample, af
     assert not result.journal['semantic_approval']
     assert not result.journal['native_acceptance_verified']
     assert result.journal['full_final_review_required']
+
+
+@pytest.mark.parametrize('boundary', ['empty_source_ids', 'wrong_target_block', 'removed_knowledge_citations'])
+def test_structurally_legal_semantic_boundaries_stay_unqualified(sample, boundary):
+    inputs, value = sample
+    raw = repaired(value)
+    if boundary == 'empty_source_ids':
+        raw['issues'][0]['source_ids'] = []
+    elif boundary == 'wrong_target_block':
+        block = inputs.source.blocks[5][1]
+        raw['repairs'][0]['edits'] = {
+            'block_6': [dict(before=block, after=block + ' OFFLINE错目标段见证。',
+                             reason='The issue is structurally mapped but this block is unrelated.')]
+        }
+    elif boundary == 'removed_knowledge_citations':
+        assert re.search(r'\[K\d+\]', inputs.source.report)
+        edits = {}
+        for number, (_, block) in enumerate(inputs.source.blocks, 1):
+            after = re.sub(r'\[K\d+\]', '', block).replace(BEFORE, AFTER)
+            if after != block:
+                edits[f'block_{number}'] = [dict(before=block, after=after,
+                    reason='OFFLINE removes citations while claiming to repair one factual issue.')]
+        raw['repairs'][0]['edits'] = edits
+    result = direct.preview(inputs, pair(inputs, raw))
+    assert result.report != inputs.source.report
+    assert not result.journal['semantic_approval']
+    assert not result.journal['production_admitted']
+    assert result.journal['full_final_review_required']
+    if boundary == 'wrong_target_block':
+        assert BEFORE in result.report and AFTER not in result.report
+        assert {op['block'] for op in result.journal['operations']} == {6}
+    elif boundary == 'removed_knowledge_citations':
+        assert not re.search(r'\[K\d+\]', result.report)
+        assert AFTER in result.report
+    else:
+        saved = json.loads(result.journal['opinions']['facts']['raw'])
+        assert saved['issues'][0]['source_ids'] == []
 
 
 def test_both_pass_preserves_report_and_terminal_does_not_assemble(sample):

@@ -1,0 +1,92 @@
+{
+  "version": "offline-reviewer-profile-screen-v1",
+  "source_material_sha256": "8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6",
+  "evaluation_sha256": "002852f42c24b627e83a7d593c17fe4f27dab5383d901155e23295103da5bc95",
+  "source_input_sha256": "db308da6164e575d6f56a37b38473cae3f343a8426ee6acec7ff678d6ce7d10e",
+  "historical_visible_requests_reconstructed": 2,
+  "official_reference_profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "api": "responses",
+    "sampling": "provider-supported defaults; not GLM 1.0/.95 equivalence",
+    "tool_choice": "auto as in historical request; exactly one named call required on receipt",
+    "schema_mode": "must preserve existing optional fields; API compatibility not yet verified"
+  },
+  "selected_execution_profile": null,
+  "actual_channel_estimate": null,
+  "rows": [
+    {
+      "id": "r01-facts",
+      "request_sha256": "f741236a19c6dd3de3353842ad479133ad3a0ad9c83342848309d0afecf2f50d",
+      "report_sha256": "0a4c073e282beca5cbb3e1226e628e0a033ff8a43b0a210a1a0e1816dc85bcb6",
+      "input_sha256": "82b3c98093f83b37ca5b4bd37d4062a9cc2a54c20b677dcd146f19be66fc020a",
+      "policy_sha256": "12be71e1192d3c03a6ecafd0dae0bf9166d0915ed83e6f88d2b1eebfcf0578e9",
+      "schema_sha256": "a6a662d93e552767e07acd59395e373eb360c9d96ef88382fb96f292eb9b788b",
+      "existing_local_input_estimate": 58466,
+      "model_result": null,
+      "actual_http": null
+    },
+    {
+      "id": "r01-completion",
+      "request_sha256": "8af8d953af0d0557ff17719d53b7e395df5e410cef2dbf8491e641d2125843ab",
+      "report_sha256": "0a4c073e282beca5cbb3e1226e628e0a033ff8a43b0a210a1a0e1816dc85bcb6",
+      "input_sha256": "82b3c98093f83b37ca5b4bd37d4062a9cc2a54c20b677dcd146f19be66fc020a",
+      "policy_sha256": "e20181298bae9dabbb3622a3035dde708d87900342d8e40d5dd03ae911179c1e",
+      "schema_sha256": "a6a662d93e552767e07acd59395e373eb360c9d96ef88382fb96f292eb9b788b",
+      "existing_local_input_estimate": 53994,
+      "model_result": null,
+      "actual_http": null
+    },
+    {
+      "id": "r02-facts",
+      "request_sha256": "851b8a6830e3bdba417c05225ba712ce2bf031c2d74c59bc0d283a45d6fb10ee",
+      "report_sha256": "c3e944095a41b00303b6a7f86fc413c120b009b884a8cd5c5025d9a42a2385d0",
+      "input_sha256": "d21064ea1b79bdbc1db712cdfeecdc547c157c48603adff4c1bcc0e37db7e2ff",
+      "policy_sha256": "12be71e1192d3c03a6ecafd0dae0bf9166d0915ed83e6f88d2b1eebfcf0578e9",
+      "schema_sha256": "a6a662d93e552767e07acd59395e373eb360c9d96ef88382fb96f292eb9b788b",
+      "existing_local_input_estimate": 58428,
+      "model_result": null,
+      "actual_http": null
+    },
+    {
+      "id": "r02-completion",
+      "request_sha256": "fcf5c6f008b117fcfd04b1b05f8a17cbe1b5389cff6c7f2ec59871987f874e14",
+      "report_sha256": "c3e944095a41b00303b6a7f86fc413c120b009b884a8cd5c5025d9a42a2385d0",
+      "input_sha256": "d21064ea1b79bdbc1db712cdfeecdc547c157c48603adff4c1bcc0e37db7e2ff",
+      "policy_sha256": "e20181298bae9dabbb3622a3035dde708d87900342d8e40d5dd03ae911179c1e",
+      "schema_sha256": "a6a662d93e552767e07acd59395e373eb360c9d96ef88382fb96f292eb9b788b",
+      "existing_local_input_estimate": 53956,
+      "model_result": null,
+      "actual_http": null
+    }
+  ],
+  "proposed_budget": {
+    "max_requests": 4,
+    "max_retries": 0,
+    "input_tokens_per_request": 64000,
+    "output_tokens_per_request": 32768,
+    "maximum_total_tokens": 387072,
+    "request_timeout_seconds": 300,
+    "maximum_model_seconds": 1200,
+    "official_reference_uncached_estimate_usd": "1.82272",
+    "pricing_basis": "official reference only: 2026-10-15 snapshot in reviewer-route-comparison.md; USD 2/10 per million; not a third-party channel quote or actual cost",
+    "hard_billing_cap": false,
+    "input_tokenizer_verified": false
+  },
+  "evidence_class": "authored-development-screen-familiar-source-not-holdout",
+  "provider_calls": 0,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "qualified": false,
+  "semantic_detection_proven": false,
+  "publication_allowed": false,
+  "live_dependencies": [
+    "explicit profile/cost decision",
+    "account/model/API availability without assuming Codex access",
+    "minimal isolated Responses transport and authentic receipt/usage/timeout tests",
+    "exact wire request and input-envelope verification",
+    "frozen preparation and exact HEAD public CI",
+    "new bounded authorization; no reuse of closed batch authorization"
+  ]
+}

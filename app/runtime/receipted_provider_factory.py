@@ -42,9 +42,9 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
     """
 
     def __init__(self, *, settings, directory, task_directory, transport_id):
-        from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, TIMED_TRANSPORTS
+        from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, TIMED_TRANSPORTS, NATURAL_TRANSPORTS
 
-        if transport_id not in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS):
+        if transport_id not in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS, *NATURAL_TRANSPORTS):
             raise ValueError("role_transport_identity")
         super().__init__(settings=settings, directory=directory, transport_id=transport_id)
         self._task_directory = Path(task_directory)
@@ -76,7 +76,10 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
         from app.evaluation.golden_inference_scope_v5 import strict_json
         from app.evaluation.golden_integrated_runtime import Exchange
         from app.evaluation.golden_journal import write_new_json
-        from app.evaluation.golden_stream_bridge import GoldenProcessStreamProvider, REVIEW_TRANSPORTS, TIMED_TRANSPORTS
+        from app.evaluation.golden_stream_bridge import (
+            GoldenProcessStreamProvider, REVIEW_TRANSPORTS, TIMED_TRANSPORTS,
+            NATURAL_TRANSPORTS, transport_max_calls,
+        )
         from app.providers.errors import ProviderError, ProviderResponseError
         from app.providers.models import ChatResponse
 
@@ -85,6 +88,8 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
         try:
             self._require_identity()
             expected_roles = ("review",) if self.transport_id in REVIEW_TRANSPORTS else ("generation", "revision")
+            if self.transport_id in NATURAL_TRANSPORTS:
+                expected_roles = expected_roles[:1]
             role = expected_roles[0] if role is None else role
             if role not in expected_roles:
                 raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
@@ -92,9 +97,13 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
                 from app.evaluation.document_review_timing_adapter import role_for_request
                 if role_for_request(request) != role:
                     raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
+            if self.transport_id in NATURAL_TRANSPORTS:
+                from app.evaluation.natural_duty_contract import role_for_request
+                if role_for_request(request) != role:
+                    raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
             if self._failed:
                 raise ProviderResponseError(provider="zhipu", code="stream_bridge_exhausted")
-            if type(ordinal) is not int or not self._calls < ordinal <= 9:
+            if type(ordinal) is not int or not self._calls < ordinal <= transport_max_calls(self.transport_id):
                 raise ProviderResponseError(provider="zhipu", code="role_transport_ordinal_invalid")
             raw = validate_request(request, transport_id=self.transport_id)
             request_sha256 = hashlib.sha256(raw).hexdigest()
@@ -133,7 +142,7 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
                 model_identity_valid = (
                     reservation.get("model") == self.model_name
                     and reservation.get("thinking_profile_id") == self.thinking_profile_id
-                ) if self.transport_id in REVIEW_TRANSPORTS else (
+                ) if self.transport_id in (*REVIEW_TRANSPORTS, *NATURAL_TRANSPORTS) else (
                     reservation.get("model", self.model_name) == self.model_name
                     and reservation.get("thinking_profile_id", self.thinking_profile_id) == self.thinking_profile_id
                 )
@@ -145,6 +154,15 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
                     and reservation["stream_tool_arguments"] == (self.stream_tool_arguments and bool(request.tools))
                     and terminal["state"] == "complete"
                     and terminal["transport_id"] == self.transport_id)
+                if self.transport_id in NATURAL_TRANSPORTS:
+                    from app.evaluation.golden_stream_bridge import CapacityBridgeObservation
+                    progress = CapacityBridgeObservation.model_validate(strict_json(
+                        (directory / "progress.json").read_text(encoding="utf-8")), strict=True)
+                    valid = valid and (progress.state == "complete" and progress.close_state == "closed"
+                        and progress.eof_ms is not None and progress.close_ms is not None
+                        and progress.terminal_ms is not None and progress.http_requests == 1
+                        and progress.input_tokens == response.usage.input_tokens
+                        and progress.output_tokens == response.usage.output_tokens)
             except (KeyError, TypeError, ValueError, OSError):
                 valid = False
             if not valid:

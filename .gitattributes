@@ -1,4 +1,22 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
+/data/evaluation/fixtures/natural_duty_observed_source_20261015/*.json -text
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf
+
+# Prospective research batch control and its offline evidence.
+/scripts/reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_batch.py text eol=lf
+/tests/test_reviewer_profile_native.py text eol=lf
+/data/evaluation/results/reviewer_profile_batch_offline_20261015.json text eol=lf
+
+# Offline reviewer screen: preserve bound source/report/request and review bytes.
+/data/evaluation/fixtures/reviewer_profile_screen_20261015/** -text
+/scripts/prepare_reviewer_profile_screen.py text eol=lf
+/tests/test_reviewer_profile_screen.py text eol=lf
+/scripts/reviewer_responses_*.py text eol=lf
+/tests/test_reviewer_responses_*.py text eol=lf
+/data/evaluation/results/reviewer_responses_offline_20261015.json text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json text eol=lf
+/data/evaluation/fixtures/natural_duty_observed_preparation_20261015/*.json text eol=lf
 /data/evaluation/results/golden_document_remaining11_scan_preparation_20261009.json text eol=lf
 /data/evaluation/results/golden_document_checkpoint_tails_preparation_20261009.json text eol=lf
 /data/evaluation/results/golden_document_checkpoint_tails_readiness_20261009.json text eol=lf
@@ -349,3 +367,27 @@
 /tests/test_review_duty_launch.py text eol=lf
 /data/evaluation/fixtures/review_duty_chain_20261014/** -text
 /data/evaluation/results/review_duty_launch_preparation_20261014.json -text
+
+# Prospective six-call candidate assets, distinct from frozen historical runs.
+/app/evaluation/natural_duty_*.py text eol=lf
+/app/product/natural_duty_candidate.py text eol=lf
+/scripts/refresh_natural_duty_manifest.py text eol=lf
+/tests/test_natural_duty_candidate.py text eol=lf
+/examples/runtime_profiles/natural_duty_v1/** text eol=lf
+/data/evaluation/results/natural_duty_six_offline_20261014.json text eol=lf
+/scripts/audit_natural_duty_qualification.py text eol=lf
+/tests/test_natural_duty_qualification_inventory.py text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_20261015.json text eol=lf
+
+# Exact public author/native artifacts from the source-only material review.
+/data/evaluation/fixtures/preservation_material_review_20261015/** -text
+/data/evaluation/results/natural_duty_preservation_material_decision_20261015.json -text
+/scripts/preservation_material_review.py text eol=lf
+/tests/test_preservation_material_review.py text eol=lf
+/tests/test_natural_duty_worker_postgres.py text eol=lf
+/data/evaluation/results/natural_duty_worker_postgres_20261015.json text eol=lf
+
+# Preserve closed observed-run evidence, including original newline differences.
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/** -text
+/data/evaluation/fixtures/natural_duty_observed_review_20261015/execution-stdout.log whitespace=cr-at-eol
+/data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf

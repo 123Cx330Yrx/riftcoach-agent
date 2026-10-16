@@ -4,47 +4,124 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "逐字补丁固定报告开发链通过并封存，automation PAUSED；熟悉单例非资格；自然修订最少6次超过产品5上限，6次候选待用户决定，无新付费授权。"
+pause_reason: "自然观摩单任务已执行并失败关闭：双初审漏检观摩/训练边界；作者/native末尾LF差异保留。发布门关闭，automation PAUSED，本批不重试。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-14。后端 `D:/riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`。
+2026-10-15。候选实施 `D:/riftcoach-natural-duty-six`，分支 `codex/natural-duty-six`。
+原后端 `D:/riftcoach-agent-rq192-pr` 保留冻结源码与封存回放。
 主树未完成前端保持；0—8及当前8E checkpoint不变。
 
 ## 当前行动
 
-**已授权的初审逐字补丁固定报告验证完成，结果 development_chain_pass。**
-用户“授权继续”后，以冻结505aff8f / 公共CI38564530018全绿、854源码配置和三文件包唯一执行。
-facts初审72/needs_revision给出两个真错及两个精确补丁；completion初审95/pass；
-兼容clear、完整新稿四项验收获双方接受，程序唯一原样应用。事实fresh与完成度fresh均96/pass，
-六项Host均经完整来源审查、run外作者/check-answer及真实native导入，未重试或补发。
-详见[真实结果与方案去留](plans/2026-10-14-review-duty-direct-patch-result.md)。
+**2026-10-15：自然观摩真实运行已结束，业务验收拒绝，未发布。**
+用户确认费用并在重启后恢复；冻结f606ecb4、CI38704482702全部8项success、771绑定文件一致。
+真实Agent自主检索4次/5片段，Flash2次生成、GLM2次初审，共4HTTP/59574tokens/229.531秒，
+估价0.4182756元非账单；无未知用量或缺回执，2slot未用。两initial均pass直接结束，无编辑/双fresh。
+主审先自写、独立随后同样reject：初稿block24把仅限观摩的练习写成输局CS≥8和训练后指标，
+双方确认两职责漏检。46份run原件与原stdout guard/closure只读replay通过，API拒发布保持。
+独立真实native可核，但作者多一个末尾LF：JSON同值、逐字节不同；原件不改，不要求第二final。
+唯一seal为closed_with_author_byte_mismatch，不冒称完整验收成功。27份控制/作者/公开阅读原件归档。
+详见[本轮结果与边界](plans/2026-10-15-natural-duty-observed-result.md)及natural_duty_observed_result_20261015.json。
+零付费机制核对已完成：实际政策已有观摩约束和职责覆盖，未发现确定性合同冲突；模板/K3压力
+仍是未证解释。本例未进补丁路径，不能归因补丁；已有Training写入拦截也不能修正文。
+用户允许比较替代模型、可靠性优先，随后明确提出Astra费用和此前GLM适配投入的疑问。
+官方能力/价格及代码增量比较见[审查路线比较](plans/2026-10-15-reviewer-route-comparison.md)。
+比较不等于迁移，GLM采用决定仍有效；撤回“先验证Astra”的过早顺序，没有模型请求或产品provider切换。
+离线准备已具体化：两份完整稿仅block19有一项业务差异，四份请求保持完整来源/政策/schema；
+独立材料审查usable，主审随后复核一致。旧两请求精确重建，标签不进入请求。
+用户提供两家第三方，天机阁明列Responses及通用tools/stream参数；high/工具回执/用量尚未实测。
+官方$1.82272仅参考；天机阁pro组按四次预算页面估价0.364544元，实际通道未选、未授权、未ready。
+最小单次研究Responses适配已实现：全文/schema不变、high、32768总输出、零重试；真实工具和
+既有业务合同分别校验，拒绝/截断保留已知用量，未知不填零；进程硬截止与取消覆盖阻塞读写/关闭。
+真实SDK+离线SSE及真实子进程共85项通过（41.53秒），工程独立复核问题已修。没有真实模型调用。
+详见reviewer_responses_offline_20261015.json及审查路线比较；这只证明本地适配，不证明第三方/high/语义。
+后继四次批控制已实现：固定顺序、每次全文人工判读后才继续，claim和checkpoint防止重启重发；
+源码/HEAD/材料/回执保持绑定，已知/未知/未发送分开。默认原生导入增量核作者与真实final逐字节一致，
+下一发送与关闭重读历史原件。离线接线/故障检查见reviewer_profile_batch_offline_20261015.json。
+这仍不是付费launcher：账号分组/安全凭证、真实网络、具体费用授权、精确clean HEAD公共CI和
+未读预期标签的独立审查上下文还需实际绑定，不能用测试callback代替。selected_execution_profile仍null。
+下一动作：完成这组具体接入条件后仅做已提议的最多四次筛选，按真实结果决定是否值得继续投入；
+不再增加无关试验框架，不复用旧授权、补发或把断网通过称模型通过。
+比较不自动授权迁移/付费，双稿筛选不授自然任务/原15资格。旧批关闭，automation保持PAUSED，8E未完成。
+Docker重启复发已备份重建两运行目录，原容器/卷、15432、SQL和迁移恢复；永久上游修复未证。
 
-两处改文把中单早死比较纠正为胜2.5/败0.5，明确混合败2.67及仅四局中单；其余23段和两段
-剩余内容逐字保留。实际新稿SHA 0da0c6299711cb8feff3c135b86768c3d94c82e159110c709b5fef7a3ac3d2c3，
-两fresh审同一稿。没有Flash调用，也没有把结构校验当语义认证。
+以下为本轮授权和真实执行之前的历史准备及既有结果；其中待CI/待授权不再是当前行动。
 
-4HTTP/65839tokens（输入52318、输出13521），合同估价0.797132元非实际账单；
-unknown/receiptless/发送未知0、未发0。活动318.515秒、Host3959.876秒，runner退出0、stderr空。
-严格只读replay与唯一create-only seal通过，103份本批原件精确库存与SHA、6native/作者、
-4份无正文观测及控制库存一致。原stdout guard/exit SHA保留；854源码/3件包与旧证据保持。
-机器审计 `review_duty_direct_patch_close_audit_20261014.json`；automation已实核PAUSED。
+### 自然观摩单任务的零付费准备
 
-**方案判断：本例新增实际改稿及fresh通过证据，只支持继续考虑该开发方向。**
-熟悉来源非holdout；初审承担更多修订负担的稳定质量未证，开发Host不等于产品自动语义能力。
-不重启原15、不授资格，不把旧失败或分歧改为通过。旧Flash链3HTTP/48960tokens、严格block_N
-失败与raw范围扩展诊断继续保留，见[旧链关闭结果](plans/2026-10-14-review-duty-chain-result.md)。
+已有候选接到实际typed观摩入口和本地RAG；两份公开历史来源按原SHA保存，不注入旧报告、意见或预选知识。
+prepare实际运行到第一请求，OBSERVED身份、空Memory及投影时间均固定；实际模型发送仍为0。
+专用传输复用原子进程/SDK/收流/回执，全局最多6次、共享401920tokens/900秒、每次300秒。
+第一请求绑定、独占claim、每次发送前冻结核验、run外观测、原stdout guard/closure根及只读replay已接线。
+完整响应缺有效观测硬停，未知账目不抹零；始终拒发布，模型双pass不授资格。
+最多4GLM审查的保守估价5.7595904元（历史报价、非账单硬上限），仍待本包新的明确费用授权。
+详见[执行准备与结果判读](plans/2026-10-15-natural-duty-observed-development.md)。旧原15输入/标签/30请求保持，
+新增清单仅反映传输源码身份变化，未ready/authorized/qualified；原稿保留批仍已关闭。
+452972e7 / CI38680020527全部公共检查success；后继准备提交需自己的精确HEAD公共CI。
 
-**零付费自然路径与预算审计已完成；下一动作是6次候选的显式预算取舍。**
-一次模型选工具、一次读取结果成稿后，双初审直接通过共4次，修订并双fresh最少6次；
-追加工具轮次为5/7次，无工具虽少一次却缺当前必要知识证据。实际AgentLoop/本地RAG探针通过，
-共享预算器第6次发送前硬停；剩50秒裁为50、到期/token不足拒发。14项既有应用回归通过。
-见[具体取舍与实施边界](plans/2026-10-14-natural-review-duty-budget.md)及机器审计natural_review_duty_budget_audit_20261014。
-推荐显式候选max_calls由5改6，401920tokens/900秒/产品单次300秒及模型high保持；尚未批准或实施。
-6次只容纳最短修订，不保证更多工具轮次；开发600秒身份及人工Host验收不能直接移植为产品能力。
-不删职责或跳fresh、不另开账本；用户决定后先做零付费独立身份/发布语义设计与接线，新付费另案。
-本批永久关闭、automation保持PAUSED；原15/全部后续产品依赖保持，8E不推进。
+### 发送前取消的预算修复
+
+独立工程审查、主审复现确认：第1/4/5次响应后取消阻止后继发送，但旧预算多计一次调用及
+未知预留。Trace/API实际用量原本正确，候选outcome账本错误；不是实际超发或账单错误。
+观察层仅证明本次delegate调用前的可信停止，预算撤销本次未发预留并保持终止；已发未知、
+完成观察失败及旧异常对象重抛均不误撤销。三个旧实现失败见证、138项软件回归（57.87秒）及
+7项真实数据库回归（28.25秒、无skip）已核；普通工程独立复核无新发现。
+41项历史/旧应用回归及4项清单回归通过，共190项。五份当前manifest随源码更新，
+历史budget原LF字节追加归档，不重算旧决策或原件；新清单仅两源码/Program摘要变化，
+原15输入/标签/30请求逐字保持，旧清单原件保留，新旧均未ready/authorized/qualified。
+详见[实际消费验证续查](plans/2026-10-15-natural-duty-worker-consumption.md)及
+natural_duty_dispatch_budget_20261015.json；仅软件账本修复，不改变语义/资格/发布边界。
+
+### 原稿保留提案的去留
+
+完整五局来源、用户任务、六对两稿、四政策及schema经主审与既有独立作者审查。
+主审先写stop，独立返回unresolved；作者原件与真实唯一native final逐字相同，input直读仍false。
+p01删掉正确且非重复的2.5/2.67比较，信息减少成立；全文仍有其他分析和行动，实质损害与
+合理压缩未能区分。按预设未决分支停止，20请求均未发，未建设sender、transport或付费run。
+p02删错、p03不变、p04等义、p05去重、p06未改真错明确，但不能补成有效损失正例。
+
+5份原始材料/作者/native记录原字节归档，10项socket阻断检查通过（3.03秒）。详见
+[材料审查与方案裁决](plans/2026-10-15-preservation-material-decision.md)及
+natural_duty_preservation_material_decision_20261015.json。旧设计、开发假设与dataset保持；
+不改标签、换例或改研究目标继续本批，原诊断设计不再是执行队列，未把两种建议写成一致stop。
+
+### 六次候选工程消费与本机恢复
+
+现有数据库检查覆盖旧五次应用；本次新增当前1.6.0真实Worker/SQL/FastAPI检查，7项通过
+（26.69秒，无skip）：初审4次、修订6次未认证完成；第1/4/5/6次响应后owner取消；外人取消。
+用量/Trace保留实际已知tokens，取消后无下一发送，owner可见用量而正文409，非owner均404，
+无final_report、终态不重领。SQL succeeded与publication rejected可同时成立。
+只用替身模型/来源、真实本地RAG和共享Runtime，无生产代码改动；已接公共Postgres job。
+详见[数据库消费验证](plans/2026-10-15-natural-duty-worker-consumption.md)及
+natural_duty_worker_postgres_20261015.json；不证明真实模型质量或自然消费。
+
+用户要求修复Docker启动错误。实核两个残留AF_UNIX socket无法重命名；官方停止并确认进程
+退出后同时备份重建两个运行目录，Docker29.7.2恢复。原Postgres容器/卷保持、15432端口不变，
+healthy、容器内SELECT1和迁移0014_message_projection_status已核。独立临时测试库已删除。
+本机恢复记录在outputs/riftcoach-docker-recovery-20261015；不保证上游socket问题永久消失。
+
+### 候选和既有证据边界
+
+用户已确认6次候选，合同1.6.0/Skill0.7.0/Program4.0.0；共享6/401920/900、单次300，
+Flash/high生成、GLM/high审查、程序逐字应用和双fresh。初审双pass共4次，修订最少6次；
+额外检索不足两fresh slot则应用前停止。真实Runtime、Trace、用量及取消围栏复用。
+所有模型pass仍内部unqualified，Harness拒发布，不伪造ReportAssessment或免费Host服务。
+见ADR0118及[接线边界](plans/2026-10-14-natural-duty-six-implementation.md)。
+
+固定报告逐字补丁链development_chain_pass保留：冻结505aff8f/CI38564530018，4HTTP/65839tokens，
+6项完整Host审查、同稿双fresh、严格只读replay与create-only seal/103原件通过。仅熟悉来源开发
+证据，不授自然候选资格，见[结果](plans/2026-10-14-review-duty-direct-patch-result.md)。
+旧Flash链严格block_N失败及范围扩展诊断保持；原后端5b19e3ee干净，未改冻结源码和原件。
+
+离线84项职责/补丁/候选与4项原15清单检查通过；反例即使替身双fresh pass也拒发布，证明隔离
+而非自动语义检出。清单30个初审请求、fresh待实际稿，ready/authorized/qualified全false。
+原稿信息探针、六项成对材料、24项诊断结构检查只证明可见性/边界，材料预期可被否定。
+见[语义边界](plans/2026-10-15-natural-duty-semantic-qualification.md)，不把新字段当质量认证。
+
+b79d2c83/CI38601405819与取消修复452972e7/CI38680020527公共检查均已通过。
+自然入口后继提交仍须自己的精确HEAD公共CI；automation继续PAUSED。
 
 ## 保留的真实结果与依赖
 
@@ -55,7 +132,7 @@ unknown/receiptless/发送未知0、未发0。活动318.515秒、Host3959.876秒
 
 原15的10通过/3语义拒绝或分歧/2未认证及scope:4分歧保持；37.167104元原15方案撤回保持。
 J1/J2两臂皆过无改善证据，关系教学候选不采用；原三处语义问题尚未证明稳定解决。
-产品5/401920/900不静默扩成7调用。取消/失败用量owner API与UI既有分段证据复用，
+旧产品5/401920/900保持；显式新候选获准6次，不静默扩成7调用。取消/失败用量owner API与UI既有分段证据复用，
 不替代当前组合自然消费，见[实际消费证据](plans/2026-10-14-terminal-usage-consumption.md)。
 正式同版本15、自然Coach/Training、四块联动、完整journal、前端审美头像、Memory、
 身份运维、两树整合、独立评估和学习保留；代码/Owner理解/来源资格/公开成熟度分别验收。

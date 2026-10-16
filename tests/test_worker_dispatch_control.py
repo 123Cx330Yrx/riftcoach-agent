@@ -197,10 +197,9 @@ def test_actual_coach_budget_stops_with_only_one_delegate_send(no_network, coars
     assert len(roles.attempts) == 1 and len(roles.reviewer.requests) == 1
     assert len([e for e in events.signals if isinstance(e, ProviderCallStartedSignal)]) == 1
     assert budget.stopped and observed.last_exchange is None
-    # The unchanged outer budget reserves before the observed-provider boundary.
-    # Keep that conservative attempted-call reservation; do not invent usage or
-    # count it as another actual Provider/HTTP dispatch.
-    assert budget.calls == 2 and budget.tokens > 0 and budget.reserved_tokens > 0
+    # The trusted fence proves the next call was never sent. Its provisional
+    # envelope is released while the run remains stopped.
+    assert budget.calls == 1 and budget.tokens > 0 and budget.reserved_tokens == 0
     assert not repo.succeed_with_evidence_calls and not repo.fail_calls
 
 
