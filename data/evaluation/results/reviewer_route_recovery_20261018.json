@@ -1,0 +1,226 @@
+{
+  "version": "reviewer-route-recovery-v1",
+  "status": "offline_contract_repaired_live_quality_unproven",
+  "source_audit_sha256": "53383324334c46fb961ee5f49d074d5f21146fd5aee3b808310afdc6681f2e8f",
+  "historical_receipts_unchanged": true,
+  "historical_attempts": [
+    {
+      "id": "direct",
+      "receipt_sha256": "f4ffb96f514b67cc429c56020c98cf90767a9f9f7f6d02b75db344131c9f821f",
+      "http_requests": 1,
+      "code": "usage_receipt_mismatch",
+      "worker_code": null,
+      "usage_state": "unknown",
+      "usage": null
+    },
+    {
+      "id": "proxy_stream",
+      "receipt_sha256": "1c591b8009f85a3acff018474e89900443c1124e7d37b12d8f7d88a88edcaad3",
+      "http_requests": 1,
+      "code": "worker_rejected",
+      "worker_code": "tool_arguments_mismatch",
+      "usage_state": "unknown",
+      "usage": null
+    },
+    {
+      "id": "chat_full",
+      "receipt_sha256": "de756f67c245f76d9de241d1c1f45bbac55b3aae3a350fdabffb385f73f9ddd1",
+      "http_requests": 1,
+      "code": "sdk_error",
+      "worker_code": null,
+      "usage_state": "unknown",
+      "usage": null
+    },
+    {
+      "id": "minimal_nonstream",
+      "receipt_sha256": "125c59d1e5b1ede4ec0078236a154647dcbcfcc6d980e9eba2d89be4639c3d2f",
+      "http_requests": 1,
+      "code": "ok",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 144,
+        "output_tokens": 52,
+        "total_tokens": 196
+      }
+    },
+    {
+      "id": "synthetic",
+      "receipt_sha256": "5e5edf20ecd715c49ef0e8d26b6b3330e41b3c9d66fb84e01502ede04cbb3a2d",
+      "http_requests": 1,
+      "code": "ok",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 3125,
+        "output_tokens": 361,
+        "total_tokens": 3486
+      }
+    },
+    {
+      "id": "r01_initial",
+      "receipt_sha256": "d1197ae7f28cd227917555568c26921ec3c918dac67554ec8baa6a0adf84f860",
+      "http_requests": 1,
+      "code": "ok",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 17999,
+        "output_tokens": 692,
+        "total_tokens": 18691
+      }
+    },
+    {
+      "id": "r01_v2",
+      "receipt_sha256": "b770907cb2c10eb94daab3b9d83bf4959bc86c81edca961c2633b2e1cf5aa702",
+      "http_requests": 1,
+      "code": "non_tool_output",
+      "worker_code": null,
+      "usage_state": "unknown",
+      "usage": null
+    },
+    {
+      "id": "r01_v3",
+      "receipt_sha256": "8dbd4c9787042471978c9db167736f19c4a0ba490e4248a6261c63db6b83af06",
+      "http_requests": 1,
+      "code": "ok",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 22741,
+        "output_tokens": 1626,
+        "total_tokens": 24367
+      }
+    },
+    {
+      "id": "r02_initial",
+      "receipt_sha256": "b6d2f1629677aa0f38aa0f6a1165b8a8992dc2299f0524c88323aae12ee5ad19",
+      "http_requests": 1,
+      "code": "ok",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 22669,
+        "output_tokens": 1703,
+        "total_tokens": 24372
+      }
+    },
+    {
+      "id": "r02_v2",
+      "receipt_sha256": "4d876f9a6c8a7d9bd51c5b817b0560628af815a67bd738b11fd0d060fa609ce2",
+      "http_requests": 1,
+      "code": "non_tool_output",
+      "worker_code": null,
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 23071,
+        "output_tokens": 2124,
+        "total_tokens": 25195
+      }
+    }
+  ],
+  "historical_totals": {
+    "http_attempts": 10,
+    "known_tokens": 96307,
+    "unknown_usage_attempts": 4,
+    "invoice_verified": false,
+    "original_four_review_screen_complete": false,
+    "completion_duty_responses_obtained": 0
+  },
+  "engineering": {
+    "mode": "nonstream-tool-v1",
+    "tool_choice": "named_submit_report_review",
+    "original_messages_and_schema_preserved": true,
+    "historical_stream_mode_unchanged": true,
+    "sample_specific_prompt_patches_used": false,
+    "new_paid_preparation_created": false,
+    "new_http_requests": 0,
+    "credentials_read": false,
+    "existing_supervisor_reused": true,
+    "body_free_observation_before_validation": true,
+    "known_usage_preserved_on_failure": true
+  },
+  "adjudication_corrections": {
+    "r01_initial": "Block13 false positive retained; Block7 true finding invalidates old clean-control premise.",
+    "r01_v3": "One correct observation after example-specific patch, not causal or generalization proof.",
+    "r02": "Target detection and repair retained; category-only rejection lacks a mandatory mapping and demonstrated consumption difference. No historical receipt or qualification rewritten.",
+    "r02_v2": "Receiving-contract failure; old item composition unknown, not evidence of zero tool calls."
+  },
+  "validation": {
+    "first_combined": {
+      "passed": 160,
+      "failed": 2,
+      "errors": 38,
+      "seconds": 194.08,
+      "notes": [
+        "39 legacy patch tests blocked by CRLF checkout bytes; restored two dataset files to exact existing Git blobs without changing expected hashes.",
+        "One batch budget test failed in combined run; isolated rerun passed. No definitive root-cause claim."
+      ]
+    },
+    "budget_target_rerun": {
+      "passed": 1,
+      "seconds": 16.55
+    },
+    "final_nonstream_and_recovery_and_direct_patch": {
+      "passed": 77,
+      "seconds": 45.52,
+      "network": "blocked"
+    },
+    "final_batch_group": {
+      "passed": 32,
+      "seconds": 181.67,
+      "network": "blocked"
+    },
+    "governance": "passed",
+    "final_nonstream_recovery_and_old_actual_chain": {
+      "passed": 41,
+      "seconds": 37.21,
+      "network": "blocked",
+      "includes_exact_default_profile_regression": true
+    },
+    "distinct_tests_with_passing_results_across_runs": 205,
+    "not_a_single_initial_all_green_run": true,
+    "profile_regression": {
+      "reproduced_without_http": true,
+      "unexpected_response_mode_in_legacy_profile": true,
+      "fixed_by_adding_mode_only_to_new_profile": true,
+      "old_real_worker_to_batch_native_fixture_passed": true
+    }
+  },
+  "limits": {
+    "semantic_approval": false,
+    "provider_identity_verified": false,
+    "qualified": false,
+    "publication_allowed": false,
+    "original_four_review_screen_complete": false,
+    "new_live_authorization": false
+  },
+  "next_action": "Redesign the limited semantic evaluation decision using corrected source-grounded criteria; no automatic retry, relabel-and-rebuy, or new paid package.",
+  "implementation_sha256": {
+    "scripts/reviewer_responses_process.py": "faba3b5bd0c61b6f97bbb81fe776f7414017653e92769d3acf063893d339d049",
+    "scripts/reviewer_responses_nonstream.py": "9a6899cfaba4f43cd688c0d5d199bf8178672097a8083d970e0a730231af6369",
+    "tests/test_reviewer_responses_nonstream.py": "88e5dc7e98f77a6ab148263c9ad6ba9063f8160d57fecd2ba14ab3e0d2911baa",
+    "tests/test_reviewer_recovery_review.py": "226980f82adbea20663085bc31e48a2706f43b1c73ddd709606ab68fb9cdb25b",
+    "data/evaluation/fixtures/reviewer_route_recovery_20261018/r02-review.json": "11670e81c60447c9d2b0435801134629db09e0ddb11116a289723478d1e505d0",
+    "data/evaluation/fixtures/reviewer_route_recovery_20261018/manifest.json": "6951dec4697c686362d071e5ae4e771e6fd1f044fac78757891e2d733b2913cf"
+  },
+  "checkout_byte_repair": [
+    {
+      "path": "data/evaluation/datasets/golden_native_product_attribution_controls_v1.json",
+      "before_sha256": "2124edb534b25e3e0ab2e308b195f8acc1d8fbc873f12845a85062622596c2ca",
+      "restored_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+      "same_as_git_blob": true,
+      "only_line_endings_changed": true
+    },
+    {
+      "path": "data/evaluation/datasets/golden_observed_review_controls_v1.json",
+      "before_sha256": "378f547f796a70c6f233ec2fa8759b7e633565e450be760c000859eb5a23051b",
+      "restored_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "same_as_git_blob": true,
+      "only_line_endings_changed": true
+    }
+  ],
+  "source_base_head": "2241dd01781ae5be24b1e1da93491134c481baaa",
+  "public_ci_for_this_change": "not_run",
+  "legacy_probe_adopted": false
+}

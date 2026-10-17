@@ -1,3 +1,9 @@
+# Preserve the original LF bytes of two hash-bound datasets on Windows.
+/data/evaluation/datasets/golden_native_product_attribution_controls_v1.json text eol=lf
+/data/evaluation/datasets/golden_observed_review_controls_v1.json text eol=lf
+/data/evaluation/fixtures/reviewer_route_recovery_20261018/** -text
+/data/evaluation/results/reviewer_route_recovery_20261018.json text eol=lf
+/tests/test_reviewer_recovery_review.py text eol=lf
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
 /data/evaluation/fixtures/natural_duty_observed_source_20261015/*.json -text
 /data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf

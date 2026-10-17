@@ -9,6 +9,7 @@ configuration. Other machines should select the corresponding verified branch.
 |---|---|---|
 | `D:\riftcoach-agent` | `codex/g53-7-a-prime` | Main workspace and unfinished frontend/product work; backend checkpoint here is older. Preserve its existing dirty files. |
 | `D:\riftcoach-agent-rq192-pr` | `codex/rq192-provider-stream-contract-ci` | Active backend reliability and report-evaluation work; read this checkout's `docs/project_execution_state.md` for that work. |
+| `D:\riftcoach-review-route-diagnostics` | `codex/reviewer-route-diagnostics` | Current reviewer-route recovery, 2026-10-18. Read this checkout's canonical/active card; original backend remains frozen replay. No new paid batch is prepared. |
 
 Do not merge product code, copy state documents between branches, or resolve
 same-number RQ entries merely to make the checkouts look identical. Read both

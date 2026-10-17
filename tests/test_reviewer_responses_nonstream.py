@@ -1,0 +1,209 @@
+"""Real SDK, mock HTTP, owned worker: offline contract evidence, not model quality."""
+from copy import deepcopy
+from dataclasses import asdict
+import json
+from pathlib import Path
+import socket
+import sys
+
+import httpx
+import pytest
+
+from scripts import reviewer_responses_nonstream as codec
+from scripts import reviewer_responses_process as process
+from scripts import reviewer_responses_transport as stream
+
+PACKAGE = Path(__file__).resolve().parents[1] / 'data/evaluation/fixtures/reviewer_profile_screen_20261015'
+PRIVATE = 'PRIVATE_BODY_AND_REASONING_SENTINEL'
+KEY = 'OFFLINE_KEY_SENTINEL'
+REVIEW = dict(score=95, verdict='pass', issues=[], issue_resolutions=[], advisories=[], repairs=[])
+USAGE = dict(input_tokens=12, output_tokens=8, total_tokens=20)
+
+
+@pytest.fixture(autouse=True)
+def offline(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError('offline test attempted network')
+    monkeypatch.setattr(socket, 'socket', forbidden)
+    monkeypatch.setattr(socket, 'create_connection', forbidden)
+
+
+@pytest.fixture
+def business():
+    return json.loads((PACKAGE / 'requests/r02-facts.json').read_text(encoding='utf-8'))
+
+
+def response(review=None, output=None):
+    call = dict(type='function_call', id='fc_1', call_id='call_1', status='completed',
+        name=stream.TOOL, arguments=json.dumps(REVIEW if review is None else review))
+    return dict(id='resp_1', object='response', created_at=1, model=stream.MODEL,
+        status='completed', error=None, incomplete_details=None, usage=deepcopy(USAGE),
+        output=[call] if output is None else output)
+
+
+@pytest.mark.parametrize('case', ['r01-facts', 'r01-completion', 'r02-facts', 'r02-completion'])
+def test_full_request_preserved_and_tool_choice_explicit(case):
+    business = json.loads((PACKAGE / f'requests/{case}.json').read_text(encoding='utf-8'))
+    before = deepcopy(business)
+    wire = codec.build_wire(business)
+    assert business == before and wire['input'] == business['messages']
+    assert wire['tools'][0]['parameters'] == business['tools'][0]['input_schema']
+    assert wire['tool_choice'] == dict(type='function', name=stream.TOOL)
+    assert wire['stream'] is False and wire['max_output_tokens'] == 16384
+    assert wire['reasoning'] == {'effort': 'high'}
+    # Old frozen protocol is not silently changed into the new diagnostic.
+    assert stream.build_wire(business)['tool_choice'] == 'auto'
+
+
+@pytest.mark.parametrize('kind,calls,code', [
+    ('tool', 1, 'ok'), ('text', 0, 'non_tool_output'),
+    ('mixed', 1, 'non_tool_output'), ('reasoning', 0, 'single_tool_required'),
+    ('two_tools', 2, 'single_tool_required'), ('unknown', 0, 'non_tool_output'),
+])
+def test_counts_survive_rejection_without_response_body(business, kind, calls, code):
+    value = response()
+    message = dict(type='message', status='completed', content=[dict(text=PRIVATE)])
+    reasoning = dict(type='reasoning', summary=[dict(text=PRIVATE)])
+    value['output'] = {
+        'tool': [reasoning, *value['output']], 'text': [message],
+        'mixed': [*value['output'], message], 'reasoning': [reasoning],
+        'two_tools': value['output'] * 2, 'unknown': [dict(type=PRIVATE)],
+    }[kind]
+    result = codec.inspect_response(value, business)
+    assert result['code'] == code
+    assert result['response_observation']['function_calls'] == calls
+    assert result['response_observation']['reported_completed'] is True
+    assert result['usage']['total_tokens'] == 20
+    assert PRIVATE not in json.dumps(result)
+    if code != 'ok':
+        assert result['public_tool_call'] is None
+
+
+@pytest.mark.parametrize('fault,code', [
+    ('model', 'model_identity'), ('incomplete', 'response_not_completed'),
+    ('terminal_error', 'terminal_error'), ('output', 'output_shape'),
+    ('name', 'tool_contract'), ('arguments', 'tool_schema_invalid'),
+    ('duplicate', 'tool_schema_invalid'), ('budget', 'usage_over_budget'),
+    ('reasoning', 'reasoning_identity'), ('output_limit', 'output_limit_identity'),
+])
+def test_failure_keeps_reported_usage_and_terminal_separate(business, fault, code):
+    value = response()
+    if fault == 'model': value['model'] = PRIVATE
+    elif fault == 'incomplete': value['status'] = 'incomplete'
+    elif fault == 'terminal_error': value['error'] = dict(message=PRIVATE)
+    elif fault == 'output': value['output'] = None
+    elif fault == 'name': value['output'][0]['name'] = PRIVATE
+    elif fault == 'arguments': value['output'][0]['arguments'] = PRIVATE
+    elif fault == 'duplicate': value['output'][0]['arguments'] = '{"score":95,"score":90}'
+    elif fault == 'budget': value['usage'] = dict(input_tokens=64001, output_tokens=1, total_tokens=64002)
+    elif fault == 'reasoning': value['reasoning'] = dict(effort='low')
+    elif fault == 'output_limit': value['max_output_tokens'] = 32768
+    result = codec.inspect_response(value, business)
+    assert result['code'] == code and not result['ok']
+    assert result['usage_state'] == 'known'
+    assert result['response_observation']['reported_completed'] is (fault != 'incomplete')
+    assert PRIVATE not in json.dumps(result)
+
+
+@pytest.mark.parametrize('usage', [None, {}, {**USAGE, 'input_tokens': True},
+    {**USAGE, 'total_tokens': 999}, {**USAGE, 'input_tokens_details': 'bad'}])
+def test_invalid_usage_is_unknown_but_output_counts_remain(business, usage):
+    value = response(); value['usage'] = usage
+    result = codec.inspect_response(value, business)
+    assert not result['ok'] and result['usage'] is None and result['usage_state'] == 'unknown'
+    assert result['response_observation']['function_calls'] == 1
+
+
+@pytest.mark.parametrize('variant', ['ok', 'mixed', '524', 'usage_write'])
+def test_sdk_request_and_failure_observation(tmp_path, business, variant):
+    requests = []
+    value = response()
+    if variant == 'mixed':
+        value['output'].append(dict(type='message', status='completed', role='assistant',
+            content=[dict(type='output_text', text=PRIVATE, annotations=[])]))
+    def handler(request):
+        requests.append(request)
+        return httpx.Response(524 if variant == '524' else 200,
+            stream=httpx.ByteStream(PRIVATE.encode() if variant == '524' else json.dumps(value).encode()),
+            headers={'content-type': 'application/json'})
+    def save_usage(usage):
+        if variant == 'usage_write': raise OSError(PRIVATE)
+    result = codec.collect(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+        api_key=KEY, observation_dir=tmp_path / 'observation', on_usage=save_usage,
+        transport=httpx.MockTransport(handler))
+    assert len(requests) == 1
+    assert json.loads(requests[0].content) == codec.build_wire(business)
+    assert result['ok'] is (variant == 'ok')
+    assert result['code'] == {'ok':'ok', 'mixed':'non_tool_output',
+        '524':'http_status_524', 'usage_write':'usage_write_failed'}[variant]
+    observed = json.loads((tmp_path / 'observation/observation.json').read_text())
+    assert observed['closed'] and observed['eof'] and observed['http_requests'] == 1
+    if variant != '524':
+        assert observed['response_contract']['function_calls'] == 1
+        assert observed['response_contract']['reported_completed']
+        assert result['usage']['total_tokens'] == 20
+    public = json.dumps(result) + json.dumps(observed)
+    assert KEY not in public and PRIVATE not in public
+
+
+@pytest.mark.parametrize('variant,accepted', [('ok', True), ('mixed', False), ('missing_repairs', False)])
+def test_owned_worker_to_receipt_uses_business_gate(tmp_path, business, variant, accepted):
+    # Execute the actual child, replacing HTTP IO only. No key prompt or network.
+    child = '''
+import json, socket, runpy
+import httpx
+from scripts import reviewer_responses_nonstream as codec
+from scripts import reviewer_responses_process as process
+fixture = runpy.run_path('tests/test_reviewer_responses_nonstream.py')
+value = fixture['response']()
+if VARIANT == 'mixed':
+    value['output'].append(dict(type='message', role='assistant', status='completed', content=[]))
+elif VARIANT == 'missing_repairs':
+    raw = json.load(open('data/evaluation/fixtures/reviewer_route_recovery_20261018/r02-review.json', encoding='utf-8'))
+    raw['repairs'] = []
+    value = fixture['response'](raw)
+def forbidden(*args, **kwargs): raise AssertionError('offline child attempted network')
+socket.socket = socket.create_connection = forbidden
+original = codec.collect
+def offline_collect(*args, **kwargs):
+    return original(*args, **kwargs, transport=httpx.MockTransport(lambda request: httpx.Response(200,
+        stream=httpx.ByteStream(json.dumps(value).encode()), headers={'content-type':'application/json'})))
+codec.collect = offline_collect
+process.worker()
+'''.replace('VARIANT', repr(variant))
+    directory = tmp_path / 'call'
+    receipt = process.run_once(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+        api_key=KEY, directory=directory, response_mode=codec.MODE,
+        command=[sys.executable, '-c', child], timeout_s=30)
+    assert receipt['ok'] is accepted
+    assert receipt['usage_state'] == 'known' and receipt['http_requests'] == 1 and receipt['reaped']
+    assert receipt['wire_sha256'] == stream.digest(codec.build_wire(business))
+    worker = json.loads((directory / 'worker-result.json').read_text())
+    assert worker['business_validated'] is accepted
+    if variant == 'missing_repairs': assert worker['code'] == 'business_contract_invalid'
+    assert KEY not in ''.join(p.read_text() for p in directory.rglob('*.json'))
+    with pytest.raises(FileExistsError):
+        process.run_once(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+            api_key=KEY, directory=directory, response_mode=codec.MODE, cancel=lambda: True)
+
+
+def test_mode_and_route_rejected_before_claim(tmp_path, business):
+    for mode, route in [('bad', 'proxy-12000'), (codec.MODE, 'direct-no-proxy')]:
+        with pytest.raises(ValueError):
+            process.run_once(business, profile=stream.Profile(group='GPT-pro', route=route),
+                api_key=KEY, directory=tmp_path / 'claim', response_mode=mode)
+        assert not (tmp_path / 'claim').exists()
+
+
+@pytest.mark.parametrize('mode', ['stream', codec.MODE])
+def test_cancel_before_send_preserves_exact_profile_contract(tmp_path, business, mode):
+    profile = stream.Profile(group='GPT-pro', route='proxy-12000')
+    directory = tmp_path / 'call'
+    receipt = process.run_once(business, profile=profile, api_key=KEY, directory=directory,
+        response_mode=mode, cancel=lambda: True)
+    expected = dict(**asdict(profile), reasoning_effort='high', api='responses',
+        max_output_tokens=32768 if mode == 'stream' else 16384, max_retries=0, timeout_s=300,
+        group_verified=False, upstream_identity_verified=False)
+    if mode != 'stream': expected['response_mode'] = mode
+    assert json.loads((directory / 'profile.json').read_text()) == expected
+    assert receipt['http_requests'] == 0 and receipt['usage_state'] == 'not_sent'

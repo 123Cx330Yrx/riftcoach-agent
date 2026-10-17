@@ -4,10 +4,39 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "自然观摩单任务已执行并失败关闭：双初审漏检观摩/训练边界；作者/native末尾LF差异保留。发布门关闭，automation PAUSED，本批不重试。"
+pause_reason: "审查路线本地合同修复与裁决更正完成；真实质量未证，原四项筛选未完成，无新付费包，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-18。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
+
+## 当前行动
+
+**复盘后的本地合同修复与裁决更正已完成；没有新付费请求或执行包。**
+新nonstream-tool-v1明确选择submit_report_review，原全文/来源/schema不变，不追加样本特制提示。
+复用现有owned process独占目录、stdin凭证、300秒deadline/取消/回收及业务validator；旧stream默认不变。
+失败前先保存终态、输出类型/数量、工具候选数量与已知用量；mixed/non-tool不再被解释为零工具。
+工具结构合法仍须修法覆盖、来源及verdict检查；schema通过不等于语义批准。
+
+r02真实检出及修法方向保留；other/fact_error/unsupported_comparison在现有消费中产生同一修订稿，
+撤回仅因other否定该次检出并续购分类复测的依据。原r01合法对照前提失效、Block13实质误报保留；
+r01-v3只是一次加提示后的正确结果，不证明因果改善或泛化；所有旧原件/失败/未知用量保持。
+历史10HTTP尝试、96307已知tokens、4次未知；completion真实输出0，原四项筛选未完成。
+本地真实SDK替身、实际进程/回执与历史修法消费检查见
+`data/evaluation/results/reviewer_route_recovery_20261018.json`；方法与去留见
+`docs/plans/2026-10-18-reviewer-route-recovery.md`。没有真实模型、native业务认证或产品采用证明。
+
+**下一动作：按纠正后的完整业务标准重新确定有限语义评估材料与去留决策。**
+不得继续旧r02-v2分类复测或把调试稿称独立稳定性对照；新请求若有必要，须能改变采用决定，
+并按既有成本授权、精确HEAD/CI/实际路径和独立审查要求准备。当前不索Key、不发请求、不新开批。
+该第三方仍是未获资格候选；GLM采用不变，不能宣布Sol更可靠，也不再凭other字段淘汰。
+自动化PAUSED，发布关闭，8E未完成；同版本15、自然Coach/Training、四块联动、前端头像审美、
+Memory、身份运维、两树整合、独立评估与学习保持。
+
+## 以下为历史记录（2026-10-15 当前状态原文保留，不作为执行队列）
+
 
 2026-10-15。候选实施 `D:/riftcoach-natural-duty-six`，分支 `codex/natural-duty-six`。
 原后端 `D:/riftcoach-agent-rq192-pr` 保留冻结源码与封存回放。

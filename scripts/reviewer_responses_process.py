@@ -20,6 +20,15 @@ from scripts.reviewer_responses_transport import Profile, TransportError, build_
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def response_contract(mode):
+    if mode == 'stream':
+        return build_wire, collect
+    if mode == 'nonstream-tool-v1':
+        from scripts import reviewer_responses_nonstream as nonstream
+        return nonstream.build_wire, nonstream.collect
+    raise ValueError('response_mode_invalid')
+
+
 def write_json(path, value):
     with Path(path).open('x', encoding='utf-8', newline='\n') as handle:
         handle.write(json.dumps(value, ensure_ascii=True, allow_nan=False, indent=2) + '\n')
@@ -48,7 +57,7 @@ def valid_saved_usage(value):
 
 
 def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
-             timeout_s=300, command=None):
+             timeout_s=300, command=None, response_mode='stream'):
     """Explicit caller credential is passed by stdin, never argv or a file.
 
     A directory is a create-only single-call claim, not a batch retry token.
@@ -59,15 +68,21 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
         raise ValueError('timeout_invalid')
     if not isinstance(profile, Profile):
         raise ValueError('profile_required')
-    wire = build_wire(business)
+    make_wire, _ = response_contract(response_mode)
+    if response_mode != 'stream' and profile.route != 'proxy-12000':
+        raise ValueError('nonstream_explicit_proxy_required')
+    wire = make_wire(business)
     directory = Path(directory).resolve()
     if directory.is_relative_to(ROOT/'data/runs'):
         raise ValueError('research_output_must_be_outside_runs')
     directory.mkdir(parents=True, exist_ok=False)
     write_json(directory/'request.json', business)
-    write_json(directory/'profile.json', dict(**asdict(profile), reasoning_effort='high',
-        api='responses', max_output_tokens=32768, max_retries=0, timeout_s=timeout_s,
-        group_verified=False, upstream_identity_verified=False))
+    saved_profile = dict(**asdict(profile), reasoning_effort='high',
+        api='responses', max_output_tokens=wire['max_output_tokens'], max_retries=0, timeout_s=timeout_s,
+        group_verified=False, upstream_identity_verified=False)
+    if response_mode != 'stream':
+        saved_profile['response_mode'] = response_mode
+    write_json(directory/'profile.json', saved_profile)
     started = time.monotonic()
     deadline = started + timeout_s
     code, process, writer = 'cancelled', None, None
@@ -80,7 +95,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
                 stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             reaped = False
             data = json.dumps(dict(business=business, profile=asdict(profile), api_key=api_key,
-                directory=str(directory), timeout_s=timeout_s), ensure_ascii=True).encode('utf-8')
+                directory=str(directory), timeout_s=timeout_s,
+                response_mode=response_mode), ensure_ascii=True).encode('utf-8')
 
             def send_input():
                 try:
@@ -169,6 +185,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
         reaped=reaped, worker_exit=None if process is None else process.returncode,
         elapsed_s=round(time.monotonic() - started, 6), semantic_approval=False,
         group_verified=False, upstream_identity_verified=False, qualified=False)
+    if response_mode != 'stream':
+        receipt['response_mode'] = response_mode
     try:
         write_json(directory/'receipt.json', receipt)
     except Exception:
@@ -204,7 +222,8 @@ def worker():
     result = dict(ok=False, code='worker_preflight_failed', usage=None, public_tool_call=None)
     try:
         validate = screen_validator(payload['business'])
-        result = collect(payload['business'], profile=Profile(**payload['profile']),
+        _, collect_response = response_contract(payload.get('response_mode', 'stream'))
+        result = collect_response(payload['business'], profile=Profile(**payload['profile']),
             api_key=payload['api_key'], observation_dir=directory/'observation',
             timeout_s=payload['timeout_s'],
             on_usage=lambda usage: write_json(directory/'usage.json', usage))
