@@ -11,24 +11,22 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：本地合同修复/裁决更正完成，真实质量尚未验证；无新付费包，automation PAUSED，8E未完成。
+执行状态：本地修复完成；三稿六审材料和断网验证完成，独立材料审查usable。无付费执行批，8E未完成。
 
 ## Active Work Package
 
-**目标：** 修复审查候选诊断的请求/接收矛盾与失败观测丢失；纠正分类偏好被当作业务失败。
-**状态：** 本地实施及离线验证完成；原模型筛选未完成，产品资格未变。
-**实施：** 新nonstream-tool-v1明确选择审查工具，保留全文/schema，复用owned process及业务validator；
-失败先记录终态、输出类型/数量与已知用量，再拒收；旧stream模式及封存回执不改。
-**实际消费：** 原r02响应的三种合法category产生完全相同修订稿；缺修法/错误块/坏锚点/重叠拒绝。
-预览中的另一职责pass是测试替身，不是completion真实响应或独立语义认证。
-**裁决：** r02正确检出不因other作废；r01原合法对照前提失效，首次误报与后续单次正确结果各自保留。
-历史10次HTTP尝试、96307已知tokens/4次未知，不能拼成原四项筛选完成或供应商账单。
-**证据：** docs/plans/2026-10-18-reviewer-route-recovery.md 与
- data/evaluation/results/reviewer_route_recovery_20261018.json；无新模型请求或native业务认证。
-**边界：** 原backend封存、主树前端保持；GLM采用不变，第三方未获资格，不因标签偏好淘汰。
-**下一动作：** 重新确定有限语义评估的材料与去留决策；先审完整来源/修法/正确保留，不继续旧分类复测。
-当前无付费执行包；任何后续真实请求须回答明确问题并沿用既有授权/冻结/CI/路径/独立审查要求。
-不以本地通过声称端点遵守新模式或模型质量过关。
+**目标：** 用全文正对照、事实单错和完成度单缺口，判断该候选配置是否值得继续投入，不再追逐分类偏好。
+**状态：** 三份新写报告、六份原业务请求/非流式wire、逐段主审、评测侧标准及人工修法见证已保存。
+**来源：** 熟悉的原五局完整材料，非holdout、非自然新生成；旧r01/r02不重测、不改标签拼成原筛选完成。
+**实施与证据：** docs/plans/2026-10-18-reviewer-semantic-materials.md；
+ data/evaluation/results/reviewer_semantic_materials_20261018.json。11项断网检查通过，模型调用0。
+**判读：** 逐项核完整意见/修法/正确保留；合法category不因偏好否定。材料真错或争议先停设计；
+真实语义失败停止配置筛选；协议失败为语义未决。全部六审成立只支持继续有限评估，不授资格或迁移。
+**边界：** 六次482304tokens/1800秒为未授权新提案；无新live入口、无新公共CI、不调用旧四次launcher。
+用户授权全新独立审查上下文，作者实际全文审读并自行交付，六职责判断一致；普通材料审查不是业务native认证。
+**本轮结果：** 新六审控制层及成对补丁预览审查已接线，14项新增离线检查、6项旧配置关键回归通过。用户确认报价，六次估价0.350208元非硬账单上限；模型调用0。
+**下一动作：** 补齐受控live入口，完成干净精确提交公共CI和真实作者/账户/路径绑定，再申请本批新费用授权。详见docs/plans/2026-10-18-reviewer-semantic-execution.md。
+**后续实际接入条件：** 真实作者/事件、当前账户报价、精确HEAD/CI/路径/网络和新费用授权；不把此材料包称ready。
 
 ## Dependencies and Follow-through
 

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "审查路线本地合同修复与裁决更正完成；真实质量未证，原四项筛选未完成，无新付费包，automation PAUSED。"
+pause_reason: "三稿六审材料和离线控制层验证完成；受控live入口/精确CI与新授权未完成，无付费执行批，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,26 +14,33 @@ pause_reason: "审查路线本地合同修复与裁决更正完成；真实质�
 
 ## 当前行动
 
-**复盘后的本地合同修复与裁决更正已完成；没有新付费请求或执行包。**
-新nonstream-tool-v1明确选择submit_report_review，原全文/来源/schema不变，不追加样本特制提示。
-复用现有owned process独占目录、stdin凭证、300秒deadline/取消/回收及业务validator；旧stream默认不变。
-失败前先保存终态、输出类型/数量、工具候选数量与已知用量；mixed/non-tool不再被解释为零工具。
-工具结构合法仍须修法覆盖、来源及verdict检查；schema通过不等于语义批准。
+**2026-10-18：三份完整语义评估材料和六份完整请求已在诊断树准备并离线验证；未发送。**
+新稿以同一熟悉五局来源构造：s01基稿、s02仅事实全称错误、s03仅OP.GG行动消费缺口；两职责各自审全文。
+完整来源和既有政策保持；采用已完成本地修复的nonstream-tool-v1拟发wire，不追加样本特制提示。
+预期与主审意见留在评测端，人工参考补丁通过原validate/preview可恢复同一基稿，不能冒充真实编辑或fresh。
+来源/数字/标签隔离/实际组装及坏补丁检查11项通过；用户授权新建全新上下文独立审查后，独立判材料usable，六职责判断一致；不是业务native资格。
+详情：`docs/plans/2026-10-18-reviewer-semantic-materials.md`；结果：
+`data/evaluation/results/reviewer_semantic_materials_20261018.json`。
 
-r02真实检出及修法方向保留；other/fact_error/unsupported_comparison在现有消费中产生同一修订稿，
-撤回仅因other否定该次检出并续购分类复测的依据。原r01合法对照前提失效、Block13实质误报保留；
-r01-v3只是一次加提示后的正确结果，不证明因果改善或泛化；所有旧原件/失败/未知用量保持。
-历史10HTTP尝试、96307已知tokens、4次未知；completion真实输出0，原四项筛选未完成。
-本地真实SDK替身、实际进程/回执与历史修法消费检查见
-`data/evaluation/results/reviewer_route_recovery_20261018.json`；方法与去留见
-`docs/plans/2026-10-18-reviewer-route-recovery.md`。没有真实模型、native业务认证或产品采用证明。
+**本轮推进：六审配置已接入现有worker和批控制；14项新增离线验证、6项旧配置关键回归通过。**
+每次需先审原始意见；每对意见原样preview并经四项全文审查后才能继续。停止/未知预留/关闭后不补发保持。
+两处新增协议接线错误已在本地测试中修正，原报告/作者原件/旧封存不改；没有第三方模型调用。
+执行提案：`docs/plans/2026-10-18-reviewer-semantic-execution.md`；验证结果：
+`data/evaluation/results/reviewer_semantic_execution_preparation_20261018.json`。
+用户确认当前GPT-pro输入0.4元、输出2元每百万tokens；六次预留估价0.350208元，非账单硬上限。
+报价来自用户确认；浏览器枚举恢复但读取超时，不冒称网页已核。账户Key实际分组未绑定，未读密钥。
+**下一动作：完成受控live入口和干净精确提交的公共CI/作者/路径绑定，然后提出本批新费用授权。**
+当前仅离线控制层可用；旧单次launcher仍不能承载本批。不将before_send回调当完整执行前核验。
+六次482304tokens/1800活动秒是新提案，非旧四次授权续期；没有新执行批或公共CI。
+独立作者材料原件保持；未来真实输出仍需独立作者及真实native审查，不能拿本次fixture通过替代。
+材料争议先停设计；真实语义错误停止该配置筛选；协议失败记未决不补发；全部成立只支持进一步有限评估。
 
-**下一动作：按纠正后的完整业务标准重新确定有限语义评估材料与去留决策。**
-不得继续旧r02-v2分类复测或把调试稿称独立稳定性对照；新请求若有必要，须能改变采用决定，
-并按既有成本授权、精确HEAD/CI/实际路径和独立审查要求准备。当前不索Key、不发请求、不新开批。
-该第三方仍是未获资格候选；GLM采用不变，不能宣布Sol更可靠，也不再凭other字段淘汰。
-自动化PAUSED，发布关闭，8E未完成；同版本15、自然Coach/Training、四块联动、前端头像审美、
-Memory、身份运维、两树整合、独立评估与学习保持。
+旧r01/r02只作开发回归。撤回仅凭other否定r02正确检出的依据；首次r01误报和原正对照前提失效保持。
+旧10HTTP、96307已知tokens/4次未知、completion真实输出0及所有封存/分歧保持，不拼资格。
+本轮只有真实独立开发材料审查，没有真实模型/native业务审查或产品采用证明；第三方上游身份未证，GLM采用不变。
+原backend为封存位置，主树前端保持。automation PAUSED、发布关闭、8E未完成；
+同版本15、自然Coach/Training、四块联动、前端头像审美、Memory、身份运维、两树整合、独立评估与学习均保持。
+本地修复历史见`docs/plans/2026-10-18-reviewer-route-recovery.md`。
 
 ## 以下为历史记录（2026-10-15 当前状态原文保留，不作为执行队列）
 

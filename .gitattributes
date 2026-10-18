@@ -386,6 +386,9 @@
 /data/evaluation/results/natural_duty_qualification_inventory_20261015.json text eol=lf
 
 # Exact public author/native artifacts from the source-only material review.
+/data/evaluation/fixtures/reviewer_semantic_screen_20261018/** -text
+/scripts/prepare_reviewer_semantic_screen.py text eol=lf
+/tests/test_reviewer_semantic_materials.py text eol=lf
 /data/evaluation/fixtures/preservation_material_review_20261015/** -text
 /data/evaluation/results/natural_duty_preservation_material_decision_20261015.json -text
 /scripts/preservation_material_review.py text eol=lf

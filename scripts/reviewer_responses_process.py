@@ -194,7 +194,7 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     return receipt
 
 
-def screen_validator(business):
+def screen_validator(business, *, response_mode='stream'):
     """Bind a single saved screen request and reuse its existing business checks."""
     from app.evaluation.source_patch_editor import report_inputs
     from scripts import prepare_reviewer_profile_screen as screen
@@ -206,6 +206,9 @@ def screen_validator(business):
             path = screen.PACKAGE/'requests'/f'{case}-{duty}.json'
             if read_json(path) == business:
                 matches.append((case, duty))
+    if not matches and response_mode == 'nonstream-tool-v1':
+        from scripts.prepare_reviewer_semantic_screen import business_validator
+        return business_validator(business)
     if len(matches) != 1:
         raise TransportError('screen_request_binding')
     case, duty = matches[0]
@@ -221,7 +224,7 @@ def worker():
     directory = Path(payload['directory'])
     result = dict(ok=False, code='worker_preflight_failed', usage=None, public_tool_call=None)
     try:
-        validate = screen_validator(payload['business'])
+        validate = screen_validator(payload['business'], response_mode=payload.get('response_mode', 'stream'))
         _, collect_response = response_contract(payload.get('response_mode', 'stream'))
         result = collect_response(payload['business'], profile=Profile(**payload['profile']),
             api_key=payload['api_key'], observation_dir=directory/'observation',
