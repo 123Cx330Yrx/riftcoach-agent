@@ -7483,3 +7483,12 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运行目录，原容器ebffdb0a8f3e和业务卷保持，
 29.7.2/healthy/15432/SELECT1/0014_message_projection_status已核；未证明上游永久修复。
 详见data/evaluation/results/natural_duty_preservation_ci_recovery_20261015.json及outputs/riftcoach-docker-recovery-20261015续记录。
+
+
+## 2026-10-19 六审批HTTP524关闭
+
+2026-10-19 本批已关闭：第六项s03-completion收到HTTP524，未得到语义结果，用量未知；不重试、不补发。共6次HTTP，已知110636tokens、未知预留80384tokens，活动383.485秒。前五项及s01/s02组合预览双审接受；s03完成度与组合预览未完成，不能宣布六审成功。原件/作者/native只读回放通过，发布关闭、未授资格、automation PAUSED。
+下一动作：基于封存结果评估第三方HTTP524交付风险及完成度检出仍未验证的缺口，先整理可区分原因的现有证据与后续方案，不重开本批或自动申请补发；新付费执行需单独具体决策与授权。
+证据：Operator calls/05-s03-completion/receipt.json及observation/observation.json。1次HTTP，状态524，worker耗时129.188秒；本机配置300秒，未到本机截止。具体上游超时根因未证，不归因模型判断、密钥或网络配置。无有效审查正文，不能补写第六项意见。
+闭批checkpoint d20b1d132e5e6a4220801906870ea6ce9a82d7c08fb180f7f1d73230f9951eb5；原seal SHA e025286f679928b5e9f873ee3022237f53ef0b91bdff839660e8dae39f0ac27a。run外control/closed-replay.json记录严格只读回放和库存未变。
+已得到正确稿不误改、单事实错误检出及修订预览、职责分离的开发证据；未得到缺口检出、完整六审、fresh或稳定率证据。保留所有既有失败，GLM采用与8E未完成状态不变。
