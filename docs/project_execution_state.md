@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "三稿六审材料和离线控制层验证完成；受控live入口/精确CI与新授权未完成，无付费执行批，automation PAUSED。"
+pause_reason: "首项s01-facts及双审导入完成，待用户本机输入Key发送s01-completion；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,32 +14,18 @@ pause_reason: "三稿六审材料和离线控制层验证完成；受控live入�
 
 ## 当前行动
 
-**2026-10-18：三份完整语义评估材料和六份完整请求已在诊断树准备并离线验证；未发送。**
-新稿以同一熟悉五局来源构造：s01基稿、s02仅事实全称错误、s03仅OP.GG行动消费缺口；两职责各自审全文。
-完整来源和既有政策保持；采用已完成本地修复的nonstream-tool-v1拟发wire，不追加样本特制提示。
-预期与主审意见留在评测端，人工参考补丁通过原validate/preview可恢复同一基稿，不能冒充真实编辑或fresh。
-来源/数字/标签隔离/实际组装及坏补丁检查11项通过；用户授权新建全新上下文独立审查后，独立判材料usable，六职责判断一致；不是业务native资格。
-详情：`docs/plans/2026-10-18-reviewer-semantic-materials.md`；结果：
-`data/evaluation/results/reviewer_semantic_materials_20261018.json`。
+2026-10-19 实测：用户已授权本批最多六次。s01-facts完成1次HTTP200、25593已知tokens、122.843秒；主审全文核源接受，独立作者真实native及原件字节核验/导入通过。当前ready，next=s01-completion，余5次、未知0、未审0；未发布、未授资格。
 
-**本轮推进：六审配置已接入现有worker和批控制；14项新增离线验证、6项旧配置关键回归通过。**
-每次需先审原始意见；每对意见原样preview并经四项全文审查后才能继续。停止/未知预留/关闭后不补发保持。
-两处新增协议接线错误已在本地测试中修正，原报告/作者原件/旧封存不改；没有第三方模型调用。
-执行提案：`docs/plans/2026-10-18-reviewer-semantic-execution.md`；验证结果：
-`data/evaluation/results/reviewer_semantic_execution_preparation_20261018.json`。
-用户确认当前GPT-pro输入0.4元、输出2元每百万tokens；六次预留估价0.350208元，非账单硬上限。
-报价来自用户确认；浏览器枚举恢复但读取超时，不冒称网页已核。账户Key实际分组未绑定，未读密钥。
-**2026-10-19补充：** 受控入口已实现，11项离线边界测试通过，绝对cwd/Python的--help启动成功；模型调用0。此处未完成真实native作者/final预检，CI仍需绑定新增入口的精确提交。
-**2026-10-19预检结果：** 干净执行树D:/riftcoach-semantic-execution固定8cdc9d2c，公共CI39189896488全绿。新独立作者真实原件/check-answer/native final/ExactNativeGate导入/只读回放通过；行政预检不授业务资格。首次末尾LF失败原件保留，v2只改变新作者序列化方式，不改字节门。
-**下一动作：** 提出绑定既有三稿六请求的新费用授权，确认所输入Key属于GPT-pro；发送前再次核CI/源码/路径/原件/身份/授权。未授权不读取Key、不发送。
-当前有独立受控入口，但实际执行条件尚未齐备；旧单次launcher仍不能承载本批。不将before_send回调当完整执行前核验。
-六次482304tokens/1800活动秒是新提案，非旧四次授权续期；没有新执行批或公共CI。
-独立作者材料原件保持；未来真实输出仍需独立作者及真实native审查，不能拿本次fixture通过替代。
-材料争议先停设计；真实语义错误停止该配置筛选；协议失败记未决不补发；全部成立只支持进一步有限评估。
+下一动作：用户执行已绑定最新checkpoint 204f216fbbff329485f9635552bab48b0edb9ba5c70a3de2b6a050406da61669的send-s01-completion.ps1，在本机隐藏输入Key；只发第二项，返回后逐项审查。既有授权有效期不延长，不重跑首项。
+
+执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
+本批三稿使用熟悉五局来源，非holdout；首项事实审查通过不等于完成度、编辑或可靠率通过。
+准备、行政预检及既有失败见`docs/plans/2026-10-18-reviewer-semantic-execution.md`。
+实际结果见`data/evaluation/results/reviewer_semantic_live_20261019.json`。
 
 旧r01/r02只作开发回归。撤回仅凭other否定r02正确检出的依据；首次r01误报和原正对照前提失效保持。
 旧10HTTP、96307已知tokens/4次未知、completion真实输出0及所有封存/分歧保持，不拼资格。
-本轮只有真实独立开发材料审查，没有真实模型/native业务审查或产品采用证明；第三方上游身份未证，GLM采用不变。
+本轮已有首项真实模型及native业务审查，尚无产品采用证明；第三方上游身份未证，GLM采用不变。
 原backend为封存位置，主树前端保持。automation PAUSED、发布关闭、8E未完成；
 同版本15、自然Coach/Training、四块联动、前端头像审美、Memory、身份运维、两树整合、独立评估与学习均保持。
 本地修复历史见`docs/plans/2026-10-18-reviewer-route-recovery.md`。

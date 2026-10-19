@@ -9754,3 +9754,10 @@ OBSERVED、空Memory和历史时间，不注入旧报告或预选知识；两份
 Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运行目录，原容器ebffdb0a8f3e和业务卷保持，
 29.7.2/healthy/15432/SELECT1/0014_message_projection_status已核；未证明上游永久修复。
 详见data/evaluation/results/natural_duty_preservation_ci_recovery_20261015.json及outputs/riftcoach-docker-recovery-20261015续记录。
+
+
+## 2026-10-19 首项真实审查通过
+
+2026-10-19 实测：用户已授权本批最多六次。s01-facts完成1次HTTP200、25593已知tokens、122.843秒；主审全文核源接受，独立作者真实native及原件字节核验/导入通过。当前ready，next=s01-completion，余5次、未知0、未审0；未发布、未授资格。
+下一动作：用户执行已绑定最新checkpoint 204f216fbbff329485f9635552bab48b0edb9ba5c70a3de2b6a050406da61669的send-s01-completion.ps1，在本机隐藏输入Key；只发第二项，返回后逐项审查。既有授权有效期不延长，不重跑首项。
+此前未授权/未执行文字是准备阶段记录，由本节实际状态更新。

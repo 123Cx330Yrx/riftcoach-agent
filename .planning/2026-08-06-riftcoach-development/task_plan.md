@@ -11,24 +11,16 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-执行状态：本地修复完成；三稿六审材料和断网验证完成，独立材料审查usable。无付费执行批，8E未完成。
+2026-10-19 实测：用户已授权本批最多六次。s01-facts完成1次HTTP200、25593已知tokens、122.843秒；主审全文核源接受，独立作者真实native及原件字节核验/导入通过。当前ready，next=s01-completion，余5次、未知0、未审0；未发布、未授资格。
 
 ## Active Work Package
 
-**目标：** 用全文正对照、事实单错和完成度单缺口，判断该候选配置是否值得继续投入，不再追逐分类偏好。
-**状态：** 三份新写报告、六份原业务请求/非流式wire、逐段主审、评测侧标准及人工修法见证已保存。
-**来源：** 熟悉的原五局完整材料，非holdout、非自然新生成；旧r01/r02不重测、不改标签拼成原筛选完成。
-**实施与证据：** docs/plans/2026-10-18-reviewer-semantic-materials.md；
- data/evaluation/results/reviewer_semantic_materials_20261018.json。11项断网检查通过，模型调用0。
-**判读：** 逐项核完整意见/修法/正确保留；合法category不因偏好否定。材料真错或争议先停设计；
-真实语义失败停止配置筛选；协议失败为语义未决。全部六审成立只支持继续有限评估，不授资格或迁移。
-**边界：** 六次482304tokens/1800秒为未授权新提案；受控live入口已写入但未运行，公共CI待核，不调用旧四次launcher。
-用户授权全新独立审查上下文，作者实际全文审读并自行交付，六职责判断一致；普通材料审查不是业务native认证。
-**本轮结果：** 新六审控制层及成对补丁预览审查已接线，14项新增离线检查、6项旧配置关键回归通过。用户确认报价，六次估价0.350208元非硬账单上限；模型调用0。
-**2026-10-19补充：** 受控入口已实现，11项离线边界测试通过，绝对cwd/Python的--help启动成功；模型调用0。此处未完成真实native作者/final预检，CI仍需绑定新增入口的精确提交。
-**2026-10-19预检结果：** 干净执行树D:/riftcoach-semantic-execution固定8cdc9d2c，公共CI39189896488全绿。新独立作者真实原件/check-answer/native final/ExactNativeGate导入/只读回放通过；行政预检不授业务资格。首次末尾LF失败原件保留，v2只改变新作者序列化方式，不改字节门。
-**下一动作：** 提出绑定既有三稿六请求的新费用授权，确认所输入Key属于GPT-pro；发送前再次核CI/源码/路径/原件/身份/授权。未授权不读取Key、不发送。
-**后续实际接入条件：** 真实作者/事件、当前账户报价、精确HEAD/CI/路径/网络和新费用授权；不把此材料包称ready。
+**目标：** 用三稿六审检验正确全文、事实单错和完成度缺口，决定候选是否值得继续评估。
+**实施：** 固定8cdc9d2c、既有worker/批控制/真实native；每项审查，每对实际补丁preview后全文验收。
+**证据：** data/evaluation/results/reviewer_semantic_live_20261019.json。
+**边界：** 最多六次、482304tokens/1800秒，零重试；熟悉来源非holdout，8E未完成。
+**失败分支：** 语义实错停止配置；协议/用量/观测故障停止且保留未知，不补发。
+**下一动作：用户执行已绑定最新checkpoint 204f216fbbff329485f9635552bab48b0edb9ba5c70a3de2b6a050406da61669的send-s01-completion.ps1，在本机隐藏输入Key；只发第二项，返回后逐项审查。既有授权有效期不延长，不重跑首项。**
 
 ## Dependencies and Follow-through
 
