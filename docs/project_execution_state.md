@@ -1311,3 +1311,9 @@ GLM fresh终评96/pass且全文双审接受。此前正确原稿96/pass保持、
   真实Worker/DB/API/UI消费仍待验；默认Worker未切换，主树未完成前端未动。
 - 四块联动、本人Training、前端整体审美/必要重做/英雄头像、Memory、身份运维、两树整合、
   独立评估和学习仍沿活动计划依赖推进。事实详见context-scope-failure计划及ADR0114。
+
+
+## 2026-10-19 第六项补测准备（未授权、未发送）
+
+用户要求回到第六项继续。原六调用批已封存，不能重开或修改；已准备同材料/同HEAD/同模型的单独 `s03-completion` 补测提案：`C:/Users/33502/Documents/Agent/outputs/riftcoach-semantic-six-20261019-control/s03-completion-supplement-proposal.json`，SHA256 `7a5265bab03d86e170b8b86ca0f291fa9794e205af20b325bff9275e400777c8`。
+补测最多1次，预留80384 tokens，估价0.058368元；原524和80384未知预留保留，不重算。当前只完成材料/request/wire/HEAD/CI绑定，未创建新执行批、未读取Key、未发送。启动需要用户对这一次新增付费调用明确授权。

@@ -9798,3 +9798,9 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 证据：Operator calls/05-s03-completion/receipt.json及observation/observation.json。1次HTTP，状态524，worker耗时129.188秒；本机配置300秒，未到本机截止。具体上游超时根因未证，不归因模型判断、密钥或网络配置。无有效审查正文，不能补写第六项意见。
 闭批checkpoint d20b1d132e5e6a4220801906870ea6ce9a82d7c08fb180f7f1d73230f9951eb5；原seal SHA e025286f679928b5e9f873ee3022237f53ef0b91bdff839660e8dae39f0ac27a。run外control/closed-replay.json记录严格只读回放和库存未变。
 已得到正确稿不误改、单事实错误检出及修订预览、职责分离的开发证据；未得到缺口检出、完整六审、fresh或稳定率证据。保留所有既有失败，GLM采用与8E未完成状态不变。
+
+
+## 2026-10-19 第六项补测准备（未授权、未发送）
+
+用户要求回到第六项继续。原六调用批已封存，不能重开或修改；已准备同材料/同HEAD/同模型的单独 `s03-completion` 补测提案：`C:/Users/33502/Documents/Agent/outputs/riftcoach-semantic-six-20261019-control/s03-completion-supplement-proposal.json`，SHA256 `7a5265bab03d86e170b8b86ca0f291fa9794e205af20b325bff9275e400777c8`。
+补测最多1次，预留80384 tokens，估价0.058368元；原524和80384未知预留保留，不重算。当前只完成材料/request/wire/HEAD/CI绑定，未创建新执行批、未读取Key、未发送。启动需要用户对这一次新增付费调用明确授权。
