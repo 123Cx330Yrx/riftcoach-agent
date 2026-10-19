@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "首项s01-facts及双审导入完成，待用户本机输入Key发送s01-completion；automation PAUSED。"
+pause_reason: "首稿两职责及组合预览双审完成，待用户本机输入Key发送s02-facts；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,18 +14,18 @@ pause_reason: "首项s01-facts及双审导入完成，待用户本机输入Key�
 
 ## 当前行动
 
-2026-10-19 实测：用户已授权本批最多六次。s01-facts完成1次HTTP200、25593已知tokens、122.843秒；主审全文核源接受，独立作者真实native及原件字节核验/导入通过。当前ready，next=s01-completion，余5次、未知0、未审0；未发布、未授资格。
+2026-10-19 实测：首稿s01两职责及实际组合预览均获主审/独立审查接受，真实native和作者原件导入通过。累计2次HTTP、42583已知tokens、147.25秒；当前ready，next=s02-facts，余4次、未知0、未审0。双pass/零补丁，整稿未改，不算纠错或fresh成功；未发布、未授资格。
 
-下一动作：用户执行已绑定最新checkpoint 204f216fbbff329485f9635552bab48b0edb9ba5c70a3de2b6a050406da61669的send-s01-completion.ps1，在本机隐藏输入Key；只发第二项，返回后逐项审查。既有授权有效期不延长，不重跑首项。
+下一动作：用户执行绑定checkpoint d5340646fcea10917ccf191b507c271efc88eed420a171035099d552781f179b的send-s02-facts.ps1，本机隐藏输入Key，只发第三项；返回后核真实事实意见与全部补丁。既有六次授权不延长、不重发。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
-本批三稿使用熟悉五局来源，非holdout；首项事实审查通过不等于完成度、编辑或可靠率通过。
+本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
 准备、行政预检及既有失败见`docs/plans/2026-10-18-reviewer-semantic-execution.md`。
 实际结果见`data/evaluation/results/reviewer_semantic_live_20261019.json`。
 
 旧r01/r02只作开发回归。撤回仅凭other否定r02正确检出的依据；首次r01误报和原正对照前提失效保持。
 旧10HTTP、96307已知tokens/4次未知、completion真实输出0及所有封存/分歧保持，不拼资格。
-本轮已有首项真实模型及native业务审查，尚无产品采用证明；第三方上游身份未证，GLM采用不变。
+本轮已有首稿两项真实模型及native业务审查，尚无产品采用证明；第三方上游身份未证，GLM采用不变。
 原backend为封存位置，主树前端保持。automation PAUSED、发布关闭、8E未完成；
 同版本15、自然Coach/Training、四块联动、前端头像审美、Memory、身份运维、两树整合、独立评估与学习均保持。
 本地修复历史见`docs/plans/2026-10-18-reviewer-route-recovery.md`。
