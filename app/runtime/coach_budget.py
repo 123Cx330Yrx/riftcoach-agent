@@ -43,6 +43,23 @@ class CoachBudgetedProvider:
         return True
 
     def chat(self, request):
+        try:
+            return self._chat_once(request)
+        except ProviderError as error:
+            # Recovery is opt-in to this exact candidate. Every attempt still
+            # passes through observation, reservations and the shared budget.
+            from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
+            if self.contract is not sol_contract:
+                raise
+            delegate = self.provider._delegate if isinstance(self.provider, ObservedLLMProvider) else self.provider
+            issued = getattr(self, '_last_issued', None)
+            if (issued is None or self.calls >= self.contract.descriptor()['max_calls']
+                    or not delegate.prepare_retry(error, issued)):
+                raise
+            self.stopped = False
+            return self._chat_once(request)
+
+    def _chat_once(self, request):
         from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
         limits = self.contract.descriptor()
         remaining = limits["execution_timeout_s"] - (self.clock() - self.started)
@@ -65,6 +82,7 @@ class CoachBudgetedProvider:
         except Exception:
             self.stopped = True
             raise
+        self._last_issued = request
         self.calls += 1
         self.reserved_tokens += reservation
         try:
@@ -78,6 +96,15 @@ class CoachBudgetedProvider:
                 self.calls -= 1
                 self.reserved_tokens -= reservation
                 raise
+            if self.contract.version == '1.6.1':
+                from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
+                if self.contract is sol_contract:
+                    delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
+                    known = delegate.failure_usage(error, request)
+                    if known is not None:
+                        self.tokens += known
+                        self.reserved_tokens -= reservation
+                        raise
             # A trusted transport/router may reject the receipt after receiving
             # a complete response. Only that response's matching actual identity
             # can settle the reservation; usage from another model stays unknown.

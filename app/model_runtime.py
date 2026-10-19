@@ -147,6 +147,7 @@ class CandidateEvaluationRequestPolicy:
         object.__setattr__(self, "version", self.version.strip())
 
         capacity_policy = (self.policy_id, self.version, self.provider_id, self.model) in (
+            ("natural-duty-direct-patch-time300-v1", "2.0.0", "riftcoach-mixed", "flash-generation-tianjige-sol-review-v1"),
             # Explicit six-call candidate; default selection remains unchanged.
             ("natural-duty-direct-patch-time300-v1", "1.0.0", "zhipu", "flash-generation-glm53-dual-duty-patch-v1"),
             ("glm-5.3-flash-coach-high-32768", "1.0.0", "zhipu", "glm-5.3-flash"),

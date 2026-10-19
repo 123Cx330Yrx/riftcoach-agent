@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "1c7dfaa2f33bfe71039e6abdceeda9f6fc5a81a81aebf40c2ea38bc6b9b46a1b"
+      "sha256": "645eebebea518516a27536d95039e60d656c536d580b1e07419a46c9496bda1b"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "7e6326e1cdf428082edd0f360ea31cbfd32df48f0218a6b95f2d74c3273cef46"
+      "sha256": "5b1cd3476dc49fb9197224e9cd592abe38c464772ac35f6dfed4dccc7abc12a7"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -262,12 +262,12 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "4c3a7587ecfa3b31393dca6cc3bd94a536958ab507a1707081d43e4ebca66a03"
+      "sha256": "022a964dd62980b3dd934fabae81e165ec0a41087047afb51a85d92001e69b6e"
     },
     {
       "component_id": "app.model_runtime",
       "source": "app/model_runtime.py",
-      "sha256": "d4b8fc440c9ed33ae646a2054b930b59e278920d139e77f1760fcec95499f836"
+      "sha256": "4c1698822995fe2c25ded49a3a809cc1cbb67aa68668e905cf8ee3cfb4ed51db"
     },
     {
       "component_id": "app.evaluation.natural_duty_contract",
@@ -277,12 +277,12 @@
     {
       "component_id": "app.evaluation.natural_duty_workflow",
       "source": "app/evaluation/natural_duty_workflow.py",
-      "sha256": "a55b7eb585132380af83d9d0e28e4f624559ae3274347a22cf6f2429a7e34260"
+      "sha256": "bc981df13dbbb2acd1015a918f182fe313b9e6f1f15c0788d3e911801b39a396"
     },
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "57f39ec7cc18951f4e58936c4dffd8494add442a842ea83f46b74a7fa9ae205d"
+      "sha256": "80afd8c71ee4196d52ffd545d52dbea4a6a6c5931c22f4a3bb61d19ddd8e1762"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -345,5 +345,5 @@
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "e678102956edfca5394dc4c44483a8a24839b5a3f6703dcd7c21d0ae08f7f0d2"
+  "program_sha256": "a7bf9216dc3c0f7bfd3b4ba107a9abe772a39c783b6668e3f63b7786f2eb5336"
 }

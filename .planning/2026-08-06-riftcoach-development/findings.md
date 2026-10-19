@@ -1,3 +1,8 @@
+## 2026-10-19 超时恢复与混合身份
+
+Sol固定筛选worker不能直接消费自然动态稿；新增精确context重建校验，未删旧校验或把Sol标为GLM。真实应用trace需显式混合provider合同和统一价格表ID。Flash的stream_deadline只有result=deadline才证明监督回收成功；unreaped/cleanup_failed不可重试。Sol只恢复已回收的明确超时，SDK重试保持0；任务库存被改、鉴权/结构错误或预算不足均不再发送。
+共享预算保留失败未知预留；已知失败用量独立结算，不伪造ChatResponse。恢复增加一次实际尝试，不增加逻辑职责数，不跳fresh。断电重启后的恢复尚未实现，本轮离线证据限同进程。
+
 ## 2026-10-18 六审执行提案与控制层接线
 
 真实worker返回已被nonstream适配器剥离调用ID，旧batch要求ID导致合法输出拒绝；按模式区分并核完整response_contract观测后通过。成对预览审查使用kind=edit，但既有binding.stage必须revision，不能混用；全文哈希取实际assembled_report_sha256。两处均在离线整链暴露并修正，不消耗付费请求。

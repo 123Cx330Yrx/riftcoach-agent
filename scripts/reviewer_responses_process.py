@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def response_contract(mode):
     if mode == 'stream':
         return build_wire, collect
-    if mode == 'nonstream-tool-v1':
+    if mode in ('nonstream-tool-v1', 'natural-sol-v1'):
         from scripts import reviewer_responses_nonstream as nonstream
         return nonstream.build_wire, nonstream.collect
     raise ValueError('response_mode_invalid')
@@ -57,7 +57,7 @@ def valid_saved_usage(value):
 
 
 def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
-             timeout_s=300, command=None, response_mode='stream'):
+             timeout_s=300, command=None, response_mode='stream', validation_context=None):
     """Explicit caller credential is passed by stdin, never argv or a file.
 
     A directory is a create-only single-call claim, not a batch retry token.
@@ -69,6 +69,11 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     if not isinstance(profile, Profile):
         raise ValueError('profile_required')
     make_wire, _ = response_contract(response_mode)
+    if response_mode == 'natural-sol-v1':
+        from app.evaluation.sol_natural_contract import validate_business
+        validate_business(business, validation_context)
+    elif validation_context is not None:
+        raise ValueError('unexpected_validation_context')
     if response_mode != 'stream' and profile.route != 'proxy-12000':
         raise ValueError('nonstream_explicit_proxy_required')
     wire = make_wire(business)
@@ -77,6 +82,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
         raise ValueError('research_output_must_be_outside_runs')
     directory.mkdir(parents=True, exist_ok=False)
     write_json(directory/'request.json', business)
+    if validation_context is not None:
+        write_json(directory/'validation-context.json', validation_context)
     saved_profile = dict(**asdict(profile), reasoning_effort='high',
         api='responses', max_output_tokens=wire['max_output_tokens'], max_retries=0, timeout_s=timeout_s,
         group_verified=False, upstream_identity_verified=False)
@@ -96,7 +103,7 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
             reaped = False
             data = json.dumps(dict(business=business, profile=asdict(profile), api_key=api_key,
                 directory=str(directory), timeout_s=timeout_s,
-                response_mode=response_mode), ensure_ascii=True).encode('utf-8')
+                response_mode=response_mode, validation_context=validation_context), ensure_ascii=True).encode('utf-8')
 
             def send_input():
                 try:
@@ -187,6 +194,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
         group_verified=False, upstream_identity_verified=False, qualified=False)
     if response_mode != 'stream':
         receipt['response_mode'] = response_mode
+    if validation_context is not None:
+        receipt['validation_context_sha256'] = digest(validation_context)
     try:
         write_json(directory/'receipt.json', receipt)
     except Exception:
@@ -224,7 +233,11 @@ def worker():
     directory = Path(payload['directory'])
     result = dict(ok=False, code='worker_preflight_failed', usage=None, public_tool_call=None)
     try:
-        validate = screen_validator(payload['business'], response_mode=payload.get('response_mode', 'stream'))
+        if payload.get('response_mode') == 'natural-sol-v1':
+            from app.evaluation.sol_natural_contract import validate_business
+            validate = validate_business(payload['business'], payload['validation_context'])
+        else:
+            validate = screen_validator(payload['business'], response_mode=payload.get('response_mode', 'stream'))
         _, collect_response = response_contract(payload.get('response_mode', 'stream'))
         result = collect_response(payload['business'], profile=Profile(**payload['profile']),
             api_key=payload['api_key'], observation_dir=directory/'observation',

@@ -18,7 +18,9 @@ from .natural_duty_contract import VERSION, make_request, request_sha
 
 
 class NaturalDutyWorkflow:
-    def __init__(self, send, *, journal_root):
+    def __init__(self, send, *, journal_root, contract_module=None):
+        from app.evaluation import natural_duty_contract
+        self.contract_module = contract_module or natural_duty_contract
         self.send, self.journal_root = send, Path(journal_root)
         self.state = 'initial'
         self.outcome = None
@@ -33,14 +35,14 @@ class NaturalDutyWorkflow:
         if self.state == 'terminal':
             raise ValueError('natural_duty_already_terminal')
         self.state, self.outcome = 'terminal', outcome
-        self.record('outcome', dict(version=VERSION, outcome=outcome,
+        self.record('outcome', dict(version=self.contract_module.VERSION, outcome=outcome,
             production_admitted=False, publication_allowed=False, host_semantics_verified=False,
             calls=self.send.provider.calls, known_tokens=self.send.provider.tokens,
             unknown_reserved_tokens=self.send.provider.reserved_tokens))
         return EvaluationResult(score=0, verdict=EvaluationVerdict.FAIL, summary=outcome)
 
     def _review(self, inputs, name, stage):
-        prepared = make_request(inputs, name, stage)
+        prepared = self.contract_module.make_request(inputs, name, stage)
         exchange = self.send(prepared)
         if not isinstance(exchange, Exchange):
             raise ValueError('natural_duty_exchange_missing')
@@ -50,16 +52,16 @@ class NaturalDutyWorkflow:
             raise ValueError('natural_duty_budget_binding')
         if (not 0 < issued.timeout_s <= prepared.timeout_s
                 or replace(issued, metadata=metadata, timeout_s=prepared.timeout_s) != prepared
-                or exchange.receipt_request_sha256 != request_sha(issued)
-                or (response.provider, response.model) != ('zhipu', 'glm-5.3')
+                or exchange.receipt_request_sha256 != self.contract_module.request_sha(issued)
+                or (response.provider, response.model) != self.contract_module.request_identity(issued)
                 or response.finish_reason != 'tool_calls' or (response.content or '').strip()
                 or len(response.tool_calls) != 1 or response.tool_calls[0].name != 'submit_report_review'):
             raise ValueError('natural_duty_exchange_invalid')
         raw = compact(dict(response.tool_calls[0].arguments))
         # Raw public opinions are business evidence, never private reasoning.
-        self.record(name+'-'+stage, dict(version=VERSION, raw=raw,
+        self.record(name+'-'+stage, dict(version=self.contract_module.VERSION, raw=raw,
             input_sha256=digest(inputs.data_json), report_sha256=digest(inputs.source.report),
-            prepared_request_sha256=request_sha(prepared), issued_request_sha256=request_sha(issued),
+            prepared_request_sha256=self.contract_module.request_sha(prepared), issued_request_sha256=self.contract_module.request_sha(issued),
             receipt_request_sha256=exchange.receipt_request_sha256,
             actual_model=response.model, usage=asdict(response.usage)))
         value = direct.validate(raw, inputs, name) if stage == 'initial' else duty.validate(raw, inputs, name)
@@ -97,12 +99,15 @@ class NaturalDutyWorkflow:
             budget = self.send.provider
             if budget.contract.descriptor()['max_calls'] - budget.calls < 2:
                 return self.stop('insufficient_fresh_call_slots')
+            if (self.contract_module.VERSION == 'natural-flash-sol-development-v1'
+                    and budget.tokens + budget.reserved_tokens + 2 * 80384 > budget.contract.descriptor()['total_tokens']):
+                return self.stop('insufficient_fresh_token_budget')
             self.assembly = direct.preview(inputs, self.proposals)
             self.expected_fresh = report_inputs(inputs, self.assembly.report)
             self.record('preview', dict(report=self.assembly.report, journal=self.assembly.journal,
-                candidate_version=VERSION, structural_checks_only=True,
+                candidate_version=self.contract_module.VERSION, structural_checks_only=True,
                 semantic_compatibility_verified=False,
-                actual_fresh_requests={n:request_sha(make_request(self.expected_fresh,n,'fresh')) for n in duty.DUTIES}))
+                actual_fresh_requests={n:self.contract_module.request_sha(self.contract_module.make_request(self.expected_fresh,n,'fresh')) for n in duty.DUTIES}))
             issues = tuple(i.model_dump(mode='json') for v in values for i in v.issues)
             self.initial_result = EvaluationResult(score=min(v.score for v in values),
                 verdict=EvaluationVerdict.NEEDS_REVISION, issues=issues,
@@ -126,13 +131,13 @@ class NaturalDutyWorkflow:
                     or request.report != self.original.source.report):
                 raise ValueError('natural_duty_revision_binding')
             budget = self.send.provider
-            if budget.stopped or budget.calls > 4:
+            if budget.stopped or budget.calls > budget.contract.descriptor()['max_calls'] - 2:
                 raise ValueError('natural_duty_fresh_slots_lost')
-            if budget.clock()-budget.started >= 900:
+            if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:
                 raise ProviderResponseError(provider='zhipu', code='timeout')
             if direct.preview(self.original, self.proposals) != self.assembly:
                 raise ValueError('natural_duty_preview_changed')
-            self.record('application', dict(version=VERSION,
+            self.record('application', dict(version=self.contract_module.VERSION,
                 report_sha256=digest(self.assembly.report), original_report_sha256=digest(request.report),
                 deterministic_application=True, host_semantics_verified=False,
                 production_admitted=False))

@@ -586,7 +586,7 @@ class RuntimeTrace(RuntimeContractModel):
         role_descriptor = None
         snapshot = self.identity.coach_contract
         if snapshot is not None and (
-            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1"}
+            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1", "natural-flash-sol-development-v1"}
             or snapshot.version in {"1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5"}
         ):
             # Only this exact opt-in contract permits per-request model roles.
@@ -598,6 +598,9 @@ class RuntimeTrace(RuntimeContractModel):
             if snapshot.contract_id == 'natural-duty-direct-patch-time300-v1':
                 from app.evaluation.natural_duty_contract import CONTRACT as natural_duty
                 candidates += (natural_duty,)
+            if snapshot.contract_id == 'natural-flash-sol-development-v1':
+                from app.evaluation.sol_natural_contract import CONTRACT as sol_natural
+                candidates += (sol_natural,)
             role_contract = next((contract for contract in
                 candidates
                 if snapshot == contract.snapshot()), None)
@@ -608,7 +611,7 @@ class RuntimeTrace(RuntimeContractModel):
                     or self.identity.prompt_profile_version != role_descriptor['program_version']):
                 raise ValueError("trace role program identity mismatch")
             if (
-                self.identity.provider_id != "zhipu"
+                self.identity.provider_id != role_descriptor.get("provider_id", "zhipu")
                 or self.identity.provider_model != role_descriptor["model"]
             ):
                 raise ValueError("trace role composition identity mismatch")
