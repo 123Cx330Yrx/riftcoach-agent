@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "第三项事实检错及补丁双审完成，待用户本机输入Key发送s02-completion；automation PAUSED。"
+pause_reason: "第二稿两职责及修订预览双审完成，待用户本机输入Key发送s03-facts；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,9 +14,9 @@ pause_reason: "第三项事实检错及补丁双审完成，待用户本机输�
 
 ## 当前行动
 
-2026-10-19 实测：已完成3次调用及逐项双审。s02-facts正确检出block16全称比较错误，解释、来源与唯一逐字补丁获主审/独立审查接受并原生导入；尚未应用或组合预览。累计66796已知tokens、213.125秒，未知0、未审0，余3次。当前ready，next=s02-completion；未发布、未授资格。
+2026-10-19 实测：已完成4次调用及逐项双审，s02两职责和实际组合预览双审接受并原生导入。预览仅替换block16，真实全称错误已修正，其余正文及身份保留；这不是生产应用或fresh模型复评。累计87922已知tokens、236.078秒，未知0、未审0，余2次。当前ready，next=s03-facts；未发布、未授资格。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
@@ -25,7 +25,7 @@ pause_reason: "第三项事实检错及补丁双审完成，待用户本机输�
 
 旧r01/r02只作开发回归。撤回仅凭other否定r02正确检出的依据；首次r01误报和原正对照前提失效保持。
 旧10HTTP、96307已知tokens/4次未知、completion真实输出0及所有封存/分歧保持，不拼资格。
-本轮已有三项真实模型及native业务审查，尚无产品采用证明；第三方上游身份未证，GLM采用不变。
+本轮已有四项真实模型及native业务审查，尚无产品采用证明；第三方上游身份未证，GLM采用不变。
 原backend为封存位置，主树前端保持。automation PAUSED、发布关闭、8E未完成；
 同版本15、自然Coach/Training、四块联动、前端头像审美、Memory、身份运维、两树整合、独立评估与学习均保持。
 本地修复历史见`docs/plans/2026-10-18-reviewer-route-recovery.md`。
@@ -66,7 +66,7 @@ pause_reason: "第三项事实检错及补丁双审完成，待用户本机输�
 下一发送与关闭重读历史原件。离线接线/故障检查见reviewer_profile_batch_offline_20261015.json。
 这仍不是付费launcher：账号分组/安全凭证、真实网络、具体费用授权、精确clean HEAD公共CI和
 未读预期标签的独立审查上下文还需实际绑定，不能用测试callback代替。selected_execution_profile仍null。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 不再增加无关试验框架，不复用旧授权、补发或把断网通过称模型通过。
 比较不自动授权迁移/付费，双稿筛选不授自然任务/原15资格。旧批关闭，automation保持PAUSED，8E未完成。
 Docker重启复发已备份重建两运行目录，原容器/卷、15432、SQL和迁移恢复；永久上游修复未证。
@@ -313,7 +313,7 @@ H5输出82/needs_revision；主审与原独立主体真实全文审查均拒绝w
 
 主线仍是完整来源支持的正确报告及修法进入真实Agent消费。本次获得真错检出后的错误修法反例；没有证据支持调整网络、温度或600秒时限。明确cwd/Python已实际生效，但read/help路径探针和不写作者文件的离线替身没有验证完整审查到封存链路。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 
 本批关闭不补签、不重开、不删额外原件以通过封存。V2未认证、S8无双审、旧温度批strict seal缺口与前TCP批unknown1各自保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格；新增资格0。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与学习仍未完成。
 
@@ -340,7 +340,7 @@ H5输出82/needs_revision；主审与原独立主体真实全文审查均拒绝w
 
 未发送的H5/S8两稿后续包已固定：[两稿方案](plans/2026-10-12-full-report-remaining-initial.md)，plan `ca02d0de57430af4bd7cf64b66ab730ad231e9782bf9e3e0487ee016f2de394a`。原V2不在包中，request/material与旧准备包逐字节一致。实际observe已接入本入口私有的绝对cwd/Python dispatch，保留原checkpoint与artifact门、不改旧helper。19项相关离线检查通过（原14/新5），26+14+146旧原件和冻结源码保持，原主体当前native读取预检通过。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 
 前一TCP超时批unknown1/费用未知继续单列；旧温度批strict seal缺口保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格。temperature0.2未采用；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习仍未完成。
 
@@ -362,7 +362,7 @@ H5输出82/needs_revision；主审与原独立主体真实全文审查均拒绝w
 
 后续三稿包已完成可执行准备：[网络切换后方案](plans/2026-10-12-full-report-network-followup.md)，plan `fb573b77b24b882ef917569781a7bb0c5d616cceb2a10c28da6eda4453758c6a`。逐字节核三稿request/material与旧准备包一致，原builder/runner和冻结源码未改；新run/授权身份固定旧失败及网络切换证据，不能使用旧授权。18项相关离线检查通过，14+146份旧原件SHA保持。原独立主体当前native读取通路预检通过，不保证将来可用；无新Agent/业务派发/模型调用。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 
 temperature=0.2未达到采用门，产品默认入口未切换。历史2/15、3/15、remaining11、完整15前段/后8/后4与教学对照各自独立；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习未完成。
 
@@ -387,7 +387,7 @@ temperature=0.2未达到采用门，产品默认入口未切换。历史2/15、3
 
 准备阶段用指定Codex0.153.4实读现有主/独立身份与native-final通路通过；旧dispatch正文不可读（current_input_readable=false），已采用FINAL_POLICY下当前终答通路可用，不承诺未来可用，也不代替发送前即时预检。未派新Agent或业务审查；Provider0/业务submit0，新run不存在。24e2af1b/CI38222204055实查打包、DB、web通过，四pytest分片仍运行，查询EOF不计CI失败。当前适配器尚无独立工程Agent复核，离线替身不是真实质量证据。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 
 
 temperature=0.2未达到采用门，产品默认入口未切换。新资格0；历史2/15、3/15、remaining11、完整15前段/后8/后4及教学对照各自保留。正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习继续未完成。automation保持PAUSED。
@@ -573,7 +573,7 @@ Worker核验已补：7新真实线程+候选factory/预算反例及42既有检�
 网关配置已为Responses，未定位字段丢失层或具体根因，不归因429/401/503或加密单项。
 停止同类试发，不改native门、网关配置或用普通CLI冒充独立身份。30材料SHA再核一致；
 自动任务实读PAUSED，诊断与恢复见2026-10-10-full15-native-host-path-diagnostic。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 同checkpoint实读预检，再冻结完整15源/请求/身份/计划SHA及具体授权。
 execution_ready=false，paid_plan_frozen=false，无新run/Provider/已授权付费方案。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
@@ -646,7 +646,7 @@ Summary文件SHA与Evidence规范化SHA分别核验；服务器pending候选、�
 旧run/报告/请求/评级不回写；模型提案独立写事务不在本轮扩大。
 早期死亡nullable整链6例及相邻后端/前端检查保留；6c9f1f67公共DB/packaging/四shards成功，
 web仍运行，全CI尚未确认。此次新接线需自己提交的公共CI，不能借用前一提交。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 补最短产品断点；随后回到共同语义修复与同版本资格/自然消费的原依赖，不另开付费批。
 模型遗漏block的输入/政策因果和整稿语义未证；工程代码复核/预检与20/41项重叠检查不当业务证据。
 真实全文双审/fresh门保留；泛指不补全称、措辞不升级事实门，历史初评不重签或重买。
@@ -675,7 +675,7 @@ web仍运行，全CI尚未确认。此次新接线需自己提交的公共CI，�
 具体实现/边界/证据：docs/plans/2026-10-09-checkpoint-tail-diagnostic.md；
 冻结及readiness见data/evaluation/results/golden_document_checkpoint_tails_*_20261009.json。
 本轮Provider0、未建业务run/等待器、execution_authorized=false，接续保持PAUSED。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 clean exact HEAD，单次首次执行；不可重开旧批或借其余量，不自动触发完整15。
 最多Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒，保守估价9.4347264元非硬封顶；
 有效语义拒绝停该案继续独立案，身份/来源/native/checkpoint/预算等硬故障停全批，无重试。
@@ -700,7 +700,7 @@ claim-scope:3均完成真实初评→必要Flash编辑→fresh96/pass；三个�
 为新身份3/15 validated_partial，不能与历史严格2/15拼接。自动接续已暂停，不重开本批。
 完整规则、表格和原文确实发出；同引言、同来源而后文不同的结果不能证明表示修复可靠。
 结果/分歧/用量/Host合同插曲：docs/plans/2026-10-08-document-original15-result.md。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 裁决最小含义→问题分流机制及独立成批初评收集路径。诊断和资格验收分开，先集中暴露
 失败、集中修复，再做同版本完整资格；当前无新付费授权或runner，不原样重跑十五例。
 默认产品合同/模型/预算/质量门保持，新身份完整原15与自然产品消费未证，8E未完成。
@@ -726,7 +726,7 @@ strict关闭封存均用新显式1.5.6未准入合同/身份；默认产品resol
 详见docs/plans/2026-10-08-document-original15-integration.md和对应preparation JSON。
 上一三例真实完整初评3/3通过证据保留；本轮Provider0、未启动付费等待器、接续保持暂停。
 历史原15仍严格2/15；新呈现15例真实编辑/fresh、900秒可达性与自然产品消费未证，8E未完成。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 首次执行；首失败即停，不重试/重开/旧资格转授。新身份没有已获付费权限。
 自然Coach及四块联动、本人Training、前端审美/必要重做/头像、journal/Worker/DB/API/UI、
 Memory、身份运维、两树整合与学习仍沿原活动计划依赖保留。
@@ -742,7 +742,7 @@ Memory、身份运维、两树整合与学习仍沿原活动计划依赖保留�
 结果、限制和下一工作卡：docs/plans/2026-10-08-document-review-result.md。
 这是核心混合反例在新呈现本次初评中未复发的实证，支持进入同版本整链验证准备；不证明JSON
 根因或通用可靠率，编辑/fresh未由此批验证，标签结构风险保留。历史原15仍2/15，8E未完成。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 回归并补实际缺口、完成独立代码复核和冻结准备；默认生产质量门不变，不直接注册已通过产品。
 本批调用已完成，自动接续暂停，不另开付费批；后续新增调用需具体冻结及对应新授权。
 自然Coach与四块联动、本人Training、前端审美/必要重做/头像、journal/Worker/DB/API/UI、
@@ -758,7 +758,7 @@ Memory、身份运维、两树整合与学习保持原活动依赖。
 57项源码冻结，真实原生主体预检及计划精确重建通过。响应均为替身，无新Provider或语义改善证据。
 冻结SHA bdb678d80a8568443ce92d01ec3a636542a4ebe6f5c6ea0b5ecf6d63a1f376a6。
 具体执行、来源比较、结构风险及失败决策：docs/plans/2026-10-08-document-review-diagnostic.md。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 未缓存估价4.288512元授权；最终提交同CI全绿和执行前真实身份预检后才首次执行。
 首语义/来源/身份/传输/预算/双审失败即停、不重试；未启动等待器。标签打断列表分组风险
 保持，完整全文审查所有新误读。三例全过也只是窄可行性信号，不证明JSON根因或可靠率。
@@ -777,7 +777,7 @@ Memory、身份运维、两树整合与学习保持原活动依赖。
 三份依赖manifest组件及program摘要已同步；相关53项、后续27项、文档/应用16项及
 三profile21项回归通过（存在重叠，不相加当独立覆盖）。核心误报未修好，Provider0。
 详情：docs/plans/2026-10-08-document-view-feasibility.md。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 共享预算拒绝；不加审计字段/第六调用、不放宽默认router、不创建付费runner。
 历史原15仍2/15，不能自动转授优化后源码身份；旧批均关闭，8E未完成。
 自然Coach及四块联动、本人Training、前端审美/必要重做/头像、journal/Worker/DB/API/UI、
@@ -790,7 +790,7 @@ Memory、身份运维、两树整合与学习保持原活动依赖。
 不能据此继续付费扩尾链：它不修复此前GLM初评误报，Host筛掉误报也不是自主产品能力。
 新增只读审计scripts/audit_editor_responsibility.py及可复现摘要；未改产品代码/模型/质量门，
 无新Provider。具体取舍见docs/plans/2026-10-08-editor-responsibility-audit.md。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 筛选能实际改变失败路径且保留完整初评/fresh及五调用出口的机制；没有满足条件的方案
 就不建runner、不准备付费，不重新包装旧编辑、近义提示或人工删issue。
 上一混合尾链仍关闭，1调用11894tokens；原15严格2/15、8E未完成，自动接续保持暂停。
@@ -806,7 +806,7 @@ Flash正确修复block6补刀真错并保留block4全样本早死原义，但rea
 独立审查首次遗漏reason，复核纠正后两份真实final均保留；22份原件摘要和公开白名单已封存。
 关机影响的是付费前CI等待；恢复核清尚未启动后才首次执行，不是本次语义失败原因。自动接续已暂停。
 结果及证据入口：docs/plans/2026-10-08-mixed-review-tail-result.md。原15仍严格2/15，8E未完成。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 的职责差异及历史反证，再决定机制取舍；不把旧超时当语义失败，不把无旧意见当已有效的新方案。
 不重开关闭批、不追加近义提示或直接重跑15；没有区分性机制不准备付费变体，当前无新批授权。
 自然Coach、当前组合Worker/DB/API/UI及journal持久化仍待完成；四块联动、本人Training、
@@ -821,7 +821,7 @@ actionable意见原样输入当前编辑器，再普通fresh完整审查，验�
 新入口20项和相邻41项离线检查通过；独立复核发现的历史请求摘要混用及依赖冻结遗漏已修，
 20项再通过、补丁复核无阻断。这些只证明工程控制流；无新Provider，默认产品和旧封存不变。
 本轮真实只读身份预检通过，既有native-final证明策略保持；冻结方案f0122c92…efda211。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 600活动秒/约1.57元授权；同提交公共CI及执行前真实身份预检全过才执行，不借旧授权。
 具体输入、成功/失败决策及边界见docs/plans/2026-10-08-mixed-review-tail-diagnostic.md。
 自然Coach实测、当前组合Worker/DB/API/UI及journal持久化仍待完成；四块联动、本人Training、
@@ -835,7 +835,7 @@ Agent知识工具、角色路由、共享预算、初评/编辑/fresh和发布�
 一致性，6项重跑通过。此输入完整预留361506/401920 tokens、5次；坏编辑、终评拒绝、
 恢复耗尽预算均拒绝发布。响应均为脚本替身；未修改生产政策或注册新产品，未发付费请求。
 原15仍2/15；最新真实批仅block6问题清单正确但自选audit漏项，批次关闭及不采用决定保持。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 形成可区分技术选择的最小比较；没有因果证据则不改提示、不增字段或盲跑原15。
 完整结果与失败边界见docs/plans/2026-10-08-review-bound-coach-integration.md。
 自然Coach实测、当前组合Worker/DB/API/UI及journal持久化未由本测试证明；四块联动、本人
@@ -851,7 +851,7 @@ Training、前端审美/必要重做/头像、Memory、身份运维、两树整�
 主工作区46项tracked修改、137项untracked及本地壁纸研究素材、三批原件/需求资料已做本地恢复包；
 未覆盖主树、未提交其脏文件，实际尚未转移电脑。包不含密钥/DB/Codex宿主历史，具体恢复边界
 见docs/plans/2026-10-08-machine-transfer-handoff.md；新机器不要把旧worktree指针当独立仓库。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 提出不依赖自选audit覆盖的可执行任务合同和负对照；复用现有能力，遵守ADR0110/0111五调用
 及业务标准，不新增未准备的付费实验、不借单次改善授资格。自然Coach/真实产品与8E仍未完成。
 资格回放性能采样已定位重复投影，尚未改代码或删测试；前端审美/必要重做/头像、四块联动、
@@ -873,7 +873,7 @@ Flash仅修正必要句，精确成稿GLM96/pass。五个阶段均有真实主�
 尚不能区分随机波动与另处真错对判断的影响，不能宣称模型内部根因或可靠修法已被证明。
 已复用现有previous_raw/issue_resolutions生成实际混合例及明确中单反例，离线映射检查与独立复核通过；
 它仍是完整重评，不是窄裁决，不能把人工构造输出当模型正确。没有新提示或schema、没有额外Provider。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 新方案尚未冻结执行，旧批剩余额度不转授；新付费需具体冻结后另获授权。
 当前默认产品不变，8E未完成。自然Coach、当前组合Worker/DB/API/Workbench、四块联动、
 本人Training、审美/必要重做/英雄头像、Memory、身份运维、两树整合与学习沿原依赖保留。
@@ -893,7 +893,7 @@ Flash仅修正必要句，精确成稿GLM96/pass。五个阶段均有真实主�
 冻结golden_review_bound_original15_preparation_20261008.json，方案SHA b2eb550ddc6766a26e98a1f7e0af8d404495af9733718e29d2d7ee6b605261b7。
 新增完整15最多35调用（Flash10、GLM25）、3386880tokens、10500活动秒、86400host秒；
 保守未缓存估价37.167104元，不是计费硬封顶。首失败停、不重试、不借旧1/15或诊断初评。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 本轮Provider0，旧三阶段授权已用完。原15真实质量、自然Coach、当前组合Worker/DB/API/
 Workbench和8E仍未完成；四块联动、本人Training、审美/必要重做/头像、Memory、身份运维、
 两树整合与学习沿原依赖保留。详情见docs/plans/2026-10-08-review-bound-original15-integration.md。
@@ -918,7 +918,7 @@ Workbench和8E仍未完成；四块联动、本人Training、审美/必要重做
 封存初次隐私检查因request中的reasoning_content=null过严拒绝，未写出文件；核实为空后
 保留请求原结构，实际response只用公开字段白名单，未导出私有推理正文。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 先验证初评→一次必要修订→精确成稿fresh及原始回执消费，保留失败停止、身份和预算约束；
 本批三次调用已全部用完，不以诊断成功或旧授权启动新的付费批。不继续展开schema/加字段
 提醒碰运气，也不将本次两个固定输入冒充完整原15。具体接线及证据见
@@ -958,7 +958,7 @@ list直接比较，已按JSON语义修正，不改失败判定。真实只读身
 冻结golden_review_bound_edit_preparation_20261001.json，SHA 359ce034817c288bef02a812696b46b1264362d131c4a2b74c63f9544bb45c66。
 新增3调用/290304tokens/900活动秒/1.7154048元；含旧两笔累计最多5调用/312989tokens/
 936秒（向上取整）/1.7353548元。超过原3次总授权，当前未执行、Provider0。
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 完整fresh→逐字正确保持，每阶段真实双审；首失败停，不重试、不授原15/产品资格。
 当前适配器未注册；历史1/15不授新方案，完整原15、自然Coach及当前组合Worker/DB/API/
 Workbench、8E仍未完成。四块联动、本人Training、前端审美/必要重做/英雄头像、Memory、
@@ -984,7 +984,7 @@ GLM正确检出“辅助局将每一个指标均值都拉低”的事实错误�
 （首次90通过1个新增fixture失败，修fixture后续批14例通过）；此预检不授资格或保证未来派发。
 执行前HEAD 8ac9cab1的CI36735390662三项成功，仅证明旧提交；新增补丁公共CI另行跟踪。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 GLM的真实往返证明它可用。当前尚无已验证读取路径，不再开付费批碰运气；若需替代证据合同，
 先形成具体方案和影响评估，不能静默放宽或追认旧批。已停续批及原冻结保持只读。
 完整原15、自然Agent、当前组合真实Worker/DB/API/Workbench和8E仍未完成。四块联动、本人
@@ -1011,7 +1011,7 @@ SHA `435affe0828827d56e84f2c811567aca84fa16d530f30c8473d4859db9fdffa2`。
 仍在原35/3386880/10500授权内。新预留35.737600元，含父费35.929020元；非账单。
 宿主等待另列86400秒；原父批封存与真实身份回读已再次通过，独立Agent已响应。
 
-下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。
+下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。
 身份、传输或预算失败即停，不重试，不改提示/模型/high/1.5.5标准。当前续批Provider请求0。
 原15严格完成仍为1/15；完整原15、自然Agent、当前组合真实Worker/DB/API/Workbench和8E未完成。
 四块联动、本人Training、前端审美/必要重做/英雄头像、Memory、身份运维、两树整合及学习

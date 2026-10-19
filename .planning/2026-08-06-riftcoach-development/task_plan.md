@@ -11,7 +11,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-2026-10-19 实测：已完成3次调用及逐项双审。s02-facts正确检出block16全称比较错误，解释、来源与唯一逐字补丁获主审/独立审查接受并原生导入；尚未应用或组合预览。累计66796已知tokens、213.125秒，未知0、未审0，余3次。当前ready，next=s02-completion；未发布、未授资格。
+2026-10-19 实测：已完成4次调用及逐项双审，s02两职责和实际组合预览双审接受并原生导入。预览仅替换block16，真实全称错误已修正，其余正文及身份保留；这不是生产应用或fresh模型复评。累计87922已知tokens、236.078秒，未知0、未审0，余2次。当前ready，next=s03-facts；未发布、未授资格。
 
 ## Active Work Package
 
@@ -20,7 +20,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **证据：** data/evaluation/results/reviewer_semantic_live_20261019.json。
 **边界：** 最多六次、482304tokens/1800秒，零重试；熟悉来源非holdout，8E未完成。
 **失败分支：** 语义实错停止配置；协议/用量/观测故障停止且保留未知，不补发。
-**下一动作：用户执行绑定checkpoint 5695f401fb7c46a754ad0ba0997dbd444d1fb210082337709d07a19426b52f62的send-s02-completion.ps1，本机隐藏输入Key，只发第四项；返回后审原稿完成度，再审两份实际意见的组合预览。原六次授权不延长、不重发。**
+**下一动作：用户执行绑定checkpoint 11dabe050ba3b215eab7d2b696d8ff17cbbdb1de6af04dff99abf0ac0ebab2cf的send-s03-facts.ps1，本机隐藏输入Key，只发第五项；返回后审第三稿事实意见，再按原顺序完成最后一项与组合预览。六次授权不延长、不重发。**
 
 ## Dependencies and Follow-through
 
