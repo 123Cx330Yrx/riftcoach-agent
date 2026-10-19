@@ -58,3 +58,13 @@ CI证明是操作者保存的公开结果，SHA保证字节绑定，不能认证
 
 下一步绑定干净执行checkout（原目录未跟踪旧probe保留）、当前真实独立审查身份与原件/final预检，
 保存对应提交的公共CI证据，再向用户呈现本批费用授权。不能使用旧单次launcher或旧授权发送。
+
+## 2026-10-19 实际native预检结果
+
+8cdc9d2c对应CI39189896488全部成功；干净执行树D:/riftcoach-semantic-execution材料重建、CLI启动与治理检查通过。
+用户授权创建独立作者01a15237-eee1-7f01-889f-e54a3ea1fa0a。首次预检作者显式追加LF，字节门拒绝；原件/封存保持。
+新v2任务明确首次序列化不得附加末尾换行，作者自行写原件、重读checkpoint、check-answer并输出唯一final。
+真实ExactNativeGate导入及只读回放通过，库存快照先计算再写文件，避免旧自引用错误。
+后续每次派发须带同一序列化指令；不剪裁/重写作者内容。此行政例只核交付路径，未读业务标签，非语义质量。
+证据见data/evaluation/results/reviewer_semantic_native_preflight_20261019.json及其中Operator原件。
+六审计划已绑定原8cdc9d2c、当前作者和绝对路径；费用授权尚未给予，执行目录尚未创建，模型调用0。
