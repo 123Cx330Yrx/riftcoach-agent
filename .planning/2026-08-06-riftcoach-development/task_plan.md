@@ -11,16 +11,16 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-2026-10-19 本批已关闭：第六项s03-completion收到HTTP524，未得到语义结果，用量未知；不重试、不补发。共6次HTTP，已知110636tokens、未知预留80384tokens，活动383.485秒。前五项及s01/s02组合预览双审接受；s03完成度与组合预览未完成，不能宣布六审成功。原件/作者/native只读回放通过，发布关闭、未授资格、automation PAUSED。
+2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
 
 ## Active Work Package
 
-**目标：** 用三稿六审检验正确全文、事实单错和完成度缺口，决定候选是否值得继续评估。
-**实施：** 固定8cdc9d2c、既有worker/批控制/真实native；每项审查，每对实际补丁preview后全文验收。
-**证据：** data/evaluation/results/reviewer_semantic_live_20261019.json。
-**边界：** 最多六次、482304tokens/1800秒，零重试；熟悉来源非holdout，8E未完成。
-**失败分支：** 语义实错停止配置；协议/用量/观测故障停止且保留未知，不补发。
-**下一动作：基于封存结果评估第三方HTTP524交付风险及完成度检出仍未验证的缺口，先整理可区分原因的现有证据与后续方案，不重开本批或自动申请补发；新付费执行需单独具体决策与授权。**
+**目标：** 在自然任务实际链路验证候选审查配置，先完成零付费接线，不以固定稿筛选代替产品验收。
+**实施：** 独立候选身份、动态初审/fresh请求、真实回执与共享预算，复用现有Runtime和逐字修订。
+**证据：** reviewer_semantic_live_20261019.json、sol_natural_chain_feasibility_20261019.json。
+**边界：** 方案拟6调用/401920tokens/900秒，估价0.474112元；尚未实现或授权新调用，产品五调用/GLM采用不变。
+**失败分支：** 保留分阶段结果和未知用量，真实语义错误区分生成与审查，不自动重试。
+**下一动作：按docs/plans/2026-10-19-sol-natural-chain-proposal.md，完成Flash生成/Sol审查独立候选的动态请求与真实回执接线及零付费整链验证；再冻结新HEAD/CI和具体付费提案。不重跑固定筛选，不直接修改产品GLM采用或五调用上限。**
 
 ## Dependencies and Follow-through
 

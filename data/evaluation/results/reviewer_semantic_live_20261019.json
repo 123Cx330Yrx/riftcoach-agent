@@ -14,7 +14,7 @@
   "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-semantic-six-20261019",
   "qualified": false,
   "publication_allowed": false,
-  "scope": "Incomplete familiar-source development screen: first five opinions and s01/s02 previews accepted; sixth HTTP524 without semantic result. No complete-screen success, production application, fresh or reliability claim. No retry.",
+  "scope": "Original six-call batch remains closed with sixth HTTP524. Separate authorized supplement completes familiar-source semantic coverage; all three actual previews accepted. No six-of-six transport, fresh, production or reliability claim.",
   "first_facts_checkpoint_sha256": "204f216fbbff329485f9635552bab48b0edb9ba5c70a3de2b6a050406da61669",
   "first_facts_event_id": "01a15237-eee1-7f01-889f-e54a3ea1fa0a/01a15254-b471-7c62-a4d0-e9e936cb3b8c/msg_01042119cc3cf4ce016ad59725e9708193a2f2b0ba86f4ff8f",
   "checkpoint_sha256": "d20b1d132e5e6a4220801906870ea6ce9a82d7c08fb180f7f1d73230f9951eb5",
@@ -45,5 +45,35 @@
     "elapsed_s": 129.188,
     "usage_state": "unknown",
     "semantic_result": null
-  }
+  },
+  "supplement": {
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-semantic-six-20261019-supplement-s03-completion",
+    "status": "reviewed_and_sealed",
+    "http_requests": 1,
+    "input_tokens": 20685,
+    "output_tokens": 1409,
+    "total_tokens": 22094,
+    "elapsed_s": 38.219,
+    "usage_state": "known",
+    "opinion_accepted": true,
+    "pair_accepted": true,
+    "opinion_event_id": "01a15237-eee1-7f01-889f-e54a3ea1fa0a/01a1530c-abc0-7923-b64b-4e7cc1acfe97/msg_0f1ac0a82d291fb8016ad5c641d15c8199907529f4cad6aa46",
+    "pair_event_id": "01a15237-eee1-7f01-889f-e54a3ea1fa0a/01a15310-0777-7200-9269-cfbee5a7ccf6/msg_0f1ac0a82d291fb8016ad5c755b4008199a0b9120c1831bddb",
+    "preview_operations": 1,
+    "preview_sha256": "3fcf0372dcd6379f51c59c9e89835a086239d6120f14c5b5878ec0ce61643881",
+    "seal_sha256": "e8675853c04874aae9158dd4821c40100fe9f96c58e3cdced1867f6810d9c822",
+    "read_only_replay_passed": true,
+    "execution_checkpoint_chain": false,
+    "review_baseline_created_after_call": true
+  },
+  "combined_accounting": {
+    "http_requests": 7,
+    "known_tokens": 132730,
+    "input_tokens": 124278,
+    "output_tokens": 8452,
+    "unknown_reserved_tokens": 80384,
+    "elapsed_s": 421.704
+  },
+  "semantic_coverage_with_supplement": true,
+  "six_of_six_transport_success": false
 }

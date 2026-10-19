@@ -7492,3 +7492,10 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 证据：Operator calls/05-s03-completion/receipt.json及observation/observation.json。1次HTTP，状态524，worker耗时129.188秒；本机配置300秒，未到本机截止。具体上游超时根因未证，不归因模型判断、密钥或网络配置。无有效审查正文，不能补写第六项意见。
 闭批checkpoint d20b1d132e5e6a4220801906870ea6ce9a82d7c08fb180f7f1d73230f9951eb5；原seal SHA e025286f679928b5e9f873ee3022237f53ef0b91bdff839660e8dae39f0ac27a。run外control/closed-replay.json记录严格只读回放和库存未变。
 已得到正确稿不误改、单事实错误检出及修订预览、职责分离的开发证据；未得到缺口检出、完整六审、fresh或稳定率证据。保留所有既有失败，GLM采用与8E未完成状态不变。
+
+
+## 2026-10-19 补测与自然链路接线差异
+
+2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
+
+零网络复现：两份实际修订稿fresh请求均能build_wire，但固定筛选worker返回semantic_request_binding。自然合同/workflow/provider固定GLM身份及32768输出，Sol为16384；不可以改名字或删除校验接入。具体独立候选方案、预算与范围见2026-10-19-sol-natural-chain-proposal.md。补测没有执行checkpoint链；事后审查基线与原执行证据分开，不能追认历史链条。

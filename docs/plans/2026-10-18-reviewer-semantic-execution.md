@@ -118,3 +118,16 @@ CI证明是操作者保存的公开结果，SHA保证字节绑定，不能认证
 
 用户要求回到第六项继续。原六调用批已封存，不能重开或修改；已准备同材料/同HEAD/同模型的单独 `s03-completion` 补测提案：`C:/Users/33502/Documents/Agent/outputs/riftcoach-semantic-six-20261019-control/s03-completion-supplement-proposal.json`，SHA256 `7a5265bab03d86e170b8b86ca0f291fa9794e205af20b325bff9275e400777c8`。
 补测最多1次，预留80384 tokens，估价0.058368元；原524和80384未知预留保留，不重算。当前只完成材料/request/wire/HEAD/CI绑定，未创建新执行批、未读取Key、未发送。启动需要用户对这一次新增付费调用明确授权。
+
+
+## 2026-10-19 s03补测审查与只读封存完成
+
+2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
+
+补测receipt SHA 2cb160ac9a8d5ff636475c9af62c4f9861f2430ef4f7533322bfc3e54dc741b0；seal SHA e8675853c04874aae9158dd4821c40100fe9f96c58e3cdced1867f6810d9c822。仅block21替换，修订稿SHA 3fcf0372dcd6379f51c59c9e89835a086239d6120f14c5b5878ec0ce61643881。原seal/库存保持。
+
+执行质量更正：初版runner未指定UTF8，GBK读取失败发生在Key和请求前；随后修正编码、导入路径和摘要算法，执行preflight-only通过后才发送。没有ScreenBatch执行checkpoint链，旧“新checkpoint链”表述错误，已更正；本次事后审查计划不补造发送前证据。独立审查经既有子Agent恢复完成；直接app消息路线不支持子Agent，未用它重复派发。
+
+补测已证明完成度缺口检出与安全修法，熟悉来源/小样本/无fresh/第三方身份未证边界保持。
+
+下一动作：按docs/plans/2026-10-19-sol-natural-chain-proposal.md，完成Flash生成/Sol审查独立候选的动态请求与真实回执接线及零付费整链验证；再冻结新HEAD/CI和具体付费提案。不重跑固定筛选，不直接修改产品GLM采用或五调用上限。
