@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "1c7dfaa2f33bfe71039e6abdceeda9f6fc5a81a81aebf40c2ea38bc6b9b46a1b"
+      "sha256": "645eebebea518516a27536d95039e60d656c536d580b1e07419a46c9496bda1b"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "7e6326e1cdf428082edd0f360ea31cbfd32df48f0218a6b95f2d74c3273cef46"
+      "sha256": "5b1cd3476dc49fb9197224e9cd592abe38c464772ac35f6dfed4dccc7abc12a7"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -252,22 +252,22 @@
     {
       "component_id": "app.runtime.observed_provider",
       "source": "app/runtime/observed_provider.py",
-      "sha256": "4303ca5c3008bb84292b703ab69ec34d45420de57ea1905dfcc5f8de07438e9b"
+      "sha256": "695b8f439d7732dc609085235482fbfc64d2fa1617d77fcb762a9bccd44a68dc"
     },
     {
       "component_id": "app.runtime.recorder",
       "source": "app/runtime/recorder.py",
-      "sha256": "24c307dee84dcad7e68b0c6df2ac6921fcb7c8834e05c33c0780f99daa98658f"
+      "sha256": "4c50b6c3db81e4aee3be2ed9cb34e332857c4ad0c2071abc84980017c7bcdafc"
     },
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "4c3a7587ecfa3b31393dca6cc3bd94a536958ab507a1707081d43e4ebca66a03"
+      "sha256": "b454ec05635cb9d4ad959f41ca85566c61dfe848a127aa473e2579d6a4021c6b"
     },
     {
       "component_id": "app.model_runtime",
       "source": "app/model_runtime.py",
-      "sha256": "d4b8fc440c9ed33ae646a2054b930b59e278920d139e77f1760fcec95499f836"
+      "sha256": "4c1698822995fe2c25ded49a3a809cc1cbb67aa68668e905cf8ee3cfb4ed51db"
     },
     {
       "component_id": "app.evaluation.golden_role_coarse",
@@ -292,7 +292,7 @@
     {
       "component_id": "app.prompt_program.resolver",
       "source": "app/prompt_program/resolver.py",
-      "sha256": "aa4ba62ffd9dd10de194cade4805d3a5cb70205aa84c5e24c926cc3489495ca6"
+      "sha256": "6eecf15f9d3a09b28bcac78cbaddd31e2b976bbd19a11a4a9cdf426a380d8684"
     },
     {
       "component_id": "app.prompt_program.models",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "73ead6b78382904320e5fe0152314cfc2c8392d41c360335d878bae85958be48"
+  "program_sha256": "c46736bd7028929b705eb3af8dc5d47c2d048ff621e57660e5d0cfe328706455"
 }

@@ -184,6 +184,32 @@ def test_memory_attack_is_detected_even_when_fake_evaluator_returns_high_score()
     assert "injection_resistance_failed" in receipt.cases[-1].failure_codes
 
 
+def test_known_failed_usage_is_accounted_without_a_normalized_success():
+    from app.providers.models import TokenUsage
+
+    class FailedUsageProvider(ProductStub):
+        def chat(self, request):
+            self.requests.append(request)
+            error = ProviderResponseError(provider="zhipu", code="invalid_json")
+            error.observed_usage = TokenUsage(input_tokens=13, output_tokens=9)
+            error.observed_usage_identity = ("zhipu", "glm-5.3-flash")
+            error.observed_usage_conflict = False
+            raise error
+
+    stub = FailedUsageProvider(provider_name="zhipu", model_name="glm-5.3-flash")
+    receipt = run_acceptance(ROOT, provider=stub)
+    assert not receipt.passed
+    assert [row.status for row in receipt.cases] == ["failed", "skipped", "skipped", "skipped"]
+    first = receipt.cases[0].observation
+    assert first.provider_calls == len(stub.requests) == 1
+    assert first.normalized_response_count == 0
+    assert first.safe_provider_error_code == "provider_error"
+    assert (first.input_tokens, first.output_tokens) == (13, 9)
+    assert (receipt.observed_input_tokens, receipt.observed_output_tokens) == (13, 9)
+    assert receipt.cases[0].failure_codes and not receipt.production_admitted
+    assert validate_receipt(receipt, admit_assets(ROOT)) == receipt
+
+
 @pytest.mark.parametrize("mutation", ["sha", "fake", "old", "future", "failed_ci", "missing_job", "protocol_count"])
 def test_real_evidence_requires_exact_successful_ci_and_fresh_strict_protocol(mutation):
     ci, raw = evidence_inputs()

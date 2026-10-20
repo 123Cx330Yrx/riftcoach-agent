@@ -17,10 +17,10 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 **目标：** 在自然任务实际链路验证候选审查配置，先完成零付费接线，不以固定稿筛选代替产品验收。
 **实施：** 独立候选身份、动态初审/fresh请求、真实回执与共享预算，复用现有Runtime和逐字修订。
-**证据：** reviewer_semantic_live_20261019.json、sol_natural_offline_preparation_20261019.json；124项链路/传输、44项预算/trace及3项新增失败预算测试通过。
+**证据：** reviewer_semantic_live_20261019.json、sol_natural_offline_preparation_20261019.json及sol_continuation_audit_20261020.json。断续审计修复清单漂移、deadline硬错遮蔽、缺观测误重试、失败usage归属及Trace消费；稳定回归172、身份25、消费130、最终超时17项分别通过（有重叠），隔离SQL/Worker/API16项无skip。
 **边界：** 独立候选已实现。拟6逻辑调用+1超时重试/498688tokens/1200秒，估价0.6170624元；未授权新调用，产品五调用/GLM采用不变。
 **失败分支：** 明确且已回收的超时同阶段最多重试一次，保留已完成结果及未知预留；结构/身份/语义错误不重试，不无限扩容。
-**下一动作：完成混合候选受控付费入口、重启恢复与独立审查/回放接线，核精确HEAD公共CI后提出具体费用方案。当前不是付费launcher ready，不重开原固定批。**
+**下一动作：先核本轮修复的精确HEAD公共CI，再完成混合候选持久执行入口、重启恢复与独立审查/回放接线。当前不是付费launcher ready，不重开原固定批。**
 
 ## Dependencies and Follow-through
 

@@ -26,6 +26,7 @@ from .signals import (
     HarnessTransitionedSignal,
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
+    ProviderCallFailedUsageSignal,
     ProviderCallStartedSignal,
     PublicationDecidedSignal,
     RunCompletedSignal,
@@ -472,6 +473,8 @@ class RuntimeEvent(RuntimeContractModel):
                     )
             return self
         signal = self.signal
+        if isinstance(signal, ProviderCallFailedUsageSignal):
+            raise ValueError("event_schema_version 1.0 has no failed usage")
         if isinstance(signal, AgentRunTerminatedSignal):
             raise ValueError("event_schema_version 1.0 has no Agent terminal")
         if isinstance(signal, ContextBuiltSignal) and any(
@@ -815,19 +818,19 @@ class RuntimeTrace(RuntimeContractModel):
             isinstance(event.signal, ProviderCallStartedSignal)
             for event in self.events
         )
-        provider_completes = [
+        provider_usage_observations = [
             event.signal
             for event in self.events
-            if isinstance(event.signal, ProviderCallCompletedSignal)
+            if isinstance(event.signal, (ProviderCallCompletedSignal, ProviderCallFailedUsageSignal))
         ]
         if self.usage.provider_calls_attempted != provider_starts:
             raise ValueError("provider attempted-call usage does not match events")
-        if self.usage.provider_responses_observed != len(provider_completes):
+        if self.usage.provider_responses_observed != len(provider_usage_observations):
             raise ValueError("provider response usage does not match events")
         if self.usage.observed_input_tokens != sum(
-            signal.input_tokens for signal in provider_completes
+            signal.input_tokens for signal in provider_usage_observations
         ) or self.usage.observed_output_tokens != sum(
-            signal.output_tokens for signal in provider_completes
+            signal.output_tokens for signal in provider_usage_observations
         ):
             raise ValueError("observed token usage does not match events")
         if role_contract is not None:
@@ -844,7 +847,7 @@ class RuntimeTrace(RuntimeContractModel):
                     (Decimal(signal.input_tokens) * prices[(signal.provider_id, signal.model)].input_cost_per_million
                      + Decimal(signal.output_tokens) * prices[(signal.provider_id, signal.model)].output_cost_per_million)
                     / Decimal(1_000_000)
-                    for signal in provider_completes
+                    for signal in provider_usage_observations
                 ), Decimal(0))
                 if self.usage.cost != expected_cost:
                     raise ValueError("trace role cost does not match actual model events")

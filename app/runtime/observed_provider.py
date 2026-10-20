@@ -7,7 +7,7 @@ from collections.abc import Callable
 from app.providers.capabilities import require_provider_capabilities
 from app.providers.error_safety import safe_provider_error_code
 from app.providers.errors import ProviderError, ProviderResponseError
-from app.providers.models import ChatRequest, ChatResponse
+from app.providers.models import ChatRequest, ChatResponse, TokenUsage
 from app.providers.protocol import LLMProvider
 
 from .observer import (
@@ -18,6 +18,7 @@ from .observer import (
 from .signals import (
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
+    ProviderCallFailedUsageSignal,
     ProviderCallStartedSignal,
     RuntimeFinishReason,
     RuntimeProviderPhase,
@@ -278,14 +279,32 @@ def _observe_provider_failure(
         if error.provider == provider_name
         else None
     )
+    usage = getattr(error, "observed_usage", None)
+    usage_known = (
+        error.provider == provider_name
+        and observed_response is None
+        and getattr(error, "observed_usage_identity", None) == (provider_name, model_name)
+        and getattr(error, "observed_usage_conflict", None) is False
+        and type(usage) is TokenUsage
+        and all(type(value) is int and value >= 0 for value in (
+            usage.input_tokens, usage.output_tokens, usage.cached_input_tokens
+        ))
+        and usage.cached_input_tokens <= usage.input_tokens
+    )
+    # Trust only the transport's typed, actual-model-bound failed usage.
+    # The event remains a failure and does not create a response or Exchange.
+    signal_type = ProviderCallFailedUsageSignal if usage_known else ProviderCallFailedSignal
+    usage_fields = (dict(input_tokens=usage.input_tokens, output_tokens=usage.output_tokens)
+                    if usage_known else {})
     observe_runtime_signal(
         observer,
-        ProviderCallFailedSignal(
+        signal_type(
             provider_id=provider_name,
             model=model_name,
             ordinal=ordinal,
             failure_code="provider_failed",
             provider_error_code=detail,
+            **usage_fields,
         ),
     )
 

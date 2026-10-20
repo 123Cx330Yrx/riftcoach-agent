@@ -1,3 +1,17 @@
+## 2026-10-20 断续推进的可信恢复边界
+
+监督deadline不是唯一故障：worker可能已持久化硬拒绝/完整输出后卡在收尾。重试必须先读原件和
+有效观测，不能让父进程timeout掩盖更早结构错误。usage known只表示通道报告了数字，
+model_identity拒绝发生在usage保存之后；归属与预算释放需另核真实response_contract，
+并与worker/checkpoint、原库存绑定。失败有用量不等于成功，验收成功计数只读Completed事件。
+
+跨重启不能直接重调旧runner：claim和closure是终态围栏，且重新RAG会改变retrieval-time及请求。
+恢复设计必须保存真实工具结果，原回执纯本地重演另置派生目录；不能把缓存经过ObservedProvider
+后记成新HTTP，不能重复application，不释放未知预留。当前实现仍仅同进程恢复。
+
+源码指纹与回归需冻结为一个单位；测试期间并行改共享源码会制造无意义fingerprint失败。
+当前profile按真实依赖更新，封存历史不重算；Windows原件须保留Git原字节而非调整预期SHA。
+
 ## 2026-10-19 超时恢复与混合身份
 
 Sol固定筛选worker不能直接消费自然动态稿；新增精确context重建校验，未删旧校验或把Sol标为GLM。真实应用trace需显式混合provider合同和统一价格表ID。Flash的stream_deadline只有result=deadline才证明监督回收成功；unreaped/cleanup_failed不可重试。Sol只恢复已回收的明确超时，SDK重试保持0；任务库存被改、鉴权/结构错误或预算不足均不再发送。

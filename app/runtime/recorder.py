@@ -29,6 +29,7 @@ from .signals import (
     ExecutionValidatedSignal,
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
+    ProviderCallFailedUsageSignal,
     ProviderCallStartedSignal,
     PublicationDecidedSignal,
     RunCompletedSignal,
@@ -96,22 +97,22 @@ class RuntimeRecorder:
 
     @property
     def usage(self) -> RuntimeUsage:
-        completed_provider_calls = [
+        observed_provider_usage = [
             event.signal
             for event in self._events
-            if isinstance(event.signal, ProviderCallCompletedSignal)
+            if isinstance(event.signal, (ProviderCallCompletedSignal, ProviderCallFailedUsageSignal))
         ]
         provider_attempts = sum(
             isinstance(event.signal, ProviderCallStartedSignal)
             for event in self._events
         )
         observed_input = sum(
-            signal.input_tokens for signal in completed_provider_calls
+            signal.input_tokens for signal in observed_provider_usage
         )
         observed_output = sum(
-            signal.output_tokens for signal in completed_provider_calls
+            signal.output_tokens for signal in observed_provider_usage
         )
-        observed_responses = len(completed_provider_calls)
+        observed_responses = len(observed_provider_usage)
 
         if provider_attempts == 0:
             token_observation = TokenObservation.NOT_APPLICABLE
@@ -168,8 +169,8 @@ class RuntimeRecorder:
                             (signal.provider_id, signal.model)
                         ].output_cost_per_million
                     ) / Decimal(1_000_000)
-                    for signal in completed_provider_calls
-                ) if completed_provider_calls else Decimal(0)
+                    for signal in observed_provider_usage
+                ) if observed_provider_usage else Decimal(0)
                 cost_observation = CostObservation.COMPLETE
             elif token_observation is TokenObservation.PARTIAL:
                 cost = None

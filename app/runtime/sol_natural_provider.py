@@ -100,16 +100,17 @@ class SolReviewProvider:
                 inventory=inventory(self.task_directory))
             # Never manufacture a ChatResponse to settle a failed request.
             # Known failed usage is carried separately by the trusted adapter.
-            if receipt.get('usage_state') == 'known' and valid_saved_usage(receipt.get('usage')):
-                error.observed_usage = TokenUsage(input_tokens=receipt['usage']['input_tokens'],
-                    output_tokens=receipt['usage']['output_tokens'],
-                    cached_input_tokens=receipt['usage']['cached_input_tokens'] or 0)
+            usage = self.failure_usage(error, request)
+            if usage is not None:
+                error.observed_usage = TokenUsage(input_tokens=usage['input_tokens'],
+                    output_tokens=usage['output_tokens'],
+                    cached_input_tokens=usage['cached_input_tokens'] or 0)
+                error.observed_usage_identity = (self.provider_name, self.model_name)
+                error.observed_usage_conflict = False
             raise error
         worker = read_json(directory / 'worker-result.json')
         usage = receipt.get('usage')
-        expected_profile = dict(**asdict(self.profile), reasoning_effort='high', api='responses',
-            max_output_tokens=16384, max_retries=0, timeout_s=request.timeout_s,
-            group_verified=False, upstream_identity_verified=False, response_mode='natural-sol-v1')
+        expected_profile = self.expected_profile(request)
         observed_contract = (observation or {}).get('response_contract')
         if (receipt.get('code') != 'ok' or receipt.get('reaped') is not True or receipt.get('worker_exit') != 0
                 or receipt.get('usage_state') != 'known' or receipt.get('usage_conflict') is not False
@@ -139,6 +140,47 @@ class SolReviewProvider:
         self.last_exchange = Exchange(request, response, pin)
         return response
 
+    def expected_profile(self, request):
+        return dict(**asdict(self.profile), reasoning_effort='high', api='responses',
+            max_output_tokens=16384, max_retries=0, timeout_s=request.timeout_s,
+            group_verified=False, upstream_identity_verified=False, response_mode='natural-sol-v1')
+
+    def failure_usage(self, error, request):
+        failure = self.last_failure
+        if (not failure or failure['error'] is not error or failure['request'] != request
+                or inventory(self.task_directory) != failure['inventory']):
+            return None
+        directory = failure['directory']
+        path = directory / 'receipt.json'
+        if hashlib.sha256(path.read_bytes()).hexdigest() != failure['receipt_sha256']:
+            return None
+        receipt = read_json(path) or {}
+        usage = receipt.get('usage')
+        observation = read_json(directory / 'observation/observation.json') or {}
+        response = observation.get('response_contract')
+        # A receipt can retain usage from a rejected, different model. Only
+        # matching response evidence can attribute those numbers to this route.
+        # This remains a channel claim, never verified upstream identity.
+        if (receipt.get('reaped') is not True or receipt.get('usage_state') != 'known'
+                or receipt.get('usage_conflict') is not False or not valid_saved_usage(usage)
+                or receipt.get('http_requests') != 1
+                or read_json(directory / 'profile.json') != self.expected_profile(request)
+                or observation.get('http_requests') != 1 or observation.get('response_status') != 200
+                or observation.get('eof') is not True or not isinstance(response, dict)
+                or response.get('response_received') is not True or response.get('model_matches') is not True):
+            return None
+        checkpoint_path, worker_path = directory / 'usage.json', directory / 'worker-result.json'
+        checkpoint, worker = read_json(checkpoint_path), read_json(worker_path)
+        if checkpoint_path.exists() and checkpoint != usage:
+            return None
+        if worker_path.exists() and (not worker or worker.get('usage') != usage
+                or worker.get('usage_conflict') is not False
+                or worker.get('response_observation') != response):
+            return None
+        if checkpoint is None and worker is None:
+            return None
+        return usage
+
     def retryable(self, error, request):
         failure = self.last_failure
         if not failure or failure['error'] is not error or failure['request'] != request:
@@ -151,12 +193,34 @@ class SolReviewProvider:
             return False
         r = read_json(directory / 'receipt.json')
         obs = read_json(directory / 'observation/observation.json') or {}
+        if (obs.get('schema_version') != 'stream-observation-v1' or obs.get('body_free') is not True
+                or type(obs.get('http_requests')) is not int or obs['http_requests'] not in (0, 1)
+                or obs.get('phase') not in ('before_request', 'awaiting_response_headers',
+                    'response_headers_received', 'waiting_for_raw_bytes', 'sdk_consuming_bytes',
+                    'response_headers_failed', 'read_failed', 'closed')
+                or obs.get('exception_type') not in (None, 'connect_timeout', 'read_timeout')):
+            return False
+        if obs.get('response_status') == 200 and obs.get('eof') is True:
+            # Parsing or close can hang after all HTTP bytes arrived, before
+            # response_contract/worker-result is persisted. It is not an IO timeout.
+            return False
+        # The supervisor can reach its deadline after a worker has already
+        # persisted a rejection (or a complete response). That timeout must
+        # never hide a structural/identity failure and buy another response.
+        timeout_codes = ('request_failed', 'http_status_408', 'http_status_504', 'http_status_524')
+        if (r.get('worker_code') not in (None, *timeout_codes)
+                or obs.get('response_contract') is not None
+                or obs.get('response_status') not in (None, 200, 408, 504, 524)):
+            return False
+        if r.get('worker_code') == 'request_failed' and r.get('failure_category') not in (
+                'connect_timeout', 'read_timeout'):
+            return False
         # Only a reaped process and an explicit timeout, never a bad output,
         # auth error, missing observation, schema rejection or usage conflict.
         return (r.get('reaped') is True and r.get('usage_conflict') is False and r.get('ok') is False
             and (r.get('code') == 'deadline_exceeded' or
                  (r.get('code') == 'worker_rejected' and r.get('worker_exit') == 0
-                  and r.get('worker_code') in ('request_failed', 'http_status_408', 'http_status_504', 'http_status_524')
+                  and r.get('worker_code') in timeout_codes
                   and (obs.get('response_status') in (408, 504, 524)
                        or r.get('failure_category') in ('connect_timeout', 'read_timeout')))))
 
@@ -226,16 +290,8 @@ class SolNaturalProvider(RoleRoutedProvider):
         return True
 
     def failure_usage(self, error, request):
-        failure = self.reviewer.last_failure
-        if not failure or failure['error'] is not error or failure['request'] != request:
-            return None
-        path = failure['directory'] / 'receipt.json'
-        if hashlib.sha256(path.read_bytes()).hexdigest() != failure['receipt_sha256']:
-            return None
-        receipt = read_json(path)
-        if receipt.get('usage_state') != 'known' or receipt.get('usage_conflict') is not False or not valid_saved_usage(receipt.get('usage')):
-            return None
-        return receipt['usage']['total_tokens']
+        usage = self.reviewer.failure_usage(error, request)
+        return usage['total_tokens'] if usage is not None else None
 
 
 class SolNaturalProviderFactory:

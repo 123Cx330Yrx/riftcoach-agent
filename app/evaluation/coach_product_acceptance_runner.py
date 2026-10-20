@@ -25,6 +25,7 @@ from app.harness.store import FileRunStore
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT
 from app.runtime.store import RuntimeTraceStore
+from app.runtime.signals import ProviderCallCompletedSignal, ProviderCallFailedSignal
 
 
 CASE_IDS = ("coach246_recent", "coach246_survival", "coach246_economy", "coach246_memory")
@@ -228,8 +229,8 @@ def observe_product_result(runs_root, result, case, *, request, context_commitme
         ))
     observation = DomainCandidateCase(
         case_id=case["case_id"], provider_calls=trace.usage.provider_calls_attempted,
-        normalized_response_count=trace.usage.provider_responses_observed,
-        safe_provider_error_code="provider_error" if any(s.kind == "provider_call_failed" for s in signals) else None,
+        normalized_response_count=sum(isinstance(s, ProviderCallCompletedSignal) for s in signals),
+        safe_provider_error_code="provider_error" if any(isinstance(s, ProviderCallFailedSignal) for s in signals) else None,
         agent_status=agent.status.value if agent else None, agent_stop_reason=agent.stop_reason.value if agent else None,
         proposed_tool_names=tuple(sorted({s.tool_name for s in signals if s.kind == "tool_call_started"})),
         successful_tool_names=tuple(sorted({s.tool_name for s in signals if s.kind == "tool_call_completed" and s.success})),
