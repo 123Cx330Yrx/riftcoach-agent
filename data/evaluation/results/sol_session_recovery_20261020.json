@@ -41,5 +41,33 @@
     "operator must bind final native review principals and real event source",
     "paid launcher and authorization are still separate work",
     "offline tests do not prove model semantic quality or upstream identity"
-  ]
+  ],
+  "public_ci_after_implementation": {
+    "run_id": 39451570923,
+    "head_sha": "469da8ecd5a8c3e92c676a05d7e2c5a6f842234d",
+    "status": "completed",
+    "conclusion": "failure",
+    "first_failure_all_four_shards": "tests/test_document_remaining4_adapter.py setup: missing archived app/runtime/runtime.py; historical lf_sha256 mismatch"
+  },
+  "historical_fixture_repair": {
+    "date": "2026-10-21",
+    "source_commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4",
+    "added_source": "app/runtime/runtime.py",
+    "lf_sha256": "30d18b7499da443dca0b10e8515d9510b778bfb8eb1a8a22076eaa65ba04ffbe",
+    "existing_archived_sources_unchanged": 9,
+    "manifest_files_verified": {
+      "remaining4": 47,
+      "remaining8": 46
+    },
+    "frozen_hashes_changed": false,
+    "historical_seals_changed": false,
+    "verification": {
+      "tests": "17 passed in 195.09s",
+      "command": "python -m pytest tests/test_document_remaining4_adapter.py tests/test_document_remaining8_adapter.py -q --tb=short --show-capture=no",
+      "governance": "passed",
+      "diff_check": "passed",
+      "provider_requests": 0,
+      "keys_read": false
+    }
+  }
 }

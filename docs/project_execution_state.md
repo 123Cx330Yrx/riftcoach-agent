@@ -35,7 +35,9 @@ Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，�
 新增Sol候选持久session：create-only intent/result/checkpoint链、进程锁、工具结果回放、Flash/Sol完整回执只读协调、
 未知预留保留、跨重启预算/retry恢复；NativeGate改用ExactNativeGate并绑定作者final字节。
 96项聚焦回归通过，38profile resolver、governance、compile、diff-check通过；本轮模型请求0、密钥0。
-下一动作：提交并核新精确HEAD公共CI；CI未全绿前仍不做付费启动。当前已具备开发候选的持久恢复与审查接线，
+后继469da8ec公共CI39451570923已结束failure：四分片首错同为历史回放夹具缺少旧runtime.py快照。
+2026-10-21已从归档指定的51923f4b提取该文件，原LF SHA匹配，两份历史清单47/46文件全部核对；
+旧哈希、旧封存及当前源码拒绝门不改。下一动作：相关17项回归通过，推送修复并核新精确HEAD公共CI；仍不做付费启动。当前已具备开发候选的持久恢复与审查接线，
 不能宣称付费launcher ready、模型质量、上游身份或产品资格。原固定批不重开，产品GLM/五调用不变。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
