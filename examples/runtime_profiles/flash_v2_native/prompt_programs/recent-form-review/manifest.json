@@ -142,7 +142,7 @@
     {
       "component_id": "app.runtime.runtime",
       "source": "app/runtime/runtime.py",
-      "sha256": "30d18b7499da443dca0b10e8515d9510b778bfb8eb1a8a22076eaa65ba04ffbe"
+      "sha256": "f94a64f6debbfc6114accd5d9c04cef64d46f86b90e1dc7afdf92749c2b0e463"
     },
     {
       "component_id": "coach_execution_contract",
@@ -150,5 +150,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "f61d8808d26915ac7a3a1bae67f9dc8f5c28a7e53633aac49ebd6565d6010ee6"
+  "program_sha256": "59c42b9ca886480262850d6edadf43b94deeb2bf3735ecd8bccbfe8372765a33"
 }

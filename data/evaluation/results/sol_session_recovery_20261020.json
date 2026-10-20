@@ -1,0 +1,45 @@
+{
+  "version": "sol-session-recovery-20261020-v1",
+  "source_head_before_commit": "7444cd887d91e82fc1f91c3bee0694695a0ca646",
+  "public_ci_before_commit": {
+    "run_id": 39401813306,
+    "head_sha": "7444cd887d91e82fc1f91c3bee0694695a0ca646",
+    "status": "completed",
+    "conclusion": "failure",
+    "first_related_failures": [
+      "tests/test_document_review_diagnostic.py::test_real_budget_gate_and_first_failure_stop[receipt-1]",
+      "tests/test_document_review_scan.py::test_hard_failures_stop_never_become_semantics[receipt-1]",
+      "tests/test_document_review_timed_transport.py::test_actual_factory_failures_keep_usage_and_poison_shared_task[unknown]",
+      "tests/test_document_review_timed_budget.py::test_unknown_failure_keeps_reservation_and_prevents_retry"
+    ]
+  },
+  "implemented": [
+    "shared budget checks the exact Sol contract object and preserves legacy contracts",
+    "candidate session guard, create-only operation intents/results, checkpoint chain and process lock",
+    "complete tool results are replayed without retrieval or model IO",
+    "complete original Flash/Sol receipts can be reconciled read-only after parent loss",
+    "pending intents remain blocked and unknown reservations are retained",
+    "native independent review gate reuses ExactNativeGate and checks author final bytes",
+    "candidate runtime requires native review gate outside fixture-only tests",
+    "historical original15 bytes remain unchanged"
+  ],
+  "verification": {
+    "focused_tests": "96 passed",
+    "focused_tests_xml": "tmp/sol-session-final-regression-20261020.xml",
+    "profile_resolver": "38 profiles verified",
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed",
+    "network_requests": 0,
+    "keys_read": false,
+    "paid_launcher_ready": false,
+    "production_admitted": false,
+    "publication_allowed": false
+  },
+  "remaining": [
+    "new exact-head public CI must be green",
+    "operator must bind final native review principals and real event source",
+    "paid launcher and authorization are still separate work",
+    "offline tests do not prove model semantic quality or upstream identity"
+  ]
+}

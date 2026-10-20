@@ -1,4 +1,5 @@
 # Preserve the original LF bytes of two hash-bound datasets on Windows.
+/data/evaluation/results/golden_document_original15_result_20261008.json text eol=lf
 /data/evaluation/datasets/golden_native_product_attribution_controls_v1.json text eol=lf
 /data/evaluation/datasets/golden_observed_review_controls_v1.json text eol=lf
 /data/evaluation/fixtures/reviewer_route_recovery_20261018/** -text

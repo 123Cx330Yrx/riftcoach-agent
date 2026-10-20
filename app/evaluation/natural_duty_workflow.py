@@ -17,6 +17,10 @@ from scripts import review_duty_direct_patch as direct, review_duty_composition 
 from .natural_duty_contract import VERSION, make_request, request_sha
 
 
+class NaturalDutySuspended(BaseException):
+    """An execution boundary pause must not become a business rejection."""
+
+
 class NaturalDutyWorkflow:
     def __init__(self, send, *, journal_root, contract_module=None):
         from app.evaluation import natural_duty_contract
@@ -114,6 +118,8 @@ class NaturalDutyWorkflow:
                 summary='Unqualified candidate exact-patch preview; two full fresh reviews required.')
             self.state = 'revision'
             return self.initial_result
+        except NaturalDutySuspended:
+            raise
         except BaseException as error:
             if self.state != 'terminal':
                 try:
@@ -143,6 +149,8 @@ class NaturalDutyWorkflow:
                 production_admitted=False))
             self.state = 'fresh'
             return CoachDraft(report=self.assembly.report)
+        except NaturalDutySuspended:
+            raise
         except BaseException as error:
             if self.state != 'terminal':
                 try:

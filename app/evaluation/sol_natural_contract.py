@@ -146,6 +146,9 @@ def component_fingerprints(skill):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     rows = {r.component_id: r for r in legacy.component_fingerprints(skill)}
     for path in ('app/evaluation/sol_natural_contract.py', 'app/runtime/sol_natural_provider.py',
+                 'app/evaluation/sol_natural_session.py', 'app/runtime/sol_session_runtime.py',
+                 'app/runtime/sol_session_receipts.py',
+                 'app/evaluation/sol_session_review.py',
                  'scripts/reviewer_responses_process.py', 'scripts/reviewer_responses_nonstream.py',
                  'scripts/reviewer_responses_transport.py', 'scripts/stream_observation.py'):
         key = path.replace('/', '.').replace('.py', '')

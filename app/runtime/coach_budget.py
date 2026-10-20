@@ -96,15 +96,14 @@ class CoachBudgetedProvider:
                 self.calls -= 1
                 self.reserved_tokens -= reservation
                 raise
-            if self.contract.version == '1.6.1':
-                from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
-                if self.contract is sol_contract:
-                    delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
-                    known = delegate.failure_usage(error, request)
-                    if known is not None:
-                        self.tokens += known
-                        self.reserved_tokens -= reservation
-                        raise
+            from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
+            if self.contract is sol_contract:
+                delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
+                known = delegate.failure_usage(error, request)
+                if known is not None:
+                    self.tokens += known
+                    self.reserved_tokens -= reservation
+                    raise
             # A trusted transport/router may reject the receipt after receiving
             # a complete response. Only that response's matching actual identity
             # can settle the reservation; usage from another model stays unknown.

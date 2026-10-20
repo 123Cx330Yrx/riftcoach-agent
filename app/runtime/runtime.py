@@ -119,6 +119,8 @@ class RuntimeExecutionFactory:
         review_workflow_factory: ReviewWorkflowFactory | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
         coach_contract=None,
+        budget_factory=None,
+        knowledge_runtime_factory=None,
     ) -> None:
         if review_workflow_factory is not None:
             if evaluator_factory is not None or reviser_factory is not None:
@@ -137,6 +139,8 @@ class RuntimeExecutionFactory:
                     "evaluator_factory and reviser_factory must be supplied together"
                 )
         self._knowledge_provider = knowledge_provider
+        self._budget_factory = budget_factory
+        self._knowledge_runtime_factory = knowledge_runtime_factory
         self.coach_contract = require_coach_contract(coach_contract)
         if coach_contract is not None and runtime_profile is not None:
             raise ValueError("unadmitted Coach contract cannot bind a product runtime profile")
@@ -173,10 +177,15 @@ class RuntimeExecutionFactory:
                 if self._review_workflow_factory is not None
                 else CoachBudgetedProvider
             )
-            provider = budgeted_type(
+            original_provider = provider
+            provider = (self._budget_factory or budgeted_type)(
                 provider,
                 coach_contract=self.coach_contract,
             )
+            if (not isinstance(provider, CoachBudgetedProvider)
+                    or provider.provider is not original_provider
+                    or provider.contract is not self.coach_contract):
+                raise RuntimeCompositionError('budget factory must preserve provider and contract')
         elif expected_profile is not None:
             if getattr(provider, "runtime_profile", None) != expected_profile:
                 raise RuntimeCompositionError(
@@ -203,7 +212,7 @@ class RuntimeExecutionFactory:
         agent_loop = AgentLoop(
             provider=provider,
             tool_registry=knowledge_registry,
-            tool_runtime=ToolRuntime(knowledge_registry),
+            tool_runtime=(self._knowledge_runtime_factory or ToolRuntime)(knowledge_registry),
         )
 
         harness_llm_registry = ToolRegistry()

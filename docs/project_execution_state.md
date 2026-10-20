@@ -30,8 +30,13 @@ pause_reason: "付费批已封存；补测完成。准备自然任务候选接�
 Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，未证明永久根治。
 详见`docs/plans/2026-10-20-sol-continuation-audit.md`及对应result；本轮模型请求0、密钥0。
 
-下一动作：核本轮修复提交的精确HEAD公共CI，再完成混合候选持久执行入口、重启恢复及独立审查/回放接线，形成可执行费用提案。
-当前仅同一进程内超时恢复已验证，不能宣称断电续跑或付费launcher ready。原固定批不重开，产品GLM/五调用不变。
+2026-10-20续：公共CI39401813306在7444cd88结束为failure；首错是旧诊断路径读取不存在的Sol contract.version，
+并伴随历史original15工作副本换行漂移。修复共享预算判断、恢复原字节并锁定LF属性。
+新增Sol候选持久session：create-only intent/result/checkpoint链、进程锁、工具结果回放、Flash/Sol完整回执只读协调、
+未知预留保留、跨重启预算/retry恢复；NativeGate改用ExactNativeGate并绑定作者final字节。
+96项聚焦回归通过，38profile resolver、governance、compile、diff-check通过；本轮模型请求0、密钥0。
+下一动作：提交并核新精确HEAD公共CI；CI未全绿前仍不做付费启动。当前已具备开发候选的持久恢复与审查接线，
+不能宣称付费launcher ready、模型质量、上游身份或产品资格。原固定批不重开，产品GLM/五调用不变。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。

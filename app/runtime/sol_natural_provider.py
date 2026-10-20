@@ -68,20 +68,36 @@ class SolReviewProvider:
         self.last_exchange = self.last_failure = None
 
     def chat_at_ordinal(self, request, *, ordinal, role):
+        return self._consume(request, ordinal=ordinal, role=role, read_only=False)
+
+    def read_completed_at_ordinal(self, request, *, ordinal, role):
+        """Validate original completed evidence without creating or sending anything."""
+        return self._consume(request, ordinal=ordinal, role=role, read_only=True)
+
+    def _consume(self, request, *, ordinal, role, read_only):
         self.last_exchange = self.last_failure = None
         raw = contract.request_bytes(request, transport_id=self.transport_id)
         if role != 'review' or type(ordinal) is not int or not 1 <= ordinal <= 7:
             raise ValueError('sol_ordinal')
-        self.task_directory.mkdir(parents=True, exist_ok=True)
-        self.directory.mkdir(parents=True, exist_ok=True)
+        if not read_only:
+            self.task_directory.mkdir(parents=True, exist_ok=True)
+            self.directory.mkdir(parents=True, exist_ok=True)
         directory = self.directory / f'call-{ordinal:03d}'
         pin = hashlib.sha256(raw).hexdigest()
-        write_json(self.task_directory / f'call-{ordinal:03d}.json', dict(ordinal=ordinal, role=role,
-            provider=self.provider_name, model=self.model_name, request_sha256=pin, state='reserved_before_io'))
+        reservation = dict(ordinal=ordinal, role=role, provider=self.provider_name,
+            model=self.model_name, request_sha256=pin, state='reserved_before_io')
+        if read_only:
+            if read_json(self.task_directory / f'call-{ordinal:03d}.json') != reservation:
+                raise ValueError('sol_saved_reservation_binding')
+        else:
+            write_json(self.task_directory / f'call-{ordinal:03d}.json', reservation)
         business = visible(json_value(request))
         context = request.metadata[contract.CONTEXT]
-        receipt = self.sender(business, profile=self.profile, api_key=self._key, directory=directory,
-            timeout_s=request.timeout_s, response_mode='natural-sol-v1', validation_context=context)
+        receipt = (read_json(directory / 'receipt.json') if read_only else
+            self.sender(business, profile=self.profile, api_key=self._key, directory=directory,
+                timeout_s=request.timeout_s, response_mode='natural-sol-v1', validation_context=context))
+        if not receipt or read_only and receipt.get('ok') is not True:
+            raise ValueError('sol_saved_complete_receipt_required')
         saved = read_json(directory / 'receipt.json')
         observation = read_json(directory / 'observation/observation.json')
         bound = (saved == receipt and receipt.get('request_sha256') == digest(business)
@@ -134,9 +150,15 @@ class SolReviewProvider:
                 name=tool['name'], arguments=json.loads(tool['arguments'])),), finish_reason='tool_calls',
             usage=TokenUsage(input_tokens=usage['input_tokens'], output_tokens=usage['output_tokens'],
                 cached_input_tokens=usage['cached_input_tokens'] or 0))
-        write_json(self.task_directory / f'call-result-{ordinal:03d}.json', dict(state='complete',
+        result = dict(state='complete',
             request_sha256=pin, receipt_sha256=hashlib.sha256((directory / 'receipt.json').read_bytes()).hexdigest(),
-            input_tokens=usage['input_tokens'], output_tokens=usage['output_tokens']))
+            input_tokens=usage['input_tokens'], output_tokens=usage['output_tokens'])
+        result_path = self.task_directory / f'call-result-{ordinal:03d}.json'
+        if read_only:
+            if result_path.exists() and read_json(result_path) != result:
+                raise ValueError('sol_saved_result_binding')
+        else:
+            write_json(result_path, result)
         self.last_exchange = Exchange(request, response, pin)
         return response
 
