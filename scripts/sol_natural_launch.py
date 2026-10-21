@@ -1,7 +1,8 @@
 """Explicit, resumable natural-task development entry; no default paid action.
 
 Preparation and native task/import/replay never load credentials. Only `run`
-may prompt for two distinct keys, after a pinned grant, CI and native preflight.
+loads an explicitly authorized Zhipu config or prompts for its key, then prompts
+for the distinct reviewer key, after a pinned grant, CI and native preflight.
 This entry does not reopen any historical trial or grant product qualification.
 """
 import argparse
@@ -199,19 +200,32 @@ def verify_preflight(plan, plan_sha, event_source, proof):
     return True
 
 
-def credentials():
-    # Refuse getpass's echoed fallback, and never discover secrets from env/files.
+def credentials(zhipu_env_file=None):
+    # Refuse echoed fallback; only an explicitly selected file may supply Zhipu.
     if not sys.stdin.isatty():
         raise ValueError('launch_interactive_hidden_key_input_required')
+    from app.providers.config import ZhipuSettings
+    if zhipu_env_file is not None:
+        from scripts.run_role_coach_development import load_role_settings
+        path = Path(zhipu_env_file)
+        if not path.is_absolute() or not path.is_file():
+            raise ValueError('launch_explicit_zhipu_config_required')
+        generator = load_role_settings(path)[0]
+        if generator.base_url.rstrip('/') != 'https://open.bigmodel.cn/api/paas/v4':
+            raise ValueError('launch_zhipu_standard_endpoint_required')
+        generator = replace(generator, default_timeout_s=300)
+    else:
+        generator = None
     with warnings.catch_warnings():
         warnings.simplefilter('error', getpass.GetPassWarning)
-        flash = getpass.getpass('Zhipu Flash API key (hidden): ')
+        if generator is None:
+            flash = getpass.getpass('Zhipu Flash API key (hidden): ')
+            generator = ZhipuSettings(api_key=flash, base_url='https://open.bigmodel.cn/api/paas/v4',
+                                     model='glm-5.3-flash', default_timeout_s=300)
         sol = getpass.getpass('Tianjige GPT-pro API key (hidden): ')
-    if not flash.strip() or not sol.strip() or flash == sol:
+    if not sol.strip() or generator.api_key == sol:
         raise ValueError('launch_distinct_provider_keys_required')
-    from app.providers.config import ZhipuSettings
-    return ZhipuSettings(api_key=flash, base_url='https://open.bigmodel.cn/api/paas/v4',
-                         model='glm-5.3-flash', default_timeout_s=300), sol
+    return generator, sol
 
 
 def verify_derived(plan, session):
@@ -224,12 +238,15 @@ def verify_derived(plan, session):
 
 
 def execute(plan, plan_sha, event_source, *, authorization_file, authorization_sha,
-            ci_run, preflight_proof, guard=None, checkpoint=None):
+            ci_run, preflight_proof, guard=None, checkpoint=None, zhipu_env_file=None):
     raw = Path(authorization_file).read_bytes()
     if digest(raw) != authorization_sha:
         raise ValueError('launch_original_authorization_sha_required')
     grant = json.loads(raw)
     validate_grant(grant, plan, plan_sha)
+    config_path = str(Path(zhipu_env_file).resolve()) if zhipu_env_file is not None else None
+    if grant.get('zhipu_env_file') != config_path:
+        raise ValueError('launch_authorized_zhipu_config_required')
     load(plan['operator'], plan_sha, frozen=True)
     ci = verify_ci(ci_run, plan['head'])
     verify_native_principals(event_source.client, plan['review_plan'])
@@ -266,7 +283,7 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
                 raise SessionPaused('session_awaiting_native_review')
             gate.verify_prior()
             # Ownership, frozen source, grant and live native checks precede prompts.
-            generator, key = credentials()
+            generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
             before()
             from app.runtime.sol_natural_provider import SolNaturalProviderFactory
             factory = SolNaturalProviderFactory(generator_settings=generator, api_key=key,
@@ -378,6 +395,7 @@ def main():
     parser.add_argument('--checkpoint-sha')
     parser.add_argument('--authorization-sha')
     parser.add_argument('--authorization-file', type=Path)
+    parser.add_argument('--zhipu-env-file', type=Path)
     parser.add_argument('--ci-run')
     parser.add_argument('--preflight-guard-sha')
     parser.add_argument('--preflight-checkpoint-sha')
@@ -423,7 +441,8 @@ def main():
                 authorization_sha=args.authorization_sha, ci_run=args.ci_run,
                 preflight_proof=dict(guard_sha256=args.preflight_guard_sha,
                     checkpoint_sha256=args.preflight_checkpoint_sha),
-                guard=args.guard_sha, checkpoint=args.checkpoint_sha))
+                guard=args.guard_sha, checkpoint=args.checkpoint_sha,
+                zhipu_env_file=args.zhipu_env_file))
 
 
 if __name__ == '__main__':

@@ -13,6 +13,45 @@ from scripts import sol_natural_launch as launch
 from scripts.prepare_sol_natural import capture, CaptureFactory
 from tests.test_sol_session_review import controls, author
 
+REAL_CREDENTIALS = launch.credentials
+
+
+def test_explicit_stored_zhipu_config_only_prompts_reviewer(tmp_path, monkeypatch, capsys):
+    env = tmp_path/'configured.env'
+    env.write_text('LLM_PROVIDER=zhipu\nLLM_API_KEY=STORED_TEST_ONLY\n'
+                   'LLM_BASE_URL=https://open.bigmodel.cn/api/paas/v4\nLLM_MODEL=glm-5.3\n', encoding='utf-8')
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
+    prompts = []
+    def prompt(text):
+        prompts.append(text)
+        return 'REVIEW_TEST_ONLY'
+    monkeypatch.setattr(launch.getpass, 'getpass', prompt)
+    generator, reviewer = REAL_CREDENTIALS(env)
+    assert generator.api_key == 'STORED_TEST_ONLY' and reviewer == 'REVIEW_TEST_ONLY'
+    assert generator.model == 'glm-5.3-flash' and generator.default_timeout_s == 300
+    assert prompts == ['Tianjige GPT-pro API key (hidden): ']
+    output = capsys.readouterr()
+    assert 'STORED_TEST_ONLY' not in output.out+output.err
+    assert 'REVIEW_TEST_ONLY' not in output.out+output.err
+
+
+def test_missing_explicit_config_does_not_fall_back_to_another_key(tmp_path, monkeypatch):
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
+    monkeypatch.setattr(launch.getpass, 'getpass', lambda *a: pytest.fail('unexpected prompt'))
+    with pytest.raises(ValueError, match='explicit_zhipu_config_required'):
+        REAL_CREDENTIALS(tmp_path/'missing.env')
+
+
+def test_unapproved_zhipu_config_rejected_before_session_or_keys(tmp_path, monkeypatch):
+    p, pin = plan(tmp_path, monkeypatch)
+    raw = json.dumps(grant(p, pin)).encode()
+    path = tmp_path/'authorization.json'
+    path.write_bytes(raw)
+    with pytest.raises(ValueError, match='authorized_zhipu_config_required'):
+        launch.execute(p, pin, None, authorization_file=path, authorization_sha=digest(raw),
+                       ci_run='synthetic', preflight_proof={}, zhipu_env_file=tmp_path/'config.env')
+    assert not (Path(p['operator'])/'execution').exists()
+
 
 @pytest.fixture(autouse=True)
 def offline(monkeypatch):

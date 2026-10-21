@@ -2,8 +2,8 @@
   "version": "sol-natural-launch-integration-20261021-v1",
   "base_head": "19f76f047a01e26ac0855a535facbb54c7893855",
   "provider_requests": 0,
-  "key_read": false,
-  "paid_launcher_ready": true,
+  "key_read": true,
+  "paid_launcher_ready": false,
   "execution_authorized": true,
   "production_admitted": false,
   "publication_allowed": false,
@@ -45,7 +45,9 @@
     ]
   },
   "remaining": [
-    "user hidden-key entry and first execution; native business reviews follow actual checkpoints"
+    "corrected exact-HEAD public CI and clean execution preflight",
+    "rebind existing authorization preserving expiry and limits",
+    "user hidden Tianjige key input and execution"
   ],
   "limitations": [
     "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
@@ -153,7 +155,7 @@
     "key_read": false
   },
   "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
-  "readiness_scope": "Engineering prerequisites and fresh specific authorization complete; waiting for user interactive hidden-key input. No execution or paid model request yet.",
+  "readiness_scope": "Credential input regression corrected; original entry withdrawn before execution. Rebind same user authorization to corrected frozen plan without extending limits or expiry after exact-head verification.",
   "first_launch_entry": {
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-first.ps1",
     "sha256": "c56a00f753fcb165064c4b6b63a2d19ff1de827288b8c74845c0acb55e1f73a0",
@@ -176,5 +178,20 @@
     "key_read": false,
     "grant_validation": "passed",
     "frozen_source_validation": "passed"
+  },
+  "third_party_key_read": false,
+  "stored_zhipu_fix": {
+    "explicit_configuration": "D:/riftcoach-agent/.env",
+    "local_configuration_available": true,
+    "standard_endpoint": true,
+    "credentials_displayed": false,
+    "provider_requests": 0,
+    "original_entry_withdrawn": true,
+    "tests": {
+      "passed": 15,
+      "seconds": 103.76
+    },
+    "scope": "Reuse existing load_role_settings only when explicit path matches authorization; prompt only Tianjige key. No ambient key discovery or silent fallback.",
+    "old_authorization_deadline_preserved": "2026-10-22T13:36:53.631926+00:00"
   }
 }

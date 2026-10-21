@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "付费批已封存；自然任务候选准备完成且本次费用已授权，等待隐藏输入密钥启动；automation PAUSED。"
+pause_reason: "付费批已封存；自然任务候选准备完成且本次费用已授权，修正入口以复用已配置智谱Key，等待修正版核验；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -63,8 +63,12 @@ Flash资产仍含已过期促销，本轮不用优惠价。估价保持0.6170624
 真实原生预检只读回查通过、执行树clean、execution目录不存在；已准备单次首次启动脚本。
 用户随后明确回复“授权”；新grant已绑定原plan/冻结HEAD及最多7尝试/498688tokens/1200活动秒，明确超时共享重试一次。
 授权有效至2026-10-22T13:36:53.631926+00:00，原SHA及入口见同日integration result。
-下一动作由用户运行start-authorized.ps1并隐藏输入两家Key；随后按真实checkpoint完成审查/恢复/回放。
-目前尚无execution、模型0、密钥0；不沿用旧批授权。
+用户纠正智谱已有配置；原start-authorized.ps1已在执行前撤下，原入口/授权保留。
+已修入口：授权指定--zhipu-env-file后复用既有load_role_settings，仅隐藏输入天机阁Key，
+缺失或地址异常拒绝，不自动寻找其他Key。实际智谱配置本地核验可用，未输出密钥，模型请求0。
+15项相关入口回归通过（103.76秒）；下一动作冻结修正版、核精确HEAD CI和实际预检，
+再绑定同一用户授权；不扩展原预算或2026-10-22T13:36:53.631926+00:00截止。
+尚无execution；修正后给替换命令，不要求用户重填已配置智谱Key。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
