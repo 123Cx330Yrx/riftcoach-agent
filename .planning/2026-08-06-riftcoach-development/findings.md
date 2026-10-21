@@ -7551,3 +7551,10 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
 
 零网络复现：两份实际修订稿fresh请求均能build_wire，但固定筛选worker返回semantic_request_binding。自然合同/workflow/provider固定GLM身份及32768输出，Sol为16384；不可以改名字或删除校验接入。具体独立候选方案、预算与范围见2026-10-19-sol-natural-chain-proposal.md。补测没有执行checkpoint链；事后审查基线与原执行证据分开，不能追认历史链条。
+
+
+## 2026-10-21 reasoning回显的可选性与证据边界
+
+旧接收器接受整体reasoning缺失/null，却拒绝对象内effort缺失/null；空对象、null effort和明确low都被压成reasoning_identity。SDK类型effort可选默认null，真实SDK+mock HTTP可复现全部分支。原六项和本自然任务接收源码SHA均9a6899cfaba4f43cd688c0d5d199bf8178672097a8083d970e0a730231af6369，不能归因为本次新规则或请求漏high；原wire匹配的run外证据在control/closed-request-wire-check.json。旧receipt未保存echo，不足以选定本次实际失败是哪一支。
+
+修法是区分缺证与冲突，未回显仍标未验证；显式high也只是渠道自报。新增固定枚举观测不保留任意字段值，明确非high/畸形继续拒绝。畸形SDK模型的model_dump警告可能输出字段值，改用warnings=False并以warning-as-error反例确认未泄出。128项离线覆盖接收、实际子进程业务消费、监督/预算和候选整链；不能推导模型质量、真实high或旧响应应通过。新候选manifest更新，冻结执行树与历史stream不变。

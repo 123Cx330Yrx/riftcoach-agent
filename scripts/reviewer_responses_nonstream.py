@@ -31,8 +31,31 @@ def build_wire(business):
 
 def mapping(value):
     if hasattr(value, 'model_dump'):
-        value = value.model_dump(mode='json', exclude_unset=True)
+        value = value.model_dump(mode='json', exclude_unset=True, warnings=False)
     return value if isinstance(value, Mapping) else None
+
+
+def reasoning_echo(value):
+    """Classify optional provider metadata without retaining arbitrary text.
+
+    Missing metadata does not verify the requested effort or upstream identity.
+    An explicit conflict or malformed shape still rejects the response.
+    """
+    if 'reasoning' not in value:
+        return 'absent'
+    if value['reasoning'] is None:
+        return 'null'
+    reasoning = mapping(value['reasoning'])
+    if reasoning is None:
+        return 'malformed'
+    if 'effort' not in reasoning:
+        return 'effort_missing'
+    effort = reasoning['effort']
+    if effort is None:
+        return 'effort_null'
+    if not isinstance(effort, str):
+        return 'malformed'
+    return 'high' if effort == 'high' else 'conflict'
 
 
 def inspect_response(response, business):
@@ -46,13 +69,14 @@ def inspect_response(response, business):
     value = mapping(response)
     observation = dict(response_received=value is not None, terminal_status=None,
         reported_completed=False, output_items=None, function_calls=None,
-        output_type_counts=None, model_matches=False)
+        output_type_counts=None, model_matches=False, reasoning_echo=None)
     result = dict(ok=False, code='response_shape', usage=None, usage_state='unknown',
         public_tool_call=None, business_validated=False, semantic_approval=False,
         upstream_identity_verified=False, qualified=False, publication_allowed=False,
         response_observation=observation)
     if value is None:
         return result
+    observation['reasoning_echo'] = reasoning_echo(value)
     status = value.get('status')
     observation.update(terminal_status=status if status in (
         'completed', 'incomplete', 'failed', 'cancelled', 'queued', 'in_progress') else 'other',
@@ -83,8 +107,7 @@ def inspect_response(response, business):
 
     if not observation['model_matches']:
         return reject('model_identity')
-    reasoning = mapping(value.get('reasoning'))
-    if value.get('reasoning') is not None and (reasoning is None or reasoning.get('effort') != 'high'):
+    if observation['reasoning_echo'] in ('conflict', 'malformed'):
         return reject('reasoning_identity')
     if value.get('max_output_tokens') not in (None, MAX_OUTPUT):
         return reject('output_limit_identity')

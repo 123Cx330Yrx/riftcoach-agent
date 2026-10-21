@@ -146,7 +146,58 @@ def test_sdk_request_and_failure_observation(tmp_path, business, variant):
     assert KEY not in public and PRIVATE not in public
 
 
-@pytest.mark.parametrize('variant,accepted', [('ok', True), ('mixed', False), ('missing_repairs', False)])
+@pytest.mark.parametrize('sdk', [False, True], ids=['mapping', 'real-sdk-mock-http'])
+@pytest.mark.filterwarnings('error:Pydantic serializer warnings')
+@pytest.mark.parametrize('field,echo,accepted', [
+    ('omit', 'absent', True), (None, 'null', True),
+    ({}, 'effort_missing', True), ({'effort': None}, 'effort_null', True),
+    ({'effort': 'high'}, 'high', True),
+    *[({'effort': effort}, 'conflict', False)
+      for effort in ('none', 'minimal', 'low', 'medium', 'xhigh', 'max', PRIVATE)],
+    ({'effort': []}, 'malformed', False),
+    ({'effort': True}, 'malformed', False),
+    (PRIVATE, 'malformed', False), ([], 'malformed', False),
+])
+def test_optional_reasoning_echo_is_observed_without_claiming_identity(
+        tmp_path, business, sdk, field, echo, accepted):
+    value = response()
+    value['output'].insert(0, dict(type='reasoning', id='rs_1',
+        summary=[dict(type='summary_text', text=PRIVATE)]))
+    if field != 'omit':
+        value['reasoning'] = field
+    if sdk:
+        requests = []
+        def handler(request):
+            requests.append(json.loads(request.content))
+            return httpx.Response(200, stream=httpx.ByteStream(json.dumps(value).encode()),
+                headers={'content-type': 'application/json'})
+        result = codec.collect(business,
+            profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+            api_key=KEY, observation_dir=tmp_path / 'observation',
+            transport=httpx.MockTransport(handler))
+        assert len(requests) == 1 and requests[0]['reasoning'] == {'effort': 'high'}
+        observed = json.loads((tmp_path / 'observation/observation.json').read_text(encoding='utf-8'))
+        assert observed['response_contract']['reasoning_echo'] == echo
+        assert observed['eof'] and observed['closed']
+        assert KEY not in json.dumps(observed) and PRIVATE not in json.dumps(observed)
+    else:
+        result = codec.inspect_response(value, business)
+    assert result['ok'] is accepted
+    assert result['code'] == ('ok' if accepted else 'reasoning_identity')
+    assert result['response_observation']['reasoning_echo'] == echo
+    assert {key: result['usage'][key] for key in USAGE} == USAGE
+    assert result['usage_state'] == 'known'
+    assert result['business_validated'] is False
+    assert result['semantic_approval'] is False and result['upstream_identity_verified'] is False
+    assert result['qualified'] is False and result['publication_allowed'] is False
+    assert (result['public_tool_call'] is not None) is accepted
+    assert PRIVATE not in json.dumps(result) and KEY not in json.dumps(result)
+
+
+@pytest.mark.parametrize('variant,accepted', [
+    ('ok', True), ('mixed', False), ('missing_repairs', False),
+    ('effort_null', True), ('effort_conflict', False),
+])
 def test_owned_worker_to_receipt_uses_business_gate(tmp_path, business, variant, accepted):
     # Execute the actual child, replacing HTTP IO only. No key prompt or network.
     child = '''
@@ -156,7 +207,11 @@ from scripts import reviewer_responses_nonstream as codec
 from scripts import reviewer_responses_process as process
 fixture = runpy.run_path('tests/test_reviewer_responses_nonstream.py')
 value = fixture['response']()
-if VARIANT == 'mixed':
+if VARIANT == 'effort_null':
+    value['reasoning'] = dict(effort=None)
+elif VARIANT == 'effort_conflict':
+    value['reasoning'] = dict(effort='low')
+elif VARIANT == 'mixed':
     value['output'].append(dict(type='message', role='assistant', status='completed', content=[]))
 elif VARIANT == 'missing_repairs':
     raw = json.load(open('data/evaluation/fixtures/reviewer_route_recovery_20261018/r02-review.json', encoding='utf-8'))
@@ -181,6 +236,12 @@ process.worker()
     worker = json.loads((directory / 'worker-result.json').read_text())
     assert worker['business_validated'] is accepted
     if variant == 'missing_repairs': assert worker['code'] == 'business_contract_invalid'
+    if variant.startswith('effort_'):
+        assert worker['response_observation']['reasoning_echo'] == (
+            'effort_null' if accepted else 'conflict')
+        assert worker['upstream_identity_verified'] is False
+        if not accepted:
+            assert worker['code'] == 'reasoning_identity'
     assert KEY not in ''.join(p.read_text() for p in directory.rglob('*.json'))
     with pytest.raises(FileExistsError):
         process.run_once(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),

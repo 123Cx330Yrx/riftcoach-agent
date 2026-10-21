@@ -62,5 +62,40 @@
     "upstream_identity_verified": false,
     "model_quality_conclusion": null
   },
-  "next_action": "Improve body-free parameter observation and decide missing-vs-conflicting response echo semantics offline; do not reopen this run or send a new paid request."
+  "next_action": "Define recovery using saved report/tool results and explicit remaining cost scope. Do not reopen sealed run or automatically resend/regenerate; prospective receiver fix passed offline checks.",
+  "prospective_receiver_fix": {
+    "scope": "future nonstream candidate only; sealed execution and original verdict unchanged",
+    "previous_six_and_natural_receiver_identical": true,
+    "old_receiver_sha256": "9a6899cfaba4f43cd688c0d5d199bf8178672097a8083d970e0a730231af6369",
+    "frozen_wire_matches_original_receipt": true,
+    "request_effort": "high",
+    "accepted_unverified_echo": [
+      "absent",
+      "null",
+      "effort_missing",
+      "effort_null"
+    ],
+    "explicit_high_echo": "channel metadata only; does not authenticate upstream effort",
+    "rejected_echo": [
+      "conflict",
+      "malformed"
+    ],
+    "observation": "fixed enum only; no arbitrary field values, reasoning or body",
+    "sdk_serialization_field_value_warnings": false,
+    "old_actual_echo": "unknown; cannot reconstruct or approve the sealed failed response",
+    "new_paid_requests": 0,
+    "original_failed_run_reopened": false,
+    "verification": {
+      "kind": "offline only; real SDK/mock HTTP and owned subprocesses",
+      "command": "python -m pytest tests/test_reviewer_responses_nonstream.py tests/test_reviewer_responses_supervisor.py tests/test_sol_natural_candidate.py -q --tb=short --show-capture=no",
+      "passed": 128,
+      "failed": 0,
+      "seconds": 181.62,
+      "governance": "passed",
+      "compile": "passed",
+      "diff_check": "passed",
+      "candidate_manifest": "refreshed only sol_natural_v1",
+      "quality_or_upstream_identity_proof": false
+    }
+  }
 }

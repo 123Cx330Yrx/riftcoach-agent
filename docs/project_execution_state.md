@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "本自然任务已执行并封存，首次Sol响应reasoning_identity拒绝；转零付费参数观测/合同诊断，automation PAUSED。"
+pause_reason: "本自然任务已执行并封存；reasoning回显接收修正仅离线验证，不追认旧响应，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -83,7 +83,14 @@ CI39610700918现已全部8项success；用户启动后在天机阁隐藏输入�
 离线复现确认空对象/null effort/显式low均映射同码，故实际档位未知，不断言降档。
 真实原stdout根保留，整链严格只读回放通过，唯一seal b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55。
 报告及工具/回执原件保留；本run已闭不重开。结果见sol_natural_observed_20261021.json。
-下一动作仅零付费诊断：补参数无正文观测并区分未回显与明确冲突的合同语义，不能靠放行旧失败或自动重买来继续。
+后续零付费诊断：原六项与本自然任务的非流式接收/传输源码SHA相同，请求high且wire摘要匹配原回执。
+发现接收规则不一致：整体字段缺失/null可过，对象内缺失/null却拒绝，并与明确非high共用错误码。
+前瞻修正统一按未回显处理，新增固定枚举reasoning_echo；明确非high/畸形仍拒绝，SDK序列化不输出字段值警告。
+未回显不是high已证实；第三方上游身份仍未验证，模型/schema/业务/预算及发布门保持。
+旧失败实际属于哪种仍未知，正文及实际echo无法从原件恢复，不补签或追认旧响应通过。
+修正的SDK/子进程/候选链128项离线回归通过（181.62秒），governance、compile和diff检查通过。
+下一动作：复用现存报告/工具结果制定具体恢复方案；任何后续真实验证须明确剩余费用边界，
+不重开本封存run、不默认重新生成报告，也不自动发新付费请求。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。

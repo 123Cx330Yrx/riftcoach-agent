@@ -9923,3 +9923,12 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 补测已证明完成度缺口检出与安全修法，熟悉来源/小样本/无fresh/第三方身份未证边界保持。
 
 下一动作：按docs/plans/2026-10-19-sol-natural-chain-proposal.md，完成Flash生成/Sol审查独立候选的动态请求与真实回执接线及零付费整链验证；再冻结新HEAD/CI和具体付费提案。不重跑固定筛选，不直接修改产品GLM采用或五调用上限。
+
+
+## 2026-10-21 首次Sol返回接收修正（零新增付费）
+
+自然任务3HTTP后的reasoning_identity拒绝保持原封存。对比原六项与本次冻结源码，两者非流式接收与传输SHA完全相同；重建原请求wire与receipt摘要匹配，发送high没有丢失。旧观测没保留echo区别，无法确认此次是空/null还是明确冲突，不判断模型降档或语义失败。
+
+前瞻统一缺失/null响应元数据语义，新增固定reasoning_echo枚举；明确非high/畸形仍拒绝。SDK序列化关闭会包含字段值的警告，测试将同类警告设为error。请求、来源、工具/schema/业务/预算与发布门不变，仅刷新独立Sol候选manifest。
+
+SDK+mock HTTP、实际owned worker、自然候选与监督检查128项通过（181.62秒）；governance、compile、diff-check通过。首轮新增测试的fixture曾误用预加载HTTP body并对归一化usage做精确键比较，修正测试后完整检查通过，不是新的真实请求失败。旧run、报告/工具/原回执/seal及未知项保持；新增模型请求0，不读取Key、不启动新批。下一动作是具体设计复用已存报告/工具的恢复，不默认重生成或自动重买。
