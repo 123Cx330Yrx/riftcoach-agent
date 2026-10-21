@@ -1,3 +1,10 @@
+## 2026-10-21 自然任务费用授权已绑定
+
+用户对具体调用/预算提案明确回复“授权”。create-only保存authorization.json和原SHA，
+精确绑定plan/冻结HEAD/run_id/limits/估价/共享一次明确超时重试；有效期24小时。
+已在冻结执行树通过实际load(frozen=True)/validate_grant，并准备start-authorized.ps1，语法解析通过。
+下一动作用户在交互终端隐藏输入两家Key。尚无execution、模型0、密钥0，automation PAUSED。
+
 ## 2026-10-21 冻结CI和发送前报价核对
 
 冻结e1de0891 / CI39534539078全部8项success，原始CI核验记录已create-only保存。

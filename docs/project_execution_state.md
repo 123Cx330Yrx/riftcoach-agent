@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "付费批已封存；补测完成。准备自然任务候选接线，未授权新付费，automation PAUSED。"
+pause_reason: "付费批已封存；自然任务候选准备完成且本次费用已授权，等待隐藏输入密钥启动；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -61,8 +61,10 @@ Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，�
 公开价格接口/官方价格资产复核Sol GPT-pro输入0.4、输出2元/百万tokens，Flash常规价0.8/2.8；
 Flash资产仍含已过期促销，本轮不用优惠价。估价保持0.6170624元，非账单硬限。
 真实原生预检只读回查通过、执行树clean、execution目录不存在；已准备单次首次启动脚本。
-下一动作申请本自然任务的新费用授权：最多7尝试/498688tokens/1200活动秒，明确超时共享重试一次。
-授权后生成24小时内有效且绑定原plan的新grant，提供可粘贴命令；目前模型0、密钥0，不沿用旧批授权。
+用户随后明确回复“授权”；新grant已绑定原plan/冻结HEAD及最多7尝试/498688tokens/1200活动秒，明确超时共享重试一次。
+授权有效至2026-10-22T13:36:53.631926+00:00，原SHA及入口见同日integration result。
+下一动作由用户运行start-authorized.ps1并隐藏输入两家Key；随后按真实checkpoint完成审查/恢复/回放。
+目前尚无execution、模型0、密钥0；不沿用旧批授权。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。

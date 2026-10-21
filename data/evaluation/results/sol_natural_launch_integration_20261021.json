@@ -4,7 +4,7 @@
   "provider_requests": 0,
   "key_read": false,
   "paid_launcher_ready": true,
-  "execution_authorized": false,
+  "execution_authorized": true,
   "production_admitted": false,
   "publication_allowed": false,
   "checks": [
@@ -45,7 +45,7 @@
     ]
   },
   "remaining": [
-    "specific new-task cost authorization before key entry and execution"
+    "user hidden-key entry and first execution; native business reviews follow actual checkpoints"
   ],
   "limitations": [
     "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
@@ -153,13 +153,28 @@
     "key_read": false
   },
   "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
-  "readiness_scope": "Engineering prerequisites complete; fresh specific cost authorization still required. No execution directory or paid model request.",
+  "readiness_scope": "Engineering prerequisites and fresh specific authorization complete; waiting for user interactive hidden-key input. No execution or paid model request yet.",
   "first_launch_entry": {
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-first.ps1",
     "sha256": "c56a00f753fcb165064c4b6b63a2d19ff1de827288b8c74845c0acb55e1f73a0",
     "powershell_parse": "passed",
     "invoked": false,
     "authorization_created": false,
-    "stdout": "create-only first-launch.stdout.txt outside Operator"
+    "stdout": "create-only first-launch.stdout.txt outside Operator",
+    "authorized_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-authorized.ps1"
+  },
+  "authorization": {
+    "authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\authorization.json",
+    "authorization_sha256": "5bdaf21567db6fccbebc7c1b930be9cc4677f8cb3f50f545eb2726be84f8d5ce",
+    "issued_at": "2026-10-21T13:36:53.631926+00:00",
+    "expires_at": "2026-10-22T13:36:53.631926+00:00",
+    "entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-authorized.ps1",
+    "entry_sha256": "0bec5011e632428efdc351b90f23d08cd51cef2578e31533ef8772fea6177945",
+    "plan_sha256": "76c1e683590542f5443a85abeeeb67101e40e7385a1fc73c668862e36033f84d",
+    "execution_started": false,
+    "provider_requests": 0,
+    "key_read": false,
+    "grant_validation": "passed",
+    "frozen_source_validation": "passed"
   }
 }
