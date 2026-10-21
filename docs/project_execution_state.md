@@ -48,6 +48,13 @@ Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，�
 补齐依赖后30项、恢复三个回执原字节后57项复测通过。下一动作提交并核新HEAD CI。
 实际cwd/Python的Sol离线准备已捕获首请求，provider_requests=0、key_read=false；付费launcher仍未ready。
 
+2026-10-21启动入口接线：新增独立sol_natural_launch命令，补实际应用execution_session传递、首请求绑定、
+原授权/CI/预检根保留、派生输出摘要、逐阶段暂停/恢复、只读整链回放及唯一封存。
+会话/审查/库存32项、最终入口及旧入口36项通过（有重叠）；无模型调用、无密钥读取。
+19f76f04 / CI39532199974仍在运行，Web/Postgres/打包已成功，四分片未出结论。
+下一动作提交本轮接线并核精确HEAD公共CI，在干净执行树完成真实作者预检；尚不可填Key执行。
+详见docs/plans/2026-10-21-sol-natural-launcher.md及sol_natural_launch_integration_20261021.json。
+
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
 准备、行政预检及既有失败见`docs/plans/2026-10-18-reviewer-semantic-execution.md`。

@@ -34,7 +34,7 @@ def cost_envelope():
     return str(max(costs))
 
 
-def prepare(run_id):
+def capture(run_id):
     factory = CaptureFactory()
     with TemporaryDirectory(prefix='riftcoach-sol-natural-') as directory:
         prepared = base.build_application(provider_factory=factory, output_root=directory,
@@ -46,7 +46,7 @@ def prepare(run_id):
         if factory.first is None:
             raise ValueError('sol_first_request_not_reached')
     raw = contract.request_bytes(factory.first)
-    return dict(version='sol-natural-offline-preparation-v1', run_id=run_id,
+    preparation = dict(version='sol-natural-offline-preparation-v1', run_id=run_id,
         first_request_sha256=base.sha(raw), source_sha256=base.SOURCE_SHA,
         source_projection_time=base.SOURCE_NOW, relationship='observed', memory_records=0,
         source_scope='frozen_public_development_not_holdout', preselected_knowledge=False,
@@ -56,6 +56,11 @@ def prepare(run_id):
         estimated_uncached_cny=cost_envelope(), hard_billing_cap=False,
         provider_requests=0, key_read=False, semantic_approval=False,
         execution_authorized=False, paid_launcher_ready=False, production_admitted=False)
+    return factory.first, preparation
+
+
+def prepare(run_id):
+    return capture(run_id)[1]
 
 
 if __name__ == '__main__':

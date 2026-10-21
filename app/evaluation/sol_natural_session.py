@@ -224,6 +224,10 @@ class CandidateSession:
                 raise SessionBlocked('session_reconciliation_required')
             self.verify()
             ordinal = self.cursor + 1
+            first_pin = self.binding.get('first_request_sha256')
+            if kind == 'model' and ordinal == 1 and first_pin is not None:
+                if digest(canonical(request)) != first_pin:
+                    raise SessionBlocked('session_first_request_changed')
             intent = dict(ordinal=ordinal, kind=kind, request=json.loads(canonical(request)))
             path = self.root/'operations'/f'{ordinal:04d}-intent.json'
             result_path = self.root/'operations'/f'{ordinal:04d}-result.json'

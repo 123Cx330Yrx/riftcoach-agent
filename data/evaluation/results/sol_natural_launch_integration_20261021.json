@@ -1,0 +1,65 @@
+{
+  "version": "sol-natural-launch-integration-20261021-v1",
+  "base_head": "19f76f047a01e26ac0855a535facbb54c7893855",
+  "provider_requests": 0,
+  "key_read": false,
+  "paid_launcher_ready": false,
+  "execution_authorized": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "checks": [
+    {
+      "scope": "session/native-review/current-inventory plus initial launcher",
+      "passed": 32,
+      "seconds": 241.02
+    },
+    {
+      "scope": "final launcher including replay/seal/derived retention and old development entry",
+      "passed": 36,
+      "seconds": 100.69
+    }
+  ],
+  "test_limit": "Synthetic providers/native events; overlapping test sets are not summed. No real semantic review.",
+  "native_lineage": {
+    "root": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "independent": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "verified_parent_link": true,
+    "host_status": "notLoaded",
+    "author_preflight_completed": false
+  },
+  "prior_ci": {
+    "run_id": "39532199974",
+    "head": "19f76f047a01e26ac0855a535facbb54c7893855",
+    "status": "in_progress",
+    "observed_at": "2026-10-21T02:41:00Z",
+    "successful_jobs": [
+      "web-checks",
+      "postgres-migrations",
+      "packaging-smoke"
+    ],
+    "pending_jobs": [
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)"
+    ]
+  },
+  "remaining": [
+    "exact committed HEAD public CI",
+    "clean execution checkout and pinned plan",
+    "actual independent author/check-answer/native final/import preflight",
+    "current prices and specific cost authorization"
+  ],
+  "limitations": [
+    "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
+    "Third-party upstream identity remains unverified."
+  ],
+  "cleanup": {
+    "status": "previous platform deletion rejection retained",
+    "targets": [
+      "tmp/stack-debug",
+      "tmp/sol-natural-preflight-20261021.json"
+    ],
+    "bypassed": false
+  }
+}
