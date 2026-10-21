@@ -56,3 +56,15 @@
 测试使用合成响应与合成原生事件；验证完整应用暂停、作者导入、恢复、不重复发送、唯一应用、
 完整回放、唯一封存，以及CI/身份/过期授权/首请求变化的前置拒绝。真实作者预检另行记录，
 不把测试替身计入真实业务审查、模型可靠率或8E退出条件。
+
+## 当前交接（2026-10-21）
+
+实现冻结e1de08913606267db0c97f2ead95ffa723f9ed17，CI39534539078全部8项success。
+执行树D:/riftcoach-sol-natural-launch-execution保持clean，真实作者行政预检及只读回查通过。
+Operator为C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-natural-launch-20261021，
+plan SHA为76c1e683590542f5443a85abeeeb67101e40e7385a1fc73c668862e36033f84d。
+同级riftcoach-sol-natural-launch-20261021-control/start-first.ps1为首次启动入口；
+必须提供授权后生成的AuthorizationFile/AuthorizationSha，原stdout追加到create-only日志，
+execution已存在则拒绝再次首次启动，恢复另用真实执行guard/最新checkpoint。
+公开报价确认记录见Operator/pricing-confirmation-20261021.json及同日integration result。
+新费用授权仍未取得，未创建execution、未读取Key、未发送模型请求。

@@ -3,7 +3,7 @@
   "base_head": "19f76f047a01e26ac0855a535facbb54c7893855",
   "provider_requests": 0,
   "key_read": false,
-  "paid_launcher_ready": false,
+  "paid_launcher_ready": true,
   "execution_authorized": false,
   "production_admitted": false,
   "publication_allowed": false,
@@ -45,8 +45,7 @@
     ]
   },
   "remaining": [
-    "exact frozen execution HEAD public CI",
-    "current prices and specific cost authorization"
+    "specific new-task cost authorization before key entry and execution"
   ],
   "limitations": [
     "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
@@ -78,7 +77,89 @@
     "head": "e1de08913606267db0c97f2ead95ffa723f9ed17",
     "clean": true,
     "ci_run": "39534539078",
-    "ci_status": "in_progress",
-    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021"
+    "ci_status": "completed",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021",
+    "ci_conclusion": "success"
+  },
+  "verified_ci": {
+    "run_id": "39534539078",
+    "head_sha": "e1de08913606267db0c97f2ead95ffa723f9ed17",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest",
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)",
+      "web-checks"
+    ]
+  },
+  "pricing_confirmation": {
+    "observed_at": "2026-10-21T13:32:39.729125+00:00",
+    "access": "public HTTP; no login or API credentials",
+    "sol": {
+      "url": "https://yujianwudi.top/api/pricing",
+      "http_status": 200,
+      "response_sha256": "d1b5e14c8a6672ee63e59d2030c27d72d4d1f9f41b3c2e6c1848ec918ed5a32c",
+      "model_entry": {
+        "model_name": "gpt-6.1-sol",
+        "description": "GPT-6 \u7cfb\u5217\uff0cSOL\u6a21\u578b\uff0c\u591a\u6a21\u6001\uff0c\u652f\u6301\u6587\u672c\u4e0e\u56fe\u50cf\u8f93\u5165\uff0c1M \u4e0a\u4e0b\u6587\u4e0e 128K \u6700\u5927\u8f93\u51fa",
+        "tags": "1M",
+        "vendor_id": 3,
+        "quota_type": 0,
+        "model_ratio": 37.5,
+        "model_price": 0,
+        "owner_by": "",
+        "completion_ratio": 2,
+        "enable_groups": [
+          "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+          "GPT-pro",
+          "GPT-plus"
+        ],
+        "supported_endpoint_types": [
+          "openai",
+          "openai-response",
+          "openai-response-compact",
+          "anthropic",
+          "gemini",
+          "openai-alpha-search"
+        ],
+        "billing_mode": "tiered_expr",
+        "billing_expr": "tier(\"\u6807\u51c6\", p * 2 + c * 10 + cr * 0.1 + cc * 2.5)",
+        "pricing_version": "5a90f2b86c08bd983a9a2e6d66c255f4eaef9c4bc934386d2b6ae84ef0ff1f1f"
+      },
+      "group": "GPT-pro",
+      "group_ratio": 0.2,
+      "input_per_million_cny": 0.4,
+      "output_per_million_cny": 2,
+      "interpretation": "billing_expr input/output multiplied by group ratio; currency basis matches earlier explicit user price confirmation"
+    },
+    "flash": {
+      "page": "https://open.bigmodel.cn/pricing",
+      "asset_url": "https://static.bigmodel.cn/wd-paas-front/js/app.d001091a.js",
+      "http_status": 200,
+      "response_sha256": "eeabcd7e964e750c179acce4abff10a452fb24ce8d21c717884e10bc23bb8042",
+      "price_entry": "{name:\"GLM-5.3-Flash\",rowspan:1,intro:\"5\u6298\u9650\u65f6\u4e24\u5468\u81f309-09\",introType:\"new\",upDownText:[\"1M\"],inPrice:[\"0.4\u5143\",\"0.8\u5143\"],outPrice:[\"1.4\u5143\",\"2.8\u5143\"],storage:\"\u9650\u65f6\u514d\u8d39\",hit:[\"0.115\u5143\",\"0.23\u5143\"],input_model1:\"\u56fe\u7247\u3001\u89c6\u9891\",input_model2:\"\u6587\u4ef6\u3001\u6587\u672c\",decode:\"\"}",
+      "input_per_million_cny": 0.8,
+      "output_per_million_cny": 2.8,
+      "interpretation": "Regular listed rates; expired promotional values 0.4/1.4 ending 09-09 are not used. Public asset still contains that promotion."
+    },
+    "estimated_uncached_cny": 0.6170624,
+    "billing_hard_cap": false,
+    "provider_requests": 0,
+    "key_read": false
+  },
+  "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
+  "readiness_scope": "Engineering prerequisites complete; fresh specific cost authorization still required. No execution directory or paid model request.",
+  "first_launch_entry": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-first.ps1",
+    "sha256": "c56a00f753fcb165064c4b6b63a2d19ff1de827288b8c74845c0acb55e1f73a0",
+    "powershell_parse": "passed",
+    "invoked": false,
+    "authorization_created": false,
+    "stdout": "create-only first-launch.stdout.txt outside Operator"
   }
 }
