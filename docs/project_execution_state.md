@@ -40,6 +40,14 @@ Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，�
 旧哈希、旧封存及当前源码拒绝门不改。下一动作：相关17项回归通过，推送修复并核新精确HEAD公共CI；仍不做付费启动。当前已具备开发候选的持久恢复与审查接线，
 不能宣称付费launcher ready、模型质量、上游身份或产品资格。原固定批不重开，产品GLM/五调用不变。
 
+2026-10-21续：6906d169 / CI39454231178已完成failure；三个pytest分片、Web、Postgres和打包通过，
+分片1在当前original15离线库存对比旧10月15日指纹时停止。新库存单独存为
+`natural_duty_qualification_inventory_session_20261021.json`，仅九组件及program摘要变化；
+15输入/标签、30请求、预算和未授权/未授资格字段与旧库存相同。来源coverage恢复Git原LF并固定属性，
+旧清单和封存结果不改。清单5项通过；剩余800项补跑744通过/35跳过，21失败或错误分别归因Pi依赖及历史回执换行，
+补齐依赖后30项、恢复三个回执原字节后57项复测通过。下一动作提交并核新HEAD CI。
+实际cwd/Python的Sol离线准备已捕获首请求，provider_requests=0、key_read=false；付费launcher仍未ready。
+
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
 准备、行政预检及既有失败见`docs/plans/2026-10-18-reviewer-semantic-execution.md`。

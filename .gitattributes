@@ -402,3 +402,13 @@
 /data/evaluation/fixtures/natural_duty_observed_review_20261015/** -text
 /data/evaluation/fixtures/natural_duty_observed_review_20261015/execution-stdout.log whitespace=cr-at-eol
 /data/evaluation/results/natural_duty_observed_*_20261015.json text eol=lf
+
+# Preserve original coverage and the current offline inventory across platforms.
+/data/evaluation/results/golden_native_partitioned_tool_coverage_v2.json text eol=lf
+/data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json text eol=lf
+
+# Historical role receipts retain their original sealed Git bytes.
+/data/evaluation/results/golden_role_clarity_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_containment_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_unexecuted_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_remaining_interruption_v1.json text eol=lf

@@ -20,7 +20,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **证据：** reviewer_semantic_live_20261019.json、sol_natural_offline_preparation_20261019.json及sol_continuation_audit_20261020.json。断续审计修复清单漂移、deadline硬错遮蔽、缺观测误重试、失败usage归属及Trace消费；稳定回归172、身份25、消费130、最终超时17项分别通过（有重叠），隔离SQL/Worker/API16项无skip。
 **边界：** 独立候选已实现。拟6逻辑调用+1超时重试/498688tokens/1200秒，估价0.6170624元；未授权新调用，产品五调用/GLM采用不变。
 **失败分支：** 明确且已回收的超时同阶段最多重试一次，保留已完成结果及未知预留；结构/身份/语义错误不重试，不无限扩容。
-**下一动作：历史回放夹具17项回归已通过，推送并核新精确HEAD公共CI。469da8ec/39451570923四分片首错均为旧runtime.py快照缺失，已从原历史提交补齐并匹配原SHA；不改旧封存。混合候选持久恢复与审查接线仍仅离线证据；CI未全绿前不是付费launcher ready。**
+**下一动作：当前库存修复5项及剩余测试故障复核30/57项已通过，提交并核新HEAD CI。旧封存与10月15日清单保持，新清单仅更新九组件及program摘要。付费launcher尚未完成；CI通过后继续其实际接线与原生作者预检。**
 
 ## Dependencies and Follow-through
 

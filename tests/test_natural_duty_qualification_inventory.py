@@ -18,18 +18,19 @@ def offline(monkeypatch):
 
 def test_saved_inventory_rebuilds_without_fresh_or_qualification_credit():
     value = inventory.audit()
-    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json'
+    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json'
     assert value == json.loads(path.read_bytes())
-    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_dispatch_fix_20261015.json').read_bytes())
+    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json').read_bytes())
     assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
         k: v for k, v in previous.items() if k not in ('component_fingerprints', 'program_sha256')}
     old_rows = {r['component_id']: r for r in previous['component_fingerprints']}
     new_rows = {r['component_id']: r for r in value['component_fingerprints']}
-    assert new_rows.keys() - old_rows.keys() == {'app.runtime.natural_duty_provider_factory'}
-    assert not old_rows.keys() - new_rows.keys()
+    assert old_rows.keys() == new_rows.keys()
     assert {k for k in old_rows if old_rows[k] != new_rows[k]} == {
-        'app.evaluation.golden_stream_bridge', 'app.runtime.receipted_provider_factory',
-        'app.evaluation.natural_duty_contract', 'app.product.natural_duty_candidate'}
+        'app.runtime.models', 'app.runtime.recorder', 'app.runtime.observed_provider',
+        'app.runtime.runtime', 'app.runtime.coach_budget', 'app.runtime.coach_contract',
+        'app.model_runtime', 'app.evaluation.natural_duty_workflow',
+        'app.product.natural_duty_candidate'}
     assert value['initial_request_count'] == 30
     assert value['fixed_report_review_slots_if_all_cases_match_labels'] == 50
     assert value['label_counts'] == {'accept': 5, 'reject': 10}
@@ -40,6 +41,20 @@ def test_saved_inventory_rebuilds_without_fresh_or_qualification_credit():
     assert value['provider_calls'] == value['new_host_tasks'] == value['new_qualification'] == 0
     assert not any(value[k] for k in ('qualified', 'execution_ready', 'execution_authorized',
                                     'production_admitted', 'publication_allowed'))
+
+
+def test_historical_transport_inventory_keeps_its_original_change_boundary():
+    value = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json').read_bytes())
+    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_dispatch_fix_20261015.json').read_bytes())
+    assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
+        k: v for k, v in previous.items() if k not in ('component_fingerprints', 'program_sha256')}
+    old_rows = {r['component_id']: r for r in previous['component_fingerprints']}
+    new_rows = {r['component_id']: r for r in value['component_fingerprints']}
+    assert new_rows.keys() - old_rows.keys() == {'app.runtime.natural_duty_provider_factory'}
+    assert not old_rows.keys() - new_rows.keys()
+    assert {k for k in old_rows if old_rows[k] != new_rows[k]} == {
+        'app.evaluation.golden_stream_bridge', 'app.runtime.receipted_provider_factory',
+        'app.evaluation.natural_duty_contract', 'app.product.natural_duty_candidate'}
 
 
 @pytest.mark.parametrize('changed', ['input_sha256', 'report_sha256', 'expected_initial'])
