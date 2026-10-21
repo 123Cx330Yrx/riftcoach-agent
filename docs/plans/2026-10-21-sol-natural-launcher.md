@@ -74,3 +74,11 @@ execution已存在则拒绝再次首次启动，恢复另用真实执行guard/�
 修正仅显式复用D:/riftcoach-agent/.env的智谱配置，天机阁仍隐藏输入；实际本地加载核实可用且为官方地址，
 未输出密钥；这次读取属于配置核验，不记成“从未读取凭据”。15项入口回归通过（103.76秒），
 预算、来源、模型角色及用户原授权截止不扩展。后续需冻结修正版和核该HEAD CI/实际预检。
+
+修正后实际交接：HEAD084c415cbcfac173f1a075983260aa9d694b430c，执行树
+D:/riftcoach-sol-natural-stored-key-execution；Operator为outputs/riftcoach-sol-natural-stored-key-20261021。
+新plan SHA641f4cac2a98be481e08752866eddc6814f53c066eeb7323f3d67a27edc785a3。
+真实行政预检与原件严格只读回查通过，原stdout根及当前0006 checkpoint、event-id均在同级control保存。
+授权SHA2ef562edb1ca15fcad8646063307bcb441b02faf0a877edc76903d209155decd，
+原issued/expires/预算保持；显式配置路径绑定。替换脚本为同级control/start-authorized.ps1，
+语法通过、未运行；公共CI39610700918尚在运行，未通知用户填Key。
