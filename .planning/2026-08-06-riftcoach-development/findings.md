@@ -1,3 +1,11 @@
+## 2026-10-21 新执行树换行与恢复预检
+
+新worktree自动CRLF导致prepare在发送前拒绝unrelated_source_changed。仅对新冻结树899项库存
+恢复Git提交原字节，其中816项变化；刷新索引前后write-tree相同且最终clean。未改共享Git配置、
+旧执行树或封存；失败stdout保留，后继实际prepare通过。不要对冻结树再次checkout/reset引入漂移。
+新行政预检完整走作者原件/check-answer/真实native final/submit/严格只读回查，库存未变；
+只证明交接，不证明模型语义质量或付费许可。
+
 ## 2026-10-21 reasoning_identity不是已证档位降级
 
 inspect_response在reasoning对象存在但effort非high时返回同一码；空字典、effort=null、effort=low

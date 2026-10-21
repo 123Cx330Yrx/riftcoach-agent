@@ -118,3 +118,16 @@ D:/riftcoach-sol-natural-stored-key-execution；Operator为outputs/riftcoach-sol
 最多等1小时、每30秒查一次，授权过期/CI失败/连续三次查询失败均在执行前退出，查询故障不冒称CI失败。
 等待可Ctrl+C，尚未产生execution时无模型发送；原首次stdout仍create-only。
 六项判定分支和实际授权校验通过，入口语法通过；此入口未运行。
+
+## 恢复入口实际准备（2026-10-21）
+
+2026-10-21恢复准备实核：34项相关回归已通过，执行树D:/riftcoach-sol-natural-continuation-execution冻结51f31f60。
+实际prepare完成；独立作者原件/check-answer/真实native final/导入及严格只读回查通过，原件前后不变。
+新plan与预检原stdout根详见sol_natural_continuation_preparation_20261021.json。首次启动脚本已备好并通过语法检查。
+CI39623758447在15:22 UTC仍in_progress：Web/Postgres/打包通过，四pytest分片运行。
+下一动作仅核冻结HEAD公共CI；全绿后给绑定新plan/父seal的具体补充授权。无execution、无新请求、无Key读取。
+
+新Operator为outputs/riftcoach-sol-natural-continuation-20261021，同级control/start-first.ps1
+要求明确传入新授权文件及原SHA；不读取智谱配置，只隐藏提示天机阁Key。旧授权不自动重绑。
+预检guard8080b1db、最新checkpoint8a58a383及完整根在result和control原stdout保留。
+新增最多4次Sol/321536tokens/估价0.233472元，旧3次成本继承；生成禁止，超时重试占剩余位置。
