@@ -54,6 +54,10 @@ Docker旧socket复发已备份恢复，原卷/15432/healthy/只读SQL核实，�
 19f76f04 / CI39532199974仍在运行，Web/Postgres/打包已成功，四分片未出结论。
 下一动作提交本轮接线并核精确HEAD公共CI，在干净执行树完成真实作者预检；尚不可填Key执行。
 详见docs/plans/2026-10-21-sol-natural-launcher.md及sol_natural_launch_integration_20261021.json。
+接线提交e1de0891已推送；干净执行树D:/riftcoach-sol-natural-launch-execution冻结同HEAD，CI39534539078运行中。
+真实独立作者已完成行政夹具、作者原件/check-answer/native final/逐字导入，随后严格只读回查通过且原件未变。
+准备包及原始stdout根已保留在outputs/riftcoach-sol-natural-launch-20261021；这不是业务语义审查。
+下一动作核冻结e1de0891公共CI并复核价格，之后才提交新费用授权；不需要用户提前填Key。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。

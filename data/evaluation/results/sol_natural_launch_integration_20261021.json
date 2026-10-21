@@ -24,8 +24,8 @@
     "root": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
     "independent": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
     "verified_parent_link": true,
-    "host_status": "notLoaded",
-    "author_preflight_completed": false
+    "host_status": "completed_native_preflight",
+    "author_preflight_completed": true
   },
   "prior_ci": {
     "run_id": "39532199974",
@@ -45,9 +45,7 @@
     ]
   },
   "remaining": [
-    "exact committed HEAD public CI",
-    "clean execution checkout and pinned plan",
-    "actual independent author/check-answer/native final/import preflight",
+    "exact frozen execution HEAD public CI",
     "current prices and specific cost authorization"
   ],
   "limitations": [
@@ -61,5 +59,26 @@
       "tmp/sol-natural-preflight-20261021.json"
     ],
     "bypassed": false
+  },
+  "native_preflight": {
+    "native_preflight_verified": true,
+    "strict_readback": true,
+    "originals_unchanged": true,
+    "plan_sha256": "76c1e683590542f5443a85abeeeb67101e40e7385a1fc73c668862e36033f84d",
+    "guard_sha256": "2d3cdd79091c3b4cd4d50938ee80195d7bb30c7fd7d9cdbed74a857d45a79d36",
+    "checkpoint_sha256": "fac91b1c08d87a10466aa4198281b168999a97c3005d6d2133f48a882aab2cbf",
+    "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a15c58-c6b2-7b00-b893-673f1b105cf9/msg_0a36aebb81a71052016ad8276b58388191b4de880828ccf7e4",
+    "provider_requests": 0,
+    "key_read": false,
+    "business_review": false,
+    "execution_authorized": false
+  },
+  "execution_checkout": {
+    "cwd": "D:/riftcoach-sol-natural-launch-execution",
+    "head": "e1de08913606267db0c97f2ead95ffa723f9ed17",
+    "clean": true,
+    "ci_run": "39534539078",
+    "ci_status": "in_progress",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021"
   }
 }

@@ -1,3 +1,10 @@
+## 2026-10-21 真实作者行政预检完成
+
+e1de0891已推送，干净执行树冻结同HEAD；实际prepare及native-task启动通过。
+复用host_scope_calibration，唯一任务返回原生final，作者文件/check-answer/逐字导入全部通过，
+随后严格只读回查原件未变。完整根及event-id见sol_natural_launch_integration_20261021.json。
+模型请求0、密钥0；业务审查/新费用授权未发生。精确HEAD CI39534539078尚在运行。
+
 ## 2026-10-21 自然任务实际启动入口
 
 已接持久session到真实准备应用入口，新增独立命令的准备、原生任务/导入、执行暂停恢复、回放/封存。
