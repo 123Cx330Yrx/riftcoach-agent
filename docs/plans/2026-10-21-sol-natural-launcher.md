@@ -82,3 +82,10 @@ D:/riftcoach-sol-natural-stored-key-execution；Operator为outputs/riftcoach-sol
 授权SHA2ef562edb1ca15fcad8646063307bcb441b02faf0a877edc76903d209155decd，
 原issued/expires/预算保持；显式配置路径绑定。替换脚本为同级control/start-authorized.ps1，
 语法通过、未运行；公共CI39610700918尚在运行，未通知用户填Key。
+
+继续交接：新control/start-authorized.ps1先执行同目录wait_public_ci.py（前台只读，不是automation），
+固定CI39610700918/HEAD084c415c/原授权SHA。仅同HEAD全部8项success才进入原实际launcher，
+后者再次核CI/授权/native/来源后加载显式智谱配置并只提示天机阁Key。
+最多等1小时、每30秒查一次，授权过期/CI失败/连续三次查询失败均在执行前退出，查询故障不冒称CI失败。
+等待可Ctrl+C，尚未产生execution时无模型发送；原首次stdout仍create-only。
+六项判定分支和实际授权校验通过，入口语法通过；此入口未运行。

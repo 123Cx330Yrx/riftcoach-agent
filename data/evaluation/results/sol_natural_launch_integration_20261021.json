@@ -45,8 +45,9 @@
     ]
   },
   "remaining": [
-    "corrected exact-HEAD public CI",
-    "user hidden Tianjige key input and execution"
+    "user starts foreground CI-wait entry",
+    "exact-head public CI success before any key prompt",
+    "Tianjige hidden-key input and actual execution/reviews"
   ],
   "limitations": [
     "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
@@ -151,14 +152,15 @@
     "key_read": false
   },
   "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
-  "readiness_scope": "Stored Zhipu configuration fix passed 15 launcher regressions and real administrative author/native readback. Same user authorization rebound with unchanged deadline/limits. Corrected exact-head CI in progress; no paid model execution.",
+  "readiness_scope": "Authorized foreground entry is ready: wait read-only for corrected exact-head CI before invoking original launcher and prompting only Tianjige key. CI pending; no execution started.",
   "first_launch_entry": {
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-first.ps1",
     "sha256": "5149904426665f351698e65f0c83ba25784bd6ca71197d534e8eac453f9a4389",
     "authorized_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-authorized.ps1",
     "powershell_parse": "passed",
     "invoked": false,
-    "stdout": "create-only first-launch.stdout.txt outside Operator"
+    "stdout": "create-only first-launch.stdout.txt outside Operator",
+    "authorized_entry_sha256": "e97ed0a60ffe89eb2803e9de2247e1b1098aaaedae8c349ad201aa267d62b989"
   },
   "authorization": {
     "authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\authorization.json",
@@ -243,5 +245,26 @@
       "authorized_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-authorized.ps1"
     },
     "reason": "Credential prompt regression corrected; no model execution occurred."
+  },
+  "foreground_ci_wait_entry": {
+    "checks": [
+      "pending waits",
+      "all-success accepted",
+      "wrong head rejected",
+      "failure rejected",
+      "missing jobs rejected",
+      "failed job rejected",
+      "actual grant valid"
+    ],
+    "provider_requests": 0,
+    "third_party_key_read": false,
+    "entry_sha256": "e97ed0a60ffe89eb2803e9de2247e1b1098aaaedae8c349ad201aa267d62b989",
+    "waiter_sha256": "d94915cc4799615bae29ac75b8d9a53226fc317dd51fd19b42bea567a65eeb1e",
+    "foreground": true,
+    "started": false,
+    "max_wait_seconds": 3600,
+    "query_failure_is_ci_failure": false,
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-authorized.ps1",
+    "waiter": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\wait_public_ci.py"
   }
 }

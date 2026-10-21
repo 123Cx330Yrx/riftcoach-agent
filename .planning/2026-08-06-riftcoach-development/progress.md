@@ -1,3 +1,13 @@
+## 2026-10-21 继续等待CI的实际启动交接
+
+修正版源码/授权/真实native只读回查再次通过，尚无execution或首次启动日志。
+CI39610700918的Web/Postgres/打包成功，四pytest分片仍运行；前轮完整CI耗时约42分钟。
+外部start-authorized入口增加前台只读等待，固定同HEAD/CI及原授权SHA，最多等1小时；
+同HEAD全部8项success才调用已有launcher，随后仅提示天机阁Key。连续三次查询失败、CI失败、
+授权过期或等待截止均不执行。等待无API Key读取/模型请求，不启用automation。
+pending/success/错误HEAD/失败/缺job/单job失败六分支及实际授权有效性核对通过，PowerShell语法通过。
+新入口与等待脚本SHA见ci-wait-entry-validation.json，未运行；预算/截止不扩展。
+
 ## 2026-10-21 修正凭据输入回归
 
 新launcher错误地要求重填两家Key，漏接用户已配置的智谱凭据。原粘贴入口执行前撤下且存档，

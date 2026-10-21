@@ -70,7 +70,11 @@ Flash资产仍含已过期促销，本轮不用优惠价。估价保持0.6170624
 实际prepare及真实独立作者/原件/check-answer/native导入和严格只读回查通过。
 新Operator为outputs/riftcoach-sol-natural-stored-key-20261021；同一用户授权已重新绑定，
 不扩展原预算或2026-10-22T13:36:53.631926+00:00截止。新入口已备好且语法通过。
-下一动作核精确HEAD公共CI39610700918（当前in_progress）后给仅输入天机阁Key的替换命令。
+CI39610700918当前in_progress：Web/Postgres/打包success，四pytest分片运行；前轮完整CI约42分钟。
+已接外部前台只读CI等待入口，不启动新automation；等待不读API Key、不发送模型请求，
+精确HEAD全部8项success后才进入原launcher、读取显式智谱配置并隐藏输入天机阁Key。
+当前授权SHA/截止保持；查询失败不当CI失败，连续三次查询失败、CI失败、过期或1小时等待截止均不执行。
+下一动作用户运行新control/start-authorized.ps1；终端等待结束后输入天机阁Key，再按真实checkpoint审查。
 尚无execution；修正后给替换命令，不要求用户重填已配置智谱Key。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
