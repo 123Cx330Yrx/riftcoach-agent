@@ -74,8 +74,11 @@ CI39610700918当前in_progress：Web/Postgres/打包success，四pytest分片运
 已接外部前台只读CI等待入口，不启动新automation；等待不读API Key、不发送模型请求，
 精确HEAD全部8项success后才进入原launcher、读取显式智谱配置并隐藏输入天机阁Key。
 当前授权SHA/截止保持；查询失败不当CI失败，连续三次查询失败、CI失败、过期或1小时等待截止均不执行。
-下一动作用户运行新control/start-authorized.ps1；终端等待结束后输入天机阁Key，再按真实checkpoint审查。
-尚无execution；修正后给替换命令，不要求用户重填已配置智谱Key。
+CI39610700918现已全部8项success；用户启动后在天机阁隐藏输入处按Ctrl+C。
+原stdout guard63490234和checkpoint b758cdb8逐字保留，实际session只读核验operations=0、无未完成操作、未关闭，transport为空。
+原授权/冻结源码/native回查均通过，没有模型请求；不是付费尝试失败，不消费超时重试。
+下一动作用户运行新control/resume-authorized.ps1沿同session/原根恢复，仅重新输入天机阁Key。
+不再运行首次start-authorized入口，不重建execution；后续按真实checkpoint审查。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。

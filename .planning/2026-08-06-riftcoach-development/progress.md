@@ -1,3 +1,10 @@
+## 2026-10-21 CI全绿、隐藏输入取消后恢复
+
+CI39610700918精确084c415c全部8项success。用户天机阁Key输入时Ctrl+C；
+原stdout保留guard63490234/checkpoint b758cdb8，实核session operations=0、未关闭、无未完成项、transport为空。
+原授权、源码和真实native只读回查通过。准备resume-authorized.ps1沿同session原根恢复，
+stdout另create-only保存；不重开、未发送模型、不消费超时重试。脚本语法通过。
+
 ## 2026-10-21 继续等待CI的实际启动交接
 
 修正版源码/授权/真实native只读回查再次通过，尚无execution或首次启动日志。

@@ -3,7 +3,7 @@
   "base_head": "19f76f047a01e26ac0855a535facbb54c7893855",
   "provider_requests": 0,
   "key_read": true,
-  "paid_launcher_ready": false,
+  "paid_launcher_ready": true,
   "execution_authorized": true,
   "production_admitted": false,
   "publication_allowed": false,
@@ -45,9 +45,8 @@
     ]
   },
   "remaining": [
-    "user starts foreground CI-wait entry",
-    "exact-head public CI success before any key prompt",
-    "Tianjige hidden-key input and actual execution/reviews"
+    "user resumes same session and enters Tianjige key",
+    "actual business execution and native reviews"
   ],
   "limitations": [
     "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
@@ -77,12 +76,13 @@
     "head": "084c415cbcfac173f1a075983260aa9d694b430c",
     "clean": true,
     "ci_run": "39610700918",
-    "ci_status": "in_progress",
-    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021"
+    "ci_status": "completed",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021",
+    "ci_conclusion": "success"
   },
   "verified_ci": {
-    "run_id": "39534539078",
-    "head_sha": "e1de08913606267db0c97f2ead95ffa723f9ed17",
+    "run_id": "39610700918",
+    "head_sha": "084c415cbcfac173f1a075983260aa9d694b430c",
     "status": "completed",
     "conclusion": "success",
     "jobs": [
@@ -152,7 +152,7 @@
     "key_read": false
   },
   "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
-  "readiness_scope": "Authorized foreground entry is ready: wait read-only for corrected exact-head CI before invoking original launcher and prompting only Tianjige key. CI pending; no execution started.",
+  "readiness_scope": "Exact corrected HEAD CI all green. User cancelled hidden-key input before any operation; original guard/checkpoint validated read-only, same-session resume prepared. Zero model requests.",
   "first_launch_entry": {
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-first.ps1",
     "sha256": "5149904426665f351698e65f0c83ba25784bd6ca71197d534e8eac453f9a4389",
@@ -266,5 +266,40 @@
     "query_failure_is_ci_failure": false,
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-authorized.ps1",
     "waiter": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\wait_public_ci.py"
-  }
+  },
+  "execution_key_input_cancelled": {
+    "reason": "KeyboardInterrupt during hidden reviewer key input",
+    "original_stdout_sha256": "b2fcf8e375706e70170b34eec30f608b3e59efa80de62a0edee276434fdc267f",
+    "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+    "checkpoint_sha256": "b758cdb87f70d5c66c8a4a11ae70b2f6c89114c12ef623b182ce162dea10306e",
+    "status": {
+      "operations": 0,
+      "unresolved": [],
+      "closed": false,
+      "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+      "checkpoint_sha256": "b758cdb87f70d5c66c8a4a11ae70b2f6c89114c12ef623b182ce162dea10306e",
+      "publication_allowed": false,
+      "production_admitted": false
+    },
+    "ci": {
+      "run_id": "39610700918",
+      "head_sha": "084c415cbcfac173f1a075983260aa9d694b430c",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        "packaging-smoke",
+        "postgres-migrations",
+        "pytest",
+        "pytest-shards (0)",
+        "pytest-shards (1)",
+        "pytest-shards (2)",
+        "pytest-shards (3)",
+        "web-checks"
+      ]
+    },
+    "authorization_sha256": "2ef562edb1ca15fcad8646063307bcb441b02faf0a877edc76903d209155decd",
+    "provider_requests": 0,
+    "resume_allowed": true
+  },
+  "resume_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\resume-authorized.ps1"
 }
