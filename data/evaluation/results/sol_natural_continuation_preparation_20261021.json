@@ -1,0 +1,48 @@
+{
+  "version": "sol-natural-continuation-preparation-20261021-v1",
+  "parent_operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021",
+  "parent_seal_sha256": "b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55",
+  "parent_head": "084c415cbcfac173f1a075983260aa9d694b430c",
+  "inherited_calls": 3,
+  "inherited_known_tokens": 52067,
+  "inherited_unknown_reserved_tokens": 0,
+  "inherited_active_seconds": 190.09399999999732,
+  "max_new_attempts": 4,
+  "max_new_tokens": 321536,
+  "estimated_additional_cny": "0.233472",
+  "hard_billing_cap": false,
+  "cumulative_limits": {
+    "max_calls": 7,
+    "total_tokens": 498688,
+    "active_seconds": 1200
+  },
+  "timeout_retry": "one explicit reaped timeout retry, charged to four remaining attempts; may leave fresh incomplete",
+  "preview": {
+    "provider_requests": 0,
+    "key_read": false,
+    "imported_operations": 5,
+    "generation_requests": 0,
+    "next_stage": "facts-initial",
+    "exact_frontier_request_sha256": "a639148f5208a1a2e19c62d82bbb80704e91b5684d2bea802269925c35664edc",
+    "report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32"
+  },
+  "provider_requests": 0,
+  "key_read": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "old_failed_response_accepted": false,
+  "old_run_reopened": false,
+  "same_version_qualification": false,
+  "source": "historical generated report and tool results, exact request replay",
+  "implementation_checks": {
+    "command": "python -m pytest tests/test_sol_natural_continuation.py tests/test_sol_natural_session.py tests/test_sol_natural_launch.py -q --tb=short --show-capture=no",
+    "passed": 34,
+    "seconds": 342.57,
+    "real_provider_calls": 0,
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed",
+    "actual_saved_prefix_preview": "passed"
+  },
+  "next_action": "Freeze this implementation, complete native preflight and exact-HEAD CI; request specific authorization only after the concrete continuation is ready."
+}

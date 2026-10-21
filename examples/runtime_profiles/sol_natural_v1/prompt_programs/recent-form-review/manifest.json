@@ -342,7 +342,7 @@
     {
       "component_id": "app.evaluation.sol_natural_contract",
       "source": "app/evaluation/sol_natural_contract.py",
-      "sha256": "e1bfe85a6e0e88bdde907e35daaf737096dbec8bb8e74cf293f733fe439c6496"
+      "sha256": "e4adb28b43af51755b98b1098b7e822f846b73f1e42f73ecf8cd04e128f81eaf"
     },
     {
       "component_id": "app.runtime.sol_natural_provider",
@@ -352,7 +352,7 @@
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "a82a7fe500899217ee48bb29f07eaed5b09d0970e4710bb50bd7ba77ea4639ea"
+      "sha256": "84b7226dac7413efe908c0921afc5b8ab721ff47f260f7440dc71eb31efa643c"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
@@ -368,6 +368,11 @@
       "component_id": "app.evaluation.sol_session_review",
       "source": "app/evaluation/sol_session_review.py",
       "sha256": "14b816ca944f223b1fa1218b0b502d60a4dd19a0108f331de5800783b24ea426"
+    },
+    {
+      "component_id": "scripts.sol_natural_continuation",
+      "source": "scripts/sol_natural_continuation.py",
+      "sha256": "a8659c72d08bd8ca1420f137edcde0e9bacb9ecb6f5ef818d0171cafb3dbfe01"
     },
     {
       "component_id": "scripts.reviewer_responses_process",
@@ -395,5 +400,5 @@
       "sha256": "89dbc7379328bb00cf4510e63e399d3989ffaa35bacca361a06fe8028f90fd65"
     }
   ],
-  "program_sha256": "10afda6f6d3b441796597c5597ea218cc25985239a3250e6b148def7b420f65e"
+  "program_sha256": "5b0734c79fb3dce0adc45ec40f2682e9640253603e4a85af91c62eb33a69ade5"
 }

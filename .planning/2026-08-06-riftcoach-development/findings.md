@@ -7558,3 +7558,8 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 旧接收器接受整体reasoning缺失/null，却拒绝对象内effort缺失/null；空对象、null effort和明确low都被压成reasoning_identity。SDK类型effort可选默认null，真实SDK+mock HTTP可复现全部分支。原六项和本自然任务接收源码SHA均9a6899cfaba4f43cd688c0d5d199bf8178672097a8083d970e0a730231af6369，不能归因为本次新规则或请求漏high；原wire匹配的run外证据在control/closed-request-wire-check.json。旧receipt未保存echo，不足以选定本次实际失败是哪一支。
 
 修法是区分缺证与冲突，未回显仍标未验证；显式high也只是渠道自报。新增固定枚举观测不保留任意字段值，明确非high/畸形继续拒绝。畸形SDK模型的model_dump警告可能输出字段值，改用warnings=False并以warning-as-error反例确认未泄出。128项离线覆盖接收、实际子进程业务消费、监督/预算和候选整链；不能推导模型质量、真实high或旧响应应通过。新候选manifest更新，冻结执行树与历史stream不变。
+
+
+## 2026-10-21 复用生成结果继续审查
+
+已保存的两次生成/三次检索可以通过实际应用逐字重演到原facts-initial请求，不能把接收器失败等同于整任务材料失效。新会话只导入成功前缀，最后导入记录显式派生累计预算，保留原失败attempt及成本；未完成逻辑审查重新开始但不重置总次数。4剩余位置正好容纳初审/复审，超时重试占位后可能无法完成全部fresh，仍不扩容。父seal和新计划贯穿核验，旧失败无正文仍不追认通过，跨接收版本不授同版本资格。

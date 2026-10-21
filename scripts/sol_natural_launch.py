@@ -75,7 +75,7 @@ def require_paths(plan):
     return operator
 
 
-def prepare(operator, run_id, primary, independent):
+def prepare(operator, run_id, primary, independent, *, parent_operator=None, parent_seal_sha=None):
     head = current_head()
     operator = Path(operator).absolute()
     first, offline = capture(run_id)
@@ -88,6 +88,20 @@ def prepare(operator, run_id, primary, independent):
         source=source(), offline=offline, first_request_sha256=first_pin(first),
         review_plan=review_plan, limits=limits(), estimated_uncached_cny=offline['estimated_uncached_cny'],
         execution_authorized=False, publication_allowed=False, production_admitted=False)
+    if parent_operator is not None:
+        from scripts.sol_natural_continuation import parent_state, verify_source
+        parent = parent_state(parent_operator, parent_seal_sha)
+        parent_path = Path(parent['operator'])
+        if operator.is_relative_to(parent_path) or parent_path.is_relative_to(operator):
+            raise ValueError('launch_parent_operator_overlap')
+        if (run_id != parent['run_id'] or plan['first_request_sha256'] != parent['first_request_sha256']
+                or review_plan != parent['review_plan']):
+            raise ValueError('launch_continuation_task_changed')
+        plan['continuation'] = parent
+        plan['continuation_source_changes'] = verify_source(parent, plan['source'])
+        plan['estimated_uncached_cny'] = parent['estimated_additional_cny']
+        plan['offline']['estimated_uncached_cny'] = parent['estimated_additional_cny']
+        plan['offline']['continuation_frontier'] = preview_continuation(plan)
     require_paths(plan)
     if operator.exists():
         raise ValueError('launch_operator_already_exists')
@@ -123,6 +137,12 @@ def validate_grant(grant, plan, plan_sha, *, now=None):
             or not isinstance(grant.get('user_authorization_evidence'), str)
             or not grant['user_authorization_evidence'].strip()):
         raise ValueError('launch_specific_unexpired_authorization_required')
+    if plan.get('continuation'):
+        expected = dict(parent_seal_sha256=plan['continuation']['seal_sha256'],
+            max_new_attempts=plan['continuation']['remaining_attempts'],
+            max_new_tokens=plan['continuation']['max_new_tokens'], generation_requests=0)
+        if grant.get('continuation') != expected:
+            raise ValueError('launch_continuation_specific_authorization_required')
 
 
 @contextmanager
@@ -141,10 +161,14 @@ def session_for(plan, plan_sha, event_source, *, preflight=False, guard=None, ch
         authorization_sha256=authorization_sha)
     if not preflight:
         binding['first_request_sha256'] = plan['first_request_sha256']
+    extra = {}
+    if not preflight and plan.get('continuation'):
+        extra['continuation'] = plan['continuation']
+        binding['continuation_sha256'] = digest(canonical(plan['continuation']))
     session = CandidateSession(folder/'session', binding=binding,
         transport_root=folder/'transport'/run_id, journal_root=folder/'journal',
         guard_sha=guard, checkpoint_sha=checkpoint, read_only=read_only,
-        checkpoint_sink=sink, before_new_model=before)
+        checkpoint_sink=sink, before_new_model=before, **extra)
     workspace = HostReviewWorkspace(cwd=ROOT, python=sys.executable,
         answers=operator.with_name(operator.name+'-authors'), evidence_roots=[operator])
     gate = SessionReviewGate(session, plan=plan['review_plan'], workspace=workspace, event_source=event_source)
@@ -228,6 +252,64 @@ def credentials(zhipu_env_file=None):
     return generator, sol
 
 
+def continuation_credentials():
+    """Only the unfinished reviewer can send; no generator key is loaded."""
+    if not sys.stdin.isatty():
+        raise ValueError('launch_interactive_hidden_key_input_required')
+    from app.providers.config import ZhipuSettings
+    with warnings.catch_warnings():
+        warnings.simplefilter('error', getpass.GetPassWarning)
+        key = getpass.getpass('Tianjige GPT-pro API key (hidden): ')
+    if not key.strip():
+        raise ValueError('launch_explicit_reviewer_key_required')
+    return ZhipuSettings(api_key='UNUSED_GENERATION_FORBIDDEN',
+        base_url='https://open.bigmodel.cn/api/paas/v4', model='glm-5.3-flash'), key
+
+
+def preview_continuation(plan):
+    """Replay the saved prefix through the actual app, stopping before any IO."""
+    from app.providers.config import ZhipuSettings
+    from app.runtime.sol_natural_provider import SolNaturalProviderFactory
+    parent = plan['continuation']
+    def forbidden(*args, **kwargs):
+        raise AssertionError('offline continuation attempted IO or native reading')
+    # A correctly typed event source that cannot read anything. No Host task
+    # exists before the paused first review; future native checks remain live.
+    class NoNative:
+        request = forbidden
+    with TemporaryDirectory(prefix='sol-continuation-preview-') as directory:
+        root = Path(directory)
+        session = CandidateSession(root/'session',
+            binding=dict(first_request_sha256=plan['first_request_sha256'],
+                review_plan_sha256=digest(canonical(plan['review_plan'])),
+                continuation_sha256=digest(canonical(parent)), fixture_only=False),
+            continuation=parent, transport_root=root/'transport'/plan['run_id'],
+            journal_root=root/'journal', before_new_model=forbidden, max_new_models=0)
+        workspace = HostReviewWorkspace(cwd=ROOT, python=sys.executable,
+            answers=root/'authors', evidence_roots=[root/'journal'])
+        SessionReviewGate(session, plan=plan['review_plan'], workspace=workspace,
+            event_source=CodexHostReviewEventSource(NoNative(), plan['review_plan']))
+        factory = SolNaturalProviderFactory(generator_settings=ZhipuSettings(
+            api_key='OFFLINE_NO_SEND', base_url='https://open.bigmodel.cn/api/paas/v4',
+            model='glm-5.3-flash'), api_key='OFFLINE_NO_SEND', transport_root=root/'transport')
+        try:
+            with session:
+                prepared = base.build_application(provider_factory=factory, output_root=root/'derived',
+                    run_id=plan['run_id'], candidate=contract, execution_session=session)
+                prepared.run()
+        except SessionPaused as error:
+            if str(error) != 'session_model_boundary' or session.cursor != parent['prefix_operations']:
+                raise
+        else:
+            raise ValueError('launch_continuation_frontier_not_reached')
+        if inventory(root/'transport') or inventory(root/'journal'):
+            raise ValueError('launch_continuation_preview_unexpected_io')
+    return dict(provider_requests=0, key_read=False, imported_operations=parent['prefix_operations'],
+        generation_requests=0, next_stage='facts-initial',
+        exact_frontier_request_sha256=parent['frontier_request_sha256'],
+        report_sha256=parent['report_sha256'])
+
+
 def verify_derived(plan, session):
     expected = {}
     for path in sorted(session.root.glob('derived-*.json')):
@@ -283,7 +365,10 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
                 raise SessionPaused('session_awaiting_native_review')
             gate.verify_prior()
             # Ownership, frozen source, grant and live native checks precede prompts.
-            generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
+            if plan.get('continuation'):
+                generator, key = continuation_credentials()
+            else:
+                generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
             before()
             from app.runtime.sol_natural_provider import SolNaturalProviderFactory
             factory = SolNaturalProviderFactory(generator_settings=generator, api_key=key,
@@ -365,6 +450,12 @@ def replay(plan, plan_sha, event_source, *, guard, checkpoint, authorization_sha
         budget = budgets[-1] if budgets else dict(calls=0, tokens=0, reserved_tokens=0, retries=0)
         result['accounting'] = {k: budget[k] for k in ('calls', 'tokens', 'reserved_tokens', 'retries')}
         result['native_reviews'] = len(decisions)
+        if plan.get('continuation'):
+            parent = plan['continuation']
+            result['continuation'] = dict(parent_seal_sha256=parent['seal_sha256'],
+                historical_failure_retained=True, imported_generation_calls=2,
+                new_calls=budget['calls']-parent['historical_budget']['calls'],
+                new_known_tokens=budget['tokens']-parent['historical_budget']['tokens'])
     if inventory(operator) != before:
         raise ValueError('launch_replay_mutated_originals')
     return result
@@ -390,6 +481,8 @@ def main():
     parser.add_argument('--run-id')
     parser.add_argument('--primary')
     parser.add_argument('--independent')
+    parser.add_argument('--parent-operator', type=Path)
+    parser.add_argument('--parent-seal-sha')
     parser.add_argument('--preflight', action='store_true')
     parser.add_argument('--guard-sha')
     parser.add_argument('--checkpoint-sha')
@@ -406,7 +499,10 @@ def main():
     if args.action == 'prepare':
         if not all((args.run_id, args.primary, args.independent)):
             parser.error('prepare requires run-id, primary and independent')
-        emit(prepare(args.operator, args.run_id, args.primary, args.independent))
+        if bool(args.parent_operator) != bool(args.parent_seal_sha):
+            parser.error('continuation requires parent-operator and parent-seal-sha')
+        emit(prepare(args.operator, args.run_id, args.primary, args.independent,
+                     parent_operator=args.parent_operator, parent_seal_sha=args.parent_seal_sha))
         return
     plan = load(args.operator, args.plan_sha, frozen=args.action in ('native-task', 'run', 'replay', 'seal'))
     with host(plan) as event_source:

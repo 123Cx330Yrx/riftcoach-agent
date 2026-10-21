@@ -40,6 +40,8 @@ def collect(business,**kwargs):
             content=[dict(type='output_text', text='OFFLINE_TEXT_ONLY', annotations=[])])]
     if MODE == 'wrong_model':
         value['model'] = 'offline-other-model'
+    if MODE == 'reasoning_conflict':
+        value['reasoning'] = dict(effort='low')
     status=STATUS
     return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
         stream=httpx.ByteStream(json.dumps(value if status==200 else {'error':'timeout'}).encode()),

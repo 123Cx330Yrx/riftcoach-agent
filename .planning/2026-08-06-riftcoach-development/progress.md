@@ -9932,3 +9932,8 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 前瞻统一缺失/null响应元数据语义，新增固定reasoning_echo枚举；明确非high/畸形仍拒绝。SDK序列化关闭会包含字段值的警告，测试将同类警告设为error。请求、来源、工具/schema/业务/预算与发布门不变，仅刷新独立Sol候选manifest。
 
 SDK+mock HTTP、实际owned worker、自然候选与监督检查128项通过（181.62秒）；governance、compile、diff-check通过。首轮新增测试的fixture曾误用预加载HTTP body并对归一化usage做精确键比较，修正测试后完整检查通过，不是新的真实请求失败。旧run、报告/工具/原回执/seal及未知项保持；新增模型请求0，不读取Key、不启动新批。下一动作是具体设计复用已存报告/工具的恢复，不默认重生成或自动重买。
+
+
+## 2026-10-21 复用生成结果继续审查
+
+恢复入口已实现并核实际旧报告/请求摘要一致：只读父seal/全库存，导入生成和检索结果，继承旧3次/52067tokens/190.094秒；新生成禁止，剩4次Sol/321536tokens/估价0.233472元。完整mock HTTP链覆盖逐项native导入、唯一application、双fresh、7次累计账目和严格封存；原session/launcher相关34项通过（342.57秒），governance/compile/diff通过。本轮新增真实模型请求0。下一步冻结执行目录、实际原生预检和精确HEAD公共CI，具体补充授权尚未请求。

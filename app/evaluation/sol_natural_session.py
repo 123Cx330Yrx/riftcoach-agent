@@ -81,7 +81,7 @@ class CandidateSession:
     def __init__(self, root, *, binding, transport_root, journal_root,
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
-                 max_new_models=None, clock=time.monotonic, reconcile=False):
+                 max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None):
         self.root = Path(root).resolve()
         self.transport_root, self.journal_root = Path(transport_root).resolve(), Path(journal_root).resolve()
         roots = (self.root, self.transport_root, self.journal_root)
@@ -89,6 +89,9 @@ class CandidateSession:
                for i, a in enumerate(roots) for b in roots[i+1:]):
             raise ValueError('session_roots_overlap')
         self.binding = json.loads(canonical(binding))
+        self.continuation = continuation
+        if continuation is not None and self.binding.get('continuation_sha256') != digest(canonical(continuation)):
+            raise ValueError('launch_continuation_binding')
         self.guard_sha, self.checkpoint_sha = guard_sha, checkpoint_sha
         self.read_only, self.sink = read_only, checkpoint_sink
         self.reconciling = reconcile
@@ -101,6 +104,9 @@ class CandidateSession:
         self._open = False
 
     def __enter__(self):
+        if self.continuation is not None:
+            from scripts.sol_natural_continuation import verify_parent
+            verify_parent(self.continuation)
         self.root.parent.mkdir(parents=True, exist_ok=True)
         if self.read_only and not self.root.exists():
             raise ValueError('session_missing')
@@ -123,10 +129,15 @@ class CandidateSession:
                 self.segment_started = self.clock()
                 self._open = True
                 self._checkpoint('created')
+                if self.continuation is not None:
+                    from scripts.sol_natural_continuation import import_prefix
+                    import_prefix(self)
             else:
                 if not self.guard_sha or not self.checkpoint_sha:
                     raise ValueError('session_original_roots_required')
                 self._load()
+                if self.continuation is not None and not (self.root/'continuation-import.json').is_file():
+                    raise SessionBlocked('launch_continuation_import_incomplete')
                 self._open = True
             self.operations = sorted((self.root/'operations').glob('*-intent.json'))
             return self
@@ -184,6 +195,9 @@ class CandidateSession:
         self.verify()
 
     def verify(self):
+        if self.continuation is not None:
+            from scripts.sol_natural_continuation import verify_parent
+            verify_parent(self.continuation)
         actual = self._inventory()
         unchanged = (actual == self.expected)
         if self.reconciling:
@@ -223,6 +237,9 @@ class CandidateSession:
             if self.reconciling:
                 raise SessionBlocked('session_reconciliation_required')
             self.verify()
+            if self.continuation is not None:
+                from scripts.sol_natural_continuation import verify_frontier
+                verify_frontier(self, kind, request)
             ordinal = self.cursor + 1
             first_pin = self.binding.get('first_request_sha256')
             if kind == 'model' and ordinal == 1 and first_pin is not None:
