@@ -1,3 +1,10 @@
+## 2026-10-21 reasoning_identity不是已证档位降级
+
+inspect_response在reasoning对象存在但effort非high时返回同一码；空字典、effort=null、effort=low
+均被拒绝，而整个reasoning字段省略则放行。当前无正文回执未存这一区别，故HTTP200/模型名一致/
+有reasoning tokens不能证明实际high，也不能断言返回明确low。工具数量1不等于schema/业务通过。
+补观测应仅保存固定枚举/形状，不保存reasoning正文；对旧回执不能补签成已知值。
+
 ## 2026-10-21 公开价格核对
 
 浏览器调试连接不可用，但两家公开HTTP资源可读，无需登录或读取Key。

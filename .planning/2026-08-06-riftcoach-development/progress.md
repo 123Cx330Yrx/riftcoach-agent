@@ -1,3 +1,12 @@
+## 2026-10-21 自然任务实际结果与封存
+
+用户恢复后Flash两次成功，工具请求和报告已生成；首个Sol HTTP200完整返回，但worker拒绝reasoning_identity，
+拒绝发生在工具schema/业务审查前。共3HTTP、52067已知tokens、未知预留0、重试0；
+native业务审查0、修订/fresh0，未发布/未授资格。原件和预算保留，未按字段修补重开。
+请求high；旧日志不记录实际effort，离线复现表明空对象/null及low均产生该码，无法断言实际降档。
+原stdout guard/最终checkpoint保留，严格只读整链replay及唯一seal通过，原seal SHA与结果见
+sol_natural_observed_20261021.json。下一步仅零付费参数观测/合同诊断，不自动付费补发。
+
 ## 2026-10-21 CI全绿、隐藏输入取消后恢复
 
 CI39610700918精确084c415c全部8项success。用户天机阁Key输入时Ctrl+C；

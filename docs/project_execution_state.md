@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "付费批已封存；自然任务候选准备完成且本次费用已授权，修正入口以复用已配置智谱Key，等待修正版核验；automation PAUSED。"
+pause_reason: "本自然任务已执行并封存，首次Sol响应reasoning_identity拒绝；转零付费参数观测/合同诊断，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -77,8 +77,13 @@ CI39610700918当前in_progress：Web/Postgres/打包success，四pytest分片运
 CI39610700918现已全部8项success；用户启动后在天机阁隐藏输入处按Ctrl+C。
 原stdout guard63490234和checkpoint b758cdb8逐字保留，实际session只读核验operations=0、无未完成操作、未关闭，transport为空。
 原授权/冻结源码/native回查均通过，没有模型请求；不是付费尝试失败，不消费超时重试。
-下一动作用户运行新control/resume-authorized.ps1沿同session/原根恢复，仅重新输入天机阁Key。
-不再运行首次start-authorized入口，不重建execution；后续按真实checkpoint审查。
+随后用户恢复输入成功：Flash两次完成（工具请求/报告），三次工具操作持久保存；首次Sol审查HTTP200完整返回，
+因reasoning_identity在工具schema/业务审查前拒绝。共3HTTP、52067已知tokens、未知预留0、重试0；
+无native业务审查、修订或fresh，不构成模型语义质量结论。请求明确high，旧无正文观测未保存实际effort，
+离线复现确认空对象/null effort/显式low均映射同码，故实际档位未知，不断言降档。
+真实原stdout根保留，整链严格只读回放通过，唯一seal b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55。
+报告及工具/回执原件保留；本run已闭不重开。结果见sol_natural_observed_20261021.json。
+下一动作仅零付费诊断：补参数无正文观测并区分未回显与明确冲突的合同语义，不能靠放行旧失败或自动重买来继续。
 
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
