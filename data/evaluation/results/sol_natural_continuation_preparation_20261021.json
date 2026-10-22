@@ -44,7 +44,7 @@
     "diff_check": "passed",
     "actual_saved_prefix_preview": "passed"
   },
-  "next_action": "Wait for exact frozen HEAD CI39623758447 success; then obtain a specific grant bound to the new plan and parent seal before asking for the reviewer key. Administrative preflight and launch template are complete.",
+  "next_action": "Obtain a specific continuation grant for the pinned new plan and parent seal, at most 4 new Sol attempts and 321536 tokens with zero generation; then provide the hidden-key launch command.",
   "frozen_head": "51f31f6010989a6d80ad34760409789e85b9c253",
   "execution_cwd": "D:/riftcoach-sol-natural-continuation-execution",
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-continuation-20261021",
@@ -65,48 +65,21 @@
     "business_quality_claim": false
   },
   "ci": {
-    "checked_at": "2026-10-21T15:22:51.3749331Z",
     "run_id": "39623758447",
-    "head": "51f31f6010989a6d80ad34760409789e85b9c253",
-    "status": "in_progress",
-    "conclusion": "",
+    "head_sha": "51f31f6010989a6d80ad34760409789e85b9c253",
+    "status": "completed",
+    "conclusion": "success",
     "jobs": [
-      {
-        "name": "web-checks",
-        "status": "completed",
-        "conclusion": "success"
-      },
-      {
-        "name": "pytest-shards (2)",
-        "status": "in_progress",
-        "conclusion": ""
-      },
-      {
-        "name": "packaging-smoke",
-        "status": "completed",
-        "conclusion": "success"
-      },
-      {
-        "name": "pytest-shards (1)",
-        "status": "in_progress",
-        "conclusion": ""
-      },
-      {
-        "name": "pytest-shards (0)",
-        "status": "in_progress",
-        "conclusion": ""
-      },
-      {
-        "name": "postgres-migrations",
-        "status": "completed",
-        "conclusion": "success"
-      },
-      {
-        "name": "pytest-shards (3)",
-        "status": "in_progress",
-        "conclusion": ""
-      }
-    ]
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest",
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)",
+      "web-checks"
+    ],
+    "checked_at": "2026-10-22T01:47:13.168105+00:00"
   },
   "paid_launcher_ready": false,
   "new_authorization_present": false,
@@ -117,7 +90,8 @@
     "preflight-submit.stdout.txt": "4134789d4b7d0bfea69833c2b439273d69d4af65ebec357461d8750bc0ef98b8",
     "primary-preflight.json": "4ae82b7c6e257aba0ccc5de55c2b737afc915603bb56f9ea53c796332577b5b8",
     "preflight-verified.json": "643a08996ed7fce32959598885a36baa34ae8bb5f1afb0cde846be582db0acad",
-    "start-first.ps1": "9e32d9c089bfe3db150bdb2a2060631ad3abd874a98391847792c4a457f9a96a"
+    "start-first.ps1": "9e32d9c089bfe3db150bdb2a2060631ad3abd874a98391847792c4a457f9a96a",
+    "ci-success.json": "b5b5f416f1ac5f2351ab6bebafde7aa43b2e9079d6d39c05f167e8f30c043a59"
   },
   "checkout_byte_recovery": {
     "reason": "Git checkout CRLF drift rejected by parent source verification",
@@ -127,5 +101,7 @@
     "shared_git_config_changed": false,
     "old_evidence_changed": false,
     "final_checkout_clean": true
-  }
+  },
+  "ci_verified": true,
+  "technical_preparation_complete": true
 }
