@@ -1,0 +1,95 @@
+# RiftCoach Agent
+
+> 一个基于 Riot 公开赛后数据的英雄联盟复盘与训练助手，通过确定性指标、RAG 检索与模型生成教练式中文报告。
+
+使用 Python 3.11+，复制 .env.example 为 .env 填入 Riot API 与智谱 GLM 配置后本地运行，支持 Docker Compose。核心包含 FastAPI 异步任务基座、Player Link 绑定、Session/typed Memory、Harness 质量门控状态机与 RAG v1；仅分析已结束的公开赛后数据，不提供实时对局辅助。
+
+## Docs
+
+- [RiftCoach Agent](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/README.md): RiftCoach 复盘助手的项目定位、数据分工、能力边界与本地开发要求。
+- [阶段 5A：最小 Agent Loop](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/agent_loop_v1.md): 最小 Agent Loop 的原理、实现边界、消息变化、Fake Provider 验证与面试表述。
+- [RiftCoach 架构能力覆盖矩阵](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/architecture_capability_matrix.md): 各阶段架构能力的公共证据、视觉层边界与未完成项的覆盖矩阵。
+- [Harness v1 使用与原理](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/harness_v1_usage.md): Harness v1 确定性控制层的状态机、Artifact 完整性、dry-run 与真实 GLM 运行参数。
+- [RiftCoach Agent 项目决策记录](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/project_decisions.md): 项目定位、能力基线与各阶段已实现功能的决策记录。
+- [RiftCoach 当前执行状态](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/project_execution_state.md): 项目当前进度的唯一事实源，含状态元数据、主阶段与最新执行细节。
+- [3G-2：Provider 能力协商](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/provider_capability_negotiation.md): 为什么在 SDK 调用前协商 Provider 能力，ProviderCapabilities、CapabilityNegotiation 与安全拒绝的边界。
+- [3G-3：Provider Registry 与配置选择](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/provider_registry.md): ProviderRegistry 的注册、默认实例、resolve、select 与能力协商，以及为何不做自动 Fallback。
+- [3G-1：Tool Calling 消息协议](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/provider_tool_calling_protocol.md): Tool Calling 的厂商无关消息协议：ToolSpec、ToolCall、TOOL 消息、tool_call_id 关联与 tool_choice 策略。
+- [Provider 与 Tool Runtime：使用方式、原理与边界](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/provider_tool_runtime_usage.md): Provider、Tool Runtime 与 Harness 三层职责，Tool Runtime 校验、缓存、重试、熔断顺序及安全边界。
+- [RAG v1：现状审计与检索基线](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/rag_v1_baseline.md): RAG v0.1 现状审计、KnowledgeProvider 契约、Recall@K、MRR、nDCG 基线评测与混合检索结果。
+- [RiftCoach 需求与约束变更账本](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/requirements_change_log.md): 以追加式 RQ-xxx 条目记录影响多轮开发的长期需求与约束，取代旧条目时不删除历史。
+- [RiftCoach 主路线 v1.1（阶段 0—8）](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/roadmap.md): 九个主阶段的唯一编号路线、总体策略、横向能力矩阵与 8E 视觉前置约束。
+- [RiftCoach 路线变更历史](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/roadmap_change_history.md): 2026-08-01 以来的路线变更时间线、状态标签与证据裁决规则。
+- [RiftCoach 路线 v1.3 局部校准](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/roadmap_v1_3_amendment.md): 对既有九阶段路线的增量修正：决策原则、3G 多模型边界与第二 Provider 准入条件。
+- [Player Summary Schema v1.0](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/summary_schema.md): Player_summary JSON 的顶层字段、单局状态、短局策略与 schema_version 兼容规则。
+
+## Learning
+
+- [RiftCoach 学习与工程证据索引](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/README.md): 按四遍学习法组织的能力证据链、覆盖地图与八类证据说明。
+- [6B-1 学习复盘：Player Identity 与 Link Persistence 地基](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-1-player-identity-link-persistence-walkthrough.md): 6B-1 身份与关系持久化地基：四张表、状态机与已验证边界。
+- [6B-2 学习复盘：异步 Player Link Worker 与 API 纵向切片](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-2-async-player-link-worker-api-walkthrough.md): 6B-2 如何用异步 Worker、Resolver 防腐层与 202 入队语义实现 Player Link 纵向切片。
+- [6B-3 Conversation / Message Foundation：从设计到实现](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-3-conversation-message-foundation-walkthrough.md): 6B-3 搭建 Conversation 与 Message 基础：服务器权威身份、Idempotency-Key 与越权边界。
+- [6B-4 Conversation-bound Recent Review Identity 实现后复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md): 6B-4 用 server-derived identity 与 schema 2.0 把复盘任务绑定到稳定玩家主体。
+- [6B-5 Memory Candidate & Write Gate：初学者 walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-5-memory-candidate-write-gate-walkthrough.md): 6B-5 Memory Candidate 与写入门设计：来源分级、deterministic gate、typed materializer 协议。
+- [6B-6 Preferences / Profile / Review Memory 实现后复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md): 6B-6 把已接受的 Candidate 物化为 Preference、Player Profile、Review Memory 三张版本链表。
+- [6B-7 Training Plan / Progress 实现复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-7-training-plan-progress-walkthrough.md): 6B-7 Training Plan 与 Progress 的版本化计划、不可变测量事件和纯函数 Trend 实现。
+- [6B-8 Memory-aware Context / Typed Conversation Turns 实现复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-8-memory-aware-context-typed-turns-walkthrough.md): Working Context 有界投影、terminal truth 原则与 ADR-0045 run-scoped decorator 的实现细节。
+- [6B-9 Lifecycle / Export / Session-Memory V1 退出复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md): Hidden-before-cleanup 删除策略、OwnerDataExport 导出边界与各删除范围的 provenance 规则。
+- [7-1 MCP Client Pure Contract Walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/7-1-mcp-client-contract-walkthrough.md): MCP 消息的 pure Python contracts：JSON-RPC envelope、version allowlist、schema 校验与大小上限。
+- [7-2 MCP Transport / Discovery 学习与工程复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/7-2-mcp-transport-and-discovery-walkthrough.md): MCP transport 与 session 分层：StdioMcpTransport、initialize/discovery 状态机、generation 失效与 fail closed。
+- [7-3 OP.GG Meta Adapter 实现后讲解](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/7-3-opgg-meta-adapter-walkthrough.md): OP.GG 反腐层设计：Streamable HTTP transport、白名单 AST parser 与带 provenance 的 Meta facts。
+- [7-4 RiftCoach MCP Server 实现后讲解](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/7-4-riftcoach-mcp-server-walkthrough.md): MCP Server 四个只读工具、Application Facade 的 owner scope 与跨存储完整性校验。
+- [7-5 MCP 双向互操作与 Stage 7 退出复盘](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/7-5-mcp-interoperability-exit-review-walkthrough.md): 用官方 TypeScript MCP SDK 跨进程验证 stdio 协议协商、framing 门与 Stage 7 退出复盘。
+- [8A Advanced Adoption Gate 实现后 walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8a-advanced-adoption-gate-walkthrough.md): Advanced Adoption Gate 的证据标准、strict Pydantic 模型、gate digest 与 TDD 验证过程。
+- [8B Conditional Multi-Agent Experiment walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md): 角色隔离 Multi-Agent 三路对比实验的设计、Scripted Usage fixture、工具探测与 reject 裁决证据。
+- [8C Reliable Runtime Core：从“任务在跑”到“任务可证明地活着”](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8c-reliable-runtime-core-walkthrough.md): Reliable Runtime Core 的租约、fencing、checkpoint、持久任务事件与恢复证明五个概念及实现。
+- [8D Riot + OP.GG Evidence Fusion：从多份 JSON 到可解释证据包](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8d-riot-opgg-evidence-fusion-core-walkthrough.md): Riot、Data Dragon、patch 与 OP.GG 证据的 typed snapshot、确定性融合、provenance 与 gap 规则。
+- [8E Batch D Rift Command Center Walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-batch-d-rift-command-center-walkthrough.md): Fixture 驱动的 Rift Command Center 前端纵向：契约先于展示、状态正交与 Hextech 视觉语言。
+- [8E Batch E 安全与部署入口设计 walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md): 安全与部署入口设计：Auth/RSO 区分、opaque session、删除恢复链与硬门边界。
+- [8E Batch E implementation walkthrough（E1/E2/E3/E4 本地阶段）](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md): Batch E E1–E4 本地实现：session/CSRF、请求预算限流、secret 解析与测试证据。
+- [8E 双语产品表面基础八维 walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md): Zh-CN/en 双语产品表面：typed catalog、locale 切换控制流与测试证据。
+- [8E Batch C：Evidence 快照、四态产品 API 与 Cursor SSE walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-evidence-product-api-walkthrough.md): Evidence 快照、四态产品 API 与 Cursor SSE 重放的设计与实现。
+- [8E：GLM-5.3-Flash 适配档案离线 TDD](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md): GLM-5.3-Flash 思考适配档案：ZhipuThinkingProfile、reasoning 与工具边界、离线验证。
+- [8E Live Workbench Integration Walkthrough](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/learning/8e-live-workbench-integration-walkthrough.md): Live Workbench 真实 API/SSE 接线：服务器身份恢复、异步结果归属与 decoder。
+
+## Plans
+
+- [Harness v1 设计说明](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-22-harness-v1-design.md): Harness v1 的目标、核心原则、状态机、Artifact 类型、运行目录与发布降级策略。
+- [Harness v1 Implementation Plan](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-22-harness-v1-implementation.md): 将生成、评测与修订脚本整合为单入口 Harness v1 的分任务实现计划，含文件、测试与提交步骤。
+- [Provider 与 Tool Runtime 设计说明](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-23-provider-tool-runtime-design.md): Provider 与 Tool Runtime 的需求边界、方案比较，统一外部调用的重试、缓存、熔断与 fallback 设计。
+- [Provider and Tool Runtime Implementation Plan](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-23-provider-tool-runtime-implementation.md): 实现厂商无关 LLM Provider 与可靠 Tool Runtime 的分任务计划，含契约定义、GLM Provider 与测试步骤。
+- [RAG v1 第二批设计：结构化索引与混合召回](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-23-rag-v1-index-retrieval-design.md): RAG v1 结构化索引与混合召回设计：父子块切分、BM25、hashing embedding 与 RRF 融合方案。
+- [RAG v1 收尾设计：证据策略、引用与 Harness 接入](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-07-24-rag-v1-policy-harness-design.md): RAG v1 收尾设计：证据门控、确定性重排、版本冲突处理、citation 契约与 Harness 接入标准。
+- [RAG 4M：独立评测门禁](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-04-rag-4m-independent-gate.md): 为 RAG 检索评测新增 held_out 保留集、abstention_accuracy 与 citation_support_rate 指标及 CI 门禁接入。
+- [阶段 5C-2：Skill Catalog V1](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-05-skill-catalog-design.md): Skill Catalog V1 的构建时快照方案、目录发现与失败规则，以及 route_candidates 对外接口范围。
+- [Skill Contract V1 Design](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-05-skill-contract-v1-design.md): Skill 包三份事实来源 manifest.yaml、SKILL.md 与 Pydantic 模型的职责划分及 recent-form-review 首个垂直契约。
+- [阶段 5C-1：Skill Router Contract V1](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-05-skill-router-contract-design.md): RouterRequest 与 RouterDecision 的输入输出契约、三种互斥路由结果及不变量约束。
+- [阶段 5C-3：确定性 Skill Router V1](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-deterministic-skill-router-design.md): 基于 Manifest 声明式信号组的确定性匹配策略、文本规范化规则与决策及安全边界。
+- [Deterministic Skill Router V1 Implementation Plan](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-deterministic-skill-router-implementation.md): 确定性 Skill Router 的逐任务实现计划、架构与技术栈，以及越界批次的复盘说明。
+- [5C-5 前置复核：事实审查属于 Skill 还是 Harness](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-report-fact-check-classification-review.md): 辨析 Skill、Router、EvaluatorStep 与 Harness 的职责，论证事实审查应留在 Harness 而非新增 Skill。
+- [阶段 5C-4：Router 拒绝与歧义验收](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-router-rejection-ambiguity-review.md): Skill Router 的 fail closed 决策边界：无候选、无完整匹配、排除信号否决与多候选歧义的处理规则。
+- [阶段 5C-5-prep-2：single-match-review Skill Contract](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-single-match-review-skill-design.md): Single-match-review Skill 的输入方案比较、单局证据边界、knowledge.search 权限预算与路由歧义规则。
+- [已取代设计：Skill 调用模式合同](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-skill-invocation-boundary-design.md): 被 ADR-0009 取代的原提案：为何取消为 report-fact-check 增加内部 Skill 调用模式的计划。
+- [5C-5 Router Evaluation：数据集生命周期](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-06-skill-router-evaluation-dataset-lifecycle.md): Router 评测数据集的开发集与保留集分离原则、历史基线冻结、快照校验与 holdout 退休规则。
+- [阶段 5D：Python 受限 Skill Agent Loop 设计](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-constrained-skill-agent-loop-design.md): 5D 受限 Skill Agent Loop 设计：SkillReviewExecutor 编译请求、AgentLoop 生成草稿、Harness 评测发布的边界与需求。
+- [5D-2 Context Builder V1 设计](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-context-builder-v1-design.md): Context Builder V1 设计：ContextSection 信任分层、预算选择与 ChatMessage 渲染，三种方案比较与采用决策。
+- [5D-2 Context Builder V1 Implementation Plan](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-context-builder-v1-implementation.md): ContextBuilderV1 实施计划：按 TDD 逐任务实现 section 合同、ContextSizer 选择与 ChatMessage 渲染。
+- [5C-6：Skill Router 模型兜底采用决策](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-router-model-fallback-decision.md): Skill Router 模型兜底决策：分析键盘 Bad Case，暂缓 LLM fallback 并列出未来采用门槛。
+- [阶段 5C：Skill Router V1 退出复核](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-router-v1-exit-review.md): 阶段 5C 退出复核：Router V1 通过依据、holdout 11/12 失败解读及两类审计问题修复。
+- [5D-1 Skill Run Boundary Hardening 设计](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-run-boundary-hardening-design.md): Skill Run 边界加固设计：Router 版本绑定、安全 run ID 规则与 SHA-256 内容承诺的 fail-closed 验证。
+- [5D-1 Skill Run Boundary Hardening 实施计划](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-run-boundary-hardening-implementation.md): Skill Run 边界加固实施计划：按 TDD 逐任务锁定 Skill 文本合同、Router 版本与统一 run ID。
+- [5D-3 Skill Run Compiler & Budget Enforcement 设计](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-run-compiler-budget-design.md): AgentRunCompiler 如何从 Manifest 编译最小权限请求，以及 AgentLoop 的上下文与超时预算保护。
+- [5D-3 Skill Run Compiler & Budget Enforcement Implementation Plan](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/plans/2026-08-07-skill-run-compiler-budget-implementation.md): 按任务拆分的 Compiler 与预算执行实现计划，含测试先行步骤、涉及文件与 pytest 验证。
+
+## Examples
+
+- [RiftCoach 教练式复盘报告（合成示例）](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/examples/sample_coach_report.md): 展示教练式复盘报告结构的合成示例，含亮点、风险点、训练建议与数据边界说明。
+
+## Optional
+
+- [Contributing to RiftCoach](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/CONTRIBUTING.md): 开发环境设置、提交原则、Pull Request 检查清单与安全问题的报告方式。
+- [ADR-0001：保持 RiftCoach 独立仓库](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/adr/0001-independent-riftcoach-repository.md): 保持 RiftCoach 独立仓库的决策记录，含 fork EchoMind 与 AGI-Saber 的备选方案及影响。
+- [ADR-0002：选择性参考 EchoMind 与 AGI-Saber](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/adr/0002-reference-echomind-and-agi-saber-selectively.md): 分阶段选择性参考 EchoMind 与 AGI-Saber 能力的决策，避免引入无关重型基础设施。
+- [ADR-0003：采用质量门控型 Agent Harness](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/adr/0003-quality-gated-agent-harness.md): 质量门控型 Agent Harness 的背景、运行生命周期决策与对模型调用和实现复杂度的影响。
+- [ADR-0004：优先建设轻量 RAG](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/adr/0004-lightweight-rag-before-heavy-infrastructure.md): 先采用本地 BM25 与 Embedding 混合检索的决策，以及迁移重型基础设施的触发阈值。
+- [ADR-0005：只将标准协议实现称为 MCP](https://raw.githubusercontent.com/123Cx330Yrx/riftcoach-agent/main/docs/adr/0005-standard-mcp-only.md): 内部工具系统称为 Tool Runtime，仅标准协议实现可称为 MCP 的决策与影响。
