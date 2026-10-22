@@ -15,21 +15,20 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-22更新：旧v2入口将Key提示处等待误算成活动时间，新增HTTP0便本地timeout关闭。
-用户要求“那重新来”，当前以`docs/plans/2026-10-22-sol-credential-wait-recovery.md`为工作卡：
-修复活动时钟，验证长等待/Ctrl+C/授权过期，核同稿零新增请求后从同有效父任务准备新入口。
-原授权截止及五次额度不延展，旧失败seal64a0e244及原件保留；不得再运行下面的旧入口。
-现已完成：31项session/launcher、1项全续接两小时等待、1项UTC过期拒发通过；dadb73eb冻结树实际prepare、
-真实作者/native逐字导入及只读回查、入口CheckOnly通过。新命令为outputs/riftcoach-sol-natural-keywait-fix-20261022-control/start-authorized.ps1，
-先等CI39730401796全绿，再由用户隐藏输入Key。真实业务质量仍待后续审查。
-
-**目标：** 把两次远端524后的续测准备到用户只需运行单命令、隐藏输入天机阁Key；等待上游恢复，不在本轮付费。
-**起点：** 旧5操作成功前缀/同报告保留，累计5HTTP、52067已知tokens、145824未知预留、重试1、472.672活动秒；完整只读回放与seal通过，无业务语义结果。
-**实施：** 递归只读核两层父seal、导入原生成/三次检索并继承失败账目；扩候选预算、保留原审查请求与四次审查流程；新冻结树完成真实作者预检，手动启动时激活新grant。
-**授权：** 用户明确“预算改加就加”与先等上游恢复。新增最多5次Sol/401920tokens/估价0.29184元；累计10次/739840tokens/2400活动秒/重试2（已用1），零新增生成。无需再次索要同项预算许可；新授权不改旧grant/截止。
-**验证：** 本轮相关回归分组通过，38个当前profile已实核；08d14754新冻结树完成实际prepare、真实作者/check-answer/native final逐字导入及严格只读回查，入口CheckOnly实测通过。当前新请求/Key读取均0、无execution/新grant；精确HEAD CI39714990765仍运行，入口先等全绿。不得把准备或行政预检称语义成功。证据见sol_natural_timeout_recovery_preparation_20261022.json。
-**失败分支：** 传输失败保留旧工作、unknown与成本；本轮一次明确已回收的超时可同阶段重试。身份/来源/结构/语义错误不盲重试；若再遇上游问题，据实际证据调整下一动作，不把报告整体作废。
-**下一动作：** 技术准备和单命令已交付；用户等上游恢复后手动运行`outputs/riftcoach-sol-natural-timeout-recovery-20261022-control/start-authorized.ps1`，入口先核CI全绿再隐藏读天机阁Key。当前不发送、不探测上游；真实输出返回后按原完整来源和双审流程续接。
+**目标：** 在下一次付费前核清最新HTTP200后的本地档位拒收，验证完整接收/失败/恢复路径，不用重复调用代替诊断。
+**事实：** dadb73eb的CI39730401796全绿且用户已经执行。Key等待计时已修；新增1HTTP/28070已知tokens，
+首次新facts-initial返回非high字符串而触发reasoning_identity。原返回具体值未保存，不能判定low或语义错误。
+**修复：** 补安全固定分类和白名单值，不改变接收规则。沿真实SDK→子进程→观测/回执→应用预算/停止，
+并验证启动/长等待/恢复/四审查/唯一应用/只读replay/seal，零付费。
+**保留：** 已闭Operator唯一seal1d0a2f49，70项原库存及stdout根复核未变；累计6HTTP/80137known/
+145824unknown/retry1，原生成与检索报告保留，native业务审查0。
+**验证：** 82项接收/SDK/子进程/应用检查与54项候选/实际启动/续接整链回归通过；CLI启动、治理、编译和diff检查通过。
+**判断与下一动作：** 本地整链已验证，按request ID核查原effort/映射的具体问题已备好，未代发消息。
+用户确认费用页不含该字段，已排除该证据来源，不再要求重连/继续查价格。
+无区分证据不原样重试、不重新输Key、不交付新入口；不能声称整体已修通。
+**完成边界：** 软件诊断修复及整链检查通过，只能证明本地路径；不能冒充上游恢复或自然Agent质量。
+工作卡及事实分别见docs/plans/2026-10-22-sol-credential-wait-recovery.md当前节、
+data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。原预算授权不重复索取也不延展；automation PAUSED。
 
 ## Dependencies and Follow-through
 
@@ -50,7 +49,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：续测技术准备完成，等待用户手动启动；GLM产品采用保持，厂商迁移未决定。
+以canonical和上方工作卡为准：当前查已有渠道记录，先完成离线整链验证；不再等待Key或交付重复付费入口。GLM产品采用保持，厂商迁移未决定。
 复用原稿与历史成本，不重开旧封存；当前发布门关闭，8E及全部依赖保持。
 
 ## History

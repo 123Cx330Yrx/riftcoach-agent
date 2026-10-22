@@ -153,7 +153,8 @@ def test_sdk_request_and_failure_observation(tmp_path, business, variant):
     ({}, 'effort_missing', True), ({'effort': None}, 'effort_null', True),
     ({'effort': 'high'}, 'high', True),
     *[({'effort': effort}, 'conflict', False)
-      for effort in ('none', 'minimal', 'low', 'medium', 'xhigh', 'max', PRIVATE)],
+      for effort in ('none', 'minimal', 'low', 'medium', 'xhigh', 'max', 'ultra',
+                     '', '  ', 'HIGH', ' high ', PRIVATE)],
     ({'effort': []}, 'malformed', False),
     ({'effort': True}, 'malformed', False),
     (PRIVATE, 'malformed', False), ([], 'malformed', False),
@@ -185,6 +186,20 @@ def test_optional_reasoning_echo_is_observed_without_claiming_identity(
     assert result['ok'] is accepted
     assert result['code'] == ('ok' if accepted else 'reasoning_identity')
     assert result['response_observation']['reasoning_echo'] == echo
+    detail = result['response_observation']['reasoning_effort_detail']
+    if isinstance(field, dict) and isinstance(field.get('effort'), str):
+        effort = field['effort']
+        normalized = effort.strip().casefold()
+        if effort in ('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra'):
+            assert detail == dict(category='known', value=effort)
+        elif normalized == 'high':
+            assert detail == dict(category='noncanonical_known', value='high')
+        else:
+            assert detail == dict(category='blank' if not normalized else 'unrecognized', value=None)
+    else:
+        assert detail is None
+    if sdk:
+        assert observed['response_contract']['reasoning_effort_detail'] == detail
     assert {key: result['usage'][key] for key in USAGE} == USAGE
     assert result['usage_state'] == 'known'
     assert result['business_validated'] is False
@@ -197,6 +212,7 @@ def test_optional_reasoning_echo_is_observed_without_claiming_identity(
 @pytest.mark.parametrize('variant,accepted', [
     ('ok', True), ('mixed', False), ('missing_repairs', False),
     ('effort_null', True), ('effort_conflict', False),
+    ('effort_noncanonical', False), ('effort_unknown', False),
 ])
 def test_owned_worker_to_receipt_uses_business_gate(tmp_path, business, variant, accepted):
     # Execute the actual child, replacing HTTP IO only. No key prompt or network.
@@ -211,6 +227,10 @@ if VARIANT == 'effort_null':
     value['reasoning'] = dict(effort=None)
 elif VARIANT == 'effort_conflict':
     value['reasoning'] = dict(effort='low')
+elif VARIANT == 'effort_noncanonical':
+    value['reasoning'] = dict(effort=' HIGH ')
+elif VARIANT == 'effort_unknown':
+    value['reasoning'] = dict(effort=fixture['PRIVATE'])
 elif VARIANT == 'mixed':
     value['output'].append(dict(type='message', role='assistant', status='completed', content=[]))
 elif VARIANT == 'missing_repairs':
@@ -240,9 +260,19 @@ process.worker()
         assert worker['response_observation']['reasoning_echo'] == (
             'effort_null' if accepted else 'conflict')
         assert worker['upstream_identity_verified'] is False
+        expected_detail = {
+            'effort_null': None,
+            'effort_conflict': dict(category='known', value='low'),
+            'effort_noncanonical': dict(category='noncanonical_known', value='high'),
+            'effort_unknown': dict(category='unrecognized', value=None),
+        }[variant]
+        assert worker['response_observation']['reasoning_effort_detail'] == expected_detail
+        observed = json.loads((directory / 'observation/observation.json').read_text(encoding='utf-8'))
+        assert observed['response_contract']['reasoning_effort_detail'] == expected_detail
         if not accepted:
             assert worker['code'] == 'reasoning_identity'
     assert KEY not in ''.join(p.read_text() for p in directory.rglob('*.json'))
+    assert PRIVATE not in json.dumps(worker)
     with pytest.raises(FileExistsError):
         process.run_once(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
             api_key=KEY, directory=directory, response_mode=codec.MODE, cancel=lambda: True)
@@ -254,6 +284,34 @@ def test_mode_and_route_rejected_before_claim(tmp_path, business):
             process.run_once(business, profile=stream.Profile(group='GPT-pro', route=route),
                 api_key=KEY, directory=tmp_path / 'claim', response_mode=mode)
         assert not (tmp_path / 'claim').exists()
+
+
+def test_reasoning_conflict_reaches_application_without_retry_or_lost_usage(tmp_path):
+    from tests.test_sol_natural_candidate import application
+    from tests.test_natural_duty_candidate import run
+    from app.runtime.store import RuntimeTraceStore
+
+    app, factory, flows, attempts = application(tmp_path, mode='reasoning_conflict')
+    result = run(app)
+    assert attempts == [200] and len(factory.providers['candidate'].generator.requests) == 2
+    assert flows[0].outcome == 'candidate_execution_failed'
+    budget = flows[0].send.provider
+    assert budget.calls == 3 and budget.reserved_tokens == 0
+    directory = next((tmp_path / 'transport/candidate/review').glob('call-*'))
+    receipt = json.loads((directory / 'receipt.json').read_bytes())
+    worker = json.loads((directory / 'worker-result.json').read_bytes())
+    observed = json.loads((directory / 'observation/observation.json').read_bytes())
+    assert receipt['worker_code'] == 'reasoning_identity' and receipt['usage_state'] == 'known'
+    assert receipt['reaped'] and receipt['http_requests'] == 1
+    assert worker['response_observation'] == observed['response_contract']
+    assert worker['response_observation']['reasoning_effort_detail'] == dict(category='known', value='low')
+    assert worker['public_tool_call'] is None and worker['business_validated'] is False
+    trace = RuntimeTraceStore(tmp_path / 'reports', 'candidate').read_trace(result.trace_reference)
+    assert trace.usage.provider_calls_attempted == 3
+    assert trace.usage.input_tokens + trace.usage.output_tokens == budget.tokens
+    failed = [e.signal for e in trace.events if e.signal.kind == 'provider_call_failed_usage']
+    assert len(failed) == 1 and failed[0].input_tokens == 12 and failed[0].output_tokens == 8
+    assert result.publication_status.value == 'rejected'
 
 
 @pytest.mark.parametrize('mode', ['stream', codec.MODE])

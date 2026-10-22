@@ -19,6 +19,7 @@ from scripts.stream_observation import StreamObservation
 MODE = 'nonstream-tool-v1'
 MAX_INPUT = 64000
 MAX_OUTPUT = 16384
+KNOWN_EFFORTS = frozenset(('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra'))
 
 
 def build_wire(business):
@@ -58,6 +59,24 @@ def reasoning_echo(value):
     return 'high' if effort == 'high' else 'conflict'
 
 
+def reasoning_effort_detail(value):
+    """Bounded diagnostic only; normalization never changes acceptance.
+
+    Persist only fixed categories and allowlisted effort names, never an
+    arbitrary provider string. Existing echoes cover absent/null/bad shapes.
+    """
+    reasoning = mapping(value.get('reasoning'))
+    effort = reasoning.get('effort') if reasoning is not None else None
+    if not isinstance(effort, str):
+        return None
+    normalized = effort.strip().casefold()
+    if effort in KNOWN_EFFORTS:
+        return dict(category='known', value=effort)
+    if normalized in KNOWN_EFFORTS:
+        return dict(category='noncanonical_known', value=normalized)
+    return dict(category='blank' if not normalized else 'unrecognized', value=None)
+
+
 def inspect_response(response, business):
     """Return body-free facts even when the receiving contract rejects output.
 
@@ -69,7 +88,8 @@ def inspect_response(response, business):
     value = mapping(response)
     observation = dict(response_received=value is not None, terminal_status=None,
         reported_completed=False, output_items=None, function_calls=None,
-        output_type_counts=None, model_matches=False, reasoning_echo=None)
+        output_type_counts=None, model_matches=False, reasoning_echo=None,
+        reasoning_effort_detail=None)
     result = dict(ok=False, code='response_shape', usage=None, usage_state='unknown',
         public_tool_call=None, business_validated=False, semantic_approval=False,
         upstream_identity_verified=False, qualified=False, publication_allowed=False,
@@ -77,6 +97,7 @@ def inspect_response(response, business):
     if value is None:
         return result
     observation['reasoning_echo'] = reasoning_echo(value)
+    observation['reasoning_effort_detail'] = reasoning_effort_detail(value)
     status = value.get('status')
     observation.update(terminal_status=status if status in (
         'completed', 'incomplete', 'failed', 'cancelled', 'queued', 'in_progress') else 'other',

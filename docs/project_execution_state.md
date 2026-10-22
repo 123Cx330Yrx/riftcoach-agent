@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "Key等待计时已修复，新入口核验完成；精确HEAD CI运行中，入口先等全绿再隐藏读Key；automation PAUSED。"
+pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；离线补足诊断，待渠道元数据核查，不再交付重复付费入口；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,19 @@ pause_reason: "Key等待计时已修复，新入口核验完成；精确HEAD CI�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-22后续实况：dadb73eb的CI39730401796已全绿；用户已执行入口，不再等待Key。
+Key等待计时修复生效；新增1HTTP，约60.516秒HTTP200/EOF/closed，21758输入+6312输出=28070已知tokens。
+首次新facts-initial在本地reasoning_identity拒收，未到业务参数校验或独立语义审查。
+冻结构造器重建wire确认请求确为high，返回只保留conflict，无法恢复原始effort或工具参数；不能断言返回low或模型业务错误。
+严格回放/唯一seal1d0a2f49已完成；本轮再核70项库存及stdout根未变。
+累计6HTTP/80137已知tokens/145824未知预留/重试1，原两次生成/三次检索与报告保留，native业务审查0。
+现仅补充安全固定分类，区分已知档位、非标准拼写、空白和未知字符串，既有接收规则不变；82项接收/SDK/子进程/应用检查与54项候选/启动/续接整链回归均通过。
+用户确认使用日志仅有费用，不能提供effort；不再把读取费用页作为推进前提或继续尝试连接。
+下一动作：完成本地整链验证，备好按现有request ID向渠道核查effort/映射的具体问题（未代发）。
+原字段缺口本地不可恢复；不新增付费诊断，不要求重复输Key，不重开已闭Operator。
+证据与判定见`data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json`及原Key等待修复工作卡后续节。
+以下为真实执行前的准备记录，历史入口不再是待办。
 
 2026-10-22最新：用户执行08d14754入口时在Key提示处等待约85分钟，活动时间从472.688增加到5554.797秒，
 因此首次新审查请求发送前发生本地timeout。新增HTTP0，历史5HTTP/52067known/145824unknown/retry1不变；
