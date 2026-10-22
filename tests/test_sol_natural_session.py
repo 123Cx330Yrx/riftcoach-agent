@@ -40,6 +40,34 @@ class NoSearch:
         pytest.fail('committed tool result was searched again')
 
 
+@pytest.mark.parametrize('interrupt', [False, True])
+def test_credential_wait_excludes_human_time_and_preserves_active_time(tmp_path, interrupt):
+    now = [100.0]
+    first = session(tmp_path, clock=lambda: now[0])
+    with first:
+        now[0] += 17
+        def prompt():
+            with first.waiting_for_credentials():
+                now[0] += 7200
+                assert first.active_seconds == 17
+                if interrupt:
+                    raise KeyboardInterrupt()
+        if interrupt:
+            with pytest.raises(KeyboardInterrupt):
+                prompt()
+        else:
+            prompt()
+        assert first.active_seconds == 17
+        now[0] += 23
+        assert first.active_seconds == 40
+    now[0] += 5000
+    resumed = session(tmp_path, first, clock=lambda: now[0])
+    with resumed:
+        assert resumed.active_seconds == 40
+        now[0] += 5
+        assert resumed.active_seconds == 45
+
+
 def test_application_resume_preserves_tools_budget_and_single_application(tmp_path):
     first = session(tmp_path, max_new_models=3)
     with pytest.raises(SessionPaused), first:

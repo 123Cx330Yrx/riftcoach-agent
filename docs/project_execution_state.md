@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "扩预算续测技术准备完成；入口先等精确HEAD CI全绿，用户等上游恢复后手动输入天机阁Key；automation PAUSED。"
+pause_reason: "Key输入等待误计活动时间导致本地发送前关闭；新增HTTP为0。用户要求重新来，正在修复计时并重建恢复入口；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,15 @@ pause_reason: "扩预算续测技术准备完成；入口先等精确HEAD CI全�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-22最新：用户执行08d14754入口时在Key提示处等待约85分钟，活动时间从472.688增加到5554.797秒，
+因此首次新审查请求发送前发生本地timeout。新增HTTP0，历史5HTTP/52067known/145824unknown/retry1不变；
+不是又一次远端524。原记录完整保留，严格只读回放及seal64a0e244已完成。
+用户要求“那重新来”：修复隐藏输入期间暂停活动计时、异常恢复和真实UTC授权检查，并明确输出终态失败原因。
+只刷新受影响Sol清单；正在验证初次/续接两小时等待、Ctrl+C与授权过期。新入口仍复用原稿与原五次额度，
+原授权截止北京时间2026-10-23 11:54:18保持。下一动作：完成验证/新冻结预检并提供新命令，旧v2已闭不再启动。
+事实见`data/evaluation/results/sol_credential_wait_failure_20261022.json`，工作卡见`docs/plans/2026-10-22-sol-credential-wait-recovery.md`。
+以下为本次失败前的准备记录，不作为当前可运行入口。
 
 2026-10-22最新：恢复任务两次请求均在约128秒收到远端HTTP524，早于本地300秒deadline；
 无业务语义结果，旧报告/三次检索保持。原stdout根、严格只读replay及唯一seal均已保存，

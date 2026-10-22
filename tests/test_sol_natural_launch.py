@@ -212,8 +212,10 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
     monkeypatch.setattr(launch, 'verify_native_principals', lambda *a: {'verified': True})
     monkeypatch.setattr(launch, 'verify_preflight', lambda *a: True)  # exercised separately above
     keys = []
+    wait_clock = [100.0]
     def credentials():
         keys.append('synthetic')
+        wait_clock[0] += 7200  # Two hours at every initial/resumed key prompt.
         return None, 'OFFLINE_SENTINEL'
     monkeypatch.setattr(launch, 'credentials', credentials)
     factories, requests = [], []
@@ -226,7 +228,9 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
     receipts = []
     original = launch.session_for
     def session_for(*a, **kw):
-        return original(*a, **dict(kw, sink=receipts.append))
+        session, gate = original(*a, **dict(kw, sink=receipts.append))
+        session.clock = lambda: wait_clock[0]
+        return session, gate
     monkeypatch.setattr(launch, 'session_for', session_for)
     raw = json.dumps(grant(p, pin)).encode()
     path = tmp_path/'authorization.json'
@@ -274,3 +278,37 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
         launch.seal(p, pin, native, authorization_sha=authorization_sha, **roots)
     with pytest.raises(SessionBlocked, match='closed'):
         launch.execute(p, pin, native, **common, **roots)
+
+
+def test_credential_wait_does_not_extend_utc_authorization(tmp_path, monkeypatch):
+    from app.runtime import sol_natural_provider
+    p, pin = plan(tmp_path, monkeypatch)
+    opened, _, _ = controls(tmp_path/'history')
+    _, gate = opened()
+    native = launch.CodexHostReviewEventSource(gate.native.event_source.client, p['review_plan'])
+    value = grant(p, pin)
+    now = [datetime.fromisoformat(value['issued_at'])]
+    class UTCClock:
+        @staticmethod
+        def now(tz):
+            return now[0]
+        fromisoformat = staticmethod(datetime.fromisoformat)
+    monkeypatch.setattr(launch, 'datetime', UTCClock)
+    for name in ('verify_ci', 'verify_native_principals', 'verify_preflight'):
+        monkeypatch.setattr(launch, name, lambda *a: True)
+    def credentials():
+        now[0] += timedelta(hours=2)
+        return None, 'OFFLINE_SENTINEL'
+    monkeypatch.setattr(launch, 'credentials', credentials)
+    monkeypatch.setattr(sol_natural_provider, 'SolNaturalProviderFactory',
+                        lambda **kw: pytest.fail('expired grant reached factory'))
+    raw = json.dumps(value).encode()
+    auth = tmp_path/'authorization.json'
+    auth.write_bytes(raw)
+    with pytest.raises(ValueError, match='authorization_required'):
+        launch.execute(p, pin, native, authorization_file=auth,
+            authorization_sha=digest(raw), ci_run='synthetic', preflight_proof={})
+    root = Path(p['operator'])/'execution'
+    assert not list((root/'session/operations').glob('*'))
+    assert not (root/'transport').exists()
+    assert not (root/'session/terminal.json').exists()

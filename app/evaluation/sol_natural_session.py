@@ -102,6 +102,7 @@ class CandidateSession:
         self.cursor = self.new_models = 0
         self.review_gate = None
         self._open = False
+        self._waiting_since = None
 
     def __enter__(self):
         if self.continuation is not None:
@@ -159,7 +160,25 @@ class CandidateSession:
 
     @property
     def active_seconds(self):
-        return self.active_before + max(0.0, self.clock()-self.segment_started)
+        now = self.clock() if self._waiting_since is None else self._waiting_since
+        return self.active_before + max(0.0, now-self.segment_started)
+
+    @contextmanager
+    def waiting_for_credentials(self):
+        """Human input consumes wall time, never the active execution budget.
+
+        Keep session ownership while waiting. Authorization still uses UTC and
+        is checked again after input; pausing this clock cannot extend a grant.
+        """
+        if not self._open or self.read_only or self._waiting_since is not None:
+            raise SessionBlocked('session_invalid_credential_wait')
+        self._waiting_since = self.clock()
+        try:
+            yield
+        finally:
+            self.segment_started += max(0.0, self.clock()-self._waiting_since)
+            self._waiting_since = None
+            self._checkpoint('credential_wait_finished')
 
     def _inventory(self):
         own = tree(self.root)

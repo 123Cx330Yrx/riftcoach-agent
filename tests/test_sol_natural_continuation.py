@@ -94,6 +94,17 @@ def prepare_child(state, tmp_path, name='continued'):
 def test_continue_four_reviews_and_native_gates_without_rebuying_prefix(setup, tmp_path, monkeypatch):
     s = setup
     p, pin, common = prepare_child(s, tmp_path)
+    wait_clock = [100.0]
+    original_session = launch.session_for
+    def session_for(*a, **kw):
+        session, gate = original_session(*a, **kw)
+        session.clock = lambda: wait_clock[0]
+        return session, gate
+    monkeypatch.setattr(launch, 'session_for', session_for)
+    def credentials():
+        wait_clock[0] += 7200
+        return None, 'OFFLINE_SENTINEL'
+    monkeypatch.setattr(launch, 'continuation_credentials', credentials)
     spec = p['continuation']
     assert p['offline']['continuation_frontier']['generation_requests'] == 0
     assert spec['historical_budget']['calls'] == 3 and spec['remaining_attempts'] == 7
@@ -124,6 +135,8 @@ def test_continue_four_reviews_and_native_gates_without_rebuying_prefix(setup, t
     assert sealed['accounting']['tokens'] == spec['historical_budget']['tokens']+80
     assert sealed['continuation']['new_calls'] == 4
     assert sealed['continuation']['historical_failure_retained']
+    final_clock = json.loads(sorted((Path(p['operator'])/'execution/session/checkpoints').glob('*.json'))[-1].read_bytes())['active_seconds']
+    assert final_clock == spec['active_seconds']
     assert len(list((Path(p['operator'])/'execution/journal').glob('application.json'))) == 1
     assert tree(Path(s['parent']['operator'])) == s['parent_inventory']
     assert not sealed['production_admitted'] and not sealed['publication_allowed']

@@ -365,10 +365,11 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
                 raise SessionPaused('session_awaiting_native_review')
             gate.verify_prior()
             # Ownership, frozen source, grant and live native checks precede prompts.
-            if plan.get('continuation'):
-                generator, key = continuation_credentials()
-            else:
-                generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
+            with session.waiting_for_credentials():
+                if plan.get('continuation'):
+                    generator, key = continuation_credentials()
+                else:
+                    generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
             before()
             from app.runtime.sol_natural_provider import SolNaturalProviderFactory
             factory = SolNaturalProviderFactory(generator_settings=generator, api_key=key,
@@ -389,11 +390,18 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
                 raise SessionBlocked('launch_unqualified_publication')
             outcome_path = session.journal_root/'outcome.json'
             outcome = json.loads(outcome_path.read_bytes()) if outcome_path.exists() else None
+            failure_code = None
+            if outcome is not None and outcome.get('outcome') == 'candidate_execution_failed':
+                for path in sorted((session.root/'operations').glob('*-result.json')):
+                    value = json.loads(path.read_bytes())['value']
+                    if isinstance(value, dict) and value.get('ok') is False:
+                        failure_code = value.get('error_code')
             session.close(dict(runtime_status=result.runtime_status.value, candidate_outcome=outcome,
                                publication_allowed=False, production_admitted=False))
     except SessionPaused as error:
         return dict(phase='paused', reason=str(error), publication_allowed=False, production_admitted=False)
-    return dict(phase='closed', publication_allowed=False, production_admitted=False)
+    return dict(phase='closed', candidate_outcome=outcome, failure_code=failure_code,
+                publication_allowed=False, production_admitted=False)
 
 
 def replay(plan, plan_sha, event_source, *, guard, checkpoint, authorization_sha):
