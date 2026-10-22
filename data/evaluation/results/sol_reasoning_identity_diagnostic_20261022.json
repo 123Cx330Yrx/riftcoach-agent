@@ -109,10 +109,10 @@
     "further_page_attempts_planned": false,
     "updated_judgment": "Screenshot supplies high and exact usage, but not the raw response effort; previous cost-only conclusion was superseded."
   },
-  "next_action": "Local raw-versus-SDK integration verified; commit/push and verify exact-head CI, then freeze the defined single original-review diagnostic under applicable authorization. No new full batch, no generation, no automatic retries, no historical rewrite.",
+  "next_action": "Address necessary-repair versus optional-clarification behavior using the retained counterexample and existing positive cases before considering another paid run; do not restart generation or the fixed six for effort metadata.",
   "new_provider_requests_this_diagnostic": 0,
   "new_key_reads_this_diagnostic": 0,
-  "new_entry_delivered": false,
+  "new_entry_delivered": true,
   "qualified": false,
   "publication_allowed": false,
   "channel_questions": [
@@ -411,7 +411,7 @@
     "history_retained": true,
     "authorization_basis": "User continued diagnosis/repair/progression and authorized necessary budget; explicitly narrowed binding for new head/plan within unused original scope; old exact-head grant is provenance, not reused as new-head authorization.",
     "original_expiry_utc": "2026-10-23T03:54:18.433261+00:00",
-    "preparation_status": "actual frozen prepare/check, native route, terminal and wrapper verified; exact-head CI still in_progress",
+    "preparation_status": "Historical preparation; entry executed and sealed, not runnable.",
     "new_provider_requests": 0,
     "real_key_read": false,
     "execution_pins": {
@@ -453,6 +453,93 @@
       "temporary_offline_logs_removed": true
     },
     "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022-control",
-    "authorization_explicitly_rebound_with_original_expiry": true
+    "authorization_explicitly_rebound_with_original_expiry": true,
+    "execution_result": "completed_and_sealed; entry already consumed, not a runnable queue"
+  },
+  "completed_single_request_followup": {
+    "status": "diagnostic_complete_partial_semantic_validity",
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-reasoning-single-20261022",
+    "plan_sha256": "22f77653a7a690fd9a9b3ea9a23d9f9f1f0ea30a8ac76696c34bad70ed3557fc",
+    "claim_sha256": "d547f71ccea4516faa29f6ab6cf3e3663a5afacafd185e01123f58f94d463a8e",
+    "seal_sha256": "da687ba3c9ff2a483c8bc5f2ed021e7c57e79fd8f038a9301474a82d2cce8153",
+    "http_requests": 1,
+    "response_status": 200,
+    "elapsed_seconds": 90.985,
+    "requested_effort": "high",
+    "raw_response_effort": "max",
+    "sdk_response_effort": "max",
+    "identity_fields_equal": true,
+    "usage_state": "known",
+    "input_tokens": 21758,
+    "output_tokens": 9497,
+    "total_tokens": 31255,
+    "public_arguments_sha256": "32578633da7d0ea99fb878ab3d312ec1053205e20313073ef6e2541c452e2cf4",
+    "worker_result_sha256": "b29a4edf68cb9150440276fd124fb74eef00167e43a37ebb2c64064702b8a1c0",
+    "semantic_review": {
+      "kind": "primary_full_source_review_and_independent_diagnostic_native_final",
+      "whole_opinion_accepted": false,
+      "issue_1": {
+        "block": 10,
+        "disposition": "false_positive_optional_clarification",
+        "primary": "The complete paragraph names unconfirmed video-review hypotheses and denies determining causes from statistics. The final consistency statement does not assert verification or a conjunction of confirmed causes. Correct outcomes can motivate inspection without identifying the cause. The supplied explanation does not establish a necessary factual correction under the exact policy; its cautious replacement is optional.",
+        "independent_agrees": true,
+        "mandatory_patch_accepted": false
+      },
+      "issue_2": {
+        "block": 21,
+        "disposition": "supported_unsupported_threshold_finding",
+        "primary": "MID loss rows 9.64/8.38 average 9.01; wins 8.95/8.66 average 8.805 (8.81 at two decimals). K4 permits observable goals but supplies no 7.5 target, and no stated maintenance-goal rationale exists. This arbitrary threshold cannot be justified from the mixed-position losing mean. The narrow recording alternative and quoted means are supported.",
+        "independent_agrees": true,
+        "proposed_patch_semantics_accepted": true
+      },
+      "report_statistics_recomputed": true,
+      "both_original_anchors_unique": true,
+      "independent_answer": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022-independent-review-author.json",
+      "author_sha256": "d6c46965264362002aa9e05004fe1795308fe73c3b15145287e226099a135684",
+      "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022-independent-review-control\\checkpoint.json",
+      "checkpoint_sha256": "1355e97a6817236a07557ce541b84b5d6f0c367fd15aed20c78ac1ae13bed6fd",
+      "native_event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a16466-ce8b-7841-82dc-64c7c1ae1af4/msg_0ec02a04ee77b13f016ada37d73bd88193ad33802e33d9008f",
+      "native_observation": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022-independent-review-control\\native-observation.json",
+      "independent_native_final_observed": true,
+      "author_native_match": true,
+      "independent_source_review": "I verified the exact request and worker-result SHA256 values and read every request message: the complete review policy and examples, all 28 report blocks, all fact and provenance tables, source-root mappings, computed cohorts and role contrasts, knowledge K1-K4, the original user utterance, generation projection, deterministic report, position context and external snapshots. I also read both diagnostic public issues, their explanations and suggested corrections, and both exact patches. I adjudicate their semantics independently of the score and of the worker's reasoning_identity failure; neither establishes semantic correctness or publication authority.\n\nIssue 1, block 10, is a false positive under this policy. The full paragraph explicitly calls the proposed explanations video-review hypotheses and immediately states that statistics cannot determine their causes. Its final sentence says the Locke loss is directionally consistent with that hypothesis; it does not say the causes were verified, that any specific cause occurred, or that every component was independently demonstrated. K2 explicitly allows safety of farming routes, resource allocation and participation timing to be investigated as hypotheses when the displayed outcome metrics differ. K3 likewise treats such suggestions as hypotheses to test. The quoted Locke damage/minute 605.5 and participation 36.4% are correct: participation is 0.3636, and both outcome measures are below both wins (damage 1143.4 and 1430.11; participation 77.5% and 55.81%). They supply an outcome-level review clue, not causal identification. The surrounding mixed-position comparison, block 14's rejection of causal and every-game inference, and block 24's sample boundary further limit the claim. The policy requires honoring these qualifications and prohibits importing an unwritten causal or universal assertion. The public explanation moves from consistency with a stated hypothesis to verification of the compound cause, and identifies no unresolved alternative proposition that changes the report's conclusion. The absence of direct farming-route evidence does not turn a plainly unconfirmed review hypothesis into a confirmed farming claim. Its proposed replacement is factually cautious and preserves the two correct numbers, but merely makes the existing limitation more explicit. It is optional clarification, not a necessary factual repair; the explanation and patch reason do not justify a medium causality issue.\n\nIssue 2, block 21, is a genuine unsupported recommendation. The conditional MID branch prescribes a numerical minimum of 7.5 CS/minute for the next losing games without a supplied rationale or benchmark for that threshold. Conditional choice of position does not supply evidence for the chosen number. K4 supports observable goals, a review period and recording changes, but contains no 7.5 threshold. K2 warns against deriving a unified threshold from mixed positions. MID winning rows have CS/minute 8.95 and 8.66, whose mean 8.805 rounds HALF_UP to 8.81; MID losing rows have 9.64 and 8.38, whose mean is 9.01. Both losses already exceed 7.5, so the selected mixed-position loss mean 6.45 cannot establish the claimed position-specific training need. Being below the observed values would not by itself invalidate every possible maintenance goal; here the decisive defect is the absence of any supplied basis for prescribing this particular target. The issue's explanation, sources 27/30/38 and narrow correction are supported. Its patch removes only that unsupported minimum and replaces it with conditional recording, retaining the correct MID means without claiming a personal baseline, a causal effect or a new performance standard.\n\nBoth before strings occur exactly once in their designated blocks and the patches do not overlap. I checked the substituted paragraphs in memory without editing any report file. The second patch preserves the conditional MID scope, observation period, death-time review, K4 citation and OP.GG facts and limitations. The first preserves correct numerical content but must not be required as a factual correction. Across the unchanged report I checked the selected five-game and role counts, individual statistics, mixed-group comparisons, early-death interpretation, conditional observation suggestions, observed-player versus reader identity, K1-K4 usage, patch/static-catalog boundaries and the dated position-specific OP.GG claims. I found no further established defect requiring an additional issue in this review. The report's 8.8 winning CS display is consistent with rounding the raw 8.805 to one decimal; the patch's 8.81 uses two decimals. This opinion rejects the complete two-issue review because issue 1 violates the actual-error versus optional-clarification boundary, while retaining issue 2 as valid. actual_report_checked refers to the full supplied original report; this is not a fresh assembled-report acceptance, an identity qualification, a task-completion judgment or publication permission.",
+      "legacy_batch_native_import_or_submit_performed": false,
+      "patch_applied": false,
+      "fresh_review_completed": false,
+      "correction_to_assistant_status": "Yesterday initial quality-failure wording was premature and its proven-causation paraphrase was inaccurate. Today full-source primary and independent diagnostic review establish the narrower false-positive finding; this does not invalidate prior six-duty successes or prove overall model regression."
+    },
+    "comparison_with_fixed_six": {
+      "prior_acceptances_preserved": true,
+      "same_system_message": true,
+      "same_report": false,
+      "fixed_reports": "three prewritten closely related reports; six duties completed via five original responses plus separately authorized sixth supplement",
+      "current_report": "Flash-generated natural-task report, 28 blocks rather than 30; four knowledge excerpts rather than five",
+      "prior_controls": "s01 clean; s02 changes one universal comparison; s03 removes one required connection from snapshot to action",
+      "conclusion": "Different documents and source bundles; not a repeated identical-input experiment. No evidence that code change caused semantic deterioration, model quality declined, or max echo caused this judgment."
+    },
+    "accounting_after_single": {
+      "http_requests": 7,
+      "known_tokens": 111392,
+      "unknown_reserved_tokens": 145824,
+      "retries": 1
+    },
+    "provider_requests_during_offline_followup": 0,
+    "new_key_reads_during_offline_followup": 0,
+    "qualified": false,
+    "publication_allowed": false,
+    "next_action": "Address necessary-repair versus optional-clarification behavior using the retained counterexample and existing positive cases before considering another paid run; do not restart generation or the fixed six for effort metadata.",
+    "decision": {
+      "paid_metadata_diagnosis": "complete_no_repeat",
+      "retained_useful_finding": 2,
+      "rejected_necessary_finding": 1,
+      "automatic_apply_whole_opinion": false,
+      "old_six_acceptances": "preserved",
+      "model_replacement_decided": false,
+      "config_exactness": "requested high / response reports max; not normalized, not proven upstream configuration",
+      "scope": "one familiar-source natural report and one full-source diagnostic review, not holdout, reliability rate, product qualification or publication",
+      "next_work": "Address necessary-repair versus optional-clarification behavior using the retained counterexample and existing positive cases before considering another paid run; do not restart generation or the fixed six for effort metadata."
+    },
+    "readonly_replay_reverified_20261023": true,
+    "retained_offline_validation": "Exact request/context restore and complete public opinion structure/anchor validation pass; not semantic approval."
   }
 }
