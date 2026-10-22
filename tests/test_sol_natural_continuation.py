@@ -17,7 +17,7 @@ from tests.test_sol_session_review import controls, author
 
 
 @pytest.fixture
-def setup(tmp_path, monkeypatch):
+def setup(tmp_path, monkeypatch, request):
     def deny(*a, **kw):
         pytest.fail('unexpected network/key/generation')
     monkeypatch.setattr(socket, 'create_connection', deny)
@@ -37,7 +37,7 @@ def setup(tmp_path, monkeypatch):
     monkeypatch.setattr(launch, 'verify_preflight', lambda *a: True)
     monkeypatch.setattr(launch, 'credentials', lambda: (None, 'OFFLINE_SENTINEL'))
     monkeypatch.setattr(launch, 'continuation_credentials', lambda: (None, 'OFFLINE_SENTINEL'))
-    state = dict(plan=p, mode='reasoning_conflict', factories=[], requests=[], statuses=())
+    state = dict(plan=p, mode=getattr(request, 'param', 'reasoning_conflict'), factories=[], requests=[], statuses=())
     from app.runtime import sol_natural_provider
     state['real_factory'] = sol_natural_provider.SolNaturalProviderFactory
     def factory(**kwargs):
@@ -72,19 +72,19 @@ def setup(tmp_path, monkeypatch):
     return state
 
 
-def prepare_child(state, tmp_path):
+def prepare_child(state, tmp_path, name='continued'):
     p = state['parent']
     # Preparation uses its real offline factory; the test's sender factory is
     # safe too, but preview pauses before it can send or search.
     with patch('app.runtime.sol_natural_provider.SolNaturalProviderFactory',state['real_factory']):
-        result = launch.prepare(tmp_path/'continued', p['run_id'], 'synthetic-root','synthetic-child',
+        result = launch.prepare(tmp_path/name, p['run_id'], 'synthetic-root','synthetic-child',
             parent_operator=p['operator'], parent_seal_sha=state['seal']['seal_sha256'])
     child = launch.load(result['operator'], result['plan_sha256'])
     state.update(plan=child, mode='repair', factories=[], requests=[])
     value = grant(child, result['plan_sha256'])
     spec = child['continuation']
     value['continuation'] = dict(parent_seal_sha256=spec['seal_sha256'],
-        max_new_attempts=4, max_new_tokens=321536, generation_requests=0)
+        max_new_attempts=spec['remaining_attempts'], max_new_tokens=spec['max_new_tokens'], generation_requests=0)
     path = tmp_path/'child-grant.json'
     path.write_bytes(canonical(value))
     return child, result['plan_sha256'], dict(authorization_file=path,
@@ -96,8 +96,8 @@ def test_continue_four_reviews_and_native_gates_without_rebuying_prefix(setup, t
     p, pin, common = prepare_child(s, tmp_path)
     spec = p['continuation']
     assert p['offline']['continuation_frontier']['generation_requests'] == 0
-    assert spec['historical_budget']['calls'] == 3 and spec['remaining_attempts'] == 4
-    assert p['estimated_uncached_cny'] == '0.233472'
+    assert spec['historical_budget']['calls'] == 3 and spec['remaining_attempts'] == 7
+    assert p['estimated_uncached_cny'] == '0.408576'
     roots, stages = {}, []
     for n in range(7):
         result = launch.execute(p, pin, s['native'], **common, **roots)
@@ -193,3 +193,54 @@ def test_source_changes_cannot_hide_generation_or_prompt_changes():
     current['files']['app/generate.py']='new'
     with pytest.raises(ValueError,match='unrelated_source'):
         continuation.verify_source(spec,current)
+
+
+def test_sealed_timeout_continuation_preserves_cost_and_allows_complete_reviews(setup, tmp_path):
+    s = setup
+    p, pin, common = prepare_child(s, tmp_path)
+    s['statuses'] = (524,524)
+    assert launch.execute(p,pin,s['native'],**common)['phase'] == 'closed'
+    roots = dict(guard=s['pins'][-1]['guard_sha256'],checkpoint=s['pins'][-1]['checkpoint_sha256'])
+    sealed = launch.seal(p,pin,s['native'],authorization_sha=common['authorization_sha'],**roots)
+    assert sealed['accounting']['calls'] == 5
+    assert sealed['accounting']['reserved_tokens'] > 0
+    first_inventory = tree(Path(s['parent']['operator']))
+    timeout_inventory = tree(Path(p['operator']))
+    s.update(parent=p,parent_pin=pin,seal=sealed,statuses=(524,))
+    child,child_pin,child_common = prepare_child(s,tmp_path,name='after-timeout')
+    spec = child['continuation']
+    assert spec['remaining_attempts'] == 5 and spec['historical_budget']['retries'] == 1
+    assert spec['historical_budget']['reserved_tokens'] == sealed['accounting']['reserved_tokens']
+    roots,stages = {},[]
+    for _ in range(8):
+        result = launch.execute(child,child_pin,s['native'],**child_common,**roots)
+        s['statuses'] = ()
+        roots = dict(guard=s['pins'][-1]['guard_sha256'],checkpoint=s['pins'][-1]['checkpoint_sha256'])
+        if result['phase'] == 'closed':break
+        session,gate = launch.session_for(child,child_pin,s['native'],read_only=True,
+            authorization_sha=child_common['authorization_sha'],**roots)
+        with session:handle = list(gate.handles())[-1]
+        stages.append(handle['binding']['key'])
+        primary,event = author(handle,s['turns'],gate.native.workspace)
+        path=tmp_path/f'timeout-primary-{len(stages)}.json';path.write_bytes(canonical(primary))
+        launch.submit(child,child_pin,s['native'],stages[-1],path,event,
+            authorization_sha=child_common['authorization_sha'],**roots)
+        roots = dict(guard=s['pins'][-1]['guard_sha256'],checkpoint=s['pins'][-1]['checkpoint_sha256'])
+    assert stages == ['facts-initial','completion-initial','compatibility','edit','facts-fresh','completion-fresh']
+    final = launch.seal(child,child_pin,s['native'],authorization_sha=child_common['authorization_sha'],**roots)
+    assert final['accounting']['calls'] == 10
+    assert final['accounting']['reserved_tokens'] > sealed['accounting']['reserved_tokens']
+    assert final['accounting']['retries'] == 2
+    assert sum(map(len,s['requests'])) == 5
+    assert tree(Path(p['operator'])) == timeout_inventory
+    original = Path(s['parent']['continuation']['operator'])
+    assert tree(original) == first_inventory
+
+
+@pytest.mark.parametrize('setup', ['non_tool', 'wrong_model'], indirect=True)
+def test_structural_and_identity_failures_do_not_become_timeout_continuations(setup, tmp_path):
+    original = tree(Path(setup['parent']['operator']))
+    with pytest.raises(ValueError, match='launch_parent_(nonrecoverable_failure|failure_receipt_invalid)'):
+        prepare_child(setup, tmp_path)
+    assert tree(Path(setup['parent']['operator'])) == original
+    assert not (tmp_path/'continued').exists()

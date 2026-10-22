@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "本自然任务已执行并封存；reasoning回显接收修正仅离线验证，不追认旧响应，automation PAUSED。"
+pause_reason: "两次远端HTTP524已只读回放封存；按用户授权扩预算准备续测，等待上游恢复后用户手动输入Key；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,16 @@ pause_reason: "本自然任务已执行并封存；reasoning回显接收修正�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-22最新：恢复任务两次请求均在约128秒收到远端HTTP524，早于本地300秒deadline；
+无业务语义结果，旧报告/三次检索保持。原stdout根、严格只读replay及唯一seal均已保存，
+累计5HTTP、52067已知tokens、145824未知预留、重试1、472.672活动秒；native业务审查/修订/fresh均0。
+事实与网页日志的未关联限制见`data/evaluation/results/sol_natural_timeout_observed_20261022.json`。
+用户要求等待上游恢复，并明确授权必要预算增加。本轮准备新增最多5次Sol/401920tokens/估价0.29184元，
+累计10次/739840tokens/2400活动秒/重试2（历史已用1），零新增生成；只读继承两层父seal，旧原件不动。
+正在完成代码回归、新冻结执行树和真实原生行政预检，以及手动启动时才激活的新授权/隐藏Key入口。
+当前新请求0、Key读取0；尚未交付启动就绪，不自动重试/探测上游。下一动作：完成这些准备并提供单命令。
+以下10月19—21日记录为前序证据；不以旧“等待Key”状态作为当前执行队列。
 
 2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
 

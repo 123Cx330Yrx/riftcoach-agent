@@ -20,10 +20,11 @@ class CaptureFactory(base.CaptureFactory):
 
 
 def cost_envelope():
-    # One additional attempt belongs to either role, never both. Maximize cost
-    # under the shared token cap separately for the two possible allocations.
+    # Cumulative timeout allowance is shared across roles; logical calls stay 2+4.
     costs = []
-    for generation, reviews in ((3, 4), (2, 5)):
+    retries = contract.CONTRACT.descriptor()['transport_retries']
+    for extra_generation in range(retries+1):
+        generation, reviews = 2+extra_generation, 4+retries-extra_generation
         remaining, cost = contract.CONTRACT.descriptor()['total_tokens'], Decimal(0)
         for cap, rate in ((generation*32768, '2.8'), (reviews*16384, '2'),
                           (generation*64000, '.8'), (reviews*64000, '.4')):

@@ -111,8 +111,8 @@ class SolNaturalContract(legacy.NaturalDutyContract):
         value = super().descriptor()
         value.update(contract_id=VERSION, provider_id=PROVIDER, model=MODEL,
             thinking_profile_id=PROFILE, target_runtime_profile_id=PROFILE,
-            max_calls=7, total_tokens=498688, execution_timeout_s=1200,
-            generation_logical_calls=2, review_logical_calls=4, transport_retries=1,
+            max_calls=10, total_tokens=739840, execution_timeout_s=2400,
+            generation_logical_calls=2, review_logical_calls=4, transport_retries=2,
             generation_policy_reused=legacy.VERSION, stream_transport_id='mixed-explicit',
             component_contract=VERSION)
         value['roles']['review'] = dict(provider=REVIEW_PROVIDER, model=REVIEW_MODEL,
@@ -139,7 +139,7 @@ class SolNaturalContract(legacy.NaturalDutyContract):
         return values
 
 
-CONTRACT = SolNaturalContract(version='1.6.1')
+CONTRACT = SolNaturalContract(version='1.6.2')
 
 
 def component_fingerprints(skill):

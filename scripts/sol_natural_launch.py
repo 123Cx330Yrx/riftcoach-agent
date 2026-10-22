@@ -90,7 +90,7 @@ def prepare(operator, run_id, primary, independent, *, parent_operator=None, par
         execution_authorized=False, publication_allowed=False, production_admitted=False)
     if parent_operator is not None:
         from scripts.sol_natural_continuation import parent_state, verify_source
-        parent = parent_state(parent_operator, parent_seal_sha)
+        parent = parent_state(parent_operator, parent_seal_sha, limits_override=limits())
         parent_path = Path(parent['operator'])
         if operator.is_relative_to(parent_path) or parent_path.is_relative_to(operator):
             raise ValueError('launch_parent_operator_overlap')

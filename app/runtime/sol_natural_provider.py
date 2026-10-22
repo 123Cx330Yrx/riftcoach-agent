@@ -77,7 +77,7 @@ class SolReviewProvider:
     def _consume(self, request, *, ordinal, role, read_only):
         self.last_exchange = self.last_failure = None
         raw = contract.request_bytes(request, transport_id=self.transport_id)
-        if role != 'review' or type(ordinal) is not int or not 1 <= ordinal <= 7:
+        if role != 'review' or type(ordinal) is not int or not 1 <= ordinal <= contract.CONTRACT.descriptor()['max_calls']:
             raise ValueError('sol_ordinal')
         if not read_only:
             self.task_directory.mkdir(parents=True, exist_ok=True)
@@ -293,7 +293,8 @@ class SolNaturalProvider(RoleRoutedProvider):
         return super().chat(request)
 
     def prepare_retry(self, error, request):
-        if self._retries or not self._failed:
+        if (self._retries >= contract.CONTRACT.descriptor()['transport_retries'] or not self._failed
+                or (self.reviewer.task_directory/'retry-decision.json').exists()):
             return False
         role = self.role_for_request(request)
         selected = self.reviewer if role == 'review' else self.generator
@@ -303,7 +304,7 @@ class SolNaturalProvider(RoleRoutedProvider):
         write_json(self.reviewer.task_directory / 'retry-decision.json', dict(
             reason='verified_transport_timeout', previous_ordinal=self._calls,
             role=role, prior_receipt_sha256=selected.last_failure['receipt_sha256'],
-            same_stage=True, max_retries=1, previous_unknown_reservation_retained=True))
+            same_stage=True, max_retries=contract.CONTRACT.descriptor()['transport_retries'], previous_unknown_reservation_retained=True))
         self._retries += 1
         self._failed = False
         if role == 'generation':

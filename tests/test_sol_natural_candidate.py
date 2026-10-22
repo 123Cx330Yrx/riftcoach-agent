@@ -379,7 +379,7 @@ def test_retry_cannot_exceed_shared_budget(tmp_path, exhaustion):
     def limited(*args, **kwargs):
         receipt=send(*args, **kwargs)
         if exhaustion == 'time':
-            now[0]=1200
+            now[0]=contract.CONTRACT.descriptor()['execution_timeout_s']
         else:
             budget.tokens=contract.CONTRACT.descriptor()['total_tokens']
         return receipt

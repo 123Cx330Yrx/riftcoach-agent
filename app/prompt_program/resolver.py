@@ -160,7 +160,7 @@ class PromptProgramResolver:
         if grounded and self.coach_contract.version == "1.6.0":
             from app.evaluation.natural_duty_contract import component_fingerprints
             current = component_fingerprints(skill)
-        if grounded and self.coach_contract.version == "1.6.1":
+        if grounded and self.coach_contract.version == "1.6.2":
             from app.evaluation.sol_natural_contract import component_fingerprints
             current = component_fingerprints(skill)
         if self.coach_contract is not None:
