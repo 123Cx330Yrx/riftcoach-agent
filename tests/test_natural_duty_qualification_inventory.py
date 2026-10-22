@@ -18,8 +18,14 @@ def offline(monkeypatch):
 
 def test_saved_inventory_rebuilds_without_fresh_or_qualification_credit():
     value = inventory.audit()
-    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json'
+    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_timeout_recovery_20261022.json'
     assert value == json.loads(path.read_bytes())
+    session = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json').read_bytes())
+    assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
+        k: v for k, v in session.items() if k not in ('component_fingerprints', 'program_sha256')}
+    session_rows = {r['component_id']: r for r in session['component_fingerprints']}
+    assert {r['component_id'] for r in value['component_fingerprints']
+            if r != session_rows[r['component_id']]} == {'app.runtime.coach_contract'}
     previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_transport_20261015.json').read_bytes())
     assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
         k: v for k, v in previous.items() if k not in ('component_fingerprints', 'program_sha256')}

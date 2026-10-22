@@ -23,6 +23,13 @@ ALLOWED_CHANGES = frozenset((
     'app/evaluation/sol_natural_session.py', 'app/evaluation/sol_natural_contract.py',
     'app/runtime/sol_natural_provider.py', 'app/runtime/coach_contract.py',
     'app/prompt_program/resolver.py',
+    # Current manifests inherit the shared Coach contract/resolver source hash.
+    # Their prompt assets and historical sealed copies remain unchanged.
+    'examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json',
+    'examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json',
+    'examples/runtime_profiles/flash_glm_correction_scope_v1/prompt_programs/recent-form-review/manifest.json',
+    'examples/runtime_profiles/flash_glm_boundary_examples_v1/prompt_programs/recent-form-review/manifest.json',
+    'examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json',
     'examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json',
 ))
 
