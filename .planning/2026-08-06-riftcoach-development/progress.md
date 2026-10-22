@@ -1,3 +1,12 @@
+## 2026-10-22 Key等待修复已交付
+
+修复提交dadb73eb，执行树D:/riftcoach-sol-natural-keywait-execution，plan c85ec413，公共CI39730401796运行中。
+31项session/launcher（216.75秒）、续接四审查长等待1项（162.86秒）、UTC过期拒发1项（2.86秒）通过。
+实际prepare、独立作者/check-answer/native逐字导入、严格只读回查及入口CheckOnly通过，原件前后不变。
+新Control为outputs/riftcoach-sol-natural-keywait-fix-20261022-control；start-authorized.ps1先等CI再隐藏读Key。
+沿用原五次额度/原授权截止10月23日11:54:18；旧错误零发送旁支seal与有效父seal均在启动前校验。
+本轮新请求0/Key读取0/无execution，未授资格发布。完整证据见sol_keywait_recovery_preparation_20261022.json。
+
 ## 2026-10-22 隐藏输入等待误计活动时间：零发送失败已封存，修复中
 
 用户执行旧v2入口后在Key提示处等待；0003为472.688秒，0004为5554.797秒，超过2400活动秒。

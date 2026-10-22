@@ -31,3 +31,12 @@ CandidateSession为隐藏凭据输入提供独立等待区间：活动时钟冻�
 授权沿用原范围和截止北京时间2026-10-23 11:54:18，不因本地错误延展。
 新冻结树/实际prepare/真实作者原件与native导入/零付费入口检查及精确HEAD CI完成后交付新命令。
 自动化保持PAUSED；产品资格、发布、原15与其余产品依赖不变。
+
+## 交付
+
+修复冻结dadb73eb，执行目录`D:/riftcoach-sol-natural-keywait-execution`，plan c85ec413。
+31项session/launcher、1项真实续接全部四审查长等待、1项UTC过期拒发通过。
+实际prepare、独立作者原件/check-answer/唯一native final逐字导入、严格只读回查及实际CheckOnly通过。
+新入口`C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-natural-keywait-fix-20261022-control/start-authorized.ps1`，
+会先等CI39730401796精确HEAD全绿，再提示Key。原授权截止保持，本轮新请求0/Key读取0。
+完整路径/原stdout根/入口SHA/事件证据见`data/evaluation/results/sol_keywait_recovery_preparation_20261022.json`。

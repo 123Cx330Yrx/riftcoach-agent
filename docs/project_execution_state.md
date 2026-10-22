@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "Key输入等待误计活动时间导致本地发送前关闭；新增HTTP为0。用户要求重新来，正在修复计时并重建恢复入口；automation PAUSED。"
+pause_reason: "Key等待计时已修复，新入口核验完成；精确HEAD CI运行中，入口先等全绿再隐藏读Key；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,8 +18,13 @@ pause_reason: "Key输入等待误计活动时间导致本地发送前关闭；�
 因此首次新审查请求发送前发生本地timeout。新增HTTP0，历史5HTTP/52067known/145824unknown/retry1不变；
 不是又一次远端524。原记录完整保留，严格只读回放及seal64a0e244已完成。
 用户要求“那重新来”：修复隐藏输入期间暂停活动计时、异常恢复和真实UTC授权检查，并明确输出终态失败原因。
-只刷新受影响Sol清单；正在验证初次/续接两小时等待、Ctrl+C与授权过期。新入口仍复用原稿与原五次额度，
-原授权截止北京时间2026-10-23 11:54:18保持。下一动作：完成验证/新冻结预检并提供新命令，旧v2已闭不再启动。
+只刷新受影响Sol清单；31项session/launcher、1项真实续接全四审查两小时等待、1项UTC过期拒发均通过。
+冻结执行树`D:/riftcoach-sol-natural-keywait-execution`为dadb73eb，plan c85ec413；实际prepare、作者原件/check-answer/
+唯一native导入及只读回查通过，实际入口CheckOnly通过，原件库存未变。本轮新请求0/Key读取0。
+新入口仍复用原稿与原五次额度，原授权截止北京时间2026-10-23 11:54:18保持。
+下一动作：用户运行`outputs/riftcoach-sol-natural-keywait-fix-20261022-control/start-authorized.ps1`，
+先等精确HEAD CI39730401796全绿再隐藏输入天机阁Key。旧v2已闭不再启动。
+交付证据见`data/evaluation/results/sol_keywait_recovery_preparation_20261022.json`。
 事实见`data/evaluation/results/sol_credential_wait_failure_20261022.json`，工作卡见`docs/plans/2026-10-22-sol-credential-wait-recovery.md`。
 以下为本次失败前的准备记录，不作为当前可运行入口。
 

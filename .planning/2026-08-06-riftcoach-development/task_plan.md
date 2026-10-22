@@ -19,7 +19,9 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 用户要求“那重新来”，当前以`docs/plans/2026-10-22-sol-credential-wait-recovery.md`为工作卡：
 修复活动时钟，验证长等待/Ctrl+C/授权过期，核同稿零新增请求后从同有效父任务准备新入口。
 原授权截止及五次额度不延展，旧失败seal64a0e244及原件保留；不得再运行下面的旧入口。
-完成后提供新命令，真实业务质量仍待后续审查。
+现已完成：31项session/launcher、1项全续接两小时等待、1项UTC过期拒发通过；dadb73eb冻结树实际prepare、
+真实作者/native逐字导入及只读回查、入口CheckOnly通过。新命令为outputs/riftcoach-sol-natural-keywait-fix-20261022-control/start-authorized.ps1，
+先等CI39730401796全绿，再由用户隐藏输入Key。真实业务质量仍待后续审查。
 
 **目标：** 把两次远端524后的续测准备到用户只需运行单命令、隐藏输入天机阁Key；等待上游恢复，不在本轮付费。
 **起点：** 旧5操作成功前缀/同报告保留，累计5HTTP、52067已知tokens、145824未知预留、重试1、472.672活动秒；完整只读回放与seal通过，无业务语义结果。
