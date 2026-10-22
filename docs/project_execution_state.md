@@ -14,6 +14,14 @@ pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；公�
 
 ## 当前行动
 
+2026-10-22单次诊断入口已实现：scripts/sol_reasoning_single复用既有owned worker，仅发送原facts-initial一次，
+零新生成/零自动重试，不改旧批。新增13项入口检查通过（19.80秒），含实际worker/SDK四类返回、原件不变、
+已知/未知费用与公开意见留存、提示取消与已claim不可重发、过期/CI失败拒发、只读seal防篡改。
+既有107项receiver/应用覆盖复用，不重复当新增。用户继续诊断与必要预算授权缩窄显式绑定新HEAD/计划，
+原精确旧grant只作来源证据，剩余额度与原UTC截止均不扩展。实际冻结目录/prepare/check及新精确HEAD CI待核；
+本轮新请求/真实Key读取0。下一动作：冻结并完成实际准备，再交付经CI核验的安全命令，不重跑生成或整批。
+以下同日记录为原诊断修复证据，不能当最新入口已ready。
+
 2026-10-22继续诊断：控制台实际公开JS确认“推理强度”来自log.other.reasoning_effort；公开New API
 源码从请求/请求转换填该日志值，部署版本尚未核同。因此截图high不证明API响应reasoning.effort为high。
 本机openai2.54.0默认effort=None；真实SDK/mock HTTP未复现把high自动改成其他档位，旧原值仍不可恢复。

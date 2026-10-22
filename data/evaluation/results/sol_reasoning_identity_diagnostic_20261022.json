@@ -325,7 +325,7 @@
     "diff_check": true
   },
   "next_discriminating_request": {
-    "status": "defined, not launched or executable entry delivered",
+    "status": "single-request entry implemented and locally verified; frozen preparation and exact-head CI pending",
     "purpose": "one original facts-initial request with raw versus SDK metadata observation and public tool retention; not a fresh whole task or a qualification run",
     "new_request_ceiling": 1,
     "input_ceiling": 64000,
@@ -388,5 +388,22 @@
       "conclusion": null
     },
     "raw_decode_comparison": "new commit pending"
+  },
+  "single_request_entry": {
+    "module": "scripts.sol_reasoning_single",
+    "local_tests": {
+      "passed": 13,
+      "seconds": 19.8,
+      "real_owned_worker_mock_http": true
+    },
+    "existing_107_receiver_application_checks_reused": true,
+    "generation": 0,
+    "automatic_retry": false,
+    "history_retained": true,
+    "authorization_basis": "User continued diagnosis/repair/progression and authorized necessary budget; explicitly narrowed binding for new head/plan within unused original scope; old exact-head grant is provenance, not reused as new-head authorization.",
+    "original_expiry_utc": "2026-10-23T03:54:18.433261+00:00",
+    "preparation_status": "frozen actual preparation pending",
+    "new_provider_requests": 0,
+    "real_key_read": false
   }
 }
