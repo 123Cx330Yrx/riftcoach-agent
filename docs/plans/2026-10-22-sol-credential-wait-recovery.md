@@ -1,5 +1,28 @@
 # 隐藏Key等待计时修复与原任务恢复
 
+## 当前补充：原始字段与SDK同次对照
+
+2026-10-22继续诊断，未新增付费。控制台实际公开JS43503.1ba0ddd2d5已核：推理强度显示
+来自log.other.reasoning_effort，不是直接显示API响应reasoning.effort。公开New API提交0c2af978的
+service/log_info_generate.go从relayInfo.ReasoningEffort写该日志，OpenAI Responses请求转换及参数
+覆盖后从请求填入该值。站点部署与公开提交未证实相同，因此这解释了为何截图不能证明响应字段，
+不能据此宣布渠道已改写、更不能当成原调用通过。证据URL/源码SHA见同一diagnostic result。
+
+本机openai2.54.0的Reasoning.effort默认None；真实SDK/mock HTTP已核high/low/空值/缺省/
+非标准字符串/错误类型会按原字段保留，未复现自动把high改成其他档位。旧具体值已失，无法追补归因。
+下一次必须能区分竞争解释：同一次HTTP通过SDK公开with_raw_response入口取得内存JSON，先记原始
+白名单档位/固定分类和响应体SHA，再与SDK对象的身份字段比较。无额外HTTP，不保存原HTTP正文或私有推理。
+SDK解析抛错时原始分类仍保留；原始/SDK字段不同则明确response_decode_mismatch并拒收，而不是混为渠道档位冲突。
+同次原始与SDK一致但非high时，才有新请求的渠道响应冲突证据。接收high、业务、资格和发布标准不放宽。
+
+诊断结束条件是确定可观察区别及对应修法，不能靠再买整轮碰运气。已定义下一必要实测为原facts-initial
+完全同一wire（527e8605）的一次对照，最多1HTTP/80384tokens/300秒，估价0.058368元（非账单硬限）。
+零重新生成，原6HTTP/80137known/145824unknown/retry1保留，不自动重试、不改旧封存、不延长原授权。
+raw high且SDK一致：进入公开意见的独立语义核验，只说明新请求；raw非high且SDK一致：处理路由/渠道映射；
+SDK不一致：修本地解析；非标准字符串：形成有证据的兼容决策；超时不回答本疑点。
+本次最终107项接收/SDK/实际worker/应用/恢复/封存回放检查通过（419.37秒，包含此前93项分组不相加），
+治理/编译/diff通过。目前单次实测仅准备定义，尚未提供新可执行入口；精确新HEAD CI通过后再冻结准备，不能复用旧CI。
+
 ## 当前补充：拒收裁决与公开输出留存分开
 
 用户提供截图后，原“费用页没有档位信息”的判断撤回：截图显示high、21758输入/6312输出，

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；修复客户端拒收后的公开工具输出留存并验证整链；不等待客服作为硬前提，automation PAUSED。"
+pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；公开工具留存已修，新增同HTTP原字段/SDK对照并验证整链；不等待客服作为硬前提，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,18 +14,21 @@ pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；修�
 
 ## 当前行动
 
-2026-10-22后续：dadb73eb/CI39730401796全绿后的新增请求HTTP200/完整EOF，28070已知tokens，
-本地reasoning_identity拒收，未进入业务参数/native语义审查。实际wire为high，旧返回具体effort/工具参数被丢弃。
-这是客户端记录设计缺陷，不能要求用户到通常不存正文的平台找回。实际store=False且没有响应ID，当前无可用取回入口。
-用户截图显示high与21758输入/6312输出，强关联本次请求；该字段来源未证实，不能据此补签通过或断言返回low。
-修复在现有接收器内保留唯一schema有效公开工具参数原文、UTF8 SHA及wire SHA，独立标记仅诊断/未验证/不允许发布。
-私有reasoning、message、未知/重复工具、坏参数和实际Key回显不留存；应用接收/身份/业务标准不变。
-接收/SDK/子进程/应用及初次封存92项通过（37.57秒）；8项整链补验通过（291秒），含四审查/唯一应用/恢复/只读replay/seal与库存防篡改，分组重叠不相加。
-上一版82/54项测试保持原提交证据，不冒充新版本完成。当前修复为离线软件验证，不证明自然任务质量或上游身份。
-原唯一seal1d0a2f49及70项库存再核未变；累计6HTTP/80137known/145824unknown/retry1、原生成/检索/报告保留。
-下一动作：提交留存修复并核精确HEAD公共CI；再以可保留结果区分元数据冲突与语义质量，明确必要诊断决策，客服核查可选。
-本轮新增付费/Key读取0，不交付重复入口、不重开已闭Operator、不延长原授权；产品采用/原资格/后续依赖保持。
-证据见data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json及原Key等待修复工作卡当前补充节。
+2026-10-22继续诊断：控制台实际公开JS确认“推理强度”来自log.other.reasoning_effort；公开New API
+源码从请求/请求转换填该日志值，部署版本尚未核同。因此截图high不证明API响应reasoning.effort为high。
+本机openai2.54.0默认effort=None；真实SDK/mock HTTP未复现把high自动改成其他档位，旧原值仍不可恢复。
+现已接SDK公开raw-response接口，对同一HTTP内存JSON先记白名单档位/固定分类及响应体SHA，再与SDK身份字段比较；
+不额外发送、不保存原HTTP正文或私有reasoning。SDK解析抛错仍有原字段分类；不一致则明确response_decode_mismatch，
+保留公开意见且继续拒收、不自动重试。原high、来源、业务、native和发布标准保持。
+上一轮公开意见留存449ec45f已推送，CI39740910236尚in_progress；再前95718581的CI39737779367已success。
+本次107项接收/SDK/实际worker/应用/恢复/只读封存检查通过（419.37秒），含此前93项分组，不相加；
+原wire/报告/context可准确重建，70项旧库存/唯一seal再核未变，治理/编译/diff通过。
+累计6HTTP/80137known/145824unknown/retry1与原生成/检索报告保持，本轮新增付费/Key读取0。
+下一动作：提交并核新精确HEAD CI；随后冻结已定义的一次原facts-initial对照准备。
+该必要诊断最多1HTTP/80384tokens/300秒、估价0.058368元（非账单硬限），零生成、不自动重试、不改旧失败；
+费用授权/截止须按实际scope核验，不延长旧授权。只复核新请求的字段与语义，不能补签旧请求或授产品资格。
+原请求具体档位及语义未查明；不凭截图或离线测试放宽接收。客服可选、不作为硬前提，automation PAUSED。
+证据/决策分支见data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json及原工作卡当前节。
 以下为真实执行前的准备记录，历史入口不再是待办。
 
 2026-10-22最新：用户执行08d14754入口时在Key提示处等待约85分钟，活动时间从472.688增加到5554.797秒，

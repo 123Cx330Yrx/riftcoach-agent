@@ -109,7 +109,7 @@
     "further_page_attempts_planned": false,
     "updated_judgment": "Screenshot supplies high and exact usage, but not the raw response effort; previous cost-only conclusion was superseded."
   },
-  "next_action": "Local retention fix and integration verification complete; commit/push and check exact-head public CI. Next paid use needs a diagnostic decision that distinguishes response metadata conflict from semantic quality, preserving historical costs; no support-only gate or automatic retry.",
+  "next_action": "Local raw-versus-SDK integration verified; commit/push and verify exact-head CI, then freeze the defined single original-review diagnostic under applicable authorization. No new full batch, no generation, no automatic retries, no historical rewrite.",
   "new_provider_requests_this_diagnostic": 0,
   "new_key_reads_this_diagnostic": 0,
   "new_entry_delivered": false,
@@ -251,5 +251,142 @@
     "agent_joined_or_sent_message": false,
     "mandatory_dependency": false
   },
-  "original_inventory_reverified_this_followup": true
+  "original_inventory_reverified_this_followup": true,
+  "console_field_provenance": {
+    "live_public_bundle": {
+      "url": "https://yujianwudi.top/static/js/async/43503.1ba0ddd2d5.js",
+      "sha256": "b818ed93b640b4f13cf61d7a6fda151e78a290efd9caea8f6e6365e646d2128e",
+      "observed_expression": "o=parse(log.other); label=Reasoning Effort; value=o.reasoning_effort",
+      "authenticated_logs_read": false
+    },
+    "public_upstream": {
+      "repository": "https://github.com/QuantumNous/new-api",
+      "ref": "0c2af9780e45f6f9073528fb0fcbdcd64b5d9495",
+      "deployment_version_match_verified": false,
+      "files": [
+        {
+          "path": "service/log_info_generate.go",
+          "sha256": "5da2093cc09d3d2cb036e6b13a1a60b5455b0f2623d5780455ca14ff73fc43ac",
+          "observation": "other.reasoning_effort is set from relayInfo.ReasoningEffort"
+        },
+        {
+          "path": "relay/channel/openai/adaptor.go",
+          "sha256": "79ae4ac316c2684e757805cce42e1104f8db63891dcde3cc8710fa3369d017c7",
+          "observation": "Responses request conversion fills info.SetReasoningEffort from request.Reasoning.Effort or canonical request-conversion intent"
+        },
+        {
+          "path": "relay/common/override.go",
+          "sha256": "95e56d77cda19577ca90a1294f8030d62c4da1ff10debf9b210606a5c6e3eba4",
+          "observation": "after parameter override, log effort is synchronized from resulting request JSON"
+        }
+      ]
+    },
+    "conclusion": "Screenshot is evidence of channel log metadata, not raw API response reasoning.effort. Public source supplies a request-side origin consistent with this UI, but is not proof of this deployment or upstream settings.",
+    "unsupported_conclusions": [
+      "upstream definitely ignored high",
+      "SDK definitely corrupted original response",
+      "screenshot proves raw response effort high",
+      "failed review semantically passed"
+    ]
+  },
+  "sdk_decode_diagnosis": {
+    "sdk": "openai 2.54.0",
+    "reasoning_effort_default": null,
+    "automatic_high_to_other_reproduced": false,
+    "method": "same real SDK mock-HTTP table, including omitted/null/empty/noncanonical/known conflicting/malformed reasoning values",
+    "prospective_change": "Use supported with_raw_response interface for the same request; classify raw JSON before SDK construction, compare model/reasoning/status/max_output_tokens; persist fixed classifications/allowlisted effort and raw body SHA only.",
+    "no_extra_http": true,
+    "wire_unchanged": true,
+    "acceptance": "Existing identity gate stays; a disagreement between raw and SDK identity fields rejects as response_decode_mismatch; missing raw/SDK evidence never certifies upstream identity.",
+    "failure_observation": "Raw metadata and body SHA survive even if SDK construction raises; no raw HTTP body, messages, private reasoning or arbitrary strings stored.",
+    "original_request_recoverable": false,
+    "local_tests": {
+      "receiver_group": {
+        "passed": 93,
+        "seconds": 29.23
+      },
+      "final_integration_group": {
+        "passed": 107,
+        "seconds": 419.37,
+        "includes_earlier_receiver_group": true,
+        "coverage": [
+          "same HTTP raw JSON versus SDK metadata",
+          "SDK injected field drift and parse failure",
+          "actual owned worker and application no retry / known usage",
+          "deadline after HTTP EOF not reclassified as transport retry",
+          "normal four reviews / unique application / long key wait / resume",
+          "readonly replay, seal and diagnostic-file tamper rejection"
+        ]
+      }
+    },
+    "live_root_cause_resolved": false,
+    "compile": true,
+    "governance": true,
+    "diff_check": true
+  },
+  "next_discriminating_request": {
+    "status": "defined, not launched or executable entry delivered",
+    "purpose": "one original facts-initial request with raw versus SDK metadata observation and public tool retention; not a fresh whole task or a qualification run",
+    "new_request_ceiling": 1,
+    "input_ceiling": 64000,
+    "output_ceiling": 16384,
+    "token_reservation": 80384,
+    "request_seconds": 300,
+    "estimated_uncached_cny": "0.058368",
+    "automatic_retry": false,
+    "new_generation": 0,
+    "parent_seal_sha256": "1d0a2f49dda848068ad4d74ed84cc09ce065b54531603b9d51498b7a9682f774",
+    "request_file_sha256": "008987be27dc121516010a488e2fae70d5d167f454f555b9bccbb7db435b3eae",
+    "context_file_sha256": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
+    "report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+    "wire_sha256": "527e860587a234abf5cbc37ae27e0c968fbfe8ede8aa0f1e760b0d2af8590c8f",
+    "carry_history": {
+      "http_requests": 6,
+      "known_tokens": 80137,
+      "unknown_reserved_tokens": 145824,
+      "retries": 1
+    },
+    "decision_table": [
+      {
+        "result": "raw high, SDK same, valid public tool",
+        "action": "current echo conflict not reproduced; review public semantics separately, do not call old request successful"
+      },
+      {
+        "result": "raw explicit other effort, SDK same",
+        "action": "channel response metadata conflict confirmed for new request; no repeated purchase on unchanged route, resolve channel mapping or compare an alternative route"
+      },
+      {
+        "result": "raw high, SDK different",
+        "action": "local SDK decode mismatch isolated; use captured facts to fix decoding, no further paid retry"
+      },
+      {
+        "result": "noncanonical/blank/unknown raw effort",
+        "action": "compatibility case distinguished; retain rejection until an explicit justified compatibility decision"
+      },
+      {
+        "result": "transport timeout or invalid structure",
+        "action": "retain cost and partial evidence; does not answer echo or semantic quality; no automatic retry in this single-request diagnostic"
+      }
+    ],
+    "execution_dependencies": [
+      "exact final-head public CI",
+      "frozen clean source and exact parent inventory",
+      "applicable cost authorization and expiry",
+      "secure interactive third-party credential entry"
+    ],
+    "not_an_authorization_extension": true
+  },
+  "ci_followup": {
+    "metadata_classifier_95718581": {
+      "run_id": "39737779367",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "public_output_retention_449ec45f": {
+      "run_id": "39740910236",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    "raw_decode_comparison": "new commit pending"
+  }
 }

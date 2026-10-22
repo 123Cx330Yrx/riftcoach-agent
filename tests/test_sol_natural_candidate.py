@@ -28,6 +28,15 @@ from tests.test_reviewer_responses_nonstream import response
 def deny(*args,**kwargs): raise AssertionError('network forbidden')
 socket.socket = socket.create_connection = deny
 original=codec.collect
+if MODE == 'sdk_decode_conflict':
+    from openai._legacy_response import LegacyAPIResponse
+    original_parse = LegacyAPIResponse.parse
+    def parse(self, *, to=None):
+        value = original_parse(self, to=to) if to is not None else original_parse(self)
+        if to is None:
+            value.reasoning.effort = 'low'
+        return value
+    LegacyAPIResponse.parse = parse
 def collect(business,**kwargs):
     directory=Path(kwargs['observation_dir']).parent
     context=process.read_json(directory/'validation-context.json')
@@ -42,6 +51,8 @@ def collect(business,**kwargs):
         value['model'] = 'offline-other-model'
     if MODE == 'reasoning_conflict':
         value['reasoning'] = dict(effort='low')
+    elif MODE == 'sdk_decode_conflict':
+        value['reasoning'] = dict(effort='high')
     status=STATUS
     return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
         stream=httpx.ByteStream(json.dumps(value if status==200 else {'error':'timeout'}).encode()),

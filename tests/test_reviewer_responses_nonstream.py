@@ -201,6 +201,11 @@ def test_optional_reasoning_echo_is_observed_without_claiming_identity(
         assert detail is None
     if sdk:
         assert observed['response_contract']['reasoning_effort_detail'] == detail
+        decode = observed['response_contract']['decode']
+        assert decode['identity_fields_equal'] and decode['raw_object'] and decode['sdk_object']
+        assert decode['raw_reasoning_echo'] == echo and decode['raw_reasoning_effort_detail'] == detail
+        assert observed['response_decode'] == decode
+        assert observed['response_body_sha256'] == hashlib.sha256(json.dumps(value).encode()).hexdigest()
     assert {key: result['usage'][key] for key in USAGE} == USAGE
     assert result['usage_state'] == 'known'
     assert result['business_validated'] is False
@@ -270,6 +275,7 @@ process.worker()
         assert worker['response_observation']['reasoning_effort_detail'] == expected_detail
         observed = json.loads((directory / 'observation/observation.json').read_text(encoding='utf-8'))
         assert observed['response_contract']['reasoning_effort_detail'] == expected_detail
+        assert observed['response_decode']['identity_fields_equal'] is True
         if not accepted:
             assert worker['code'] == 'reasoning_identity'
     assert KEY not in ''.join(p.read_text() for p in directory.rglob('*.json'))
@@ -287,12 +293,13 @@ def test_mode_and_route_rejected_before_claim(tmp_path, business):
         assert not (tmp_path / 'claim').exists()
 
 
-def test_reasoning_conflict_reaches_application_without_retry_or_lost_usage(tmp_path):
+@pytest.mark.parametrize('mode', ['reasoning_conflict', 'sdk_decode_conflict'])
+def test_reasoning_conflict_reaches_application_without_retry_or_lost_usage(tmp_path, mode):
     from tests.test_sol_natural_candidate import application
     from tests.test_natural_duty_candidate import run
     from app.runtime.store import RuntimeTraceStore
 
-    app, factory, flows, attempts = application(tmp_path, mode='reasoning_conflict')
+    app, factory, flows, attempts = application(tmp_path, mode=mode)
     result = run(app)
     assert attempts == [200] and len(factory.providers['candidate'].generator.requests) == 2
     assert flows[0].outcome == 'candidate_execution_failed'
@@ -302,10 +309,14 @@ def test_reasoning_conflict_reaches_application_without_retry_or_lost_usage(tmp_
     receipt = json.loads((directory / 'receipt.json').read_bytes())
     worker = json.loads((directory / 'worker-result.json').read_bytes())
     observed = json.loads((directory / 'observation/observation.json').read_bytes())
-    assert receipt['worker_code'] == 'reasoning_identity' and receipt['usage_state'] == 'known'
+    assert receipt['worker_code'] == ('reasoning_identity' if mode == 'reasoning_conflict' else 'response_decode_mismatch')
+    assert receipt['usage_state'] == 'known'
     assert receipt['reaped'] and receipt['http_requests'] == 1
     assert worker['response_observation'] == observed['response_contract']
     assert worker['response_observation']['reasoning_effort_detail'] == dict(category='known', value='low')
+    assert worker['response_observation']['decode']['raw_reasoning_effort_detail'] == dict(
+        category='known', value='low' if mode == 'reasoning_conflict' else 'high')
+    assert worker['response_observation']['decode']['identity_fields_equal'] is (mode == 'reasoning_conflict')
     assert worker['public_tool_call'] is None and worker['business_validated'] is False
     diagnostic = worker['diagnostic_tool_call']
     assert diagnostic['purpose'] == 'diagnostic_only'
@@ -351,6 +362,43 @@ def test_rejected_public_tool_retention_preserves_exact_bytes_only(business, fau
         assert diagnostic['business_validated'] is False and diagnostic['semantic_approval'] is False
         assert diagnostic['publication_allowed'] is False
     assert PRIVATE not in json.dumps(result)
+
+
+@pytest.mark.parametrize('fault', ['changed_effort', 'parser_error'])
+def test_raw_metadata_survives_sdk_drift_or_parse_error(tmp_path, business, monkeypatch, fault):
+    from openai._legacy_response import LegacyAPIResponse
+    original = LegacyAPIResponse.parse
+    def parse(self, *, to=None):
+        if to is not None:
+            return original(self, to=to)
+        if fault == 'parser_error':
+            raise ValueError(PRIVATE)
+        value = original(self)
+        value.reasoning.effort = 'low'
+        return value
+    monkeypatch.setattr(LegacyAPIResponse, 'parse', parse)
+    value = response()
+    value['reasoning'] = dict(effort='high')
+    value['output'].append(dict(type='reasoning', summary=[dict(text=PRIVATE)]))
+    requests = []
+    def handler(request):
+        requests.append(request)
+        return httpx.Response(200, json=value)
+    result = codec.collect(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+        api_key=KEY, observation_dir=tmp_path/'observation', transport=httpx.MockTransport(handler))
+    assert len(requests) == 1 and not result['ok'] and result['public_tool_call'] is None
+    observed = json.loads((tmp_path/'observation/observation.json').read_bytes())
+    decode = observed['response_decode']
+    assert decode['raw_reasoning_effort_detail'] == dict(category='known', value='high')
+    assert decode['identity_fields_equal'] is False
+    if fault == 'changed_effort':
+        assert result['code'] == 'response_decode_mismatch' and result['usage_state'] == 'known'
+        assert result['diagnostic_tool_call'] is not None and decode['sdk_object'] is True
+        assert result['response_observation']['reasoning_effort_detail'] == dict(category='known', value='low')
+    else:
+        assert result['code'] == 'request_failed' and decode['sdk_object'] is False
+    assert KEY not in json.dumps(result)+json.dumps(observed)
+    assert PRIVATE not in json.dumps(result)+json.dumps(observed)
 
 
 @pytest.mark.parametrize('escaped', [False, True])

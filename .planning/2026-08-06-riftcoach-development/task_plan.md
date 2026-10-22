@@ -15,18 +15,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 拒收不能再次丢掉已经收到的公开审查意见；在下一次付费前验证实际留存/失败/封存消费路径。
-**事实：** 原HTTP200/high请求被reasoning_identity拒收；客户端丢弃工具参数，仅存用量/计数。
-用户截图的high与21758/6312精确用量强关联该请求，但不能恢复原响应effort或补签语义通过。
-**实现：** 现有非流式接收器在采纳前保存唯一schema有效公开工具参数及UTF8/wire SHA到worker-result，
-标记仅诊断/未业务验证/不允许发布；不保存私有推理、普通消息、坏参数或实际Key回显，接收标准不变。
-实际store=False且没有响应ID，当前无可用取回路径；客服核查可选，不再卡住客户端明确修复。
-**保留：** 旧seal1d0a2f49及70项库存再核未变；6HTTP/80137known/145824unknown/retry1保持。
-**验证：** 92项接收/SDK/子进程/应用及初次封存通过（37.57秒）；8项整链补验通过（291秒），分组重叠不相加；正常四审查、唯一应用、恢复/只读回放/库存防篡改均覆盖。
-**下一动作：** 提交修复并核精确HEAD公共CI，再以可保留结果区分元数据冲突与语义质量，明确必要诊断决策，不原样重复付费。
-**完成边界：** 只能证明本地工程路径；原响应内容缺口仍未知，不能声称渠道/语义问题已修好。
-本轮新增付费/Key读取0，不重开旧封存、不交付新入口、不改原授权截止或产品标准；automation PAUSED。
-工作卡/事实见docs/plans/2026-10-22-sol-credential-wait-recovery.md与sol_reasoning_identity_diagnostic_20261022.json。
+**目标：** 区分请求/日志high、渠道响应字段与SDK解析分歧，避免再次付费后只得到不明冲突。
+**事实：** 控制台公开JS直接显示log.other.reasoning_effort；公开New API请求转换写该日志，未核实部署版本相同。
+截图不证明API响应high；本机SDK默认None，实际mock HTTP未复现high被自动改值。旧具体值/意见已失且不可补签。
+**实现：** 使用SDK公开raw-response接口，单HTTP先记原JSON白名单分类及响应体SHA，再比较SDK身份字段；
+不同明确response_decode_mismatch，SDK解析失败仍留原分类。既有公开意见留存保持，不存原HTTP正文/私有推理，接收标准不变。
+**保留：** 旧seal1d0a2f49及70项库存再核未变；6HTTP/80137known/145824unknown/retry1与原稿、生成、检索保留。
+**验证：** 107项最终接收/SDK/实际worker/应用/恢复/只读封存检查通过（419.37秒），含此前93项分组不相加；模拟SDK漂移/解析失败、已知用量、不重试、唯一应用和库存防篡改覆盖，治理/编译/diff通过。
+**下一动作：** 提交并核精确HEAD公共CI；随后冻结已定义的一次原facts-initial单次对照准备，零新生成。
+**诊断分支：** raw high且SDK一致才查新意见语义；raw非high且SDK一致处理渠道映射；不一致修本地解析；
+非标准字段形成有证据的兼容决策；超时不回答本疑点。单次1HTTP/80384tokens/300秒，估价0.058368元，不自动重试。
+**边界：** 未开始新付费/未读Key/未交付新入口，不重开旧封存，不延长授权，不证明渠道已恢复或业务合格。
+449ec45f/CI39740910236尚运行；95718581/CI39737779367已success，不能冒充本次新版本CI。
+工作卡/事实仍为原2026-10-22-sol-credential-wait-recovery.md及sol_reasoning_identity_diagnostic_20261022.json；automation PAUSED。
 
 ## Dependencies and Follow-through
 
@@ -47,7 +48,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：留存与失败/回放整链已完成；提交后核精确HEAD公共CI，不把找客服当硬前提。GLM产品采用保持，厂商迁移未决定。
+以canonical和上方工作卡为准：同HTTP原始字段/SDK对照的进程与整链验证已通过；提交并核精确HEAD CI，随后准备单次原请求诊断；客服非硬前提。GLM产品采用保持，厂商迁移未决定。
 复用原稿与历史成本，不重开旧封存；当前发布门关闭，8E及全部依赖保持。
 
 ## History

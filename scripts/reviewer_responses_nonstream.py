@@ -113,6 +113,28 @@ def contains_credential(value, credential):
     return False
 
 
+def decode_observation(raw, parsed):
+    """Compare identity metadata before/after SDK construction, without bodies.
+
+    A returned field describes channel metadata, not authenticated upstream
+    settings. Equality is checked on actual values; only fixed classifications
+    and allowlisted effort values are persisted.
+    """
+    parsed = mapping(parsed)
+    raw = mapping(raw)
+    if raw is None or parsed is None:
+        return dict(raw_object=raw is not None, sdk_object=parsed is not None,
+                    identity_fields_equal=False,
+                    raw_reasoning_echo=reasoning_echo(raw) if raw is not None else None,
+                    raw_reasoning_effort_detail=reasoning_effort_detail(raw) if raw is not None else None)
+    fields = ('model', 'reasoning', 'status', 'max_output_tokens')
+    return dict(raw_object=True, sdk_object=True,
+        identity_fields_equal=all((key in raw) == (key in parsed) and raw.get(key) == parsed.get(key)
+                                  for key in fields),
+        raw_reasoning_echo=reasoning_echo(raw),
+        raw_reasoning_effort_detail=reasoning_effort_detail(raw))
+
+
 def inspect_response(response, business):
     """Separate body-free observations, diagnostic public tool and admission.
 
@@ -217,8 +239,21 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
                 transport=transport if transport is not None else
                     httpx.HTTPTransport(proxy=stream.PROXY_12000, retries=0),
                 event_hooks=dict(request=[observer.on_request], response=[observer.on_response])))
-        response = client.responses.create(**wire)
+        raw_response = client.responses.with_raw_response.create(**wire)
+        # Same HTTP response, no retrieval request or raw-body file. The SDK's
+        # public raw-response interface lets us separate channel JSON from
+        # Pydantic construction instead of inferring one from the other.
+        raw_http = raw_response.parse(to=httpx.Response)
+        raw_value = raw_http.json()
+        body_sha = hashlib.sha256(raw_http.content).hexdigest()
+        observer.update(response_decode=decode_observation(raw_value, None), response_body_sha256=body_sha)
+        response = raw_response.parse()
         result.update(inspect_response(response, business))
+        result['response_observation']['decode'] = decode_observation(raw_value, response)
+        result['response_observation']['response_body_sha256'] = body_sha
+        observer.update(response_decode=result['response_observation']['decode'])
+        if not result['response_observation']['decode']['identity_fields_equal']:
+            result.update(ok=False, code='response_decode_mismatch')
         # Credentials are never business input, but exclude an echoed exact
         # credential even if a malformed channel puts it in a valid tool field.
         diagnostic = result['diagnostic_tool_call']

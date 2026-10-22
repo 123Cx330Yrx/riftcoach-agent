@@ -1,3 +1,15 @@
+## 2026-10-22 控制台字段来源与原JSON/SDK对照
+
+实际站点JS显示log.other.reasoning_effort，公开New API源码填入请求/请求转换档位；未核部署同版，
+不能把截图high当响应字段high。openai2.54.0字段默认None，mock HTTP未复现high自动改值；旧原值保持未知。
+同一HTTP走SDK公开raw-response接口，在SDK对象构造前保留原白名单分类/响应体SHA，再比较身份字段；
+解析失败原分类仍留，不一致明确response_decode_mismatch。公开意见留存/业务拒收分离，无额外HTTP，不保存私有推理。
+107项最终受影响接收/SDK/worker/应用/恢复/封存回放检查通过（419.37秒，包含93项分组），治理/编译/diff通过。
+原wire/报告/context重建一致，70项原库存/旧seal再核不变；新增模型请求/Key读取0。
+下一必要实测已缩到完全同一原facts-initial的一次对照（1HTTP/80384tokens/300秒/估价0.058368元），
+零新生成、不自动重试，旧6HTTP/80137known/145824unknown/retry1保持；先核新提交CI及实际授权，不延展截止。
+尚未交付新付费入口，不宣称上游冲突已修或旧意见合格；automation PAUSED。
+
 ## 2026-10-22 拒收公开输出留存已修复，本地整链通过
 
 用户截图显示high与21758/6312，撤回“费用页没有档位”的旧判断；字段来源仍未知，不补签语义通过。
