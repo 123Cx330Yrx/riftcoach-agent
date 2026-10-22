@@ -16,7 +16,11 @@ Key等待不启动请求计时；发送前create-only claim，已claim/call/seal
 原issued_at及截止2026-10-23T03:54:18.433261+00:00保持，不重置期限/历史6HTTP/80137known/145824unknown/retry1。
 先前107项receiver/SDK/应用检查复用；新增入口13项通过（19.80秒），覆盖实际worker/SDK、正常/两类冲突/524、
 原件不变、用量/意见保留、唯一claim/断电等价中断/提示处取消、到期拒发、CI查询失败不发和只读封存防篡改。
-全部离线且禁止真实网络，不声称模型质量、上游已恢复或真实隐藏输入已完成。冻结执行目录/入口和新精确HEAD CI待核。
+13项均离线且禁止真实模型网络，不声称模型质量或上游已恢复。后续实际冻结364db0ba于D:/riftcoach-sol-reasoning-single-execution，
+prepare/check核过完整原件、绝对cwd/Python及真实native路由；真实终端用无效哨兵核隐藏输入无回显、取消与最终wrapper日志块UTF8/退出SHA。
+Control为outputs/riftcoach-sol-reasoning-single-20261022-control，计划22f77653，入口a86ce1ea；CI实际等待/取消核过，
+无残留waiter/claim/call。CI39746293864在08:23UTC尚in_progress（打包/数据库已success）；入口先等待该精确HEAD全绿，
+再隐藏输入天机阁Key，CI查询EOF不算CI失败，原期限保持。原stdout/exit新根create-only留在control，后续不重算冒充最早根。
 
 ## 当前补充：原始字段与SDK同次对照
 

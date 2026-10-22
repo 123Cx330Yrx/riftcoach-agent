@@ -2,8 +2,11 @@
 
 sol_reasoning_single复用现有run_once，仅绑定封存原facts-initial，1HTTP/80384tokens/300秒，零生成/重试。
 原grant/原stdout/父seal全库存核对，隐藏输入前后核源/路径/native/真实期限；create-only claim阻止发送阶段中断重买。
+后续实际冻结364db0ba于D:/riftcoach-sol-reasoning-single-execution，prepare/check与原生路由核过；计划22f77653，入口a86ce1ea。
+真实终端隐藏哨兵无回显、Ctrl+C取消、最终wrapper同一日志块的UTF8/退出SHA核过；CI等待/取消实测，无活跃waiter/claim/call。
+CI39746293864在08:23UTC仍运行，打包/数据库已success。Control安全入口先等全绿再提示Key，原期限不扩展。
 13项新入口检查通过（19.80秒）：实际worker/SDK正常、渠道冲突、SDK漂移、524与费用/意见留存，取消、过期、CI故障、原件/封存防篡改；全部离线。
-既有107项不重跑；授权缩窄绑定新HEAD/计划但不延展原期限，不开新组额度。冻结实际prepare/check及精确HEAD CI待核。
+既有107项不重跑；授权缩窄绑定新HEAD/计划但不延展原期限，不开新组额度。冻结实际prepare/check已通过，精确HEAD CI仍待完成。
 本轮付费0/真实Key读取0；无关untracked probe保持。原业务/资格未知项不变。
 
 ## 2026-10-22 控制台字段来源与原JSON/SDK对照

@@ -325,7 +325,7 @@
     "diff_check": true
   },
   "next_discriminating_request": {
-    "status": "single-request entry implemented and locally verified; frozen preparation and exact-head CI pending",
+    "status": "frozen preparation complete; safe entry waits exact-head CI before hidden key; no new request sent",
     "purpose": "one original facts-initial request with raw versus SDK metadata observation and public tool retention; not a fresh whole task or a qualification run",
     "new_request_ceiling": 1,
     "input_ceiling": 64000,
@@ -387,7 +387,16 @@
       "status": "in_progress",
       "conclusion": null
     },
-    "raw_decode_comparison": "new commit pending"
+    "raw_decode_comparison": "new commit pending",
+    "single_request_entry": {
+      "head": "364db0baa16405ebe030fe4aa01eb00917d0d7fe",
+      "run_id": "39746293864",
+      "status": "in_progress",
+      "conclusion": null,
+      "last_verified_utc": "2026-10-22T08:23:18+00:00",
+      "packaging_smoke": "success",
+      "postgres_migrations": "success"
+    }
   },
   "single_request_entry": {
     "module": "scripts.sol_reasoning_single",
@@ -402,8 +411,48 @@
     "history_retained": true,
     "authorization_basis": "User continued diagnosis/repair/progression and authorized necessary budget; explicitly narrowed binding for new head/plan within unused original scope; old exact-head grant is provenance, not reused as new-head authorization.",
     "original_expiry_utc": "2026-10-23T03:54:18.433261+00:00",
-    "preparation_status": "frozen actual preparation pending",
+    "preparation_status": "actual frozen prepare/check, native route, terminal and wrapper verified; exact-head CI still in_progress",
     "new_provider_requests": 0,
-    "real_key_read": false
+    "real_key_read": false,
+    "execution_pins": {
+      "execution_head": "364db0baa16405ebe030fe4aa01eb00917d0d7fe",
+      "cwd": "D:/riftcoach-sol-reasoning-single-execution",
+      "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+      "plan_sha256": "22f77653a7a690fd9a9b3ea9a23d9f9f1f0ea30a8ac76696c34bad70ed3557fc",
+      "entry_sha256": "a86ce1ea59a89091aa7e5c8c5e7414d3d9f0919330b6677c6953b330ec68cd15",
+      "ci_run": "39746293864",
+      "expires_at": "2026-10-23T03:54:18.433261+00:00",
+      "provider_requests": 0,
+      "key_read": false,
+      "ci_wait_before_key": true,
+      "ci_query_failure_is_ci_failure": false,
+      "create_only_stdout_exit_roots": true
+    },
+    "preparation_proof": {
+      "head": "364db0baa16405ebe030fe4aa01eb00917d0d7fe",
+      "plan_sha256": "22f77653a7a690fd9a9b3ea9a23d9f9f1f0ea30a8ac76696c34bad70ed3557fc",
+      "entry_sha256": "a86ce1ea59a89091aa7e5c8c5e7414d3d9f0919330b6677c6953b330ec68cd15",
+      "real_cwd_python_check": true,
+      "parent_inventory_unchanged": true,
+      "native_route_verified": true,
+      "native_business_review": false,
+      "terminal_hidden_sentinel_not_echoed": true,
+      "terminal_hidden_cancel_observed": true,
+      "wrapper_check_only_passed": true,
+      "wrapper_actual_ci_wait_and_ctrl_c_passed": true,
+      "active_waiter": false,
+      "claim_exists": false,
+      "call_exists": false,
+      "provider_requests": 0,
+      "real_key_read": false,
+      "ci_run": "39746293864",
+      "ci_last_observed": "in_progress",
+      "expires_at": "2026-10-23T03:54:18.433261+00:00",
+      "wrapper_exact_log_block_hidden_input_tested": true,
+      "wrapper_create_only_utf8_stdout_and_exit_sha_tested": true,
+      "temporary_offline_logs_removed": true
+    },
+    "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022-control",
+    "authorization_explicitly_rebound_with_original_expiry": true
   }
 }

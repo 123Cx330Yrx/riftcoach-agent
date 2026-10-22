@@ -22,12 +22,13 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 不同明确response_decode_mismatch，SDK解析失败仍留原分类。既有公开意见留存保持，不存原HTTP正文/私有推理，接收标准不变。
 **保留：** 旧seal1d0a2f49及70项库存再核未变；6HTTP/80137known/145824unknown/retry1与原稿、生成、检索保留。
 **验证：** 107项最终接收/SDK/实际worker/应用/恢复/只读封存检查通过（419.37秒），含此前93项分组不相加；模拟SDK漂移/解析失败、已知用量、不重试、唯一应用和库存防篡改覆盖，治理/编译/diff通过。
-**下一动作：** 提交单次入口并冻结干净执行树，核真实prepare/check及原件/路由，再核该精确HEAD公共CI交付安全命令；零新生成。
+**下一动作：** 用户运行outputs/riftcoach-sol-reasoning-single-20261022-control/start-authorized.ps1；脚本先等待冻结364db0ba/CI39746293864全绿再隐藏输入Key，最多一次原facts-initial。
+**实际准备：** 干净执行树D:/riftcoach-sol-reasoning-single-execution，计划22f77653、入口a86ce1ea；原件/绝对cwd/Python/原生路由prepare/check通过，真实终端隐藏哨兵/取消和日志UTF8/退出SHA通过，CI实际等待/取消通过，无残留waiter/claim/call。CI08:23UTC仍运行，打包/数据库已success。
 **诊断分支：** raw high且SDK一致才查新意见语义；raw非high且SDK一致处理渠道映射；不一致修本地解析；
 非标准字段形成有证据的兼容决策；超时不回答本疑点。单次1HTTP/80384tokens/300秒，估价0.058368元，不自动重试。
 **入口：** sol_reasoning_single复用既有owned worker；新增13项实际worker/SDK及入口检查通过（19.80秒），四分支/费用/原件/单claim/取消/过期/只读封存防篡改覆盖。不重跑已通过107项。
 **授权：** 当前继续指令与原必要预算授权显式缩窄绑定新诊断HEAD/计划，原grant只作来源证据；仍截止北京时间10月23日11:54:18，最多一次/80384tokens，不延长。
-**边界：** 未开始新付费/未读Key；入口源码完成，实际冻结准备/精确HEAD CI未完成，不重开旧封存，不证明渠道已恢复或业务合格。
+**边界：** 未开始新付费/未读Key；实际冻结准备完成，精确HEAD CI尚运行，不重开旧封存，不证明渠道已恢复或业务合格。
 449ec45f/CI39740910236尚运行；95718581/CI39737779367已success，不能冒充本次新版本CI。
 工作卡/事实仍为原2026-10-22-sol-credential-wait-recovery.md及sol_reasoning_identity_diagnostic_20261022.json；automation PAUSED。
 
@@ -50,7 +51,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：同HTTP对照及单次入口检查通过；冻结执行树并核真实prepare/check、精确HEAD CI后交付单次原请求命令；客服非硬前提。GLM产品采用保持，厂商迁移未决定。
+以canonical和上方工作卡为准：同HTTP对照及单次入口检查通过；实际冻结准备及安全命令已完成；用户运行入口，先等精确HEAD CI再隐藏输入Key，做一次原请求诊断；客服非硬前提。GLM产品采用保持，厂商迁移未决定。
 复用原稿与历史成本，不重开旧封存；当前发布门关闭，8E及全部依赖保持。
 
 ## History

@@ -18,8 +18,12 @@ pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；公�
 零新生成/零自动重试，不改旧批。新增13项入口检查通过（19.80秒），含实际worker/SDK四类返回、原件不变、
 已知/未知费用与公开意见留存、提示取消与已claim不可重发、过期/CI失败拒发、只读seal防篡改。
 既有107项receiver/应用覆盖复用，不重复当新增。用户继续诊断与必要预算授权缩窄显式绑定新HEAD/计划，
-原精确旧grant只作来源证据，剩余额度与原UTC截止均不扩展。实际冻结目录/prepare/check及新精确HEAD CI待核；
-本轮新请求/真实Key读取0。下一动作：冻结并完成实际准备，再交付经CI核验的安全命令，不重跑生成或整批。
+原精确旧grant只作来源证据，剩余额度与原UTC截止均不扩展。执行树D:/riftcoach-sol-reasoning-single-execution冻结364db0ba，
+原件/绝对cwd/Python/原生路由实际prepare/check通过；真实终端隐藏哨兵、取消、同一日志块的UTF8/无回显/退出SHA均核过。
+Control为outputs/riftcoach-sol-reasoning-single-20261022-control，计划22f77653，入口a86ce1ea；实际CI等待及取消通过，
+无残留waiter/claim/call。CI39746293864仍in_progress（08:23UTC），打包/数据库已success，不能冒充已全绿。
+本轮新请求/真实Key读取0。下一动作：用户运行该control的start-authorized.ps1；脚本先等精确HEAD全绿，再隐藏输入天机阁Key，
+最多一次原请求，不重跑生成/整批。原截止北京时间10月23日11:54:18保持，automation PAUSED。
 以下同日记录为原诊断修复证据，不能当最新入口已ready。
 
 2026-10-22继续诊断：控制台实际公开JS确认“推理强度”来自log.other.reasoning_effort；公开New API
