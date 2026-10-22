@@ -1,3 +1,16 @@
+## 2026-10-22 扩预算续测技术准备完成，等待用户手动启动
+
+最终冻结08d14754，plan900fd9ec，Operator为outputs/riftcoach-sol-natural-timeout-recovery-v2-20261022。
+真实独立作者/check-answer/唯一native final与原件逐字一致，主审自己的意见提交成功；严格只读回查库存未变。
+最终Control的start-authorized.ps1已解析并实测CheckOnly通过，实际cwd/Python/源码/两层父seal/native核通过，
+无execution/新grant、新请求0/Key读取0。CI39714990765仍运行（打包/Postgres成功），付费入口必须先等全部8项success。
+相关回归按原6、增强3、candidate/session/launch/native63、共享37、库存5、相关57项分组保留，存在重叠不加总；38profile已实核。
+首次公共CI39713331698因五份其他当前manifest漏刷新失败，08d已修；不是上游524或数据库业务错误。
+一次行政作者末尾LF差异被拒绝、未篡改作者/重发final，随后新行政checkpoint通过；最终v2重新完成独立预检。
+用户预算增加授权已落地：新增最多5次Sol/401920tokens/估价0.29184元，含四审查及一次明确超时重试，零生成。
+下一动作仅用户等上游恢复后运行Control/start-authorized.ps1并隐藏输入天机阁Key；自动化PAUSED。
+结果/完整路径/根及入口SHA见sol_natural_timeout_recovery_preparation_20261022.json；不授质量/资格/发布。
+
 ## 2026-10-22 远端524封存与用户授权扩预算准备
 
 两次恢复请求均为远端HTTP524，约128秒返回、worker回收、单HTTP、usage unknown；不是本地300秒截止。

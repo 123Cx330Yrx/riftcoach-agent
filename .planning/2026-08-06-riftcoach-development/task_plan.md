@@ -19,9 +19,9 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **起点：** 旧5操作成功前缀/同报告保留，累计5HTTP、52067已知tokens、145824未知预留、重试1、472.672活动秒；完整只读回放与seal通过，无业务语义结果。
 **实施：** 递归只读核两层父seal、导入原生成/三次检索并继承失败账目；扩候选预算、保留原审查请求与四次审查流程；新冻结树完成真实作者预检，手动启动时激活新grant。
 **授权：** 用户明确“预算改加就加”与先等上游恢复。新增最多5次Sol/401920tokens/估价0.29184元；累计10次/739840tokens/2400活动秒/重试2（已用1），零新增生成。无需再次索要同项预算许可；新授权不改旧grant/截止。
-**验证：** 本轮回归在进行；零付费实际父seal读取已算出剩5次、401920tokens及同报告/同首审请求。不得把准备或行政预检称语义成功。
+**验证：** 本轮相关回归分组通过，38个当前profile已实核；08d14754新冻结树完成实际prepare、真实作者/check-answer/native final逐字导入及严格只读回查，入口CheckOnly实测通过。当前新请求/Key读取均0、无execution/新grant；精确HEAD CI39714990765仍运行，入口先等全绿。不得把准备或行政预检称语义成功。证据见sol_natural_timeout_recovery_preparation_20261022.json。
 **失败分支：** 传输失败保留旧工作、unknown与成本；本轮一次明确已回收的超时可同阶段重试。身份/来源/结构/语义错误不盲重试；若再遇上游问题，据实际证据调整下一动作，不把报告整体作废。
-**下一动作：** 完成相关回归、冻结和真实native预检，交付单命令；用户等上游恢复后手动运行，当前不发送。
+**下一动作：** 技术准备和单命令已交付；用户等上游恢复后手动运行`outputs/riftcoach-sol-natural-timeout-recovery-20261022-control/start-authorized.ps1`，入口先核CI全绿再隐藏读天机阁Key。当前不发送、不探测上游；真实输出返回后按原完整来源和双审流程续接。
 
 ## Dependencies and Follow-through
 
@@ -42,8 +42,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：本地合同修复与裁决更正完成；GLM采用保持，厂商迁移未决定。
-原稿保留提案已关闭，不再排transport或新付费授权；发布门关闭，8E及全部依赖保持。
+以canonical和上方工作卡为准：续测技术准备完成，等待用户手动启动；GLM产品采用保持，厂商迁移未决定。
+复用原稿与历史成本，不重开旧封存；当前发布门关闭，8E及全部依赖保持。
 
 ## History
 

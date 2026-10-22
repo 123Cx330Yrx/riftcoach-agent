@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "两次远端HTTP524已只读回放封存；按用户授权扩预算准备续测，等待上游恢复后用户手动输入Key；automation PAUSED。"
+pause_reason: "扩预算续测技术准备完成；入口先等精确HEAD CI全绿，用户等上游恢复后手动输入天机阁Key；automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -20,8 +20,14 @@ pause_reason: "两次远端HTTP524已只读回放封存；按用户授权扩预�
 事实与网页日志的未关联限制见`data/evaluation/results/sol_natural_timeout_observed_20261022.json`。
 用户要求等待上游恢复，并明确授权必要预算增加。本轮准备新增最多5次Sol/401920tokens/估价0.29184元，
 累计10次/739840tokens/2400活动秒/重试2（历史已用1），零新增生成；只读继承两层父seal，旧原件不动。
-正在完成代码回归、新冻结执行树和真实原生行政预检，以及手动启动时才激活的新授权/隐藏Key入口。
-当前新请求0、Key读取0；尚未交付启动就绪，不自动重试/探测上游。下一动作：完成这些准备并提供单命令。
+续测技术准备已完成：执行树`D:/riftcoach-sol-natural-timeout-ready-execution`冻结`08d14754`，
+plan`900fd9ec`；相关回归分组通过（不加总重叠项），真实作者原件/check-answer/原生final逐字导入通过，
+严格只读回查确认库存未变。最终PowerShell入口已实测CheckOnly，实际cwd/Python/源码/父seal/native均核通过。
+精确HEAD公共CI`39714990765`仍in_progress，打包/Postgres已成功；启动入口会先等待全部8项success。
+当前新请求0、Key读取0、execution不存在、新grant尚未激活，不自动重试或探测上游。
+下一动作：用户等上游恢复后运行`outputs/riftcoach-sol-natural-timeout-recovery-20261022-control/start-authorized.ps1`，
+只需隐藏输入天机阁Key；沿用同稿和失败账目，零新增生成。预算增加已授权，不重复索要许可。
+完整路径/原stdout根/入口SHA/原生事件/验证分组见`data/evaluation/results/sol_natural_timeout_recovery_preparation_20261022.json`。
 以下10月19—21日记录为前序证据；不以旧“等待Key”状态作为当前执行队列。
 
 2026-10-19：原批第六项HTTP524保持封存；用户单独授权的s03-completion补测HTTP200，22094已知tokens。补测意见与唯一block21修订后的全文均双审接受，真实native/作者字节导入和只读回放通过。三稿六职责由原五项加独立补测取得语义覆盖，不是原六次全成功。累计7HTTP、132730已知tokens、80384未知预留、421.704活动秒；未发布、未授资格，automation PAUSED。
