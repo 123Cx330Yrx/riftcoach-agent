@@ -100,6 +100,12 @@ CI39623758447在15:22 UTC仍in_progress：Web/Postgres/打包通过，四pytest�
 下一动作是确认新plan/父seal绑定的恢复付费授权，再提供隐藏输入天机阁Key的命令；
 最多新增4次Sol/321536tokens/估价0.233472元，零生成，旧成本与累计预算继承。新请求0、Key读取0。
 
+2026-10-22用户明确回复“授权”。新grant绑定恢复plan94c8fe57/冻结51f31f60/父seal，
+最多新增4次Sol、321536tokens、零生成，继承旧成本和累计预算；SHA37676388，
+有效至北京时间2026-10-23 09:48:43。CI/实际路径/源码/真实native再次核验通过。
+同级control/start-authorized.ps1已备好且语法通过；下一动作由用户隐藏输入天机阁Key启动，
+随后逐项审查真实输出。此刻execution不存在、新请求0、Key读取0。
+
 执行树`D:/riftcoach-semantic-execution`保持8cdc9d2c，CI39189896488全绿；诊断树只记录结果。
 本批三稿使用熟悉五局来源，非holdout；首稿两职责通过不等于纠错、fresh或可靠率通过。
 准备、行政预检及既有失败见`docs/plans/2026-10-18-reviewer-semantic-execution.md`。

@@ -44,7 +44,7 @@
     "diff_check": "passed",
     "actual_saved_prefix_preview": "passed"
   },
-  "next_action": "Obtain a specific continuation grant for the pinned new plan and parent seal, at most 4 new Sol attempts and 321536 tokens with zero generation; then provide the hidden-key launch command.",
+  "next_action": "User runs control/start-authorized.ps1 and enters only the Tianjige key through hidden terminal input; then inspect the original execution stdout/checkpoint and perform native business review.",
   "frozen_head": "51f31f6010989a6d80ad34760409789e85b9c253",
   "execution_cwd": "D:/riftcoach-sol-natural-continuation-execution",
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-continuation-20261021",
@@ -81,8 +81,8 @@
     ],
     "checked_at": "2026-10-22T01:47:13.168105+00:00"
   },
-  "paid_launcher_ready": false,
-  "new_authorization_present": false,
+  "paid_launcher_ready": true,
+  "new_authorization_present": true,
   "execution_exists": false,
   "control_evidence": {
     "prepare-final.stdout.txt": "4623a7eadccdde114ab74d0064b3ba2938d21083b00aa12d8062bd2edd6276fa",
@@ -91,7 +91,8 @@
     "primary-preflight.json": "4ae82b7c6e257aba0ccc5de55c2b737afc915603bb56f9ea53c796332577b5b8",
     "preflight-verified.json": "643a08996ed7fce32959598885a36baa34ae8bb5f1afb0cde846be582db0acad",
     "start-first.ps1": "9e32d9c089bfe3db150bdb2a2060631ad3abd874a98391847792c4a457f9a96a",
-    "ci-success.json": "b5b5f416f1ac5f2351ab6bebafde7aa43b2e9079d6d39c05f167e8f30c043a59"
+    "ci-success.json": "b5b5f416f1ac5f2351ab6bebafde7aa43b2e9079d6d39c05f167e8f30c043a59",
+    "start-authorized.ps1": "364863d05fae5fa93553148870bc54f264a89a98d53970f7fe25d1e7bc60b2cf"
   },
   "checkout_byte_recovery": {
     "reason": "Git checkout CRLF drift rejected by parent source verification",
@@ -103,5 +104,34 @@
     "final_checkout_clean": true
   },
   "ci_verified": true,
-  "technical_preparation_complete": true
+  "technical_preparation_complete": true,
+  "authorization": {
+    "authorization_sha256": "37676388e5fc6a0ffeb27cf723a042590ac15c2c36b5dad54f0ebb78350501f5",
+    "authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-continuation-20261021-control\\authorization.json",
+    "issued_at": "2026-10-22T01:48:43.898645+00:00",
+    "expires_at": "2026-10-23T01:48:43.898645+00:00",
+    "ci": {
+      "run_id": "39623758447",
+      "head_sha": "51f31f6010989a6d80ad34760409789e85b9c253",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        "packaging-smoke",
+        "postgres-migrations",
+        "pytest",
+        "pytest-shards (0)",
+        "pytest-shards (1)",
+        "pytest-shards (2)",
+        "pytest-shards (3)",
+        "web-checks"
+      ]
+    },
+    "plan_sha256": "94c8fe5725ebe6031aba761b66a8e76f4b5e99f1fd4971bd69905822201ae2d4",
+    "guard_sha256": "8080b1dbffb6c787b06bdaa681853d33035a0826c1cf842daa319b7cca6b75ce",
+    "checkpoint_sha256": "8a58a3830fe7579a68d23f4000ea951fd7537da2a6bebf2faf708a28891f42ce",
+    "native_verified": true,
+    "provider_requests": 0,
+    "key_read": false,
+    "execution_exists": false
+  }
 }
