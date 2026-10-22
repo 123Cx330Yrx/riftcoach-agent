@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；离线补足诊断，待渠道元数据核查，不再交付重复付费入口；automation PAUSED。"
+pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；修复客户端拒收后的公开工具输出留存并验证整链；不等待客服作为硬前提，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,17 +14,18 @@ pause_reason: "最新真实HTTP200被reasoning_identity拒收并已封存；离�
 
 ## 当前行动
 
-2026-10-22后续实况：dadb73eb的CI39730401796已全绿；用户已执行入口，不再等待Key。
-Key等待计时修复生效；新增1HTTP，约60.516秒HTTP200/EOF/closed，21758输入+6312输出=28070已知tokens。
-首次新facts-initial在本地reasoning_identity拒收，未到业务参数校验或独立语义审查。
-冻结构造器重建wire确认请求确为high，返回只保留conflict，无法恢复原始effort或工具参数；不能断言返回low或模型业务错误。
-严格回放/唯一seal1d0a2f49已完成；本轮再核70项库存及stdout根未变。
-累计6HTTP/80137已知tokens/145824未知预留/重试1，原两次生成/三次检索与报告保留，native业务审查0。
-现仅补充安全固定分类，区分已知档位、非标准拼写、空白和未知字符串，既有接收规则不变；82项接收/SDK/子进程/应用检查与54项候选/启动/续接整链回归均通过。
-用户确认使用日志仅有费用，不能提供effort；不再把读取费用页作为推进前提或继续尝试连接。
-下一动作：完成本地整链验证，备好按现有request ID向渠道核查effort/映射的具体问题（未代发）。
-原字段缺口本地不可恢复；不新增付费诊断，不要求重复输Key，不重开已闭Operator。
-证据与判定见`data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json`及原Key等待修复工作卡后续节。
+2026-10-22后续：dadb73eb/CI39730401796全绿后的新增请求HTTP200/完整EOF，28070已知tokens，
+本地reasoning_identity拒收，未进入业务参数/native语义审查。实际wire为high，旧返回具体effort/工具参数被丢弃。
+这是客户端记录设计缺陷，不能要求用户到通常不存正文的平台找回。实际store=False且没有响应ID，当前无可用取回入口。
+用户截图显示high与21758输入/6312输出，强关联本次请求；该字段来源未证实，不能据此补签通过或断言返回low。
+修复在现有接收器内保留唯一schema有效公开工具参数原文、UTF8 SHA及wire SHA，独立标记仅诊断/未验证/不允许发布。
+私有reasoning、message、未知/重复工具、坏参数和实际Key回显不留存；应用接收/身份/业务标准不变。
+接收/SDK/子进程/应用及初次封存92项通过（37.57秒）；8项整链补验通过（291秒），含四审查/唯一应用/恢复/只读replay/seal与库存防篡改，分组重叠不相加。
+上一版82/54项测试保持原提交证据，不冒充新版本完成。当前修复为离线软件验证，不证明自然任务质量或上游身份。
+原唯一seal1d0a2f49及70项库存再核未变；累计6HTTP/80137known/145824unknown/retry1、原生成/检索/报告保留。
+下一动作：提交留存修复并核精确HEAD公共CI；再以可保留结果区分元数据冲突与语义质量，明确必要诊断决策，客服核查可选。
+本轮新增付费/Key读取0，不交付重复入口、不重开已闭Operator、不延长原授权；产品采用/原资格/后续依赖保持。
+证据见data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json及原Key等待修复工作卡当前补充节。
 以下为真实执行前的准备记录，历史入口不再是待办。
 
 2026-10-22最新：用户执行08d14754入口时在Key提示处等待约85分钟，活动时间从472.688增加到5554.797秒，

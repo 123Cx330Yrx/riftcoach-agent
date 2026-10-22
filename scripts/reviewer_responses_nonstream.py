@@ -6,6 +6,7 @@ Observe the returned structure before accepting it; never persist message text,
 reasoning, arbitrary item types, IDs, exception messages or credentials.
 """
 from collections.abc import Mapping
+import hashlib
 import math
 
 import httpx
@@ -77,8 +78,43 @@ def reasoning_effort_detail(value):
     return dict(category='blank' if not normalized else 'unrecognized', value=None)
 
 
+def diagnostic_tool_call(calls, wire):
+    """Retain only one schema-valid, expected public tool, before admission.
+
+    Exact argument UTF-8 bytes are preserved; never copy messages, reasoning,
+    arbitrary tools or unparseable text. This record is not an accepted call.
+    The worker artifact is covered by the existing receipt/session inventory.
+    """
+    if len(calls) != 1:
+        return None
+    call = calls[0]
+    if (call.get('name') != stream.TOOL or call.get('status') != 'completed'
+            or not isinstance(call.get('arguments'), str)):
+        return None
+    raw = call['arguments']
+    try:
+        Draft202012Validator(wire['tools'][0]['parameters']).validate(strict_json(raw))
+    except Exception:
+        return None
+    return dict(purpose='diagnostic_only', name=stream.TOOL, arguments=raw,
+        arguments_sha256=hashlib.sha256(raw.encode('utf-8')).hexdigest(),
+        wire_sha256=stream.digest(wire), business_validated=False,
+        semantic_approval=False, publication_allowed=False)
+
+
+def contains_credential(value, credential):
+    if isinstance(value, str):
+        return credential in value
+    if isinstance(value, dict):
+        return any(contains_credential(k, credential) or contains_credential(v, credential)
+                   for k, v in value.items())
+    if isinstance(value, list):
+        return any(contains_credential(item, credential) for item in value)
+    return False
+
+
 def inspect_response(response, business):
-    """Return body-free facts even when the receiving contract rejects output.
+    """Separate body-free observations, diagnostic public tool and admission.
 
     `reported_completed` is a provider terminal claim, not business acceptance.
     `function_calls` counts candidates, not validated calls. Known usage survives
@@ -91,7 +127,8 @@ def inspect_response(response, business):
         output_type_counts=None, model_matches=False, reasoning_echo=None,
         reasoning_effort_detail=None)
     result = dict(ok=False, code='response_shape', usage=None, usage_state='unknown',
-        public_tool_call=None, business_validated=False, semantic_approval=False,
+        public_tool_call=None, diagnostic_tool_call=None,
+        business_validated=False, semantic_approval=False,
         upstream_identity_verified=False, qualified=False, publication_allowed=False,
         response_observation=observation)
     if value is None:
@@ -115,6 +152,7 @@ def inspect_response(response, business):
                 calls.append(item)
         observation.update(output_items=len(output), function_calls=len(calls),
                            output_type_counts=counts)
+        result['diagnostic_tool_call'] = diagnostic_tool_call(calls, wire)
     try:
         result['usage'] = stream.usage_value(value.get('usage'))
         result['usage_state'] = 'known'
@@ -181,6 +219,11 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
                 event_hooks=dict(request=[observer.on_request], response=[observer.on_response])))
         response = client.responses.create(**wire)
         result.update(inspect_response(response, business))
+        # Credentials are never business input, but exclude an echoed exact
+        # credential even if a malformed channel puts it in a valid tool field.
+        diagnostic = result['diagnostic_tool_call']
+        if diagnostic is not None and contains_credential(strict_json(diagnostic['arguments']), api_key):
+            result.update(ok=False, code='credential_echo', diagnostic_tool_call=None)
         observer.update(response_contract=result['response_observation'])
         if result['usage'] is not None:
             try:

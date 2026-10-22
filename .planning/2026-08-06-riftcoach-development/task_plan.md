@@ -15,20 +15,18 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 在下一次付费前核清最新HTTP200后的本地档位拒收，验证完整接收/失败/恢复路径，不用重复调用代替诊断。
-**事实：** dadb73eb的CI39730401796全绿且用户已经执行。Key等待计时已修；新增1HTTP/28070已知tokens，
-首次新facts-initial返回非high字符串而触发reasoning_identity。原返回具体值未保存，不能判定low或语义错误。
-**修复：** 补安全固定分类和白名单值，不改变接收规则。沿真实SDK→子进程→观测/回执→应用预算/停止，
-并验证启动/长等待/恢复/四审查/唯一应用/只读replay/seal，零付费。
-**保留：** 已闭Operator唯一seal1d0a2f49，70项原库存及stdout根复核未变；累计6HTTP/80137known/
-145824unknown/retry1，原生成与检索报告保留，native业务审查0。
-**验证：** 82项接收/SDK/子进程/应用检查与54项候选/实际启动/续接整链回归通过；CLI启动、治理、编译和diff检查通过。
-**判断与下一动作：** 本地整链已验证，按request ID核查原effort/映射的具体问题已备好，未代发消息。
-用户确认费用页不含该字段，已排除该证据来源，不再要求重连/继续查价格。
-无区分证据不原样重试、不重新输Key、不交付新入口；不能声称整体已修通。
-**完成边界：** 软件诊断修复及整链检查通过，只能证明本地路径；不能冒充上游恢复或自然Agent质量。
-工作卡及事实分别见docs/plans/2026-10-22-sol-credential-wait-recovery.md当前节、
-data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。原预算授权不重复索取也不延展；automation PAUSED。
+**目标：** 拒收不能再次丢掉已经收到的公开审查意见；在下一次付费前验证实际留存/失败/封存消费路径。
+**事实：** 原HTTP200/high请求被reasoning_identity拒收；客户端丢弃工具参数，仅存用量/计数。
+用户截图的high与21758/6312精确用量强关联该请求，但不能恢复原响应effort或补签语义通过。
+**实现：** 现有非流式接收器在采纳前保存唯一schema有效公开工具参数及UTF8/wire SHA到worker-result，
+标记仅诊断/未业务验证/不允许发布；不保存私有推理、普通消息、坏参数或实际Key回显，接收标准不变。
+实际store=False且没有响应ID，当前无可用取回路径；客服核查可选，不再卡住客户端明确修复。
+**保留：** 旧seal1d0a2f49及70项库存再核未变；6HTTP/80137known/145824unknown/retry1保持。
+**验证：** 92项接收/SDK/子进程/应用及初次封存通过（37.57秒）；8项整链补验通过（291秒），分组重叠不相加；正常四审查、唯一应用、恢复/只读回放/库存防篡改均覆盖。
+**下一动作：** 提交修复并核精确HEAD公共CI，再以可保留结果区分元数据冲突与语义质量，明确必要诊断决策，不原样重复付费。
+**完成边界：** 只能证明本地工程路径；原响应内容缺口仍未知，不能声称渠道/语义问题已修好。
+本轮新增付费/Key读取0，不重开旧封存、不交付新入口、不改原授权截止或产品标准；automation PAUSED。
+工作卡/事实见docs/plans/2026-10-22-sol-credential-wait-recovery.md与sol_reasoning_identity_diagnostic_20261022.json。
 
 ## Dependencies and Follow-through
 
@@ -49,7 +47,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：当前查已有渠道记录，先完成离线整链验证；不再等待Key或交付重复付费入口。GLM产品采用保持，厂商迁移未决定。
+以canonical和上方工作卡为准：留存与失败/回放整链已完成；提交后核精确HEAD公共CI，不把找客服当硬前提。GLM产品采用保持，厂商迁移未决定。
 复用原稿与历史成本，不重开旧封存；当前发布门关闭，8E及全部依赖保持。
 
 ## History

@@ -98,17 +98,18 @@
   "failure_attribution": "local_rejection_of_non_high_string_metadata; exact upstream value unrecoverable locally",
   "response_low_proven": false,
   "sdk_corruption_proven": false,
-  "prospective_fix": "body-free fixed categories and allowlisted effort value; acceptance unchanged",
+  "prospective_fix": "Retain one expected schema-valid completed public tool argument string and UTF-8 SHA, wire SHA and diagnostic-only flags before admission. Admission remains unchanged; observation logs remain body-free.",
   "browser_audit": {
     "url": "https://yujianwudi.top/usage-logs/audit",
     "attempts": 2,
     "result": "timeout_then_debugger_unattached",
     "page_read": false,
     "user_report": "usage page shows cost only, not response effort",
-    "excluded_as_effort_evidence": true,
-    "further_page_attempts_planned": false
+    "excluded_as_effort_evidence": false,
+    "further_page_attempts_planned": false,
+    "updated_judgment": "Screenshot supplies high and exact usage, but not the raw response effort; previous cost-only conclusion was superseded."
   },
-  "next_action": "finish offline end-to-end checks; prepare channel metadata questions for existing request_id; no paid retry or cost-page investigation",
+  "next_action": "Local retention fix and integration verification complete; commit/push and check exact-head public CI. Next paid use needs a diagnostic decision that distinguishes response metadata conflict from semantic quality, preserving historical costs; no support-only gate or automatic retry.",
   "new_provider_requests_this_diagnostic": 0,
   "new_key_reads_this_diagnostic": 0,
   "new_entry_delivered": false,
@@ -138,7 +139,19 @@
     ],
     "current_input_tokens": 21758,
     "note": "No causal claim that longer integration caused metadata conflict; old exact effort echoes were not retained",
-    "input_size_increase_established": false
+    "input_size_increase_established": false,
+    "actual_request_comparison": {
+      "system_message_equal": true,
+      "wire_settings_equal": [
+        "model",
+        "reasoning",
+        "tool_choice",
+        "max_output_tokens",
+        "stream"
+      ],
+      "schema_difference": "only report-specific source enums and block keys (30 old, 28 current); no new review fields",
+      "new_size_explains_failure": false
+    }
   },
   "validation": {
     "receiver_sdk_owned_worker_and_application": {
@@ -157,5 +170,86 @@
     "diff_check": true,
     "first_test_setup_failure": "direct script refresh import failed; initial 28 candidate checks rejected stale fingerprint before IO; corrected module invocation and complete relevant suite passed",
     "live_issue_resolved": false
-  }
+  },
+  "screenshot_evidence": {
+    "source": "user supplied screenshot, visually inspected",
+    "path": "C:/Users/33502/AppData/Local/Temp/codex-clipboard-ca278089-3f8c-40ee-bed1-2af0dcfd675d.png",
+    "sha256": "458a14a43abe6dac3615457bcb8eafbf6e9d97c86a89e2fdf1d61c50957e3063",
+    "visible": {
+      "group": "GPT-pro",
+      "reasoning_effort": "high",
+      "input_tokens": 21758,
+      "output_tokens": 6312,
+      "response_seconds": 55.0,
+      "reported_cost_cny": "0.021328"
+    },
+    "association": "exact usage pair strongly links this log to call-006; no shared unique ID established",
+    "limitation": "source of displayed effort (request, response or channel configuration) not established; does not recover response effort or tool arguments",
+    "unrelated_token_name_ip_omitted": true
+  },
+  "support_report": {
+    "source": "user relay of intelligent customer service answer",
+    "statement": "Console usage logs show tokens/status; full conversation usually not retained, check API client locally.",
+    "independent_confirmation": false,
+    "message_sent_by_agent": false
+  },
+  "retrieval_check": {
+    "wire_store": false,
+    "local_response_id_saved": false,
+    "http_request_id_is_response_retrieval_id": false,
+    "usable_retrieval_path_found": false,
+    "live_retrieval_attempted": false,
+    "absolute_provider_nonretention_proven": false,
+    "local_gap": "Client received parsed response, but identity rejection discarded public tool arguments and exact non-high effort. No full response file was written."
+  },
+  "public_output_retention": {
+    "artifact": "existing worker-result.json: diagnostic_tool_call",
+    "source": "SDK parsed function arguments; exact string UTF-8 digest, not raw HTTP body",
+    "not_retained": [
+      "message text",
+      "reasoning items",
+      "unexpected or multiple tools",
+      "unparseable or schema-invalid arguments",
+      "exact API credential echoes"
+    ],
+    "never_grants": [
+      "business validation",
+      "semantic approval",
+      "publication",
+      "upstream authentication"
+    ],
+    "scope": "future nonstream calls only; no historical artifacts rewritten",
+    "integrity": "existing session checkpoint and create-only seal inventory cover worker result",
+    "local_tests": {
+      "receiver_sdk_worker_application_and_initial_seal": {
+        "passed": 92,
+        "seconds": 37.57
+      },
+      "integration_followup": {
+        "passed": 8,
+        "seconds": 291.0,
+        "coverage": [
+          "normal application initial/pass/repair/fresh rejection/bad anchor",
+          "timeout retry keeps unknown usage",
+          "launcher key wait/resume/native gates/unique application/readonly replay/seal",
+          "rejected diagnostic inventory and tamper refusal",
+          "continuation without rebuying generation"
+        ],
+        "overlaps_prior_group": true
+      }
+    },
+    "first_test_fixture_failure": "Credential sentinel initially placed on repair instead of edit reason; 89 passed/1 fixture validation failed. Corrected schema-valid fixture then 92 passed.",
+    "validation_complete": true,
+    "governance": true,
+    "compile": true,
+    "diff_check": true
+  },
+  "public_support_lookup": {
+    "announcement_url": "https://yujianwudi.top/api/notice",
+    "reported_qq_group": "334141779",
+    "reported_link": "https://qm.qq.com/q/bXBfjVwHew",
+    "agent_joined_or_sent_message": false,
+    "mandatory_dependency": false
+  },
+  "original_inventory_reverified_this_followup": true
 }

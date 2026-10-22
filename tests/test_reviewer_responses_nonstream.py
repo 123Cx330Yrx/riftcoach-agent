@@ -1,6 +1,7 @@
 """Real SDK, mock HTTP, owned worker: offline contract evidence, not model quality."""
 from copy import deepcopy
 from dataclasses import asdict
+import hashlib
 import json
 from pathlib import Path
 import socket
@@ -306,12 +307,70 @@ def test_reasoning_conflict_reaches_application_without_retry_or_lost_usage(tmp_
     assert worker['response_observation'] == observed['response_contract']
     assert worker['response_observation']['reasoning_effort_detail'] == dict(category='known', value='low')
     assert worker['public_tool_call'] is None and worker['business_validated'] is False
+    diagnostic = worker['diagnostic_tool_call']
+    assert diagnostic['purpose'] == 'diagnostic_only'
+    assert diagnostic['arguments_sha256'] == hashlib.sha256(diagnostic['arguments'].encode('utf-8')).hexdigest()
+    assert diagnostic['wire_sha256'] == receipt['wire_sha256']
+    assert diagnostic['business_validated'] is False and diagnostic['publication_allowed'] is False
+    # Retention must never manufacture a completed exchange or a replayable
+    # successful review from the rejected worker's otherwise valid arguments.
+    reviewer = factory.providers['candidate'].reviewer
+    assert reviewer.last_exchange is None
+    with pytest.raises(ValueError, match='sol_saved_complete_receipt_required'):
+        reviewer.read_completed_at_ordinal(reviewer.last_failure['request'], ordinal=3, role='review')
     trace = RuntimeTraceStore(tmp_path / 'reports', 'candidate').read_trace(result.trace_reference)
     assert trace.usage.provider_calls_attempted == 3
     assert trace.usage.input_tokens + trace.usage.output_tokens == budget.tokens
     failed = [e.signal for e in trace.events if e.signal.kind == 'provider_call_failed_usage']
     assert len(failed) == 1 and failed[0].input_tokens == 12 and failed[0].output_tokens == 8
     assert result.publication_status.value == 'rejected'
+
+
+@pytest.mark.parametrize('fault', ['reasoning', 'model', 'usage', 'mixed', 'invalid', 'two_tools', 'name'])
+def test_rejected_public_tool_retention_preserves_exact_bytes_only(business, fault):
+    value = response()
+    raw = json.dumps(REVIEW, ensure_ascii=False, indent=2) + '\n'
+    value['output'][0]['arguments'] = raw
+    value['output'].append(dict(type='reasoning', summary=[dict(text=PRIVATE)]))
+    if fault == 'reasoning': value['reasoning'] = dict(effort='low')
+    elif fault == 'model': value['model'] = PRIVATE
+    elif fault == 'usage': value['usage'] = None
+    elif fault == 'mixed': value['output'].append(dict(type='message', content=[dict(text=PRIVATE)]))
+    elif fault == 'invalid': value['output'][0]['arguments'] = PRIVATE
+    elif fault == 'two_tools': value['output'].insert(0, deepcopy(value['output'][0]))
+    elif fault == 'name': value['output'][0]['name'] = PRIVATE
+    result = codec.inspect_response(value, business)
+    assert not result['ok'] and result['public_tool_call'] is None
+    diagnostic = result['diagnostic_tool_call']
+    if fault in ('invalid', 'two_tools', 'name'):
+        assert diagnostic is None
+    else:
+        assert diagnostic['arguments'] == raw
+        assert diagnostic['arguments_sha256'] == hashlib.sha256(raw.encode('utf-8')).hexdigest()
+        assert diagnostic['wire_sha256'] == stream.digest(codec.build_wire(business))
+        assert diagnostic['business_validated'] is False and diagnostic['semantic_approval'] is False
+        assert diagnostic['publication_allowed'] is False
+    assert PRIVATE not in json.dumps(result)
+
+
+@pytest.mark.parametrize('escaped', [False, True])
+def test_credential_echo_in_public_tool_is_not_retained(tmp_path, business, escaped):
+    # Obtain a schema-valid free-text location from the actual business tool.
+    schema = codec.build_wire(business)['tools'][0]['parameters']
+    from jsonschema import Draft202012Validator
+    # A repair reason is public model output, never a credential source.
+    review = json.loads((Path('data/evaluation/fixtures/reviewer_route_recovery_20261018/r02-review.json')).read_text(encoding='utf-8'))
+    next(iter(review['repairs'][0]['edits'].values()))[0]['reason'] = KEY
+    value = response(review)
+    assert not list(Draft202012Validator(schema).iter_errors(json.loads(value['output'][0]['arguments'])))
+    if escaped:
+        value['output'][0]['arguments'] = value['output'][0]['arguments'].replace('OFFLINE', '\\u004fFFLINE')
+    result = codec.collect(business, profile=stream.Profile(group='GPT-pro', route='proxy-12000'),
+        api_key=KEY, observation_dir=tmp_path/'observation', transport=httpx.MockTransport(
+            lambda request: httpx.Response(200, json=value)))
+    assert result['code'] == 'credential_echo' and not result['ok']
+    assert result['public_tool_call'] is None and result['diagnostic_tool_call'] is None
+    assert KEY not in json.dumps(result)
 
 
 @pytest.mark.parametrize('mode', ['stream', codec.MODE])

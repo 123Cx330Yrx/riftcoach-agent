@@ -91,6 +91,36 @@ def prepare_child(state, tmp_path, name='continued'):
         authorization_sha=digest(path.read_bytes()), ci_run='synthetic', preflight_proof={})
 
 
+def test_rejected_public_tool_is_sealed_and_readonly_replay_never_adopts_it(setup, tmp_path):
+    s = setup
+    operator = Path(s['parent']['operator'])
+    worker_path = next((operator/'execution/transport').rglob('worker-result.json'))
+    worker = json.loads(worker_path.read_bytes())
+    diagnostic = worker['diagnostic_tool_call']
+    assert worker['code'] == 'reasoning_identity' and worker['public_tool_call'] is None
+    assert diagnostic['arguments_sha256'] == digest(diagnostic['arguments'].encode('utf-8'))
+    assert diagnostic['business_validated'] is False and diagnostic['publication_allowed'] is False
+    seal = json.loads((operator/'seal.json').read_bytes())
+    assert seal['inventory'][worker_path.relative_to(operator).as_posix()] == digest(worker_path.read_bytes())
+    roots = dict(guard=s['pins'][-1]['guard_sha256'], checkpoint=s['pins'][-1]['checkpoint_sha256'])
+    before = tree(operator)
+    requests_before = sum(map(len, s['requests']))
+    checked = launch.replay(s['parent'], s['parent_pin'], s['native'],
+        authorization_sha=digest((tmp_path/'parent-grant.json').read_bytes()), **roots)
+    assert checked['strict_replay'] and checked['native_reviews'] == 0
+    assert checked['candidate_outcome']['outcome'] == 'candidate_execution_failed'
+    assert checked['accounting']['calls'] == 3
+    assert not checked['publication_allowed'] and not (operator/'execution/journal/application.json').exists()
+    assert tree(operator) == before and sum(map(len, s['requests'])) == requests_before
+    # The diagnostic is part of the trusted inventory, not a mutable side log.
+    worker['diagnostic_tool_call']['arguments'] += ' '
+    worker_path.write_bytes(canonical(worker))
+    with pytest.raises(SessionBlocked, match='session_evidence_changed_or_uncommitted'):
+        launch.replay(s['parent'], s['parent_pin'], s['native'],
+            authorization_sha=digest((tmp_path/'parent-grant.json').read_bytes()), **roots)
+    assert sum(map(len, s['requests'])) == requests_before
+
+
 def test_continue_four_reviews_and_native_gates_without_rebuying_prefix(setup, tmp_path, monkeypatch):
     s = setup
     p, pin, common = prepare_child(s, tmp_path)
