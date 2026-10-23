@@ -1,7 +1,7 @@
 {
   "kind": "review-necessity-offline-preparation-v1",
   "date": "2026-10-23",
-  "status": "offline_candidate_prepared_model_effect_unproven",
+  "status": "primary_material_audited_worker_bound_live_launcher_not_prepared",
   "candidate": "offline-review-necessity-candidate-v1",
   "code": "scripts/review_necessity_candidate.py",
   "materials": "data/evaluation/fixtures/review_necessity_20261023",
@@ -11,7 +11,8 @@
     "data/evaluation/fixtures/review_necessity_20261023/c.md": "7141e301c580d024812de74baa091c46dd7aa2557fa8e967d3c0d7f8fb9952f7",
     "data/evaluation/fixtures/review_necessity_20261023/context.json": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
     "data/evaluation/fixtures/review_necessity_20261023/evaluation.json": "77d64e31d68e077c00faa40a34257b5b041b066b19c78aa298f037c29addbdf2",
-    "data/evaluation/fixtures/review_necessity_20261023/README.md": "b30826e430e3ec6ae40a04b7024d64fa828ca2b21642eff98416732660e0a7f7",
+    "data/evaluation/fixtures/review_necessity_20261023/primary-material-review.json": "51c4b9588fc9a94b32f7af9a7bf2a6d5bd35ffb57d1b4ca9a4eda4bbe7272aee",
+    "data/evaluation/fixtures/review_necessity_20261023/README.md": "87082ff915548efaabff60b92ecbf7047dcd87b6577502eb44abd2c48d952e6d",
     "data/evaluation/fixtures/review_necessity_20261023/retained-public-review.json": "32578633da7d0ea99fb878ab3d312ec1053205e20313073ef6e2541c452e2cf4"
   },
   "request_manifest": {
@@ -20,31 +21,33 @@
     "cases": [
       {
         "id": "a",
-        "request_sha256": "afc638550d011e3e9820641985dd0ff74bdbfc253880343d04481b1eb9cb30a7",
+        "request_sha256": "589584724dd8cc593c2fdc1a77f07f4ace2e7e0dd53a1d53417d6e4c6a8f0208",
         "report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
         "source_pack_sha256": "b880a30307062d26883a71337a00d6025c9f8c4a1cee2c29679d6cb3fa04377d",
-        "estimated_input_ceiling": 57944,
+        "estimated_input_ceiling": 57958,
         "output_reservation": 16384
       },
       {
         "id": "b",
-        "request_sha256": "2c4d40901e277875608076dcfedaf1bde4d67b53da0d1bfb5bfdb44cd2ee1555",
+        "request_sha256": "b0f1d86c4fe3878504c4ceca2496a71319c14591bd869690ad412316160f1445",
         "report_sha256": "92904899ae6c7b95b4f75a89d3ff510be8c7d6739dfee77fe7ebe292360c33bc",
         "source_pack_sha256": "b880a30307062d26883a71337a00d6025c9f8c4a1cee2c29679d6cb3fa04377d",
-        "estimated_input_ceiling": 58018,
+        "estimated_input_ceiling": 58032,
         "output_reservation": 16384
       },
       {
         "id": "c",
-        "request_sha256": "83e89f0fac52f30b8110054b25a6afa93633b970258646ecb4063b8858d48be2",
+        "request_sha256": "f873d8a492596d9dcb0a156575e3c56aded9edd671b45ecebcbe9655556bfb54",
         "report_sha256": "7141e301c580d024812de74baa091c46dd7aa2557fa8e967d3c0d7f8fb9952f7",
         "source_pack_sha256": "b880a30307062d26883a71337a00d6025c9f8c4a1cee2c29679d6cb3fa04377d",
-        "estimated_input_ceiling": 58064,
+        "estimated_input_ceiling": 58078,
         "output_reservation": 16384
       }
     ],
+    "worker_response_mode": "necessity-candidate-v1",
     "provider_requests": 0,
     "authorized": false,
+    "execution_ready": false,
     "semantic_improvement_proven": false,
     "production_admitted": false,
     "publication_allowed": false
@@ -62,15 +65,35 @@
     "governance": true,
     "original_call_unchanged": true,
     "frozen_execution_head_unchanged": true,
-    "offline_cli_rebuild_exact": true
+    "offline_cli_rebuild_exact": true,
+    "receiver_and_previous_codec_single_entry": {
+      "passed": 129,
+      "seconds": 89.03,
+      "network": "mock HTTP only; actual child and SDK"
+    },
+    "final_policy_candidate_recheck": {
+      "passed": 22,
+      "seconds": 34.2
+    },
+    "export_context_and_natural_binding": {
+      "passed": 2,
+      "seconds": 2.98
+    },
+    "existing_natural_full_chain_repair": {
+      "passed": 1,
+      "seconds": 20.53,
+      "logical_calls": 6,
+      "actual_provider_requests": 0,
+      "scope": "Actual application + owned workers; mocked HTTP, same edited report for both fresh duties."
+    }
   },
   "policy_hypothesis": "Judge the substantive claim/action changed by a proposed repair; do not merely repeat a prohibition. Contrast with explicit causality and unsupported numeric targets.",
   "limitations": [
     "Author-controlled familiar development inputs, not holdout.",
-    "Expected b/c labels are author judgments, not independent full-report acceptance.",
-    "No provider receiver registration or real model semantic improvement.",
     "Old high/max identity discrepancy remains separate; no old receipt is re-admitted.",
-    "Three initial fact reviews are a proposed diagnostic scope, not an authorized or executable paid batch."
+    "Three initial fact reviews are a proposed diagnostic scope, not an authorized or executable paid batch.",
+    "b/c complete source and labels accepted by primary only; no independent Agent full-report acceptance.",
+    "Explicit existing-worker receiver is implemented; live authorization/CI/native operator launcher is not prepared."
   ],
   "new_provider_requests": 0,
   "new_key_reads": 0,
@@ -78,5 +101,11 @@
   "semantic_improvement_proven": false,
   "production_admitted": false,
   "publication_allowed": false,
-  "next_action": "Full-source review of the two controlled report variants and labels, then decide a bounded live comparison using existing owned-worker/native paths; no new generation or automatic 15-case run."
+  "next_action": "Prepare a controlled three-item diagnostic launch using the existing owned-worker/native infrastructure; pin the candidate version, actual authorization scope, receipts and failure/recovery decisions. Do not send requests or reuse the old consumed authorization.",
+  "code_sha256": {
+    "scripts/review_necessity_candidate.py": "e107d172333e284814a8dd0e7d9a83e699cc824b8924e09f484d577e35dcde1e",
+    "scripts/reviewer_responses_process.py": "800f87228f68798834caa188a0d0132d659917479ba44278fc33e34dac2d59c2"
+  },
+  "primary_material_review": "data/evaluation/fixtures/review_necessity_20261023/primary-material-review.json",
+  "primary_material_labels_confirmed": true
 }

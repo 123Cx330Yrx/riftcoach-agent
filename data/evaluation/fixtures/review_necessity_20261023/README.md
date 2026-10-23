@@ -25,6 +25,8 @@
 - `retained-public-review.json`：原公开工具arguments的UTF8原文，SHA32578633。
   两条意见完整保留；不是候选输出或候选正确答案。
 - `evaluation.json`：作者预期、唯一修改锚点、原件摘要和独立诊断checkpoint摘要；只给评测方。
+- `primary-material-review.json`：主线程完整来源复核，覆盖28段、全部知识/事实/用户原话，
+  三份标签维持；中路均值和单局百分比独立重算。不是独立Agent接受或模型结果。
 
 原件来自Operator `riftcoach-sol-reasoning-single-20261022/call`。
 原worker-result SHA b29a4edf；独立诊断checkpoint SHA1355e97a；完整摘要见evaluation。
@@ -35,14 +37,19 @@
 `scripts/review_necessity_candidate.py`是离线请求构造器：复用当前Sol请求，只在facts initial/fresh
 增加同一system政策及独立候选标记；completion的消息保持原样。完整报告、来源、工具schema、
 输出预算、超时与原职责保持。现有Sol旧接收器明确拒绝该候选，旧回放不变；尚未注册到自然任务。
-CLI只生成三份facts-initial完整业务请求及manifest，不生成授权、不读Key、不发送。
+现有owned worker新增显式necessity-candidate-v1模式，父进程与worker都按版本/案例和完整请求重建校验，
+只接受这三份facts-initial。它复用原nonstream codec、SDK、观测、费用与create-only调用目录。
+新模式接线不是费用授权或付费启动入口。CLI生成三份请求、三份无标签validation-context及manifest，
+不生成授权、不读Key、不发送。旧contract政策不改；只刷新当前Sol源码清单中变更的worker指纹，冻结执行树不动。
 `materials/prepare`不读取evaluation或旧意见；删掉这些旁文件后生成字节完全相同。
 
 本地检查覆盖完整来源/知识/用户任务不丢失、原稿恢复、对照仅一处改文、初审/fresh协议保持、
-候选隔离及旧误报仍可通过结构验证。它们不能证明模型语义改善。
+候选隔离及旧误报仍可通过结构验证；实际子进程+SDK模拟HTTP覆盖三案例的high/max/524结果、
+公开意见保留、已知/未知费用、唯一调用目录、无Key落盘，以及请求漂移发送前拒绝。
+129项相关检查通过；之后仅改可选标记的提示写法，候选22项再次通过。它们不能证明模型语义改善。
 
 如果安排真实开发核验，范围为这三份全文的facts-initial，各一次，零新增生成。
-先对b/c及标签做完整来源复核，再复用已有owned worker/native审查路径；不是新造一套harness。
+b/c及标签已完成主线程完整来源复核，未取得独立Agent整稿接受。后续复用已有native审查路径；不是新造一套harness。
 同组GPT-pro/Sol及请求high仍是原讨论组合；high/max身份兼容问题保持独立未解决，
 不得因为保留了公开意见就冒充身份接收或产品采纳。旧授权截止为2026-10-23T03:54:18.433261+00:00，不能移作本候选的新范围授权或自动延展。
 三次每次最多64000输入预留+16384输出，即241152 tokens；按用户确认的0.4/2元每百万tokens

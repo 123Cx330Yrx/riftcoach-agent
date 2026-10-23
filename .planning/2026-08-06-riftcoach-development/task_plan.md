@@ -21,10 +21,11 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 “补丁改变什么实质含义”的判定及虚构物流正反例；不改schema/职责/旧接收器，不按关键词删意见。
 **证据：** 原稿a、只修目标b、再加明确因果错c，完整来源相同、逐处唯一对照；生成不读标签/旧意见。
 7项新隔离/完整性与58项既有职责/补丁测试通过。旧真实误报仍结构合法，程序没有冒充语义裁判。
-**限制：** b/c是作者预期标签，尚无独立整稿接受；模型改善未证，候选未接入付费或产品自然任务。
+**限制：** b/c已由主线程全源核对标签，无独立Agent整稿接受；模型改善未证，候选未接入付费或产品自然任务。
+**接线：** 现有owned worker新增显式候选模式，父/子端均重建核完整请求；high/max/524及拒发/回执129项检查通过。最终提示候选22项、导出/原自然绑定2项通过。
 high/max问题独立未解决；旧UTC授权不延展。Provider/Key新增0，automation PAUSED。
 **失败决策：** 有限实测如仍误报或漏报，否定此提示候选，不继续逐句加字重买；超时保留其他有效观察。
-**下一动作：** 完整来源核对b/c及标签后决定已有owned worker/native路径上的有限开发核验；拟议三份facts
+**下一动作：** 复用已有owned worker/native基础准备受控开发诊断入口，核授权与失败恢复；拟议三份facts
 各一次（非新授权），不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
 **依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
  data/evaluation/results/review_necessity_preparation_20261023.json；独立原诊断checkpoint1355e97a。
@@ -48,7 +49,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：离线必要修订候选及三份完整对照已实现；先核对新对照标签再决定有限实测。
+以canonical和上方工作卡为准：离线必要修订候选及三份完整对照已实现；主线程已核对新对照标签，显式worker绑定已完成；准备受控实测入口。
 当前不等待CI、不输入Key、不重测档位；未证明模型改善。原发布门、8E与后续依赖保持。
 
 ## History

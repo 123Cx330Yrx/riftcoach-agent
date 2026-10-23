@@ -3,6 +3,7 @@ from dataclasses import replace
 import hashlib
 import json
 import socket
+import sys
 
 import pytest
 
@@ -12,6 +13,8 @@ from scripts import review_duty_direct_patch as direct
 from scripts import review_necessity_candidate as candidate
 from scripts.prepare_reviewer_profile_screen import visible, json_value
 from scripts.report_document_view import restore_document
+from scripts import reviewer_responses_process as process
+from scripts.reviewer_responses_transport import Profile
 
 
 @pytest.fixture(autouse=True)
@@ -81,6 +84,9 @@ def test_preparation_does_not_read_evaluator_or_retained_opinion(tmp_path):
     for case in candidate.CASES:
         business = json.loads(files[f'{case}-facts.json'])
         assert business == visible(json_value(candidate.make_request(candidate.materials()[case], 'facts')))
+        context = json.loads(files[f'{case}-validation-context.json'])
+        assert context == dict(version=candidate.VERSION, case=case)
+        candidate.validate_business(business, context)
     assert manifest['provider_requests'] == 0
     assert not any(manifest[k] for k in ('authorized', 'semantic_improvement_proven',
                                        'production_admitted', 'publication_allowed'))
@@ -95,3 +101,77 @@ def test_old_false_positive_still_passes_structure_not_semantics():
     assert [issue.block for issue in wire.issues] == [10, 21]
     assert len(wire.repairs) == 2
     assert not evaluation['semantic_improvement_proven']
+
+
+@pytest.mark.parametrize('fault', ['case', 'version', 'extra', 'report', 'system', 'schema'])
+def test_candidate_binding_rejects_drift_before_claim(tmp_path, fault):
+    context = dict(version=candidate.VERSION, case='a')
+    business = json.loads(candidate.prepare()['a-facts.json'])
+    if fault == 'case':
+        context['case'] = 'b'
+    elif fault == 'version':
+        context['version'] = 'old'
+    elif fault == 'extra':
+        context['expected_answer'] = 'pass'
+    elif fault == 'report':
+        business['messages'][1]['content'] += ' changed'
+    elif fault == 'system':
+        business['messages'][0]['content'] = 'different policy'
+    else:
+        business['tools'][0]['input_schema']['required'] = []
+    directory = tmp_path / 'call'
+    with pytest.raises(ValueError, match='necessity_candidate_'):
+        process.run_once(business, profile=Profile(group='GPT-pro', route='proxy-12000'),
+            api_key='OFFLINE_SENTINEL', directory=directory,
+            response_mode='necessity-candidate-v1', validation_context=context)
+    assert not directory.exists()
+
+
+@pytest.mark.parametrize('case', candidate.CASES)
+@pytest.mark.parametrize('status,effort', [(200, 'high'), (200, 'max'), (524, 'high')])
+def test_candidate_real_owned_worker_sdk_and_receipts(tmp_path, case, status, effort):
+    # Actual worker subprocess and SDK; only HTTP is replaced. The authored
+    # response deliberately includes the old false positive: it must survive.
+    child = '''
+import json,socket
+from pathlib import Path
+import httpx
+from scripts import reviewer_responses_nonstream as codec, reviewer_responses_process as process
+from scripts.review_necessity_candidate import PACKAGE
+from tests.test_reviewer_responses_nonstream import response
+def deny(*args,**kwargs): raise AssertionError('network forbidden')
+socket.socket = socket.create_connection = deny
+review=json.loads((PACKAGE/'retained-public-review.json').read_text(encoding='utf-8'))
+value=response(review)
+value['reasoning']={'effort':EFFORT}
+original=codec.collect
+def collect(*args,**kwargs):
+    return original(*args,**kwargs,transport=httpx.MockTransport(lambda request:
+        httpx.Response(STATUS,stream=httpx.ByteStream(json.dumps(value if STATUS==200 else
+        {'error':'timeout'}).encode()),headers={'content-type':'application/json'})))
+codec.collect=collect
+process.worker()
+'''
+    business = json.loads(candidate.prepare()[f'{case}-facts.json'])
+    directory = tmp_path / 'call'
+    receipt = process.run_once(business, profile=Profile(group='GPT-pro', route='proxy-12000'),
+        api_key='OFFLINE_SENTINEL', directory=directory, timeout_s=30,
+        response_mode='necessity-candidate-v1', validation_context=dict(version=candidate.VERSION, case=case),
+        command=[sys.executable, '-c', f'STATUS={status}\nEFFORT={effort!r}\n'+child])
+    worker = process.read_json(directory / 'worker-result.json')
+    assert receipt['ok'] is (status == 200 and effort == 'high')
+    assert receipt['http_requests'] == 1 and receipt['reaped']
+    assert receipt['usage_state'] == ('known' if status == 200 else 'unknown')
+    assert not receipt['semantic_approval'] and not receipt['qualified']
+    if status == 200:
+        public = worker['public_tool_call'] if effort == 'high' else worker['diagnostic_tool_call']
+        assert json.loads(public['arguments'])['issues'][0]['block'] == 10
+        assert worker['business_validated'] is (effort == 'high')
+        if effort == 'max':
+            assert worker['code'] == 'reasoning_identity'
+            assert public['purpose'] == 'diagnostic_only'
+    with pytest.raises(FileExistsError):
+        process.run_once(business, profile=Profile(group='GPT-pro', route='proxy-12000'),
+            api_key='OFFLINE_SENTINEL', directory=directory,
+            response_mode='necessity-candidate-v1', validation_context=dict(version=candidate.VERSION, case=case))
+    assert 'OFFLINE_SENTINEL' not in ''.join(p.read_text(encoding='utf-8') for p in directory.rglob('*.json'))
