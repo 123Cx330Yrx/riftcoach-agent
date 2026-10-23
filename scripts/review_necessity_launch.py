@@ -98,7 +98,7 @@ def prepare(operator, *, primary, independent):
     for name, raw in files.items():
         with (operator/'requests'/name).open('xb') as stream:
             stream.write(raw)
-    state = dict(phase='ready', next_case='a', attempts=[], reason=None)
+    state = dict(phase='needs_native_preflight', next_case='a', attempts=[], reason=None)
     return dict(save(operator, state, None, inventory(operator)), key_read=False, provider_requests=0)
 
 
@@ -199,10 +199,36 @@ def native_gate(plan, client):
 
 def replay_reviews(plan, state, client):
     gate = native_gate(plan, client)
+    if state.get('native_preflight_accepted'):
+        require(gate.replay(state['native_preflight_handle']), 'native_preflight_changed')
     for row in state['attempts']:
         if row.get('reviewed'):
             require(gate.replay(row['handle']) == row['accepted'], 'review_changed')
     return gate
+
+
+def native_task(operator, plan_sha, checkpoint_sha, client):
+    operator = Path(operator).absolute()
+    with exclusive(operator.with_name(operator.name+'.lock')):
+        plan, state, expected = load(operator, plan_sha, checkpoint_sha)
+        require(state['phase'] == 'needs_native_preflight', 'preflight_already_dispatched')
+        verify_native_principals(client, plan)
+        gate = native_gate(plan, client)
+        material = dict(report='Administrative fixture only; no business verdict or model output.',
+            complete_request={}, public_tool_call=None,
+            instruction='Verify this is an administrative fixture only. Author your own complete JSON '
+                'at the exclusive answer path, check-answer, reread the same checkpoint, then return '
+                'its exact multiline bytes as your single native final. No Provider IO or business acceptance.')
+        marker = digest(material)
+        bound = dict(plan_sha256=plan_sha, key='native-preflight', stage='initial',
+            response_sha256=marker, report_sha256=marker, request_sha256=marker)
+        folder = operator/'native-preflight'
+        state['native_preflight_handle'] = gate.publish(folder, bound, 'opinion', material)
+        state['phase'] = 'awaiting_native_preflight'
+        actual = inventory(operator)
+        require(all(actual.get(k) == v for k, v in expected.items()) and
+                set(actual)-set(expected) == {'native-preflight/'+n for n in REVIEW_FILES}, 'native_task_inventory')
+        return dict(save(operator, state, checkpoint_sha, actual), dispatch_file=str(folder/'dispatch.txt'))
 
 
 def preflight(operator, plan_sha, checkpoint_sha, grant, grant_sha, ci_run, client):
@@ -352,6 +378,16 @@ def submit(operator, plan_sha, checkpoint_sha, client, decision, event_id):
     operator = Path(operator).absolute()
     with exclusive(operator.with_name(operator.name+'.lock')):
         plan, state, expected = load(operator, plan_sha, checkpoint_sha)
+        if state['phase'] == 'awaiting_native_preflight':
+            gate = native_gate(plan, client)
+            accepted = gate.submit(state['native_preflight_handle'], decision, event_id)
+            state['native_preflight_accepted'] = accepted
+            state.update(phase='ready' if accepted else 'stopped',
+                         reason=None if accepted else 'native_preflight_rejected')
+            path = operator/'native-preflight/submission.json'
+            expected[path.relative_to(operator).as_posix()] = sha(path)
+            replay_reviews(plan, state, client)
+            return save(operator, state, checkpoint_sha, expected)
         require(state['phase'] == 'awaiting_review', 'no_pending_review')
         row = state['attempts'][-1]
         gate = replay_reviews(plan, state, client)
@@ -400,7 +436,7 @@ def replay(operator, plan_sha, checkpoint_sha, seal_sha, client):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'check', 'send', 'retry', 'reconcile', 'submit', 'seal', 'replay'])
+    parser.add_argument('action', choices=['prepare', 'check', 'native-task', 'send', 'retry', 'reconcile', 'submit', 'seal', 'replay'])
     parser.add_argument('--operator', required=True, type=Path)
     for name in ('plan-sha', 'checkpoint-sha', 'authorization-sha', 'ci-run', 'primary', 'independent',
                  'event-id', 'seal-sha'):
@@ -418,6 +454,8 @@ def main():
                     replay_reviews(plan, state, client)
                     result = dict(status=status(state), native=verify_native_principals(client, plan),
                                   key_read=False, provider_requests=0)
+                elif args.action == 'native-task':
+                    result = native_task(args.operator, args.plan_sha, args.checkpoint_sha, client)
                 elif args.action in ('send', 'retry'):
                     result = send(args.operator, args.plan_sha, args.checkpoint_sha, args.authorization,
                         args.authorization_sha, args.ci_run, client, retry=args.action == 'retry')

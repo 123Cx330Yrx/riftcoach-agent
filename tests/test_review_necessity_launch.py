@@ -56,6 +56,12 @@ def prepared(tmp_path, monkeypatch):
     monkeypatch.setattr(launch, 'native_gate', lambda plan, client: FakeGate(plan, None, source))
     operator = tmp_path/'operator'
     root = launch.prepare(operator, primary='primary', independent='independent')
+    assert root['status']['phase'] == 'needs_native_preflight'
+    native = launch.native_task(operator, root['plan_sha256'], root['checkpoint_sha256'], None)
+    source.decisions['fixture-preflight'] = {'accepted':True, 'fixture_only':True}
+    root = launch.submit(operator, native['plan_sha256'], native['checkpoint_sha256'], None,
+        {'accepted':True, 'fixture_only':True}, 'fixture-preflight')
+    source.handles.clear()
     now = datetime.now(timezone.utc)
     grant = tmp_path/'authorization.json'
     value = dict(version=launch.VERSION+'-authorization', plan_sha256=root['plan_sha256'],
@@ -243,3 +249,21 @@ def test_source_inventory_does_not_open_untracked_probe(monkeypatch):
         return original(path)
     monkeypatch.setattr(Path, 'read_bytes', guarded)
     assert 'scripts/reviewer_responses_nonstream_probe.py' not in launch.source_identity()['files']
+
+
+def test_native_preflight_is_mandatory_and_cannot_be_redelivered(prepared, monkeypatch):
+    operator, _, grant, source, _ = prepared
+    other = operator.with_name('unreviewed-proposal')
+    root = launch.prepare(other, primary='primary', independent='independent')
+    monkeypatch.setattr(launch, 'hidden_key', lambda: pytest.fail('key before native preflight'))
+    with pytest.raises(ValueError, match='not_ready'):
+        launch.send(other, root['plan_sha256'], root['checkpoint_sha256'], grant,
+                    launch.sha(grant), 'offline-ci', None)
+    task = launch.native_task(other, root['plan_sha256'], root['checkpoint_sha256'], None)
+    with pytest.raises(ValueError, match='preflight_already_dispatched'):
+        launch.native_task(other, task['plan_sha256'], task['checkpoint_sha256'], None)
+    source.decisions['rejected-preflight'] = {'accepted':False, 'fixture_only':True}
+    result = launch.submit(other, task['plan_sha256'], task['checkpoint_sha256'], None,
+        {'accepted':False, 'fixture_only':True}, 'rejected-preflight')
+    assert result['status']['phase'] == 'stopped'
+    assert result['status']['attempts'] == 0

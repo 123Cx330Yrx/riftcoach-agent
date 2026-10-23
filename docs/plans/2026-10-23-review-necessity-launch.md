@@ -46,6 +46,8 @@ claim在worker启动前落盘并输出；中断后不能换目录、重置账目
 | Key提示处取消 | 保留此前checkpoint，可恢复同一未claim项 |
 
 `seal`为Operator内唯一create-only `seal.json`；它可封存部分结果，不把未做项当通过。
+prepare后先停在needs_native_preflight；native-task只建立行政审查夹具，真实原生提交接受后才进入ready。
+这份proof会在每次发送前重新读取作者/原生，不能靠计划里的自报布尔值直接绕过。
 尚有不确定活动claim时拒绝封存，需先核进程及真实回执。`replay`严格只读，要求原seal SHA，
 重核原生/作者及全部库存，不事后重算trust root充当启动时根。临时锁在Operator外，用OS锁，
 进程退出释放，不用PID猜重启状态。锁文件保留给后续恢复，不进入封存库存。
@@ -56,7 +58,7 @@ claim在worker启动前落盘并输出；中断后不能换目录、重置账目
 `check`不读Key、不发请求；业务原生预检仍须真实作者file→check-answer→唯一final→导入，
 历史身份/final可读取不能替代这一过程，也不保证旧Agent仍能被当前协作工具调度。
 
-模块CLI有prepare/check/send/retry/reconcile/submit/seal/replay。send一次只发送当前项，
+模块CLI有prepare/check/native-task/send/retry/reconcile/submit/seal/replay。send一次只发送当前项，
 返回完整dispatch文件路径；操作者原样派发，不从摘要重写。submit须主审自己写decision，
 独立JSON只能来自作者及真实event；禁止操作者代写独立判断。
 submit完成后保存其原stdout checkpoint再用同一入口继续，不根据目录mtime挑根。
