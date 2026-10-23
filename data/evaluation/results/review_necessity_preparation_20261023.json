@@ -11,7 +11,7 @@
     "data/evaluation/fixtures/review_necessity_20261023/c.md": "7141e301c580d024812de74baa091c46dd7aa2557fa8e967d3c0d7f8fb9952f7",
     "data/evaluation/fixtures/review_necessity_20261023/context.json": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
     "data/evaluation/fixtures/review_necessity_20261023/evaluation.json": "77d64e31d68e077c00faa40a34257b5b041b066b19c78aa298f037c29addbdf2",
-    "data/evaluation/fixtures/review_necessity_20261023/README.md": "cf0e8ed9bfd7f0e235381e4bd4e528d0e0b6c76c95dfbbe247a9ae28a5e19d27",
+    "data/evaluation/fixtures/review_necessity_20261023/README.md": "b30826e430e3ec6ae40a04b7024d64fa828ca2b21642eff98416732660e0a7f7",
     "data/evaluation/fixtures/review_necessity_20261023/retained-public-review.json": "32578633da7d0ea99fb878ab3d312ec1053205e20313073ef6e2541c452e2cf4"
   },
   "request_manifest": {
@@ -62,8 +62,7 @@
     "governance": true,
     "original_call_unchanged": true,
     "frozen_execution_head_unchanged": true,
-    "offline_cli_rebuild_exact": true,
-    "committed_material_bytes_match": true
+    "offline_cli_rebuild_exact": true
   },
   "policy_hypothesis": "Judge the substantive claim/action changed by a proposed repair; do not merely repeat a prohibition. Contrast with explicit causality and unsupported numeric targets.",
   "limitations": [
