@@ -1,3 +1,18 @@
+## 2026-10-23 真实行政作者交接与本机启动入口已核
+
+冻结执行树6052be74，Operator outputs/riftcoach-review-necessity-verified-20261023，plan f3c2c586、原submit stdout根09dd5c9e。
+沿用用户已给的独立审查授权，/root/necessity_independent真实作者原件/check-answer/唯一多行native final/主审导入通过；
+CLI check及Windows PowerShell CheckOnly重读真实事件，31件当前/前次行政原件SHA/mtime未变。仅行政预检，无业务接受或模型改善。
+第一次另一检查点作者1895/native1894字节因尾LF不同拒绝，旧原件不改；新行政检查点独立作者无尾LF后逐字节匹配。
+最终15项新入口行为检查由14项75.27秒+新增1项4秒覆盖，mock不作真实语义证据；相邻67过/1失败的源码并发漂移，
+已于干净冻结7e00c163定点复跑1过24.71秒。不是所有相邻项同一次完整重跑，不加总旧重叠测试。
+本机入口缺Get-FileHash改为内置.NET SHA256后，CheckOnly退出0/缺授权退出2；实际生产hidden_key函数配同stdout保存方式，
+Windows PowerShell终端哨兵无回显/零真实Key/零Provider。stdout即时UTF8保存且独立exit保留最初日志SHA。
+当前冻结HEAD CI39895429952最近观测in_progress；不阻挡本地归档。尚无此新范围费用授权，不造approved grant、不读Key。
+下一动作申请三份全文facts诊断及共享一次超时补测，最多4次/321536 tokens/估价0.233472元，非账单硬限。
+high/max仅保留语义诊断后停止，不为档位再买；普通超时保留前项，实质语义错误停候选。旧六项/旧费用/原seal保持，automation PAUSED。
+证据review_necessity_launch_preparation_20261023.json；下列入口尚未预检/无Agent的描述为此前历史阶段。
+
 ## 2026-10-23 三项诊断入口及单项恢复已实现
 
 新增review_necessity_launch，复用owned worker/ExactNativeGate；三项逐份审查、最多一次显式超时补测。

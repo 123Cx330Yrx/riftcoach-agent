@@ -70,3 +70,27 @@ submit完成后保存其原stdout checkpoint再用同一入口继续，不根据
 单项超时保留前项、显式有限补测、high/max诊断后停、语义拒绝、取消/UTC/路径/来源漂移拒发、
 OS互斥、完整回执中断恢复、缺观测停发和只读seal。它们只证明工程控制流，不证明真实语义或原生交接。
 不因fixture里模拟接受就给三份预期标签盖独立审查章。实际预检与准确执行树/根另存准备结果。
+
+## 当前已核入口与恢复用法
+
+执行代码固定在`D:/riftcoach-review-necessity-execution`的6052be74，Python为
+`D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`；精确CI为39895429952，发送前须success。
+当前Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-review-necessity-verified-20261023`，
+同名`-control/start-authorized.ps1`已完成Windows PowerShell本机检查；实际行政作者交接与回查通过。
+plan原根f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e，
+原submit stdout checkpoint为09dd5c9e4610dc80ad421a6b858ede6d36fbfcfdb95cbefa04512826ba7425f8。
+完整路径/作者事件/原stdout SHA见`data/evaluation/results/review_necessity_launch_preparation_20261023.json`。
+
+`start-authorized.ps1 -CheckOnly`零Key/零Provider重读当前真实原生记录；无参数启动在缺少
+`authorization.binding.json`时退出2，尚未创建本候选已批准grant。不是让用户现在输入Key。
+获得具体新费用授权后，绑定文件须记录plan_sha256、authorization_file、authorization_sha256、ci_run；
+入口仍由Python核原grant SHA/范围/真实UTC/精确CI/全部原件，包装文件不代替授权。
+每次只发送当前一项；原stdout JSON即时保存至Control的唯一UTF8文件，exit记录保存该日志最初SHA。
+仅stdout入日志，stdin仍接终端；隐藏输入函数用哨兵真实核过，不记录Key或私有reasoning。
+后续submit原stdout返回新根后，以`-CheckpointSha <该原值>`继续；默认0003根故意不能静默追踪mtime。
+明确超时仅用`-Retry -CheckpointSha <超时命令原stdout值>`；有claim或完整receipt的中断先查原件，
+由CLI reconcile导入已有结果，不能再运行send。不要拿旧入口/首个默认根补发。
+
+本入口已准备不等于模型质量已改善；截至当前新增真实Key/Provider均0。
+早期未执行草稿已标superseded；首次另一行政检查点的尾LF拒收原件保持。
+high/max完整意见仍诊断审完后停，可能只取得部分项，不能承诺三项完整通过或自动升级产品。

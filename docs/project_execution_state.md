@@ -29,9 +29,17 @@ pause_reason: "用户已恢复；单次诊断完成，独立复核确认一条�
 受控启动/恢复层已实现scripts/review_necessity_launch.py，复用owned worker与ExactNativeGate；
 三项逐份审查，显式共享一次超时补测，最多4尝试/321536 tokens；取消不claim，已claim不盲目重发，完整回执中断可只读协调。
 超时保留前项，语义实错停候选；high/max完整意见仅诊断后停，不为档位重买；原费用与seal贯穿核查。
-下一动作：在干净执行树固定计划及原stdout根，完成实际原生作者交接预检并取得此三项的新费用授权。
-旧原生身份/历史final当前可读，协作列表无可复用Agent；尚无本轮真实作者预检或新费用授权，不可填Key启动。
-材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md，结果review_necessity_preparation_20261023.json。
+真实行政作者交接已完成：复用用户此前独立审查授权，当前Agent为/root/necessity_independent；
+作者原件/check-answer/唯一native final/ExactNativeGate导入及主审只读回查通过，不是业务语义接受。
+执行树D:/riftcoach-review-necessity-execution冻结6052be74；有效Operator为outputs/riftcoach-review-necessity-verified-20261023，
+plan f3c2c586、原submit stdout checkpoint 09dd5c9e。只读检查前后31件原件SHA/mtime未变，零尝试/零真实Key/零Provider。
+此前另一行政检查点因作者尾LF与native不同被拒，原件不改、不补签；成功检查点由作者另行独立序列化。
+Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏输入函数哨兵与UTF8日志保存已验证；
+本机缺Get-FileHash的包装问题改为内置.NET SHA256后复测通过。相邻旧测试的源码并发修改失败已在干净固定树定点通过。
+下一动作：取得此三项具体新费用授权，绑定已验证入口；发送前核冻结6052be74的CI39895429952全绿。
+CI最近观测仍in_progress，不阻挡本地准备；当前无新grant，不可填Key启动。普通超时保留前项，high/max仅诊断审完停，不保证三项均执行。
+材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
+旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
 证据：data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。
 以下为已消耗入口的历史准备记录，不再作为启动队列。

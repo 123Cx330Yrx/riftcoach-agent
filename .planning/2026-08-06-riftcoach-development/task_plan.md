@@ -28,11 +28,15 @@ high/max问题独立未解决；旧UTC授权不延展。Provider/Key新增0，au
 **入口：** 已实现review_necessity_launch，复用owned worker/ExactNativeGate；三项各一次，超时保留前项，
 共享至多一次显式补测，完整回执中断只读协调；三项加补测最多4尝试/321536 tokens，估价0.233472元。
 high/max公开意见仅诊断审查后停，不继续为档位购买；语义实错停止该候选，不加字续买。
-**下一动作：** 干净树固定计划和原stdout根，完成真实原生作者交接预检、取得此新范围费用授权后启动。
-旧身份/final可读，但当前协作列表无复用Agent，本轮真实交接尚未完成；不能冒充入口已可付费启动。
+**实际预检：** 干净执行树冻结6052be74，独立Agent /root/necessity_independent已完成真实行政作者原件→check-answer→唯一native final→导入；
+只读回查31件原件SHA/mtime不变，0尝试/真实Key/Provider。首次另一检查点尾LF不符保持拒绝；不修改原件或normalize接受。
+当前plan f3c2c586、原submit stdout checkpoint 09dd5c9e；Windows PowerShell CheckOnly/缺授权拒绝/隐藏哨兵与UTF8日志均已核。
+这是行政交接，b/c仍非独立黄金标签；工程入口通过不证明模型改善。
+**下一动作：** 取得此新范围具体费用授权，绑定已准备入口；真实发送前核冻结6052be74的CI39895429952全绿。
+当前无新grant，不填Key；high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
 不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
 **依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
- data/evaluation/results/review_necessity_preparation_20261023.json；独立原诊断checkpoint1355e97a。
+ data/evaluation/results/review_necessity_launch_preparation_20261023.json；独立原诊断checkpoint1355e97a。
 
 ## Dependencies and Follow-through
 
@@ -53,8 +57,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：离线必要修订候选及三份完整对照已实现；主线程已核对新对照标签，显式worker绑定已完成；准备受控实测入口。
-当前不等待CI、不输入Key、不重测档位；未证明模型改善。原发布门、8E与后续依赖保持。
+以canonical和上方工作卡为准：候选/三稿/worker/有限恢复/真实行政作者交接及本机入口均已验证；
+申请三项加一次显式超时补测的新费用范围，批准后绑定原计划和CI再启动。未授权前不输入Key，未证明模型改善；原发布门、8E与后续依赖保持。
 
 ## History
 
