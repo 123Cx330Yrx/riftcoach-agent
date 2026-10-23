@@ -412,3 +412,8 @@
 /data/evaluation/results/golden_role_containment_result_v1.json text eol=lf
 /data/evaluation/results/golden_role_unexecuted_result_v1.json text eol=lf
 /data/evaluation/results/golden_role_remaining_interruption_v1.json text eol=lf
+
+# Exact source snapshot and author-controlled development contrasts.
+/data/evaluation/fixtures/review_necessity_20261023/** -text
+/scripts/review_necessity_candidate.py text eol=lf
+/tests/test_review_necessity_candidate.py text eol=lf

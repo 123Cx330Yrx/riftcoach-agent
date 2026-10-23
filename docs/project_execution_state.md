@@ -22,7 +22,11 @@ pause_reason: "用户已恢复；单次诊断完成，独立复核确认一条�
 昨天撤回的过早判词保留；今天用完整来源和独立意见确认上述较窄结论，而非恢复错误转述。
 单次诊断HTTP200/90.985秒/31255已知tokens，原JSON与SDK均max，请求high；档位一致性仍未证，
 不再为该元数据购买相同请求。累计7HTTP/111392known/145824unknown/retry1，旧三稿六职责接受保持。
-下一动作：针对“必要修订/可选表达”边界审视最小改进，复用本例和既有正例；再付费前先形成具体可审改动。
+已实现离线隔离候选review_necessity_candidate：facts initial/fresh增加“补丁改变什么实质含义”的判定，
+不改schema/来源/旧合同；三份全文对照为原稿、仅修目标稿、再加明确因果错稿。7项新隔离/完整性检查与58项原职责/补丁回归通过。
+候选不读评测标签或旧意见，旧receiver拒收；本地检查不是模型改善证明，b/c尚无独立整稿接受。
+下一动作：完整来源核对b/c及作者标签，随后决定已有worker/native路径上的有限实测；当前没有新付费入口或新费用授权。
+材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md，结果review_necessity_preparation_20261023.json。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
 证据：data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。
 以下为已消耗入口的历史准备记录，不再作为启动队列。

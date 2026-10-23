@@ -15,17 +15,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 从现有真实回执判断哪些意见可用，排除档位反复重测，修正必要修改边界。
-**已完成：** 同HTTP原JSON/SDK均max；完整公开意见保留。10月23日主审全源重读、算术/锚点复核、
-独立作者→check-answer→唯一native final及主线程原生实读/作者匹配均完成。此处是独立诊断，不是旧批submit。
-**结论：** block10为可选表达误升必要修订；block21任意7.5阈值意见及窄修法有依据。保留有用意见，
-不自动应用整份意见；原六项双审接受保持，不据不同新稿推断模型退步或max致错。
-**现场：** 原seal da687ba3只读replay通过；累计7HTTP/111392known/145824unknown/retry1不变，
-本轮Provider0/Key0。原执行入口已消耗，冻结源码/旧seal保持，无补丁应用/模型fresh/产品资格。
-**下一动作：** 据本真实误报核对必要修订判定的最小改进与既有正例，先给具体改动再考虑付费；
-不因档位重复购买、不重跑原生成和固定六项，复核现有材料不等待新CI。模型/厂商迁移未决定。
-**依据：** sol_reasoning_identity_diagnostic_20261022.json；独立checkpoint1355e97a、作者SHA d6c46965；
-旧准备及诊断分支留在原工作卡历史部分，不再作为执行队列。automation保持PAUSED。
+**目标：** 减少把可选表达升为必要修订的误报，同时保留真错检出，不重跑原生成。
+**起点：** 全源与独立诊断确认block10误报、block21阈值问题有效；原六项接受保持，旧seal不变。
+**实现：** 离线隔离候选scripts/review_necessity_candidate.py复用现有Sol请求，在facts initial/fresh引入
+“补丁改变什么实质含义”的判定及虚构物流正反例；不改schema/职责/旧接收器，不按关键词删意见。
+**证据：** 原稿a、只修目标b、再加明确因果错c，完整来源相同、逐处唯一对照；生成不读标签/旧意见。
+7项新隔离/完整性与58项既有职责/补丁测试通过。旧真实误报仍结构合法，程序没有冒充语义裁判。
+**限制：** b/c是作者预期标签，尚无独立整稿接受；模型改善未证，候选未接入付费或产品自然任务。
+high/max问题独立未解决；旧UTC授权不延展。Provider/Key新增0，automation PAUSED。
+**失败决策：** 有限实测如仍误报或漏报，否定此提示候选，不继续逐句加字重买；超时保留其他有效观察。
+**下一动作：** 完整来源核对b/c及标签后决定已有owned worker/native路径上的有限开发核验；拟议三份facts
+各一次（非新授权），不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
+**依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
+ data/evaluation/results/review_necessity_preparation_20261023.json；独立原诊断checkpoint1355e97a。
 
 ## Dependencies and Follow-through
 
@@ -46,8 +48,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-以canonical和上方工作卡为准：诊断已完成，一条误报/一条有用意见已独立复核；先修必要修改判定的具体机制，
-复用既有材料，不再等待CI/输入Key/重测档位。原发布门、8E与后续依赖保持。
+以canonical和上方工作卡为准：离线必要修订候选及三份完整对照已实现；先核对新对照标签再决定有限实测。
+当前不等待CI、不输入Key、不重测档位；未证明模型改善。原发布门、8E与后续依赖保持。
 
 ## History
 
