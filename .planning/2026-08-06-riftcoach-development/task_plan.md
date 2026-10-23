@@ -25,8 +25,12 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 **接线：** 现有owned worker新增显式候选模式，父/子端均重建核完整请求；high/max/524及拒发/回执129项检查通过。最终提示候选22项、导出/原自然绑定2项通过。
 high/max问题独立未解决；旧UTC授权不延展。Provider/Key新增0，automation PAUSED。
 **失败决策：** 有限实测如仍误报或漏报，否定此提示候选，不继续逐句加字重买；超时保留其他有效观察。
-**下一动作：** 复用已有owned worker/native基础准备受控开发诊断入口，核授权与失败恢复；拟议三份facts
-各一次（非新授权），不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
+**入口：** 已实现review_necessity_launch，复用owned worker/ExactNativeGate；三项各一次，超时保留前项，
+共享至多一次显式补测，完整回执中断只读协调；三项加补测最多4尝试/321536 tokens，估价0.233472元。
+high/max公开意见仅诊断审查后停，不继续为档位购买；语义实错停止该候选，不加字续买。
+**下一动作：** 干净树固定计划和原stdout根，完成真实原生作者交接预检、取得此新范围费用授权后启动。
+旧身份/final可读，但当前协作列表无复用Agent，本轮真实交接尚未完成；不能冒充入口已可付费启动。
+不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
 **依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
  data/evaluation/results/review_necessity_preparation_20261023.json；独立原诊断checkpoint1355e97a。
 

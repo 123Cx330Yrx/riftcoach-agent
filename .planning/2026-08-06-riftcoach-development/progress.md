@@ -1,3 +1,13 @@
+## 2026-10-23 三项诊断入口及单项恢复已实现
+
+新增review_necessity_launch，复用owned worker/ExactNativeGate；三项逐份审查、最多一次显式超时补测。
+14项新入口回归通过（67.49秒）：真实worker/SDK配mock HTTP与标识FakeGate，覆盖前项保留、显式补测、
+完整回执中断协调不重发、身份/语义/观测硬停、取消/UTC/路径/源码拒发、OS锁和只读seal。不证明模型改善或真实原生交接。
+旧原生身份/历史final只读查证可用，当前协作列表仅主线程；本轮尚无真实作者预检，不新建Agent冒充已获此任务授权。
+旧seal da687ba3原件只读保持，新增Provider/Key0，automation PAUSED。计划见2026-10-23-review-necessity-launch.md。
+扩展相邻回归67通过/1失败（276.13秒）；失败为测试期间入口源码继续修改触发batch_sources_changed，
+须在冻结树定点复测。最终closure状态改为closed后，三项顺序/封存只读整链1项通过（29.33秒）。
+
 ## 2026-10-23 标签核对与现有worker候选接线完成
 
 主线程完整重读三稿28段、全部事实/知识/用户原话，重算中路CS8.91/8.81/9.01及单局百分比；标签维持。

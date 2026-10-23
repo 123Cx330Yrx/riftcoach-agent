@@ -26,7 +26,11 @@ pause_reason: "用户已恢复；单次诊断完成，独立复核确认一条�
 不改schema/来源/旧合同；三份全文对照为原稿、仅修目标稿、再加明确因果错稿。7项新隔离/完整性检查与58项原职责/补丁回归通过。
 候选不读评测标签或旧意见，旧receiver拒收；本地检查不是模型改善证明，b/c主线程全文/完整来源核对通过，仍无独立Agent整稿接受。
 已接入现有owned worker显式necessity-candidate-v1模式，父/子双端完整请求绑定；129项相关检查通过，最终提示22项复核及导出/原自然绑定2项通过。
-下一动作：复用已有worker/native基础准备受控三项开发诊断入口，明确真实授权及失败恢复分支；当前没有可启动的付费入口或新费用授权。
+受控启动/恢复层已实现scripts/review_necessity_launch.py，复用owned worker与ExactNativeGate；
+三项逐份审查，显式共享一次超时补测，最多4尝试/321536 tokens；取消不claim，已claim不盲目重发，完整回执中断可只读协调。
+超时保留前项，语义实错停候选；high/max完整意见仅诊断后停，不为档位重买；原费用与seal贯穿核查。
+下一动作：在干净执行树固定计划及原stdout根，完成实际原生作者交接预检并取得此三项的新费用授权。
+旧原生身份/历史final当前可读，协作列表无可复用Agent；尚无本轮真实作者预检或新费用授权，不可填Key启动。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md，结果review_necessity_preparation_20261023.json。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
 证据：data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。

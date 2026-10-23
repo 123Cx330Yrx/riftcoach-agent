@@ -417,3 +417,6 @@
 /data/evaluation/fixtures/review_necessity_20261023/** -text
 /scripts/review_necessity_candidate.py text eol=lf
 /tests/test_review_necessity_candidate.py text eol=lf
+/scripts/review_necessity_launch.py text eol=lf
+/tests/test_review_necessity_launch.py text eol=lf
+/docs/plans/2026-10-23-review-necessity-launch.md text eol=lf
