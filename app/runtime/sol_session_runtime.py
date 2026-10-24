@@ -104,6 +104,11 @@ class SessionBudget(CoachBudgetedProvider):
                         value['reaped_timeout'] = dict(role=role, ordinal=self.calls,
                             issued_raw=contract.request_bytes(issued).decode('utf-8'),
                             receipt_sha256=selected.last_failure['receipt_sha256'])
+                    elif (callable(getattr(selected, 'recoverable_format', None))
+                            and selected.recoverable_format(error, issued)):
+                        value['recoverable_format'] = dict(role=role, ordinal=self.calls,
+                            issued_raw=contract.request_bytes(issued).decode('utf-8'),
+                            receipt_sha256=selected.last_failure['receipt_sha256'])
                 return value
             exchange = self.provider.last_exchange
             if not isinstance(exchange, Exchange) or exchange.response is not response:
@@ -116,6 +121,9 @@ class SessionBudget(CoachBudgetedProvider):
             value, replayed = self.session.operation('model', normalized, send)
             if replayed:
                 self.restore(value['budget'])
+            if value.get('recoverable_format') is not None:
+                self._manual_retry(value, format_repair=True)
+                continue
             if value.get('reaped_timeout') is None:
                 break
             self._manual_retry(value)
@@ -133,7 +141,7 @@ class SessionBudget(CoachBudgetedProvider):
         self._exchange = Exchange(issued, response, value['receipt_request_sha256'])
         return response
 
-    def _manual_retry(self, failed):
+    def _manual_retry(self, failed, *, format_repair=False):
         """Append one human-triggered decision, then replay the same logical call.
 
         The failure was classified while its original exception and immutable
@@ -142,16 +150,19 @@ class SessionBudget(CoachBudgetedProvider):
         """
         session, router = self.session, self.router
         previous = session.root/'operations'/f'{session.cursor:04d}-result.json'
+        failure_key = 'recoverable_format' if format_repair else 'reaped_timeout'
         bound = dict(failed_result_sha256=digest(previous.read_bytes()),
-            timeout=failed['reaped_timeout'], budget=failed['budget'])
+            **{'format' if format_repair else 'timeout': failed[failure_key]}, budget=failed['budget'])
+        attempt = failed[failure_key]
         next_path = session.root/'operations'/f'{session.cursor+1:04d}-intent.json'
         if not next_path.exists():
             if session.read_only or not session.manual_retry:
-                raise SessionPaused('session_timeout_awaiting_manual_retry')
+                raise SessionPaused('session_format_awaiting_manual_retry' if format_repair
+                                    else 'session_timeout_awaiting_manual_retry')
             limits = self.contract_module.CONTRACT.descriptor()
             from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
             from app.runtime.sol_session_receipts import request_from_raw
-            request = request_from_raw(bound['timeout']['issued_raw'])
+            request = request_from_raw(attempt['issued_raw'])
             reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
             if (self.calls >= limits['max_calls'] or router._retries >= limits['transport_retries']
                     or self.tokens+self.reserved_tokens+reservation > limits['total_tokens']
@@ -162,7 +173,7 @@ class SessionBudget(CoachBudgetedProvider):
             from app.runtime.sol_session_receipts import request_from_raw
             # Consume the manual flag once, even if this attempt times out too.
             session.manual_retry = False
-            router._retry_request = request_from_raw(bound['timeout']['issued_raw'])
+            router._retry_request = request_from_raw(attempt['issued_raw'])
             router._retries += 1
             router._failed = self.stopped = False
             if hasattr(router.generator, '_failed'):

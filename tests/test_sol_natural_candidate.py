@@ -49,6 +49,13 @@ def collect(business,**kwargs):
     if MODE == 'non_tool':
         value['output'] = [dict(type='message', status='completed',
             content=[dict(type='output_text', text='OFFLINE_TEXT_ONLY', annotations=[])])]
+    if MODE == 'mixed_tool':
+        value['output'].append(dict(type='message', role='assistant', status='completed',
+            content=[dict(type='output_text', text='OFFLINE_IGNORED_MESSAGE', annotations=[])]))
+    if MODE == 'bad_json':
+        value['output'][0]['arguments'] = '{'
+    if MODE == 'two_tools':
+        value['output'] *= 2
     if MODE == 'wrong_model':
         value['model'] = 'offline-other-model'
     if MODE == 'reasoning_conflict':

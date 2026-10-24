@@ -203,7 +203,7 @@ def test_execution_checks_fail_before_claim_and_keys(tmp_path, monkeypatch, fail
     assert not (Path(p['operator'])/'execution').exists()
 
 
-@pytest.mark.parametrize('necessity', [False, True])
+@pytest.mark.parametrize('necessity', [False, True, 'format'])
 def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path, monkeypatch, necessity):
     from tests.test_sol_natural_candidate import application
     from app.runtime import sol_natural_provider
@@ -226,8 +226,9 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
     factories, requests = [], []
     def factory(**kwargs):
         assert kwargs['contract_module'] is candidate
-        statuses = (524,) if necessity and len(factories) == 1 else ()
-        _, value, _, calls = application(Path(p['operator'])/'execution', candidate=candidate, statuses=statuses)
+        statuses = (524,) if necessity is True and len(factories) == 1 else ()
+        mode = 'non_tool' if necessity == 'format' and len(factories) == 1 else 'repair'
+        _, value, _, calls = application(Path(p['operator'])/'execution', candidate=candidate, statuses=statuses, mode=mode)
         factories.append(value)
         requests.append(calls)
         return value
@@ -253,7 +254,7 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
         roots = dict(guard=receipts[-1]['guard_sha256'], checkpoint=receipts[-1]['checkpoint_sha256'])
         if result['phase'] == 'closed':
             break
-        if result['reason'] == 'session_timeout_awaiting_manual_retry':
+        if result['reason'] in ('session_timeout_awaiting_manual_retry', 'session_format_awaiting_manual_retry'):
             timeouts += 1
             key_count = len(keys)
             again = launch.execute(p, pin, native, **common, **roots)
@@ -281,14 +282,14 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
         roots = dict(guard=receipts[-1]['guard_sha256'], checkpoint=receipts[-1]['checkpoint_sha256'])
     assert result['phase'] == 'closed'
     assert stages == ['facts-initial', 'completion-initial', 'compatibility', 'edit', 'facts-fresh', 'completion-fresh']
-    assert timeouts == int(necessity)
-    assert sum(map(len, requests)) == 4+int(necessity)
+    assert timeouts == int(bool(necessity))
+    assert sum(map(len, requests)) == 4+int(bool(necessity))
     assert sum(len(f.providers[p['run_id']].generator.requests) for f in factories) == 2
     assert len(list((Path(p['operator'])/'execution/journal').glob('application.json'))) == 1
     calls_before = sum(map(len, requests))
     replayed = launch.replay(p, pin, native, authorization_sha=authorization_sha, **roots)
-    assert replayed['strict_replay'] and replayed['accounting']['calls'] == 6+int(necessity)
-    assert (replayed['accounting']['reserved_tokens'] > 0) is necessity
+    assert replayed['strict_replay'] and replayed['accounting']['calls'] == 6+int(bool(necessity))
+    assert (replayed['accounting']['reserved_tokens'] > 0) is (necessity is True)
     assert replayed['native_reviews'] == 6
     assert sum(map(len, requests)) == calls_before
     sealed = launch.seal(p, pin, native, authorization_sha=authorization_sha, **roots)

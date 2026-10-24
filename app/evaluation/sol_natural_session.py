@@ -393,5 +393,6 @@ class CandidateSession:
         value = json.loads(last.read_bytes())['value'] if last and last.exists() else None
         return dict(operations=len(paths), unresolved=pending,
             timeout_waiting=isinstance(value, dict) and value.get('reaped_timeout') is not None,
+            format_waiting=isinstance(value, dict) and value.get('recoverable_format') is not None,
             closed=(self.root/'terminal.json').exists(), guard_sha256=self.guard_sha,
             checkpoint_sha256=self.checkpoint_sha, publication_allowed=False, production_admitted=False)

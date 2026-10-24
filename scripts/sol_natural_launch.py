@@ -391,8 +391,10 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
             status = session.status()
             if status['closed'] or status['unresolved']:
                 raise SessionBlocked('launch_closed_or_unresolved_no_send')
-            if manual_retry and (guard is None or not status['timeout_waiting']):
-                raise SessionBlocked('launch_manual_retry_requires_paused_timeout')
+            if manual_retry and (guard is None or not (status['timeout_waiting'] or status['format_waiting'])):
+                raise SessionBlocked('launch_manual_retry_requires_paused_failure')
+            if status['format_waiting'] and not manual_retry:
+                raise SessionPaused('session_format_awaiting_manual_retry')
             if status['timeout_waiting'] and not manual_retry:
                 raise SessionPaused('session_timeout_awaiting_manual_retry')
             verify_derived(plan, session)

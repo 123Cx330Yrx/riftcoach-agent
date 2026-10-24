@@ -18,6 +18,7 @@ from scripts import reviewer_responses_transport as stream
 from scripts.stream_observation import StreamObservation
 
 MODE = 'nonstream-tool-v1'
+TOOL_WITH_MESSAGE = 'single-tool-with-message-v2'
 MAX_INPUT = 64000
 MAX_OUTPUT = 16384
 KNOWN_EFFORTS = frozenset(('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra'))
@@ -135,13 +136,15 @@ def decode_observation(raw, parsed):
         raw_reasoning_effort_detail=reasoning_effort_detail(raw))
 
 
-def inspect_response(response, business):
+def inspect_response(response, business, *, output_policy=MODE):
     """Separate body-free observations, diagnostic public tool and admission.
 
     `reported_completed` is a provider terminal claim, not business acceptance.
     `function_calls` counts candidates, not validated calls. Known usage survives
     model, terminal, output, schema and business failures; it is not a bill.
     """
+    if output_policy not in (MODE, TOOL_WITH_MESSAGE):
+        raise ValueError('nonstream_output_policy')
     wire = build_wire(business)
     value = mapping(response)
     observation = dict(response_received=value is not None, terminal_status=None,
@@ -200,7 +203,10 @@ def inspect_response(response, business):
         return reject('usage_over_budget')
     if not isinstance(output, list):
         return reject('output_shape')
-    if counts['message'] or counts['other']:
+    # Only the selected tool arguments are business output. Accompanying
+    # messages are counted but never retained or executed under the explicit
+    # v2 policy. Unknown items still reject; legacy v1 remains strict.
+    if counts['other'] or (counts['message'] and output_policy == MODE):
         return reject('non_tool_output')
     if len(calls) != 1:
         return reject('single_tool_required')
@@ -219,7 +225,7 @@ def inspect_response(response, business):
 
 
 def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
-            on_usage=lambda value: None, transport=None):
+            on_usage=lambda value: None, transport=None, output_policy=MODE):
     """Internal worker body. Only the owned supervisor supplies a hard deadline."""
     wire = build_wire(business)
     if not isinstance(profile, stream.Profile) or profile.route != 'proxy-12000':
@@ -229,7 +235,7 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
     if type(timeout_s) not in (int, float) or not math.isfinite(timeout_s) or not 0 < timeout_s <= 300:
         raise stream.TransportError('timeout_invalid')
     observer = StreamObservation(observation_dir)
-    result = inspect_response(None, business)
+    result = inspect_response(None, business, output_policy=output_policy)
     result.update(code='request_failed', failure_category=None, usage_conflict=False)
     client = None
     try:
@@ -248,7 +254,7 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
         body_sha = hashlib.sha256(raw_http.content).hexdigest()
         observer.update(response_decode=decode_observation(raw_value, None), response_body_sha256=body_sha)
         response = raw_response.parse()
-        result.update(inspect_response(response, business))
+        result.update(inspect_response(response, business, output_policy=output_policy))
         result['response_observation']['decode'] = decode_observation(raw_value, response)
         result['response_observation']['response_body_sha256'] = body_sha
         observer.update(response_decode=result['response_observation']['decode'])

@@ -16,8 +16,8 @@ from scripts.reviewer_responses_transport import Profile
 
 VERSION = 'natural-flash-sol-necessity-development-v1'
 CONTEXT = 'sol_necessity_validation'
-RESPONSE_MODE = 'natural-sol-necessity-v1'
-REVIEW_TRANSPORT = 'natural-sol-necessity-nonstream-v1'
+RESPONSE_MODE = 'natural-sol-necessity-v2'
+REVIEW_TRANSPORT = 'natural-sol-necessity-nonstream-v2'
 REVIEW_PROFILE = Profile(group='GPT-企业专线', route='proxy-12000')
 FRESH_REVIEW_RESERVATION = 80384
 ROOT, legacy = baseline.ROOT, baseline.legacy
@@ -93,6 +93,8 @@ class NecessityNaturalContract(baseline.SolNaturalContract):
         value.update(contract_id=VERSION, component_contract=VERSION,
             transport_retries=4, execution_timeout_s=3600,
             transport_retry_mode='manual-reaped-timeout-v1',
+            output_policy='single-tool-with-message-v2',
+            output_recovery_mode='manual-reaped-format-v1',
             necessity_policy_sha256=hashlib.sha256(NECESSITY_POLICY.encode('utf-8')).hexdigest(),
             review_profile=dict(group=REVIEW_PROFILE.group, route=REVIEW_PROFILE.route),
             review_prices_cny_per_million=dict(input='0.5', output='2.5'))
@@ -118,7 +120,7 @@ class NecessityNaturalContract(baseline.SolNaturalContract):
         return values
 
 
-CONTRACT = NecessityNaturalContract(version='1.6.3')
+CONTRACT = NecessityNaturalContract(version='1.6.4')
 
 
 def component_fingerprints(skill):

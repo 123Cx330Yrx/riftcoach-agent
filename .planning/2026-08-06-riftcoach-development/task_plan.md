@@ -15,17 +15,17 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 把已测必要修订政策接回自然任务，并把下一次实测准备到能保留成功项、手动恢复普通超时的具体入口。
-2026-10-24真实执行最新：Flash检索/生成与Sol facts-initial均已正常返回，3HTTP/45060已知tokens/0未知预留/0重试。
-Sol本次HTTP200、模型及high档位匹配；公开意见两项必要修订：block18薇古丝禁用率3%应为4%，并把含艾尼维亚的错误“赢局英雄”范围改为“中单英雄”。
-主审与既有独立作者分别实读完整27段/全部来源/政策/公开意见及逐字补丁，均接受；真实native事件和run外作者字节逐字一致，submit已导入。
-事实初审意见获接受，不等于报告已改好：尚未completion-initial、compatibility/edit、唯一应用或同稿双fresh；未授产品及15项资格。
-首stdout/exit信任根保留；guard5668400a，最新0029根c7fa485a；原冻结执行树2b14583e保持clean，不重开或重发前三项。
-续接Control/resume-authorized.ps1已实际CheckOnly通过，未读Key/未新增Provider；待审未导入时也实测在读Key前拒绝。
-**下一动作：** 用户运行outputs/riftcoach-sol-necessity-natural-20261024-control/resume-authorized.ps1，重新隐藏输入企业Key，沿原session执行completion-initial并再次双审。
-这是原授权内续接，不是超时重试或新批；原grant125005b2/plan a9ccbca1、2026-10-25T08:58:07.794391Z截止及10HTTP/739840tokens/3600秒包络保持。
-普通已回收超时仍保留成功项并手动补当前阶段；身份/来源/协议/语义硬错按原判据处理。automation不恢复。
-证据data/evaluation/results/sol_necessity_natural_first_review_20261024.json；旧封存/费用/阶段8E及下游依赖保持。
+**目标：** 修复格式拒收与暂停恢复，保留自然任务成功前缀；分别处理已发现的完成度语义误报。
+2026-10-24当前：第四次completion-initial为HTTP200、模型/high匹配，21531已知tokens；接收器因唯一有效工具伴随message而误拒收，并在用户新指令到达前按旧规则关闭。
+累计4HTTP/66591known/0unknown/0重试；前三次与facts双审保留，未应用补丁、未发送fresh，不是整批成果作废或完整链路通过。
+主审与既有独立作者另审保留意见：OP.GG数字未连具体行动是真缺口；个人参赛归属误报、删正确8.7–9.0/≤3观察参照，故整份completion意见不接受。
+真实native及作者字节已在Control外层诊断逐字导入，不补签原闭批；原guard5668400a/checkpoint0041 aa3c2816/seal24172c4f及冻结2b14583e clean保持。
+按用户新要求修复格式恢复：开发合同1.6.4显式采用唯一工具+伴随message容错，纯文本/缺工具/坏JSON暂停，普通resume不重发，手动仅重试当前项并保留费用/成功前缀。
+身份/档位/来源/观测/多工具/坏补丁和语义错误仍分别处理，不将语义错误伪装为格式补测。新增15项真实worker/Runtime/session检查及132项相关接收/合同/launcher回归通过；7份受影响配置启动、编译与diff检查通过。
+**下一动作：** 用已保留误报与正确对照检验完成度必要修订判定机制，先确定有证据的修法，再准备从该职责续接；不重买前三次，不运行15项。
+当前不需填Key，旧resume入口因已闭批继续拒发。原grant截止及预算不重置；automation保持PAUSED。
+证据data/evaluation/results/sol_necessity_format_recovery_20261024.json；工作卡docs/plans/2026-10-24-sol-output-format-recovery.md。
+旧封存/费用、阶段8E及自然Coach/Training、四块/journal、前端、Memory、身份运维、两树整合、独立评估、学习和6对5调用依赖保持。
 
 ## Dependencies and Follow-through
 
@@ -45,9 +45,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-本次自然任务前三次真实请求正常完成，facts-initial已获主审及独立审查接受并导入。
-下一步运行已实核resume-authorized.ps1，隐藏输入企业Key后沿原session继续completion-initial；不重买生成或事实初审。
-原授权截止、阶段及下游依赖保持；整稿/实际修订/同稿fresh尚未完成。
+下一步以真实完成度误报和正确对照检验必要修订判定机制；格式恢复工程验证见当前工作卡。
+不重跑成功前三项，不改闭批原件或补签坏意见，当前无需Key。
 
 ## History
 

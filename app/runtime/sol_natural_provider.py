@@ -259,6 +259,37 @@ class SolReviewProvider:
                   and (obs.get('response_status') in (408, 504, 524)
                        or r.get('failure_category') in ('connect_timeout', 'read_timeout')))))
 
+    def recoverable_format(self, error, request):
+        """A complete, identity-matched response may pause for format repair.
+
+        This never approves the retained opinion or silently sends a retry.
+        Multiple/unknown tools, business-invalid patches and identity failures
+        are not classified as formatting. Original usage and receipts survive.
+        """
+        if (self.contract_module.CONTRACT.descriptor().get('output_recovery_mode')
+                != 'manual-reaped-format-v1' or self.response_mode != 'natural-sol-necessity-v2'
+                or self.failure_usage(error, request) is None):
+            return False
+        failure = self.last_failure
+        directory = failure['directory']
+        receipt = read_json(directory / 'receipt.json') or {}
+        worker = read_json(directory / 'worker-result.json') or {}
+        observation = read_json(directory / 'observation/observation.json') or {}
+        response = observation.get('response_contract') or {}
+        counts = response.get('output_type_counts') or {}
+        code = worker.get('code')
+        return bool(receipt.get('code') == 'worker_rejected' and receipt.get('worker_exit') == 0
+            and receipt.get('worker_code') == code and worker.get('ok') is False
+            and worker.get('business_validated') is False
+            and worker.get('public_tool_call') is None
+            and observation.get('closed') is True and observation.get('exception_type') is None
+            and response.get('terminal_status') == 'completed'
+            and response.get('reasoning_echo') not in ('conflict', 'malformed')
+            and (response.get('decode') or {}).get('identity_fields_equal') is True
+            and counts.get('other') == 0
+            and ((code == 'single_tool_required' and counts.get('function_call') == 0)
+                 or (code == 'tool_schema_invalid' and counts.get('function_call') == 1)))
+
 
 class SolNaturalProvider(RoleRoutedProvider):
     provider_name, model_name, thinking_profile_id = contract.PROVIDER, contract.MODEL, contract.PROFILE

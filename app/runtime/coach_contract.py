@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2", "recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1", "natural-flash-sol-development-v1", "natural-flash-sol-necessity-development-v1"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5", "1.5.6", "1.6.0", "1.6.1", "1.6.2", "1.6.3"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5", "1.5.6", "1.6.0", "1.6.1", "1.6.2", "1.6.3", "1.6.4"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -491,7 +491,7 @@ LEGACY_ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.0")
 
 
 def require_coach_contract(value):
-    if getattr(value, 'version', None) == '1.6.3':
+    if getattr(value, 'version', None) in ('1.6.3', '1.6.4'):
         from app.evaluation.sol_necessity_contract import CONTRACT as necessity_natural
         if value is necessity_natural:
             return value
@@ -511,9 +511,9 @@ def require_coach_contract(value):
 def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     require_coach_contract(contract)
-    if contract.version == '1.6.3':
+    if contract.version in ('1.6.3', '1.6.4'):
         return ComponentFingerprint(component_id='coach_execution_contract',
-            source='app.evaluation.sol_necessity_contract:v1.6.3', sha256=contract.snapshot().sha256)
+            source='app.evaluation.sol_necessity_contract:v'+contract.version, sha256=contract.snapshot().sha256)
     if contract.version == '1.6.2':
         return ComponentFingerprint(component_id='coach_execution_contract',
             source='app.evaluation.sol_natural_contract:v1.6.2', sha256=contract.snapshot().sha256)
