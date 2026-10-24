@@ -44,8 +44,12 @@ Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏�
 原stdout/exit SHA核验及checkpoint77132319只读回查通过；phase=retry_available，不封批、不重发、不作语义失败。
 旧524耗时128.890/128.282秒，另两次完整HTTP200为60.516/90.985秒；相近超时窗口支持远端等待限制解释，
 但具体网关/排队/模型耗时尚不能区分。非流式长请求是否能在该窗口完成未知，单纯提高本地超时不能修远端524。
-下一动作：保留一次已授权显式补测额度与原根，避免无改善证据就原样重发；当前不读Key、不发第二请求，
-向用户说明补测仍可能超时，不把重试可执行等同值得立即购买。证据review_necessity_timeout_20261024.json。
+用户随后明确允许多次补测、要求先准备第一次；本次优先沿用原grant尚余的一次，不改冻结代码/原回执/期限。
+第一次补测入口同名-control/retry-first.ps1已固定原超时stdout根77132319，完整授权/CI/native/来源前检与
+Windows PowerShell CheckOnly均通过，原Operator/作者库存未变、补测尚未发送。下一动作：用户隐藏输入Key发首次补测a。
+多次手动补测的用户决定已单独保存；现有冻结执行器仍只支持共享一次，扩展尚未实现，不能宣称已取消全部限制；
+若需再次恢复，须从真实新回执续接、保留累计known/unknown，不因次数耗尽作废已有结果，也不自动循环购买。
+超时仍可能重复，不保证恢复；本轮准备0新HTTP/真实Key。证据review_necessity_first_retry_preparation_20261024.json。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
