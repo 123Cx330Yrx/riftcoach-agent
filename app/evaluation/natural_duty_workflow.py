@@ -103,8 +103,9 @@ class NaturalDutyWorkflow:
             budget = self.send.provider
             if budget.contract.descriptor()['max_calls'] - budget.calls < 2:
                 return self.stop('insufficient_fresh_call_slots')
-            if (self.contract_module.VERSION == 'natural-flash-sol-development-v1'
-                    and budget.tokens + budget.reserved_tokens + 2 * 80384 > budget.contract.descriptor()['total_tokens']):
+            fresh_reservation = getattr(self.contract_module, 'FRESH_REVIEW_RESERVATION', 0)
+            if (fresh_reservation and budget.tokens + budget.reserved_tokens + 2 * fresh_reservation
+                    > budget.contract.descriptor()['total_tokens']):
                 return self.stop('insufficient_fresh_token_budget')
             self.assembly = direct.preview(inputs, self.proposals)
             self.expected_fresh = report_inputs(inputs, self.assembly.report)

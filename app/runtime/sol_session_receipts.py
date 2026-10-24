@@ -18,12 +18,15 @@ def request_from_raw(raw):
     return replace(value, **{k: original[k] for k in ('timeout_s', 'temperature', 'top_p')})
 
 
-def recover_success(root, intent, attempt):
+def recover_success(root, intent, attempt, *, contract_module=None):
+    from app.runtime.sol_natural_provider import selected_contract
+    contract = selected_contract(contract_module)
     request = request_from_raw(attempt['issued_raw'])
     role = contract.role_for_request(request)
     ordinal = attempt['ordinal']
     before = attempt['budget_before']
-    if ordinal != before['calls']+1 or ordinal != before['router_calls']+1 or not 1 <= ordinal <= 7:
+    if (ordinal != before['calls']+1 or ordinal != before['router_calls']+1
+            or not 1 <= ordinal <= contract.CONTRACT.descriptor()['max_calls']):
         raise ValueError('session_attempt_ordinal_binding')
     prepared = REQUEST.validate_json(json.dumps(intent['request']))
     expected = replace(prepared, timeout_s=request.timeout_s,
@@ -33,7 +36,8 @@ def recover_success(root, intent, attempt):
         raise ValueError('session_attempt_request_binding')
     if role == 'review':
         provider = SolReviewProvider(api_key='', directory=root/'review', task_directory=root,
-                                    sender=lambda *a, **k: (_ for _ in ()).throw(AssertionError('recovery IO')))
+                                    sender=lambda *a, **k: (_ for _ in ()).throw(AssertionError('recovery IO')),
+                                    contract_module=contract)
         response = provider.read_completed_at_ordinal(request, ordinal=ordinal, role=role)
         elapsed = read_json(root/'review'/f'call-{ordinal:03d}'/'receipt.json')['elapsed_s']
         allowed = {f'review/call-{ordinal:03d}/{name}' for name in (

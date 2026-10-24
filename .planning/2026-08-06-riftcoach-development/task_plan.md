@@ -15,21 +15,20 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 把已取得三项正向开发证据的必要修订政策接回现有自然任务路径，避免只在固定请求上有效。
-**刚完成：** a检出任意门槛、b正确全文不误报、c检出明确因果真错；三项完整意见/建议补丁均双审接受，真实作者及唯一native逐字导入。
-企业三次46.797/31.328/35.156秒完整200/high；累计4HTTP/69473known/80384unknown，原Pro524保持。
-终根d1a5a26a、唯一seal79afb631；严格只读回放76件Operator/4件作者SHA/mtime未变。automation实核PAUSED。
-**依据：** data/evaluation/results/review_necessity_enterprise_completed_20261024.json；详细执行史见progress及原工作卡。
-**结论边界：** 只接受熟悉开发材料的facts意见及拟议修法，未实际应用/fresh，未验证未见材料、自然完整任务或产品资格。
-不重买a/b/c、不重开旧六项、不自动15项，旧报告/成本/失败/封存全部保留。
-**实际缺口：** scripts/review_necessity_candidate.py目前只校验三份固定facts请求；旧sol_natural_contract.make_request仍baseline政策，
-SolReviewProvider硬编码GPT-pro。直接换Key不会完成动态政策、分组记录与接收/授权绑定。
-**实现路径：** 独立开发合同复用现有natural workflow、Sol session/worker及ExactNativeGate，绑定同一必要修订政策到facts initial/fresh；
-保持completion职责，显式企业Profile与费用/授权，动态完整来源/报告重建，不在旧合同下混收新请求。
-**本包验收：** 零付费验证请求构造与发送/接收两端绑定、唯一逐字应用、实际同稿facts/completion fresh、完整回执及known/unknown恢复；
-关键分支用现有真实worker/SDK配mock HTTP，不把mock/native行政证明当真实语义结果。保留旧合同回放和新旧拒绝混用。
-**下一动作：** 完成上述动态接线设计和离线验证后，形成可检查的新自然任务实测入口及其范围/费用；当前不发送新模型请求。
-**不变：** 三项grant不用于新范围；自然六调用与产品五调用差异不靠静默扩容解决，原8E/发布门/同版本资格要求保持。
+**目标：** 把已测必要修订政策接回自然任务，并把下一次实测准备到能保留成功项、手动恢复普通超时的具体入口。
+**刚完成：** 用户要求的a/b/c完整来源再审通过，既有双审/native原件只读重验，原封存与费用保持。
+独立开发合同1.6.3及企业Profile已贯穿动态初审/fresh、父子receiver、实际Runtime/预算/trace/session。
+20项新接线、103项相关旧回归、26项旧自然链及6项库存检查通过；39份Runtime配置校验通过。
+首发边界从实际OBSERVED/空Memory入口捕获，零Key/零真实模型；当前库存另存，不改旧15资格/标签/原件。
+**证据：** review_necessity_three_recheck_20261024.json、sol_necessity_natural_integration_20261024.json、
+sol_necessity_natural_offline_20261024.json；设计docs/plans/2026-10-24-necessity-natural-integration.md。
+**已解决：** 旧自然任务仍使用baseline政策和Pro硬编码的缺口；同政策现在能进入动态全文和同稿双fresh。
+**仍缺：** 现有自然Runtime的有界自动重试不等于用户要求的多次手动补测；新实测启动/授权/冻结CI及真实native预检尚未绑定。
+**下一动作：** 实现并零付费验证同阶段手动超时续测，保留所有成功项和未知预留；完成新自然任务的具体范围、预算和独立启动绑定。
+成功HTTP中断只协调，不重发；身份/来源/协议/语义硬错拒绝，单独审查判断，不按网络补测处理。
+**边界：** 已完成三项grant不挪用；当前约0.864元是继承预算估价，不是新费用授权；付费入口未ready，不用填Key。
+熟悉开发材料/模拟工程成功不当新语义、原生业务审查、同版本15或阶段/产品完成；旧六项/失败/封存和automation PAUSED保持。
+自然六调用与产品五调用差异不靠静默扩容解决，原阶段和后续依赖保持。
 
 ## Dependencies and Follow-through
 
@@ -49,9 +48,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-三项诊断已完成并封存，完整证据review_necessity_enterprise_completed_20261024.json。
-按上方工作卡准备同政策自然任务的独立开发合同、动态来源绑定与企业Profile，先零付费整链验证，不重复固定三项。
-原六项/所有旧失败/费用/封存保持，automation PAUSED；不把该开发诊断当阶段或产品完成。
+三项再审和同政策自然动态接线的离线准备已完成。下一步按上方工作卡准备手动超时续测及独立真实任务启动绑定。
+旧授权不用于新范围，现阶段不用Key，不自动发送；原阶段及下游依赖保持。
 
 ## History
 

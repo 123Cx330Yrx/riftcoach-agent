@@ -22,7 +22,9 @@ import json,socket
 from pathlib import Path
 import httpx
 from scripts import reviewer_responses_nonstream as codec, reviewer_responses_process as process
-from app.evaluation import sol_natural_contract as contract, natural_duty_contract as legacy
+from app.evaluation import natural_duty_contract as legacy
+from importlib import import_module
+contract=import_module(CONTRACT_MODULE)
 from tests.test_natural_duty_candidate import Responses
 from tests.test_reviewer_responses_nonstream import response
 def deny(*args,**kwargs): raise AssertionError('network forbidden')
@@ -70,13 +72,13 @@ def offline(monkeypatch):
     monkeypatch.setattr(socket, 'create_connection', deny)
 
 
-def application(tmp_path, *, mode='repair', statuses=()):
+def application(tmp_path, *, mode='repair', statuses=(), candidate=contract):
     attempts = []
 
     def sender(business, **kwargs):
         status = statuses[len(attempts)] if len(attempts) < len(statuses) else 200
         attempts.append(status)
-        command = [sys.executable, '-c', 'MODE='+repr(mode)+'\nSTATUS='+str(status)+'\n'+CHILD]
+        command = [sys.executable, '-c', 'CONTRACT_MODULE='+repr(candidate.__name__)+'\nMODE='+repr(mode)+'\nSTATUS='+str(status)+'\n'+CHILD]
         return run_once(business, **kwargs, command=command)
 
     class Factory:
@@ -87,7 +89,8 @@ def application(tmp_path, *, mode='repair', statuses=()):
         def make(self, name):
             folder = tmp_path/'transport'/name
             return SolNaturalProvider(Responses(), SolReviewProvider(api_key='OFFLINE_SENTINEL',
-                directory=folder/'review', task_directory=folder, sender=sender))
+                directory=folder/'review', task_directory=folder, sender=sender,
+                contract_module=candidate), contract_module=candidate)
 
         def __call__(self, run_id):
             self.providers[run_id] = self.make(run_id)
@@ -96,7 +99,7 @@ def application(tmp_path, *, mode='repair', statuses=()):
     factory = Factory()
     app = build_natural_duty_candidate(summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory, knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
-        runs_root=tmp_path/'reports', candidate=contract)
+        runs_root=tmp_path/'reports', candidate=candidate)
     flows=[]
     original=app._runtime._execution_factory._review_workflow_factory
     def capture(runtime,budget):

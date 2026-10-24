@@ -30,16 +30,22 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         from app.evaluation import natural_duty_contract as candidate
         provider_type, assets = NaturalDutyProvider, ASSETS
     else:
-        from app.evaluation import sol_natural_contract
+        from app.evaluation import sol_natural_contract, sol_necessity_contract
         from app.runtime.sol_natural_provider import SolNaturalProvider
-        if candidate is not sol_natural_contract:
+        if candidate not in (sol_natural_contract, sol_necessity_contract):
             raise ValueError("unsupported_natural_candidate")
         provider_type, assets = SolNaturalProvider, ROOT/"examples/runtime_profiles/sol_natural_v1"
+        if candidate is sol_necessity_contract:
+            assets = ROOT/'examples/runtime_profiles/sol_necessity_v1'
     contract = candidate.CONTRACT
+    if getattr(provider_factory.descriptor, 'contract_module', candidate) is not candidate:
+        raise ValueError('natural_candidate_provider_contract')
     if execution_session is not None:
-        from app.evaluation import sol_natural_contract
+        from app.evaluation import sol_natural_contract, sol_necessity_contract
         from app.evaluation.sol_natural_session import CandidateSession
-        if candidate is not sol_natural_contract or type(execution_session) is not CandidateSession:
+        if (candidate not in (sol_natural_contract, sol_necessity_contract)
+                or type(execution_session) is not CandidateSession
+                or execution_session.contract_module is not candidate):
             raise ValueError('session_requires_sol_candidate')
     if (memory_repository is None) != (memory_manifest_store is None):
         raise ValueError('Memory repository and manifest store must be supplied together')
@@ -55,6 +61,7 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         provider = provider_factory(run_id)
         if type(provider) is not provider_type:
             raise TypeError('natural duty requires its exact routed provider')
+        contract.require_provider(provider)
         provider.candidate_run_id = run_id
         return provider
 

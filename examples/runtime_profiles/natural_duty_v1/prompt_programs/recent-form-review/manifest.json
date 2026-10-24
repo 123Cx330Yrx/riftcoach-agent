@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "e9db91b23c817e056b46896df115de3da3b5f8ddd0b07de59b4143c0fe4b9077"
+      "sha256": "52d19b6f9092d1b777dca6f1c7e369cad84af39d8b8a9ed3a0333bebe943d177"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "17db9871ae157ce5e279a9a4e4b40a1b971f57324819d316cdd61c5d27eeed1a"
+      "sha256": "825cc5e9be7aed612d141ac8e36ffecfc0d014e2dee8c35d5d0ba5d4b174ed6c"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -262,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "b454ec05635cb9d4ad959f41ca85566c61dfe848a127aa473e2579d6a4021c6b"
+      "sha256": "8958bfba0c4f50c427b55eca1baf244544b41bee604fec6a0225206c1980c19f"
     },
     {
       "component_id": "app.model_runtime",
@@ -277,12 +277,12 @@
     {
       "component_id": "app.evaluation.natural_duty_workflow",
       "source": "app/evaluation/natural_duty_workflow.py",
-      "sha256": "b8248e0a829d3fd564ff82acf455cb69514ae9224608da4f4bd9ddf7c1a75165"
+      "sha256": "cd48056030706726f0055f170fd3a7028fb509f61febd90c4529b993eafc1821"
     },
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "79cf6ee8575f66ab40b26bffe4e1ae66ccc90bfdba1156a0251eb7b2ef9a82fb"
+      "sha256": "29d27d41ff28888b80cb6311309c6cbe1d944f83340f6234452a886fb84c2245"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -345,5 +345,5 @@
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "f8bf30d75aafb07decc820f1dfc3b193b4e2dc497ad907ca5e5dcc9f18bb396e"
+  "program_sha256": "957c1a7eb5a21bb72082e3f674d4d5281ce662e63029eb6489375582e49acab8"
 }

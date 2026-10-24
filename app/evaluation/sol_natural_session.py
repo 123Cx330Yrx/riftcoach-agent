@@ -81,7 +81,14 @@ class CandidateSession:
     def __init__(self, root, *, binding, transport_root, journal_root,
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
-                 max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None):
+                 max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None,
+                 contract_module=None):
+        from app.runtime.sol_natural_provider import selected_contract
+        self.contract_module = selected_contract(contract_module)
+        if ((self.contract_module.VERSION != 'natural-flash-sol-development-v1'
+                or 'candidate_contract' in binding)
+                and binding.get('candidate_contract') != self.contract_module.VERSION):
+            raise ValueError('session_candidate_contract_binding')
         self.root = Path(root).resolve()
         self.transport_root, self.journal_root = Path(transport_root).resolve(), Path(journal_root).resolve()
         roots = (self.root, self.transport_root, self.journal_root)
@@ -360,7 +367,8 @@ class CandidateSession:
             raise SessionBlocked('session_issued_request_missing')
         from app.runtime.sol_session_receipts import recover_success
         before = tree(self.transport_root)
-        value, elapsed, allowed = recover_success(self.transport_root, intent, attempts[-1])
+        value, elapsed, allowed = recover_success(self.transport_root, intent, attempts[-1],
+                                                contract_module=self.contract_module)
         if set(before)-set(self.expected['transport'])-allowed:
             raise SessionBlocked('session_unrecognized_recovery_files')
         if tree(self.transport_root) != before:

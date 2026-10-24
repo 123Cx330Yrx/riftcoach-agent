@@ -20,6 +20,7 @@ REVIEW_PROVIDER = 'tianjige'
 REVIEW_MODEL = 'gpt-6.1-sol'
 REVIEW_TRANSPORT = 'natural-sol-nonstream-v1'
 CONTEXT = 'sol_natural_validation'
+FRESH_REVIEW_RESERVATION = 80384
 ROOT = legacy.ROOT
 
 

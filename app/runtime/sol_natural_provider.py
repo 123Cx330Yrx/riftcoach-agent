@@ -23,6 +23,15 @@ def inventory(directory):
             for p in directory.rglob('*') if p.is_file()}
 
 
+def selected_contract(value=None):
+    from app.evaluation import sol_necessity_contract
+    if value is None or value is contract:
+        return contract
+    if value is sol_necessity_contract:
+        return value
+    raise ValueError('sol_unsupported_contract')
+
+
 class RecoverableFlashProvider(RoleReceiptedStreamProvider):
     """Reuse the existing supervisor; only its reaped deadline can recover."""
 
@@ -61,10 +70,13 @@ class SolReviewProvider:
     sdk_max_retries, runtime_profile = 0, None
     capabilities = ZhipuProvider.capabilities
 
-    def __init__(self, *, api_key, directory, task_directory, sender=run_once):
+    def __init__(self, *, api_key, directory, task_directory, sender=run_once, contract_module=None):
+        self.contract_module = selected_contract(contract_module)
+        self.transport_id = self.contract_module.REVIEW_TRANSPORT
+        self.response_mode = getattr(self.contract_module, 'RESPONSE_MODE', 'natural-sol-v1')
         self._key, self.directory, self.task_directory = api_key, Path(directory), Path(task_directory)
         self.sender = sender
-        self.profile = Profile(group='GPT-pro', route='proxy-12000')
+        self.profile = getattr(self.contract_module, 'REVIEW_PROFILE', Profile(group='GPT-pro', route='proxy-12000'))
         self.last_exchange = self.last_failure = None
 
     def chat_at_ordinal(self, request, *, ordinal, role):
@@ -75,6 +87,7 @@ class SolReviewProvider:
         return self._consume(request, ordinal=ordinal, role=role, read_only=True)
 
     def _consume(self, request, *, ordinal, role, read_only):
+        contract = self.contract_module
         self.last_exchange = self.last_failure = None
         raw = contract.request_bytes(request, transport_id=self.transport_id)
         if role != 'review' or type(ordinal) is not int or not 1 <= ordinal <= contract.CONTRACT.descriptor()['max_calls']:
@@ -95,7 +108,7 @@ class SolReviewProvider:
         context = request.metadata[contract.CONTEXT]
         receipt = (read_json(directory / 'receipt.json') if read_only else
             self.sender(business, profile=self.profile, api_key=self._key, directory=directory,
-                timeout_s=request.timeout_s, response_mode='natural-sol-v1', validation_context=context))
+                timeout_s=request.timeout_s, response_mode=self.response_mode, validation_context=context))
         if not receipt or read_only and receipt.get('ok') is not True:
             raise ValueError('sol_saved_complete_receipt_required')
         saved = read_json(directory / 'receipt.json')
@@ -104,7 +117,7 @@ class SolReviewProvider:
             and receipt.get('wire_sha256') == digest(build_wire(business))
             and receipt.get('validation_context_sha256') == digest(context)
             and receipt.get('profile') == asdict(self.profile)
-            and receipt.get('response_mode') == 'natural-sol-v1'
+            and receipt.get('response_mode') == self.response_mode
             and read_json(directory / 'request.json') == business
             and read_json(directory / 'validation-context.json') == context)
         if not bound:
@@ -165,7 +178,7 @@ class SolReviewProvider:
     def expected_profile(self, request):
         return dict(**asdict(self.profile), reasoning_effort='high', api='responses',
             max_output_tokens=16384, max_retries=0, timeout_s=request.timeout_s,
-            group_verified=False, upstream_identity_verified=False, response_mode='natural-sol-v1')
+            group_verified=False, upstream_identity_verified=False, response_mode=self.response_mode)
 
     def failure_usage(self, error, request):
         failure = self.last_failure
@@ -253,7 +266,13 @@ class SolNaturalProvider(RoleRoutedProvider):
     request_identity = staticmethod(contract.request_identity)
     validate_request = staticmethod(contract.request_bytes)
 
-    def __init__(self, generator, reviewer):
+    def __init__(self, generator, reviewer, *, contract_module=None):
+        contract = self.contract_module = selected_contract(contract_module)
+        if reviewer.contract_module is not contract:
+            raise ValueError('sol_reviewer_contract_binding')
+        self.role_for_request = contract.role_for_request
+        self.request_identity = contract.request_identity
+        self.validate_request = contract.request_bytes
         from app.evaluation.golden_coarse_source_projection import VERSION
         self.source_projection = VERSION
         self.require_selected_provider(generator, 'generation')
@@ -268,6 +287,7 @@ class SolNaturalProvider(RoleRoutedProvider):
         self._retry_request = None
 
     def require_selected_provider(self, provider, role):
+        contract = self.contract_module
         if role == 'generation':
             contract.legacy.NaturalDutyProvider.require_selected_provider(self, provider, role)
         elif ((provider.provider_name, provider.model_name, provider.thinking_profile_id, provider.sdk_max_retries,
@@ -276,6 +296,7 @@ class SolNaturalProvider(RoleRoutedProvider):
             raise ValueError('sol_child_identity')
 
     def transport_for_role(self, role):
+        contract = self.contract_module
         return NATURAL_FLASH_TRANSPORT_ID if role == 'generation' else contract.REVIEW_TRANSPORT
 
     def chat(self, request):
@@ -293,6 +314,7 @@ class SolNaturalProvider(RoleRoutedProvider):
         return super().chat(request)
 
     def prepare_retry(self, error, request):
+        contract = self.contract_module
         if (self._retries >= contract.CONTRACT.descriptor()['transport_retries'] or not self._failed
                 or (self.reviewer.task_directory/'retry-decision.json').exists()):
             return False
@@ -318,14 +340,16 @@ class SolNaturalProvider(RoleRoutedProvider):
 
 
 class SolNaturalProviderFactory:
-    def __init__(self, *, generator_settings, api_key, transport_root):
+    def __init__(self, *, generator_settings, api_key, transport_root, contract_module=None):
+        self.contract_module = selected_contract(contract_module)
         self.settings, self._key, self.root = generator_settings, api_key, Path(transport_root)
         self.descriptor = self._build(self.root / '_identity_only')
 
     def _build(self, folder):
         return SolNaturalProvider(RecoverableFlashProvider(settings=self.settings,
             directory=folder / 'generation', task_directory=folder, transport_id=NATURAL_FLASH_TRANSPORT_ID),
-            SolReviewProvider(api_key=self._key, directory=folder / 'review', task_directory=folder))
+            SolReviewProvider(api_key=self._key, directory=folder / 'review', task_directory=folder,
+                contract_module=self.contract_module), contract_module=self.contract_module)
 
     def __call__(self, run_id):
         from app.harness.run_ids import normalize_run_id

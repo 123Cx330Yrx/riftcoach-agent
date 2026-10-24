@@ -16,10 +16,20 @@ def offline(monkeypatch):
     monkeypatch.setattr(socket, 'create_connection', deny)
 
 
-def test_saved_inventory_rebuilds_without_fresh_or_qualification_credit():
+def test_current_inventory_rebuilds_without_changing_historical_qualification():
     value = inventory.audit()
-    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_timeout_recovery_20261022.json'
+    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_necessity_integration_20261024.json'
     assert value == json.loads(path.read_bytes())
+    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_timeout_recovery_20261022.json').read_bytes())
+    assert {k:v for k,v in value.items() if k not in ('component_fingerprints','program_sha256')} == {
+        k:v for k,v in previous.items() if k not in ('component_fingerprints','program_sha256')}
+    assert value['provider_calls'] == value['new_host_tasks'] == value['new_qualification'] == 0
+    assert not value['qualified']
+
+
+def test_historical_inventory_keeps_original_change_boundary():
+    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_timeout_recovery_20261022.json'
+    value = json.loads(path.read_bytes())
     session = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json').read_bytes())
     assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
         k: v for k, v in session.items() if k not in ('component_fingerprints', 'program_sha256')}

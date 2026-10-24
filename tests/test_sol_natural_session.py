@@ -17,20 +17,24 @@ from tests.test_natural_duty_candidate import run
 
 
 def session(tmp, previous=None, **kwargs):
-    return CandidateSession(tmp/'session', binding=dict(run_id='candidate', fixture_only=True),
+    candidate = kwargs.pop('candidate', contract)
+    binding = dict(run_id='candidate', fixture_only=True)
+    if candidate is not contract:
+        binding['candidate_contract'] = candidate.VERSION
+    return CandidateSession(tmp/'session', binding=binding, contract_module=candidate,
         transport_root=tmp/'transport/candidate', journal_root=tmp/'journal',
         guard_sha=previous.guard_sha if previous else None,
         checkpoint_sha=previous.checkpoint_sha if previous else None,
         before_new_model=lambda: None, **kwargs)
 
 
-def app_for(tmp, sess, segment, *, statuses=(), mode='repair', knowledge=None):
-    _, factory, _, calls = application(tmp, statuses=statuses, mode=mode)
+def app_for(tmp, sess, segment, *, statuses=(), mode='repair', knowledge=None, candidate=contract):
+    _, factory, _, calls = application(tmp, statuses=statuses, mode=mode, candidate=candidate)
     app = build_natural_duty_candidate(
         summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory,
         knowledge_provider=knowledge or LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
-        runs_root=tmp/f'derived-{segment}', candidate=contract, execution_session=sess)
+        runs_root=tmp/f'derived-{segment}', candidate=candidate, execution_session=sess)
     return app, factory, calls
 
 

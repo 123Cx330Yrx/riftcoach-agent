@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "企业三项开发诊断已完成双审及只读封存；下一步自然任务同政策离线接线，automation PAUSED。"
+pause_reason: "三项再审及同政策自然任务离线接线已完成；准备手动超时续测与独立实测入口，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,25 +14,26 @@ pause_reason: "企业三项开发诊断已完成双审及只读封存；下一�
 
 ## 当前行动
 
-2026-10-24，必要修订政策候选的三份全文开发对照已完成，全部模型意见及建议补丁经主审/独立完整来源审查接受。
-- a：原稿仅检出block21无依据的7.5门槛，并给窄补丁；未误报block10待验假设。
-- b：预制的修正全文pass，未把否定句里的7.5或明确的中路8.81/9.01判成错误。
-- c：检出新增的block10“已经证明原因”真错，修法保留数据、撤回无依据因果断言。
-三次企业HTTP200，46.797/31.328/35.156秒，均完整工具意见、raw/SDK均high；实际分组/上游身份仍未独立验证。
-三项原生作者/唯一final逐字导入，c作者SHAc450fca4；终根d1a5a26a来自submit原stdout。
-唯一seal79afb631已create-only保存，严格只读replay通过，76件Operator及4件作者原件SHA/mtime未变。
-累计4HTTP/69473known/80384unknown预留，0未审/未知HTTP/未发；首项Pro524及未知预留保留，预留不是账单。
-终态closed/stopped_at=complete，未应用/未fresh/未授资格；旧六项接受、旧失败、旧seal及各冻结树保持。
-执行代码冻结2bd7e08e，CI40057680511全绿；本轮复核及封存新增模型请求/Key读取0，automation实核PAUSED。
-完整证据：data/evaluation/results/review_necessity_enterprise_completed_20261024.json。
+2026-10-24，按用户要求再次实读三份全文/完整来源/政策/模型意见及全部补丁，原a/b/c判断成立。
+a的7.5门槛无依据；b撤回门槛并正确区分中路胜8.81/负9.01，不误报；c明确的“已经证明原因”须撤回，修法保留605.5/36.4%。
+既有双审原件和真实native只读回放通过，76件Operator与4件作者SHA/mtime不变；原seal79afb631及最终根d1a5a26a保持。
+原4HTTP/69473known/80384unknown预留不改，预留不是账单。新复核记录review_necessity_three_recheck_20261024.json。
 
-**决策：** 这组三项支持保留必要修订政策作为开发方向；材料熟悉且仅facts初审，不当holdout、同版本15项或产品完成。
-不再重复购买a/b/c。下一工作包先在现有自然任务Runtime/session复用路径准备同政策的独立开发合同及零付费整链验证。
-实读发现旧sol_natural_contract仍构造baseline政策，SolReviewProvider硬编码GPT-pro，不能直接把已测candidate请求塞入旧接收器。
-**下一动作：** 明确新开发合同的facts initial/fresh请求、动态全文重建、企业Profile与授权/费用绑定，复用原应用/双fresh/恢复逻辑；
-先用mock HTTP与真实worker验证动态来源、唯一应用、同稿双fresh、原件/账目及超时恢复，再准备具体新付费范围。
-旧合同/源码/run不改，completion职责保持；不复用本三项grant发自然任务，不把六调用与产品五调用差异静默扩容。
-正式同版本15项、自然Coach/Training、四块/journal、前端审美/英雄头像、Memory、身份运维、两树整合、独立评估与学习依赖保持。
+同政策动态接线的零付费工作包已完成：独立Sol必要修订合同1.6.3绑定facts initial/fresh，completion政策不变，
+企业Profile/0.5与2.5元每百万输入输出价格明确绑定；原旧合同不混收新请求。父/实际worker、Runtime、预算、trace与session均接线。
+20项新检查通过，含真实worker/SDK配mock HTTP、唯一应用、实际同稿双fresh、硬错拒绝、已知/未知用量、中断协调与封存只读重放。
+103项相关旧回归、26项原自然链及6项库存检查通过；共享变更相关6份manifest刷新，39份Runtime配置启动校验通过。
+中途源码编辑使7项旧回归正确报指纹漂移，固定最终源码/清单后这7项单独重跑通过；不隐藏为模型失败或重跑全库。
+实际OBSERVED/空Memory用户入口的首发送边界已捕获，新增真实Provider/Key均0。工程证据见sol_necessity_natural_integration_20261024.json。
+
+**决策与边界：** a/b/c只支持熟悉材料的开发方向，b是预制对照，未冒充a实际应用后fresh。
+新接线的模拟成功不算新模型语义、真实native业务验收、同版本15或产品资格。现有旧自然Runtime只有一次有界自动超时重试，
+尚未按用户多次手动补测要求形成新任务续测入口；本轮没有创建可付费启动的入口，不复用已完成三项grant。
+**下一动作：** 准备新自然任务的手动超时续测与独立启动绑定：保留成功项/未知预留，明确已回收超时才允许用户手动再试；
+绑定新范围/预算、冻结代码及公共CI，并做真实原生作者/check-answer/final/导入预检，之后再交付隐藏Key入口。
+准备记录sol_necessity_natural_offline_20261024.json；费用包络约0.864元是当前继承预算的估算，非新授权或账单硬限。
+本轮复核/离线接线不需用户填Key，automation现场核PAUSED；各冻结树/旧报告/失败/费用/封存均保持。
+自然六调用与产品五调用差异、正式同版本15、自然Coach/Training、四块/journal、前端审美/英雄头像、Memory、身份运维、两树整合、独立评估与学习依赖保持。
 
 以下为已消耗入口的历史准备记录，不再作为启动队列。
 

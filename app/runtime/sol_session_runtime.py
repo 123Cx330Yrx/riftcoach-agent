@@ -26,10 +26,13 @@ TOOL_RESULT = TypeAdapter(ToolResult)
 
 class SessionBudget(CoachBudgetedProvider):
     def __init__(self, provider, *, session, coach_contract):
+        contract = self.contract_module = session.contract_module
         if coach_contract is not contract.CONTRACT or not isinstance(provider, ObservedLLMProvider):
             raise ValueError('session_budget_requires_observed_sol')
         if type(provider._delegate) is not SolNaturalProvider:
             raise ValueError('session_router_type')
+        if provider._delegate.contract_module is not contract:
+            raise ValueError('session_router_contract')
         if provider._delegate.reviewer.task_directory.resolve() != session.transport_root:
             raise ValueError('session_transport_root_binding')
         if session.binding.get('fixture_only') is not True and session.review_gate is None:
@@ -44,7 +47,7 @@ class SessionBudget(CoachBudgetedProvider):
 
     def _provider_for_request(self, request):
         self.session.capture_attempt(self.calls+1,
-            contract.request_bytes(request).decode('utf-8'), self.snapshot(),
+            self.contract_module.request_bytes(request).decode('utf-8'), self.snapshot(),
             retry_pending=self.router._retry_request is not None)
         return super()._provider_for_request(request)
 
@@ -69,6 +72,7 @@ class SessionBudget(CoachBudgetedProvider):
         self.started = self.clock() - self.session.active_seconds
 
     def chat(self, request):
+        contract = self.contract_module
         self._exchange = None
         # AgentLoop shortens its timeout on each run. Preserve every business
         # byte and retain the original actually issued timeout in the receipt.
@@ -133,6 +137,7 @@ class SessionWorkflow(NaturalDutyWorkflow):
         self.session = session
 
     def _review(self, inputs, name, stage):
+        contract = self.contract_module
         raw, value = super()._review(inputs, name, stage)
         gate = self.session.review_gate
         if gate is not None:
@@ -145,6 +150,7 @@ class SessionWorkflow(NaturalDutyWorkflow):
         return raw, value
 
     def record(self, name, data):
+        contract = self.contract_module
         gate = self.session.review_gate
         if name == 'application' and gate is not None:
             gate.verify_prior()

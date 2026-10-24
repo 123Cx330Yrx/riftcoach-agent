@@ -49,7 +49,8 @@ class CoachBudgetedProvider:
             # Recovery is opt-in to this exact candidate. Every attempt still
             # passes through observation, reservations and the shared budget.
             from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
-            if self.contract is not sol_contract:
+            from app.evaluation.sol_necessity_contract import CONTRACT as necessity_contract
+            if self.contract is not sol_contract and self.contract is not necessity_contract:
                 raise
             delegate = self.provider._delegate if isinstance(self.provider, ObservedLLMProvider) else self.provider
             issued = getattr(self, '_last_issued', None)
@@ -97,7 +98,8 @@ class CoachBudgetedProvider:
                 self.reserved_tokens -= reservation
                 raise
             from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
-            if self.contract is sol_contract:
+            from app.evaluation.sol_necessity_contract import CONTRACT as necessity_contract
+            if self.contract is sol_contract or self.contract is necessity_contract:
                 delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
                 known = delegate.failure_usage(error, request)
                 if known is not None:
