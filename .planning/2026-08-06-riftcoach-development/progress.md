@@ -1,3 +1,12 @@
+## 2026-10-24 当前库存CI遗漏修复与完成度四稿对照
+
+CI40084544939的库存重建失败已定位为共享源码摘要更新遗漏；新增当前format_recovery快照，历史文件不覆盖。6项检查通过，仅组件/程序摘要变化。
+完成四稿完整来源两变量对照和候选请求构造；7项离线检查通过，原a重建原真实业务请求，标签/旧意见不入输入，候选未接运行合同。
+8份配对请求已在outputs/riftcoach-completion-necessity-20261024-offline实际生成，不是8次调用计划。既有独立主体不读标签/主审意见核过四稿及候选公平性并接受，原生final与作者原件逐字核验，submit/replay通过；无候选模型结果，未把预制对照称为实际改稿/fresh。
+旧144件库存加唯一seal核未变，冻结2b14583e clean，automation PAUSED；新Provider/Key0，原4HTTP/66591known保留。
+下一步实现并离线验证继承已接受facts/native、成功生成/工具及失败费用的completion断点诊断入口；先核b/c/d，再将a真实结果直接消费到自然任务，不重买成功项。候选真实支持前不授采用。
+证据completion_necessity_offline_20261024.json及fixtures/completion_necessity_20261024/README.md。
+
 ## 2026-10-24 格式误拒收修复与完成度公开意见双审诊断
 
 2026-10-24当前：第四次completion-initial为HTTP200、模型/high匹配，21531已知tokens；接收器因唯一有效工具伴随message而误拒收，并在用户新指令到达前按旧规则关闭。

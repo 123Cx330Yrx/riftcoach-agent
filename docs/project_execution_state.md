@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "第四次格式误拒收已定位；保留意见另有语义误报。格式恢复本地修复，下一步完成度机制对照；当前不需Key，automation PAUSED。"
+pause_reason: "格式恢复与当前库存修复已验证；完成度四稿离线对照已准备，候选未实测。下一步completion断点诊断入口离线准备；当前不需Key，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,16 +14,18 @@ pause_reason: "第四次格式误拒收已定位；保留意见另有语义误�
 
 ## 当前行动
 
-2026-10-24当前：第四次completion-initial为HTTP200、模型/high匹配，21531已知tokens；接收器因唯一有效工具伴随message而误拒收，并在用户新指令到达前按旧规则关闭。
-累计4HTTP/66591known/0unknown/0重试；前三次与facts双审保留，未应用补丁、未发送fresh，不是整批成果作废或完整链路通过。
-主审与既有独立作者另审保留意见：OP.GG数字未连具体行动是真缺口；个人参赛归属误报、删正确8.7–9.0/≤3观察参照，故整份completion意见不接受。
-真实native及作者字节已在Control外层诊断逐字导入，不补签原闭批；原guard5668400a/checkpoint0041 aa3c2816/seal24172c4f及冻结2b14583e clean保持。
-按用户新要求修复格式恢复：开发合同1.6.4显式采用唯一工具+伴随message容错，纯文本/缺工具/坏JSON暂停，普通resume不重发，手动仅重试当前项并保留费用/成功前缀。
-身份/档位/来源/观测/多工具/坏补丁和语义错误仍分别处理，不将语义错误伪装为格式补测。新增15项真实worker/Runtime/session检查及132项相关接收/合同/launcher回归通过；7份受影响配置启动、编译与diff检查通过。
-**下一动作：** 用已保留误报与正确对照检验完成度必要修订判定机制，先确定有证据的修法，再准备从该职责续接；不重买前三次，不运行15项。
-当前不需填Key，旧resume入口因已闭批继续拒发。原grant截止及预算不重置；automation保持PAUSED。
-证据data/evaluation/results/sol_necessity_format_recovery_20261024.json；工作卡docs/plans/2026-10-24-sol-output-format-recovery.md。
-旧封存/费用、阶段8E及自然Coach/Training、四块/journal、前端、Memory、身份运维、两树整合、独立评估、学习和6对5调用依赖保持。
+2026-10-24当前：自然任务第四次completion-initial的伴随message误拒收已修复，开发合同1.6.4；格式错误暂停当前项，普通resume不重发，手动恢复保留成功项和费用。相关15+132项工程检查已通过，不作为模型语义证明。
+上一提交bb35f996的CI40084544939发现当前资格库存未更新共享组件摘要。本包新增format_recovery库存，不覆盖历史快照；6项库存检查通过，仅component_fingerprints/program_sha256变化，原15输入/30请求/预算/未资格状态不变。
+
+完成度语义阻断保持：旧意见正确发现OP.GG未连到具体行动，却误报个人参赛要求并删正确观察参照。原政策已禁止这类误报，不能断言再加一句提示便已解决。
+本包完成四稿两变量对照：原稿a、只补OP.GG行动b、b加明确个人参赛冲突c、a加该冲突d；四稿保留完整27段和全部来源、原facts两项错误。候选仅提出“实际义务→全文对象/行动→真缺口→最小保留修法”的待检方法，不改现行运行合同。
+原a可重建为原真实业务请求；基线/候选只改system政策，标签/旧意见不进输入，7项离线完整性及隔离检查通过。既有独立主体不读标签/主审意见实核四稿，逐稿结论一致、材料公平性接受；原生final与run外作者字节一致，submit及只读replay通过。仍无候选模型结果；预制b/c/d不是实际应用或fresh。
+
+原累计4HTTP/66591known/0unknown/0重试，前三次成功与facts双审保留；原guard5668400a/checkpoint0041 aa3c2816/seal24172c4f及144件封存库存另加seal均核未变，冻结2b14583e clean。未应用、未fresh、未授资格；automation现场核PAUSED。
+**下一动作：** 实现并离线验证有界completion断点诊断入口，继承已接受facts/native、生成/工具结果和全部历史费用。设计为先核b/c/d，再把a的新真实completion结果直接消费到自然任务，避免成功a重买；候选有真实支持前不授采用。旧continuation只支持首次facts失败，不能直接套用当前断点。
+当前无需Key，无新付费入口或请求；8份配对请求是离线材料，不是8次调用授权，原grant不自动延期或扩范围。
+证据data/evaluation/results/completion_necessity_offline_20261024.json；对照与决策data/evaluation/fixtures/completion_necessity_20261024/README.md；工作卡docs/plans/2026-10-24-sol-output-format-recovery.md。
+旧封存/费用、阶段8E及正式同版本15、自然Coach/Training、四块/journal、前端、Memory、身份运维、两树整合、独立评估、学习和自然6对产品5调用依赖保持。
 
 以下为历史记录，不是可执行入口。
 

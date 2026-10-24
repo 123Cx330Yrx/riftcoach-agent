@@ -15,17 +15,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 修复格式拒收与暂停恢复，保留自然任务成功前缀；分别处理已发现的完成度语义误报。
-2026-10-24当前：第四次completion-initial为HTTP200、模型/high匹配，21531已知tokens；接收器因唯一有效工具伴随message而误拒收，并在用户新指令到达前按旧规则关闭。
-累计4HTTP/66591known/0unknown/0重试；前三次与facts双审保留，未应用补丁、未发送fresh，不是整批成果作废或完整链路通过。
-主审与既有独立作者另审保留意见：OP.GG数字未连具体行动是真缺口；个人参赛归属误报、删正确8.7–9.0/≤3观察参照，故整份completion意见不接受。
-真实native及作者字节已在Control外层诊断逐字导入，不补签原闭批；原guard5668400a/checkpoint0041 aa3c2816/seal24172c4f及冻结2b14583e clean保持。
-按用户新要求修复格式恢复：开发合同1.6.4显式采用唯一工具+伴随message容错，纯文本/缺工具/坏JSON暂停，普通resume不重发，手动仅重试当前项并保留费用/成功前缀。
-身份/档位/来源/观测/多工具/坏补丁和语义错误仍分别处理，不将语义错误伪装为格式补测。新增15项真实worker/Runtime/session检查及132项相关接收/合同/launcher回归通过；7份受影响配置启动、编译与diff检查通过。
-**下一动作：** 用已保留误报与正确对照检验完成度必要修订判定机制，先确定有证据的修法，再准备从该职责续接；不重买前三次，不运行15项。
-当前不需填Key，旧resume入口因已闭批继续拒发。原grant截止及预算不重置；automation保持PAUSED。
-证据data/evaluation/results/sol_necessity_format_recovery_20261024.json；工作卡docs/plans/2026-10-24-sol-output-format-recovery.md。
-旧封存/费用、阶段8E及自然Coach/Training、四块/journal、前端、Memory、身份运维、两树整合、独立评估、学习和6对5调用依赖保持。
+**目标：** 解决completion必要修订误报，保留自然任务成功前缀；格式接收及暂停恢复工程修复已完成。
+当前库存遗漏已用新快照修复，历史文件不改，6项库存检查通过；原15输入/请求/预算/资格不变。
+完成四稿完整来源对照与未接线候选：a原稿有真实资料使用缺口；b只补行动；c在b上明确个人参赛冲突；d在a上加该冲突。
+7项离线检查通过，基线可重建原真实请求，候选仅改系统政策，不向模型泄漏标签或旧意见。既有独立主体不读标签/主审意见核过四稿及方案，逐稿结论一致且材料接受；原生final/作者原件逐字核验及submit/replay通过。没有候选模型结果，不宣称语义修复完成。
+本轮Provider/Key读取0，原4HTTP/66591known/0unknown费用及前三次/facts双审保留，144件库存与seal核未变，冻结2b14583e clean。automation PAUSED。
+**下一动作：** 实现并离线验证有界completion断点诊断入口，继承已接受facts/native及生成/工具结果、全部历史费用；先核b/c/d，再由a的新实际completion结果直接进入后续链路，不重买成功a或前三次。现有continuation不支持该断点，不能直接套用。新费用范围/版本/期限须在入口可审查后具体核定，候选未实测前不授采用。
+当前无新付费入口，无需Key；8份离线请求不是8次授权，不扩原grant期限/范围。预制全文不是实际应用/fresh，尚未产品或15项资格。
+证据：data/evaluation/results/completion_necessity_offline_20261024.json；方案和竞争解释见data/evaluation/fixtures/completion_necessity_20261024/README.md；工作卡沿用docs/plans/2026-10-24-sol-output-format-recovery.md。
 
 ## Dependencies and Follow-through
 
@@ -45,8 +42,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-下一步以真实完成度误报和正确对照检验必要修订判定机制；格式恢复工程验证见当前工作卡。
-不重跑成功前三项，不改闭批原件或补签坏意见，当前无需Key。
+下一步实现并离线验证有界completion断点诊断入口；已独立核材料公平性，未实测前不宣称机制有效。
+不重跑成功前三项，不改闭批原件或补签坏意见；断点续接须显式继承已接受facts/native和失败费用，当前无需Key。
 
 ## History
 
