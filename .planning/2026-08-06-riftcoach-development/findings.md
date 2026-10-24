@@ -7797,3 +7797,7 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 
 复用完整旧生成Runtime只为继承已接受前缀，会引入无必要的新Profile/manifest。当前改为显式诊断续接：旧Runtime严格回放负责证明前缀，新引擎只消费已绑定来源与原facts，再复用现有审查/补丁链。合同1.6.5明确不属完整产品Runtime。
 关闭核验区分完整workflow回放和真实native拒绝前沿；拒绝必须停在最后实际host-task，不通过假游标伪称已重跑后续链。缺新费用授权不读Key，普通resume暂停项不重发。
+
+## 2026-10-24 首冻结与CI取值修复
+
+5f46413d实际原生作者/check-answer/final/导入、只读核验与PowerShell CheckOnly通过；未授权普通入口在Key/claim前拒绝。CI40094551645的shard2先暴露测试glob未排序，Linux把0006旧账目选作最新值；运行及关闭回放均已排序，本包只修测试，不改模型政策或重买请求。旧冻结与所有原件保留，新增Provider/Key0；候选未实测，等待修正提交的同HEAD CI。

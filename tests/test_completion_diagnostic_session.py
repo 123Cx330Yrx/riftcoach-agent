@@ -240,14 +240,12 @@ def test_failure_keeps_prior_cost_and_plain_resume_never_resends(setup,mode):
     modes=('text',) if mode=='format' else ()
     s,g,result=complete(setup,statuses=statuses,modes=modes)
     assert result is None and len(setup['http'])==1
-    before=tree(setup['root'])
     resumed,_,result=drive(setup,previous=s,statuses=statuses,modes=modes)
     assert result is None and len(setup['http'])==1
     retried,_,_=drive(setup,previous=resumed,statuses=statuses,modes=modes,retry=True)
     assert len(setup['http'])==2
-    row=json.loads((retried.root/'operations'/f'{retried.cursor:04d}-result.json').read_bytes())['value']
     # Current segment pauses at native review after successful same-control retry.
-    models=[json.loads(p.read_bytes())['value'] for p in (retried.root/'operations').glob('*-result.json')]
+    models=[json.loads(p.read_bytes())['value'] for p in sorted((retried.root/'operations').glob('*-result.json'))]
     budget=[v['budget'] for v in models if isinstance(v,dict) and 'budget' in v][-1]
     assert budget['calls']==6 and budget['retries']==1
     assert budget['logical']==dict(generation=2,review=1,control=1)
@@ -282,7 +280,7 @@ def test_identity_conflict_is_not_retryable_or_attributed_as_known_usage(setup):
         drive(setup, modes=('identity',))
     assert setup['http'] == [200]
     rows = [json.loads(p.read_bytes())['value'] for p in
-            (setup['root']/'session/operations').glob('*-result.json')]
+            sorted((setup['root']/'session/operations').glob('*-result.json'))]
     failed = [v for v in rows if isinstance(v, dict) and v.get('ok') is False][-1]
     assert not any(k in failed for k in ('reaped_timeout', 'recoverable_format'))
     assert failed['budget']['calls'] == 5

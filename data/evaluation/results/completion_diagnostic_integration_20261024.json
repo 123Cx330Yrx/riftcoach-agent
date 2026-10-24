@@ -79,7 +79,7 @@
     "app/evaluation/sol_completion_contract.py": "84a5ee5553aabaad84716d6380e24a0494817d3a1aa574a3aa3d82ff6b6c7978",
     "scripts/completion_diagnostic_launch.py": "3dd3563622687ce563456d1fda35035a7aaedae5ff5bf1c2580f48b484efdc0d",
     "scripts/prepare_completion_diagnostic.py": "5134c6680730108972e98cd9667f8bef44ae456bc141e93ffbbd192edeed5179",
-    "tests/test_completion_diagnostic_session.py": "7ad62b0a3c51cc2517dcbae53700e5c64966aca4d535f2179d50fcbf1f1e6297",
+    "tests/test_completion_diagnostic_session.py": "0449867b72d7aff772c9d924465c759ea2ce8e6ae031ce7998b4e98cdaaefbd5",
     "tests/test_completion_diagnostic_launch.py": "bd031386cc0b64c0451d2bb89d7e33f5fd2b5531f1ec08f8112bd1071039a90b"
   },
   "new_qualification_inventory": "data/evaluation/results/natural_duty_qualification_inventory_completion_continuation_20261024.json",
@@ -93,5 +93,30 @@
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
-  "automation": "PAUSED"
+  "automation": "PAUSED",
+  "ci_failure": {
+    "run_id": "40094551645",
+    "head": "5f46413d5ff5d7125141a8780db1ace895f92435",
+    "job": "pytest-shards (2)",
+    "first_failure": "test_failure_keeps_prior_cost_and_plain_resume_never_resends[timeout]",
+    "cause": "Unsorted Path.glob in the test selected the old facts budget on Linux; runtime/replay already sort ordinal paths.",
+    "fix": "Sort test operation results before selecting the latest budget.",
+    "provider_requests": 0,
+    "focused_recheck": {
+      "passed": 2,
+      "seconds": 30.66,
+      "tests": "timeout and format recovery; deterministic ordinal selection"
+    }
+  },
+  "first_frozen_preparation": {
+    "head": "5f46413d5ff5d7125141a8780db1ace895f92435",
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-diagnostic-20261024",
+    "plan_sha256": "75be2e31e68bb1b290eb6f1bf7a32c1c52912e4932beab7af69cabe6eb87d5dd",
+    "native_preflight_proof_sha256": "a2edfe2c7101a343314d56be8ef150d2d1ba946415e16f97e0bb4ade8bccb8a7",
+    "entry_check_only": true,
+    "missing_grant_refused_before_key": true,
+    "execution_exists": false,
+    "authorization_installed": false,
+    "paid_launcher_ready": false
+  }
 }

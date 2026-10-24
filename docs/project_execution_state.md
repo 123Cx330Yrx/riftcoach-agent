@@ -18,7 +18,8 @@ pause_reason: "completion诊断续接/统一预算/整链及启动器检查通�
 原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。
 整链/异常9项、启动/授权/关闭回放9项、相关旧回归67项（包含6库存检查）通过；7受影响配置实际启动校验通过。另以真实原proof/原作者/native实核新引擎，准确停在control-b发送前，原145件及3作者原件不变；新增Provider/Key均0。模拟检查不是新模型语义证明。
 显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
-**下一动作：** 冻结该启动代码，完成新原生作者/check-answer/final/导入和隐藏Key入口零发送核验，核精确HEAD公共CI后，再呈交具体新授权。automation保持PAUSED。
+首个冻结5f46413d的真实作者/check-answer/原生final/导入及最终PowerShell CheckOnly已通过；缺新grant的正常入口也实证拒发、未读Key、未创建execution。其CI40094551645发现测试glob无排序、Linux误取旧预算；生产回放已有排序，本包只修测试取最新账目方式，保留失败记录。
+**下一动作：** 用修正测试后的新精确HEAD冻结续接准备并核CI；只有全绿及具体新授权后才交付可填Key入口。旧准备无付费执行，不当作已通过CI。automation保持PAUSED。
 证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
 
 以下为本包之前的材料准备记录，其下一动作已由上述离线前沿及接线工作接续。

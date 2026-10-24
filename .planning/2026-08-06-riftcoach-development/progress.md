@@ -10285,3 +10285,7 @@ SDK+mock HTTP、实际owned worker、自然候选与监督检查128项通过（1
 显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
 **下一动作：** 冻结该启动代码，完成新原生作者/check-answer/final/导入和隐藏Key入口零发送核验，核精确HEAD公共CI后，再呈交具体新授权。automation保持PAUSED。
 证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
+
+## 2026-10-24 首冻结与CI取值修复
+
+5f46413d实际原生作者/check-answer/final/导入、只读核验与PowerShell CheckOnly通过；未授权普通入口在Key/claim前拒绝。CI40094551645的shard2先暴露测试glob未排序，Linux把0006旧账目选作最新值；运行及关闭回放均已排序，本包只修测试，不改模型政策或重买请求。旧冻结与所有原件保留，新增Provider/Key0；候选未实测，等待修正提交的同HEAD CI。
