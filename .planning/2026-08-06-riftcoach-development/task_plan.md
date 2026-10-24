@@ -15,10 +15,12 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**当前实现结果：** completion离线断点入口已通过真实旧批核验。原冻结2b14583e/合同1.6.3严格回放后，实际Runtime在临时派生session复用9个成功操作和原facts/native，继承4HTTP/66591tokens/0unknown/0retry及255.657活动秒，准确停在completion发送前。原145件封存/3件作者原件不变，新增Provider/Key0。
-13项新增完整性、真实Runtime、native字节及发送前控制检查和6项库存检查通过；上次提交3902e1ee公共CI40087866246已全绿。亲本证明与b/c/d/a候选请求已实际生成，a基线与原前沿一致；当前入口只有离线prepare，没有新运行合同或付费run动作。
-**唯一下一动作：** 完成候选合同/receiver、继承native路由及统一累计预算调度，离线跑通b/c/d→自然a→兼容/编辑→唯一应用→同稿双fresh；之后核具体新授权/冻结CI和原生预检，不重买成功前缀或首次已接受a。
-证据`data/evaluation/results/completion_continuation_offline_20261024.json`。候选未实测、语义未修复、无当前Key入口；旧grant不延期，automation PAUSED。
+2026-10-24完成completion诊断续接引擎与显式启动器。合同1.6.5复用既有session、owned worker、共享预算、原生审查及程序逐字补丁；顺序为b/c/d对照→原稿a的completion→兼容/编辑→唯一应用→实际同稿双fresh。它是诊断续接，不是完整产品Runtime注册或产品准入。
+原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。
+整链/异常9项、启动/授权/关闭回放9项、相关旧回归67项（包含6库存检查）通过；7受影响配置实际启动校验通过。另以真实原proof/原作者/native实核新引擎，准确停在control-b发送前，原145件及3作者原件不变；新增Provider/Key均0。模拟检查不是新模型语义证明。
+显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
+**下一动作：** 冻结该启动代码，完成新原生作者/check-answer/final/导入和隐藏Key入口零发送核验，核精确HEAD公共CI后，再呈交具体新授权。automation保持PAUSED。
+证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
 
 以下为同一工作包的材料准备依据；其中“实现入口”已完成到离线前沿，尚未成为付费启动器。
 
@@ -49,8 +51,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-下一步实现并离线验证有界completion断点诊断入口；已独立核材料公平性，未实测前不宣称机制有效。
-不重跑成功前三项，不改闭批原件或补签坏意见；断点续接须显式继承已接受facts/native和失败费用，当前无需Key。
+冻结completion诊断启动代码，完成新原生作者与隐藏入口零发送核验，核精确HEAD CI后呈交具体新授权。不重买成功前缀或首次接受的a，不扩旧grant。
 
 ## History
 

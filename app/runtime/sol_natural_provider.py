@@ -24,10 +24,10 @@ def inventory(directory):
 
 
 def selected_contract(value=None):
-    from app.evaluation import sol_necessity_contract
+    from app.evaluation import sol_necessity_contract, sol_completion_contract
     if value is None or value is contract:
         return contract
-    if value is sol_necessity_contract:
+    if value in (sol_necessity_contract, sol_completion_contract):
         return value
     raise ValueError('sol_unsupported_contract')
 
@@ -267,7 +267,8 @@ class SolReviewProvider:
         are not classified as formatting. Original usage and receipts survive.
         """
         if (self.contract_module.CONTRACT.descriptor().get('output_recovery_mode')
-                != 'manual-reaped-format-v1' or self.response_mode != 'natural-sol-necessity-v2'
+                != 'manual-reaped-format-v1' or self.response_mode not in (
+                    'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1')
                 or self.failure_usage(error, request) is None):
             return False
         failure = self.last_failure
@@ -315,6 +316,8 @@ class SolNaturalProvider(RoleRoutedProvider):
         self.last_exchange, self.attempts = None, []
         self._calls, self._failed, self._retries = 0, False, 0
         self._logical = {'generation': 0, 'review': 0}
+        if contract.CONTRACT.descriptor().get('control_logical_calls'):
+            self._logical['control'] = 0
         self._retry_request = None
 
     def require_selected_provider(self, provider, role):
@@ -332,15 +335,19 @@ class SolNaturalProvider(RoleRoutedProvider):
 
     def chat(self, request):
         role = self.role_for_request(request)
+        context = request.metadata.get(self.contract_module.CONTEXT, {})
+        logical_role = 'control' if context.get('control_case') is not None else role
+        limit = (self.contract_module.CONTRACT.descriptor().get('control_logical_calls', 0)
+                 if logical_role == 'control' else 2 if role == 'generation' else 4)
         if self._retry_request is None:
-            self._logical[role] += 1
+            self._logical[logical_role] += 1
         else:
             # The shared budget may shorten timeout, but no business byte changes.
             from dataclasses import replace
             if replace(request, timeout_s=self._retry_request.timeout_s) != self._retry_request:
                 raise ValueError('sol_retry_request_changed')
             self._retry_request = None
-        if self._logical[role] > (2 if role == 'generation' else 4):
+        if self._logical[logical_role] > limit:
             raise ProviderResponseError(provider=self.provider_name, code='sol_logical_call_limit')
         return super().chat(request)
 

@@ -1,0 +1,97 @@
+{
+  "version": "completion-diagnostic-integration-v1",
+  "scope": "completion-diagnostic-continuation-not-product-runtime",
+  "provider_requests": 0,
+  "key_reads": 0,
+  "contract_version": "1.6.5",
+  "historical": {
+    "http_requests": 4,
+    "known_tokens": 66591,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "active_seconds": 255.657
+  },
+  "new_proposed": {
+    "logical_requests": 6,
+    "maximum_attempts": 10,
+    "maximum_tokens": 803840,
+    "manual_retries": 4,
+    "estimated_uncached_cny": 0.7296,
+    "hard_billing_cap": false
+  },
+  "cumulative": {
+    "max_calls": 14,
+    "max_tokens": 870431,
+    "max_active_seconds": 3600
+  },
+  "sequence": [
+    "control-b",
+    "control-c",
+    "control-d",
+    "completion-initial",
+    "compatibility",
+    "edit",
+    "unique-application",
+    "facts-fresh",
+    "completion-fresh"
+  ],
+  "checks": [
+    {
+      "file": "tests/test_completion_diagnostic_session.py",
+      "passed": 9,
+      "seconds": 224.24,
+      "evidence": "real worker/SDK with synthetic HTTP and native events"
+    },
+    {
+      "file": "tests/test_completion_diagnostic_launch.py",
+      "passed": 9,
+      "seconds": 49.65,
+      "evidence": "specific grant, key gate, pause/recovery and immutable failure replay with synthetic native/HTTP"
+    },
+    {
+      "files": [
+        "tests/test_sol_format_recovery.py",
+        "tests/test_sol_necessity_natural.py",
+        "tests/test_natural_duty_candidate.py",
+        "tests/test_natural_duty_qualification_inventory.py"
+      ],
+      "passed": 67,
+      "seconds": 374.15,
+      "evidence": "affected regressions including six qualification inventory checks"
+    }
+  ],
+  "startup_profiles_verified": 7,
+  "live_zero_send": {
+    "proof_file": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-continuation-20261024-offline/parent-proof.json",
+    "proof_sha256": "d59d0fea061b78ac12a7729f42abff95f716c988de06d83358a30c7e0b32802c",
+    "preparation_file": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-diagnostic-native-20261024-offline/preparation.json",
+    "preparation_sha256": "0f376c63771d7d4b76f73560ffeccde64a266cb43351b924800642dd1f138678",
+    "imported_operations": 9,
+    "original_native_replayed": true,
+    "original_inventories_unchanged": true,
+    "next_stage": "control-b",
+    "provider_requests": 0,
+    "key_reads": 0,
+    "scope": "original evidence recovery; not new business semantic acceptance"
+  },
+  "source_files": {
+    "app/evaluation/completion_diagnostic_session.py": "20758f4fafa21203068d16c084dd3c47e9f301b4304288717f6df28ad7d4d30c",
+    "app/evaluation/sol_completion_contract.py": "84a5ee5553aabaad84716d6380e24a0494817d3a1aa574a3aa3d82ff6b6c7978",
+    "scripts/completion_diagnostic_launch.py": "3dd3563622687ce563456d1fda35035a7aaedae5ff5bf1c2580f48b484efdc0d",
+    "scripts/prepare_completion_diagnostic.py": "5134c6680730108972e98cd9667f8bef44ae456bc141e93ffbbd192edeed5179",
+    "tests/test_completion_diagnostic_session.py": "7ad62b0a3c51cc2517dcbae53700e5c64966aca4d535f2179d50fcbf1f1e6297",
+    "tests/test_completion_diagnostic_launch.py": "bd031386cc0b64c0451d2bb89d7e33f5fd2b5531f1ec08f8112bd1071039a90b"
+  },
+  "new_qualification_inventory": "data/evaluation/results/natural_duty_qualification_inventory_completion_continuation_20261024.json",
+  "remaining": [
+    "Freeze the launcher checkout and bind its source/plan.",
+    "Complete new native author/check-answer/final/import preflight and actual hidden-entry check.",
+    "Verify exact frozen HEAD public CI; obtain a specific new grant before any Key or paid request."
+  ],
+  "new_authorization": false,
+  "semantic_improvement_proven": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation": "PAUSED"
+}

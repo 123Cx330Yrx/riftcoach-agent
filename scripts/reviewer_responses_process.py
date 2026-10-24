@@ -26,7 +26,7 @@ def response_contract(mode):
     if mode in ('nonstream-tool-v1', 'natural-sol-v1', 'necessity-candidate-v1', 'natural-sol-necessity-v1'):
         from scripts import reviewer_responses_nonstream as nonstream
         return nonstream.build_wire, nonstream.collect
-    if mode in ('nonstream-tool-message-v2', 'natural-sol-necessity-v2'):
+    if mode in ('nonstream-tool-message-v2', 'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1'):
         from functools import partial
         from scripts import reviewer_responses_nonstream as nonstream
         return nonstream.build_wire, partial(nonstream.collect, output_policy=nonstream.TOOL_WITH_MESSAGE)
@@ -75,6 +75,11 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     make_wire, _ = response_contract(response_mode)
     if response_mode == 'natural-sol-v1':
         from app.evaluation.sol_natural_contract import validate_business
+        validate_business(business, validation_context)
+    elif response_mode == 'natural-sol-completion-necessity-v1':
+        from app.evaluation.sol_completion_contract import validate_business, REVIEW_PROFILE
+        if profile != REVIEW_PROFILE:
+            raise ValueError('completion_profile_binding')
         validate_business(business, validation_context)
     elif response_mode in ('natural-sol-necessity-v1', 'natural-sol-necessity-v2'):
         from app.evaluation.sol_necessity_contract import validate_business, REVIEW_PROFILE
@@ -247,6 +252,11 @@ def worker():
     try:
         if payload.get('response_mode') == 'natural-sol-v1':
             from app.evaluation.sol_natural_contract import validate_business
+            validate = validate_business(payload['business'], payload['validation_context'])
+        elif payload.get('response_mode') == 'natural-sol-completion-necessity-v1':
+            from app.evaluation.sol_completion_contract import validate_business, REVIEW_PROFILE
+            if Profile(**payload['profile']) != REVIEW_PROFILE:
+                raise ValueError('completion_profile_binding')
             validate = validate_business(payload['business'], payload['validation_context'])
         elif payload.get('response_mode') in ('natural-sol-necessity-v1', 'natural-sol-necessity-v2'):
             from app.evaluation.sol_necessity_contract import validate_business, REVIEW_PROFILE

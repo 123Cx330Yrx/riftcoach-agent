@@ -245,7 +245,7 @@ class SessionWorkflow(NaturalDutyWorkflow):
                     continue
                 issued = json.loads(value['issued_raw'])
                 context = issued['metadata'].get(contract.CONTEXT)
-                if context and context['stage'] == 'initial':
+                if context and context['stage'] == 'initial' and not context.get('control_case'):
                     requests.append(value['issued_raw'])
             material['initial_requests_with_complete_policies'] = requests
             gate.require('compatibility', 'compatibility', material, data['report'])

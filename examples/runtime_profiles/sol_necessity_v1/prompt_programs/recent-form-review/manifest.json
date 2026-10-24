@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "56c5bd00b90a83a0b93f854af1ea40ef21b07951753885822fec7013e0d37ccd"
+      "sha256": "de7d85b34bcf4d1ba1ab1f45e449e97d0590a8ae742264048fd43126cd05e8f9"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "825cc5e9be7aed612d141ac8e36ffecfc0d014e2dee8c35d5d0ba5d4b174ed6c"
+      "sha256": "558dd023a130e041dac071a8853e494a6122334924e8fc26036c1f797c2bf79f"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -277,7 +277,7 @@
     {
       "component_id": "app.evaluation.natural_duty_workflow",
       "source": "app/evaluation/natural_duty_workflow.py",
-      "sha256": "cd48056030706726f0055f170fd3a7028fb509f61febd90c4529b993eafc1821"
+      "sha256": "57b775b48a0ea2c88114f611bde22bb0d4b344ea87d85392cdc6e5f2be1354ea"
     },
     {
       "component_id": "app.product.natural_duty_candidate",
@@ -347,7 +347,7 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "afc0b539cd65008371eae28a9d11b7fbdaf670c0f99a9f93a91fc52e6360c183"
+      "sha256": "ce81341022c0bf1e79250b8901d98bc0c6eca1aefb1b14093b8cb3f335aa937e"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
@@ -357,7 +357,7 @@
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "484a667ca916e5ecbab06c3bd11b2ce71c5cbeedc00a48587b931cd3a7d962e1"
+      "sha256": "ad383b07f106d7db52aaa9ab78a6ba460bc278967d50446104e203d32aee403e"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -377,7 +377,7 @@
     {
       "component_id": "scripts.reviewer_responses_process",
       "source": "scripts/reviewer_responses_process.py",
-      "sha256": "9f29300587b58e35945019ebf39ea7f0f388d64436ddbca2cebcea51de661fc0"
+      "sha256": "ad68359b481c51a748bf07901c01d674f6bc44884f687d19f8f142f5cc4d378b"
     },
     {
       "component_id": "scripts.reviewer_responses_nonstream",
@@ -410,5 +410,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "097fe779abab377a2da4b02929d4d69eb266c2458c49d41472486807ca7be8f5"
+  "program_sha256": "b4442e017c884bfa243062efd1aa2972aad0aa4f6a65bd4a74d377523b45ca33"
 }

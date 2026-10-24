@@ -72,12 +72,15 @@ class NaturalDutyWorkflow:
         self.entries.append((name, stage, value))
         return raw, value
 
+    def inputs_for(self, request):
+        return build_inputs(request)
+
     def evaluate(self, request):
         if self.state not in ('initial', 'fresh'):
             raise ValueError('natural_duty_invalid_state')
         stage = self.state
         try:
-            inputs = build_inputs(request)
+            inputs = self.inputs_for(request)
             if stage == 'fresh' and inputs != self.expected_fresh:
                 raise ValueError('natural_duty_fresh_input_changed')
             if stage == 'initial':

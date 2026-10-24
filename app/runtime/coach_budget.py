@@ -50,7 +50,8 @@ class CoachBudgetedProvider:
             # passes through observation, reservations and the shared budget.
             from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
             from app.evaluation.sol_necessity_contract import CONTRACT as necessity_contract
-            if self.contract is not sol_contract and self.contract is not necessity_contract:
+            from app.evaluation.sol_completion_contract import CONTRACT as completion_contract
+            if self.contract not in (sol_contract, necessity_contract, completion_contract):
                 raise
             delegate = self.provider._delegate if isinstance(self.provider, ObservedLLMProvider) else self.provider
             issued = getattr(self, '_last_issued', None)
@@ -99,7 +100,8 @@ class CoachBudgetedProvider:
                 raise
             from app.evaluation.sol_natural_contract import CONTRACT as sol_contract
             from app.evaluation.sol_necessity_contract import CONTRACT as necessity_contract
-            if self.contract is sol_contract or self.contract is necessity_contract:
+            from app.evaluation.sol_completion_contract import CONTRACT as completion_contract
+            if self.contract in (sol_contract, necessity_contract, completion_contract):
                 delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
                 known = delegate.failure_usage(error, request)
                 if known is not None:

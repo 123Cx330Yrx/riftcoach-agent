@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "completion离线断点入口已实核9个成功操作及原native、全部历史费用；候选运行接线/统一预算及整链模拟待完成，尚无付费入口，不需Key，automation PAUSED。"
+pause_reason: "completion诊断续接/统一预算/整链及启动器检查通过；待冻结代码、新原生及入口核验、精确CI和具体新授权。不需Key，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,11 +14,12 @@ pause_reason: "completion离线断点入口已实核9个成功操作及原native
 
 ## 当前行动
 
-2026-10-24续接前沿已完成：`scripts/prepare_completion_continuation.py`只提供离线准备，先核原seal/全库存，再用原冻结2b14583e、合同1.6.3与绝对Python做严格只读回放。随后在可丢弃session中导入9个成功操作、原facts journal及回执，仍通过原作者目录和真实native事件重验facts；实际Runtime准确停在completion-initial发送前，没有重新检索或生成。
-全部4HTTP/66591known/0unknown/0retry及255.657活动秒显式继承，失败attempt保留；仅派生逻辑review从2回到1、清除失败终态，不改变原facts响应或旧失败。原145件库存（含seal）与3件作者原件前后相同。
-已生成b/c/d/a四个候选请求及亲本证明，a基线与实际Runtime前沿一致。13项新增完整性/Runtime/native/发送前控制检查及6项库存检查通过；上次精确HEAD3902e1ee的CI40087866246现已全绿。本包是离线恢复证据，不是新模型语义、候选运行合同或付费resume已ready；没有Key读取或模型请求。
-**下一动作：** 接线显式候选合同/receiver及继承native路由，将b/c/d对照与自然a、唯一应用、同稿双fresh放入同一累计预算，并完成模拟整链和当前原生预检；随后再核具体新授权/冻结代码CI。a首次接受结果直接进入自然任务，不另买a。旧grant不扩范围/期限，automation保持PAUSED。
-证据`data/evaluation/results/completion_continuation_offline_20261024.json`；实际输出`outputs/riftcoach-completion-continuation-20261024-offline`。原误报仍否定旧completion意见；阶段8E、正式同版本15与产品依赖不变。
+2026-10-24完成completion诊断续接引擎与显式启动器。合同1.6.5复用既有session、owned worker、共享预算、原生审查及程序逐字补丁；顺序为b/c/d对照→原稿a的completion→兼容/编辑→唯一应用→实际同稿双fresh。它是诊断续接，不是完整产品Runtime注册或产品准入。
+原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。
+整链/异常9项、启动/授权/关闭回放9项、相关旧回归67项（包含6库存检查）通过；7受影响配置实际启动校验通过。另以真实原proof/原作者/native实核新引擎，准确停在control-b发送前，原145件及3作者原件不变；新增Provider/Key均0。模拟检查不是新模型语义证明。
+显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
+**下一动作：** 冻结该启动代码，完成新原生作者/check-answer/final/导入和隐藏Key入口零发送核验，核精确HEAD公共CI后，再呈交具体新授权。automation保持PAUSED。
+证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
 
 以下为本包之前的材料准备记录，其下一动作已由上述离线前沿及接线工作接续。
 

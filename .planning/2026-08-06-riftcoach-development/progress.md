@@ -10276,3 +10276,12 @@ SDK+mock HTTP、实际owned worker、自然候选与监督检查128项通过（1
 ## 2026-10-21 复用生成结果继续审查
 
 恢复入口已实现并核实际旧报告/请求摘要一致：只读父seal/全库存，导入生成和检索结果，继承旧3次/52067tokens/190.094秒；新生成禁止，剩4次Sol/321536tokens/估价0.233472元。完整mock HTTP链覆盖逐项native导入、唯一application、双fresh、7次累计账目和严格封存；原session/launcher相关34项通过（342.57秒），governance/compile/diff通过。本轮新增真实模型请求0。下一步冻结执行目录、实际原生预检和精确HEAD公共CI，具体补充授权尚未请求。
+
+## 2026-10-24 completion诊断续接实现
+
+2026-10-24完成completion诊断续接引擎与显式启动器。合同1.6.5复用既有session、owned worker、共享预算、原生审查及程序逐字补丁；顺序为b/c/d对照→原稿a的completion→兼容/编辑→唯一应用→实际同稿双fresh。它是诊断续接，不是完整产品Runtime注册或产品准入。
+原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。
+整链/异常9项、启动/授权/关闭回放9项、相关旧回归67项（包含6库存检查）通过；7受影响配置实际启动校验通过。另以真实原proof/原作者/native实核新引擎，准确停在control-b发送前，原145件及3作者原件不变；新增Provider/Key均0。模拟检查不是新模型语义证明。
+显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
+**下一动作：** 冻结该启动代码，完成新原生作者/check-answer/final/导入和隐藏Key入口零发送核验，核精确HEAD公共CI后，再呈交具体新授权。automation保持PAUSED。
+证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
