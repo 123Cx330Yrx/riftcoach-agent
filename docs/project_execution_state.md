@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "格式恢复与当前库存修复已验证；完成度四稿离线对照已准备，候选未实测。下一步completion断点诊断入口离线准备；当前不需Key，automation PAUSED。"
+pause_reason: "completion离线断点入口已实核9个成功操作及原native、全部历史费用；候选运行接线/统一预算及整链模拟待完成，尚无付费入口，不需Key，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,14 @@ pause_reason: "格式恢复与当前库存修复已验证；完成度四稿离�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-24续接前沿已完成：`scripts/prepare_completion_continuation.py`只提供离线准备，先核原seal/全库存，再用原冻结2b14583e、合同1.6.3与绝对Python做严格只读回放。随后在可丢弃session中导入9个成功操作、原facts journal及回执，仍通过原作者目录和真实native事件重验facts；实际Runtime准确停在completion-initial发送前，没有重新检索或生成。
+全部4HTTP/66591known/0unknown/0retry及255.657活动秒显式继承，失败attempt保留；仅派生逻辑review从2回到1、清除失败终态，不改变原facts响应或旧失败。原145件库存（含seal）与3件作者原件前后相同。
+已生成b/c/d/a四个候选请求及亲本证明，a基线与实际Runtime前沿一致。13项新增完整性/Runtime/native/发送前控制检查及6项库存检查通过；上次精确HEAD3902e1ee的CI40087866246现已全绿。本包是离线恢复证据，不是新模型语义、候选运行合同或付费resume已ready；没有Key读取或模型请求。
+**下一动作：** 接线显式候选合同/receiver及继承native路由，将b/c/d对照与自然a、唯一应用、同稿双fresh放入同一累计预算，并完成模拟整链和当前原生预检；随后再核具体新授权/冻结代码CI。a首次接受结果直接进入自然任务，不另买a。旧grant不扩范围/期限，automation保持PAUSED。
+证据`data/evaluation/results/completion_continuation_offline_20261024.json`；实际输出`outputs/riftcoach-completion-continuation-20261024-offline`。原误报仍否定旧completion意见；阶段8E、正式同版本15与产品依赖不变。
+
+以下为本包之前的材料准备记录，其下一动作已由上述离线前沿及接线工作接续。
 
 2026-10-24当前：自然任务第四次completion-initial的伴随message误拒收已修复，开发合同1.6.4；格式错误暂停当前项，普通resume不重发，手动恢复保留成功项和费用。相关15+132项工程检查已通过，不作为模型语义证明。
 上一提交bb35f996的CI40084544939发现当前资格库存未更新共享组件摘要。本包新增format_recovery库存，不覆盖历史快照；6项库存检查通过，仅component_fingerprints/program_sha256变化，原15输入/30请求/预算/未资格状态不变。

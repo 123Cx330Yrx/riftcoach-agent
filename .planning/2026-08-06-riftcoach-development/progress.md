@@ -1,3 +1,10 @@
+## 2026-10-24 completion成功前缀离线恢复已实核
+
+新增离线prepare入口在启动前核原seal/计划/全库存，再由冻结2b14583e/合同1.6.3严格replay。临时session复用9个成功操作、原facts journal/回执与原作者/native路由，实际Runtime准确停在completion发送前。继承4HTTP/66591known/0unknown/0retry及255.657活动秒，失败attempt保留；原145件封存和3件作者字节前后相同。
+13项新增检查（10项主组、追加3项启动控制，另复跑1项）与6项库存检查通过。早期模拟v2纯文本的错误码与原v1不同，已在明确标注的合成旧回执fixture中建模；未改真实失败或放宽生产接收。上次3902e1ee的CI40087866246已success。本轮无新Provider/Key。
+亲本证明和b/c/d/a请求已生成，a基线与原Runtime前沿一致；当前只有离线prepare，不是付费启动器或语义修复完成。下一动作是显式候选合同/receiver、继承native路由及统一预算整链接线，之后再绑定具体新grant/冻结CI/原生预检。automation PAUSED，阶段8E及产品依赖保持。
+证据completion_continuation_offline_20261024.json；方案2026-10-24-sol-output-format-recovery.md。
+
 ## 2026-10-24 当前库存CI遗漏修复与完成度四稿对照
 
 CI40084544939的库存重建失败已定位为共享源码摘要更新遗漏；新增当前format_recovery快照，历史文件不覆盖。6项检查通过，仅组件/程序摘要变化。

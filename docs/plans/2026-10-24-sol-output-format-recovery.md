@@ -34,6 +34,9 @@
 
 CI40084544939暴露当前库存遗漏：共享源码/manifest已更新但库存仍指旧摘要。本包新增format_recovery当前库存并更新当前重建测试，保留旧necessity_integration及所有历史快照；6项库存检查通过，只变component_fingerprints/program_sha256。原15输入、30请求、预算、未执行及资格不变。
 
-下一动作：实现并离线验证有界completion断点诊断入口，显式继承已接受facts/native、成功生成/工具结果和全部历史费用；先核b/c/d，再把a新真实结果直接消费到自然任务，避免成功a又被重买。现有continuation只支持首次facts失败后的生成前缀，不能直接套用。四稿/政策是待检假设，真实支持前不授采用；新具体范围/预算/版本/期限待入口可审查后核定。
+离线断点入口已实现：`scripts/prepare_completion_continuation.py`先在启动子进程前核外层seal/全库存/计划，再使用原冻结cwd与原Python、合同1.6.3严格replay，不把旧v1回执改标为新v2。临时派生session导入1—9成功操作与事实journal/回执，原host handle仍走原作者目录、原计划和真实native事件，不能仅复制accepted标记。原facts响应不变，仅其临时预算快照显式继承后来失败的attempt/费用，并恢复待完成逻辑职责。
+实际Runtime已准确到达原completion-initial发送前；max_new_models=0及发送前拒绝回调双重阻止新IO。4HTTP/66591known/0unknown/0retry、255.657活动秒均保留；145件原封存（含seal）与3件作者原件前后相同。b/c/d/a请求与亲本证明实际输出在`outputs/riftcoach-completion-continuation-20261024-offline`，a基线和原前沿业务请求一致。
+13项新增检查覆盖实际Runtime不重检索/生成、原native及作者字节、前沿/账目/接受状态/回执篡改拒绝、启动前亲本及输出路径验证；6项库存检查通过。测试native/HTTP替身只证明工程行为，真实原件/事件另由冻结回放核验。上次提交3902e1ee的CI40087866246现已success。
+下一动作：完成候选合同/receiver、继承native路由和共享累计预算调度的运行接线，再离线验证b/c/d→a→兼容/编辑→唯一应用→同稿双fresh。a新真实结果直接消费，不先单测成功a再重买。当前离线入口不是付费启动ready；新具体范围/预算/活动秒/版本/期限须在完整入口可审查后核定。四稿/政策仍是待检假设，不因恢复工程通过便授采用。
 没有可交付的当前批付费resume入口；旧Control/resume-authorized.ps1保持拒绝闭批，不再让用户填Key试运气。
 真实模型语义、同版本15、产品资格及阶段8E未完成；自然Coach/Training、四块/journal、前端、Memory、身份运维、两树整合、独立评估、学习与自然6调用/产品5调用依赖保持。
