@@ -52,8 +52,15 @@ Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏�
 单次预留0.07296元，未核企业实际报价，不当账单。原UTC截止10月25日北京时间10:56:33保持。
 20项入口检查通过（151.60秒）：保留原15项，加企业变更、旧Pro grant拒发、连续5次显式超时补测后成功/再审推进、
 旧原件不变与只读seal等；真实worker/SDK配mock HTTP/FakeGate，不是模型质量或企业路由稳定性证明。
-/root/necessity_independent实际行政消息已确认可复用，不新建Agent。下一动作：冻结新执行树并追加已授权变更，
-实际检查新入口；同源码公共CI全绿后隐藏输入企业Key，仅发送当前a的第一补测。原Pro首次补测准备不再作为企业入口。
+/root/necessity_independent实际行政消息已确认可复用，不新建Agent。企业执行树已冻结2bd7e08e，
+路径D:/riftcoach-review-necessity-enterprise-execution；原Operator已追加amendments/0001.json与checkpoint0006，
+恢复根b2bb4ab9来自amend原stdout，原plan/请求/回执/作者原件SHA及mtime未变，仍1HTTP/80384unknown预留。
+新入口outputs/riftcoach-review-necessity-enterprise-20261024-control/start-enterprise.ps1已完成真实CheckOnly及CI等待取消核验，
+无Key读取/新claim/残留waiter；原Pro入口原字节留存，旧路径已改为读Key前拒绝的退役提示。
+精确源码CI40057680511当前in_progress；下一动作：用户运行企业入口，脚本等同HEAD全绿后隐藏输入企业Key，
+仅发送当前a的第一补测。新授权绑定原plan及追加变更，原截止不延展。
+当前准备证据为data/evaluation/results/review_necessity_enterprise_recovery_20261024.json；执行代码保持2bd7e08e，
+后续文档提交不触发更换执行树或重新绑定代码CI。企业真实路由未独立验证，尚无企业业务意见。
 旧6052be74执行树/原回执不改，本轮仍0新增Key/HTTP。补测可能再次524，不能以渠道变化宣称质量改善。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。

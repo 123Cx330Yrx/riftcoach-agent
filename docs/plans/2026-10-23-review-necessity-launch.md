@@ -1,7 +1,7 @@
 # 三项必要修订边界诊断：受控入口
 
 本工作包只检验已有事实审查政策候选在三份全文开发对照上的误报/漏报。
-用户已要求继续准备，尚未授权此新范围付费；旧授权及旧六项均不挪用、不重开。
+用户已于2026-10-24授权此范围及随后企业分组变更；旧六项及旧封存均不重开。
 材料/标签及失败决策沿用 `data/evaluation/fixtures/review_necessity_20261023/README.md`。
 
 ## 2026-10-24 用户变更：企业分组与多次手动超时补测
@@ -23,6 +23,17 @@
 通过的逻辑项不重做；明确超时可再次手动retry，未知claim/缺receipt不得当作没发。完整意见必须先审，不能以补测挑答案。
 封存/replay保留原计划与全部变更、费用、作者/原生证据；新配置不能补签旧high/max冲突或拼产品资格。
 下文的一次补测/Pro额度描述为原v1计划，未变更的旧计划及其测试仍按原合同执行。
+
+当前企业入口已准备：执行树`D:/riftcoach-review-necessity-enterprise-execution`冻结
+`2bd7e08e260542246db33b445499081088a72291`，Python沿用`D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`。
+原Operator不变，新增amendment0001/checkpoint0006，恢复根
+`b2bb4ab9a7358a83f431659b4cc71783212f1e5b622d59be79b51d474e0bc7df`来自amend原stdout。
+企业Control为`C:/Users/33502/Documents/Agent/outputs/riftcoach-review-necessity-enterprise-20261024-control`，
+用户运行`start-enterprise.ps1`；脚本先等精确代码CI40057680511全绿再隐藏输入企业Key，只执行当前a一次retry。
+实际CheckOnly、CI等待取消、旧Pro入口读Key前退役拒绝均已核，旧原件SHA/mtime保持，新HTTP/Key/claim0。
+旧Pro启动器原字节留存，不能再用下文旧命令启动企业补测；后续手动恢复用每次命令原stdout的checkpoint SHA。
+20项相关行为检查通过151.60秒；证据`data/evaluation/results/review_necessity_enterprise_recovery_20261024.json`。
+当前CI仍in_progress；文档提交不更换冻结代码/CI，企业路由稳定性和业务质量尚未实测。
 
 ## 实现及证据边界
 
@@ -91,7 +102,7 @@ submit完成后保存其原stdout checkpoint再用同一入口继续，不根据
 OS互斥、完整回执中断恢复、缺观测停发和只读seal。它们只证明工程控制流，不证明真实语义或原生交接。
 不因fixture里模拟接受就给三份预期标签盖独立审查章。实际预检与准确执行树/根另存准备结果。
 
-## 当前已核入口与恢复用法
+## 原v1已核入口与恢复用法（已由上方企业入口替代）
 
 执行代码固定在`D:/riftcoach-review-necessity-execution`的6052be74，Python为
 `D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`；精确CI为39895429952，发送前须success。

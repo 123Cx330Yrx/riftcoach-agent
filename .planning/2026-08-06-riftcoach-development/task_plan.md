@@ -40,7 +40,10 @@ high/max公开意见仅诊断审查后停，不继续为档位购买；语义实
 **实现及验证：** amend追加新HEAD/source/cwd/Python、企业Profile/比例估价及无固定次数手动补测；
 仍每次1HTTP/80384预留/300秒/自动重试0。20项原入口及企业连续补测/拒绝混用/保留账目/只读封存检查通过151.60秒。
 独立Agent已实际确认可复用；mock检查不是企业稳定性或业务质量证明。
-**下一动作：** 冻结企业执行树、追加变更并核实际入口；新精确源码公共CI全绿后用户隐藏输入企业Key，仅发a第一补测。
+**实际企业准备：** 执行树D:/riftcoach-review-necessity-enterprise-execution冻结2bd7e08e，原Operator追加amendment0001及checkpoint0006，
+根b2bb4ab9来自原stdout；旧原件SHA/mtime保持。新企业Control的start-enterprise.ps1实际CheckOnly/CI等待取消通过，
+Pro入口已保留原字节并退役；新Key/HTTP/claim0，无残留waiter，原累计1HTTP/80384unknown预留保持。
+**下一动作：** 用户运行企业入口，先等精确代码CI40057680511（当前in_progress）全绿再隐藏输入企业Key，仅发a第一补测。
 不再使用原Pro首补测入口，不改原plan/receipt/源码树；原UTC截止不延展，企业比例估价0.07296元/次非账单。
 high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
 不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
@@ -67,10 +70,11 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
 以canonical和上方工作卡为准：候选/三稿/worker/有限恢复/真实行政作者交接及本机入口均已验证；
-新费用范围已获2026-10-24用户授权，首项已发送后远端524；恢复根77132319、剩余共享补测1次保持。
-用户已选企业分组并允许多次手动超时补测；执行变更代码及20项检查完成，
-准备企业执行树与追加原根、实际入口和对应CI；旧Pro首补测准备文件仅为历史证据。
-授权激活见review_necessity_authorization_20261024.json；未证明模型改善，原发布门、8E与后续依赖保持。
+新费用范围已获2026-10-24用户授权，首项已发送后远端524；父根77132319保持原件。
+企业分组及多次手动超时补测已经实现，真实新入口准备完成；恢复根b2bb4ab9，执行代码冻结2bd7e08e。
+用户运行企业Control/start-enterprise.ps1，脚本先等40057680511全绿后隐藏输入Key，只补当前a一次；不自动循环。
+准备证据review_necessity_enterprise_recovery_20261024.json；授权仍至北京时间10月25日10:56:33。
+原Pro首补测准备文件只作历史证据；未证明企业稳定性或模型改善，原发布门、8E与后续依赖保持。
 
 ## History
 

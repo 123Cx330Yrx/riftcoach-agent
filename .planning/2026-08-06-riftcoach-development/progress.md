@@ -6,8 +6,13 @@
 取消固定次数但无自动循环/驻留Key；单次80384预留/300秒及完整结果先审、语义/身份/协议硬停保持，累计known/unknown不重置。
 20项聚焦检查151.60秒通过，含原15项及新5项：连续5次显式超时不封批，再成功后审查推进下一逻辑项，旧原件/账目/只读seal保持。
 这些为真实owned worker/SDK/mock HTTP及FakeGate，不冒充企业渠道稳定性。原独立Agent实际行政消息确认可接后续任务。
-下一步冻结企业执行树、用原stdout根77132319追加新授权变更并实核入口；同源码CI全绿才读企业Key发首次补测。
-旧6052执行树保持，新增付费/Key0；原UTC截止不延展。
+已冻结企业执行树D:/riftcoach-review-necessity-enterprise-execution于2bd7e08e；原Operator追加amendment0001及checkpoint0006，
+新根b2bb4ab9来自amend原stdout。原plan/请求/receipt/作者SHA及mtime不变，仅新增两件库存，累计仍1HTTP/80384unknown。
+新Control outputs/riftcoach-review-necessity-enterprise-20261024-control/start-enterprise.ps1实际CheckOnly及CI等待取消通过，
+没有真实Key/新claim/请求/残留waiter。原Pro入口原字节留存，旧路径读Key前拒绝；不把旧命令当企业入口。
+代码CI40057680511当前in_progress，脚本会先等精确2bd7e08e全绿再隐藏输入企业Key，仅发当前a第一补测。
+新授权绑定原plan及变更canonical digest，原UTC截止不延展；执行树不随文档提交更新。
+证据review_necessity_enterprise_recovery_20261024.json；旧6052执行树保持，无企业真实稳定性/语义改善证明。
 
 ## 2026-10-24 用户允许多次补测，优先准备第一次
 
