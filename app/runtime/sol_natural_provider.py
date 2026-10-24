@@ -315,6 +315,10 @@ class SolNaturalProvider(RoleRoutedProvider):
 
     def prepare_retry(self, error, request):
         contract = self.contract_module
+        # The necessity candidate pauses in its durable session. Never turn a
+        # manual retry allowance into an automatic second provider request.
+        if contract.CONTRACT.descriptor().get('transport_retry_mode') == 'manual-reaped-timeout-v1':
+            return False
         if (self._retries >= contract.CONTRACT.descriptor()['transport_retries'] or not self._failed
                 or (self.reviewer.task_directory/'retry-decision.json').exists()):
             return False

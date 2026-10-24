@@ -39,7 +39,7 @@ def cost_envelope():
     return str(max(costs))
 
 
-def prepare(run_id='necessity-natural-offline-20261024'):
+def capture(run_id='necessity-natural-offline-20261024'):
     factory = CaptureFactory()
     with TemporaryDirectory(prefix='riftcoach-necessity-natural-') as directory:
         application = base.build_application(provider_factory=factory, output_root=directory,
@@ -51,7 +51,7 @@ def prepare(run_id='necessity-natural-offline-20261024'):
         if factory.first is None:
             raise ValueError('necessity_natural_first_request_not_reached')
     raw = contract.request_bytes(factory.first)
-    return dict(kind='necessity-natural-offline-preparation-v1', run_id=run_id,
+    return factory.first, dict(kind='necessity-natural-offline-preparation-v1', run_id=run_id,
         contract=contract.CONTRACT.snapshot().model_dump(mode='json'),
         first_request_sha256=base.sha(raw), source_sha256=base.SOURCE_SHA,
         relationship='observed', memory_records=0, preselected_knowledge=False,
@@ -65,8 +65,11 @@ def prepare(run_id='necessity-natural-offline-20261024'):
         execution_authorized=False, semantic_approval=False, qualified=False,
         production_admitted=False, publication_allowed=False,
         remaining_before_paid=['Explicit new task authorization and frozen code/CI binding',
-            'Manual repeated-timeout continuation policy; current Runtime has one bounded automatic retry',
             'Actual native author/check-answer/final/import preflight for the new task'])
+
+
+def prepare(run_id='necessity-natural-offline-20261024'):
+    return capture(run_id)[1]
 
 
 if __name__ == '__main__':

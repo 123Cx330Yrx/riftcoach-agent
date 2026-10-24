@@ -82,9 +82,13 @@ class CandidateSession:
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
                  max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None,
-                 contract_module=None):
+                 contract_module=None, manual_retry=False):
         from app.runtime.sol_natural_provider import selected_contract
         self.contract_module = selected_contract(contract_module)
+        if manual_retry and (read_only or reconcile or self.contract_module.CONTRACT.descriptor().get(
+                'transport_retry_mode') != 'manual-reaped-timeout-v1'):
+            raise ValueError('session_manual_retry_mode')
+        self.manual_retry = manual_retry
         if ((self.contract_module.VERSION != 'natural-flash-sol-development-v1'
                 or 'candidate_contract' in binding)
                 and binding.get('candidate_contract') != self.contract_module.VERSION):
@@ -385,6 +389,9 @@ class CandidateSession:
         self.verify()
         paths = sorted((self.root/'operations').glob('*-intent.json'))
         pending = [p.name for p in paths if not p.with_name(p.name.replace('-intent', '-result')).exists()]
+        last = paths[-1].with_name(paths[-1].name.replace('-intent', '-result')) if paths else None
+        value = json.loads(last.read_bytes())['value'] if last and last.exists() else None
         return dict(operations=len(paths), unresolved=pending,
+            timeout_waiting=isinstance(value, dict) and value.get('reaped_timeout') is not None,
             closed=(self.root/'terminal.json').exists(), guard_sha256=self.guard_sha,
             checkpoint_sha256=self.checkpoint_sha, publication_allowed=False, production_admitted=False)

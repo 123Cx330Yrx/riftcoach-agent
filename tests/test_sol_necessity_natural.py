@@ -112,14 +112,52 @@ def test_complete_protocol_or_identity_rejection_is_not_timeout_retry(tmp_path, 
 
 
 def test_timeout_retains_unknown_and_only_retries_same_current_stage(tmp_path):
-    app, factory, flows, attempts = application(tmp_path, candidate=new, statuses=(524,))
-    run(app)
-    assert attempts == [524, 200, 200, 200, 200]
-    assert flows[0].outcome == 'candidate_repaired_pass_unqualified'
-    assert flows[0].send.provider.reserved_tokens > 0
-    requests = sorted(factory.providers['candidate'].reviewer.directory.glob('call-*/request.json'))
-    assert read_json(requests[0]) == read_json(requests[1])
-    assert len(factory.providers['candidate'].generator.requests) == 2
+    # Every timeout, including the first one, requires a new manual invocation.
+    first = session(tmp_path, candidate=new)
+    with pytest.raises(SessionPaused, match='timeout_awaiting_manual_retry'), first:
+        app, factory, attempts = app_for(tmp_path, first, 1, candidate=new, statuses=(524,))
+        run(app)
+    assert attempts == [524]
+    unknown = factory.providers['candidate'].candidate_budget.reserved_tokens
+    before = tree(first.transport_root)
+    assert first.status()['timeout_waiting'] and not first.status()['closed']
+    assert not (first.journal_root/'outcome.json').exists()
+    # A regular resume cannot authorize another send.
+    second = session(tmp_path, first, candidate=new)
+    with pytest.raises(SessionPaused, match='timeout_awaiting_manual_retry'), second:
+        app, factory, attempts = app_for(tmp_path, second, 2, candidate=new, knowledge=NoSearch())
+        run(app)
+    assert attempts == [] and tree(second.transport_root) == before
+    # One manual approval buys exactly one retry, even when it also times out.
+    third = session(tmp_path, second, candidate=new, manual_retry=True)
+    with pytest.raises(SessionPaused, match='timeout_awaiting_manual_retry'), third:
+        app, factory, attempts = app_for(tmp_path, third, 3, candidate=new, statuses=(524,), knowledge=NoSearch())
+        run(app)
+    assert attempts == [524]
+    assert factory.providers['candidate'].candidate_budget.reserved_tokens == unknown*2
+    assert factory.providers['candidate']._logical == {'generation':2, 'review':1}
+    final = session(tmp_path, third, candidate=new, manual_retry=True)
+    with final:
+        app, factory, attempts = app_for(tmp_path, final, 4, candidate=new, knowledge=NoSearch())
+        run(app)
+        budget = factory.providers['candidate'].candidate_budget
+        assert attempts == [200, 200, 200, 200]
+        assert budget.calls == 8 and budget.reserved_tokens == unknown*2
+        assert factory.providers['candidate']._logical == {'generation':2, 'review':4}
+        assert factory.providers['candidate'].generator.requests == []
+        final.close(dict(outcome=read_json(final.journal_root/'outcome.json')['outcome']))
+    requests = sorted((final.transport_root/'review').glob('call-*/request.json'))
+    assert read_json(requests[0]) == read_json(requests[1]) == read_json(requests[2])
+    assert all(tree(final.transport_root)[p] == pin for p, pin in before.items())
+    assert len(list(final.journal_root.glob('application.json'))) == 1
+    original = tree(final.root), tree(final.transport_root), tree(final.journal_root)
+    replay = session(tmp_path, final, candidate=new, read_only=True)
+    with replay:
+        app, factory, attempts = app_for(tmp_path, replay, 5, candidate=new, knowledge=NoSearch())
+        run(app)
+        assert attempts == [] and factory.providers['candidate'].generator.requests == []
+        assert factory.providers['candidate'].candidate_budget.calls == 8
+    assert original == (tree(final.root), tree(final.transport_root), tree(final.journal_root))
 
 
 def test_receipt_reconciliation_resume_and_closed_readonly_replay(tmp_path):

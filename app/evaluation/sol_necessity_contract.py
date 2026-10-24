@@ -91,6 +91,8 @@ class NecessityNaturalContract(baseline.SolNaturalContract):
     def descriptor(self):
         value = super().descriptor()
         value.update(contract_id=VERSION, component_contract=VERSION,
+            transport_retries=4, execution_timeout_s=3600,
+            transport_retry_mode='manual-reaped-timeout-v1',
             necessity_policy_sha256=hashlib.sha256(NECESSITY_POLICY.encode('utf-8')).hexdigest(),
             review_profile=dict(group=REVIEW_PROFILE.group, route=REVIEW_PROFILE.route),
             review_prices_cny_per_million=dict(input='0.5', output='2.5'))

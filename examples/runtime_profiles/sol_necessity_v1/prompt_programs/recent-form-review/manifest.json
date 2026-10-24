@@ -347,22 +347,22 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "e5f34c4dc12ddde24f1fdd9bac1c84dcef0952c2c3e710ce1e987439b0fa529e"
+      "sha256": "0bc83bf22bffe42fb2395375564f509e91730366cde0dc08c053fa39f61db482"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "d8e098084ee13c1ccee9f932d4fe7a8ff2ff314644786ae8e4b41eee8aa79e55"
+      "sha256": "0038a0855f4f21e24764d69bf3f02804d00a6ccde37ec60a71ec82e1ff4ba76f"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "a8a6d31d0b309385aee33c72d68561922c1f081c2b0b608f9595b06d9c2d592c"
+      "sha256": "0073776bad4d6b8a9cd5369a7eba0c831147e0df3e8a75b0024b0ad11fbfb2ca"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
       "source": "app/runtime/sol_session_receipts.py",
-      "sha256": "3dc0d2ea4c7757f6258d7c740d192f65794843722c872b5821814d88d73edb7f"
+      "sha256": "26fffd9fcf61d1a80cb94d1100b0695a566190992516bd20f29af4337a8b1fd3"
     },
     {
       "component_id": "app.evaluation.sol_session_review",
@@ -397,7 +397,7 @@
     {
       "component_id": "app.evaluation.sol_necessity_contract",
       "source": "app/evaluation/sol_necessity_contract.py",
-      "sha256": "476368646d9786b4f4b770c844cbfd658ed34c68bf5a61aa4b66a739ca42158f"
+      "sha256": "cf415e0c27b61dbd511a2d97eb0d856e2feee39499e249104d6ba666c1f77a7f"
     },
     {
       "component_id": "scripts.review_necessity_candidate",
@@ -407,8 +407,8 @@
     {
       "component_id": "coach_execution_contract",
       "source": "app.evaluation.sol_necessity_contract:v1.6.3",
-      "sha256": "7d40caadb775eb06fbe8b875212fd3a0384ab3a2f8a54882a401f7a55b16b6b3"
+      "sha256": "9df3be166e2fc82d923031a28bfedb51d0cd76a27cf9b81dcdcce43db1b009ca"
     }
   ],
-  "program_sha256": "61c741f4145986d3ff12d00e26e0b1b776ef20dbd6ae4974c019bc7b447ab288"
+  "program_sha256": "71b27645497f07b1b4acd89bcbca54c3c0abf5914d3b7baa8080ebbede5c3cdc"
 }

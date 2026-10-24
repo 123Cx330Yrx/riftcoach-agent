@@ -347,22 +347,22 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "e5f34c4dc12ddde24f1fdd9bac1c84dcef0952c2c3e710ce1e987439b0fa529e"
+      "sha256": "0bc83bf22bffe42fb2395375564f509e91730366cde0dc08c053fa39f61db482"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "d8e098084ee13c1ccee9f932d4fe7a8ff2ff314644786ae8e4b41eee8aa79e55"
+      "sha256": "0038a0855f4f21e24764d69bf3f02804d00a6ccde37ec60a71ec82e1ff4ba76f"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "a8a6d31d0b309385aee33c72d68561922c1f081c2b0b608f9595b06d9c2d592c"
+      "sha256": "0073776bad4d6b8a9cd5369a7eba0c831147e0df3e8a75b0024b0ad11fbfb2ca"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
       "source": "app/runtime/sol_session_receipts.py",
-      "sha256": "3dc0d2ea4c7757f6258d7c740d192f65794843722c872b5821814d88d73edb7f"
+      "sha256": "26fffd9fcf61d1a80cb94d1100b0695a566190992516bd20f29af4337a8b1fd3"
     },
     {
       "component_id": "app.evaluation.sol_session_review",
@@ -400,5 +400,5 @@
       "sha256": "f10ee42c6ff53184b6847cc8f1cc4634f190d5aaa39591217eeef4ab5c2c593e"
     }
   ],
-  "program_sha256": "1c12b2c3835f1b1708df17949a975cb4d842fb46d2caa0fba2e6115c3eabe630"
+  "program_sha256": "67d85f9c036209fddc10e5be6886b0e616c4d8ae7d03db7eb140dcb427b22a26"
 }

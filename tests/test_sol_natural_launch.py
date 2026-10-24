@@ -97,20 +97,22 @@ def test_first_request_change_is_rejected_before_intent_or_send(tmp_path):
         assert session.status()['operations'] == 0
 
 
-def plan(tmp_path, monkeypatch):
+def plan(tmp_path, monkeypatch, candidate=contract):
     monkeypatch.setattr(launch, 'current_head', lambda: '1'*40)
     monkeypatch.setattr(launch, 'source', lambda: dict(head='1'*40, files={}))
     operator = tmp_path/'operator'
-    roots = launch.prepare(operator, 'launch-fixture', 'synthetic-root', 'synthetic-child')
+    roots = launch.prepare(operator, 'launch-fixture', 'synthetic-root', 'synthetic-child', candidate=candidate)
     return launch.load(operator, roots['plan_sha256']), roots['plan_sha256']
 
 
 def grant(p, pin):
     now = datetime.now(timezone.utc)
-    return dict(version=launch.VERSION+'-authorization', issued_at=now.isoformat(),
+    value = dict(version=launch.VERSION+'-authorization', issued_at=now.isoformat(),
         expires_at=(now+timedelta(hours=1)).isoformat(), plan_sha256=pin, head=p['head'],
         run_id=p['run_id'], limits=p['limits'], estimated_uncached_cny=p['estimated_uncached_cny'],
         retry_authorized=True, production_admitted=False, user_authorization_evidence='Synthetic test only')
+    value.update({key:p[key] for key in ('candidate_contract', 'retry_mode', 'review_profile') if key in p})
+    return value
 
 
 def test_preparation_create_only_pinned_and_no_run(tmp_path, monkeypatch):
@@ -201,10 +203,13 @@ def test_execution_checks_fail_before_claim_and_keys(tmp_path, monkeypatch, fail
     assert not (Path(p['operator'])/'execution').exists()
 
 
-def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path, monkeypatch):
+@pytest.mark.parametrize('necessity', [False, True])
+def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path, monkeypatch, necessity):
     from tests.test_sol_natural_candidate import application
     from app.runtime import sol_natural_provider
-    p, pin = plan(tmp_path, monkeypatch)
+    from app.evaluation import sol_necessity_contract
+    candidate = sol_necessity_contract if necessity else contract
+    p, pin = plan(tmp_path, monkeypatch, candidate=candidate)
     open_history, turns, _ = controls(tmp_path/'history')
     _, example_gate = open_history()
     native = launch.CodexHostReviewEventSource(example_gate.native.event_source.client, p['review_plan'])
@@ -213,14 +218,16 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
     monkeypatch.setattr(launch, 'verify_preflight', lambda *a: True)  # exercised separately above
     keys = []
     wait_clock = [100.0]
-    def credentials():
+    def credentials(*args, **kwargs):
         keys.append('synthetic')
         wait_clock[0] += 7200  # Two hours at every initial/resumed key prompt.
         return None, 'OFFLINE_SENTINEL'
     monkeypatch.setattr(launch, 'credentials', credentials)
     factories, requests = [], []
     def factory(**kwargs):
-        _, value, _, calls = application(Path(p['operator'])/'execution')
+        assert kwargs['contract_module'] is candidate
+        statuses = (524,) if necessity and len(factories) == 1 else ()
+        _, value, _, calls = application(Path(p['operator'])/'execution', candidate=candidate, statuses=statuses)
         factories.append(value)
         requests.append(calls)
         return value
@@ -238,12 +245,22 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
     authorization_sha = digest(raw)
     common = dict(authorization_file=path, authorization_sha=authorization_sha,
                   ci_run='synthetic', preflight_proof={})
-    roots, stages = {}, []
-    for index in range(7):
-        result = launch.execute(p, pin, native, **common, **roots)
+    roots, stages, manual = {}, [], False
+    timeouts = 0
+    for index in range(8):
+        result = launch.execute(p, pin, native, **common, **roots, manual_retry=manual)
+        manual = False
         roots = dict(guard=receipts[-1]['guard_sha256'], checkpoint=receipts[-1]['checkpoint_sha256'])
         if result['phase'] == 'closed':
             break
+        if result['reason'] == 'session_timeout_awaiting_manual_retry':
+            timeouts += 1
+            key_count = len(keys)
+            again = launch.execute(p, pin, native, **common, **roots)
+            assert again['phase'] == 'paused' and len(keys) == key_count
+            roots = dict(guard=receipts[-1]['guard_sha256'], checkpoint=receipts[-1]['checkpoint_sha256'])
+            manual = True
+            continue
         assert result['reason'] == 'session_awaiting_native_review'
         # Re-running at the same unsatisfied gate must not even ask for a key.
         key_count = len(keys)
@@ -264,12 +281,14 @@ def test_launcher_runs_real_application_resumes_gates_and_never_rebuys(tmp_path,
         roots = dict(guard=receipts[-1]['guard_sha256'], checkpoint=receipts[-1]['checkpoint_sha256'])
     assert result['phase'] == 'closed'
     assert stages == ['facts-initial', 'completion-initial', 'compatibility', 'edit', 'facts-fresh', 'completion-fresh']
-    assert sum(map(len, requests)) == 4
+    assert timeouts == int(necessity)
+    assert sum(map(len, requests)) == 4+int(necessity)
     assert sum(len(f.providers[p['run_id']].generator.requests) for f in factories) == 2
     assert len(list((Path(p['operator'])/'execution/journal').glob('application.json'))) == 1
     calls_before = sum(map(len, requests))
     replayed = launch.replay(p, pin, native, authorization_sha=authorization_sha, **roots)
-    assert replayed['strict_replay'] and replayed['accounting']['calls'] == 6
+    assert replayed['strict_replay'] and replayed['accounting']['calls'] == 6+int(necessity)
+    assert (replayed['accounting']['reserved_tokens'] > 0) is necessity
     assert replayed['native_reviews'] == 6
     assert sum(map(len, requests)) == calls_before
     sealed = launch.seal(p, pin, native, authorization_sha=authorization_sha, **roots)

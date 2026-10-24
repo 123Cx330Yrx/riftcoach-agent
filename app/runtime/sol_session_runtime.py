@@ -13,7 +13,7 @@ from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_stream_bridge import REQUEST, RESPONSE
 from app.evaluation.natural_duty_workflow import NaturalDutyWorkflow
-from app.evaluation.sol_natural_session import SessionBlocked
+from app.evaluation.sol_natural_session import SessionBlocked, SessionPaused, canonical, digest
 from app.providers.errors import ProviderError, ProviderResponseError
 from app.runtime.coach_budget import CoachBudgetedProvider
 from app.runtime.observed_provider import ObservedLLMProvider
@@ -53,9 +53,12 @@ class SessionBudget(CoachBudgetedProvider):
 
     def snapshot(self):
         router = self.router
-        return dict(calls=self.calls, tokens=self.tokens, reserved_tokens=self.reserved_tokens,
+        value = dict(calls=self.calls, tokens=self.tokens, reserved_tokens=self.reserved_tokens,
             stopped=self.stopped, router_calls=router._calls, logical=router._logical,
             retries=router._retries, failed=router._failed, attempts=router.attempts)
+        if router._retry_request is not None:
+            value['retry_issued_raw'] = self.contract_module.request_bytes(router._retry_request).decode('utf-8')
+        return value
 
     def restore(self, value):
         self.calls, self.tokens = value['calls'], value['tokens']
@@ -65,6 +68,11 @@ class SessionBudget(CoachBudgetedProvider):
         router._retries, router._failed = value['retries'], value['failed']
         router.attempts = list(value['attempts'])
         router._retry_request = None
+        if value.get('retry_issued_raw') is not None:
+            from app.runtime.sol_session_receipts import request_from_raw
+            router._retry_request = request_from_raw(value['retry_issued_raw'])
+        if hasattr(router.generator, '_failed'):
+            router.generator._failed = False
         # The derived trace starts its own new-IO ordinals at one. Only the
         # transport router keeps task-global ordinals across process restarts.
         if hasattr(router.generator, '_calls'):
@@ -85,8 +93,18 @@ class SessionBudget(CoachBudgetedProvider):
             try:
                 response = super(SessionBudget, self).chat(request)
             except ProviderError as error:
-                return dict(ok=False, error_provider=error.provider, error_code=error.code,
-                            budget=self.snapshot())
+                value = dict(ok=False, error_provider=error.provider, error_code=error.code,
+                             budget=self.snapshot())
+                issued = getattr(self, '_last_issued', None)
+                if (contract.CONTRACT.descriptor().get('transport_retry_mode') == 'manual-reaped-timeout-v1'
+                        and issued is not None and self.router._failed):
+                    role = contract.role_for_request(issued)
+                    selected = self.router.reviewer if role == 'review' else self.router.generator
+                    if callable(getattr(selected, 'retryable', None)) and selected.retryable(error, issued):
+                        value['reaped_timeout'] = dict(role=role, ordinal=self.calls,
+                            issued_raw=contract.request_bytes(issued).decode('utf-8'),
+                            receipt_sha256=selected.last_failure['receipt_sha256'])
+                return value
             exchange = self.provider.last_exchange
             if not isinstance(exchange, Exchange) or exchange.response is not response:
                 raise SessionBlocked('session_exchange_missing')
@@ -94,9 +112,13 @@ class SessionBudget(CoachBudgetedProvider):
                 issued_raw=contract.request_bytes(exchange.issued_request).decode('utf-8'),
                 receipt_request_sha256=exchange.receipt_request_sha256, budget=self.snapshot())
 
-        value, replayed = self.session.operation('model', normalized, send)
-        if replayed:
-            self.restore(value['budget'])
+        while True:
+            value, replayed = self.session.operation('model', normalized, send)
+            if replayed:
+                self.restore(value['budget'])
+            if value.get('reaped_timeout') is None:
+                break
+            self._manual_retry(value)
         if not value['ok']:
             raise ProviderResponseError(provider=value['error_provider'], code=value['error_code'])
         response = RESPONSE.validate_json(value['response_raw'])
@@ -110,6 +132,46 @@ class SessionBudget(CoachBudgetedProvider):
             raise SessionBlocked('session_response_identity')
         self._exchange = Exchange(issued, response, value['receipt_request_sha256'])
         return response
+
+    def _manual_retry(self, failed):
+        """Append one human-triggered decision, then replay the same logical call.
+
+        The failure was classified while its original exception and immutable
+        receipt were available. Session inventory pins those bytes throughout
+        recovery. No missing/unknown receipt can acquire this classification.
+        """
+        session, router = self.session, self.router
+        previous = session.root/'operations'/f'{session.cursor:04d}-result.json'
+        bound = dict(failed_result_sha256=digest(previous.read_bytes()),
+            timeout=failed['reaped_timeout'], budget=failed['budget'])
+        next_path = session.root/'operations'/f'{session.cursor+1:04d}-intent.json'
+        if not next_path.exists():
+            if session.read_only or not session.manual_retry:
+                raise SessionPaused('session_timeout_awaiting_manual_retry')
+            limits = self.contract_module.CONTRACT.descriptor()
+            from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
+            from app.runtime.sol_session_receipts import request_from_raw
+            request = request_from_raw(bound['timeout']['issued_raw'])
+            reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
+            if (self.calls >= limits['max_calls'] or router._retries >= limits['transport_retries']
+                    or self.tokens+self.reserved_tokens+reservation > limits['total_tokens']
+                    or session.active_seconds >= limits['execution_timeout_s']):
+                raise SessionPaused('session_retry_budget_extension_required')
+
+        def approve():
+            from app.runtime.sol_session_receipts import request_from_raw
+            # Consume the manual flag once, even if this attempt times out too.
+            session.manual_retry = False
+            router._retry_request = request_from_raw(bound['timeout']['issued_raw'])
+            router._retries += 1
+            router._failed = self.stopped = False
+            if hasattr(router.generator, '_failed'):
+                router.generator._failed = False
+            return dict(budget=self.snapshot(), automatic=False, same_stage=True)
+
+        decision, replayed = session.operation('manual-retry', bound, approve)
+        if replayed:
+            self.restore(decision['budget'])
 
 
 class SessionTools(ToolRuntime):

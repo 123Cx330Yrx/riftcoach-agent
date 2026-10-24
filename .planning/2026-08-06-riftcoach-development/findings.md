@@ -1,3 +1,19 @@
+## 2026-10-24 新自然任务手动超时续测与独立启动接线
+
+新候选采用manual-reaped-timeout-v1：首次超时即暂停，不自动购买；每次手动只放行当前项一次，再超时再暂停。
+失败结果、实际发出请求与原回执SHA、累计known/unknown预算及逻辑调用均绑定原session，成功项不重买。
+新增reconcile入口只读取完整原回执；成功补测后父进程中断的恢复已核，不重复发送。身份/协议错不能转超时补测。
+新候选launcher按计划绑定合同/企业Profile/独立grant，旧Sol/三项授权不混用；原2生成+4审查与产品5调用差异保持。
+初始包络10物理调用/739840tokens/3600活动秒/4手动补测，估价1.0683904元非实际账单硬限，预算耗尽保持暂停另备扩展。
+56项session/新接线/launcher、13项旧单次测试修复、新候选launcher全链1、真实Flash回收补测1、旧恢复/原生/库存49通过（共120）。
+旧49项耗时755.24秒，主要是完整原件反复核验；不是付费耗时。本包仅刷新两份受影响manifest，两份配置启动/编译/治理/diff通过。
+上一提交公共CI40069863769四分片失败均为旧测试复用CHILD漏传CONTRACT_MODULE；明确补参后该文件13项通过，生产worker接收标准未放宽。
+已有独立主体行政新任务实际返回ROUTE_AVAILABLE，未新建Agent；新自然任务的作者预检仍须在干净冻结目录执行，不冒充业务审查。
+旧冻结执行树HEAD2bd7e08e/clean与唯一seal79afb631再核未变，automation实核PAUSED，新增真实Provider/Key读取0。
+证据sol_necessity_manual_recovery_offline_20261024.json；设计docs/plans/2026-10-24-necessity-natural-manual-recovery.md。
+下一步统一提交推送、冻结D:/riftcoach-sol-necessity-natural-execution和新Operator计划，完成精确HEAD CI及真实作者/check-answer/final/import。
+未签发新费用grant，不交付付费ready声明；旧六项/三项/失败/账目/原同版本资格、8E及下游依赖保持。
+
 ## 2026-10-24 三项再审通过，必要修订政策动态自然接线离线完成
 
 按用户要求重读a/b/c完整来源/政策/意见/补丁与既有双审记录，三项原结论成立。原生只读replay成功，

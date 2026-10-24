@@ -74,7 +74,8 @@ def test_actual_worker_once_retains_opinion_usage_and_history(prepared, monkeypa
     sends = []
     def send(business, **kwargs):
         sends.append(deepcopy(business))
-        command = [sys.executable, '-c', 'MODE='+repr(mode)+'\nSTATUS='+str(status)+'\n'+CHILD]
+        command = [sys.executable, '-c', 'CONTRACT_MODULE='+repr(contract.__name__)+
+                   '\nMODE='+repr(mode)+'\nSTATUS='+str(status)+'\n'+CHILD]
         return process.run_once(business, **kwargs, command=command)
     monkeypatch.setattr(single, 'run_once', send)
     result = single.execute(operator, pin, 'offline-ci')

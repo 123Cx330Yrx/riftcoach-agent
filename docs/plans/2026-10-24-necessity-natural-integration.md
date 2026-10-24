@@ -34,3 +34,6 @@ completion正文不变；动态report/data/pack重建与新合同版本绑定；
 价格表统一ID、Observed包装器合同校验、共享消费者/manifest及恢复序号边界已处理。
 准备结果见sol_necessity_natural_offline_20261024.json；约0.864元仅是继承预算的估价。
 后续付费准备仍需手动超时续测、新范围/授权/冻结CI及真实native预检；未创建付费启动入口。
+
+本包后的续作见[手动超时续测](2026-10-24-necessity-natural-manual-recovery.md)。
+上面的继承预算估价和待办描述保留为本包当时状态，不用于启动新任务。

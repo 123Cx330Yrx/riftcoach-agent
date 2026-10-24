@@ -89,6 +89,7 @@ def recover_success(root, intent, attempt, *, contract_module=None):
             or not 0 <= elapsed <= request.timeout_s):
         raise ValueError('session_saved_response_or_time_invalid')
     budget = deepcopy(before)
+    budget.pop('retry_issued_raw', None)
     budget.update(calls=ordinal, router_calls=ordinal, tokens=before['tokens']+
                   response.usage.input_tokens+response.usage.output_tokens, stopped=False, failed=False)
     # Previous unknown reservations remain; this completed attempt releases

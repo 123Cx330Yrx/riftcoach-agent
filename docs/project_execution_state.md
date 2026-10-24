@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "三项再审及同政策自然任务离线接线已完成；准备手动超时续测与独立实测入口，automation PAUSED。"
+pause_reason: "同阶段手动超时续测及新合同启动接线已离线验证；冻结新任务/真实原生预检中，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,22 @@ pause_reason: "三项再审及同政策自然任务离线接线已完成；准�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-24续作：新必要修订自然任务改为明确已回收超时暂停，不写业务失败终态。
+显式手动续测只放行当前项一次，再超时再暂停；成功项/检索/审查/唯一应用与未知预留均保留。
+新候选launch显式绑定同合同、企业Profile和新grant；旧Sol/闭批/三项授权不混用。
+56项session/新接线/launcher检查、13项旧单次入口检查、新候选launcher全链及真实Flash回收补测各1项通过。
+包含两次超时再成功、补测成功后父进程中断只协调回执、硬错不补发、预算耗尽保持暂停、同稿双fresh及只读封存。
+原公共CI40069863769四分片均指向旧测试子进程漏传CONTRACT_MODULE，已修复且该文件13项通过；未改变生产worker接收标准。
+已有独立主体实际收到行政新任务并原生回复ROUTE_AVAILABLE；本轮尚未完成新任务真实作者预检，不报付费ready。
+新任务初始包络10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍2生成+4审查，估价1.0683904元非账单硬限。
+额度用尽保持暂停，后续预算扩展不得重买成功项；当前未签发新费用grant、无真实Provider或Key读取。
+**下一动作：** 完成相关旧回归并提交推送本包，干净独立执行树冻结新计划/精确HEAD/CI，验证实际原生作者/check-answer/final/import。
+只有新范围及费用获实际授权后才交付隐藏Key实测入口；automation保持PAUSED。
+设计docs/plans/2026-10-24-necessity-natural-manual-recovery.md；本轮证据与启动状态以新Operator准备文件为准。
+上一包三项再审、动态接线和旧费用封存见下；不冒充新语义、同版本15或产品/8E完成，下游依赖保持。
+
+以下为上包的离线接线记录，其“下一动作”已由本节接续。
 
 2026-10-24，按用户要求再次实读三份全文/完整来源/政策/模型意见及全部补丁，原a/b/c判断成立。
 a的7.5门槛无依据；b撤回门槛并正确区分中路胜8.81/负9.01，不误报；c明确的“已经证明原因”须撤回，修法保留605.5/36.4%。
