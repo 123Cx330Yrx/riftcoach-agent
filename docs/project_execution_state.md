@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "手动超时续测/干净冻结计划及真实原生作者预检完成；新费用授权和精确HEAD CI待完成，automation PAUSED。"
+pause_reason: "新费用授权已绑定且冻结代码CI全绿；隐藏Key入口ready，等待用户本机输入，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,20 +14,15 @@ pause_reason: "手动超时续测/干净冻结计划及真实原生作者预检�
 
 ## 当前行动
 
-2026-10-24续作完成：明确已回收超时在原session暂停；每次显式手动只补当前项一次，再超时再暂停。
-成功生成/检索/审查/唯一应用与未知预留保留；成功HTTP断点只协调原回执，身份/来源/协议/语义硬错不补发。
-新合同/企业Profile/独立grant贯穿prepare/run/replay，旧Sol和已完成三项授权不混用。相关120项本地检查通过，受影响两份配置启动、编译、治理/diff通过。
-原CI40069863769四分片因旧测试漏传CONTRACT_MODULE失败；补齐测试参数后该文件13项通过，生产接收标准不变。
-代码已推送2b14583e，公共CI40073888400进行中，尚未当作全绿。此后仅更新准备记录文档，不改变该冻结执行代码或重启全站CI。
-干净执行树D:/riftcoach-sol-necessity-natural-execution冻结同HEAD；907件来源与实际OBSERVED/空Memory首发已绑定。
-新Operator为outputs/riftcoach-sol-necessity-natural-20261024，plan SHA a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea。
-复用已有独立主体，完整原生作者预检完成：作者create-only写文件/check-answer/唯一final，主审读取真实事件并逐字导入accepted。
-作者SHAd1489638，预检最终根1e1363e1；严格只读回查原件不变，实际PowerShell检查入口通过；不是业务质量审查。
-证据sol_necessity_manual_recovery_offline_20261024.json、sol_necessity_natural_prepared_20261024.json和Control/preparation-complete.json。
-新范围初始包络10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍2生成+4审查，估价1.0683904元非实际账单硬限。
-仅生成authorization-proposal，未签发新grant；本轮新增真实Provider/Key读取0，automation继续PAUSED，旧封存和账目保持。
-**下一动作：** 取得用户对这一次新自然任务的具体费用授权，并核冻结2b14583e的CI40073888400全绿后，绑定有效grant并交付隐藏Key实测命令。
-授权问题已提交；未答复不发送、不自动补测。新候选尚无自然任务真实语义结果，不授同版本15或产品/8E资格，下游依赖保持。
+2026-10-24最新：用户明确“授权此范围，CI全绿后启动”。冻结代码2b14583e的CI40073888400已8job全success。
+grant125005b2绑定plan a9ccbca1/精确HEAD/新合同及企业Profile，UTC2026-10-24T08:58:07.794391Z签发，2026-10-25同刻截止，不自动延期。
+范围一次自然任务：2生成+4审查；初始10物理调用/739840tokens/3600活动秒/4次手动超时补测，企业专线0.25×，估价1.0683904元非账单硬限；不运行15项。
+干净冻结执行树/907来源/真实作者预检只读重验通过；Control/start-authorized.ps1实际CheckOnly为ready_for_hidden_key。
+入口复用本机智谱配置，只隐藏提示企业Key；首次create-only claim/原stdout最早根/exit SHA保留，已有execution不可重开。
+私有薄runner的输出留存用临时目录与模拟执行核过，临时目录已自动清理。本轮未创建execution、未读真实Key、Provider0，automation仍PAUSED。
+证据sol_necessity_natural_authorized_20261024.json与outputs/riftcoach-sol-necessity-natural-20261024-control/authorized-ready.json。
+**下一动作：** 用户运行该Control/start-authorized.ps1隐藏输入企业Key；返回后读真实stdout根和完整输出继续双审，不重买成功项。
+普通已回收超时暂停原阶段，每次只手动补一项；身份/来源/协议/语义硬错不补发。新语义/同版本15/产品及8E资格尚未取得，旧账目/封存/下游依赖保持。
 
 以下为上包的离线接线记录，其“下一动作”已由本节接续。
 

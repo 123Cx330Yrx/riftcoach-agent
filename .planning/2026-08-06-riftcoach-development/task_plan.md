@@ -16,15 +16,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 ## Active Work Package
 
 **目标：** 把已测必要修订政策接回自然任务，并把下一次实测准备到能保留成功项、手动恢复普通超时的具体入口。
-**当前结果：** 同阶段手动续测、新候选launcher与干净执行树/计划已完成，相关120项检查通过；普通超时保留成功项/未知预留，身份/来源/协议/语义错不补发。
-代码2b14583e已推送，公共CI40073888400进行中。原CI四分片的旧测试参数遗漏已修复，未放宽生产接收标准。
-实际独立作者check-answer/唯一native final/逐字导入/严格只读回查通过，既有主体复用，不新建Agent、不当业务审查。
-**证据：** sol_necessity_manual_recovery_offline_20261024.json、sol_necessity_natural_prepared_20261024.json；Control/preparation-complete.json为实际准备记录。
-**下一动作：** 待新自然任务具体费用授权及冻结代码CI全绿后，安装有效grant并交付隐藏Key入口；不先发请求。
-**范围与边界：** 企业专线；初始10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍6次，估价1.0683904元非实际账单硬限。
-已提出授权问题，未签发新grant，新增真实Provider/Key读取0；旧三项/六项/失败/原件/封存及automation PAUSED保持。
-新预算用尽保持暂停另行准备扩展，不重买成功项；当前无新自然真实语义/同版本15/阶段或产品完成结论。
-设计docs/plans/2026-10-24-necessity-natural-manual-recovery.md；原三项再审及动态政策接线结果保持，后续依赖如下。
+2026-10-24最新：用户明确“授权此范围，CI全绿后启动”。冻结代码2b14583e的CI40073888400已8job全success。
+grant125005b2绑定plan a9ccbca1/精确HEAD/新合同及企业Profile，UTC2026-10-24T08:58:07.794391Z签发，2026-10-25同刻截止，不自动延期。
+范围一次自然任务：2生成+4审查；初始10物理调用/739840tokens/3600活动秒/4次手动超时补测，企业专线0.25×，估价1.0683904元非账单硬限；不运行15项。
+干净冻结执行树/907来源/真实作者预检只读重验通过；Control/start-authorized.ps1实际CheckOnly为ready_for_hidden_key。
+入口复用本机智谱配置，只隐藏提示企业Key；首次create-only claim/原stdout最早根/exit SHA保留，已有execution不可重开。
+私有薄runner的输出留存用临时目录与模拟执行核过，临时目录已自动清理。本轮未创建execution、未读真实Key、Provider0，automation仍PAUSED。
+证据sol_necessity_natural_authorized_20261024.json与outputs/riftcoach-sol-necessity-natural-20261024-control/authorized-ready.json。
+**下一动作：** 用户运行该Control/start-authorized.ps1隐藏输入企业Key；返回后读真实stdout根和完整输出继续双审，不重买成功项。
+普通已回收超时暂停原阶段，每次只手动补一项；身份/来源/协议/语义硬错不补发。新语义/同版本15/产品及8E资格尚未取得，旧账目/封存/下游依赖保持。
 
 ## Dependencies and Follow-through
 
@@ -44,7 +44,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-三项再审、同政策自然动态接线和手动同阶段超时续测已离线验证。干净新任务与真实原生预检亦已完成，下一步按上方工作卡等待具体费用授权和冻结代码CI。
+三项再审、同政策自然动态接线和手动同阶段超时续测已离线验证。干净新任务与真实原生预检亦已完成，授权及CI均已完成，下一步用户运行已验证入口隐藏输入企业Key。
 旧授权不用于新范围，现阶段不用Key，不自动发送；原阶段及下游依赖保持。
 
 ## History

@@ -1,3 +1,15 @@
+## 2026-10-24 费用授权及精确HEAD CI完成，Key入口ready
+
+2026-10-24最新：用户明确“授权此范围，CI全绿后启动”。冻结代码2b14583e的CI40073888400已8job全success。
+grant125005b2绑定plan a9ccbca1/精确HEAD/新合同及企业Profile，UTC2026-10-24T08:58:07.794391Z签发，2026-10-25同刻截止，不自动延期。
+范围一次自然任务：2生成+4审查；初始10物理调用/739840tokens/3600活动秒/4次手动超时补测，企业专线0.25×，估价1.0683904元非账单硬限；不运行15项。
+干净冻结执行树/907来源/真实作者预检只读重验通过；Control/start-authorized.ps1实际CheckOnly为ready_for_hidden_key。
+入口复用本机智谱配置，只隐藏提示企业Key；首次create-only claim/原stdout最早根/exit SHA保留，已有execution不可重开。
+私有薄runner的输出留存用临时目录与模拟执行核过，临时目录已自动清理。本轮未创建execution、未读真实Key、Provider0，automation仍PAUSED。
+证据sol_necessity_natural_authorized_20261024.json与outputs/riftcoach-sol-necessity-natural-20261024-control/authorized-ready.json。
+**下一动作：** 用户运行该Control/start-authorized.ps1隐藏输入企业Key；返回后读真实stdout根和完整输出继续双审，不重买成功项。
+普通已回收超时暂停原阶段，每次只手动补一项；身份/来源/协议/语义硬错不补发。新语义/同版本15/产品及8E资格尚未取得，旧账目/封存/下游依赖保持。
+
 ## 2026-10-24 新自然任务冻结与真实作者预检完成
 
 代码提交2b14583e已推送；CI40073888400进行中，不当作全绿。执行树D:/riftcoach-sol-necessity-natural-execution同HEAD且clean，907来源绑定。
