@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "用户已恢复；单次诊断完成，独立复核确认一条误报/一条有用意见，停止档位重买；automatic application未获接受，automation PAUSED。"
+pause_reason: "用户已恢复；企业补测a完整意见双审接受，下一项b已就绪；automatic application未获接受，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -57,11 +57,17 @@ Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏�
 恢复根b2bb4ab9来自amend原stdout，原plan/请求/回执/作者原件SHA及mtime未变，仍1HTTP/80384unknown预留。
 新入口outputs/riftcoach-review-necessity-enterprise-20261024-control/start-enterprise.ps1已完成真实CheckOnly及CI等待取消核验，
 无Key读取/新claim/残留waiter；原Pro入口原字节留存，旧路径已改为读Key前拒绝的退役提示。
-精确源码CI40057680511当前in_progress；下一动作：用户运行企业入口，脚本等同HEAD全绿后隐藏输入企业Key，
-仅发送当前a的第一补测。新授权绑定原plan及追加变更，原截止不延展。
-当前准备证据为data/evaluation/results/review_necessity_enterprise_recovery_20261024.json；执行代码保持2bd7e08e，
-后续文档提交不触发更换执行树或重新绑定代码CI。企业真实路由未独立验证，尚无企业业务意见。
-旧6052be74执行树/原回执不改，本轮仍0新增Key/HTTP。补测可能再次524，不能以渠道变化宣称质量改善。
+精确源码CI40057680511已completed/success，8个job均通过。用户实际执行企业a补测：1HTTP/46.797秒，
+HTTP200、完整一次工具意见、23399已知tokens；原JSON与SDK均回显high，实际渠道/上游身份仍未独立验证。
+模型只指出block21的7.5门槛无依据，给出唯一窄补丁；没有再误报block10的待验假设。
+主审和/root/necessity_independent完整来源复核均接受；作者SHA9ae33b04与唯一native final逐字一致，真实事件导入通过。
+原stdout/exit SHA、原件库存及submit后checkpoint0009核过，根f45559f5来自submit原stdout；
+phase=ready/next_case=b，累计2HTTP/23399known/80384unknown预留，0未审；原524及未知费用不消失。
+下一动作：用户运行企业Control/continue-b.ps1，隐藏输入企业Key，仅发送已修掉任意门槛的b全文对照；
+实际新入口CheckOnly已重读全部native/作者/库存，零新请求。沿用现有授权至北京时间10月25日10:56:33。
+证据data/evaluation/results/review_necessity_enterprise_a_reviewed_20261024.json；企业准备记录单独保持历史。
+执行代码保持2bd7e08e，文档提交不更换执行树或重新绑定代码CI。旧6052be74树/原回执不改。
+本例仅熟悉材料的一项意见及修法双审接受，未应用/未fresh/未完成三项，不证明稳定性或产品资格。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。

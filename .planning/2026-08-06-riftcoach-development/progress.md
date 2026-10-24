@@ -1,3 +1,15 @@
+## 2026-10-24 企业a补测完整返回，全文意见双审接受
+
+精确2bd7e08e的CI40057680511已全部8job通过。用户执行a补测1HTTP/46.797秒/HTTP200/23399known，raw及SDK均high；
+完整意见仅指出block21的7.5门槛无依据，没有再误报block10待验假设。主审与独立实读28段/全来源/政策/全部唯一补丁均接受。
+独立作者SHA9ae33b04与唯一native final逐字匹配；真实event-id导入、作者库存贯穿submit核验通过。
+最初stdout/exit SHA、claim681381e4、响应根b9861441均保留；submit新根f45559f5、ready/next=b/0未审。
+累计2HTTP/23399known/80384unknown，原Pro524/未知预留保持；该预留不是实际消费。
+新薄入口企业Control/continue-b.ps1固定新根及Action send，实际Windows PowerShell CheckOnly重读native/作者/库存通过，
+零Key/模型请求；用户输入企业Key只发b一次，沿用已全绿代码CI及现有截止，不重做a。
+熟悉开发材料的一项事实意见及修法接受不当三项完成、已应用/fresh或产品资格；上游/分组身份仍未独立验证。
+证据review_necessity_enterprise_a_reviewed_20261024.json；automation PAUSED。下列为此前准备记录。
+
 ## 2026-10-24 企业分组及多次手动补测实现
 
 用户明确选择企业0.25×并允许多次补测；旧程序分组只在Profile/授权/回执中，HTTP不带group，实际路由由Key决定。

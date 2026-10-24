@@ -33,7 +33,12 @@
 实际CheckOnly、CI等待取消、旧Pro入口读Key前退役拒绝均已核，旧原件SHA/mtime保持，新HTTP/Key/claim0。
 旧Pro启动器原字节留存，不能再用下文旧命令启动企业补测；后续手动恢复用每次命令原stdout的checkpoint SHA。
 20项相关行为检查通过151.60秒；证据`data/evaluation/results/review_necessity_enterprise_recovery_20261024.json`。
-当前CI仍in_progress；文档提交不更换冻结代码/CI，企业路由稳定性和业务质量尚未实测。
+随后CI40057680511已completed/success，8个job全绿。企业a补测HTTP200/46.797秒/23399known，raw与SDK均回显high。
+仅指出block21的任意7.5门槛并给出窄补丁，主审/独立完整来源双审接受；真实作者原件及唯一native final逐字核对、submit通过。
+当前根`f45559f57c351ef604942db4a4f2e630ddcc6033615ce567fc4ef267fdaca7ae`来自submit原stdout；
+phase=ready/next=b，累计2HTTP/23399known/80384unknown，原Pro超时不改。
+下一入口为同企业Control/continue-b.ps1，已实际CheckOnly通过；隐藏输入Key仅发b一次，不重复a或重绑CI。
+证据`data/evaluation/results/review_necessity_enterprise_a_reviewed_20261024.json`；未应用/fresh/授资格，企业稳定性未证。
 
 ## 实现及证据边界
 
