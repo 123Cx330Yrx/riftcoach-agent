@@ -46,7 +46,9 @@ Pro入口已保留原字节并退役；新Key/HTTP/claim0，无残留waiter，�
 **企业实际结果：** CI40057680511已全绿；a补测HTTP200/46.797秒/23399known，raw与SDK均high，
 仅检出block21任意7.5门槛，未误报block10。主审与独立完整来源审查均接受，作者SHA9ae33b04与唯一native逐字导入通过。
 submit后根f45559f5来自原stdout，ready/next=b/0未审；累计2HTTP/23399known/80384unknown，原524保持。
-**下一动作：** 用户运行企业Control/continue-b.ps1，隐藏输入企业Key，只发送b全文对照一次；实际CheckOnly通过，沿用现有代码CI和授权。
+**b实际结果：** 1HTTP/31.328秒/22923known/HTTP200，raw及SDK均high；模型pass/空issues/repairs，完整来源双审接受。
+作者SHA32d83f93与真实native final逐字导入，submit根c44bd04d；累计3HTTP/46322known/80384unknown/0未审，ready/next=c。
+**下一动作：** 用户运行企业Control/continue-c.ps1，隐藏输入企业Key，只发送c明确因果错全文对照一次；实际CheckOnly通过，沿用现有代码CI和授权。
 不再使用原Pro首补测入口，不改原plan/receipt/源码树；原UTC截止不延展，企业比例估价0.07296元/次非账单。
 high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
 不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
@@ -73,9 +75,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
 以canonical和上方工作卡为准：候选/三稿/worker/有限恢复/真实行政作者交接及本机入口均已验证；
-企业a补测已获得完整意见并通过双审，父Pro超时/所有原件保持；恢复根f45559f5，执行代码冻结2bd7e08e。
-用户运行企业Control/continue-b.ps1，隐藏输入Key，只发送b一次；40057680511已全绿，不自动循环或重做a。
-结果证据review_necessity_enterprise_a_reviewed_20261024.json；授权仍至北京时间10月25日10:56:33。
+企业a/b完整意见均通过双审，父Pro超时/所有原件保持；恢复根c44bd04d，执行代码冻结2bd7e08e。
+用户运行企业Control/continue-c.ps1，隐藏输入Key，只发送c一次；40057680511已全绿，不自动循环或重做a/b。
+结果证据review_necessity_enterprise_b_reviewed_20261024.json；授权仍至北京时间10月25日10:56:33。
 原Pro首补测准备文件只作历史证据；未证明企业稳定性或模型改善，原发布门、8E与后续依赖保持。
 
 ## History

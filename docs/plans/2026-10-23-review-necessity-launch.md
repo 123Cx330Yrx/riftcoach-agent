@@ -40,6 +40,12 @@ phase=ready/next=b，累计2HTTP/23399known/80384unknown，原Pro超时不改。
 下一入口为同企业Control/continue-b.ps1，已实际CheckOnly通过；隐藏输入Key仅发b一次，不重复a或重绑CI。
 证据`data/evaluation/results/review_necessity_enterprise_a_reviewed_20261024.json`；未应用/fresh/授资格，企业稳定性未证。
 
+b已完成：HTTP200/31.328秒/22923known，raw和SDK均high；模型pass且无issues/repairs，主审及独立全文/来源核对均接受。
+真实作者SHA32d83f93与唯一native final逐字导入；新根`c44bd04d06f9c7c5bd63c1f6ae2690c0c75eb14b9714b6dbaf18ae3061550652`来自submit原stdout。
+当前ready/next=c，累计3HTTP/46322known/80384unknown/0未审；原a及Pro超时不改。
+当前入口改为同Control/continue-c.ps1，实际CheckOnly通过，只发c一次；复用原授权和已通过CI，不重测a/b。
+证据`data/evaluation/results/review_necessity_enterprise_b_reviewed_20261024.json`；c真实因果错检出仍待验证。
+
 ## 实现及证据边界
 
 `scripts/review_necessity_launch.py`调用现有 `reviewer_responses_process.run_once`，
