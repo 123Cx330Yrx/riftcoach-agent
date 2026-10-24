@@ -7801,3 +7801,8 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 ## 2026-10-24 首冻结与CI取值修复
 
 5f46413d实际原生作者/check-answer/final/导入、只读核验与PowerShell CheckOnly通过；未授权普通入口在Key/claim前拒绝。CI40094551645的shard2先暴露测试glob未排序，Linux把0006旧账目选作最新值；运行及关闭回放均已排序，本包只修测试，不改模型政策或重买请求。旧冻结与所有原件保留，新增Provider/Key0；候选未实测，等待修正提交的同HEAD CI。
+
+## 2026-10-24 修正冻结已准备
+
+排序修复后两项针对性检查通过（30.66秒）；业务app/scripts/skills/examples与5f46413d逐文件diff为空，无需再重复67项回归。已冻结303c21b42565237a7101d3dcf2357e4940bb9bb7于D:/riftcoach-completion-diagnostic-ci-execution，新Operator outputs/riftcoach-completion-diagnostic-v2-20261024，plan5218a0d2。该副本的独立作者/check-answer/唯一原生final/导入及只读回查已通过；最终PowerShell CheckOnly通过，正常未授权入口实证在Key/claim/execution之前拒绝。准备证据control/preparation-complete.json SHA63110b5ff1345d0785a6fa74f9bef6c1c2338a56c3b47f75388ed89c3fcfc37c。
+**下一动作：** 核冻结303c21b4的CI40095068270（当前in_progress），全绿后呈交本次具体新费用授权并激活同一隐藏Key入口。新增Provider/Key0、execution不存在；旧grant不扩展，automation现场核PAUSED。新引擎语义有效性仍未实测，不授产品或同版本15资格。
