@@ -4,78 +4,36 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "用户已恢复；企业a/b完整意见双审接受，最后一项c已就绪；automatic application未获接受，automation PAUSED。"
+pause_reason: "企业三项开发诊断已完成双审及只读封存；下一步自然任务同政策离线接线，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-18。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+2026-10-24。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
 
-2026-10-23用户恢复后，完成留存答案的完整来源复核及独立诊断审查：block10为误报（已明确待验且否认
-统计定因果，“方向一致”不能升级成已验证原因）；block21的7.5中路目标缺依据成立，其窄修法有用。
-保留后一条，不自动应用完整两条意见；不将本次一处误报说成旧六项作废、模型退步或整项目失败。
-独立作者原件与真实原生final已逐字核对，checkpoint 1355e97a、作者SHA d6c46965；这是独立诊断审查，
-不冒充旧批native submit、同稿fresh或产品资格。本轮新增Provider/Key均0，原seal da687ba3及父库存只读回放通过。
-昨天撤回的过早判词保留；今天用完整来源和独立意见确认上述较窄结论，而非恢复错误转述。
-单次诊断HTTP200/90.985秒/31255已知tokens，原JSON与SDK均max，请求high；档位一致性仍未证，
-不再为该元数据购买相同请求。累计7HTTP/111392known/145824unknown/retry1，旧三稿六职责接受保持。
-已实现离线隔离候选review_necessity_candidate：facts initial/fresh增加“补丁改变什么实质含义”的判定，
-不改schema/来源/旧合同；三份全文对照为原稿、仅修目标稿、再加明确因果错稿。7项新隔离/完整性检查与58项原职责/补丁回归通过。
-候选不读评测标签或旧意见，旧receiver拒收；本地检查不是模型改善证明，b/c主线程全文/完整来源核对通过，仍无独立Agent整稿接受。
-已接入现有owned worker显式necessity-candidate-v1模式，父/子双端完整请求绑定；129项相关检查通过，最终提示22项复核及导出/原自然绑定2项通过。
-受控启动/恢复层已实现scripts/review_necessity_launch.py，复用owned worker与ExactNativeGate；
-三项逐份审查，显式共享一次超时补测，最多4尝试/321536 tokens；取消不claim，已claim不盲目重发，完整回执中断可只读协调。
-超时保留前项，语义实错停候选；high/max完整意见仅诊断后停，不为档位重买；原费用与seal贯穿核查。
-真实行政作者交接已完成：复用用户此前独立审查授权，当前Agent为/root/necessity_independent；
-作者原件/check-answer/唯一native final/ExactNativeGate导入及主审只读回查通过，不是业务语义接受。
-执行树D:/riftcoach-review-necessity-execution冻结6052be74；有效Operator为outputs/riftcoach-review-necessity-verified-20261023，
-plan f3c2c586、原submit stdout checkpoint 09dd5c9e。只读检查前后31件原件SHA/mtime未变，零尝试/零真实Key/零Provider。
-此前另一行政检查点因作者尾LF与native不同被拒，原件不改、不补签；成功检查点由作者另行独立序列化。
-Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏输入函数哨兵与UTF8日志保存已验证；
-本机缺Get-FileHash的包装问题改为内置.NET SHA256后复测通过。相邻旧测试的源码并发修改失败已在干净固定树定点通过。
-2026-10-24用户明确授权此三项加共享一次显式超时补测（最多4尝试/321536 tokens）。grant SHA85c771e3，
-截止北京时间2026-10-25 10:56:33；已绑定原plan f3c2c586及checkpoint09dd5c9e，不延展旧授权。
-冻结6052be74的CI39895429952已completed/success，完整job列表及真实原生/来源/授权UTC前检通过，原件未变。
-2026-10-24用户输入Key后a已发1HTTP：131.094秒远端524，HTTP观测128.860秒，早于本地300秒；
-无完整公开意见，0known/80384unknown reserved（预留非实际消费），worker已回收，无残留发送进程。
-原stdout/exit SHA核验及checkpoint77132319只读回查通过；phase=retry_available，不封批、不重发、不作语义失败。
-旧524耗时128.890/128.282秒，另两次完整HTTP200为60.516/90.985秒；相近超时窗口支持远端等待限制解释，
-但具体网关/排队/模型耗时尚不能区分。非流式长请求是否能在该窗口完成未知，单纯提高本地超时不能修远端524。
-用户随后明确允许多次手动补测、要求先准备第一次，并选择企业分组0.25×。底层请求没有分组参数，
-实际按Key路由；旧启动器硬编码Pro授权/费用，不能只换Key仍记Pro。已增加明确amend执行变更：
-原plan/请求/超时receipt/checkpoint不改，企业分组及新执行源码、cwd/Python/手动补测规则追加入库存和后继根。
-每次仍1HTTP/80384预留/300秒/自动重试0，移除本候选普通超时的固定补测次数上限，不自动循环、不重置累计费用；
-完整意见先双审，语义实错/high-max诊断后停/未知claim硬停保持。价格按0.25/0.2比例估算0.5/2.5元每百万，
-单次预留0.07296元，未核企业实际报价，不当账单。原UTC截止10月25日北京时间10:56:33保持。
-20项入口检查通过（151.60秒）：保留原15项，加企业变更、旧Pro grant拒发、连续5次显式超时补测后成功/再审推进、
-旧原件不变与只读seal等；真实worker/SDK配mock HTTP/FakeGate，不是模型质量或企业路由稳定性证明。
-/root/necessity_independent实际行政消息已确认可复用，不新建Agent。企业执行树已冻结2bd7e08e，
-路径D:/riftcoach-review-necessity-enterprise-execution；原Operator已追加amendments/0001.json与checkpoint0006，
-恢复根b2bb4ab9来自amend原stdout，原plan/请求/回执/作者原件SHA及mtime未变，仍1HTTP/80384unknown预留。
-新入口outputs/riftcoach-review-necessity-enterprise-20261024-control/start-enterprise.ps1已完成真实CheckOnly及CI等待取消核验，
-无Key读取/新claim/残留waiter；原Pro入口原字节留存，旧路径已改为读Key前拒绝的退役提示。
-精确源码CI40057680511已completed/success，8个job均通过。用户实际执行企业a补测：1HTTP/46.797秒，
-HTTP200、完整一次工具意见、23399已知tokens；原JSON与SDK均回显high，实际渠道/上游身份仍未独立验证。
-模型只指出block21的7.5门槛无依据，给出唯一窄补丁；没有再误报block10的待验假设。
-主审和/root/necessity_independent完整来源复核均接受；作者SHA9ae33b04与唯一native final逐字一致，真实事件导入通过。
-原stdout/exit SHA、原件库存及submit后checkpoint0009核过，根f45559f5来自submit原stdout；
-phase=ready/next_case=b，累计2HTTP/23399known/80384unknown预留，0未审；原524及未知费用不消失。
-随后b全文对照已完整返回：1HTTP/31.328秒/22923known/HTTP200，raw与SDK均high；pass/空issues/空repairs。
-主审与独立完整来源核查均接受该事实意见：中路8.81/9.01正确，7.5已是否定达标线，不因旧字样仍在而误报。
-作者SHA32d83f93与唯一native final逐字导入通过；submit根c44bd04d来自原stdout，ready/next=c/0未审。
-累计3HTTP/46322known/80384unknown预留，原a及Pro超时保持，未发送c。
-下一动作：用户运行企业Control/continue-c.ps1，隐藏输入企业Key，仅发送加入明确因果错误的c全文对照；
-实际CheckOnly已重读全部native/作者/库存，零Key/新请求。沿用现有授权至北京时间10月25日10:56:33。
-证据data/evaluation/results/review_necessity_enterprise_b_reviewed_20261024.json；a接受及准备记录分别保持历史。
-执行代码保持2bd7e08e，文档提交不更换执行树或重新绑定代码CI。旧6052be74树/原回执不改。
-目前仅熟悉材料的a/b两项事实意见双审接受，b为预制对照而非a补丁实际应用结果；未应用/未fresh/未完成三项，不证明稳定性或产品资格。
-材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
-旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
-不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
-证据：data/evaluation/results/sol_reasoning_identity_diagnostic_20261022.json。
+2026-10-24，必要修订政策候选的三份全文开发对照已完成，全部模型意见及建议补丁经主审/独立完整来源审查接受。
+- a：原稿仅检出block21无依据的7.5门槛，并给窄补丁；未误报block10待验假设。
+- b：预制的修正全文pass，未把否定句里的7.5或明确的中路8.81/9.01判成错误。
+- c：检出新增的block10“已经证明原因”真错，修法保留数据、撤回无依据因果断言。
+三次企业HTTP200，46.797/31.328/35.156秒，均完整工具意见、raw/SDK均high；实际分组/上游身份仍未独立验证。
+三项原生作者/唯一final逐字导入，c作者SHAc450fca4；终根d1a5a26a来自submit原stdout。
+唯一seal79afb631已create-only保存，严格只读replay通过，76件Operator及4件作者原件SHA/mtime未变。
+累计4HTTP/69473known/80384unknown预留，0未审/未知HTTP/未发；首项Pro524及未知预留保留，预留不是账单。
+终态closed/stopped_at=complete，未应用/未fresh/未授资格；旧六项接受、旧失败、旧seal及各冻结树保持。
+执行代码冻结2bd7e08e，CI40057680511全绿；本轮复核及封存新增模型请求/Key读取0，automation实核PAUSED。
+完整证据：data/evaluation/results/review_necessity_enterprise_completed_20261024.json。
+
+**决策：** 这组三项支持保留必要修订政策作为开发方向；材料熟悉且仅facts初审，不当holdout、同版本15项或产品完成。
+不再重复购买a/b/c。下一工作包先在现有自然任务Runtime/session复用路径准备同政策的独立开发合同及零付费整链验证。
+实读发现旧sol_natural_contract仍构造baseline政策，SolReviewProvider硬编码GPT-pro，不能直接把已测candidate请求塞入旧接收器。
+**下一动作：** 明确新开发合同的facts initial/fresh请求、动态全文重建、企业Profile与授权/费用绑定，复用原应用/双fresh/恢复逻辑；
+先用mock HTTP与真实worker验证动态来源、唯一应用、同稿双fresh、原件/账目及超时恢复，再准备具体新付费范围。
+旧合同/源码/run不改，completion职责保持；不复用本三项grant发自然任务，不把六调用与产品五调用差异静默扩容。
+正式同版本15项、自然Coach/Training、四块/journal、前端审美/英雄头像、Memory、身份运维、两树整合、独立评估与学习依赖保持。
+
 以下为已消耗入口的历史准备记录，不再作为启动队列。
 
 2026-10-22单次诊断入口已实现：scripts/sol_reasoning_single复用既有owned worker，仅发送原facts-initial一次，

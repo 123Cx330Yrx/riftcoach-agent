@@ -4,7 +4,29 @@
 用户已于2026-10-24授权此范围及随后企业分组变更；旧六项及旧封存均不重开。
 材料/标签及失败决策沿用 `data/evaluation/fixtures/review_necessity_20261023/README.md`。
 
-## 2026-10-24 用户变更：企业分组与多次手动超时补测
+## 当前结论：三项已完成，退出付费诊断
+
+| 全文对照 | 模型结果 | 全来源双审 |
+|---|---|---|
+| a原稿 | 仅检出block21任意7.5门槛并给窄修法；未误报待验假设 | 意见及全部建议补丁接受 |
+| b修正稿 | pass，无issue/repair；中路数字和否定门槛正确保留 | 接受无问题意见 |
+| c新增明确因果错 | 检出block10“已经证明原因”，保留正确单局数据并撤回无依据结论 | 意见及全部建议补丁接受 |
+
+三次企业HTTP200分别46.797/31.328/35.156秒，raw/SDK均high；不能证明渠道长期稳定或独立上游身份。
+真实作者原件及各自唯一native final逐字导入通过；c作者SHAc450fca4。
+最终submit根`d1a5a26ae08a93f7780fcbf384fee9f32b8825dc5fc068f56e0b4830771b691f`来自原stdout，
+唯一create-only seal为`79afb6319bdfd7807531b9992cb2cd692c0f8960a535154e774732a76de82a98`。
+严格只读replay通过，76件Operator与4件作者原件SHA/mtime不变；closed/stopped_at=complete/0未审。
+累计4HTTP/69473known/80384unknown预留，首项Pro524保持，预留不是账单。automation实核PAUSED。
+证据`data/evaluation/results/review_necessity_enterprise_completed_20261024.json`；以下所有启动命令现在只作历史证据，不能重开本批。
+
+保留本政策为开发方向，不重买这三项；熟悉材料/仅facts初审不当holdout、实际应用/fresh或产品资格。
+下一工作包沿用活动task_plan：独立开发合同将同政策绑定facts initial/fresh和动态全文来源，显式企业Profile，
+复用现有natural Runtime/session/worker/原生Gate；先零付费验证唯一应用、同稿双fresh及超时/费用恢复。
+旧Sol合同仍baseline政策且provider硬编码Pro，不能只改Key后把三份固定validator当成自然任务接入。
+旧合同/run及六项接受不改，本grant不挪用到新范围；自然六调用/产品五调用差异及同版本资格要求保持。
+
+## 历史：2026-10-24 用户变更与执行过程
 
 用户先授权三项诊断，首项Pro请求远端524后明确允许多次补测、要求先准备第一次，随后选择企业分组0.25×。
 本地Profile名称为`GPT-企业专线`，只记用户声明；平台实际按Key选择分组，本程序没有独立验证渠道身份。

@@ -15,45 +15,21 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-**目标：** 减少把可选表达升为必要修订的误报，同时保留真错检出，不重跑原生成。
-**起点：** 全源与独立诊断确认block10误报、block21阈值问题有效；原六项接受保持，旧seal不变。
-**实现：** 离线隔离候选scripts/review_necessity_candidate.py复用现有Sol请求，在facts initial/fresh引入
-“补丁改变什么实质含义”的判定及虚构物流正反例；不改schema/职责/旧接收器，不按关键词删意见。
-**证据：** 原稿a、只修目标b、再加明确因果错c，完整来源相同、逐处唯一对照；生成不读标签/旧意见。
-7项新隔离/完整性与58项既有职责/补丁测试通过。旧真实误报仍结构合法，程序没有冒充语义裁判。
-**限制：** b/c已由主线程全源核对标签，无独立Agent整稿接受；模型改善未证，候选未接入付费或产品自然任务。
-**接线：** 现有owned worker新增显式候选模式，父/子端均重建核完整请求；high/max/524及拒发/回执129项检查通过。最终提示候选22项、导出/原自然绑定2项通过。
-high/max问题独立未解决；旧UTC授权不延展。Provider/Key新增0，automation PAUSED。
-**失败决策：** 有限实测如仍误报或漏报，否定此提示候选，不继续逐句加字重买；超时保留其他有效观察。
-**入口：** 已实现review_necessity_launch，复用owned worker/ExactNativeGate；三项各一次，超时保留前项，
-共享至多一次显式补测，完整回执中断只读协调；三项加补测最多4尝试/321536 tokens，估价0.233472元。
-high/max公开意见仅诊断审查后停，不继续为档位购买；语义实错停止该候选，不加字续买。
-**实际预检：** 干净执行树冻结6052be74，独立Agent /root/necessity_independent已完成真实行政作者原件→check-answer→唯一native final→导入；
-只读回查31件原件SHA/mtime不变，0尝试/真实Key/Provider。首次另一检查点尾LF不符保持拒绝；不修改原件或normalize接受。
-当前plan f3c2c586、原submit stdout checkpoint 09dd5c9e；Windows PowerShell CheckOnly/缺授权拒绝/隐藏哨兵与UTF8日志均已核。
-这是行政交接，b/c仍非独立黄金标签；工程入口通过不证明模型改善。
-**授权及前检：** 2026-10-24用户已授权，grant SHA85c771e3，截止北京时间10月25日10:56:33；
-原计划/原stdout根绑定完成。冻结6052be74的CI39895429952全绿，完整原生/源码/材料/UTC前检通过，原件未变、仍0请求。
-**最新实际结果：** a已1HTTP/131.094秒远端524；无完整意见，用量未知预留80384，worker已回收。
-原stdout/exit SHA及checkpoint77132319只读核过，retry_available不封批，未发第二次。
-**新用户决定：** 允许多次手动补测，第一补测切企业0.25×；原grant/Pro回执原样保持，新授权绑定追加变更。
-**实现及验证：** amend追加新HEAD/source/cwd/Python、企业Profile/比例估价及无固定次数手动补测；
-仍每次1HTTP/80384预留/300秒/自动重试0。20项原入口及企业连续补测/拒绝混用/保留账目/只读封存检查通过151.60秒。
-独立Agent已实际确认可复用；mock检查不是企业稳定性或业务质量证明。
-**实际企业准备：** 执行树D:/riftcoach-review-necessity-enterprise-execution冻结2bd7e08e，原Operator追加amendment0001及checkpoint0006，
-根b2bb4ab9来自原stdout；旧原件SHA/mtime保持。新企业Control的start-enterprise.ps1实际CheckOnly/CI等待取消通过，
-Pro入口已保留原字节并退役；新Key/HTTP/claim0，无残留waiter，原累计1HTTP/80384unknown预留保持。
-**企业实际结果：** CI40057680511已全绿；a补测HTTP200/46.797秒/23399known，raw与SDK均high，
-仅检出block21任意7.5门槛，未误报block10。主审与独立完整来源审查均接受，作者SHA9ae33b04与唯一native逐字导入通过。
-submit后根f45559f5来自原stdout，ready/next=b/0未审；累计2HTTP/23399known/80384unknown，原524保持。
-**b实际结果：** 1HTTP/31.328秒/22923known/HTTP200，raw及SDK均high；模型pass/空issues/repairs，完整来源双审接受。
-作者SHA32d83f93与真实native final逐字导入，submit根c44bd04d；累计3HTTP/46322known/80384unknown/0未审，ready/next=c。
-**下一动作：** 用户运行企业Control/continue-c.ps1，隐藏输入企业Key，只发送c明确因果错全文对照一次；实际CheckOnly通过，沿用现有代码CI和授权。
-不再使用原Pro首补测入口，不改原plan/receipt/源码树；原UTC截止不延展，企业比例估价0.07296元/次非账单。
-high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
-不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
-**依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
- data/evaluation/results/review_necessity_launch_preparation_20261023.json；独立原诊断checkpoint1355e97a。
+**目标：** 把已取得三项正向开发证据的必要修订政策接回现有自然任务路径，避免只在固定请求上有效。
+**刚完成：** a检出任意门槛、b正确全文不误报、c检出明确因果真错；三项完整意见/建议补丁均双审接受，真实作者及唯一native逐字导入。
+企业三次46.797/31.328/35.156秒完整200/high；累计4HTTP/69473known/80384unknown，原Pro524保持。
+终根d1a5a26a、唯一seal79afb631；严格只读回放76件Operator/4件作者SHA/mtime未变。automation实核PAUSED。
+**依据：** data/evaluation/results/review_necessity_enterprise_completed_20261024.json；详细执行史见progress及原工作卡。
+**结论边界：** 只接受熟悉开发材料的facts意见及拟议修法，未实际应用/fresh，未验证未见材料、自然完整任务或产品资格。
+不重买a/b/c、不重开旧六项、不自动15项，旧报告/成本/失败/封存全部保留。
+**实际缺口：** scripts/review_necessity_candidate.py目前只校验三份固定facts请求；旧sol_natural_contract.make_request仍baseline政策，
+SolReviewProvider硬编码GPT-pro。直接换Key不会完成动态政策、分组记录与接收/授权绑定。
+**实现路径：** 独立开发合同复用现有natural workflow、Sol session/worker及ExactNativeGate，绑定同一必要修订政策到facts initial/fresh；
+保持completion职责，显式企业Profile与费用/授权，动态完整来源/报告重建，不在旧合同下混收新请求。
+**本包验收：** 零付费验证请求构造与发送/接收两端绑定、唯一逐字应用、实际同稿facts/completion fresh、完整回执及known/unknown恢复；
+关键分支用现有真实worker/SDK配mock HTTP，不把mock/native行政证明当真实语义结果。保留旧合同回放和新旧拒绝混用。
+**下一动作：** 完成上述动态接线设计和离线验证后，形成可检查的新自然任务实测入口及其范围/费用；当前不发送新模型请求。
+**不变：** 三项grant不用于新范围；自然六调用与产品五调用差异不靠静默扩容解决，原8E/发布门/同版本资格要求保持。
 
 ## Dependencies and Follow-through
 
@@ -73,12 +49,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-
-以canonical和上方工作卡为准：候选/三稿/worker/有限恢复/真实行政作者交接及本机入口均已验证；
-企业a/b完整意见均通过双审，父Pro超时/所有原件保持；恢复根c44bd04d，执行代码冻结2bd7e08e。
-用户运行企业Control/continue-c.ps1，隐藏输入Key，只发送c一次；40057680511已全绿，不自动循环或重做a/b。
-结果证据review_necessity_enterprise_b_reviewed_20261024.json；授权仍至北京时间10月25日10:56:33。
-原Pro首补测准备文件只作历史证据；未证明企业稳定性或模型改善，原发布门、8E与后续依赖保持。
+三项诊断已完成并封存，完整证据review_necessity_enterprise_completed_20261024.json。
+按上方工作卡准备同政策自然任务的独立开发合同、动态来源绑定与企业Profile，先零付费整链验证，不重复固定三项。
+原六项/所有旧失败/费用/封存保持，automation PAUSED；不把该开发诊断当阶段或产品完成。
 
 ## History
 

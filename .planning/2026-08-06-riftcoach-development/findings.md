@@ -3,8 +3,13 @@
 同一a请求原Pro为131.094秒远端524，企业补测46.797秒完整200、raw/SDK均high；一次对照不能区分渠道作用与上游时段波动。
 本次候选只报任意7.5门槛并提出窄修法，完整来源双审接受，没有重现旧block10误报；这是熟悉材料的一项正向证据。
 b随后HTTP200/31.328秒/22923known、high，事实pass经完整来源双审接受；否定句里的旧7.5字样未引起误报。
-c的真实因果错检出尚待实测；不能从a/b外推零误报/零漏报、自然任务或产品资格。
-原unknown80384预留不当作账单；已审a/b不再重买，下一发送绑定b-submit原stdout根c44bd04d。
+c随后HTTP200/35.156秒/23151known、high，检出明确“已经证明原因”，全部解释/来源/窄补丁双审接受。
+三项支持本政策开发方向；不能外推零误报/零漏报、未见材料、自然任务或产品资格。
+原unknown80384预留不当作账单；已审a/b/c不再重买，唯一seal79afb631及严格只读replay完成，无下一发送。
+
+自然接线仍是独立缺口：candidate.validate_business只绑定三份固定初审，旧sol_natural_contract.make_request仍baseline，
+SolReviewProvider硬编码GPT-pro；已测政策不会自动进入动态报告或facts-fresh。下一步应复用已有Runtime/session，
+以独立开发合同绑定同政策、动态来源与企业Profile，先离线覆盖唯一应用/同稿双fresh，不能只换Key或放宽旧receiver。
 
 ## 2026-10-23 实际交接验证暴露的是序列化边界，不是业务判定
 
