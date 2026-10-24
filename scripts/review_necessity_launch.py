@@ -2,8 +2,8 @@
 
 No automatic sends/retries, secret discovery, product admission or old-run writes.
 Every command requires the last stdout checkpoint; crashes after a claim cannot
-resend. A recovered timeout leaves earlier reviews intact and can be retried once
-by an explicit command under a new, plan-bound human authorization.
+resend. A recovered timeout leaves earlier reviews intact. Original plans allow
+one retry; an explicit approved amendment can select enterprise/manual retries.
 """
 import argparse
 from copy import deepcopy
@@ -41,6 +41,10 @@ HISTORY_SEAL_SHA = 'da687ba3c9ff2a483c8bc5f2ed021e7c57e79fd8f038a9301474a82d2cce
 CALL_FILES = ('request.json', 'validation-context.json', 'profile.json', 'usage.json',
               'worker-result.json', 'receipt.json', 'observation/observation.json')
 REVIEW_FILES = ('material.json', 'independent-task.json', 'task-checkpoint.json', 'dispatch.txt')
+MANUAL_LIMITS = dict(LIMITS, max_attempts=None, max_retries=None, total_reserved_tokens=None)
+ENTERPRISE_PROFILE = Profile(group='GPT-企业专线', route='proxy-12000')
+ENTERPRISE_PRICE = {'input':'0.5', 'output':'2.5'}
+AMENDMENT_VERSION = 'review-necessity-execution-amendment-v1'
 
 
 def require(value, code):
@@ -137,6 +141,31 @@ def closed_status(state):
                 pending_case=state['next_case'], next_case=None)
 
 
+def amended_plan(plan, state):
+    """Overlay explicit append-only execution changes, never rewrite the old plan."""
+    original = plan
+    plan = deepcopy(plan)
+    for index, handle in enumerate(state.get('execution_amendments', []), 1):
+        path = Path(original['operator'])/'amendments'/f'{index:04}.json'
+        require(handle['path'] == str(path) and sha(path) == handle['sha256'], 'amendment_inventory')
+        record = read_json(path)
+        value = record['proposal']
+        require(digest(value) == record['proposal_sha256'] and
+                value['version'] == AMENDMENT_VERSION and
+                value['parent_plan_sha256'] == sha(Path(original['operator'])/'plan.json') and
+                value['limits'] == MANUAL_LIMITS and value['profile'] == asdict(ENTERPRISE_PROFILE) and
+                value['price_cny_per_million'] == ENTERPRISE_PRICE and
+                value['workspace']['answers'] == original['workspace']['answers'], 'amendment_scope')
+        parent = Path(original['operator'])/'checkpoints'/value['parent_checkpoint_name']
+        require(parent.parent == Path(original['operator'])/'checkpoints' and
+                sha(parent) == value['parent_checkpoint_sha256'], 'amendment_parent')
+        plan.update({k:deepcopy(value[k]) for k in ('head','source','workspace','limits','profile',
+                                                  'price_cny_per_million')})
+        plan['amendment_sha256'] = record['proposal_sha256']
+        plan['estimated_uncached_cny_per_attempt'] = '0.07296'
+    return plan
+
+
 def load(operator, plan_sha, checkpoint_sha, *, sources=True, pending=False, sealed=False):
     operator = Path(operator).absolute()
     require(operator.resolve() == operator and sha(operator/'plan.json') == plan_sha, 'plan_root')
@@ -165,6 +194,7 @@ def load(operator, plan_sha, checkpoint_sha, *, sources=True, pending=False, sea
     else:
         require(actual == expected, 'checkpoint_or_inventory')
     require(previous == checkpoint_sha, 'stale_checkpoint')
+    plan = amended_plan(plan, state)
     if sources:
         require(Path.cwd().resolve() == ROOT and plan['workspace']['cwd'] == str(ROOT) and
                 plan['workspace']['python'] == str(Path(sys.executable).resolve()), 'actual_execution_paths')
@@ -176,20 +206,66 @@ def load(operator, plan_sha, checkpoint_sha, *, sources=True, pending=False, sea
     return plan, deepcopy(state), expected
 
 
-def authorization(path, pin, plan_sha, *, now=None):
+def authorization(path, pin, plan_sha, *, now=None, plan=None):
     require(path is not None and pin is not None and sha(path) == pin, 'new_authorization_required')
     value = read_json(path)
+    profile = plan['profile'] if plan else asdict(PROFILE)
+    limits = plan['limits'] if plan else LIMITS
+    price = plan.get('price_cny_per_million', {'input':'0.4', 'output':'2'}) if plan else {'input':'0.4', 'output':'2'}
+    amendment_sha = plan.get('amendment_sha256') if plan else None
     require(value and value.get('version') == VERSION+'-authorization' and
-            value.get('plan_sha256') == plan_sha and value.get('limits') == LIMITS and
-            value.get('profile') == asdict(PROFILE) and value.get('approved') is True and
-            value.get('account_group_confirmed') == 'GPT-pro' and
-            value.get('price_cny_per_million') == {'input':'0.4', 'output':'2'} and
+            value.get('plan_sha256') == plan_sha and value.get('limits') == limits and
+            value.get('profile') == profile and value.get('approved') is True and
+            value.get('account_group_confirmed') == profile['group'] and
+            value.get('price_cny_per_million') == price and
+            value.get('amendment_sha256') == amendment_sha and
             isinstance(value.get('user_evidence'), str) and bool(value['user_evidence'].strip()), 'authorization_scope')
     start, end = (datetime.fromisoformat(value[k]) for k in ('issued_at', 'expires_at'))
     require(start.tzinfo is not None and end.tzinfo is not None and
             start <= (now or datetime.now(timezone.utc)) < end and
             0 < (end-start).total_seconds() <= 86400, 'authorization_expired')
     return value
+
+
+def amend(operator, plan_sha, checkpoint_sha, proposal_path, proposal_sha, grant, grant_sha, client):
+    """Apply a human-approved group/manual-retry change only at a proven timeout."""
+    operator = Path(operator).absolute()
+    with exclusive(operator.with_name(operator.name+'.lock')):
+        plan, state, expected = load(operator, plan_sha, checkpoint_sha, sources=False)
+        require(state['phase'] == 'retry_available' and state['attempts'] and
+                state['attempts'][-1]['receipt']['reaped'] is True, 'amendment_requires_timeout')
+        require(sha(proposal_path) == proposal_sha, 'amendment_proposal_root')
+        value = read_json(proposal_path)
+        parent = operator/'checkpoints'/value['parent_checkpoint_name']
+        require(value['version'] == AMENDMENT_VERSION and value['parent_plan_sha256'] == plan_sha and
+                value['parent_checkpoint_sha256'] == checkpoint_sha and
+                parent.parent == operator/'checkpoints' and sha(parent) == checkpoint_sha and
+                value['limits'] == MANUAL_LIMITS and value['profile'] == asdict(ENTERPRISE_PROFILE) and
+                value['price_cny_per_million'] == ENTERPRISE_PRICE and
+                value['workspace'] == dict(cwd=str(ROOT), python=str(Path(sys.executable).resolve()),
+                                          answers=plan['workspace']['answers']) and
+                Path.cwd().resolve() == ROOT and current_head() == value['head'] and
+                source_identity() == value['source'], 'amendment_scope')
+        require(inventory(candidate.PACKAGE) == plan['package_inventory'] and
+                historical_evidence() == plan['history'] and
+                plan['requests'] == {n:hashlib.sha256(raw).hexdigest() for n,raw in candidate.prepare().items()},
+                'amendment_business_changed')
+        effective = dict(plan, **{k:value[k] for k in ('head','source','workspace','limits','profile',
+                                                    'price_cny_per_million')}, amendment_sha256=digest(value))
+        approval = authorization(grant, grant_sha, plan_sha, plan=effective)
+        # The predecessor's real author/native attestation remains a predecessor,
+        # not a new review or a re-issued final. Re-read it before accepting a change.
+        verify_native_principals(client, plan)
+        replay_reviews(plan, state, client)
+        require(inventory(operator) == expected, 'amendment_concurrent_change')
+        folder = operator/'amendments'
+        folder.mkdir(exist_ok=True)
+        path = folder/f'{len(state.get("execution_amendments", []))+1:04}.json'
+        write_json(path, dict(proposal=value, proposal_sha256=digest(value),
+                             authorization_sha256=grant_sha, authorization_document=approval))
+        state.setdefault('execution_amendments', []).append(dict(path=str(path), sha256=sha(path)))
+        expected[path.relative_to(operator).as_posix()] = sha(path)
+        return save(operator, state, checkpoint_sha, expected)
 
 
 def native_gate(plan, client):
@@ -234,31 +310,31 @@ def native_task(operator, plan_sha, checkpoint_sha, client):
 def preflight(operator, plan_sha, checkpoint_sha, grant, grant_sha, ci_run, client):
     plan, state, expected = load(operator, plan_sha, checkpoint_sha)
     require(state['phase'] in ('ready', 'retry_available'), 'not_ready')
-    authorization(grant, grant_sha, plan_sha)
+    authorization(grant, grant_sha, plan_sha, plan=plan)
     ci = verify_ci(ci_run, plan['head'])
     native = verify_native_principals(client, plan)
     replay_reviews(plan, state, client)
     with socket.create_connection(('127.0.0.1', 12000), timeout=3):
         pass
     # Host and CI queries do not extend the human authorization deadline.
-    approval = authorization(grant, grant_sha, plan_sha)
+    approval = authorization(grant, grant_sha, plan_sha, plan=plan)
     load(operator, plan_sha, checkpoint_sha)
     return plan, state, expected, dict(ci=ci, native=native,
         authorization_sha256=grant_sha, authorization_document=approval)
 
 
-def inspect_receipt(folder, business, context):
+def inspect_receipt(folder, business, context, *, profile=PROFILE):
     """Treat identity-conflicting public text only as a diagnostic, never accepted IO."""
     receipt, worker, obs = (read_json(folder/n) for n in
         ('receipt.json', 'worker-result.json', 'observation/observation.json'))
     require(receipt and receipt.get('request_sha256') == digest(business) and
             receipt.get('wire_sha256') == digest(codec.build_wire(business)) and
             receipt.get('validation_context_sha256') == digest(context) and
-            receipt.get('profile') == asdict(PROFILE) and
+            receipt.get('profile') == asdict(profile) and
             receipt.get('response_mode') == 'necessity-candidate-v1' and
             read_json(folder/'request.json') == business and
             read_json(folder/'validation-context.json') == context, 'receipt_binding')
-    expected_profile = dict(**asdict(PROFILE), reasoning_effort='high', api='responses',
+    expected_profile = dict(**asdict(profile), reasoning_effort='high', api='responses',
         max_output_tokens=16384, max_retries=0, timeout_s=300, group_verified=False,
         upstream_identity_verified=False, response_mode='necessity-candidate-v1')
     require(read_json(folder/'profile.json') == expected_profile, 'profile_binding')
@@ -306,8 +382,10 @@ def send(operator, plan_sha, checkpoint_sha, grant, grant_sha, ci_run, client, *
         plan, state, expected, proof = preflight(operator, plan_sha, checkpoint_sha,
                                                grant, grant_sha, ci_run, client)
         require((state['phase'] == 'retry_available') == retry, 'explicit_retry_required')
-        require(len(state['attempts']) < LIMITS['max_attempts'] and
-                (not retry or sum(r['retry'] for r in state['attempts']) == 0), 'attempt_budget')
+        limits = plan['limits']
+        require((limits['max_attempts'] is None or len(state['attempts']) < limits['max_attempts']) and
+                (not retry or limits['max_retries'] is None or
+                 sum(r['retry'] for r in state['attempts']) < limits['max_retries']), 'attempt_budget')
         key = hidden_key()  # no active worker/deadline while waiting; cancellation creates no claim
         try:
             plan, state, expected, proof = preflight(operator, plan_sha, checkpoint_sha,
@@ -326,7 +404,7 @@ def send(operator, plan_sha, checkpoint_sha, grant, grant_sha, ci_run, client, *
             _, _, expected = load(operator, plan_sha, checkpoint_sha)
             business = read_json(operator/'requests'/f'{case}-facts.json')
             context = read_json(operator/'requests'/f'{case}-validation-context.json')
-            run_once(business, profile=PROFILE, api_key=key, directory=folder/'call',
+            run_once(business, profile=Profile(**plan['profile']), api_key=key, directory=folder/'call',
                 response_mode='necessity-candidate-v1', validation_context=context, timeout_s=300)
         finally:
             key = None
@@ -341,11 +419,14 @@ def finish_pending(operator, plan_sha, checkpoint_sha, client):
     folder, case = Path(row['folder']), row['case']
     business = read_json(operator/'requests'/f'{case}-facts.json')
     context = read_json(operator/'requests'/f'{case}-validation-context.json')
-    receipt, phase, tool = inspect_receipt(folder/'call', business, context)
+    receipt, phase, tool = inspect_receipt(folder/'call', business, context, profile=Profile(**plan['profile']))
     row['receipt'] = receipt
     state['phase'], state['reason'] = phase, None if tool else (
         'evidence_incomplete' if receipt['code'] == 'ok' else receipt['code'])
-    if phase == 'retry_available' and (len(state['attempts']) == 4 or any(r['retry'] for r in state['attempts'])):
+    limits = plan['limits']
+    if phase == 'retry_available' and (
+            limits['max_attempts'] is not None and len(state['attempts']) >= limits['max_attempts'] or
+            limits['max_retries'] is not None and sum(r['retry'] for r in state['attempts']) >= limits['max_retries']):
         state['phase'], state['reason'] = 'stopped', 'retry_budget_exhausted'
     if state['phase'] == 'stopped':
         state['next_case'] = None
@@ -436,12 +517,13 @@ def replay(operator, plan_sha, checkpoint_sha, seal_sha, client):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'check', 'native-task', 'send', 'retry', 'reconcile', 'submit', 'seal', 'replay'])
+    parser.add_argument('action', choices=['prepare', 'check', 'native-task', 'amend', 'send', 'retry', 'reconcile', 'submit', 'seal', 'replay'])
     parser.add_argument('--operator', required=True, type=Path)
     for name in ('plan-sha', 'checkpoint-sha', 'authorization-sha', 'ci-run', 'primary', 'independent',
-                 'event-id', 'seal-sha'):
+                 'event-id', 'seal-sha', 'amendment-sha'):
         parser.add_argument('--'+name)
     parser.add_argument('--authorization', type=Path)
+    parser.add_argument('--amendment', type=Path)
     parser.add_argument('--decision', type=Path)
     args = parser.parse_args()
     try:
@@ -456,6 +538,9 @@ def main():
                                   key_read=False, provider_requests=0)
                 elif args.action == 'native-task':
                     result = native_task(args.operator, args.plan_sha, args.checkpoint_sha, client)
+                elif args.action == 'amend':
+                    result = amend(args.operator, args.plan_sha, args.checkpoint_sha,
+                        args.amendment, args.amendment_sha, args.authorization, args.authorization_sha, client)
                 elif args.action in ('send', 'retry'):
                     result = send(args.operator, args.plan_sha, args.checkpoint_sha, args.authorization,
                         args.authorization_sha, args.ci_run, client, retry=args.action == 'retry')

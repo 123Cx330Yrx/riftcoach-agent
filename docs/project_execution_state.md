@@ -44,12 +44,17 @@ Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏�
 原stdout/exit SHA核验及checkpoint77132319只读回查通过；phase=retry_available，不封批、不重发、不作语义失败。
 旧524耗时128.890/128.282秒，另两次完整HTTP200为60.516/90.985秒；相近超时窗口支持远端等待限制解释，
 但具体网关/排队/模型耗时尚不能区分。非流式长请求是否能在该窗口完成未知，单纯提高本地超时不能修远端524。
-用户随后明确允许多次补测、要求先准备第一次；本次优先沿用原grant尚余的一次，不改冻结代码/原回执/期限。
-第一次补测入口同名-control/retry-first.ps1已固定原超时stdout根77132319，完整授权/CI/native/来源前检与
-Windows PowerShell CheckOnly均通过，原Operator/作者库存未变、补测尚未发送。下一动作：用户隐藏输入Key发首次补测a。
-多次手动补测的用户决定已单独保存；现有冻结执行器仍只支持共享一次，扩展尚未实现，不能宣称已取消全部限制；
-若需再次恢复，须从真实新回执续接、保留累计known/unknown，不因次数耗尽作废已有结果，也不自动循环购买。
-超时仍可能重复，不保证恢复；本轮准备0新HTTP/真实Key。证据review_necessity_first_retry_preparation_20261024.json。
+用户随后明确允许多次手动补测、要求先准备第一次，并选择企业分组0.25×。底层请求没有分组参数，
+实际按Key路由；旧启动器硬编码Pro授权/费用，不能只换Key仍记Pro。已增加明确amend执行变更：
+原plan/请求/超时receipt/checkpoint不改，企业分组及新执行源码、cwd/Python/手动补测规则追加入库存和后继根。
+每次仍1HTTP/80384预留/300秒/自动重试0，移除本候选普通超时的固定补测次数上限，不自动循环、不重置累计费用；
+完整意见先双审，语义实错/high-max诊断后停/未知claim硬停保持。价格按0.25/0.2比例估算0.5/2.5元每百万，
+单次预留0.07296元，未核企业实际报价，不当账单。原UTC截止10月25日北京时间10:56:33保持。
+20项入口检查通过（151.60秒）：保留原15项，加企业变更、旧Pro grant拒发、连续5次显式超时补测后成功/再审推进、
+旧原件不变与只读seal等；真实worker/SDK配mock HTTP/FakeGate，不是模型质量或企业路由稳定性证明。
+/root/necessity_independent实际行政消息已确认可复用，不新建Agent。下一动作：冻结新执行树并追加已授权变更，
+实际检查新入口；同源码公共CI全绿后隐藏输入企业Key，仅发送当前a的第一补测。原Pro首次补测准备不再作为企业入口。
+旧6052be74执行树/原回执不改，本轮仍0新增Key/HTTP。补测可能再次524，不能以渠道变化宣称质量改善。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。

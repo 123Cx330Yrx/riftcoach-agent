@@ -267,3 +267,91 @@ def test_native_preflight_is_mandatory_and_cannot_be_redelivered(prepared, monke
         {'accepted':False, 'fixture_only':True}, 'rejected-preflight')
     assert result['status']['phase'] == 'stopped'
     assert result['status']['attempts'] == 0
+
+
+def enterprise_amendment(prepared, root, **changes):
+    operator, _, grant, _, _ = prepared
+    old_plan = process.read_json(operator/'plan.json')
+    parent = next(p for p in (operator/'checkpoints').iterdir() if launch.sha(p) == root['checkpoint_sha256'])
+    proposal = dict(version=launch.AMENDMENT_VERSION, parent_plan_sha256=root['plan_sha256'],
+        parent_checkpoint_name=parent.name, parent_checkpoint_sha256=root['checkpoint_sha256'],
+        head=launch.current_head(), source=launch.source_identity(), workspace=old_plan['workspace'],
+        limits=launch.MANUAL_LIMITS, profile=launch.asdict(launch.ENTERPRISE_PROFILE),
+        price_cny_per_million=launch.ENTERPRISE_PRICE,
+        price_basis='User-reported 0.25/0.2 ratio, estimate only; not a verified tariff.')
+    proposal.update(changes)
+    path = operator.with_name('enterprise-proposal.json')
+    process.write_json(path, proposal)
+    authorization = process.read_json(grant)
+    authorization.update(limits=proposal['limits'], profile=proposal['profile'],
+        account_group_confirmed='GPT-企业专线', price_cny_per_million=launch.ENTERPRISE_PRICE,
+        amendment_sha256=launch.digest(proposal))
+    approved = operator.with_name('enterprise-authorization.json')
+    process.write_json(approved, authorization)
+    return path, approved
+
+
+def test_enterprise_multiple_manual_timeouts_preserve_parent_accounting_and_native(prepared, monkeypatch):
+    operator, root, old_grant, _, modes = prepared
+    modes.append((524, 'high'))
+    root = send(prepared, root)
+    original = tree(operator)
+    proposal, grant = enterprise_amendment(prepared, root)
+    root = launch.amend(operator, root['plan_sha256'], root['checkpoint_sha256'],
+        proposal, launch.sha(proposal), grant, launch.sha(grant), None)
+    assert all(tree(operator).get(k) == v for k,v in original.items())
+    # The old Pro grant cannot authorize an enterprise send, even under the same old plan SHA.
+    monkeypatch.setattr(launch, 'hidden_key', lambda: pytest.fail('key before correct amended grant'))
+    with pytest.raises(ValueError, match='authorization_scope'):
+        launch.send(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                    old_grant, launch.sha(old_grant), 'offline-ci', None, retry=True)
+    monkeypatch.setattr(launch, 'hidden_key', lambda: 'OFFLINE_SECRET_SENTINEL')
+    captured = []
+    run_once = launch.run_once
+    def enterprise_sender(*a, **kwargs):
+        captured.append(kwargs['profile'].group)
+        return run_once(*a, **kwargs)
+    monkeypatch.setattr(launch, 'run_once', enterprise_sender)
+    for i in range(5):
+        with pytest.raises(ValueError, match='explicit_retry'):
+            launch.send(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                        grant, launch.sha(grant), 'offline-ci', None)
+        modes.append((524, 'high'))
+        root = launch.send(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                           grant, launch.sha(grant), 'offline-ci', None, retry=True)
+        assert root['status']['phase'] == 'retry_available'
+        assert root['status']['attempts'] == i+2
+        assert root['status']['unknown_reserved_tokens'] == (i+2)*80384
+    assert captured == ['GPT-企业专线']*5
+    # One successful full result still requires review, then advances to b without repeating a.
+    modes.append((200, 'high'))
+    root = launch.send(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                       grant, launch.sha(grant), 'offline-ci', None, retry=True)
+    assert root['status']['phase'] == 'awaiting_review'
+    assert process.read_json(operator/'attempts/07-a/call/receipt.json')['profile']['group'] == 'GPT-企业专线'
+    root = submit(prepared, root)
+    assert root['status']['next_case'] == 'b' and root['status']['attempts'] == 7
+    assert all(tree(operator).get(k) == v for k,v in original.items())
+    closure = launch.seal(operator, root['plan_sha256'], root['checkpoint_sha256'], None)
+    before = tree(operator)
+    assert launch.replay(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                         closure['seal_sha256'], None)['readonly']
+    assert tree(operator) == before
+
+
+@pytest.mark.parametrize('fault', ['wrong_root','wrong_group','wrong_limits','not_timeout'])
+def test_execution_amendment_rejects_wrong_scope_without_rewriting_old_records(prepared, fault):
+    operator, root, _, _, modes = prepared
+    if fault != 'not_timeout':
+        modes.append((524, 'high'))
+        root = send(prepared, root)
+    changes = {}
+    if fault == 'wrong_root': changes['parent_checkpoint_sha256'] = '0'*64
+    elif fault == 'wrong_group': changes['profile'] = launch.asdict(launch.PROFILE)
+    elif fault == 'wrong_limits': changes['limits'] = dict(launch.MANUAL_LIMITS, timeout_s=600)
+    proposal, grant = enterprise_amendment(prepared, root, **changes)
+    before = tree(operator)
+    with pytest.raises(ValueError):
+        launch.amend(operator, root['plan_sha256'], root['checkpoint_sha256'],
+                     proposal, launch.sha(proposal), grant, launch.sha(grant), None)
+    assert tree(operator) == before
