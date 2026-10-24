@@ -32,8 +32,10 @@ high/max公开意见仅诊断审查后停，不继续为档位购买；语义实
 只读回查31件原件SHA/mtime不变，0尝试/真实Key/Provider。首次另一检查点尾LF不符保持拒绝；不修改原件或normalize接受。
 当前plan f3c2c586、原submit stdout checkpoint 09dd5c9e；Windows PowerShell CheckOnly/缺授权拒绝/隐藏哨兵与UTF8日志均已核。
 这是行政交接，b/c仍非独立黄金标签；工程入口通过不证明模型改善。
-**下一动作：** 取得此新范围具体费用授权，绑定已准备入口；真实发送前核冻结6052be74的CI39895429952全绿。
-当前无新grant，不填Key；high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
+**授权及前检：** 2026-10-24用户已授权，grant SHA85c771e3，截止北京时间10月25日10:56:33；
+原计划/原stdout根绑定完成。冻结6052be74的CI39895429952全绿，完整原生/源码/材料/UTC前检通过，原件未变、仍0请求。
+**下一动作：** 用户运行已验证-control/start-authorized.ps1隐藏输入天机阁GPT-pro Key，先发a；审查后再推进下一项。
+high/max完整意见诊断审完即停，不为档位补买，可能不会跑完三项。
 不自动恢复旧15、不开新生成、不把旧六项拼为同版本资格。
 **依据：** data/evaluation/fixtures/review_necessity_20261023/README.md及
  data/evaluation/results/review_necessity_launch_preparation_20261023.json；独立原诊断checkpoint1355e97a。
@@ -58,7 +60,8 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
 以canonical和上方工作卡为准：候选/三稿/worker/有限恢复/真实行政作者交接及本机入口均已验证；
-申请三项加一次显式超时补测的新费用范围，批准后绑定原计划和CI再启动。未授权前不输入Key，未证明模型改善；原发布门、8E与后续依赖保持。
+新费用范围已获2026-10-24用户授权且绑定原计划；冻结代码CI及零付费前检已通过，现在交付首项隐藏输入启动命令。
+授权激活见review_necessity_authorization_20261024.json；未证明模型改善，原发布门、8E与后续依赖保持。
 
 ## History
 

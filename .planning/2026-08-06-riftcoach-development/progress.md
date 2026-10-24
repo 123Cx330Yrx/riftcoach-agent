@@ -1,3 +1,11 @@
+## 2026-10-24 新范围已获授权并完成发送前检查
+
+用户明确授权昨日三份全文facts诊断加共享一次显式超时补测，最多4次/321536 tokens；估价0.233472元非账单硬限。
+create-only grant SHA85c771e3，原plan f3c2c586/checkpoint09dd5c9e绑定，至北京时间10月25日10:56:33有效。
+实际冻结6052be74的CI39895429952全部job成功；调用原preflight重核真实native/作者/源码/材料/UTC/代理可达，
+Operator及作者SHA/mtime未变，仍0尝试/真实Key/Provider。既有入口可交付用户隐藏输入Key启动a，不重跑旧批。
+证据review_necessity_authorization_20261024.json；automation PAUSED，模型改善/资格/发布未证。
+
 ## 2026-10-23 真实行政作者交接与本机启动入口已核
 
 冻结执行树6052be74，Operator outputs/riftcoach-review-necessity-verified-20261023，plan f3c2c586、原submit stdout根09dd5c9e。

@@ -36,8 +36,11 @@ plan f3c2c586、原submit stdout checkpoint 09dd5c9e。只读检查前后31件�
 此前另一行政检查点因作者尾LF与native不同被拒，原件不改、不补签；成功检查点由作者另行独立序列化。
 Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏输入函数哨兵与UTF8日志保存已验证；
 本机缺Get-FileHash的包装问题改为内置.NET SHA256后复测通过。相邻旧测试的源码并发修改失败已在干净固定树定点通过。
-下一动作：取得此三项具体新费用授权，绑定已验证入口；发送前核冻结6052be74的CI39895429952全绿。
-CI最近观测仍in_progress，不阻挡本地准备；当前无新grant，不可填Key启动。普通超时保留前项，high/max仅诊断审完停，不保证三项均执行。
+2026-10-24用户明确授权此三项加共享一次显式超时补测（最多4尝试/321536 tokens）。grant SHA85c771e3，
+截止北京时间2026-10-25 10:56:33；已绑定原plan f3c2c586及checkpoint09dd5c9e，不延展旧授权。
+冻结6052be74的CI39895429952已completed/success，完整job列表及真实原生/来源/授权UTC前检通过，原件未变。
+下一动作：用户在同名-control/start-authorized.ps1终端隐藏输入天机阁GPT-pro Key，仅启动a；本次激活未读Key/未发Provider。
+普通超时保留前项，high/max仅诊断审完停，不保证三项均执行；激活证据review_necessity_authorization_20261024.json。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
