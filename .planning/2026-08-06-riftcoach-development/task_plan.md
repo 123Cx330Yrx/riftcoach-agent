@@ -16,30 +16,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 ## Active Work Package
 
 **目标：** 把已测必要修订政策接回自然任务，并把下一次实测准备到能保留成功项、手动恢复普通超时的具体入口。
-**当前续作：** 同阶段手动续测已实现并离线验证；每次显式调用只重试当前超时项一次，再超时仍暂停。
-新候选launcher贯穿新合同/企业Profile/独立grant，成功回执断点只协调；旧批与原件保持。
-56项相关检查、13项CI旧测试修复、新候选launcher全链和真实Flash回收补测各1项通过，另49项旧恢复/原生导入/库存回归通过（755.24秒），合计120项；两份受影响配置启动校验通过。
-新初始包络10物理调用/739840tokens/3600活动秒/4次手动补测，估价1.0683904元；是待授权包络，不是永久补测上限或实际账单。
-公共CI40069863769因旧测试漏传CONTRACT_MODULE失败，已局部修复/13项过；等待本包提交后的精确新CI。
-**当前下一动作：** 旧回归完成后统一提交推送、冻结干净执行树及新任务计划，验证真实原生作者路径；尚不要求Key、不发付费请求。
-已有独立主体实际行政调度成功，未新建Agent；真实预检与新费用授权未完成前不得报告paid ready。
-详见docs/plans/2026-10-24-necessity-natural-manual-recovery.md；automation仍PAUSED。
-
-以下为上包完成记录，旧估价与“仍缺”描述由本节接续。
-
-**刚完成：** 用户要求的a/b/c完整来源再审通过，既有双审/native原件只读重验，原封存与费用保持。
-独立开发合同1.6.3及企业Profile已贯穿动态初审/fresh、父子receiver、实际Runtime/预算/trace/session。
-20项新接线、103项相关旧回归、26项旧自然链及6项库存检查通过；39份Runtime配置校验通过。
-首发边界从实际OBSERVED/空Memory入口捕获，零Key/零真实模型；当前库存另存，不改旧15资格/标签/原件。
-**证据：** review_necessity_three_recheck_20261024.json、sol_necessity_natural_integration_20261024.json、
-sol_necessity_natural_offline_20261024.json；设计docs/plans/2026-10-24-necessity-natural-integration.md。
-**已解决：** 旧自然任务仍使用baseline政策和Pro硬编码的缺口；同政策现在能进入动态全文和同稿双fresh。
-**仍缺：** 现有自然Runtime的有界自动重试不等于用户要求的多次手动补测；新实测启动/授权/冻结CI及真实native预检尚未绑定。
-**下一动作：** 实现并零付费验证同阶段手动超时续测，保留所有成功项和未知预留；完成新自然任务的具体范围、预算和独立启动绑定。
-成功HTTP中断只协调，不重发；身份/来源/协议/语义硬错拒绝，单独审查判断，不按网络补测处理。
-**边界：** 已完成三项grant不挪用；当前约0.864元是继承预算估价，不是新费用授权；付费入口未ready，不用填Key。
-熟悉开发材料/模拟工程成功不当新语义、原生业务审查、同版本15或阶段/产品完成；旧六项/失败/封存和automation PAUSED保持。
-自然六调用与产品五调用差异不靠静默扩容解决，原阶段和后续依赖保持。
+**当前结果：** 同阶段手动续测、新候选launcher与干净执行树/计划已完成，相关120项检查通过；普通超时保留成功项/未知预留，身份/来源/协议/语义错不补发。
+代码2b14583e已推送，公共CI40073888400进行中。原CI四分片的旧测试参数遗漏已修复，未放宽生产接收标准。
+实际独立作者check-answer/唯一native final/逐字导入/严格只读回查通过，既有主体复用，不新建Agent、不当业务审查。
+**证据：** sol_necessity_manual_recovery_offline_20261024.json、sol_necessity_natural_prepared_20261024.json；Control/preparation-complete.json为实际准备记录。
+**下一动作：** 待新自然任务具体费用授权及冻结代码CI全绿后，安装有效grant并交付隐藏Key入口；不先发请求。
+**范围与边界：** 企业专线；初始10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍6次，估价1.0683904元非实际账单硬限。
+已提出授权问题，未签发新grant，新增真实Provider/Key读取0；旧三项/六项/失败/原件/封存及automation PAUSED保持。
+新预算用尽保持暂停另行准备扩展，不重买成功项；当前无新自然真实语义/同版本15/阶段或产品完成结论。
+设计docs/plans/2026-10-24-necessity-natural-manual-recovery.md；原三项再审及动态政策接线结果保持，后续依赖如下。
 
 ## Dependencies and Follow-through
 
@@ -59,7 +44,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-三项再审、同政策自然动态接线和手动同阶段超时续测已离线验证。下一步按上方工作卡冻结新任务并验证实际原生作者路径。
+三项再审、同政策自然动态接线和手动同阶段超时续测已离线验证。干净新任务与真实原生预检亦已完成，下一步按上方工作卡等待具体费用授权和冻结代码CI。
 旧授权不用于新范围，现阶段不用Key，不自动发送；原阶段及下游依赖保持。
 
 ## History

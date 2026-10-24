@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "同阶段手动超时续测及新合同启动接线已离线验证；冻结新任务/真实原生预检中，automation PAUSED。"
+pause_reason: "手动超时续测/干净冻结计划及真实原生作者预检完成；新费用授权和精确HEAD CI待完成，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,19 +14,20 @@ pause_reason: "同阶段手动超时续测及新合同启动接线已离线验�
 
 ## 当前行动
 
-2026-10-24续作：新必要修订自然任务改为明确已回收超时暂停，不写业务失败终态。
-显式手动续测只放行当前项一次，再超时再暂停；成功项/检索/审查/唯一应用与未知预留均保留。
-新候选launch显式绑定同合同、企业Profile和新grant；旧Sol/闭批/三项授权不混用。
-56项session/新接线/launcher检查、13项旧单次入口检查、新候选launcher全链及真实Flash回收补测各1项通过。
-包含两次超时再成功、补测成功后父进程中断只协调回执、硬错不补发、预算耗尽保持暂停、同稿双fresh及只读封存。
-原公共CI40069863769四分片均指向旧测试子进程漏传CONTRACT_MODULE，已修复且该文件13项通过；未改变生产worker接收标准。
-已有独立主体实际收到行政新任务并原生回复ROUTE_AVAILABLE；本轮尚未完成新任务真实作者预检，不报付费ready。
-新任务初始包络10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍2生成+4审查，估价1.0683904元非账单硬限。
-额度用尽保持暂停，后续预算扩展不得重买成功项；当前未签发新费用grant、无真实Provider或Key读取。
-**下一动作：** 完成相关旧回归并提交推送本包，干净独立执行树冻结新计划/精确HEAD/CI，验证实际原生作者/check-answer/final/import。
-只有新范围及费用获实际授权后才交付隐藏Key实测入口；automation保持PAUSED。
-设计docs/plans/2026-10-24-necessity-natural-manual-recovery.md；本轮证据与启动状态以新Operator准备文件为准。
-上一包三项再审、动态接线和旧费用封存见下；不冒充新语义、同版本15或产品/8E完成，下游依赖保持。
+2026-10-24续作完成：明确已回收超时在原session暂停；每次显式手动只补当前项一次，再超时再暂停。
+成功生成/检索/审查/唯一应用与未知预留保留；成功HTTP断点只协调原回执，身份/来源/协议/语义硬错不补发。
+新合同/企业Profile/独立grant贯穿prepare/run/replay，旧Sol和已完成三项授权不混用。相关120项本地检查通过，受影响两份配置启动、编译、治理/diff通过。
+原CI40069863769四分片因旧测试漏传CONTRACT_MODULE失败；补齐测试参数后该文件13项通过，生产接收标准不变。
+代码已推送2b14583e，公共CI40073888400进行中，尚未当作全绿。此后仅更新准备记录文档，不改变该冻结执行代码或重启全站CI。
+干净执行树D:/riftcoach-sol-necessity-natural-execution冻结同HEAD；907件来源与实际OBSERVED/空Memory首发已绑定。
+新Operator为outputs/riftcoach-sol-necessity-natural-20261024，plan SHA a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea。
+复用已有独立主体，完整原生作者预检完成：作者create-only写文件/check-answer/唯一final，主审读取真实事件并逐字导入accepted。
+作者SHAd1489638，预检最终根1e1363e1；严格只读回查原件不变，实际PowerShell检查入口通过；不是业务质量审查。
+证据sol_necessity_manual_recovery_offline_20261024.json、sol_necessity_natural_prepared_20261024.json和Control/preparation-complete.json。
+新范围初始包络10物理调用/739840tokens/3600活动秒/4手动补测，逻辑仍2生成+4审查，估价1.0683904元非实际账单硬限。
+仅生成authorization-proposal，未签发新grant；本轮新增真实Provider/Key读取0，automation继续PAUSED，旧封存和账目保持。
+**下一动作：** 取得用户对这一次新自然任务的具体费用授权，并核冻结2b14583e的CI40073888400全绿后，绑定有效grant并交付隐藏Key实测命令。
+授权问题已提交；未答复不发送、不自动补测。新候选尚无自然任务真实语义结果，不授同版本15或产品/8E资格，下游依赖保持。
 
 以下为上包的离线接线记录，其“下一动作”已由本节接续。
 

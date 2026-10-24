@@ -1,3 +1,13 @@
+## 2026-10-24 新自然任务冻结与真实作者预检完成
+
+代码提交2b14583e已推送；CI40073888400进行中，不当作全绿。执行树D:/riftcoach-sol-necessity-natural-execution同HEAD且clean，907来源绑定。
+Operator outputs/riftcoach-sol-necessity-natural-20261024，plan a9ccbca1；原生预检guard18790991与最初stdout/exit留存，导入后最终根1e1363e1。
+复用独立主体01a166cd：作者原件d1489638与唯一完整native final逐字相同；主审实读事件并submit自己的notes，accepted。
+严格只读回查原件不变，实际check-preparation.ps1通过；仅行政证据，不当业务审查。存储智谱配置仅定位元数据，未读Key。
+新费范围为一个自然观摩任务，6逻辑调用，10物理调用/739840tokens/3600活动秒/4次手动补测初始包络，估价1.0683904元非账单硬限。
+授权问题已提出，只有proposal没有新grant；待具体授权及精确HEAD CI全绿再交付Key入口。新增真实Provider/Key读取0，automation PAUSED。
+新增结果sol_necessity_natural_prepared_20261024.json；本次随后提交只含记录/文档并跳过重复CI，冻结代码2b14583e的公共检查继续，未跳过其执行前CI门。
+
 ## 2026-10-24 新自然任务手动超时续测与独立启动接线
 
 新候选采用manual-reaped-timeout-v1：首次超时即暂停，不自动购买；每次手动只放行当前项一次，再超时再暂停。
