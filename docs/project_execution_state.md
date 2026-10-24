@@ -39,8 +39,13 @@ Windows PowerShell实际入口CheckOnly、缺授权输入前拒绝、同隐藏�
 2026-10-24用户明确授权此三项加共享一次显式超时补测（最多4尝试/321536 tokens）。grant SHA85c771e3，
 截止北京时间2026-10-25 10:56:33；已绑定原plan f3c2c586及checkpoint09dd5c9e，不延展旧授权。
 冻结6052be74的CI39895429952已completed/success，完整job列表及真实原生/来源/授权UTC前检通过，原件未变。
-下一动作：用户在同名-control/start-authorized.ps1终端隐藏输入天机阁GPT-pro Key，仅启动a；本次激活未读Key/未发Provider。
-普通超时保留前项，high/max仅诊断审完停，不保证三项均执行；激活证据review_necessity_authorization_20261024.json。
+2026-10-24用户输入Key后a已发1HTTP：131.094秒远端524，HTTP观测128.860秒，早于本地300秒；
+无完整公开意见，0known/80384unknown reserved（预留非实际消费），worker已回收，无残留发送进程。
+原stdout/exit SHA核验及checkpoint77132319只读回查通过；phase=retry_available，不封批、不重发、不作语义失败。
+旧524耗时128.890/128.282秒，另两次完整HTTP200为60.516/90.985秒；相近超时窗口支持远端等待限制解释，
+但具体网关/排队/模型耗时尚不能区分。非流式长请求是否能在该窗口完成未知，单纯提高本地超时不能修远端524。
+下一动作：保留一次已授权显式补测额度与原根，避免无改善证据就原样重发；当前不读Key、不发第二请求，
+向用户说明补测仍可能超时，不把重试可执行等同值得立即购买。证据review_necessity_timeout_20261024.json。
 材料及失败决策见data/evaluation/fixtures/review_necessity_20261023/README.md；当前准备证据为review_necessity_launch_preparation_20261023.json。
 旧review_necessity_preparation_20261023.json记录worker接线阶段，不能用其中尚未准备入口的历史状态替代当前证据。
 不重跑生成、不重开旧批、不换厂商、不把复核现有材料绑定新CI。automation保持PAUSED，未应用/未fresh/未授资格。
