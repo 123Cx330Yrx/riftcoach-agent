@@ -16,15 +16,16 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 ## Active Work Package
 
 **目标：** 把已测必要修订政策接回自然任务，并把下一次实测准备到能保留成功项、手动恢复普通超时的具体入口。
-2026-10-24最新：用户明确“授权此范围，CI全绿后启动”。冻结代码2b14583e的CI40073888400已8job全success。
-grant125005b2绑定plan a9ccbca1/精确HEAD/新合同及企业Profile，UTC2026-10-24T08:58:07.794391Z签发，2026-10-25同刻截止，不自动延期。
-范围一次自然任务：2生成+4审查；初始10物理调用/739840tokens/3600活动秒/4次手动超时补测，企业专线0.25×，估价1.0683904元非账单硬限；不运行15项。
-干净冻结执行树/907来源/真实作者预检只读重验通过；Control/start-authorized.ps1实际CheckOnly为ready_for_hidden_key。
-入口复用本机智谱配置，只隐藏提示企业Key；首次create-only claim/原stdout最早根/exit SHA保留，已有execution不可重开。
-私有薄runner的输出留存用临时目录与模拟执行核过，临时目录已自动清理。本轮未创建execution、未读真实Key、Provider0，automation仍PAUSED。
-证据sol_necessity_natural_authorized_20261024.json与outputs/riftcoach-sol-necessity-natural-20261024-control/authorized-ready.json。
-**下一动作：** 用户运行该Control/start-authorized.ps1隐藏输入企业Key；返回后读真实stdout根和完整输出继续双审，不重买成功项。
-普通已回收超时暂停原阶段，每次只手动补一项；身份/来源/协议/语义硬错不补发。新语义/同版本15/产品及8E资格尚未取得，旧账目/封存/下游依赖保持。
+2026-10-24真实执行最新：Flash检索/生成与Sol facts-initial均已正常返回，3HTTP/45060已知tokens/0未知预留/0重试。
+Sol本次HTTP200、模型及high档位匹配；公开意见两项必要修订：block18薇古丝禁用率3%应为4%，并把含艾尼维亚的错误“赢局英雄”范围改为“中单英雄”。
+主审与既有独立作者分别实读完整27段/全部来源/政策/公开意见及逐字补丁，均接受；真实native事件和run外作者字节逐字一致，submit已导入。
+事实初审意见获接受，不等于报告已改好：尚未completion-initial、compatibility/edit、唯一应用或同稿双fresh；未授产品及15项资格。
+首stdout/exit信任根保留；guard5668400a，最新0029根c7fa485a；原冻结执行树2b14583e保持clean，不重开或重发前三项。
+续接Control/resume-authorized.ps1已实际CheckOnly通过，未读Key/未新增Provider；待审未导入时也实测在读Key前拒绝。
+**下一动作：** 用户运行outputs/riftcoach-sol-necessity-natural-20261024-control/resume-authorized.ps1，重新隐藏输入企业Key，沿原session执行completion-initial并再次双审。
+这是原授权内续接，不是超时重试或新批；原grant125005b2/plan a9ccbca1、2026-10-25T08:58:07.794391Z截止及10HTTP/739840tokens/3600秒包络保持。
+普通已回收超时仍保留成功项并手动补当前阶段；身份/来源/协议/语义硬错按原判据处理。automation不恢复。
+证据data/evaluation/results/sol_necessity_natural_first_review_20261024.json；旧封存/费用/阶段8E及下游依赖保持。
 
 ## Dependencies and Follow-through
 
@@ -44,8 +45,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-三项再审、同政策自然动态接线和手动同阶段超时续测已离线验证。干净新任务与真实原生预检亦已完成，授权及CI均已完成，下一步用户运行已验证入口隐藏输入企业Key。
-旧授权不用于新范围，现阶段不用Key，不自动发送；原阶段及下游依赖保持。
+本次自然任务前三次真实请求正常完成，facts-initial已获主审及独立审查接受并导入。
+下一步运行已实核resume-authorized.ps1，隐藏输入企业Key后沿原session继续completion-initial；不重买生成或事实初审。
+原授权截止、阶段及下游依赖保持；整稿/实际修订/同稿fresh尚未完成。
 
 ## History
 

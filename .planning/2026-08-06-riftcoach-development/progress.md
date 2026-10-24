@@ -1,3 +1,16 @@
+## 2026-10-24 自然任务前三项正常完成，事实初审已双审接受
+
+2026-10-24真实执行最新：Flash检索/生成与Sol facts-initial均已正常返回，3HTTP/45060已知tokens/0未知预留/0重试。
+Sol本次HTTP200、模型及high档位匹配；公开意见两项必要修订：block18薇古丝禁用率3%应为4%，并把含艾尼维亚的错误“赢局英雄”范围改为“中单英雄”。
+主审与既有独立作者分别实读完整27段/全部来源/政策/公开意见及逐字补丁，均接受；真实native事件和run外作者字节逐字一致，submit已导入。
+事实初审意见获接受，不等于报告已改好：尚未completion-initial、compatibility/edit、唯一应用或同稿双fresh；未授产品及15项资格。
+首stdout/exit信任根保留；guard5668400a，最新0029根c7fa485a；原冻结执行树2b14583e保持clean，不重开或重发前三项。
+续接Control/resume-authorized.ps1已实际CheckOnly通过，未读Key/未新增Provider；待审未导入时也实测在读Key前拒绝。
+**下一动作：** 用户运行outputs/riftcoach-sol-necessity-natural-20261024-control/resume-authorized.ps1，重新隐藏输入企业Key，沿原session执行completion-initial并再次双审。
+这是原授权内续接，不是超时重试或新批；原grant125005b2/plan a9ccbca1、2026-10-25T08:58:07.794391Z截止及10HTTP/739840tokens/3600秒包络保持。
+普通已回收超时仍保留成功项并手动补当前阶段；身份/来源/协议/语义硬错按原判据处理。automation不恢复。
+证据data/evaluation/results/sol_necessity_natural_first_review_20261024.json；旧封存/费用/阶段8E及下游依赖保持。
+
 ## 2026-10-24 费用授权及精确HEAD CI完成，Key入口ready
 
 2026-10-24最新：用户明确“授权此范围，CI全绿后启动”。冻结代码2b14583e的CI40073888400已8job全success。
