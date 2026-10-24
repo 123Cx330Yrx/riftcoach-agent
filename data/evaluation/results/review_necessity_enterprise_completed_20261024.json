@@ -1,0 +1,206 @@
+{
+  "kind": "review-necessity-enterprise-completed-v1",
+  "date": "2026-10-24",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control",
+  "execution_head": "2bd7e08e260542246db33b445499081088a72291",
+  "execution_cwd": "D:/riftcoach-review-necessity-enterprise-execution",
+  "ci_run": "40057680511",
+  "original_plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+  "amendment_sha256": "da2b0c281988aecf4c1c43c057006b0430a354ce81b7122f34e15a9e1900dfea",
+  "c_first_claim_checkpoint_sha256": "682c6bd8e08ad32ba203d1e453ad3386d05db45ae993bc6aabea0d82c28080ed",
+  "c_response_checkpoint_sha256": "538b0b2585ef90c26b8cb083d19d9c600574d0328892b9908670052ff818945f",
+  "terminal_checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\checkpoints\\0015.json",
+  "terminal_checkpoint_sha256": "d1a5a26ae08a93f7780fcbf384fee9f32b8825dc5fc068f56e0b4830771b691f",
+  "seal_sha256": "79afb6319bdfd7807531b9992cb2cd692c0f8960a535154e774732a76de82a98",
+  "replay": {
+    "readonly": true,
+    "status": {
+      "phase": "closed",
+      "reason": null,
+      "next_case": null,
+      "attempts": 4,
+      "known_tokens": 69473,
+      "unknown_reserved_tokens": 80384,
+      "not_sent": 0,
+      "http_requests_known": 4,
+      "http_requests_unknown": 0,
+      "unreviewed_calls": 0,
+      "qualified": false,
+      "publication_allowed": false,
+      "stopped_at": "complete",
+      "pending_case": null
+    },
+    "seal_sha256": "79afb6319bdfd7807531b9992cb2cd692c0f8960a535154e774732a76de82a98"
+  },
+  "replay_inventory_check": {
+    "exit_code": 0,
+    "stdout_sha256": "5af583e555f13618a8dfaf79ac5aa50a767db4ed6a6eb4fe4c52640fe6bd3a8e",
+    "operator_sha_mtime_unchanged": true,
+    "authors_sha_mtime_unchanged": true,
+    "operator_files": 76,
+    "author_files": 4
+  },
+  "rows": [
+    {
+      "case": "a",
+      "receipt_sha256": "db7950b184266a101e4ae573d628b180a10f743df6d3cdf693204929544b6f1a",
+      "elapsed_s": 46.797,
+      "usage": {
+        "input_tokens": 22066,
+        "output_tokens": 1333,
+        "total_tokens": 23399,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 1034
+      },
+      "http_status": 200,
+      "request_id": "56eb3228-26b4-4a31-94ee-b1d02243912f",
+      "response_decode": {
+        "raw_object": true,
+        "sdk_object": true,
+        "identity_fields_equal": true,
+        "raw_reasoning_echo": "high",
+        "raw_reasoning_effort_detail": {
+          "category": "known",
+          "value": "high"
+        }
+      },
+      "public_tool_call": {
+        "arguments": "{\"score\":94,\"verdict\":\"needs_revision\",\"issues\":[{\"block\":21,\"severity\":\"medium\",\"category\":\"other\",\"source_ids\":[30,38],\"explanation\":\"\u201c\u4e0b\u6279\u8f93\u5c40\u8865\u5200/\u5206\u949f\u4e0d\u4f4e\u4e8e7.5\u201d\u8bbe\u5b9a\u4e86\u5177\u4f53\u8bad\u7ec3\u8fbe\u6807\u7ebf\uff0c\u4f46\u6240\u7ed9\u4e2d\u8def\u6837\u672c\u7edf\u8ba1\u6ca1\u6709\u5efa\u7acb\u8fd9\u4e00\u95e8\u69db\uff0c[K4]\u4e5f\u53ea\u652f\u6301\u8bbe\u7f6e\u53ef\u89c2\u5bdf\u76ee\u6807\u3001\u8bb0\u5f55\u6307\u6807\u53ca\u660e\u786e\u590d\u76d8\u5468\u671f\uff0c\u4e0d\u652f\u63017.5\u8fd9\u4e00\u6570\u503c\u3002\u6761\u4ef6\u5f0f\u7684\u4f4d\u7f6e\u9009\u62e9\u548c\u5168\u6587\u7684\u89c2\u6469\u9650\u5b9a\u4e0d\u80fd\u4e3a\u8be5\u5177\u4f53\u95e8\u69db\u63d0\u4f9b\u4f9d\u636e\u3002\",\"suggested_correction\":\"\u5c067.5\u8fbe\u6807\u7ebf\u6539\u4e3a\u8bb0\u5f55\u4e0b\u4e00\u6279\u89c2\u6469\u4e2d\u8def\u5bf9\u5c40\u7684\u8865\u5200/\u5206\u949f\u5e76\u6309\u80dc\u8d1f\u5206\u7ec4\u6bd4\u8f83\uff0c\u4fdd\u7559\u6b7b\u4ea1\u65f6\u95f4\u590d\u76d8\u3001\u89c2\u5bdf\u5468\u671f\u53ca\u5176\u4f59\u6709\u4f9d\u636e\u7684\u5185\u5bb9\u3002\"}],\"issue_resolutions\":[],\"advisories\":[],\"repairs\":[{\"issue_ids\":[1],\"edits\":{\"block_21\":[{\"before\":\"\u2460\u4e0b\u6279\u8f93\u5c40\u8865\u5200/\u5206\u949f\u4e0d\u4f4e\u4e8e 7.5\uff1b\",\"after\":\"\u2460\u8bb0\u5f55\u4e0b\u6279\u89c2\u6469\u4e2d\u8def\u5bf9\u5c40\u7684\u8865\u5200/\u5206\u949f\uff0c\u6309\u80dc\u8d1f\u5206\u7ec4\u6bd4\u8f83\uff1b\",\"reason\":\"\u5220\u9664\u6765\u6e90\u672a\u652f\u6301\u7684\u5177\u4f53\u8fbe\u6807\u7ebf\uff0c\u6539\u4e3a\u77e5\u8bc6\u6765\u6e90\u652f\u6301\u7684\u6307\u6807\u8bb0\u5f55\u4e0e\u6bd4\u8f83\uff0c\u4fdd\u6301\u89c2\u6469\u7528\u9014\u3002\"}]}}]}",
+        "name": "submit_report_review"
+      },
+      "material_sha256": "c54494fad8360ffe71f33e4e52b66c3594ea5e7ce01f7806818ddcee204a0c76",
+      "submission_sha256": "6b765b299849e707508770cff0b470d23af67bca21ebf46ee864124d9a4ab684",
+      "independent_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16c2d-6bf9-7043-b85e-4145d0068524/msg_0ab71b1ed75fb434016adc352e570c819597a9d0490c3dc5a2",
+      "author_sha256": "9ae33b04e574995ffff409339b68f35d770e5a4e2d3fd2c2a4fa32dd0091a270",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "case": "b",
+      "receipt_sha256": "f7e2946b50f1e8a993bdae01933cdc0bf4eac47922dc9841544cd1754b3f6564",
+      "elapsed_s": 31.328,
+      "usage": {
+        "input_tokens": 22077,
+        "output_tokens": 846,
+        "total_tokens": 22923,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 803
+      },
+      "http_status": 200,
+      "request_id": "0b781f88-247c-4c76-8ced-5ea4f616ec5e",
+      "response_decode": {
+        "raw_object": true,
+        "sdk_object": true,
+        "identity_fields_equal": true,
+        "raw_reasoning_echo": "high",
+        "raw_reasoning_effort_detail": {
+          "category": "known",
+          "value": "high"
+        }
+      },
+      "public_tool_call": {
+        "arguments": "{\"score\":100,\"verdict\":\"pass\",\"issues\":[],\"issue_resolutions\":[],\"advisories\":[],\"repairs\":[]}",
+        "name": "submit_report_review"
+      },
+      "material_sha256": "b780bc26b227daeef734502c2a9f031322397dff97ce63bb3606f00a51cf371c",
+      "submission_sha256": "23f514d7466ea892d55235d5cb13a08e8c75e2bfd40cf4325340896ae20317aa",
+      "independent_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16c38-4bdd-7e41-a05a-6cd0c0caaa32/msg_0ab71b1ed75fb434016adc37dfac988195b83d4fd4ccfb4d35",
+      "author_sha256": "32d83f93a2fe4d61fe3bb97d0b9954fc0dcbf38ac28fc9923478260022f632cc",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "case": "c",
+      "receipt_sha256": "dd2f5737c83c0ec785b1d8c6f2f67eb13f188560aa86400e0156375f5b232e95",
+      "elapsed_s": 35.156,
+      "usage": {
+        "input_tokens": 22063,
+        "output_tokens": 1088,
+        "total_tokens": 23151,
+        "cached_input_tokens": 9984,
+        "reasoning_tokens": 712
+      },
+      "http_status": 200,
+      "request_id": "d81f73e9-68f9-4465-bbb3-7386e1c1d6ac",
+      "response_decode": {
+        "raw_object": true,
+        "sdk_object": true,
+        "identity_fields_equal": true,
+        "raw_reasoning_echo": "high",
+        "raw_reasoning_effort_detail": {
+          "category": "known",
+          "value": "high"
+        }
+      },
+      "public_tool_call": {
+        "arguments": "{\"score\":90,\"verdict\":\"needs_revision\",\"issues\":[{\"block\":10,\"severity\":\"high\",\"category\":\"causality\",\"source_ids\":[30,39],\"explanation\":\"\u672b\u53e5\u660e\u786e\u58f0\u79f0\u6d1b\u514b\u8d1f\u5c40\u201c\u5df2\u7ecf\u8bc1\u660e\u201d\u5b89\u5168\u53d1\u80b2\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u662f\u9020\u6210\u5dee\u5f02\u7684\u539f\u56e0\u3002\u6765\u6e90\u53ea\u6709\u8be5\u5c40\u7684\u8d5b\u540e\u6307\u6807\uff0c\u6ca1\u6709\u5f55\u50cf\u51b3\u7b56\u8bc1\u636e\uff1b\u4f24\u5bb3/\u5206\u949f605.5\u3001\u53c2\u56e2\u738736.4%\u4e0d\u80fd\u8bc1\u660e\u8fd9\u4e09\u9879\u539f\u56e0\u3002K2\u3001K3\u4e5f\u4ec5\u652f\u6301\u5c06\u8fd9\u4e9b\u56e0\u7d20\u5217\u4e3a\u5f85\u9a8c\u8bc1\u5047\u8bbe\u3002\u540c\u6bb5\u524d\u9762\u7684\u8c28\u614e\u9650\u5b9a\u4e0d\u80fd\u6d88\u9664\u672b\u53e5\u72ec\u7acb\u4f5c\u51fa\u7684\u56e0\u679c\u65ad\u8a00\u3002\",\"suggested_correction\":\"\u4fdd\u7559\u6d1b\u514b\u8d1f\u5c40\u7684\u4f24\u5bb3/\u5206\u949f\u548c\u53c2\u56e2\u7387\uff0c\u5c06\u5176\u4f5c\u4e3a\u6838\u5bf9\u8fd9\u4e9b\u5047\u8bbe\u7684\u5f55\u50cf\u590d\u76d8\u5bf9\u8c61\uff0c\u660e\u786e\u73b0\u6709\u7edf\u8ba1\u4e0d\u80fd\u786e\u8ba4\u8fd9\u4e9b\u56e0\u7d20\u662f\u5426\u9020\u6210\u5dee\u5f02\u3002\"}],\"issue_resolutions\":[],\"advisories\":[],\"repairs\":[{\"issue_ids\":[1],\"edits\":{\"block_10\":[{\"before\":\"\u6d1b\u514b\u8d1f\u5c40\uff08\u4f24\u5bb3/\u5206\u949f 605.5\u3001\u53c2\u56e2\u7387 36.4%\uff09\u5df2\u7ecf\u8bc1\u660e\u5b89\u5168\u53d1\u80b2\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u662f\u9020\u6210\u5dee\u5f02\u7684\u539f\u56e0\u3002\",\"after\":\"\u6d1b\u514b\u8d1f\u5c40\uff08\u4f24\u5bb3/\u5206\u949f 605.5\u3001\u53c2\u56e2\u7387 36.4%\uff09\u53ef\u4f5c\u4e3a\u6838\u5bf9\u8fd9\u4e9b\u5047\u8bbe\u7684\u5f55\u50cf\u590d\u76d8\u5bf9\u8c61\uff1b\u73b0\u6709\u7edf\u8ba1\u4e0d\u80fd\u786e\u8ba4\u8fd9\u4e9b\u56e0\u7d20\u662f\u5426\u9020\u6210\u5dee\u5f02\u3002\",\"reason\":\"\u5c06\u6ca1\u6709\u8fc7\u7a0b\u8bc1\u636e\u652f\u6301\u7684\u5df2\u8bc1\u5b9e\u56e0\u679c\u7ed3\u8bba\u6539\u4e3a\u5f85\u9a8c\u8bc1\u7684\u590d\u76d8\u5047\u8bbe\uff0c\u4fdd\u7559\u6b63\u786e\u7684\u5355\u5c40\u6307\u6807\u3002\"}]}}]}",
+        "name": "submit_report_review"
+      },
+      "material_sha256": "76a4a945cb44e24cf6cd208cf430e95ba5e45fb55e66b430c49ba4bd6ab64d6b",
+      "submission_sha256": "1523365f58b54be329987b8c20edbca31868099ccb68e3f6cc64be96639ae4bc",
+      "independent_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16c42-00f8-70d1-934a-6e6a594c8281/msg_0ab71b1ed75fb434016adc3a5ece608195827719c422055117",
+      "author_sha256": "c450fca4eef5b6a04d8f6f396ef08c21b7960e1612576882f969464ea8b1da74",
+      "primary_accepted": true,
+      "independent_accepted": true
+    }
+  ],
+  "first_deviation": {
+    "case": "a",
+    "attempt": 1,
+    "category": "remote_http_524",
+    "elapsed_s": 131.094,
+    "retry_reaped_and_explicitly_authorized": true,
+    "unknown_reserved_tokens": 80384,
+    "receipt_sha256": "246bda527df179bec74dc6bb58e0de8bd669298cfbf01d714a2db9555c2b01fe"
+  },
+  "closed_status": {
+    "phase": "closed",
+    "reason": null,
+    "next_case": null,
+    "attempts": 4,
+    "known_tokens": 69473,
+    "unknown_reserved_tokens": 80384,
+    "not_sent": 0,
+    "http_requests_known": 4,
+    "http_requests_unknown": 0,
+    "unreviewed_calls": 0,
+    "qualified": false,
+    "publication_allowed": false,
+    "stopped_at": "complete",
+    "pending_case": null
+  },
+  "semantics": {
+    "unsupported_threshold_detected": true,
+    "corrected_report_not_falsely_reported": true,
+    "explicit_causal_error_detected": true,
+    "all_opinions_and_repairs_dual_reviewed": true,
+    "provider_results_not_selected_by_score": true,
+    "familiar_development_material_not_holdout": true,
+    "report_actually_applied": false,
+    "fresh_actual_report_reviewed": false,
+    "upstream_identity_independently_verified": false,
+    "enterprise_stability_established": false,
+    "original_six_acceptance_preserved": true,
+    "original_failures_unchanged": true
+  },
+  "control_evidence_sha256": {
+    "20261024T044846261Z-2c475b61393d4d56a85bedf874ef5dc3.stdout.txt": "0f55e46b9b3f7529d0248124ba895bb2bd576cf637a3d9b5aa83ff98aa2acf5d",
+    "20261024T044846261Z-2c475b61393d4d56a85bedf874ef5dc3.exit.json": "791257b96282a9d8aa5f161023957ab7cfc1ec24ce2339c91d86706eec51f6c6",
+    "primary-c-opinion.json": "9d4743739a5468988e0c7e6e2e9d6ef034498681731dc6d64489a30d842f59ef",
+    "c-review-submit.stdout.txt": "240219495e4c37ee3f9b9c8778131ab68439ffd6f8f3397caf136e1f6600cbf2",
+    "c-review-submit.exit.json": "a4c7958ca3ec183fac02649b85b1e35b59d3be83dda68b6dd9fa15993df9d623",
+    "closure-seal.stdout.txt": "c7be0ccca5089ddeab013e3d04b521bbee32e0b7486705059b4ddc07480f906c",
+    "closure-seal.exit.json": "449e6d77d791cfb9dc3aae23c61d9234171a0ee323211026e3d291c500e6ee28",
+    "closure-replay.stdout.txt": "5af583e555f13618a8dfaf79ac5aa50a767db4ed6a6eb4fe4c52640fe6bd3a8e",
+    "closure-replay.exit.json": "3ef30f5274f7c9545a2cf2bcf3fb1ac74bc00efa6f49e2de9191951a43c34cac"
+  },
+  "provider_requests_during_this_user_execution": 1,
+  "provider_requests_during_review_and_closure": 0,
+  "key_reads_during_review_and_closure": 0,
+  "automation_status_verified": "PAUSED",
+  "qualified": false,
+  "publication_allowed": false,
+  "decision": "Retain the necessity-policy candidate as a supported development direction; stop paid requests in this completed three-case diagnostic. Do not repeat a/b/c or treat this as same-version product qualification.",
+  "next_action": "Prepare a separate explicit development contract for the same facts policy at initial and fresh stages, dynamic full-source validation and enterprise profile, reusing the current natural Runtime/session. Verify offline generated requests, actual patch application, same-report double fresh, accounting and timeout recovery before preparing any new paid scope. Preserve legacy contracts, closed runs and production admission."
+}

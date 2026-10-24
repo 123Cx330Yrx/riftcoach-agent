@@ -15,7 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from app.harness.models import ArtifactKind, RunManifest, RunStatus
 from app.harness.run_ids import normalize_run_id
-from app.harness.store import FileRunStore
+from app.harness.store import ArtifactIntegrityError, FileRunStore
 from app.lol.summary_schema import validate_summary_document
 from app.runtime.models import (
     RuntimeArtifactReference,
@@ -99,7 +99,7 @@ class RecentAveragesView(BaseModel):
     kill_participation_percent: float = Field(ge=0, le=100)
     damage_share_percent: float = Field(ge=0, le=100)
     gold_share_percent: float = Field(ge=0, le=100)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentComparisonRowView(BaseModel):
@@ -114,7 +114,7 @@ class RecentComparisonRowView(BaseModel):
     gold_per_min: float = Field(ge=0)
     damage_per_min: float = Field(ge=0)
     vision_score: float = Field(ge=0)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentWinLossComparisonView(BaseModel):
@@ -360,6 +360,19 @@ class RunQueryService:
     ) -> None:
         self._runs_root = Path(runs_root).resolve()
         self._receipts = receipt_store or FileRunReceiptStore(self._runs_root)
+
+    def read_training_measurement_source(self, run_id: str) -> tuple[dict, str, str]:
+        """Internal server source; no HTTP/MCP route exposes the full Summary."""
+        verified = self._load_safely(run_id)
+        self._require_published_skill(verified, "recent-form-review")
+        try:
+            summary = self._read_verified_player_summary(verified)
+        except (ArtifactIntegrityError, OSError, UnicodeDecodeError, TypeError, ValueError, KeyError):
+            raise RunQueryError("run_integrity_failed") from None
+        references = self._artifact_references(verified.trace, ArtifactKind.PLAYER_SUMMARY)
+        if verified.report_sha256 is None:
+            raise RunQueryError("run_integrity_failed")
+        return dict(summary), references[0].sha256, verified.report_sha256
 
     def get_run(self, run_id: str) -> RunView:
         verified = self._load_safely(run_id)

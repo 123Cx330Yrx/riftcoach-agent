@@ -1,0 +1,28 @@
+{
+  "full_report_blocks_read": [
+    26,
+    26
+  ],
+  "policy_and_all_input_fields_read": true,
+  "source_tables_reconstructed_and_verified": true,
+  "case_results": [
+    {
+      "case_id": "J1",
+      "decision": "no_material_error",
+      "issue_blocks": []
+    },
+    {
+      "case_id": "J2",
+      "decision": "requires_correction",
+      "issue_blocks": [
+        14,
+        15
+      ]
+    }
+  ],
+  "source_review": "已核全部26段及K1-K5：对象是观摩者，五局2胜3负、中单2胜2负与辅助单负场；辛德拉输出、艾尼维亚无早死、卡蜜尔统计、时间线及条件建议均有来源。第6段是四局内补刀描述，不追加长期全称。第13段四指标表与原精度均值相符。第14段2.50/.50及逐对greater与全部五局2.50/约2.67不同；第15段8.95/8.66均大于8.38又均小于9.64，均值略低不证全部更低。两项独立修法逐个新断言均正确，保留数值、混合样本影响与因果限制；补刀重分组差约2.5567，伤害差仅约26.1833，未把描述变因果。第7段advisory只为可选措辞，未升事实门。全部来源根32/31/25与表行2/6及4/5核过。",
+  "all_corrections_reviewed": true,
+  "correct_content_preserved": true,
+  "agreement": true,
+  "new_qualification": 0
+}

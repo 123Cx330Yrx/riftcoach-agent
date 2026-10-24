@@ -1,0 +1,178 @@
+{
+  "evidence_type": "offline mechanism comparison; no model-quality or admission proof",
+  "provider_calls": 0,
+  "network_calls": 0,
+  "original_receipts_unchanged": true,
+  "whole_request_matches_actual_issued_messages": true,
+  "compatibility": {
+    "actual_initial_source_ids": [
+      31,
+      32
+    ],
+    "actual_source_meanings": [
+      {
+        "source_id": 31,
+        "key": "derived/computed_evidence"
+      },
+      {
+        "source_id": 32,
+        "key": "source/facts_and_provenance"
+      }
+    ],
+    "prototype_direct_resolution_error": "semantic_source_id_unknown",
+    "direct_reuse_compatible": false,
+    "fixture_source_ids": [
+      31
+    ],
+    "fixture_is_host_authored_not_repaired_review": true
+  },
+  "mechanics": {
+    "numeric_direction": {
+      "cs_per_min": {
+        "all_mean": 7.394,
+        "middle_mean": 8.9075
+      },
+      "gold_per_min": {
+        "all_mean": 435.76,
+        "middle_mean": 469.0525
+      },
+      "damage_per_min": {
+        "all_mean": 869.504,
+        "middle_mean": 952.1375
+      },
+      "vision_score": {
+        "all_mean": 45.0,
+        "middle_mean": 33.75
+      },
+      "deaths_before_15": {
+        "all_mean": 2.6,
+        "middle_mean": 1.5
+      }
+    },
+    "only_one_original_substring_replaced": true,
+    "unchanged_outside_edit_utf8_bytes": 4167,
+    "correct_report_keep_byte_identical": true,
+    "bad_after_with_policy_copy_accepted_by_assembler": true,
+    "semantic_approval": false,
+    "production_admitted": false,
+    "assembled_report_sha256": "5583cd13e0a203008cdad4d328fabfb45fcef8112c5492329b3c05f60b19d021",
+    "bad_report_sha256": "2d6b8d2ab525958bd3d1d56f431f2e2befdd2e491bdadcf4b7c633f6848676d6",
+    "old_prototype_final_review_input_ceiling": 44768,
+    "current_full_final_review_input_ceiling": 43952
+  },
+  "output_contract": {
+    "whole": "complete Markdown report, no tool; headings and minimum-length validation plus new narrow policy-echo rejection",
+    "patch": "one submit_source_edits tool call, no prose; edits with block/before/after/source_ids/reason; atomic exact-anchor assembly",
+    "patch_max_operations": 512
+  },
+  "product_budget": {
+    "max_calls": 5,
+    "max_input_tokens": 64000,
+    "max_output_tokens": 32768,
+    "total_tokens": 401920,
+    "request_timeout_s": 300,
+    "execution_timeout_s": 900,
+    "max_revisions": 1,
+    "extra_retries": 0
+  },
+  "call_arithmetic": {
+    "current": "2 Agent generation turns including tool result + initial + optional edit + fresh = 5 at edit path; pass path 3",
+    "substitute_editor": "same 5 if patch replaces existing one edit slot; freshness/host gates retained",
+    "additional_editor": "6 if appended to existing edit; exceeds max_calls=5",
+    "diagnostic": "existing immutable initial evidence + one Flash edit + conditional fresh GLM = at most 2 new calls per error case; not new fifteen-case qualification",
+    "caveat": "Current RoleReviewWorkflow final request inside old assembler differs from current coarse boundary-example reviewer; full current task capacity must be checked after any migration."
+  },
+  "adoption_missing": [
+    "Explicit decision/ADR: prototype remains unadopted; prior ADR0110 true semantic failure remains failed.",
+    "Prospective coarse-catalog-aware editor request, reference validator and final-review builder; preserve actual initial review, do not remap old receipts.",
+    "Runtime reviser adapter and tool-channel exchange validation; existing phase state, raw receipt, independent host checks, reject/fresh/publication boundaries and role routing.",
+    "Current full-task token/time envelope and changed-block budget, citations, identity, section order and no-op checks.",
+    "Real Flash necessary edit + independently accepted full report + fresh current GLM, and real correct-report keep control; synthetic exact edit proves none of these.",
+    "Current policy-echo guard or equivalent applies to assembled full report; patch after can still introduce system instructions."
+  ],
+  "next_diagnostic_recommendation": "Do not reopen fifteen cases or call old patch prototype with coarse initial review. First decide whether repeated whole-report collateral damage justifies editor migration. If choosing patch, complete offline coarse adaptation and current final-review binding, then use this immutable true-error source/initial and the correct keep control in a small separately bounded diagnostic. If retaining whole rewrite, require a concrete generation-change hypothesis; the echo rejection guard alone is not that hypothesis.",
+  "cases": {
+    "claim-scope-4": {
+      "all_source_payload_checks": {
+        "facts_and_provenance": true,
+        "knowledge": true,
+        "user_utterance": true,
+        "generation_view": true,
+        "fact_tables": true,
+        "provenance_tables": true,
+        "external_fact_paths": true,
+        "computed_evidence": true,
+        "deterministic_source_message": true,
+        "blocks": true,
+        "row_addresses": true
+      },
+      "whole_request": {
+        "conservative_input_ceiling": 37228,
+        "allowed_input_ceiling": 63936,
+        "remaining_input_ceiling": 26708,
+        "max_output_tokens": 32768,
+        "timeout_s": 300,
+        "tool_names": [],
+        "tool_choice": "auto",
+        "response_contract": false,
+        "source_projection": "native-coarse-source-projection-v1"
+      },
+      "patch_request": {
+        "conservative_input_ceiling": 42066,
+        "allowed_input_ceiling": 63936,
+        "remaining_input_ceiling": 21870,
+        "max_output_tokens": 32768,
+        "timeout_s": 300,
+        "tool_names": [
+          "submit_source_edits"
+        ],
+        "tool_choice": "auto",
+        "response_contract": false,
+        "source_projection": "native-explicit-source-projection-v1"
+      },
+      "counterfactual_editor_on_pass": false
+    },
+    "claim-scope-1": {
+      "all_source_payload_checks": {
+        "facts_and_provenance": true,
+        "knowledge": true,
+        "user_utterance": true,
+        "generation_view": true,
+        "fact_tables": true,
+        "provenance_tables": true,
+        "external_fact_paths": true,
+        "computed_evidence": true,
+        "deterministic_source_message": true,
+        "blocks": true,
+        "row_addresses": true
+      },
+      "whole_request": {
+        "conservative_input_ceiling": 36152,
+        "allowed_input_ceiling": 63936,
+        "remaining_input_ceiling": 27784,
+        "max_output_tokens": 32768,
+        "timeout_s": 300,
+        "tool_names": [],
+        "tool_choice": "auto",
+        "response_contract": false,
+        "source_projection": "native-coarse-source-projection-v1"
+      },
+      "patch_request": {
+        "conservative_input_ceiling": 40994,
+        "allowed_input_ceiling": 63936,
+        "remaining_input_ceiling": 22942,
+        "max_output_tokens": 32768,
+        "timeout_s": 300,
+        "tool_names": [
+          "submit_source_edits"
+        ],
+        "tool_choice": "auto",
+        "response_contract": false,
+        "source_projection": "native-explicit-source-projection-v1"
+      },
+      "counterfactual_editor_on_pass": true
+    }
+  },
+  "reproducer_sha256": "95225db3ff15ec51938d12852d53e83952f9bee02876fa56d73ccf69321bd408",
+  "local_reproducer": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-host-source-2026-10-01\\editor-mechanism-comparison\\compare.py"
+}

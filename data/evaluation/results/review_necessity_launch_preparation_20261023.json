@@ -1,0 +1,197 @@
+{
+  "kind": "review-necessity-launch-preparation-v1",
+  "date": "2026-10-23",
+  "status": "native_and_local_entry_verified_new_paid_scope_not_authorized",
+  "frozen_execution": {
+    "cwd": "D:\\riftcoach-review-necessity-execution",
+    "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+    "head": "6052be74aa8943ef6a52ceb1707b89bf3de83bad",
+    "ci_run": "39895429952",
+    "ci_observation": {
+      "observed_at": "2026-10-23T03:48:42.304038+00:00",
+      "conclusion": "",
+      "headSha": "6052be74aa8943ef6a52ceb1707b89bf3de83bad",
+      "jobs": [
+        {
+          "conclusion": "",
+          "name": "pytest-shards (0)",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": "success",
+          "name": "postgres-migrations",
+          "status": "completed"
+        },
+        {
+          "conclusion": "",
+          "name": "web-checks",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": "",
+          "name": "pytest-shards (3)",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": "",
+          "name": "pytest-shards (2)",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": "",
+          "name": "pytest-shards (1)",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": "success",
+          "name": "packaging-smoke",
+          "status": "completed"
+        }
+      ],
+      "status": "in_progress"
+    }
+  },
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control",
+  "plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\checkpoints\\0003.json",
+  "checkpoint_sha256": "09dd5c9e4610dc80ad421a6b858ede6d36fbfcfdb95cbefa04512826ba7425f8",
+  "original_root_source": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\native-submit.stdout.txt",
+  "native_preflight": {
+    "administrative_only": true,
+    "accepted": true,
+    "independent_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+    "independent_agent_path": "/root/necessity_independent",
+    "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a166d4-09ce-7a80-b45e-42a919d857b9/msg_0ab71b1ed75fb434016adad64d7cf8819581c21c41384df716",
+    "author": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-authors\\6bd13e1ac8ea7f10eaad48cd452f926d04be4a75cb91a1a5ffbbcf5ba520be59.json",
+    "author_sha256": "c549f3dd47d9fb31f9cca417657eac25a01910628d927d575cd5a23c9cbe70dd",
+    "author_native_exact_bytes": true,
+    "readonly_check_exit": 0,
+    "operator_author_and_previous_preflight_files_unchanged": true,
+    "files_compared": 31,
+    "current_input_readable": false,
+    "future_input_guaranteed": false
+  },
+  "prior_preflight": {
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-review-necessity-ready-20261023",
+    "status": "author_terminal_LF_differs_from_native_final_rejected",
+    "originals_preserved": true,
+    "normalized_or_rewritten": false,
+    "reissued_final": false,
+    "correction": "Separate administrative checkpoint; author independently serialized answer without terminal LF."
+  },
+  "local_entry": {
+    "script": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\start-authorized.ps1",
+    "sha256": "ebe5fb4ae1929b6aac9a29b5166da8772080f569f3bd15fe71c54b4175c151b0",
+    "windows_powershell_check_exit": 0,
+    "missing_authorization_exit": 2,
+    "real_hidden_key_function_sentinel_verified": true,
+    "sentinel_echoed": false,
+    "stdout_utf8_create_only": true,
+    "exit_stdout_sha_saved": true,
+    "stdin_terminal_preserved": true,
+    "authorization_binding_present": false,
+    "explicit_checkpoint_for_subsequent_sends": true,
+    "process_proxy_restored": true,
+    "corrected_local_issue": "Get-FileHash missing in Windows PowerShell; replaced with built-in .NET SHA256 and verified."
+  },
+  "proposal": {
+    "cases": [
+      "a",
+      "b",
+      "c"
+    ],
+    "duties": [
+      "facts-initial"
+    ],
+    "limits": {
+      "logical_reviews": 3,
+      "max_attempts": 4,
+      "max_retries": 1,
+      "input_per_request": 64000,
+      "output_per_request": 16384,
+      "reserved_per_request": 80384,
+      "total_reserved_tokens": 321536,
+      "timeout_s": 300,
+      "automatic_retries": 0
+    },
+    "profile": {
+      "group": "GPT-pro",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "price_cny_per_million": {
+      "input": "0.4",
+      "output": "2"
+    },
+    "three_item_estimate_cny": "0.175104",
+    "with_one_timeout_retry_estimate_cny": "0.233472",
+    "billing_hard_cap": false,
+    "identity_conflict_policy": "review_diagnostic_then_stop_no_retry",
+    "semantic_error_policy": "stop_candidate_preserve_observations_no_prompt_patch_and_rebuy",
+    "retry_policy": "one_explicit_confirmed_timeout_retry_keep_prior_reviews",
+    "holdout": false,
+    "paid_authorized": false
+  },
+  "checks": {
+    "launcher_and_mock_worker_base": {
+      "passed": 14,
+      "seconds": 75.27
+    },
+    "native_requirement_added_case": {
+      "passed": 1,
+      "seconds": 4.0
+    },
+    "neighboring_suite": {
+      "passed": 67,
+      "failed": 1,
+      "seconds": 276.13,
+      "failure": "Source changed during legacy source_identity test while launcher was edited."
+    },
+    "clean_frozen_tree_targeted_recheck": {
+      "passed": 1,
+      "seconds": 24.71,
+      "head": "7e00c163098e0c0e9de41e3b4f7dcc0b48fe6e27"
+    },
+    "public_ci_is_not_semantic_acceptance": true,
+    "project_governance_passed": true,
+    "git_diff_check_passed": true
+  },
+  "control_evidence_sha256": {
+    "start-authorized.ps1": "ebe5fb4ae1929b6aac9a29b5166da8772080f569f3bd15fe71c54b4175c151b0",
+    "native-submit.stdout.txt": "4266eb5331355aaaeaa672853803a514d05275fdf7b0f127e89134bed3a0afeb",
+    "native-submit.exit.json": "bfdedf06596faa2042b0fedd9653ec1023d2e96ed56dc40b607985bc8438c1d5",
+    "prepare.stdout.txt": "01d853e5f6bb2343c08ac7014c732dcd11a79cffe4135764236d48feaa3a2759",
+    "native-task.stdout.txt": "027b345b1ccf4137d682d219508bc19a824f7b18bcd9e76876d8ceb26e199390",
+    "primary-native-preflight.json": "f417470253817946ef425c569d3273ee113335df1b7e9d0c58e5d56afaac5edb",
+    "verified-native-event.json": "d86997327738174a04cf52d61f78e05ccbe5159933689ae8493fb3c2348d4cc2",
+    "final-check.stdout.txt": "cfff6ea67d2d69536785fba87d78aa8484b18cef5f4a11e446a0bf2cb674b83b",
+    "final-check.evidence.json": "4757804abb2d9d7b05195e0b9db3deb7bcb92209999a65352177c5b05aec1b57",
+    "wrapper-validation.json": "d774a828eaf355a1e25d414cc2c50fcc7749c59f37bdf0962ee90d99ff7f0939",
+    "wrapper-check-v2.stdout.txt": "cfff6ea67d2d69536785fba87d78aa8484b18cef5f4a11e446a0bf2cb674b83b",
+    "wrapper-check-v2.exit.json": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "missing-authorization.stdout.txt": "6822205b3a235f95dd06d4a15fd5132bb70afa7970109e0b52fd1bea426cbc8b",
+    "missing-authorization.exit.json": "d26b0745a1a2f3d452def2624b3b0bcc425124b18690dbf694f4de0ff91cb07e",
+    "hidden-input-preflight-v2.stdout.txt": "43419631421ac57734c628564290022a66ca2c67c20d089f11760a84c47e4acb",
+    "ci-observation.json": "1f8aec2cc27b1427fa10a62569e234b70a16b9b8b7019becfe01f574430b408b",
+    "hidden-input-preflight.py": "721b271b1f3bc6cb924516cc2f59b6953f19996f0b998f8d5acf1597e3d48685",
+    "hidden-input-preflight.ps1": "9486b1b378271b258e707271c34aec014dee3ac75106ff4ddf9104efa9b57cb6"
+  },
+  "history": {
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022",
+    "seal_sha256": "da687ba3c9ff2a483c8bc5f2ed021e7c57e79fd8f038a9301474a82d2cce8153",
+    "http_requests": 7,
+    "known_tokens": 111392,
+    "unknown_reserved_tokens": 145824,
+    "retries": 1
+  },
+  "new_provider_requests": 0,
+  "new_real_key_reads": 0,
+  "semantic_improvement_proven": false,
+  "independent_full_report_labels_accepted": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "next_action": "Obtain explicit authorization for this prepared three-item diagnostic scope; bind original plan and approved grant, require success CI for frozen execution HEAD before hidden Key input. Do not reopen old six-item runs or automatically launch 15-item qualification."
+}

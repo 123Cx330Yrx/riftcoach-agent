@@ -1,0 +1,131 @@
+{
+  "kind": "offline-completion-necessity-contrast-v1",
+  "evaluator_only": true,
+  "model_result": false,
+  "origin_material_sha256": "21752ecc9bb5a351a4a958726ddb399d1a1e53dc47556be4e45a0f388861fce0",
+  "original_report_sha256": "1b3b991358e59216e0d8ebf490ee1cfa498609a947f150b746ba70f6f1d7105c",
+  "original_request_sha256": "03177c48abe2bcb227b8d569e1e37e1e39558be2cb5865c576a9c49631a2dd1e",
+  "original_public_arguments_sha256": "f3188a5e5a9dcc15b2f1d721c8f5d2b33629827935d67a0fc016cdac18b0bced",
+  "original_primary_review_sha256": "4773a68b14b61b57a9c7dd2963aef3df2dd47f96276c0cb2ff7659274cd3952a",
+  "original_independent_submission_sha256": "0089c5cc4718f8b56e6e765ba0d601222b2b2ac0d753a4a40d6ee07d077ffc51",
+  "contrasts": {
+    "b": {
+      "parent": "a",
+      "block": 18,
+      "before": "- \u82e5\u60f3\u7ec3\u4e2d\u5355\uff0c\u4e00\u4e2a\u53ef\u8c03\u67e5\u7684\u82f1\u96c4\u6c60\u95ee\u9898\uff1a\u672c\u6837\u672c\u8d62\u5c40\u82f1\u96c4\u4e2d\uff0cOP.GG \u4e2d\u5355\u5feb\u7167\uff08\u68c0\u7d22\u65f6\u95f4 2026-09-10 12:15 UTC\uff09\u663e\u793a\u8f9b\u5fb7\u62c9\u4e3a Tier 2\u3001\u6392\u540d 12\u3001\u80dc\u7387 49%\u3001\u7981\u7528\u7387 10%\uff1b\u8587\u53e4\u4e1d\u4e3a Tier 2\u3001\u6392\u540d 14\u3001\u80dc\u7387 52%\u3001\u7981\u7528\u7387 3%\uff1b\u827e\u5c3c\u7ef4\u4e9a\u4e3a Tier 3\u3001\u6392\u540d 26\u3001\u80dc\u7387 51%\u3002\u6b64\u4e3a\u5f53\u524d\u5feb\u7167\u5bf9\u7167\uff0c\u4e0d\u4ee3\u8868\u672c\u6837\u672c\u5bf9\u5c40\u65f6\u7684\u7248\u672c\uff0c\u4e0d\u80fd\u89e3\u91ca\u5386\u53f2\u80dc\u8d1f\uff0c\u4e5f\u4e0d\u80fd\u5f53\u4f5c\u540c\u6bb5\u4f4d\u540c\u7248\u672c\u57fa\u51c6\u3002",
+      "after": "- \u82e5\u60f3\u7ec3\u4e2d\u5355\uff0c\u4e00\u4e2a\u53ef\u8c03\u67e5\u7684\u82f1\u96c4\u6c60\u95ee\u9898\uff1a\u672c\u6837\u672c\u8d62\u5c40\u82f1\u96c4\u4e2d\uff0cOP.GG \u4e2d\u5355\u5feb\u7167\uff08\u68c0\u7d22\u65f6\u95f4 2026-09-10 12:15 UTC\uff09\u663e\u793a\u8f9b\u5fb7\u62c9\u4e3a Tier 2\u3001\u6392\u540d 12\u3001\u80dc\u7387 49%\u3001\u7981\u7528\u7387 10%\uff1b\u8587\u53e4\u4e1d\u4e3a Tier 2\u3001\u6392\u540d 14\u3001\u80dc\u7387 52%\u3001\u7981\u7528\u7387 3%\uff1b\u827e\u5c3c\u7ef4\u4e9a\u4e3a Tier 3\u3001\u6392\u540d 26\u3001\u80dc\u7387 51%\u3002\u6b64\u4e3a\u5f53\u524d\u5feb\u7167\u5bf9\u7167\uff0c\u4e0d\u4ee3\u8868\u672c\u6837\u672c\u5bf9\u5c40\u65f6\u7684\u7248\u672c\uff0c\u4e0d\u80fd\u89e3\u91ca\u5386\u53f2\u80dc\u8d1f\uff0c\u4e5f\u4e0d\u80fd\u5f53\u4f5c\u540c\u6bb5\u4f4d\u540c\u7248\u672c\u57fa\u51c6\u3002 \u82e5\u9009\u62e9\u89c2\u6469\u4e2d\u5355\uff0c\u53ef\u628a\u8f9b\u5fb7\u62c9 Tier 2\u3001\u6392\u540d 12 \u4f5c\u4e3a\u5f53\u524d\u5feb\u7167\u4e0b\u7684\u6761\u4ef6\u9009\u7247\u7ebf\u7d22\uff0c\u4f18\u5148\u56de\u770b\u5176\u6837\u672c\u80dc\u5c40\u7684\u8d44\u6e90\u83b7\u53d6\u4e0e\u53c2\u56e2\u65f6\u673a\uff1b\u8fd9\u91cc\u53ea\u63d0\u51fa\u5f85\u9a8c\u8bc1\u7684\u89c2\u6469\u5b89\u6392\uff0c\u4e0d\u628a\u5feb\u7167\u5f53\u4f5c\u5386\u53f2\u80dc\u8d1f\u539f\u56e0\u6216\u9605\u8bfb\u8005\u7684\u4e2a\u4eba\u8bad\u7ec3\u57fa\u51c6 [K3]\u3002",
+      "variable": "metric_to_observation_action"
+    },
+    "c": {
+      "parent": "b",
+      "block": 21,
+      "before": "- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002",
+      "after": "- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002 \u8fd9\u91cc\u7684\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u660e\u786e\u8981\u6c42\u7531\u9605\u8bfb\u8005\u672c\u4eba\u4eb2\u81ea\u53c2\u52a0\uff0c\u5fc5\u987b\u6839\u636e\u8be5\u89c2\u6469\u5bf9\u8c61\u7684\u6bd4\u8d5b\u5b89\u6392\u672c\u4eba\u7684\u4e2a\u4eba\u8bad\u7ec3\u3002",
+      "variable": "explicit_personal_participation"
+    },
+    "d": {
+      "parent": "a",
+      "block": 21,
+      "before": "- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002",
+      "after": "- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002 \u8fd9\u91cc\u7684\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u660e\u786e\u8981\u6c42\u7531\u9605\u8bfb\u8005\u672c\u4eba\u4eb2\u81ea\u53c2\u52a0\uff0c\u5fc5\u987b\u6839\u636e\u8be5\u89c2\u6469\u5bf9\u8c61\u7684\u6bd4\u8d5b\u5b89\u6392\u672c\u4eba\u7684\u4e2a\u4eba\u8bad\u7ec3\u3002",
+      "variable": "explicit_personal_participation"
+    }
+  },
+  "cases": {
+    "a": {
+      "completion_issues": [
+        "source_use_gap"
+      ],
+      "issue_blocks": [
+        18
+      ]
+    },
+    "b": {
+      "completion_issues": [],
+      "issue_blocks": []
+    },
+    "c": {
+      "completion_issues": [
+        "reader_role_conflict"
+      ],
+      "issue_blocks": [
+        21
+      ]
+    },
+    "d": {
+      "completion_issues": [
+        "source_use_gap",
+        "reader_role_conflict"
+      ],
+      "issue_blocks": [
+        18,
+        21
+      ]
+    }
+  },
+  "unchanged_facts_issues": {
+    "block_18": [
+      "Vex ban rate 3% instead of 4%",
+      "winning champions incorrectly includes losing Anivia"
+    ]
+  },
+  "protected_blocks": [
+    2,
+    20,
+    22
+  ],
+  "protected_text": {
+    "block_21": "- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002"
+  },
+  "source_number_support": {
+    "cs_per_minute": [
+      8.66,
+      8.95
+    ],
+    "deaths_before_15": [
+      2,
+      3
+    ],
+    "reference_only": true,
+    "not_personal_target": true
+  },
+  "retained_response": {
+    "structure_valid": true,
+    "semantic_accepted": false,
+    "valid_issue_ids": [
+      2
+    ],
+    "defects": [
+      "false_positive",
+      "correct_content_lost"
+    ],
+    "not_a_good_repair": "Repairing the OP.GG use gap does not justify removing the supported block21 observations."
+  },
+  "files_sha256": {
+    "context.json": "e31bc3a830814022c5ecf426ac20222db12fffa958c1ab2bd5cd40e23d0c6b60",
+    "retained-public-review.json": "f3188a5e5a9dcc15b2f1d721c8f5d2b33629827935d67a0fc016cdac18b0bced",
+    "a.md": "1b3b991358e59216e0d8ebf490ee1cfa498609a947f150b746ba70f6f1d7105c",
+    "b.md": "2d09a0cc64273ce32223e1d370f878d8b225933fec9f3267bae7d2d3db75d1fb",
+    "c.md": "e33f9410fc1cc369c8c7cbd0c58290fbee07bed1ccc9b68ed3180fdb5010f085",
+    "d.md": "34b11dd4e01b10a27e64b7326114b39a4b23b91989c3be9b82965f34d487898e",
+    "primary-material-review.json": "5b9e994883b488fe7770edcc879b32d18f9b6454f5d8ac3d1db89b61c08dde40",
+    "independent-material-review.json": "978d18a4bf7ffe0fa78471582794b79315a8b0f256192e05c2aef6ad0edf1442"
+  },
+  "semantic_improvement_proven": false,
+  "holdout": false,
+  "actual_application": false,
+  "fresh_evidence": false,
+  "independent_material_audit": {
+    "author_sha256": "978d18a4bf7ffe0fa78471582794b79315a8b0f256192e05c2aef6ad0edf1442",
+    "checkpoint_sha256": "a982f23cee52fc29e9c728e5117bd84ecd361809942819ded0b2c9be1d244d00",
+    "diagnostic_only": true,
+    "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16d86-917f-76b2-a8f4-d8b14d97e788/msg_0370f309de022d70016adc8dc80bc481948d7a2e810836d63e",
+    "material_sha256": "26ca777e0ab472b5396d4e588d1708073cb4c7ac92564acb44136e004aa91f62",
+    "model_semantic_approval": false,
+    "native_final_exact_author_bytes": true,
+    "offline_material_accepted": true,
+    "provider_requests": 0,
+    "readonly_replay": true,
+    "submission_sha256": "433e3ed32b20b75d085927de82cb19fd1867f7113ac599b1cf1a1b22a1fc60f3"
+  }
+}

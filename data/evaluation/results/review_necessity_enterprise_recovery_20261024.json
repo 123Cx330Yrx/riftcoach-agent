@@ -1,0 +1,146 @@
+{
+  "kind": "review-necessity-enterprise-recovery-preparation-v1",
+  "date": "2026-10-24",
+  "user_decisions": [
+    "\u5141\u8bb8\u591a\u6b21\u624b\u52a8\u8865\u6d4b\uff0c\u5148\u51c6\u5907\u7b2c\u4e00\u6b21",
+    "\u5207\u5230\u4f01\u4e1a\u5206\u7ec4\uff080.25\u00d7\uff09"
+  ],
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control",
+  "entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control\\start-enterprise.ps1",
+  "entry_sha256": "f1cd2e958533349e7799fb368b2e2eef705136eecd3c0f7d7a647171edec6fbe",
+  "original_plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+  "parent_checkpoint_sha256": "77132319c39245dec87a9587f0624fb3c5eda7cd1014d0e1a15064719c2dd807",
+  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\checkpoints\\0006.json",
+  "checkpoint_sha256": "b2bb4ab9a7358a83f431659b4cc71783212f1e5b622d59be79b51d474e0bc7df",
+  "source_head": "2bd7e08e260542246db33b445499081088a72291",
+  "cwd": "D:\\riftcoach-review-necessity-enterprise-execution",
+  "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+  "ci_run": "40057680511",
+  "ci_observation": {
+    "conclusion": "",
+    "headSha": "2bd7e08e260542246db33b445499081088a72291",
+    "jobs": [
+      {
+        "conclusion": "",
+        "name": "pytest-shards (3)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (2)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "name": "postgres-migrations",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "packaging-smoke",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "web-checks",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (0)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (1)",
+        "status": "in_progress"
+      }
+    ],
+    "status": "in_progress"
+  },
+  "amendment_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\amendments\\0001.json",
+  "amendment_file_sha256": "da2b0c281988aecf4c1c43c057006b0430a354ce81b7122f34e15a9e1900dfea",
+  "amendment_authorization_pin": "dd87775159d9226696fed9f3ce40fbf11dd6c10c48a4d47e4410131c45a7ee55",
+  "authorization_sha256": "cbf7c973d6a36f74e45e1379fb07c3d7cf1599548f589e932ae3f2c5ef8822d2",
+  "authorization_expires_at": "2026-10-25T02:56:33.298308+00:00",
+  "profile": {
+    "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+    "base_url": "https://yujianwudi.top/v1",
+    "model": "gpt-6.1-sol",
+    "route": "proxy-12000"
+  },
+  "group_independently_verified": false,
+  "limits": {
+    "logical_reviews": 3,
+    "max_attempts": null,
+    "max_retries": null,
+    "input_per_request": 64000,
+    "output_per_request": 16384,
+    "reserved_per_request": 80384,
+    "total_reserved_tokens": null,
+    "timeout_s": 300,
+    "automatic_retries": 0
+  },
+  "price_cny_per_million": {
+    "input": "0.5",
+    "output": "2.5"
+  },
+  "price_basis": "Ratio estimate from user-reported GPT-pro 0.2x to enterprise 0.25x; prior confirmed Pro prices 0.4/2 CNY per million input/output. Enterprise tariff not independently verified.",
+  "estimated_reserved_cny_per_attempt": "0.07296",
+  "billing_hard_cap": false,
+  "old_plan_request_receipt_checkpoint_author_bytes_unchanged": true,
+  "new_operator_files": [
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\amendments\\0001.json",
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\checkpoints\\0006.json"
+  ],
+  "check_and_authorization_verified": true,
+  "check_exit": 0,
+  "readonly_check_operator_and_authors_unchanged": true,
+  "original_pro_entry_preserved_as": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\superseded-pro-start-20261024.ps1",
+  "old_pro_entry_now_refuses_before_key": true,
+  "ci_wait_and_cancel_verified": true,
+  "no_waiter_remaining": true,
+  "native_principal_replayed": true,
+  "independent_agent_route_confirmed": true,
+  "independent_agent": "/root/necessity_independent",
+  "business_review_not_yet_performed": true,
+  "tests": {
+    "passed": 20,
+    "seconds": 151.6,
+    "scope": "Real owned worker and SDK; mocked HTTP; explicit FakeGate. Original fifteen cases plus five amendment cases, repeated explicit timeouts and successful review advance."
+  },
+  "status": {
+    "phase": "retry_available",
+    "reason": "worker_rejected",
+    "next_case": "a",
+    "attempts": 1,
+    "known_tokens": 0,
+    "unknown_reserved_tokens": 80384,
+    "not_sent": 0,
+    "http_requests_known": 1,
+    "http_requests_unknown": 0,
+    "unreviewed_calls": 0,
+    "qualified": false,
+    "publication_allowed": false
+  },
+  "new_provider_requests": 0,
+  "new_real_key_reads": 0,
+  "semantic_improvement_proven": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "next_action": "User runs enterprise entry; it waits for exact code CI, then hidden enterprise Key for one explicit retry of a. No automatic send/retry loop. Subsequent invocations must use each original stdout checkpoint; complete public results must be reviewed before further requests.",
+  "control_evidence_sha256": {
+    "execution-amendment.json": "3dcaded59f1230cef0b9dd33bd83e30b558a3e8cc7a2a396c9a284520d612b9e",
+    "user-authorization.json": "cbf7c973d6a36f74e45e1379fb07c3d7cf1599548f589e932ae3f2c5ef8822d2",
+    "authorization.binding.json": "93d689995d7c5f954faf5268998a71627751782233b979c123b391dfa8ecd6a1",
+    "amend.stdout.txt": "d67fa9dee22af24504b5eb6d36fc2bc97f307cf5cfbde42d3e91e30154cdfd7b",
+    "amend.exit.json": "6b67517033f11b77cef0a08144e757a4963f9209455eb298c730e67eed759840",
+    "amend-inventory.json": "e5f7b673b075ca99fc262f0b07a1a68db59e406a225f5dd0bb66a1539f33765e",
+    "check.exit.json": "7c2ea6a5e0d56a0cd5548d97e4fcb6881e8c0269e5a4f0a2a79c86e78eae3a70",
+    "final-check.stdout.txt": "4bdcc088d06dee0913ca4e377d0fa0f9f36c22419ea687ad7e758c34d2a9d11c",
+    "ci-wait-cancel-and-pro-retirement.json": "9f2b2bf139fee5cb1e274ffb1cbe46a97a46a169f4ea00308a8017574201d187",
+    "retired-pro-guard-check.json": "f29ebf4f3314503f07b56c8e440d6807bb8f8218092ea2512ecb87588dbb5d72",
+    "ci-observation.json": "e467fd02b7e35cdc4f3b58b76735cfca53d7b7a93a7c71e13b1b24d43ba8bc49"
+  }
+}

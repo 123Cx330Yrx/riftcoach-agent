@@ -33,10 +33,17 @@ SafeCodeText = Annotated[
 Sha256Text = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 Focus = Literal["overall", "laning", "survival", "economy", "vision"]
 KnowledgeMode = Literal["standard", "append_injected_evidence"]
+_TEXT_SUFFIXES = frozenset({".json", ".md", ".txt", ".yaml", ".yml"})
 
 
 class DomainFixtureCommitment(BaseModel):
-    """One exact project-relative fixture and its file-byte digest."""
+    """One project-relative fixture and its declared file digest.
+
+    Existing plans may declare either the historical raw-byte digest or the
+    repository's canonical-LF text digest.  The loader accepts exactly the
+    representation named by the plan, so old evidence remains readable while
+    new cross-platform plans are not changed by Windows CRLF conversion.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -119,7 +126,11 @@ class DomainCaseInputPlanArtifact(BaseModel):
     player_summary: DomainFixtureCommitment
     deterministic_report: DomainFixtureCommitment
     sdk_max_retries: Literal[0]
-    max_revisions: Literal[0]
+    max_revisions: Literal[0, 1]
+    request_policy_id: NonBlankText | None = None
+    request_policy_version: NonBlankText | None = None
+    quality_hardening: bool = False
+    retrieval_hardening: bool = False
     prompt_context_snapshot_id: SafeCodeText | None = None
     prompt_context_snapshot_sha256: Sha256Text | None = None
     case_context_commitments: tuple[DomainCaseContextCommitment, ...] = ()
@@ -187,13 +198,17 @@ def load_domain_case_input_plan(
     *,
     project_root: str | Path,
     dataset: DomainEvaluationDataset,
+    expected_max_revisions: Literal[0, 1] = 0,
 ) -> LoadedDomainCaseInputPlan:
     """Load exact bytes and reject identity or fixture drift before Provider I/O."""
 
     if not isinstance(dataset, DomainEvaluationDataset):
         raise TypeError("dataset must be a DomainEvaluationDataset")
-    raw = Path(path).read_bytes()
+    plan_path = Path(path)
+    raw = plan_path.read_bytes()
     artifact = DomainCaseInputPlanArtifact.model_validate_json(raw)
+    if artifact.max_revisions != expected_max_revisions:
+        raise ValueError("input plan revision budget does not match caller contract")
     if (artifact.dataset_id, artifact.dataset_version) != (
         dataset.dataset_id,
         dataset.dataset_version,
@@ -214,10 +229,19 @@ def load_domain_case_input_plan(
         root,
         artifact.deterministic_report,
     )
+    fixture_modes = (
+        _fixture_digest_mode(root, artifact.player_summary),
+        _fixture_digest_mode(root, artifact.deterministic_report),
+    )
+    plan_digest = (
+        _canonical_sha256(plan_path)
+        if "canonical" in fixture_modes
+        else hashlib.sha256(raw).hexdigest()
+    )
     execution_plan = DomainCaseExecutionPlan(
         plan_id=artifact.plan_id,
         plan_version=artifact.plan_version,
-        plan_sha256=hashlib.sha256(raw).hexdigest(),
+        plan_sha256=plan_digest,
         case_ids=case_ids,
     )
     return LoadedDomainCaseInputPlan(
@@ -237,9 +261,36 @@ def _verify_fixture(
         raise ValueError("fixture path must remain project-relative")
     if not path.is_file():
         raise FileNotFoundError(f"frozen fixture does not exist: {path.name}")
-    if hashlib.sha256(path.read_bytes()).hexdigest() != commitment.sha256:
-        raise ValueError("fixture digest does not match input plan")
+    _fixture_digest_mode(project_root, commitment)
     return path
+
+
+def _fixture_digest_mode(
+    project_root: Path,
+    commitment: DomainFixtureCommitment,
+) -> Literal["raw", "canonical"]:
+    """Return the exact representation used by a fixture commitment."""
+
+    path = (project_root / PurePosixPath(commitment.relative_path)).resolve()
+    if not path.is_relative_to(project_root):
+        raise ValueError("fixture path must remain project-relative")
+    if not path.is_file():
+        raise FileNotFoundError(f"frozen fixture does not exist: {path.name}")
+    raw_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if raw_digest == commitment.sha256:
+        return "raw"
+    if _canonical_sha256(path) == commitment.sha256:
+        return "canonical"
+    raise ValueError("fixture digest does not match input plan")
+
+
+def _canonical_sha256(path: Path) -> str:
+    """Hash repository text inputs after normalizing all line endings to LF."""
+
+    raw = path.read_bytes()
+    if path.suffix.lower() in _TEXT_SUFFIXES:
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(raw).hexdigest()
 
 
 __all__ = [

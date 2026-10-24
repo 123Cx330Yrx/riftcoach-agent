@@ -1,0 +1,42 @@
+{
+  "version": "independent-material-checkpoint-v1",
+  "dispatch_ready": true,
+  "assigned_author": "fresh-independent-material-review-agent",
+  "cwd": "D:\\riftcoach-review-route-diagnostics",
+  "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+  "files": {
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\s01.md": "29afa400060bdab6022127493b05bb5e0364723c0f4073d7ab7413bcc5e55f67",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\s02.md": "b375b0a72f28ad2c1a95b8e3ac2e3607eda9fb2cd8db46cd7706ee8316e43637",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\s03.md": "dc50de01c538c39fabbbad5a886bedc917ece5421943c8daea22158012d87baa",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s01-facts.json": "e4fa4e2b1d2fae66015ee7765d780cc5fbebf8d045b04f41f1d730907e19dd94",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s01-completion.json": "b76f9f5ef3474e436fa72a9a56c227d4c2986ca99945da178a218a71d61504a3",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s02-facts.json": "28f8b05d489cf9c915cb6f533f09932d89e012224536b53c23c8ebe2c8aee8ab",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s02-completion.json": "df916031d3869b7de148a5b265845b2375ed3dcbcba7a97b36ca1757374f1be6",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s03-facts.json": "eeb0cfccfe2604bc3283d35e8854c46c0eb8b1a93e1836575462cc539f825886",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\reviewer_semantic_screen_20261018\\requests\\s03-completion.json": "c9b0fb52f53f3ddcb62d9bc187fd3723743b8130ae186e859019a1d18e45e7fc",
+    "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\fixtures\\natural_duty_observed_review_20261015\\review-evidence\\material.json": "8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6"
+  },
+  "task": "仅依据每份完整报告、完整来源、用户任务和对应政策，分别判定facts/completion是否存在实质问题、解释依据及可行修法。核正确信息保留，核材料内来源矛盾或无法裁决处。检查整个报告，不只查任一预设重点。此任务是材料审查，不是模型输出验收。",
+  "isolation": "不要读取evaluation.json、primary-material-review.json、manifest.json、本轮计划、主线程意见、测试或其他审查判断。不要执行本轮prepare或test脚本，因为其中会读取评测侧文件。",
+  "output": "报告各自是否可裁决；按职责列实际问题、原文段号、来源事实、可靠修法、未决争议和其影响。不得预设每份有错或无错。真实作者独立写答；不得由主审代写。",
+  "native_requirements": "派发前绑定真实现有作者身份、checkpoint SHA及run外author路径，恢复/final前重读同checkpoint。当前没有已派发任务或native事件。",
+  "execution_ready": false,
+  "provider_calls": 0,
+  "author_answer_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-reviewer-semantic-materials-20261018\\independent-answer.json",
+  "task_kind": "ordinary development material review; not model output or native business qualification",
+  "scope_note": "请求messages含完整政策/报告/来源。若读归档material，只读输入/知识来源，不读历史模型意见、作者意见或结果。不要读模型结果或预期标签。",
+  "output_contract": {
+    "overall": "usable | unusable | unresolved",
+    "reports": [
+      {
+        "id": "s01/s02/s03",
+        "facts": "pass | needs_revision | fail | unresolved",
+        "completion": "pass | needs_revision | fail | unresolved",
+        "findings": "list with duty/block/quote/source/explanation/suggested_correction",
+        "material_uncertainties": "list"
+      }
+    ],
+    "limitations": "list"
+  },
+  "author_instruction": "自行写唯一完整JSON答案到author_answer_path，UTF8、无BOM。final前重读本checkpoint并核SHA，确认答案对应同包。返回相同完整JSON，不由主线程改写。不要执行付费/联网或修改项目。此处不要求调用不存在的check-answer/native工具；不能声称完成业务native认证。"
+}

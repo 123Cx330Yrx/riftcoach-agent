@@ -1,0 +1,145 @@
+{
+  "version": "completion-diagnostic-integration-v1",
+  "scope": "completion-diagnostic-continuation-not-product-runtime",
+  "provider_requests": 0,
+  "key_reads": 0,
+  "contract_version": "1.6.5",
+  "historical": {
+    "http_requests": 4,
+    "known_tokens": 66591,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "active_seconds": 255.657
+  },
+  "new_proposed": {
+    "logical_requests": 6,
+    "maximum_attempts": 10,
+    "maximum_tokens": 803840,
+    "manual_retries": 4,
+    "estimated_uncached_cny": 0.7296,
+    "hard_billing_cap": false
+  },
+  "cumulative": {
+    "max_calls": 14,
+    "max_tokens": 870431,
+    "max_active_seconds": 3600
+  },
+  "sequence": [
+    "control-b",
+    "control-c",
+    "control-d",
+    "completion-initial",
+    "compatibility",
+    "edit",
+    "unique-application",
+    "facts-fresh",
+    "completion-fresh"
+  ],
+  "checks": [
+    {
+      "file": "tests/test_completion_diagnostic_session.py",
+      "passed": 9,
+      "seconds": 224.24,
+      "evidence": "real worker/SDK with synthetic HTTP and native events"
+    },
+    {
+      "file": "tests/test_completion_diagnostic_launch.py",
+      "passed": 9,
+      "seconds": 49.65,
+      "evidence": "specific grant, key gate, pause/recovery and immutable failure replay with synthetic native/HTTP"
+    },
+    {
+      "files": [
+        "tests/test_sol_format_recovery.py",
+        "tests/test_sol_necessity_natural.py",
+        "tests/test_natural_duty_candidate.py",
+        "tests/test_natural_duty_qualification_inventory.py"
+      ],
+      "passed": 67,
+      "seconds": 374.15,
+      "evidence": "affected regressions including six qualification inventory checks"
+    }
+  ],
+  "startup_profiles_verified": 7,
+  "live_zero_send": {
+    "proof_file": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-continuation-20261024-offline/parent-proof.json",
+    "proof_sha256": "d59d0fea061b78ac12a7729f42abff95f716c988de06d83358a30c7e0b32802c",
+    "preparation_file": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-diagnostic-native-20261024-offline/preparation.json",
+    "preparation_sha256": "0f376c63771d7d4b76f73560ffeccde64a266cb43351b924800642dd1f138678",
+    "imported_operations": 9,
+    "original_native_replayed": true,
+    "original_inventories_unchanged": true,
+    "next_stage": "control-b",
+    "provider_requests": 0,
+    "key_reads": 0,
+    "scope": "original evidence recovery; not new business semantic acceptance"
+  },
+  "source_files": {
+    "app/evaluation/completion_diagnostic_session.py": "20758f4fafa21203068d16c084dd3c47e9f301b4304288717f6df28ad7d4d30c",
+    "app/evaluation/sol_completion_contract.py": "84a5ee5553aabaad84716d6380e24a0494817d3a1aa574a3aa3d82ff6b6c7978",
+    "scripts/completion_diagnostic_launch.py": "3dd3563622687ce563456d1fda35035a7aaedae5ff5bf1c2580f48b484efdc0d",
+    "scripts/prepare_completion_diagnostic.py": "5134c6680730108972e98cd9667f8bef44ae456bc141e93ffbbd192edeed5179",
+    "tests/test_completion_diagnostic_session.py": "0449867b72d7aff772c9d924465c759ea2ce8e6ae031ce7998b4e98cdaaefbd5",
+    "tests/test_completion_diagnostic_launch.py": "bd031386cc0b64c0451d2bb89d7e33f5fd2b5531f1ec08f8112bd1071039a90b"
+  },
+  "new_qualification_inventory": "data/evaluation/results/natural_duty_qualification_inventory_completion_continuation_20261024.json",
+  "remaining": [
+    "Exact frozen HEAD 303c21b42565237a7101d3dcf2357e4940bb9bb7 CI40095068270 success",
+    "Specific new authorization activation before hidden-key entry"
+  ],
+  "new_authorization": false,
+  "semantic_improvement_proven": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation": "PAUSED",
+  "ci_failure": {
+    "run_id": "40094551645",
+    "head": "5f46413d5ff5d7125141a8780db1ace895f92435",
+    "job": "pytest-shards (2)",
+    "first_failure": "test_failure_keeps_prior_cost_and_plain_resume_never_resends[timeout]",
+    "cause": "Unsorted Path.glob in the test selected the old facts budget on Linux; runtime/replay already sort ordinal paths.",
+    "fix": "Sort test operation results before selecting the latest budget.",
+    "provider_requests": 0,
+    "focused_recheck": {
+      "passed": 2,
+      "seconds": 30.66,
+      "tests": "timeout and format recovery; deterministic ordinal selection"
+    }
+  },
+  "first_frozen_preparation": {
+    "head": "5f46413d5ff5d7125141a8780db1ace895f92435",
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-completion-diagnostic-20261024",
+    "plan_sha256": "75be2e31e68bb1b290eb6f1bf7a32c1c52912e4932beab7af69cabe6eb87d5dd",
+    "native_preflight_proof_sha256": "a2edfe2c7101a343314d56be8ef150d2d1ba946415e16f97e0bb4ade8bccb8a7",
+    "entry_check_only": true,
+    "missing_grant_refused_before_key": true,
+    "execution_exists": false,
+    "authorization_installed": false,
+    "paid_launcher_ready": false
+  },
+  "current_frozen_preparation": {
+    "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\preparation-complete.json",
+    "sha256": "63110b5ff1345d0785a6fa74f9bef6c1c2338a56c3b47f75388ed89c3fcfc37c",
+    "head": "303c21b42565237a7101d3dcf2357e4940bb9bb7",
+    "cwd": "D:\\riftcoach-completion-diagnostic-ci-execution",
+    "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
+    "ci_run": "40095068270",
+    "ci_state": "in_progress",
+    "native_preflight": {
+      "guard_sha256": "081def7f4ed081cff5fb333c0694c9ec0b2e9d2db382806cf5fad7b54e81e3b4",
+      "checkpoint_sha256": "f1293930da43e0c8b2adee215350eec9f4cdc1c62e919e429e276b6e54d4235c",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16df0-060e-71b3-9a87-47bfb5ea945d/msg_0370f309de022d70016adca83e346881949c368709c5c398bc",
+      "task_checkpoint_sha256": "ed7bb5563804f7a87702d708d763ee3cb1db643efc5a24312b524300d4673f2e",
+      "original_stdout_sha256": "f585761cb81e717fd3843d14b495dc196a04b0213c0e124bfbe0296c4f0e0fc9",
+      "administrative_only": true
+    },
+    "check_only_verified": true,
+    "missing_grant_refused": true,
+    "execution_exists": false,
+    "provider_requests": 0,
+    "key_reads": 0,
+    "authorization_installed": false,
+    "automation_status": "PAUSED"
+  }
+}

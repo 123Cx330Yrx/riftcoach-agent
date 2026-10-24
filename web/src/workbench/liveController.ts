@@ -6,6 +6,7 @@ import type {
   ProductStateWire,
   RecentSummaryWire,
   RunWire,
+  RunUsageWire,
   RunTimelineWire,
   TaskEventPageWire,
   TaskWire,
@@ -49,6 +50,7 @@ export interface LiveWorkbenchDataApi {
   getEvents(taskId: string, runId: string, signal: AbortSignal): Promise<TaskEventPageWire>
   getProductState(taskId: string, runId: string, signal: AbortSignal): Promise<ProductStateWire>
   getRun(runId: string, signal: AbortSignal): Promise<RunWire | void>
+  getUsage(runId: string, signal: AbortSignal): Promise<RunUsageWire>
   getSummary(runId: string, signal: AbortSignal): Promise<RecentSummaryWire | void>
   getTimeline(runId: string, signal: AbortSignal): Promise<RunTimelineWire | void>
   getReport(runId: string, signal: AbortSignal): Promise<string | void>
@@ -292,7 +294,14 @@ export class LiveWorkbenchController {
     productState: ProductStateWire,
     signal: AbortSignal,
   ): Promise<LiveWorkbenchView> {
-    if (productState.state === "rejected" || productState.state === "not_ready") return view
+    if (productState.state === "rejected" || productState.state === "not_ready") {
+      const observed = await this.api.getUsage(binding.runId, signal)
+      if (!this.owns(binding)) return view
+      if (observed.run_id !== binding.runId || observed.task_status !== view.task?.status) {
+        throw new Error("usage task binding mismatch")
+      }
+      return { ...view, usage: observed.usage }
+    }
     const runPromise = this.api.getRun(binding.runId, signal)
     const summaryPromise = this.api.getSummary(binding.runId, signal)
     const timelinePromise = this.api.getTimeline(binding.runId, signal)
@@ -323,6 +332,7 @@ export class LiveWorkbenchController {
     return {
       ...view,
       run: adaptRun(run) satisfies WorkbenchRun,
+      usage: run.usage,
       summary: adaptRecentSummary(summary) satisfies WorkbenchRecentSummary,
       timeline: adaptTimeline(timeline) satisfies WorkbenchTimeline,
       report: { markdown: report } satisfies WorkbenchCoachReport,

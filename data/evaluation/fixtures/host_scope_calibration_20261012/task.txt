@@ -1,0 +1,15 @@
+这是一次新的离线合成材料校准，目的仅是检查 Host 如何应用已采用的全文事实、范围和来源规则。
+没有 Provider 输出、请求或回执，也不是旧案例重评、正式15、业务通过或产品资格。
+读取本目录 materials.json 的全文（完整policy、全部source和每一篇完整report）。各案例均为新编合成记录。
+policy中的工具调用说明仅为历史业务合同引用，不授权调用工具或Provider；本任务用下面的普通JSON答复。
+每篇独立判断，不推测正确/错误案例的数量或配对。不读其他目录、代码、旧run、预设答案、主审笔记或其他Host意见。
+需要摘要校验只使用标准文件SHA256，不寻找批次构造器。材料缺失或摘要不符时说明不可执行，不查找替代任务。
+输出每例：case_id，decision（no_material_error / requires_correction / undetermined），issues数组。
+每项issue写block、原文精确引句、实际命题、相关全文原句、来源行/均值、冲突或未决歧义如何影响结论、最小修正方向。
+允许单列advisories，仅为可读性建议；不要把词语偏好当事实错误。若没有真实问题，issues应为空。
+若判断无法确定，写明材料缺口或两种仍可能的含义及影响，不强迫给出通过/拒绝。
+最后给material_sha256、material_read_complete布尔值、case_results、limitations。不得生成native认证、receipt或产品资格字段。
+恢复后及最终答复前重读相同材料及固定SHA；只输出自己的唯一多行JSON最终答复。
+
+精确材料路径：D:\riftcoach-agent-rq192-pr\data\evaluation\fixtures\host_scope_calibration_20261012\materials.json
+材料SHA256：100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b

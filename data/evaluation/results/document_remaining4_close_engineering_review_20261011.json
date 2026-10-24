@@ -1,0 +1,287 @@
+{
+  "kind": "remaining4-readonly-close-engineering-review-v1",
+  "task_sha256": "87c6a1d86dddf00604ecd277b1a03b508b93a3d47689d6185c8e1f2861476e68",
+  "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a12705-7689-7da1-8ba8-934b30c10ed0/msg_05d7f9e6af03b322016aca82f425fc8190a128ea52450738da",
+  "dispatch_id": "amsg_01a12705-7754-7111-bb64-62c51dc75fe0",
+  "native_turn_status": "completed",
+  "native_error": null,
+  "raw_final": "{\n  \"task_sha256\": \"87c6a1d86dddf00604ecd277b1a03b508b93a3d47689d6185c8e1f2861476e68\",\n  \"accepted\": true,\n  \"findings\": [\n    {\n      \"severity\": \"nonblocking\",\n      \"code\": \"native_schema_version_dependence\",\n      \"detail\": \"原执行指定 Codex 0.153.4 的严格 replay 完全通过。Codex 0.162.0-alpha.17.2 读取的12个事件仅 raw_event_sha256 与封存不同，其他封套字段、review_sha256、dispatch_id均一致。首例完整原生字典跨版本比较的唯一差异为新版新增非空 /turn/rootTurnId。\",\n      \"contract_binary_sha256\": \"444a3f0008050605cae73cd9b7a2dcac61294062dfaab56dd20430fd6498518b\",\n      \"newer_binary_sha256\": \"d13914ced6c7af174d8d638db938284231227312104b06a25e9608c632a7daec\"\n    }\n  ],\n  \"checks\": {\n    \"task_reread_before_final\": true,\n    \"seal_sha256\": \"a98734911f9384bd23f1b8e76bdd47513d6024add89c6a830b3155c13351feec\",\n    \"audit_sha256\": \"27d8b6b4920a2d65de97284c01255aa31c04a543cc8e33cb8977edfa2e1d8d83\",\n    \"strict_readonly_replay\": {\n      \"codex_executable\": \"C:/Users/33502/AppData/Local/Programs/OpenAI/Codex/bin/codex.exe\",\n      \"codex_version\": \"0.153.4\",\n      \"exit_code\": 0,\n      \"rebuilt_equals_complete_seal\": true,\n      \"native_events_fetched_and_exact\": 12,\n      \"original_files_before_after_equal_seal\": 260,\n      \"public_json_whitelist_exact\": 138,\n      \"provider_calls_during_review\": 0\n    },\n    \"accounting\": {\n      \"calls\": 12,\n      \"glm_5_3\": 8,\n      \"glm_5_3_flash\": 4,\n      \"known_tokens\": 202229,\n      \"unknown_usage_calls\": 0,\n      \"unknown_reserved_tokens\": 0,\n      \"receiptless_attempts\": 0\n    },\n    \"execution\": {\n      \"authorized_before_start\": true,\n      \"head\": \"89f2408c704db9af4221c8fd2ada6874bfc6ac62\",\n      \"ci_run\": \"38068536698\",\n      \"live_read_all_8_ci_jobs_success\": true,\n      \"operator_originals_and_public_values_exact\": 7,\n      \"create_only_launch_and_process_pid_match\": true,\n      \"runner_normal_exit_code\": 0,\n      \"current_remaining4_runner_count\": 0,\n      \"duplicate_runner_evidence\": false\n    },\n    \"closed_result\": {\n      \"accepted_cases\": [\n        \"observed:2\",\n        \"observed:3\",\n        \"observed:4\",\n        \"observed:5\"\n      ],\n      \"unfinished_keys\": [],\n      \"unexecuted_keys\": [],\n      \"new_qualification\": 0,\n      \"earliest_batch_deviation\": null,\n      \"old_uncertified_gaps_preserved\": [\n        \"claim-scope:2\",\n        \"observed:1\"\n      ],\n      \"old_gap_seals_still_operator_abort_with_empty_certified_stages\": true\n    },\n    \"semantic_preparation\": {\n      \"script_and_plan_reviewed\": true,\n      \"public_sha256\": \"5fa2cf783f729743822808090fc7269538994084007dd9d7af050db10d766b6b\",\n      \"guarded_rebuild_equals_public_bytes_including_windows_newlines\": true,\n      \"fixed_complete_requests\": 5,\n      \"suffix_variants\": 15,\n      \"business_prefix_and_nonpolicy_fields_exactly_unchanged\": true,\n      \"expanded_original_requests_reconstructed\": 5,\n      \"data_runs_reads\": 0,\n      \"network_or_provider_calls\": 0,\n      \"credential_reads\": 0,\n      \"writes\": 0,\n      \"execution_ready\": false,\n      \"new_qualification\": 0\n    },\n    \"review_created_temporary_files\": 0,\n    \"product_or_sealed_evidence_modified\": false\n  },\n  \"limitations\": [\n    \"本结论仅为收尾工程复核，不重审业务、不补签，不新增原业务认证、模型质量资格、生产准入或付费授权。\",\n    \"earliest_batch_deviation=null仅描述本批，不能撤销旧失败或两个未认证缺口。\",\n    \"静态变体的canonical请求摘要不是issued原字节身份；继承metadata不构成新可发送候选。\",\n    \"本批原生封套结论限定于原执行指定的Codex 0.153.4。后续使用新版需独立处理native schema稳定性并冻结新版本，不能回改旧签名。\"\n  ]\n}",
+  "raw_final_sha256": "bd91233497dd021485916c59c72145b876367a47762690a11a7cc0f031d181b9",
+  "tool_items": [
+    {
+      "type": "reasoning",
+      "id": "rs_020b80ea6b67d794016aca8064899c8191ba7a527caaee8b11"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-dbe61c52-1ed1-45eb-8179-3f0d07bdc038"
+    },
+    {
+      "type": "contextCompaction",
+      "id": "01a12705-9925-7773-b4f6-a20e468d462a"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80a379c08190957ba25aad6757ae"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-fddca823-ca15-4f6c-b421-d9111e2c150a"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-e7a792c9-7d79-4605-bead-283a616cdf80"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-eeaec3de-4f77-4f39-92e9-2fd98a6cdab3"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-00201ccb-58e9-4284-826c-e3d588f551c3"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80b5136481908e961159bdb64ecd"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-4021c69d-63c6-471b-bf0c-caa8113b6e5a"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-1dfb7bdf-a161-4bdc-95ad-ddda7b03f133"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80c968f081908b6dcdbdbb960ed1"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-8aeb0157-f69c-4b80-8613-cc454e7b7d98"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80d478a081909409286b141ec51f"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-ba4be0f1-e310-4b9b-b696-3f242ab423a4"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80dd779881909d7f08f8fcefccd4"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-badcef5d-5769-4b6a-b2de-521503c9d0d7"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca80eb3aa88190a101aecd1b08be90"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-6a5eff7f-35b1-4822-a8ce-4f992ef499e8"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca810a83208190a3cdca52a4c941b6"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-74a11f9e-5e98-408c-b840-c4fd97b9bf76"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca812328a0819090341da3681a43be"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8128815c8190b528dc658f106f84"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_GHvpC007wu5RsQsajCpnhm5I"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca812fb1b08190af0cef683796cab7"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-7c7dbced-70a9-4aad-9727-df58c7128193"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-72a1b572-3e29-475c-b386-50ecae04d79e"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81466d9c8190b0460212243f0a9c"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-1baaf78c-f382-4cad-8d9a-cf8226b3cf44"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca815164988190a3712988c8d7c1c8"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-953c4ffa-0f4c-4639-8c54-cf8f8edfdc86"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca815a51a48190b50bd46826767593"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-57016235-ee4e-45b2-b07c-f182cd3c7d04"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81732c488190a23dab8f390dec13"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_c1a259eecc2b42049502c16dbfd84c5e"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-d85397dd-f5e9-42b7-9c07-fe4cf19f8ccf"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8185ea288190ba92fef6e21b4c29"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-3c6a8c80-030d-4b3f-81ef-a62120f29a38"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81b248ac81908386b012f7a94156"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-2c06c487-6a15-4b25-9795-3954e0e67d91"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-8faa82f2-befa-4579-88bc-8587d54c53ac"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81c9d1488190b0ab5f2345fbebf8"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81d4a9a0819085558f84584f9b61"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81da084c81909089a29c1ad7426c"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-3aa94f0c-4e72-45d1-8cc5-1281cb8f9117"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81f597f88190a2400ece592b25ef"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca81fe799c81908ee6cb046affb2dc"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-c9704c88-0d8a-4e0c-8af9-70adec9c21cc"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8209704c8190a01bfc883c2faee3"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8216ef3c8190b064e20645843a92"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-91dcc6e6-9df4-4196-9949-c5a130a7a571"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca82374a44819097961b9840e6884a"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_teFTFFU6aIz5yaSixqGhF2GE"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-59f9649d-2987-46cd-812c-411647326712"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca824608388190981b979e0f114463"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-5efad7a0-451a-4e6d-ad04-c1ef0388121f"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8255717c8190bfeebac643f86630"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca827847fc81908a0aefde6d0465af"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_fk70mlXdGGlmh8K6b9BnchCx"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8286c6b4819098284d1514ed36a8"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca8291fd2081908339101991df6187"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca829cfcc081909af7f26ccf5313c3"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca82c034f0819091dff5363dcb4a91"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca82d1429881908577d229b30dbbf6"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca82d64f448190afda11b26c653952"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-73fb0b27-6f5a-4729-85f4-33dfa3db52e2"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-7e6a6433-17e2-463a-82b0-d754b9722fbb"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_05d7f9e6af03b322016aca82ec6e048190bfdb9847b535a194"
+    }
+  ],
+  "provider_calls": 0,
+  "business_review": false,
+  "qualification_credit": 0
+}

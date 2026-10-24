@@ -1,0 +1,57 @@
+{
+  "closed_batch_reopened": false,
+  "conclusion": "The observed route now uses WLAN and public DNS addresses; one TCP/TLS connection succeeded. This does not prove historical root cause, sustained reliability or authenticated model API availability.",
+  "configuration_changed_by_agent": false,
+  "credentials_sent": false,
+  "evidence": {
+    "system-proxy-connectivity-followup.json": {
+      "at": "2026-10-12T09:44:31.721614+00:00",
+      "configuration_changed_by_agent": false,
+      "credentials_sent": false,
+      "elapsed_seconds": 0.125,
+      "host": "open.bigmodel.cn",
+      "http_requests": 0,
+      "kind": "no-http-after-user-system-proxy-switch-v1",
+      "limitation": "Single current raw-socket connection; not a model/API check or historical root-cause proof.",
+      "model_requests": 0,
+      "port": 443,
+      "resolved_addresses": [
+        "8.133.182.104",
+        "47.102.128.206"
+      ],
+      "selected_address": "8.133.182.104",
+      "status": "connected",
+      "tcp_connected": true,
+      "tls_connected": true,
+      "tls_version": "TLSv1.3",
+      "user_reported_change": "Switched back to system proxy"
+    },
+    "system-proxy-route-followup.json": [
+      {
+        "DestinationPrefix": null,
+        "IPAddress": "10.210.17.85",
+        "InterfaceAlias": "WLAN",
+        "InterfaceIndex": 21,
+        "NextHop": null,
+        "RouteMetric": null
+      },
+      {
+        "DestinationPrefix": "0.0.0.0/0",
+        "IPAddress": null,
+        "InterfaceAlias": "WLAN",
+        "InterfaceIndex": 21,
+        "NextHop": "10.210.0.1",
+        "RouteMetric": 0
+      }
+    ]
+  },
+  "http_requests": 0,
+  "kind": "document-full-report-post-close-route-followup-v1",
+  "model_requests": 0,
+  "operator_sha256": {
+    "system-proxy-connectivity-followup.json": "50484fa80b88e02394ba8360879557f2c5280ddabd44565fc5dfe946703fe9df",
+    "system-proxy-route-followup.json": "d1f67a94f97b32f8d4659af0db5c7df36fe6e59032c8d70ac9b8b4193b8b3fcb"
+  },
+  "prior_close_audit_sha256": "eceb3b8ee71b85ad7cd49b4eb8475b46541a5fc288dc0804181952a3c1f4b023",
+  "user_reported_change": "Switched from virtual adapter back to system proxy"
+}

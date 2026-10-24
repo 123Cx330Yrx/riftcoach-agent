@@ -1,0 +1,158 @@
+{
+  "version": "reviewer-semantic-evaluation-v1",
+  "evaluation_only": true,
+  "source_material_sha256": "8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6",
+  "origin": "New authored reports over familiar archived complete source; no unseen-source or independent-review claim.",
+  "contrasts": {
+    "s02": {
+      "block": 16,
+      "before": "- 仅中单的败局补刀/分钟均值高于胜局均值，但不是每局败局都高于每局胜局；洛克败局为8.38，薇古丝胜局为8.95。组均值不能替代逐局比较。",
+      "after": "- 仅中单的每一局败局补刀/分钟都高于每一局胜局；中单败局均值9.01，胜局均值8.805。"
+    },
+    "s03": {
+      "block": 21,
+      "before": "- 如想比较本次观摩涉及的中单英雄，可把历史OP.GG中单快照中的辛德拉作为后续查证对象：2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。可查证这些快照指标在后续同口径快照中如何变化；这里只使用检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。",
+      "after": "- 历史OP.GG中单快照中的辛德拉在2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。这里只列检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。"
+    }
+  },
+  "expected": {
+    "s01": {
+      "facts": "pass",
+      "completion": "pass"
+    },
+    "s02": {
+      "facts": "needs_revision",
+      "completion": "pass"
+    },
+    "s03": {
+      "facts": "pass",
+      "completion": "needs_revision"
+    }
+  },
+  "rationale": {
+    "s02": "原文的每一局败局都高于每一局胜局是两两关系，不是均值关系。中单洛克败局8.38低于薇古丝胜局8.95，且低于辛德拉胜局8.66，足以反驳全称；败局均值9.01高于胜局8.805仍正确。应撤销全称，保留正确均值与适当样本限制。",
+    "s03": "已有完成度政策要求把至少一项适用OP.GG的tier/rank/rate连接到条件建议或待验行动。全文仅在本段列辛德拉中单快照数字、末节说明边界，其他行动只消费比赛/知识，没有使用这些快照指标。应补一项以该快照为起点的观摩查证行动，不能要求个人训练或用历史快照声称今天强度。"
+  },
+  "acceptance": {
+    "scope": "Full report, all issues, explanations, repairs and retained correct information; no keyword-only scoring.",
+    "category": "Accept schema-valid, semantically coherent classifications; no preferred enum requirement.",
+    "reference": "Synthetic reviews below demonstrate local feasibility only. Different faithful repairs are allowed; exact reference matching is NOT an evaluation gate.",
+    "score": "Use existing pass>=85 gate; revision score/verdict must be consistent. Synthetic scores are examples, not exact targets.",
+    "unexpected_finding": "Check full sources. A new real error invalidates the clean-control premise; stop design, never force its prior label.",
+    "mixed_output": "Protocol failure, not evidence of zero tool candidates or semantic quality.",
+    "opinion_pair": "Actual non-overlapping repairs only; identical overlapping edits still conflict. No invented pass to complete a missing duty.",
+    "disposition": "All six supported: eligible for considering further bounded evidence, not model adoption or qualification. Semantic failure: close current configuration screen; protocol/material uncertainty: no semantic verdict, close and preserve evidence."
+  },
+  "synthetic_reference_reviews": {
+    "s01": {
+      "facts": {
+        "score": 95,
+        "verdict": "pass",
+        "issues": [],
+        "repairs": [],
+        "advisories": [],
+        "issue_resolutions": []
+      },
+      "completion": {
+        "score": 95,
+        "verdict": "pass",
+        "issues": [],
+        "repairs": [],
+        "advisories": [],
+        "issue_resolutions": []
+      }
+    },
+    "s02": {
+      "facts": {
+        "score": 75,
+        "verdict": "needs_revision",
+        "issues": [
+          {
+            "block": 16,
+            "severity": "medium",
+            "category": "unsupported_comparison",
+            "source_ids": [
+              40
+            ],
+            "explanation": "原文的每一局败局都高于每一局胜局是两两关系，不是均值关系。中单洛克败局8.38低于薇古丝胜局8.95，且低于辛德拉胜局8.66，足以反驳全称；败局均值9.01高于胜局8.805仍正确。应撤销全称，保留正确均值与适当样本限制。",
+            "suggested_correction": "- 仅中单的败局补刀/分钟均值高于胜局均值，但不是每局败局都高于每局胜局；洛克败局为8.38，薇古丝胜局为8.95。组均值不能替代逐局比较。"
+          }
+        ],
+        "advisories": [],
+        "issue_resolutions": [],
+        "repairs": [
+          {
+            "issue_ids": [
+              1
+            ],
+            "edits": {
+              "block_16": [
+                {
+                  "before": "- 仅中单的每一局败局补刀/分钟都高于每一局胜局；中单败局均值9.01，胜局均值8.805。",
+                  "after": "- 仅中单的败局补刀/分钟均值高于胜局均值，但不是每局败局都高于每局胜局；洛克败局为8.38，薇古丝胜局为8.95。组均值不能替代逐局比较。",
+                  "reason": "原文的每一局败局都高于每一局胜局是两两关系，不是均值关系。中单洛克败局8.38低于薇古丝胜局8.95，且低于辛德拉胜局8.66，足以反驳全称；败局均值9.01高于胜局8.805仍正确。应撤销全称，保留正确均值与适当样本限制。"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "completion": {
+        "score": 95,
+        "verdict": "pass",
+        "issues": [],
+        "repairs": [],
+        "advisories": [],
+        "issue_resolutions": []
+      }
+    },
+    "s03": {
+      "facts": {
+        "score": 95,
+        "verdict": "pass",
+        "issues": [],
+        "repairs": [],
+        "advisories": [],
+        "issue_resolutions": []
+      },
+      "completion": {
+        "score": 75,
+        "verdict": "needs_revision",
+        "issues": [
+          {
+            "block": 21,
+            "severity": "medium",
+            "category": "other",
+            "source_ids": [
+              40,
+              28
+            ],
+            "explanation": "已有完成度政策要求把至少一项适用OP.GG的tier/rank/rate连接到条件建议或待验行动。全文仅在本段列辛德拉中单快照数字、末节说明边界，其他行动只消费比赛/知识，没有使用这些快照指标。应补一项以该快照为起点的观摩查证行动，不能要求个人训练或用历史快照声称今天强度。",
+            "suggested_correction": "- 如想比较本次观摩涉及的中单英雄，可把历史OP.GG中单快照中的辛德拉作为后续查证对象：2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。可查证这些快照指标在后续同口径快照中如何变化；这里只使用检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。"
+          }
+        ],
+        "advisories": [],
+        "issue_resolutions": [],
+        "repairs": [
+          {
+            "issue_ids": [
+              1
+            ],
+            "edits": {
+              "block_21": [
+                {
+                  "before": "- 历史OP.GG中单快照中的辛德拉在2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。这里只列检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。",
+                  "after": "- 如想比较本次观摩涉及的中单英雄，可把历史OP.GG中单快照中的辛德拉作为后续查证对象：2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。可查证这些快照指标在后续同口径快照中如何变化；这里只使用检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。",
+                  "reason": "已有完成度政策要求把至少一项适用OP.GG的tier/rank/rate连接到条件建议或待验行动。全文仅在本段列辛德拉中单快照数字、末节说明边界，其他行动只消费比赛/知识，没有使用这些快照指标。应补一项以该快照为起点的观摩查证行动，不能要求个人训练或用历史快照声称今天强度。"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "actual_model_results": null,
+  "independent_review": null,
+  "qualified": false
+}

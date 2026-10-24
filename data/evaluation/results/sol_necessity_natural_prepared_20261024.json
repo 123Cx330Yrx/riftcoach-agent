@@ -1,0 +1,41 @@
+{
+  "kind": "sol-necessity-natural-preparation-complete-v1",
+  "head": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024",
+  "cwd": "D:\\riftcoach-sol-necessity-natural-execution",
+  "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+  "plan_sha256": "a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea",
+  "native_preflight": {
+    "guard_sha256": "187909913d2407f4e81ecfe45c59d2960c91d8f764d9a4e5f4f82fe4ff8ea9d8",
+    "checkpoint_sha256": "1e1363e12032641757949d2392b531dc22de3ec44bea2631de5dd2ecb821fda8"
+  },
+  "native_preflight_proof_sha256": "ba213442944b187b74204f36b258688e7dcb9c5ac25c686543dfc99070b9149e",
+  "author_sha256": "d14896382c88c43ba3268b4f166a88af2b5e1433cd901a20f3d6a81774a19e31",
+  "actual_native_author_import_verified": true,
+  "read_only_recheck_originals_unchanged": true,
+  "public_ci": {
+    "run_id": "40073888400",
+    "status": "in_progress",
+    "verified": false
+  },
+  "structural_tests_passed": 120,
+  "provider_requests": 0,
+  "key_read": false,
+  "execution_authorized": false,
+  "paid_launcher_ready": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "remaining": [
+    "exact-head public CI success",
+    "new task-specific human cost authorization; proposal is not a grant"
+  ],
+  "preparation_record_sha256": "48cf67d7d3797250cd6a199c4e5a2b0ac8f4cf1000e2e864f10ecc4e592642e5",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024-control",
+  "check_only_script": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024-control\\check-preparation.ps1",
+  "script_check_passed": true,
+  "authorization_request_pending": true,
+  "execution_tree_clean_verified": true,
+  "source_files": 907,
+  "code_commit": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+  "documentation_update_only": true
+}

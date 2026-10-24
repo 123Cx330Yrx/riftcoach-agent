@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "execution_head": "6e322f6953cf2428ce110536f2477ea364426785",
+  "sealed_export": "data/evaluation/results/golden_boundary_examples_native_final_result_20261001.json",
+  "seal_sha256": "7e3975bc94c4b8073e08df3dba8afe16fe66ae729bc183fc9b02d3d70eb9099e",
+  "old_strict_readback_before_code_change": {
+    "keys": [
+      "claim-scope:1"
+    ],
+    "host_event_source": "CodexHostReviewEventSource",
+    "passed": true
+  },
+  "modified_workflow_actual_receipt_replay": "native_revision_policy_echo",
+  "all_83_originals_unchanged": true,
+  "new_provider_calls": 0,
+  "model_quality_fixed": false,
+  "current_candidate_qualified": false
+}

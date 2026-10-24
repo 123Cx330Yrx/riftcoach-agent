@@ -1,0 +1,43 @@
+{
+  "authorization_sha256": "125005b2b4d4e794c2a294e0a359f75916ddbfe69378b32d7a3eea48c4e40d26",
+  "issued_at": "2026-10-24T08:58:07.794391+00:00",
+  "expires_at": "2026-10-25T08:58:07.794391+00:00",
+  "ci": {
+    "run_id": "40073888400",
+    "head_sha": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest",
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)",
+      "web-checks"
+    ]
+  },
+  "plan_sha256": "a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea",
+  "head": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+  "native_preflight": {
+    "guard_sha256": "187909913d2407f4e81ecfe45c59d2960c91d8f764d9a4e5f4f82fe4ff8ea9d8",
+    "checkpoint_sha256": "1e1363e12032641757949d2392b531dc22de3ec44bea2631de5dd2ecb821fda8"
+  },
+  "provider_requests": 0,
+  "key_read": false,
+  "kind": "sol-necessity-natural-authorized-ready-v1",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024",
+  "start_command": "& 'C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024-control\\start-authorized.ps1'",
+  "check_only_passed": true,
+  "control_output_retention_verified": true,
+  "execution_started": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "control_sha256": {
+    "start_authorized.py": "56a5e200c305fe5cb30e7cc458506a7b5e910c551d0254e77ee5f841abb56bcf",
+    "start-authorized.ps1": "ecb99b593171a843f61a790a76278cdfedcb926fc0983528843b52adb07cf8fe",
+    "authorization.json": "125005b2b4d4e794c2a294e0a359f75916ddbfe69378b32d7a3eea48c4e40d26",
+    "native-preflight-proof.json": "ba213442944b187b74204f36b258688e7dcb9c5ac25c686543dfc99070b9149e"
+  }
+}
