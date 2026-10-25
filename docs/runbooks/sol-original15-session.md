@@ -1,8 +1,8 @@
 # 原15固定报告逐项执行
 
 本入口评估同一候选合同1.6.6，使用原15完整报告、来源与5accept/10reject标签。
-不生成新报告，不继承旧版本成功，不作为新holdout或产品准入。当前只有准备授权，
-执行还需要绑定最终plan SHA的新费用授权；旧自然任务grant不能使用。
+不生成新报告，不继承旧版本成功，不作为新holdout或产品准入。费用授权以当前Control中
+绑定最终plan SHA的有效grant为准；旧自然任务grant不能使用，不自动延长期限。
 
 ## 执行约定
 
@@ -59,9 +59,22 @@ session.lock不纳入证据字节库存；其他.lock文件仍核验，重定向
 ```
 
 task只显示尚未导入任务的原始dispatch，同任务恢复只用MESSAGE，不再NEW_TASK。
-这里指工具层消息类型：首次派发用`collaboration.followup_task`；同任务在现有运行者上只用`collaboration.send_message`。`followup_task`即使正文以MESSAGE开头，也会生成新的NEW_TASK。不要仅凭原生API的interrupted快照再次followup；先核协作运行状态。若已出现重复派发，保留全部真实消息及唯一作者/final，记录本地交接故障，不裁剪记录、不覆写final、不重发Provider、不将其判作模型语义失败。现reader没有此类恢复入口。
+这里指工具层消息类型：首次派发用`collaboration.followup_task`；同任务在现有运行者上只用`collaboration.send_message`。`followup_task`即使正文以MESSAGE开头，也会生成新的NEW_TASK。不要仅凭原生API的interrupted快照再次followup；先核协作运行状态。若已出现重复派发，保留全部真实消息及唯一作者/final，记录本地交接故障，不裁剪记录、不覆写final、不重发Provider、不将其判作模型语义失败。原reader继续拒绝重复派发。
 submit后从本次原stdout更新根。仅推进Host/关闭时给run加`--host-only`；遇真实发送边界
 会暂停，不提示Key。新一例也须显式指定当前case。
+
+### 本批单事件交接恢复
+
+2026-10-26用户明确要求“处理”后，仅对claim-scope:4/facts-initial的既有事件启用
+`scripts/codex_dispatch_recovery.py`的固定SHA外部适配器。它先复现原reader拒绝，再从真实
+native读取并核对四条完整派发、父/作者/唯一final及membership、checkpoint、material和
+作者原件；全部绑定精确事件和原始SHA，逐次回放重新验证。其他事件走原reader；legacy
+dispatch政策不允许该恢复。保留两次NEW_TASK事故，不声称加密输入等价已验证，也不重写意见。
+
+当前批次后续submit/run/replay/seal必须经Control/operator.py的`host_events`，由
+settings中的原plan SHA及恢复manifest/module SHA固定启用；恢复前operator/settings快照保留。
+直接调用冻结CLI仍会因该事故拒绝，这是预期，不能改冻结reader使其通过。原费用grant及期限
+不变，恢复本身0请求/0Key，不关闭整批。原失败和新恢复证据分别保留，不能把原失败改成通过。
 
 ## 暂停、恢复与封存
 

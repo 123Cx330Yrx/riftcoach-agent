@@ -1,3 +1,11 @@
+## 2026-10-26 重复派发的单事件恢复
+
+原生API的interrupted快照不充分证明协作者需要再次NEW_TASK；followup_task正文写MESSAGE不能改变工具层类型。
+本次保留全部四条派发及原拒绝，采用固定事件/SHA的外部适配器，逐次验证真实native/唯一作者/final、精确checkpoint/material；
+不解密或声称加密输入等价，不改变冻结reader/HEAD，也不一般性允许多派发。实际submit及HostOnly推进、只读原件/费用审计完成，0新Provider。
+20项恢复检查及102项旧回归通过；首例保持完成、第二例续completion-initial。审计脚本曾因Windows与POSIX库存路径格式差异报KeyError，
+统一比较键为as_posix后原文件SHA全量通过；该脚本错误未改动原件或触发请求。恢复仅解决本地交接，不新增模型/产品资格。
+
 ## 2026-10-25 原15逐项入口的离线反例
 
 实际launcher的跨case检查暴露Windows msvcrt锁文件被全Operator库存读取，产生PermissionError。

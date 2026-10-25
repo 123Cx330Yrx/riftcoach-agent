@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-26当前工作：原15已完成1/15；第二报告claim-scope:4/facts-initial真实意见及补丁均被主审/独立作者接受，但主线程用followup_task恢复同任务产生第二条NEW_TASK，真实native reader拒绝导入。累计3HTTP/60564known、无unknown/重试，当前例未关闭，无submission/实际应用/后项发送。下一动作是显式零付费native交接恢复，原两条dispatch、作者/final、收据及成功首例均保留；不删证据、不重新派发或重买、不修改冻结HEAD/reader。原授权不延期，automation PAUSED。证据sol_original15_live_20261025.json及Control/claim-scope-4-native-dispatch-failure.json。
+2026-10-26当前工作：原15完成1/15；第二报告claim-scope:4/facts-initial已通过固定事件/SHA外部适配器实际导入原意见，0新Provider/0Key。原reader不变，四条派发/唯一final/作者/checkpoint完整保留并重核，加密输入等价未知及原事故不抹除。HostOnly已推进到completion-initial发送边界；只读核验原件/首例/费用通过。20项新检查和102项原回归通过。累计3HTTP/60564known、0unknown/重试，未应用补丁、未闭批。下一动作：用户运行原start-authorized.ps1隐藏输入企业Key，只续completion-initial，不加ManualRetry；原授权北京时间10月26日23:46:27截止不延期。automation PAUSED。证据sol_original15_live_20261025.json及Control/claim-scope-4-recovery-accepted.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
@@ -89,7 +89,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-原15已完成首份；第二报告facts意见保留，先解决真实native双派发冲突，不启动新Provider。
+原15已完成首份；第二报告facts已导入，原入口隐藏输入企业Key后续completion-initial；不重买facts，不加ManualRetry。
 
 ## History
 

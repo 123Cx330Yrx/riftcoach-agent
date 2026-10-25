@@ -1,4 +1,22 @@
-## 2026-10-26 第二报告模型意见正确，本地native派发冲突待恢复（当前）
+## 2026-10-26 第二报告facts交接已恢复，续completion-initial（当前）
+
+用户明确要求“处理”后，已通过固定事件/SHA的外部Host适配器导入原facts意见，不重派发、不重买。
+原reader仍复现重复NEW_TASK拒绝；四条派发、唯一真实final/membership、作者原件、精确checkpoint
+及material均重新核验。加密输入等价性仍未验证，不能声称原校验通过；原失败原件保留。
+20项恢复反例/正例及102项原native/checkpoint/独立合同回归通过。实际submit accepted，
+随后原入口HostOnly消费接受结果，停在claim-scope:4/completion-initial发送边界，0新Provider/0Key。
+只读重放首例及当前native、原transport/观测/费用通过；原文件和作者全部SHA保持，库存前后不变。
+累计3HTTP/60564known、0unknown/0retry/0receiptless/0未发，仍完成1/15。当前4operations、无unresolved、
+closed=false；未实际应用补丁、未发送completion、整批未关闭/未seal。最初guard af6f69a2保持，
+最新checkpoint917a7ade来自0011原stdout/最早exit；0010真实导入stdout及exit也保留。
+冻结HEAD34abe04e clean、CI40188299016及原plan/grant未改；automation现场核PAUSED。
+**下一动作：** 用户运行同一Control/start-authorized.ps1，隐藏输入企业Key，只续同稿completion-initial；
+不加ManualRetry。授权北京时间2026-10-26 23:46:27截止不延展。后续submit/run/replay/seal均经
+外部Control/operator.py固定恢复适配器，其他事件仍走原reader。未授产品或15项资格。
+证据：Control/claim-scope-4-recovery-accepted.json（SHA cb0c39fadec218da8bdbf472f07c7e078f3631df7ebba5f6b975b86e2b629205）；
+manifest fa14c730、module97805fa3；data/evaluation/results/sol_original15_live_20261025.json。
+
+## 2026-10-26 第二报告native派发冲突（恢复前原记录）
 
 claim-scope:4/facts-initial新增1HTTP200/34.219秒/21139known（输入20114、输出1025），
 needs_revision/92、唯一issue及block_4逐字补丁。主审和独立作者均全文核验并接受：原稿明确的

@@ -129,7 +129,7 @@
   "completed_replay_evidence_sha256": "a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854",
   "cases_completed": 1,
   "next_case": "claim-scope:4",
-  "next_stage": "native-dispatch-recovery",
+  "next_stage": "completion-initial",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
@@ -139,16 +139,16 @@
     "provider_issues": 1,
     "primary_accepted": true,
     "independent_authored_accepted": true,
-    "native_submission_accepted": false,
-    "native_import_error": "codex_review_host_rollout_dispatch_or_final_ambiguous",
+    "native_submission_accepted": true,
+    "native_import_error": null,
     "response_preserved": true,
     "actual_edit_performed": false,
     "status": {
-      "checkpoint_sha256": "7b26c37a70160dc510c81c1c8d2d91b26b6e9ed8b6a277255a9b9ef49efcad4c",
+      "checkpoint_sha256": "917a7ade82a9781e4950f962ccfa60fdbba641763873018f879eaa8b19346dce",
       "closed": false,
       "format_waiting": false,
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7",
-      "operations": 3,
+      "operations": 4,
       "production_admitted": false,
       "publication_allowed": false,
       "timeout_waiting": false,
@@ -171,11 +171,29 @@
     "author_sha256": "12a652bc41359291350dac53397387d1be0586714cd0f7c95dc4143c85fc0b81",
     "checkpoint_sha256": "0fe827a40c3c327bb5fcc3511433e612bbdbc2fd6f53d19bd8ab185a9e7bb775",
     "original_stdout_roots": {
-      "checkpoint_sha256": "7b26c37a70160dc510c81c1c8d2d91b26b6e9ed8b6a277255a9b9ef49efcad4c",
+      "checkpoint_sha256": "917a7ade82a9781e4950f962ccfa60fdbba641763873018f879eaa8b19346dce",
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7"
     },
     "failure_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-native-dispatch-failure.json",
-    "failure_evidence_sha256": "d61ddf29de614163ff05d2d81c79f062ba6538ab01a3f33bf2d51d1ae78a5585"
+    "failure_evidence_sha256": "d61ddf29de614163ff05d2d81c79f062ba6538ab01a3f33bf2d51d1ae78a5585",
+    "native_import_recovered": true,
+    "independent_accepted": true,
+    "recovery": {
+      "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-recovery-accepted.json",
+      "evidence_sha256": "cb0c39fadec218da8bdbf472f07c7e078f3631df7ebba5f6b975b86e2b629205",
+      "original_strict_error": "codex_review_host_rollout_dispatch_or_final_ambiguous",
+      "explicit_pinned_recovery": true,
+      "encrypted_input_equivalence_verified": false,
+      "dispatches_retained": 4,
+      "manifest_sha256": "fa14c73051f49115735050d159a579d221216fd4be27973bc0f45739b6374234",
+      "module_sha256": "97805fa3268c22d1f79f403da78c32ad6c21b71087f198ea8e0d39d05d49cbea",
+      "native_event_sha256": "bc061a291937c81306bf7932c6ac1cca688db27477e7d71e3786b14aead78ae7",
+      "native_final_sha256": "12a652bc41359291350dac53397387d1be0586714cd0f7c95dc4143c85fc0b81",
+      "new_provider_requests": 0,
+      "key_reads": 0,
+      "all_originals_unchanged": true,
+      "read_only_replay": true
+    }
   },
   "batch_accounting": {
     "calls": 3,
@@ -187,7 +205,13 @@
     "receiptless_calls": 0,
     "not_sent": 0
   },
-  "next_action": "Resolve operator duplicate NEW_TASK provenance without modifying frozen inputs, discarding either dispatch, resending Provider calls or overwriting the existing final; current protocol rejects import.",
+  "next_action": "Run the existing Control/start-authorized.ps1 and enter the enterprise Key locally to continue completion-initial only; no ManualRetry. Original authorization expires 2026-10-26T15:46:27.795344+00:00.",
   "batch_closed": false,
-  "qualification_failure_due_to_model": false
+  "qualification_failure_due_to_model": false,
+  "local_recovery_verification": {
+    "new_tests_passed": 20,
+    "existing_regressions_passed": 102,
+    "read_only_inventory_unchanged": true,
+    "frozen_source_unchanged": true
+  }
 }
