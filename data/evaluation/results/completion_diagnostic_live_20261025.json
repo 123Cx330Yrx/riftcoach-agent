@@ -1,0 +1,86 @@
+{
+  "version": "completion-diagnostic-live-progress-v1",
+  "head": "303c21b42565237a7101d3dcf2357e4940bb9bb7",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
+  "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
+  "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
+  "phase": "control-b-accepted-awaiting-user-key-for-control-c",
+  "closed": false,
+  "new_requests": 1,
+  "new_known_tokens": 20393,
+  "cumulative": {
+    "http_requests": 5,
+    "known_tokens": 86984,
+    "unknown_reserved_tokens": 0,
+    "retries": 0
+  },
+  "control_b": {
+    "public_verdict": "pass",
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "material_sha256": "9c0586751cdbfa62e7e2eddd598de7c77b910bcc70fbab4381b3cc84d8d8c6a0",
+    "native": {
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a170c1-5ad1-7f20-bf37-107f2b22a116/msg_0370f309de022d70016add61226f5c8194953087fad8c92118",
+      "author_sha256": "2fe09e35e51e02d3fdb6479fe3d45ae4ec5935187cbbad326965df8ce558e352",
+      "native_final_sha256": "2fe09e35e51e02d3fdb6479fe3d45ae4ec5935187cbbad326965df8ce558e352",
+      "checkpoint_sha256": "a63a902936e77099d1f73b6ccce606458053761d435822e5b17516e08d20c04a",
+      "original_guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "source_checkpoint_sha256": "d02789e5c2c9489452bf753992226d24974c6fc33be5767f55a246f1d24e00c7"
+    },
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\control-b-primary.json",
+    "primary_sha256": "c19f8cd2b737cd733a1737bc7a709e095d57a38b4fb41ed493f843938f147521"
+  },
+  "original_stdout_roots_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\first-execution-roots.json",
+  "original_stdout_roots_sha256": "334b75cbc3cfd5b5108694a7a2c2a63e782e9005009dec3be6439c6bf51f75ed",
+  "checkpoint_handoff_defect": {
+    "symptom": "Frozen submit CLI did not emit updated checkpoint because its session sink defaults to no-op; using only launcher stdout would select stale checkpoint.",
+    "effects": "No duplicate request or semantic failure; native submission accepted once.",
+    "recovery_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\native-submit-root-recovery.json",
+    "recovery_sha256": "9f2cb735a6d358cf0025542f50268651e4a4f7ee68c819f5c954d03f6192348c",
+    "recovery_method": "derive subsequent checkpoints from original stdout anchor and verify full native submission; not original submit stdout",
+    "verified_derived_checkpoint_sha256": "65a0a07dce2dac1c72dcf240bd943bcd25f2c44d51c9bb3f4513c9c166e6f3c5",
+    "original_guard_preserved": true,
+    "old_receipts_unchanged": true,
+    "adapter_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\submit_review.py",
+    "adapter_check": {
+      "helper_sha256": "09478a4bcc299b38467615855262851373d212f7be7512daa3b6e2f1a7e54122",
+      "check_only_exit": 0,
+      "check_only_stdout_sha256": "ec4686a9435dbd6d73ad17b93f8f846425e85d1ce38b03e05b74daa4a6c9a5cf",
+      "check_only_output": {
+        "phase": "native_submit_adapter_verified",
+        "roots": {
+          "guard": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+          "checkpoint": "65a0a07dce2dac1c72dcf240bd943bcd25f2c44d51c9bb3f4513c9c166e6f3c5"
+        },
+        "status": {
+          "operations": 12,
+          "unresolved": [],
+          "timeout_waiting": false,
+          "format_waiting": false,
+          "closed": false,
+          "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+          "checkpoint_sha256": "65a0a07dce2dac1c72dcf240bd943bcd25f2c44d51c9bb3f4513c9c166e6f3c5",
+          "publication_allowed": false,
+          "production_admitted": false
+        },
+        "provider_requests": 0,
+        "key_reads": 0
+      },
+      "scope": "operator adapter uses frozen engine with checkpoint sink; frozen source and start entry unchanged",
+      "provider_requests": 0,
+      "key_reads": 0
+    },
+    "future_submit": "Use operator submit_review.py with sink=base.emit and original stdout/exit recording; do not repeat control-b submission."
+  },
+  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise reviewer key; control-c is next, no manual-retry flag.",
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation": "PAUSED",
+  "limitations": [
+    "One completion control accepted; no stability or policy-improvement conclusion.",
+    "No original-a completion, actual edit/application or fresh review yet.",
+    "Not product or full15 qualification."
+  ]
+}

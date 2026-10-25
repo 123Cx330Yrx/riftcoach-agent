@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "completion续接、冻结303c21b4、新原生作者/导入及入口检查完成；CI40095068270全绿，本次新授权已激活至北京时间10月26日09:45；待用户隐藏输入Key启动。零新请求，automation PAUSED。"
+pause_reason: "control-b完成度双审接受；累计5HTTP/86984known。交接记录修正并复核，待用户-Resume隐藏输入Key续control-c；未闭批，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,14 @@ pause_reason: "completion续接、冻结303c21b4、新原生作者/导入及入�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-25 completion诊断当前实测
+
+第一项control-b新增1HTTP/20393已知tokens，完成度pass；主审和既有独立作者实读全文/完整来源/政策/意见后均接受，真实native与run外作者字节一致、submit accepted。其OP.GG已有条件选片和具体回看行动，全文观摩限定下未凭空补读者本人参赛要求；没有补丁，没有清除facts专责遗留问题。该单项不证明稳定改善或全文通过。
+累计5HTTP/86984known/0unknown/0retry；前三次及原facts/native保留。当前未关闭，下一项control-c尚未发送；原稿a、实际应用及双fresh尚未执行。
+发现冻结submit CLI未传checkpoint sink，导入后0014/0015未留stdout；这是本地交接缺陷。保留原0001 stdout/exit及最初guard，不伪称事后hash为原输出。严格从原stdout锚0013核到0014 native_review_imported及0015 boundary，确认仅增加本次真实submission，旧库存不变；只读重放全部先前native接受。恢复根明确标为派生链验证，SHA65a0a07d；没有重发或补签。Operator新增submit_review.py显式sink=base.emit并保存每段stdout/exit；实际check-only核新根/授权/CI/原生通过，冻结源码/HEAD不变。
+**下一动作：** 用户运行原control/start-authorized.ps1 -Resume隐藏输入企业Key，继续control-c；不要使用ManualRetry或重启新批。本次授权北京时间10月26日09:45截止，余下包络/费用累计保持，automation PAUSED。证据data/evaluation/results/completion_diagnostic_live_20261025.json。
+
 
 2026-10-24完成completion诊断续接引擎与显式启动器。合同1.6.5复用既有session、owned worker、共享预算、原生审查及程序逐字补丁；顺序为b/c/d对照→原稿a的completion→兼容/编辑→唯一应用→实际同稿双fresh。它是诊断续接，不是完整产品Runtime注册或产品准入。
 原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。

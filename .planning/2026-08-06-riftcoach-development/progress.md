@@ -1,3 +1,10 @@
+## 2026-10-25 completion诊断当前实测
+
+第一项control-b新增1HTTP/20393已知tokens，完成度pass；主审和既有独立作者实读全文/完整来源/政策/意见后均接受，真实native与run外作者字节一致、submit accepted。其OP.GG已有条件选片和具体回看行动，全文观摩限定下未凭空补读者本人参赛要求；没有补丁，没有清除facts专责遗留问题。该单项不证明稳定改善或全文通过。
+累计5HTTP/86984known/0unknown/0retry；前三次及原facts/native保留。当前未关闭，下一项control-c尚未发送；原稿a、实际应用及双fresh尚未执行。
+发现冻结submit CLI未传checkpoint sink，导入后0014/0015未留stdout；这是本地交接缺陷。保留原0001 stdout/exit及最初guard，不伪称事后hash为原输出。严格从原stdout锚0013核到0014 native_review_imported及0015 boundary，确认仅增加本次真实submission，旧库存不变；只读重放全部先前native接受。恢复根明确标为派生链验证，SHA65a0a07d；没有重发或补签。Operator新增submit_review.py显式sink=base.emit并保存每段stdout/exit；实际check-only核新根/授权/CI/原生通过，冻结源码/HEAD不变。
+**下一动作：** 用户运行原control/start-authorized.ps1 -Resume隐藏输入企业Key，继续control-c；不要使用ManualRetry或重启新批。本次授权北京时间10月26日09:45截止，余下包络/费用累计保持，automation PAUSED。证据data/evaluation/results/completion_diagnostic_live_20261025.json。
+
 ## 2026-10-25 本次明确费用授权已激活
 
 用户明确“授权”最多新增10HTTP/803840tokens（6职责+4手动补测）、累计14/870431/3600活动秒，企业专线Sol/high、估价新增0.7296元非账单硬限。本次新grant create-only，SHA753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e；issued2026-10-25T01:45:21.610715Z，expires2026-10-26T01:45:21.610715Z，不扩旧授权。
