@@ -1,4 +1,23 @@
-## 2026-10-25 原15首例facts-initial已双审接受（当前）
+## 2026-10-26 原15首份报告双初审完成，1/15（当前）
+
+claim-scope:1的completion-initial新增1HTTP/14.641秒/18771已知tokens（输入18524、输出247），
+pass/100、issues/resolutions/advisories/repairs均为空。主审和既有独立作者实读完整25段、全部来源、
+知识、用户请求、政策和实际意见后均接受，真实native与run外作者逐字一致并唯一导入。
+已核K1—K5在正文的实际使用、缺失OP.GG资料的条件义务，以及ShowMaker观摩/阅读者身份；
+没有补造训练位置、个人参赛、阈值或篇幅要求。双initial pass后程序正常结束首例，
+outcome candidate_initial_pass_unqualified与原预期一致；无编辑/应用/fresh，不称修订成功。
+
+本批累计2HTTP/39425known/0unknown/0retry/0receiptless/0未发，完成1/15。
+严格只读replay实核两个真实native、作者、原收据、完整响应观测及费用，Operator/作者库存不变。
+原stdout guard faa6d5a1保持，最新checkpoint59b83542；0006—0008 stdout与最早exit SHA已留证。
+仅首例关闭，整批未seal；冻结HEAD34abe04e、CI40188299016及原plan/授权不变。
+**下一动作：** 用户运行同一control/start-authorized.ps1，隐藏输入企业Key，继续下一报告
+claim-scope:4的facts-initial；不加ManualRetry、不重发首例。授权北京时间2026-10-26 23:46:27
+截止不延展；automation PAUSED。尚未完成15项或产品资格，后续产品依赖保持。
+证据：data/evaluation/results/sol_original15_live_20261025.json；Control/claim-scope-1-completed-replay.json
+（SHA a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854）。
+
+## 2026-10-25 原15首例facts-initial已双审接受（历史）
 
 首例claim-scope:1的facts-initial新增1HTTP/33.141秒/20654已知tokens（输入20097、输出557），
 模型pass/100、issues/resolutions/repairs为空，仅advisories4/6。主审和既有独立作者实读完整25段、
