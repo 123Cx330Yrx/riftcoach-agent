@@ -15,6 +15,13 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-25 第二项completion对照已双审接受
+
+control-c新增1HTTP/20873已知tokens；模型唯一issue正确发现第21段明示阅读者本人参赛及个人训练与观摩请求冲突，引用28原用户请求。唯一逐字补丁只替换冲突末句，保留8.7–9.0/死亡≤3观察参照、记录/回看动作及K3，未误报第18段已完成的OP.GG行动。主审及既有独立作者全文核验均接受，原生事件与run外作者字节一致，实际submit accepted。内存补丁预览不是实际应用或fresh；facts遗留问题未清除。
+目前control-b/c均完成双审，新增累计2HTTP/41266known；继承后累计6HTTP/107857known/0unknown/0retry。未闭批，原成功前缀/费用保持。真实submit适配器已输出并保留0028 native_review_imported/0029 boundary及stdout/exit SHA，后续只读检查准确读到原stdout的9035ec20；没有第二次交接恢复或重发。
+**下一动作：** 用户运行原control/start-authorized.ps1 -Resume隐藏输入企业Key，续control-d；无ManualRetry，无新授权要求。本次授权北京时间10月26日09:45截止；冻结303c21b4/CI40095068270不变，automation PAUSED。未证明稳定改善、原稿a修订、实际同稿fresh、产品或15项资格。证据completion_diagnostic_live_20261025.json。
+
+
 ## 2026-10-25 completion诊断当前实测
 
 第一项control-b新增1HTTP/20393已知tokens，完成度pass；主审和既有独立作者实读全文/完整来源/政策/意见后均接受，真实native与run外作者字节一致、submit accepted。其OP.GG已有条件选片和具体回看行动，全文观摩限定下未凭空补读者本人参赛要求；没有补丁，没有清除facts专责遗留问题。该单项不证明稳定改善或全文通过。
@@ -61,7 +68,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-control-b已双审接受；用户运行control/start-authorized.ps1 -Resume隐藏输入Key续control-c，后续submit使用已核Operator适配器保留stdout检查点。不重买成功前缀或首次接受的a，不扩旧grant。
+control-b/c已双审接受；用户运行control/start-authorized.ps1 -Resume隐藏输入Key续control-d，submit适配器已真实验证保留stdout检查点。不重买成功前缀或首次接受的a，不扩旧grant。
 
 ## History
 

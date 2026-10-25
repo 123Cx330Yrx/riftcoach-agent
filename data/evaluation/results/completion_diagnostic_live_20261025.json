@@ -4,13 +4,13 @@
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
   "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
   "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
-  "phase": "control-b-accepted-awaiting-user-key-for-control-c",
+  "phase": "control-c-accepted-awaiting-user-key-for-control-d",
   "closed": false,
-  "new_requests": 1,
-  "new_known_tokens": 20393,
+  "new_requests": 2,
+  "new_known_tokens": 41266,
   "cumulative": {
-    "http_requests": 5,
-    "known_tokens": 86984,
+    "http_requests": 6,
+    "known_tokens": 107857,
     "unknown_reserved_tokens": 0,
     "retries": 0
   },
@@ -71,16 +71,63 @@
       "provider_requests": 0,
       "key_reads": 0
     },
-    "future_submit": "Use operator submit_review.py with sink=base.emit and original stdout/exit recording; do not repeat control-b submission."
+    "future_submit": "Use operator submit_review.py with sink=base.emit and original stdout/exit recording; do not repeat control-b submission.",
+    "actual_next_submit_verified": {
+      "key": "control-c",
+      "native_review_imported_and_boundary_emitted": true,
+      "original_stdout_exit_sha_preserved": true,
+      "readonly_followup_verified": true,
+      "provider_requests": 0,
+      "key_reads": 0
+    }
   },
-  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise reviewer key; control-c is next, no manual-retry flag.",
+  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise reviewer key; control-d is next, no manual-retry flag.",
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
   "automation": "PAUSED",
   "limitations": [
-    "One completion control accepted; no stability or policy-improvement conclusion.",
+    "Two completion controls accepted; no stability or policy-improvement conclusion.",
     "No original-a completion, actual edit/application or fresh review yet.",
     "Not product or full15 qualification."
-  ]
+  ],
+  "control_c": {
+    "public_verdict": "needs_revision",
+    "issues": 1,
+    "repair_operations": 1,
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "new_known_tokens": 20873,
+    "native": {
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a170c9-b13a-70f3-908f-5d08fe26239e/msg_0370f309de022d70016add631dcf808194bc15afcc7a3a33ce",
+      "author_sha256": "5d3ada3165c4ec84e4d838e9d22f3c4432853e1752eaff14102736aacd7be71e",
+      "native_final_sha256": "5d3ada3165c4ec84e4d838e9d22f3c4432853e1752eaff14102736aacd7be71e",
+      "checkpoint_sha256": "4769d350d56407f0ee50bc6d608fa69b074511f0e6763cbbc05cdab14a280b4d",
+      "original_guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "source_checkpoint_sha256": "b2e46f0ea47a903c958726ea66c2dd292fc762ba66f7cd89f76743fffa283b11"
+    },
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\control-c-primary.json",
+    "primary_sha256": "60f665ad26229d0cc68528216a1e919b8b743cab29fa69f634f1cb3bd145ca57",
+    "patch_preview_check": {
+      "primary_sha256": "60f665ad26229d0cc68528216a1e919b8b743cab29fa69f634f1cb3bd145ca57",
+      "patches_checked": 1,
+      "unique_anchor": true,
+      "correct_content_preserved": true,
+      "preview_only_not_application": true,
+      "preview_sha256": "50a26ff907c7845f7d6541e5d34b3e9800ab7b26a6f643a87a6364bc6904d27a"
+    },
+    "actual_application": false,
+    "source_read_evidence": "Current report/policy/full deterministic sources and knowledge inspected; full pack/generation/facts/provenance/utterance are value-identical to those already read for control-b; only report block21 changes."
+  },
+  "current_original_stdout_roots": {
+    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0005.stdout.txt",
+    "stdout_sha256": "53f08d8b3af507b00e15060ddcb5483c4fd609dab4a7c09bbf12ce4c3a864090",
+    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0005.exit.json",
+    "exit_sha256": "e71ae5d7d578e4c0d7d5c3b16bc089f3a372b862c2d9f4796d0b2585df0b58ca",
+    "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+    "checkpoint_sha256": "9035ec20b6050e47e3a9432016a89b79ce2c6ead025ec8c0e487e1c84d8094dc",
+    "checkpoint": "0029.json",
+    "root_source": "actual native submit adapter stdout; no recovery needed"
+  }
 }
