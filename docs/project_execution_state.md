@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "同稿facts-fresh已双审接受；10HTTP/170744known/68468unknown，待-Resume最后completion-fresh；未闭批，automation PAUSED。"
+pause_reason: "本次实际修订和同稿双fresh均双审接受，strict replay/seal完成；准备同版本评估与Runtime绑定，未授产品资格，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,20 @@ pause_reason: "同稿facts-fresh已双审接受；10HTTP/170744known/68468unknow
 
 ## 当前行动
 
-## 2026-10-25 同稿facts-fresh通过双审，待最后completion-fresh（当前）
+## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（当前）
+
+最后completion-fresh新增1HTTP/15.953秒/17891已知tokens，pass/100、issues为空，仅advisory21。主审和既有独立作者均实读完整实际新稿、来源、政策及公开响应后接受；真实native与作者原件逐字一致并唯一导入。其稿件SHA cf01c633与唯一application及facts-fresh完全相同，完整来源未变。OP.GG同Tier2已连到两局条件观摩、路线/参团/资源检查；观察身份及8.7–9.0/死亡≤3参照保留，未把可选澄清升级为错误。
+
+本包得到一份真实修订成功的诊断报告：三对照→原稿completion→compatibility/edit双审→三处逐字补丁唯一应用→实际同稿facts/completion双fresh均接受。终态candidate_repaired_pass_unqualified；这表示本切片修订成功且未授产品资格，不能把产品harness的保守FAIL返回误报为本次语义失败。9份真实native审查全部回放；原145件及3作者原件不变，42operations已消费、无未解决intent。严格只读replay及seal内再次replay均通过，库存前后不变；唯一outer seal SHA1c54efbd，最终原stdout根bb079662。终态/源代码/原件/历史失败不重写，application原静态flags保持，真实Host接受另证。
+
+新增共7HTTP/122044known，继承后11HTTP/188635known/68468unknown预留/1retry。一次control-d HTTP524只暂停同项，手动同请求补测成功；成功项未重买。未知预留不是账单；新增成功用量按渠道报价估算0.0713元，超时费用仍未知，不称总账单。关闭/回放/封存均0Key/0新请求；automation现场核PAUSED。原guard及各stdout/exit SHA保留；此前本地交接/适配器缺陷和旧语义拒绝也保留。
+
+**决策与下一动作：** 本次支持继续准备候选的正式同版本评估与现有Runtime绑定，不再围绕这份熟悉报告重测。先离线核原15输入、当前政策/传输与Runtime消费的版本差异，形成可审查的复用/变更及验收范围；尚无下一批付费执行授权。熟悉开发对照不是holdout或稳定率，渠道分组/上游身份也未独立证明；正式15、产品注册/真实DB与UI消费、自然Coach/Training、四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖仍在，阶段8E不变。
+证据：data/evaluation/results/completion_diagnostic_live_20261025.json；Control/closure-audit.json；Operator/seal.json。
+
+以下为历史记录，不是可执行入口。
+
+## 2026-10-25 同稿facts-fresh通过双审，待最后completion-fresh（历史）
 
 本次facts-fresh正常返回：新增1HTTP/36.406秒/20030已知tokens，pass/100，issues为空，仅advisory11/21。主审与既有独立作者实读同一实际应用新稿cf01c633及完整来源/政策/请求/公开意见后接受，真实native与run外作者逐字一致，submit accepted。复核数值/分组、Vex禁用率4%、Anivia负局、洛克时间窗口、观摩身份和条件观察参照；未把可读性建议升级错误，也未用分数代替核验。新稿source_index与绑定摘要刷新，底层事实/出处/知识/计算值保持。
 新增累计6HTTP/104153known/68468unknown预留，继承后10HTTP/170744known/68468unknown/1retry；未知预留非账单，旧524和全部成功/失败/费用保持。唯一application SHA37a43f43未变，无第二次应用；本轮只发送facts-fresh一次。原guard保持，0097/0098由真实0018 stdout/exit锚定，最新根107d01be；只读检查36operations/unresolved为空/timeout_waiting=false/closed=false，授权/CI/来源及先前全部native核验通过。

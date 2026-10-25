@@ -4,13 +4,13 @@
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
   "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
   "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
-  "phase": "facts-fresh-accepted-awaiting-user-key-for-completion-fresh",
-  "closed": false,
-  "new_requests": 6,
-  "new_known_tokens": 104153,
+  "phase": "closed-repaired-pass-unqualified",
+  "closed": true,
+  "new_requests": 7,
+  "new_known_tokens": 122044,
   "cumulative": {
-    "http_requests": 10,
-    "known_tokens": 170744,
+    "http_requests": 11,
+    "known_tokens": 188635,
     "unknown_reserved_tokens": 68468,
     "retries": 1
   },
@@ -81,7 +81,7 @@
       "key_reads": 0
     }
   },
-  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise key for the sole remaining completion-fresh on report cf01c633. No ManualRetry, repeated generation/controls/initial/facts-fresh or application. Review the actual final opinion, then read-only strict replay and create-only outer seal.",
+  "next_action": "Prepare the same candidate policy/transport binding for the existing original15 qualification and Runtime integration; reuse original materials, do not repurchase this closed diagnostic.",
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
@@ -122,14 +122,14 @@
     "source_read_evidence": "Current report/policy/full deterministic sources and knowledge inspected; full pack/generation/facts/provenance/utterance are value-identical to those already read for control-b; only report block21 changes."
   },
   "current_original_stdout_roots": {
-    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.stdout.txt",
-    "stdout_sha256": "3a967b5a471bc12858464a4365cba073a21454915d76826a778d748f1128cdb7",
-    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.exit.json",
-    "exit_sha256": "ed5d620b98332ebb497344d2d2cd3894a0fafab6e52c4d59ac6de7692477d4a2",
+    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0021.stdout.txt",
+    "stdout_sha256": "d993b360a0103a47ba4e318d376117a3260618c55ee288e011d958bb5c8b9c5c",
+    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0021.exit.json",
+    "exit_sha256": "f92455fa857409ac190f656604b061c1acd8022e129024214e733f989e2c270b",
     "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
-    "checkpoint_sha256": "107d01bee4f5b076e877669e54b8b8fff0305d7791a8d0836f25503c26a0c3a9",
-    "checkpoint": "0098.json",
-    "root_source": "actual facts-fresh native submit adapter stdout; next sole model duty is completion-fresh"
+    "checkpoint_sha256": "bb079662999f0936cd13dae4f3497dd0d61b6b682f7f89abbf3e2c8b237bb3dc",
+    "checkpoint": "0118.json",
+    "root_source": "actual host-only close stdout and retained exit; strict replay and unique seal accepted these original roots"
   },
   "new_unknown_reserved_tokens": 68468,
   "control_d": {
@@ -289,13 +289,17 @@
     "unique_operation": "0033-intent.json",
     "operations_count": 1,
     "report_sha256": "cf01c63370bacd3939bfba73b257621fab434715f5df246614b4d591471cd432",
-    "actual_fresh_request_sha256": {
+    "provider_requests": 0,
+    "key_reads": 0,
+    "record_flags_preserved": true,
+    "prepared_fresh_request_sha256": {
       "completion": "0669fb1602991d49bd2f26cf34c6a60fadbe8c1210ea2620019ed172e3cab3e3",
       "facts": "eee3dcd17d47d409f84ef0b9747d149fc3cc681f27cb9e5ee2e7ad4f40c30e77"
     },
-    "provider_requests": 0,
-    "key_reads": 0,
-    "record_flags_preserved": true
+    "actual_issued_fresh_request_sha256": {
+      "facts": "a0d1ba9230cc8d12813d38f0cf2b0d653454583efab45d77884b0d8f5168f996",
+      "completion": "777722a8f4024faf270d99f1fa89b707684d5a730e2f538a83c76f6b89286774"
+    }
   },
   "host_only_advance": {
     "adapter_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\advance_host.py",
@@ -356,6 +360,453 @@
     "output_tokens": 903,
     "elapsed_s": 36.406,
     "same_actual_application_report_sha256": "cf01c63370bacd3939bfba73b257621fab434715f5df246614b4d591471cd432",
-    "source_difference": "Report source_index/digest and catalog binding refreshed for actual new report; all original facts/provenance/knowledge and computed values retained."
+    "source_difference": "Report source_index/digest and catalog binding refreshed for actual new report; all original facts/provenance/knowledge and computed values retained.",
+    "submit_stdout_roots": {
+      "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.stdout.txt",
+      "stdout_sha256": "3a967b5a471bc12858464a4365cba073a21454915d76826a778d748f1128cdb7",
+      "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.exit.json",
+      "exit_sha256": "ed5d620b98332ebb497344d2d2cd3894a0fafab6e52c4d59ac6de7692477d4a2",
+      "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "checkpoint_sha256": "107d01bee4f5b076e877669e54b8b8fff0305d7791a8d0836f25503c26a0c3a9",
+      "checkpoint": "0098.json",
+      "root_source": "actual facts-fresh native submit adapter stdout; next sole model duty is completion-fresh"
+    }
+  },
+  "completion_fresh": {
+    "material_sha256": "9ae7dd80b14fa6a32c778d8eba6bc5f0f9d4dfc3d15941753ad4e28355ccca07",
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\completion-fresh-primary.json",
+    "primary_sha256": "23cedefcc13473dd02acfd1eb16627b2b4ecab6ea04e09d6356fa2ebbcbff391",
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "native": {
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a170ff-82f2-7a22-8e52-56d82366db4c/msg_0fe5a334390c61a5016add7121857481968352cc0aa9507877",
+      "author_sha256": "309e6e2eacd2f33b971340f63e097e07b76ec7bbb3f41e4ba12f96982ba21d8f",
+      "native_final_sha256": "309e6e2eacd2f33b971340f63e097e07b76ec7bbb3f41e4ba12f96982ba21d8f",
+      "checkpoint_sha256": "7e5bf84103c729e88ef1ee16be911944b8728965ecc34c1695c63f8201d19788",
+      "original_guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "source_checkpoint_sha256": "16523046d3ac3ece6964022465da2dd8e73b6f2786687ef46f4e5c090073d251"
+    },
+    "submission_sha256": "507e59817fc0f98e5e3d89efa5a5d450bbfee5d0ade0bc8e5f1101ef0eb86fa1",
+    "public_verdict": "pass",
+    "score": 100,
+    "issues": 0,
+    "advisory_blocks": [
+      21
+    ],
+    "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-011\\receipt.json",
+    "receipt_sha256": "9b98b189dd38b36dcaf5462dfc311a487e19ea337cf0a782b94f20b1025bc720",
+    "http_requests": 1,
+    "usage_state": "known",
+    "known_tokens": 17891,
+    "input_tokens": 17554,
+    "output_tokens": 337,
+    "elapsed_s": 15.953,
+    "same_actual_application_report_sha256": "cf01c63370bacd3939bfba73b257621fab434715f5df246614b4d591471cd432",
+    "full_source_equal_to_facts_fresh": true
+  },
+  "closure": {
+    "audit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\closure-audit.json",
+    "audit_sha256": "85f3ae4ccbd7b76a51c3641d2147c37145f8c0363c136250cbd6c03ad88cdf7e",
+    "seal_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\seal.json",
+    "seal_sha256": "1c54efbd12f15599a28a7a057b861967367b317207cdae387c8bb865933f536e",
+    "final_checkpoint_sha256": "bb079662999f0936cd13dae4f3497dd0d61b6b682f7f89abbf3e2c8b237bb3dc",
+    "outcome": "candidate_repaired_pass_unqualified",
+    "outcome_sha256": "ad4b9f48e9b8677539a5a19aeb2bb48ad25fe08671fe101b28ebd47b1e41279d",
+    "strict_replay": {
+      "strict_replay": true,
+      "replay_mode": "full-workflow",
+      "result": {
+        "outcome": "candidate_repaired_pass_unqualified",
+        "accounting": {
+          "calls": 11,
+          "tokens": 188635,
+          "reserved_tokens": 68468,
+          "stopped": false,
+          "router_calls": 11,
+          "logical": {
+            "control": 3,
+            "generation": 2,
+            "review": 4
+          },
+          "retries": 1,
+          "failed": false,
+          "attempts": [
+            {
+              "input_tokens": 7708,
+              "model": "glm-5.3-flash",
+              "ordinal": 1,
+              "output_tokens": 141,
+              "phase": "generation",
+              "profile": "glm-5.3-flash-candidate-enabled-high-replay",
+              "request_sha256": "02df45a8ad4bf78baa5967d7daeb9ff9fbc290eee9cc411755babc3b521204ed",
+              "role": "generation",
+              "status": "completed",
+              "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+            },
+            {
+              "input_tokens": 9796,
+              "model": "glm-5.3-flash",
+              "ordinal": 2,
+              "output_tokens": 3326,
+              "phase": "generation",
+              "profile": "glm-5.3-flash-candidate-enabled-high-replay",
+              "request_sha256": "34cc3205608c2af2530ae259dba62ac397c4b6d076489232c64c5fb5b9f590ed",
+              "role": "generation",
+              "status": "completed",
+              "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+            },
+            {
+              "input_tokens": 21558,
+              "model": "gpt-6.1-sol",
+              "ordinal": 3,
+              "output_tokens": 2531,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "16f732480379e4bf1d72cc9213e936e8a4872eac4e6ea2a1406108da1dae3fb4",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-necessity-nonstream-v1"
+            },
+            {
+              "error": "sol_call_failed",
+              "model": "gpt-6.1-sol",
+              "ordinal": 4,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "c9092ba8d381f137db98a3ae6221c50c5c706412ffaaa36c76168422b753cfab",
+              "role": "review",
+              "status": "failed",
+              "transport_id": "natural-sol-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20101,
+              "model": "gpt-6.1-sol",
+              "ordinal": 5,
+              "output_tokens": 292,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "fa1217d1c3361bf06819e31956d1c6368eff003cc8f5f0aa87b04eac24fd04fc",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20074,
+              "model": "gpt-6.1-sol",
+              "ordinal": 6,
+              "output_tokens": 799,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "c04a08bcf56dc5a4be5f3a0ce7eb727f9f80f930c191a5fcef82574fcf6156ef",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "error": "sol_call_failed",
+              "model": "gpt-6.1-sol",
+              "ordinal": 7,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "6002315861f720c8f1b4cd6c1fd2e0339038cbd47e2102880f0ddf5710e137a0",
+              "role": "review",
+              "status": "failed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20064,
+              "model": "gpt-6.1-sol",
+              "ordinal": 8,
+              "output_tokens": 1618,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "6002315861f720c8f1b4cd6c1fd2e0339038cbd47e2102880f0ddf5710e137a0",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 19985,
+              "model": "gpt-6.1-sol",
+              "ordinal": 9,
+              "output_tokens": 1190,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "d2f0f54c3a9dcfee12df607d4875ac4163df7f8dc50922731967da6fd030ab42",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 19127,
+              "model": "gpt-6.1-sol",
+              "ordinal": 10,
+              "output_tokens": 903,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "a0d1ba9230cc8d12813d38f0cf2b0d653454583efab45d77884b0d8f5168f996",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 17554,
+              "model": "gpt-6.1-sol",
+              "ordinal": 11,
+              "output_tokens": 337,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "777722a8f4024faf270d99f1fa89b707684d5a730e2f538a83c76f6b89286774",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            }
+          ]
+        },
+        "application": "# RiftCoach \u6559\u7ec3\u5f0f\u590d\u76d8\u62a5\u544a\n\n> \u89c2\u6469\u5bf9\u8c61\uff1aDK ShowMaker#KR1\u3002\u4ee5\u4e0b\u5185\u5bb9\u57fa\u4e8e\u8be5\u89c2\u6469\u5bf9\u8c61\u7684 5 \u5c40\u6837\u672c\uff08Riot API\uff0c\u961f\u5217 420\uff0c2 \u80dc 3 \u8d1f\uff0c\u80dc\u7387 40.0%\uff09\uff0c\u4e0d\u6784\u6210\u9605\u8bfb\u8005\u672c\u4eba\u7684\u80fd\u529b\u57fa\u7ebf\u6216\u8bad\u7ec3\u4f9d\u636e\u3002\n\n## 1. \u603b\u4f53\u7ed3\u8bba\n\n\u672c\u6837\u672c 4 \u5c40\u4e2d\u5355\u30011 \u5c40\u8f85\u52a9\uff0c\u8bad\u7ec3\u76ee\u6807\u672a\u63d0\u4f9b\uff0c\u6545\u4e0d\u6307\u5b9a\u4e3b\u4f4d\u7f6e\u3002\u6700\u503c\u5f97\u590d\u76d8\u7684\u5dee\u5f02\u662f\u8d62\u5c40\u4e0e\u8f93\u5c40\u7684\u53d1\u80b2\u4e0e\u8f93\u51fa\uff1a\u8d62\u5c40\u8865\u5200/\u5206\u949f 8.8\u3001\u7ecf\u6d4e/\u5206\u949f 505.29\u3001\u4f24\u5bb3/\u5206\u949f 1286.76\uff0c\u8f93\u5c40\u5206\u522b\u53ea\u6709 6.45\u3001389.41\u3001591.34 [K2]\u300215 \u5206\u949f\u524d\u6b7b\u4ea1\u5dee\u5f02\u5f88\u5c0f\uff08\u8d62 2.5 vs \u8f93 2.67\uff09\uff0c\u6309\u6307\u6807\u89e3\u91ca\u539f\u5219\u4e0d\u5e94\u5217\u4e3a\u4e3b\u8981\u80dc\u8d1f\u5206\u754c\u70b9 [K1]\u3002\u8fd9\u4e9b\u5dee\u5f02\u53ea\u80fd\u4f5c\u4e3a\u590d\u76d8\u5047\u8bbe\uff0c\u4e0d\u80fd\u76f4\u63a5\u5b9a\u4e3a\u539f\u56e0 [K3]\u3002\n\n## 2. \u5f53\u524d\u8868\u73b0\u4eae\u70b9\n\n- \u8f9b\u5fb7\u62c9\u80dc\u5c40\uff1a14/5/10\uff0c\u4f24\u5bb3/\u5206\u949f 1430.11\uff0c\u8865\u5200/\u5206\u949f 8.66\uff0c\u8f93\u51fa\u5360\u6bd4 27.5%\u3002\n- \u8587\u53e4\u4e1d\u80dc\u5c40\uff1a8/5/23\uff0c\u53c2\u56e2\u7387 77.5%\uff0c\u8865\u5200/\u5206\u949f 8.95\u3002\n- \u827e\u5c3c\u7ef4\u4e9a\u8d1f\u5c40 15 \u5206\u949f\u524d 0 \u6b7b\u4ea1\u3001\u8865\u5200/\u5206\u949f 9.64\uff1a\u751f\u5b58\u4e0e\u53d1\u80b2\u7ed3\u679c\u8f83\u597d\uff0c\u4f46\u4ec5\u8bf4\u660e\u7ed3\u679c\uff0c\u4e0d\u80fd\u76f4\u63a5\u63a8\u51fa\u5bf9\u7ebf\u6216\u9632\u6293\u80fd\u529b\u4f18\u79c0 [K1]\uff1b\u8be5\u5c40\u53c2\u56e2\u7387\u4ec5 27.8%\uff0c\u662f\u53e6\u4e00\u6761\u590d\u76d8\u7ebf\u7d22\u3002\n\n## 3. \u4e3b\u8981\u98ce\u9669\u70b9\n\n1. **\u8f93\u5c40\u53d1\u80b2\u4e0e\u8f93\u51fa\u9aa4\u964d**\uff1a\u8865\u5200/\u5206\u949f 6.45\u3001\u4f24\u5bb3/\u5206\u949f 591.34\uff0c\u8fdc\u4f4e\u4e8e\u8d62\u5c40\u3002\u6309\u8bc1\u636e\u89c4\u5219\uff0c\u53ef\u628a\u5b89\u5168\u53d1\u80b2\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u5217\u4e3a\u5f85\u9a8c\u8bc1\u5047\u8bbe\uff0c\u4e0d\u80fd\u9884\u8bbe\u67d0\u4e00\u9879\u5df2\u662f\u539f\u56e0 [K2][K3]\u3002\n2. **\u8f85\u52a9\u4f4d\u5361\u871c\u5c14\u5c40\uff08KR_8370293236\uff09**\uff1a1/13/11\uff0c15 \u5206\u949f\u524d\u6b7b\u4ea1 7 \u6b21\uff0c\u8865\u5200/\u5206\u949f 1.34\u3002\u4ec5 1 \u5c40\u8f85\u52a9\u6837\u672c\uff0c\u4e0d\u80fd\u636e\u6b64\u8bc4\u4ef7\u8f85\u52a9\u80fd\u529b\uff0c\u4f46\u5b83\u662f\u672c\u6837\u672c\u6700\u5927\u7684\u5355\u5c40\u5f02\u5e38\u503c\u3002\u6d1b\u514b\u8d1f\u5c40\u7684\u6b7b\u4ea1\u96c6\u4e2d\u5728 12:05 \u4e4b\u540e\uff0c\u63d0\u793a\u9700\u6838\u5bf9\u4e2d\u671f\u4e4b\u540e\u7684\u51b3\u7b56\uff0c\u800c\u975e 15 \u5206\u949f\u524d [K1]\u3002\n\n## 4. \u8d62\u5c40\u4e0e\u8f93\u5c40\u5dee\u5f02\n\n| \u6307\u6807 | \u8d62\u5c40 | \u8f93\u5c40 |\n|---|---:|---:|\n| \u8865\u5200/\u5206\u949f | 8.8 | 6.45 |\n| \u7ecf\u6d4e/\u5206\u949f | 505.29 | 389.41 |\n| \u4f24\u5bb3/\u5206\u949f | 1286.76 | 591.34 |\n| \u89c6\u91ce\u5206 | 33.5 | 52.67 |\n| 15\u5206\u949f\u524d\u6b7b\u4ea1 | 2.5 | 2.67 |\n\n\u89c6\u91ce\u5206\u8f93\u5c40\u66f4\u9ad8\uff0852.67 vs 33.5\uff09\uff0c\u53ef\u80fd\u4e0e\u843d\u540e\u9632\u5b88\u76f8\u5173\uff0c\u4ec5\u4e3a\u5047\u8bbe\uff1b\u5747\u503c\u5dee\u5f02\u4e0d\u4ee3\u8868\u9010\u5c40\u65b9\u5411\u4e00\u81f4\u6216\u56e0\u679c\u5173\u7cfb [K2]\u3002\n\n## 5. \u4e0b\u4e00\u6b65\u590d\u76d8\u5efa\u8bae\n\n- \u9010\u5c40\u56de\u770b\u8f93\u5c40\u7684\u53d1\u80b2\u8def\u7ebf\u4e0e\u53c2\u56e2\u65f6\u673a\uff0c\u68c0\u67e5\u4e2d\u671f\u6b7b\u4ea1\u53d1\u751f\u524d\u7684\u4f4d\u7f6e\u4e0e\u8d44\u6e90\u9009\u62e9\uff08\u6d1b\u514b\u5c40\u6b7b\u4ea1\u96c6\u4e2d\u5728 12 \u5206\u949f\u540e\uff09\uff0c\u4e0d\u9884\u8bbe\u539f\u56e0 [K3]\u3002\n- \u6838\u5bf9\u8f9b\u5fb7\u62c9/\u8587\u53e4\u4e1d\u4e24\u5c40\u4e0e\u8f93\u5c40\u5728\u8d44\u6e90\u5206\u914d\u4e0a\u7684\u5dee\u522b\uff0c\u4f5c\u4e3a\u53d1\u80b2\u5dee\u5f02\u5047\u8bbe\u7684\u5bf9\u7167 [K2]\u3002\n- \u82e5\u60f3\u7ec3\u4e2d\u5355\uff0c\u4e00\u4e2a\u53ef\u8c03\u67e5\u7684\u82f1\u96c4\u6c60\u95ee\u9898\uff1a\u672c\u6837\u672c\u4e2d\u5355\u82f1\u96c4\u4e2d\uff0cOP.GG \u4e2d\u5355\u5feb\u7167\uff08\u68c0\u7d22\u65f6\u95f4 2026-09-10 12:15 UTC\uff09\u663e\u793a\u8f9b\u5fb7\u62c9\u4e3a Tier 2\u3001\u6392\u540d 12\u3001\u80dc\u7387 49%\u3001\u7981\u7528\u7387 10%\uff1b\u8587\u53e4\u4e1d\u4e3a Tier 2\u3001\u6392\u540d 14\u3001\u80dc\u7387 52%\u3001\u7981\u7528\u7387 4%\uff1b\u827e\u5c3c\u7ef4\u4e9a\u4e3a Tier 3\u3001\u6392\u540d 26\u3001\u80dc\u7387 51%\u3002\u6b64\u4e3a\u5f53\u524d\u5feb\u7167\u5bf9\u7167\uff0c\u4e0d\u4ee3\u8868\u672c\u6837\u672c\u5bf9\u5c40\u65f6\u7684\u7248\u672c\uff0c\u4e0d\u80fd\u89e3\u91ca\u5386\u53f2\u80dc\u8d1f\uff0c\u4e5f\u4e0d\u80fd\u5f53\u4f5c\u540c\u6bb5\u4f4d\u540c\u7248\u672c\u57fa\u51c6\u3002\u82e5\u9009\u62e9\u4e2d\u5355\u89c2\u6469\uff0c\u53ef\u6309\u8fd9\u4efd\u5feb\u7167\u4e2d\u8f9b\u5fb7\u62c9\u4e0e\u8587\u53e4\u4e1d\u540c\u4e3a Tier 2\uff0c\u9009\u53d6\u672c\u6837\u672c\u8fd9\u4e24\u5c40\u4f5c\u4e3a\u89c2\u6469\u5bf9\u7167\uff0c\u9010\u9879\u8bb0\u5f55\u53d1\u80b2\u8def\u7ebf\u4e0e\u53c2\u56e2\u65f6\u673a\uff0c\u6838\u5bf9\u8d44\u6e90\u9009\u62e9\u7684\u5dee\u5f02 [K2][K3]\u3002\u8fd9\u53ea\u662f\u89c2\u6469\u53d6\u6837\u5b89\u6392\uff0c\u4e0d\u4f5c\u4e3a\u9605\u8bfb\u8005\u7684\u4e2a\u4eba\u8bad\u7ec3\u4f9d\u636e\u3002\n\n## 6. \u8bad\u7ec3\u8ba1\u5212\n\n\u8bad\u7ec3\u76ee\u6807\u672a\u77e5\uff0c\u4fdd\u6301\u6761\u4ef6\u5f0f\uff1b\u4ee5\u4e0b\u4ec5\u662f\u89c2\u6469\u89c6\u89d2\u7684\u6761\u4ef6\u7ec3\u4e60\uff0c\u9700\u8bfb\u8005\u81ea\u9009\u76ee\u6807\u540e\u624d\u9002\u7528\uff1a\n\n- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002\n- \u82e5\u9009\u62e9**\u7ec3\u8f85\u52a9**\uff1a\u73b0\u6709\u5361\u871c\u5c14\u5355\u5c40\u6837\u672c\u4e0d\u8db3\u4ee5\u8bbe\u6307\u6807\uff0c\u5148\u79ef\u7d2f\u591a\u5c40\u8f85\u52a9\u6837\u672c\uff0c\u518d\u6309\u5047\u8bbe\u9a8c\u8bc1\u6d41\u7a0b\u590d\u76d8 [K3]\u3002\n\n## 7. \u6570\u636e\u8fb9\u754c\u4e0e\u77e5\u8bc6\u6765\u6e90\n\n- \u73a9\u5bb6\u6570\u636e\uff1aRiot API 5 \u5c40\uff08\u961f\u5217 420\uff09\uff0c\u5168\u90e8\u7eb3\u5165\uff0c\u65e0\u6392\u9664\u3002\u5b98\u65b9\u8865\u4e01 16.17\uff08\u53d1\u5e03 2026-08-25\uff09\u4ec5\u652f\u6301\u7248\u672c\u5bf9\u9f50\uff1bData Dragon 16.17.1 \u4ec5\u7528\u4e8e\u4e2d\u6587\u540d\u79f0\u6620\u5c04\u3002\n- OP.GG \u4e3a\u90e8\u5206\u6765\u6e90\uff08partial\uff09\uff0c\u4e2d\u5355/\u8f85\u52a9\u5feb\u7167\u68c0\u7d22\u4e8e 2026-09-10\uff0c\u4ec5\u9650\u5f53\u524d\u5feb\u7167\u5bf9\u7167\u7528\u9014\u3002\n- \u77e5\u8bc6\u5f15\u7528\uff1a[K1] 01_metric_interpretation.md\u300c\u65e9\u671f\u6b7b\u4ea1\u300d\uff1b[K2] 01_metric_interpretation.md\u300c\u8865\u5200\u4e0e\u7ecf\u6d4e\u300d\uff1b[K3] 03_training_plan.md\u300c\u5047\u8bbe\u9a8c\u8bc1\u300d\u3002\n- \u672a\u63d0\u4f9b\u672c\u4eba\u751f\u6daf\u6570\u636e\u4e0e\u8bad\u7ec3\u76ee\u6807\uff1b\u89c2\u5bdf\u4f4d\u7f6e\u4ec5\u4ee3\u8868\u6240\u9009\u5bf9\u5c40\uff0c\u4e0d\u6784\u6210\u4e3b\u4f4d\u7f6e\u7ed3\u8bba\u3002",
+        "publication_allowed": false,
+        "production_admitted": false
+      },
+      "native_reviews": 9,
+      "accounting": {
+        "calls": 11,
+        "tokens": 188635,
+        "reserved_tokens": 68468,
+        "retries": 1
+      },
+      "publication_allowed": false
+    },
+    "strict_seal_replay": {
+      "strict_replay": true,
+      "replay_mode": "full-workflow",
+      "result": {
+        "outcome": "candidate_repaired_pass_unqualified",
+        "accounting": {
+          "calls": 11,
+          "tokens": 188635,
+          "reserved_tokens": 68468,
+          "stopped": false,
+          "router_calls": 11,
+          "logical": {
+            "control": 3,
+            "generation": 2,
+            "review": 4
+          },
+          "retries": 1,
+          "failed": false,
+          "attempts": [
+            {
+              "input_tokens": 7708,
+              "model": "glm-5.3-flash",
+              "ordinal": 1,
+              "output_tokens": 141,
+              "phase": "generation",
+              "profile": "glm-5.3-flash-candidate-enabled-high-replay",
+              "request_sha256": "02df45a8ad4bf78baa5967d7daeb9ff9fbc290eee9cc411755babc3b521204ed",
+              "role": "generation",
+              "status": "completed",
+              "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+            },
+            {
+              "input_tokens": 9796,
+              "model": "glm-5.3-flash",
+              "ordinal": 2,
+              "output_tokens": 3326,
+              "phase": "generation",
+              "profile": "glm-5.3-flash-candidate-enabled-high-replay",
+              "request_sha256": "34cc3205608c2af2530ae259dba62ac397c4b6d076489232c64c5fb5b9f590ed",
+              "role": "generation",
+              "status": "completed",
+              "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+            },
+            {
+              "input_tokens": 21558,
+              "model": "gpt-6.1-sol",
+              "ordinal": 3,
+              "output_tokens": 2531,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "16f732480379e4bf1d72cc9213e936e8a4872eac4e6ea2a1406108da1dae3fb4",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-necessity-nonstream-v1"
+            },
+            {
+              "error": "sol_call_failed",
+              "model": "gpt-6.1-sol",
+              "ordinal": 4,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "c9092ba8d381f137db98a3ae6221c50c5c706412ffaaa36c76168422b753cfab",
+              "role": "review",
+              "status": "failed",
+              "transport_id": "natural-sol-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20101,
+              "model": "gpt-6.1-sol",
+              "ordinal": 5,
+              "output_tokens": 292,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "fa1217d1c3361bf06819e31956d1c6368eff003cc8f5f0aa87b04eac24fd04fc",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20074,
+              "model": "gpt-6.1-sol",
+              "ordinal": 6,
+              "output_tokens": 799,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "c04a08bcf56dc5a4be5f3a0ce7eb727f9f80f930c191a5fcef82574fcf6156ef",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "error": "sol_call_failed",
+              "model": "gpt-6.1-sol",
+              "ordinal": 7,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "6002315861f720c8f1b4cd6c1fd2e0339038cbd47e2102880f0ddf5710e137a0",
+              "role": "review",
+              "status": "failed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20064,
+              "model": "gpt-6.1-sol",
+              "ordinal": 8,
+              "output_tokens": 1618,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "6002315861f720c8f1b4cd6c1fd2e0339038cbd47e2102880f0ddf5710e137a0",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 19985,
+              "model": "gpt-6.1-sol",
+              "ordinal": 9,
+              "output_tokens": 1190,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "d2f0f54c3a9dcfee12df607d4875ac4163df7f8dc50922731967da6fd030ab42",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 19127,
+              "model": "gpt-6.1-sol",
+              "ordinal": 10,
+              "output_tokens": 903,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "a0d1ba9230cc8d12813d38f0cf2b0d653454583efab45d77884b0d8f5168f996",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 17554,
+              "model": "gpt-6.1-sol",
+              "ordinal": 11,
+              "output_tokens": 337,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "777722a8f4024faf270d99f1fa89b707684d5a730e2f538a83c76f6b89286774",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-completion-necessity-nonstream-v1"
+            }
+          ]
+        },
+        "application": "# RiftCoach \u6559\u7ec3\u5f0f\u590d\u76d8\u62a5\u544a\n\n> \u89c2\u6469\u5bf9\u8c61\uff1aDK ShowMaker#KR1\u3002\u4ee5\u4e0b\u5185\u5bb9\u57fa\u4e8e\u8be5\u89c2\u6469\u5bf9\u8c61\u7684 5 \u5c40\u6837\u672c\uff08Riot API\uff0c\u961f\u5217 420\uff0c2 \u80dc 3 \u8d1f\uff0c\u80dc\u7387 40.0%\uff09\uff0c\u4e0d\u6784\u6210\u9605\u8bfb\u8005\u672c\u4eba\u7684\u80fd\u529b\u57fa\u7ebf\u6216\u8bad\u7ec3\u4f9d\u636e\u3002\n\n## 1. \u603b\u4f53\u7ed3\u8bba\n\n\u672c\u6837\u672c 4 \u5c40\u4e2d\u5355\u30011 \u5c40\u8f85\u52a9\uff0c\u8bad\u7ec3\u76ee\u6807\u672a\u63d0\u4f9b\uff0c\u6545\u4e0d\u6307\u5b9a\u4e3b\u4f4d\u7f6e\u3002\u6700\u503c\u5f97\u590d\u76d8\u7684\u5dee\u5f02\u662f\u8d62\u5c40\u4e0e\u8f93\u5c40\u7684\u53d1\u80b2\u4e0e\u8f93\u51fa\uff1a\u8d62\u5c40\u8865\u5200/\u5206\u949f 8.8\u3001\u7ecf\u6d4e/\u5206\u949f 505.29\u3001\u4f24\u5bb3/\u5206\u949f 1286.76\uff0c\u8f93\u5c40\u5206\u522b\u53ea\u6709 6.45\u3001389.41\u3001591.34 [K2]\u300215 \u5206\u949f\u524d\u6b7b\u4ea1\u5dee\u5f02\u5f88\u5c0f\uff08\u8d62 2.5 vs \u8f93 2.67\uff09\uff0c\u6309\u6307\u6807\u89e3\u91ca\u539f\u5219\u4e0d\u5e94\u5217\u4e3a\u4e3b\u8981\u80dc\u8d1f\u5206\u754c\u70b9 [K1]\u3002\u8fd9\u4e9b\u5dee\u5f02\u53ea\u80fd\u4f5c\u4e3a\u590d\u76d8\u5047\u8bbe\uff0c\u4e0d\u80fd\u76f4\u63a5\u5b9a\u4e3a\u539f\u56e0 [K3]\u3002\n\n## 2. \u5f53\u524d\u8868\u73b0\u4eae\u70b9\n\n- \u8f9b\u5fb7\u62c9\u80dc\u5c40\uff1a14/5/10\uff0c\u4f24\u5bb3/\u5206\u949f 1430.11\uff0c\u8865\u5200/\u5206\u949f 8.66\uff0c\u8f93\u51fa\u5360\u6bd4 27.5%\u3002\n- \u8587\u53e4\u4e1d\u80dc\u5c40\uff1a8/5/23\uff0c\u53c2\u56e2\u7387 77.5%\uff0c\u8865\u5200/\u5206\u949f 8.95\u3002\n- \u827e\u5c3c\u7ef4\u4e9a\u8d1f\u5c40 15 \u5206\u949f\u524d 0 \u6b7b\u4ea1\u3001\u8865\u5200/\u5206\u949f 9.64\uff1a\u751f\u5b58\u4e0e\u53d1\u80b2\u7ed3\u679c\u8f83\u597d\uff0c\u4f46\u4ec5\u8bf4\u660e\u7ed3\u679c\uff0c\u4e0d\u80fd\u76f4\u63a5\u63a8\u51fa\u5bf9\u7ebf\u6216\u9632\u6293\u80fd\u529b\u4f18\u79c0 [K1]\uff1b\u8be5\u5c40\u53c2\u56e2\u7387\u4ec5 27.8%\uff0c\u662f\u53e6\u4e00\u6761\u590d\u76d8\u7ebf\u7d22\u3002\n\n## 3. \u4e3b\u8981\u98ce\u9669\u70b9\n\n1. **\u8f93\u5c40\u53d1\u80b2\u4e0e\u8f93\u51fa\u9aa4\u964d**\uff1a\u8865\u5200/\u5206\u949f 6.45\u3001\u4f24\u5bb3/\u5206\u949f 591.34\uff0c\u8fdc\u4f4e\u4e8e\u8d62\u5c40\u3002\u6309\u8bc1\u636e\u89c4\u5219\uff0c\u53ef\u628a\u5b89\u5168\u53d1\u80b2\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u5217\u4e3a\u5f85\u9a8c\u8bc1\u5047\u8bbe\uff0c\u4e0d\u80fd\u9884\u8bbe\u67d0\u4e00\u9879\u5df2\u662f\u539f\u56e0 [K2][K3]\u3002\n2. **\u8f85\u52a9\u4f4d\u5361\u871c\u5c14\u5c40\uff08KR_8370293236\uff09**\uff1a1/13/11\uff0c15 \u5206\u949f\u524d\u6b7b\u4ea1 7 \u6b21\uff0c\u8865\u5200/\u5206\u949f 1.34\u3002\u4ec5 1 \u5c40\u8f85\u52a9\u6837\u672c\uff0c\u4e0d\u80fd\u636e\u6b64\u8bc4\u4ef7\u8f85\u52a9\u80fd\u529b\uff0c\u4f46\u5b83\u662f\u672c\u6837\u672c\u6700\u5927\u7684\u5355\u5c40\u5f02\u5e38\u503c\u3002\u6d1b\u514b\u8d1f\u5c40\u7684\u6b7b\u4ea1\u96c6\u4e2d\u5728 12:05 \u4e4b\u540e\uff0c\u63d0\u793a\u9700\u6838\u5bf9\u4e2d\u671f\u4e4b\u540e\u7684\u51b3\u7b56\uff0c\u800c\u975e 15 \u5206\u949f\u524d [K1]\u3002\n\n## 4. \u8d62\u5c40\u4e0e\u8f93\u5c40\u5dee\u5f02\n\n| \u6307\u6807 | \u8d62\u5c40 | \u8f93\u5c40 |\n|---|---:|---:|\n| \u8865\u5200/\u5206\u949f | 8.8 | 6.45 |\n| \u7ecf\u6d4e/\u5206\u949f | 505.29 | 389.41 |\n| \u4f24\u5bb3/\u5206\u949f | 1286.76 | 591.34 |\n| \u89c6\u91ce\u5206 | 33.5 | 52.67 |\n| 15\u5206\u949f\u524d\u6b7b\u4ea1 | 2.5 | 2.67 |\n\n\u89c6\u91ce\u5206\u8f93\u5c40\u66f4\u9ad8\uff0852.67 vs 33.5\uff09\uff0c\u53ef\u80fd\u4e0e\u843d\u540e\u9632\u5b88\u76f8\u5173\uff0c\u4ec5\u4e3a\u5047\u8bbe\uff1b\u5747\u503c\u5dee\u5f02\u4e0d\u4ee3\u8868\u9010\u5c40\u65b9\u5411\u4e00\u81f4\u6216\u56e0\u679c\u5173\u7cfb [K2]\u3002\n\n## 5. \u4e0b\u4e00\u6b65\u590d\u76d8\u5efa\u8bae\n\n- \u9010\u5c40\u56de\u770b\u8f93\u5c40\u7684\u53d1\u80b2\u8def\u7ebf\u4e0e\u53c2\u56e2\u65f6\u673a\uff0c\u68c0\u67e5\u4e2d\u671f\u6b7b\u4ea1\u53d1\u751f\u524d\u7684\u4f4d\u7f6e\u4e0e\u8d44\u6e90\u9009\u62e9\uff08\u6d1b\u514b\u5c40\u6b7b\u4ea1\u96c6\u4e2d\u5728 12 \u5206\u949f\u540e\uff09\uff0c\u4e0d\u9884\u8bbe\u539f\u56e0 [K3]\u3002\n- \u6838\u5bf9\u8f9b\u5fb7\u62c9/\u8587\u53e4\u4e1d\u4e24\u5c40\u4e0e\u8f93\u5c40\u5728\u8d44\u6e90\u5206\u914d\u4e0a\u7684\u5dee\u522b\uff0c\u4f5c\u4e3a\u53d1\u80b2\u5dee\u5f02\u5047\u8bbe\u7684\u5bf9\u7167 [K2]\u3002\n- \u82e5\u60f3\u7ec3\u4e2d\u5355\uff0c\u4e00\u4e2a\u53ef\u8c03\u67e5\u7684\u82f1\u96c4\u6c60\u95ee\u9898\uff1a\u672c\u6837\u672c\u4e2d\u5355\u82f1\u96c4\u4e2d\uff0cOP.GG \u4e2d\u5355\u5feb\u7167\uff08\u68c0\u7d22\u65f6\u95f4 2026-09-10 12:15 UTC\uff09\u663e\u793a\u8f9b\u5fb7\u62c9\u4e3a Tier 2\u3001\u6392\u540d 12\u3001\u80dc\u7387 49%\u3001\u7981\u7528\u7387 10%\uff1b\u8587\u53e4\u4e1d\u4e3a Tier 2\u3001\u6392\u540d 14\u3001\u80dc\u7387 52%\u3001\u7981\u7528\u7387 4%\uff1b\u827e\u5c3c\u7ef4\u4e9a\u4e3a Tier 3\u3001\u6392\u540d 26\u3001\u80dc\u7387 51%\u3002\u6b64\u4e3a\u5f53\u524d\u5feb\u7167\u5bf9\u7167\uff0c\u4e0d\u4ee3\u8868\u672c\u6837\u672c\u5bf9\u5c40\u65f6\u7684\u7248\u672c\uff0c\u4e0d\u80fd\u89e3\u91ca\u5386\u53f2\u80dc\u8d1f\uff0c\u4e5f\u4e0d\u80fd\u5f53\u4f5c\u540c\u6bb5\u4f4d\u540c\u7248\u672c\u57fa\u51c6\u3002\u82e5\u9009\u62e9\u4e2d\u5355\u89c2\u6469\uff0c\u53ef\u6309\u8fd9\u4efd\u5feb\u7167\u4e2d\u8f9b\u5fb7\u62c9\u4e0e\u8587\u53e4\u4e1d\u540c\u4e3a Tier 2\uff0c\u9009\u53d6\u672c\u6837\u672c\u8fd9\u4e24\u5c40\u4f5c\u4e3a\u89c2\u6469\u5bf9\u7167\uff0c\u9010\u9879\u8bb0\u5f55\u53d1\u80b2\u8def\u7ebf\u4e0e\u53c2\u56e2\u65f6\u673a\uff0c\u6838\u5bf9\u8d44\u6e90\u9009\u62e9\u7684\u5dee\u5f02 [K2][K3]\u3002\u8fd9\u53ea\u662f\u89c2\u6469\u53d6\u6837\u5b89\u6392\uff0c\u4e0d\u4f5c\u4e3a\u9605\u8bfb\u8005\u7684\u4e2a\u4eba\u8bad\u7ec3\u4f9d\u636e\u3002\n\n## 6. \u8bad\u7ec3\u8ba1\u5212\n\n\u8bad\u7ec3\u76ee\u6807\u672a\u77e5\uff0c\u4fdd\u6301\u6761\u4ef6\u5f0f\uff1b\u4ee5\u4e0b\u4ec5\u662f\u89c2\u6469\u89c6\u89d2\u7684\u6761\u4ef6\u7ec3\u4e60\uff0c\u9700\u8bfb\u8005\u81ea\u9009\u76ee\u6807\u540e\u624d\u9002\u7528\uff1a\n\n- \u82e5\u9009\u62e9**\u7ec3\u4e2d\u5355**\uff1a\u4ee5\u8d62\u5c40\u6837\u672c\u4e3a\u89c2\u5bdf\u53c2\u7167\uff08\u8865\u5200/\u5206\u949f\u7ea6 8.7\u20139.0\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u22643\uff09\uff0c\u4e0b\u4e00\u6279\u4e2d\u5355\u5bf9\u5c40\u8bb0\u5f55\u8fd9\u4e24\u9879\u89c2\u5bdf\u6307\u6807\uff0c\u518d\u56de\u770b\u53d1\u80b2\u4e2d\u65ad\u7684\u5177\u4f53\u65f6\u95f4\u70b9 [K3]\u3002\n- \u82e5\u9009\u62e9**\u7ec3\u8f85\u52a9**\uff1a\u73b0\u6709\u5361\u871c\u5c14\u5355\u5c40\u6837\u672c\u4e0d\u8db3\u4ee5\u8bbe\u6307\u6807\uff0c\u5148\u79ef\u7d2f\u591a\u5c40\u8f85\u52a9\u6837\u672c\uff0c\u518d\u6309\u5047\u8bbe\u9a8c\u8bc1\u6d41\u7a0b\u590d\u76d8 [K3]\u3002\n\n## 7. \u6570\u636e\u8fb9\u754c\u4e0e\u77e5\u8bc6\u6765\u6e90\n\n- \u73a9\u5bb6\u6570\u636e\uff1aRiot API 5 \u5c40\uff08\u961f\u5217 420\uff09\uff0c\u5168\u90e8\u7eb3\u5165\uff0c\u65e0\u6392\u9664\u3002\u5b98\u65b9\u8865\u4e01 16.17\uff08\u53d1\u5e03 2026-08-25\uff09\u4ec5\u652f\u6301\u7248\u672c\u5bf9\u9f50\uff1bData Dragon 16.17.1 \u4ec5\u7528\u4e8e\u4e2d\u6587\u540d\u79f0\u6620\u5c04\u3002\n- OP.GG \u4e3a\u90e8\u5206\u6765\u6e90\uff08partial\uff09\uff0c\u4e2d\u5355/\u8f85\u52a9\u5feb\u7167\u68c0\u7d22\u4e8e 2026-09-10\uff0c\u4ec5\u9650\u5f53\u524d\u5feb\u7167\u5bf9\u7167\u7528\u9014\u3002\n- \u77e5\u8bc6\u5f15\u7528\uff1a[K1] 01_metric_interpretation.md\u300c\u65e9\u671f\u6b7b\u4ea1\u300d\uff1b[K2] 01_metric_interpretation.md\u300c\u8865\u5200\u4e0e\u7ecf\u6d4e\u300d\uff1b[K3] 03_training_plan.md\u300c\u5047\u8bbe\u9a8c\u8bc1\u300d\u3002\n- \u672a\u63d0\u4f9b\u672c\u4eba\u751f\u6daf\u6570\u636e\u4e0e\u8bad\u7ec3\u76ee\u6807\uff1b\u89c2\u5bdf\u4f4d\u7f6e\u4ec5\u4ee3\u8868\u6240\u9009\u5bf9\u5c40\uff0c\u4e0d\u6784\u6210\u4e3b\u4f4d\u7f6e\u7ed3\u8bba\u3002",
+        "publication_allowed": false,
+        "production_admitted": false
+      },
+      "native_reviews": 9,
+      "accounting": {
+        "calls": 11,
+        "tokens": 188635,
+        "reserved_tokens": 68468,
+        "retries": 1
+      },
+      "publication_allowed": false,
+      "seal_sha256": "1c54efbd12f15599a28a7a057b861967367b317207cdae387c8bb865933f536e"
+    },
+    "replay_exit": {
+      "action": "replay",
+      "exit_code": 0,
+      "original_roots": {
+        "guard": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+        "checkpoint": "bb079662999f0936cd13dae4f3497dd0d61b6b682f7f89abbf3e2c8b237bb3dc"
+      },
+      "stdout_sha256": "21d8be48264c82aee5ef7fb36fd9b05e3caa457a63f883964fbd7fdce0a21875",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "provider_requests": 0,
+      "key_reads": 0
+    },
+    "seal_exit": {
+      "action": "seal",
+      "exit_code": 0,
+      "original_roots": {
+        "guard": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+        "checkpoint": "bb079662999f0936cd13dae4f3497dd0d61b6b682f7f89abbf3e2c8b237bb3dc"
+      },
+      "stdout_sha256": "c2a79d6956c9b3ddd010b02662cc8feaa880177a25d02934fb041cdcfc3ea19e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "provider_requests": 0,
+      "key_reads": 0
+    },
+    "close_segment_exit": {
+      "operation": "host-only-close",
+      "exit_code": 0,
+      "stdout": "0021.stdout.txt",
+      "stdout_sha256": "d993b360a0103a47ba4e318d376117a3260618c55ee288e011d958bb5c8b9c5c"
+    },
+    "close_host_adapter_sha256": "1f56e174fd4f1dfb1114a30ac08fc592ea37a8b0897458f94201e80422ad9d40",
+    "replay_adapter_sha256": "210af04b71b198e74f35f431921567708bfddd0d48efd88d8afdef75f0b21ecf",
+    "parent_original_files_unchanged": 145,
+    "parent_author_originals_unchanged": 3,
+    "unresolved_intents": 0,
+    "unique_application_operations": 1,
+    "new_http_requests_known": 7,
+    "new_http_requests_unknown": 0,
+    "receiptless_new_attempts": 0,
+    "not_sent_new_attempts": 0,
+    "signals": {
+      "started": 7,
+      "completed": 6,
+      "failed": 1
+    },
+    "new_success_usage_estimated_cny": "0.0713",
+    "estimate_not_bill": true,
+    "unknown_usage_reserved_tokens": 68468,
+    "automation": "PAUSED",
+    "no_new_provider_requests_during_close_replay_seal": true,
+    "validation": {
+      "project_governance": "passed",
+      "git_diff_check": "passed",
+      "scope": "evidence and status only; runtime source unchanged; actual native import, host-only terminal, strict replay/seal and closure inventory audit are the relevant verification"
+    }
+  },
+  "decision": {
+    "result": "One actual diagnostic report repaired and both same-report fresh duties accepted by primary and native independent reviewers; development controls support the necessity method on familiar material.",
+    "limits": [
+      "Not held-out or stability evidence",
+      "Not a same-version original15 qualification",
+      "Not a complete product Runtime admission",
+      "Third-party group and upstream identity not independently verified"
+    ],
+    "next_action": "Prepare the same candidate policy/transport binding for the existing original15 qualification and Runtime integration; reuse original materials, do not repurchase this closed diagnostic.",
+    "paid_execution_authorized": false
   }
 }
