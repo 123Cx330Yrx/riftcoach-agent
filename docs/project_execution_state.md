@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15具体费用授权已激活并通过最终核验；待用户在本机隐藏输入企业Key启动首项，0新请求/未授资格，automation PAUSED。"
+pause_reason: "原15首例facts-initial已完成真实双审及唯一导入，1HTTP/20654known；待同稿completion-initial本机隐藏输入Key，未授资格，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,26 @@ pause_reason: "原15具体费用授权已激活并通过最终核验；待用户
 
 ## 当前行动
 
-## 2026-10-25 原15费用授权已激活，待本机输入Key（当前）
+## 2026-10-25 原15首例facts-initial已双审接受（当前）
+
+首例claim-scope:1的facts-initial新增1HTTP/33.141秒/20654已知tokens（输入20097、输出557），
+模型pass/100、issues/resolutions/repairs为空，仅advisories4/6。主审和既有独立作者实读完整25段、
+全部来源/知识/用户请求/政策/实际意见后均接受；真实native final与run外作者逐字一致并唯一导入。
+核对中单均值、全样本早死2.5/2.67、混合位置补刀与伤害差异、局部稳定及观摩身份；
+不补造全称、不把可选措辞升级为错误。此次没有编辑，不能声称修订成功或整例已完成。
+
+原stdout guard faa6d5a1、最新checkpoint f670d25e及0003—0005 stdout/exit SHA均保留。
+只读回查真实native/作者/原收据/完整响应观测及已知用量通过，库存不变；1实际请求、
+0unknown/0retry/0receiptless/0未发，4operations已消费，无unresolved，closed=false。
+冻结执行HEAD34abe04e与CI40188299016、原plan/授权不变，Key未保存到文件。
+**下一动作：** 用户再次运行同一control/start-authorized.ps1，隐藏输入企业Key，只续同稿
+completion-initial；不加ManualRetry，不重发已接受facts。返回后逐项全文双审，再继续该例。
+本批授权北京时间2026-10-26 23:46:27截止保持，automation PAUSED；未完成首例、15项或产品资格。
+证据：data/evaluation/results/sol_original15_live_20261025.json；Control/claim-scope-1-facts-initial-accepted.json。
+
+以下为准备与激活历史记录，不是第二个执行入口。
+
+## 2026-10-25 原15费用授权已激活（前包记录）
 
 新增固定报告入口复用1.6.6、CandidateSession、共享预算/owned worker与真实native门，不生成报告。
 前例完整只读回放并匹配才可进入后例；初审直过、必要修订/唯一应用/同稿双fresh、524与明确格式

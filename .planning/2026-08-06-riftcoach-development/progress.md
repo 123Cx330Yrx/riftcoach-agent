@@ -1,3 +1,20 @@
+## 2026-10-25 原15首例facts-initial已双审接受（当前）
+
+首例claim-scope:1的facts-initial新增1HTTP/33.141秒/20654已知tokens（输入20097、输出557），
+模型pass/100、issues/resolutions/repairs为空，仅advisories4/6。主审和既有独立作者实读完整25段、
+全部来源/知识/用户请求/政策/实际意见后均接受；真实native final与run外作者逐字一致并唯一导入。
+核对中单均值、全样本早死2.5/2.67、混合位置补刀与伤害差异、局部稳定及观摩身份；
+不补造全称、不把可选措辞升级为错误。此次没有编辑，不能声称修订成功或整例已完成。
+
+原stdout guard faa6d5a1、最新checkpoint f670d25e及0003—0005 stdout/exit SHA均保留。
+只读回查真实native/作者/原收据/完整响应观测及已知用量通过，库存不变；1实际请求、
+0unknown/0retry/0receiptless/0未发，4operations已消费，无unresolved，closed=false。
+冻结执行HEAD34abe04e与CI40188299016、原plan/授权不变，Key未保存到文件。
+**下一动作：** 用户再次运行同一control/start-authorized.ps1，隐藏输入企业Key，只续同稿
+completion-initial；不加ManualRetry，不重发已接受facts。返回后逐项全文双审，再继续该例。
+本批授权北京时间2026-10-26 23:46:27截止保持，automation PAUSED；未完成首例、15项或产品资格。
+证据：data/evaluation/results/sol_original15_live_20261025.json；Control/claim-scope-1-facts-initial-accepted.json。
+
 ## 2026-10-25 原15明确费用授权已激活
 
 用户明确“确认”前一具体提案：原15预计50职责、最多120实际请求/9646080 tokens，

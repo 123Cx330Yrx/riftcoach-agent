@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-25当前工作：`docs/plans/2026-10-25-dual-policy-runtime-binding.md`。原15逐项入口已复用共同1.6.6与实际session/worker/native门，10项新增整链和27项相关回归通过；包含前例只读回放、原收据/已知未知费用、单项手动恢复与Host-only无Key边界。已冻结clean执行树D:/riftcoach-original15-execution-20261025、HEAD34abe04e；真实独立作者行政预检与未授权拒发已通过，Operator/control均为outputs/riftcoach-sol-original15-20261025前缀。CI40188299016已全绿，最终PowerShell CheckOnly退出0、未授权正常入口退出1且0Key/0请求；外部启动器退出码传播缺陷已修，原件库存保持。准备证据Control/preparation-complete-v2.json SHA acc65e7b29ef27643ff2fabcec3b703d9af21543f5f21546fab1c21c6a5e2e03。用户明确“确认”本批范围，已激活新grant 87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc，北京时间2026-10-26 23:46:27截止。实际入口授权/源码/CI/native核验通过，0Key/0请求、cases未建；下一动作是用户运行control/start-authorized.ps1隐藏输入企业Key启动首项，返回后逐项实审。普通超时/格式仅同项手动恢复；无真实15结果或资格，不改阶段。
+2026-10-25当前工作：`docs/plans/2026-10-25-dual-policy-runtime-binding.md`。原15首例claim-scope:1的facts-initial新增1HTTP/20654known、pass；主审及既有独立作者全文审查接受，真实native与作者原件逐字一致并唯一导入。原收据/观测/费用/先前native只读复核通过，closed=false/unresolved为空，guard faa6d5a1、最新原stdout checkpoint f670d25e。当前只到同稿completion-initial发送前，用户运行同一control/start-authorized.ps1隐藏输入企业Key；不加ManualRetry、不重发facts。授权北京时间2026-10-26 23:46:27截止保持。1请求/0unknown/0retry、未编辑、未完成首例或15项、未授产品资格；automation PAUSED。证据sol_original15_live_20261025.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
