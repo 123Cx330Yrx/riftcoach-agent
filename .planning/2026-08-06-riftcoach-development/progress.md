@@ -1,3 +1,12 @@
+## 2026-10-25 原15准备完成：公共CI与最终入口核验通过
+
+执行HEAD34abe04e的CI40188299016全绿，最终PowerShell CheckOnly退出0；冻结执行树clean，
+真实native/作者及最初stdout根核验通过。另发现外层PowerShell吞掉Python失败退出码，已只修
+外部入口，未授权正常入口现退出1；Key0/Provider0、未建cases、Operator及作者原件SHA均不变。
+原prepared-head及第一份准备记录保留，最终证据Control/preparation-complete-v2.json SHA acc65e7b29ef27643ff2fabcec3b703d9af21543f5f21546fab1c21c6a5e2e03。
+当前仅待本批具体费用授权：原15预计50职责、最多120实际请求/9646080 tokens/每例4手动恢复，
+估价8.7552元非账单硬限。未签grant/未发请求/未授资格，automation现场核PAUSED。
+
 ## 2026-10-25 原15逐项入口离线完成
 
 新增sol_original15_session及显式launcher，复用CandidateSession/SessionBudget/SessionWorkflow/native门。
@@ -6,6 +15,12 @@
 及失败库存分隔符差异已修，合成native跨case重复turn也修正。原收据实际HTTP/known/unknown独立核对。
 运行说明已写；新Operator控制器已离线核原stdout根/篡改拒绝及PowerShell语法，尚待最终执行树。
 0真实Provider/0Key，未授资格；下一步冻结与真实作者行政预检，再提出具体费用授权。
+
+续：34abe04e已推送并冻结clean执行目录D:/riftcoach-original15-execution-20261025。新Operator plan
+ef53345f，原stdout guard eca79f71；真实作者原件/check-answer/native final逐字核验、唯一导入及
+只读回查通过，最新根6764fa0a。未授权入口实测在Key及case创建前拒发，正常入口仍未激活。
+旧303c21b4 clean及seal1c54efbd未变；仅待同HEAD公共CI40188299016与最终PowerShell CheckOnly。
+无新grant，等待CI不会提前消耗授权期；无真实15业务结果。
 
 ## 2026-10-25 通用双政策与原15/Runtime共同绑定
 
