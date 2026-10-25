@@ -1,0 +1,116 @@
+{
+  "kind": "dual-policy-runtime-offline-binding-v1",
+  "status": "offline_binding_verified_not_admitted",
+  "contract": {
+    "contract_id": "natural-flash-sol-dual-necessity-development-v1",
+    "version": "1.6.6",
+    "scope": "unadmitted_opt_in",
+    "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
+  },
+  "predecessor": {
+    "head": "303c21b42565237a7101d3dcf2357e4940bb9bb7",
+    "outer_seal_sha256": "1c54efbd12f15599a28a7a057b861967367b317207cdae387c8bb865933f536e",
+    "outcome": "candidate_repaired_pass_unqualified",
+    "retained_not_replayed_or_rebought": true
+  },
+  "policy_sources_unchanged_from_sealed_diagnostic": {
+    "scripts/review_necessity_candidate.py": "e107d172333e284814a8dd0e7d9a83e699cc824b8924e09f484d577e35dcde1e",
+    "scripts/review_completion_necessity_candidate.py": "d4dcfe030d0c2559090468a185bd662f11567694d2a3a1867cf77a94758cf131"
+  },
+  "natural_first_send_capture": {
+    "kind": "necessity-natural-offline-preparation-v1",
+    "run_id": "dual-policy-runtime-offline-20261025",
+    "contract": {
+      "contract_id": "natural-flash-sol-dual-necessity-development-v1",
+      "version": "1.6.6",
+      "scope": "unadmitted_opt_in",
+      "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
+    },
+    "first_request_sha256": "14ed9bf6055dca0d04d8e4a0f4ef997b7e9a152738a210610198699e835d5f49",
+    "source_sha256": {
+      "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+      "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+    },
+    "relationship": "observed",
+    "memory_records": 0,
+    "preselected_knowledge": false,
+    "source_scope": "familiar_public_development_not_holdout",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "group_independently_verified": false,
+    "logical_generation_calls": 2,
+    "logical_review_calls": 4,
+    "limits": {
+      "max_calls": 10,
+      "total_tokens": 739840,
+      "execution_timeout_s": 3600,
+      "transport_retries": 4
+    },
+    "estimated_uncached_cny": "1.0683904",
+    "hard_billing_cap": false,
+    "provider_requests": 0,
+    "key_read": false,
+    "paid_launcher_ready": false,
+    "execution_authorized": false,
+    "semantic_approval": false,
+    "qualified": false,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "remaining_before_paid": [
+      "Explicit new task authorization and frozen code/CI binding",
+      "Actual native author/check-answer/final/import preflight for the new task"
+    ]
+  },
+  "original15_inventory": "data/evaluation/results/sol_review_qualification_inventory_20261025.json",
+  "legacy_current_inventory": "data/evaluation/results/natural_duty_qualification_inventory_dual_binding_20261025.json",
+  "startup_profiles_verified": [
+    "flash_glm_review_v1",
+    "flash_glm_coarse_v1",
+    "flash_glm_correction_scope_v1",
+    "flash_glm_boundary_examples_v1",
+    "natural_duty_v1",
+    "sol_natural_v1",
+    "sol_necessity_v1",
+    "sol_review_v1"
+  ],
+  "verification": {
+    "new_binding_tests": 23,
+    "new_binding_seconds": 188.38,
+    "http": "scripted offline SDK/owned subprocess",
+    "recovery": "CandidateSession manual current-stage retry with immutable success prefix",
+    "actual_live_model_semantics": false,
+    "related_regression_tests": 87,
+    "related_regression_seconds": 433.96,
+    "inventory_snapshot_recheck_tests": 1,
+    "inventory_snapshot_recheck_seconds": 18.91,
+    "compiled_changed_python_files": 13,
+    "governance": "passed",
+    "diff_check": "passed",
+    "test_files": [
+      "tests/test_sol_review_binding.py",
+      "tests/test_sol_necessity_natural.py",
+      "tests/test_sol_format_recovery.py",
+      "tests/test_completion_diagnostic_session.py",
+      "tests/test_natural_duty_qualification_inventory.py",
+      "tests/test_prompt_program.py",
+      "tests/test_coach_contract_repair.py"
+    ]
+  },
+  "provider_requests": 0,
+  "key_reads": 0,
+  "execution_authorized": false,
+  "qualified": false,
+  "semantic_approval": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "remaining": [
+    "Original15 executable per-case plan, native author preflight, explicit paid authorization and live review.",
+    "No inheritance of old results as same-version qualification.",
+    "Default product registration, real DB/API/UI consumption, natural Coach/Training and remaining stage8E dependencies.",
+    "Natural six logical calls still exceed the existing product five-call budget."
+  ]
+}

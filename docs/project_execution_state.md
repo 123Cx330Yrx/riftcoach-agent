@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "本次实际修订和同稿双fresh均双审接受，strict replay/seal完成；准备同版本评估与Runtime绑定，未授产品资格，automation PAUSED。"
+pause_reason: "通用双政策1.6.6已完成离线Runtime与原15库存共同绑定；待逐项执行方案及独立审查准备，无新付费授权，未授资格，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,18 @@ pause_reason: "本次实际修订和同稿双fresh均双审接受，strict repla
 
 ## 当前行动
 
-## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（当前）
+## 2026-10-25 双政策同版本接线完成（当前）
+
+已新增通用候选sol_review_contract 1.6.6：facts与completion政策逐字复用封存诊断，全部initial/fresh绑定同一动态版本。专用1.6.5的固定对照及继承facts例外未进入新候选。实际Application→Runtime→router/owned worker→共享预算/trace→唯一应用→同稿双fresh已离线验证；默认产品入口及发布状态未改变。使用CandidateSession时524或明确格式故障仅暂停当前项，普通resume不重发，手动同请求补测保留成功前缀及已知/未知费用；不带session的本地检查不是可恢复付费入口。
+
+原15输入/标签/完整来源与旧库存一致，新库存通过同一合同和Runtime manifest生成30initial请求摘要；5accept/10reject按预期共50职责槽，fresh必须绑定各例实际应用新稿。它不是新15结果或可执行批。8个受共享源码影响的当前配置启动校验通过，旧结果与冻结树/封存seal未变。新增23项整链与隔离检查通过，额外核对库存快照一致；87项相关旧路径回归、13个改动Python文件编译、治理及diff检查通过。本包0Provider/0Key，不以模拟证明语义质量。
+
+**下一动作：** 依托共同合同准备原15逐项执行与独立全文审查方案，明确每项实际初审/补丁/应用/同稿fresh及手动恢复的消费路径，完成后再提出具体费用授权；不重启旧闭批、不买已封存报告。自然6调用/产品5调用差异、真实DB/API/UI消费、Coach/Training与其余阶段8E依赖保持，automation继续PAUSED。
+工作卡：docs/plans/2026-10-25-dual-policy-runtime-binding.md。证据：data/evaluation/results/sol_review_runtime_binding_20261025.json、sol_review_qualification_inventory_20261025.json及legacy当前库存dual_binding_20261025。
+
+以下为历史记录，不是可执行入口。
+
+## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
 最后completion-fresh新增1HTTP/15.953秒/17891已知tokens，pass/100、issues为空，仅advisory21。主审和既有独立作者均实读完整实际新稿、来源、政策及公开响应后接受；真实native与作者原件逐字一致并唯一导入。其稿件SHA cf01c633与唯一application及facts-fresh完全相同，完整来源未变。OP.GG同Tier2已连到两局条件观摩、路线/参团/资源检查；观察身份及8.7–9.0/死亡≤3参照保留，未把可选澄清升级为错误。
 

@@ -12,14 +12,19 @@ from scripts import natural_duty_preparation as base
 
 
 class CaptureFactory(base.CaptureFactory):
+    def __init__(self, candidate=contract):
+        from app.runtime.sol_natural_provider import selected_contract
+        self.candidate = selected_contract(candidate)
+        super().__init__()
+
     def make(self):
         old = super().make()
         reviewer = SolReviewProvider(api_key='', directory=Path('_offline_only/review'),
-            task_directory=Path('_offline_only'), contract_module=contract)
-        return SolNaturalProvider(old.generator, reviewer, contract_module=contract)
+            task_directory=Path('_offline_only'), contract_module=self.candidate)
+        return SolNaturalProvider(old.generator, reviewer, contract_module=self.candidate)
 
 
-def cost_envelope():
+def cost_envelope(contract=contract):
     prices = contract.CONTRACT.pricing_profiles
     flash, sol = prices['zhipu', 'glm-5.3-flash'], prices['tianjige', 'gpt-6.1-sol']
     costs = []
@@ -39,8 +44,9 @@ def cost_envelope():
     return str(max(costs))
 
 
-def capture(run_id='necessity-natural-offline-20261024'):
-    factory = CaptureFactory()
+def capture(run_id='necessity-natural-offline-20261024', *, candidate=contract):
+    contract = candidate
+    factory = CaptureFactory(candidate)
     with TemporaryDirectory(prefix='riftcoach-necessity-natural-') as directory:
         application = base.build_application(provider_factory=factory, output_root=directory,
             run_id=run_id, candidate=contract)
@@ -60,7 +66,7 @@ def capture(run_id='necessity-natural-offline-20261024'):
         logical_generation_calls=2, logical_review_calls=4,
         limits={k:contract.CONTRACT.descriptor()[k] for k in
             ('max_calls', 'total_tokens', 'execution_timeout_s', 'transport_retries')},
-        estimated_uncached_cny=cost_envelope(), hard_billing_cap=False,
+        estimated_uncached_cny=cost_envelope(contract), hard_billing_cap=False,
         provider_requests=0, key_read=False, paid_launcher_ready=False,
         execution_authorized=False, semantic_approval=False, qualified=False,
         production_admitted=False, publication_allowed=False,
@@ -68,8 +74,8 @@ def capture(run_id='necessity-natural-offline-20261024'):
             'Actual native author/check-answer/final/import preflight for the new task'])
 
 
-def prepare(run_id='necessity-natural-offline-20261024'):
-    return capture(run_id)[1]
+def prepare(run_id='necessity-natural-offline-20261024', *, candidate=contract):
+    return capture(run_id, candidate=candidate)[1]
 
 
 if __name__ == '__main__':

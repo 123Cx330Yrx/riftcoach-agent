@@ -15,7 +15,9 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（当前）
+2026-10-25当前工作：`docs/plans/2026-10-25-dual-policy-runtime-binding.md`。通用双政策1.6.6与实际Runtime/worker/session/trace接线及原15共同库存已完成离线验证：23项新增检查、30initial摘要、8配置启动通过；本包0Key/0新付费请求，未授资格。下一动作是准备原15逐项执行与独立全文审查方案，再提出具体付费授权；不重复上轮封存报告，不改阶段。
+
+## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
 最后completion-fresh新增1HTTP/15.953秒/17891已知tokens，pass/100、issues为空，仅advisory21。主审和既有独立作者均实读完整实际新稿、来源、政策及公开响应后接受；真实native与作者原件逐字一致并唯一导入。其稿件SHA cf01c633与唯一application及facts-fresh完全相同，完整来源未变。OP.GG同Tier2已连到两局条件观摩、路线/参团/资源检查；观察身份及8.7–9.0/死亡≤3参照保留，未把可选澄清升级为错误。
 
@@ -87,7 +89,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-本诊断已成功封存；下一步离线核候选政策/传输与原15输入、当前Runtime绑定的差异，准备正式同版本评估及消费验收，不重跑本报告、不启动新付费批。
+本诊断已成功封存，同版本双政策离线绑定也已完成；下一步准备原15逐项执行与独立审查方案，不重跑本报告、不启动新付费批。
 
 ## History
 

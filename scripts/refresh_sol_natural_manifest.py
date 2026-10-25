@@ -10,11 +10,13 @@ from app.prompt_program.models import PromptProgramManifest
 def main(candidate=None):
     if candidate is None:
         from app.evaluation import sol_natural_contract as candidate
-    from app.evaluation import sol_natural_contract, sol_necessity_contract
-    if candidate not in (sol_natural_contract, sol_necessity_contract):
+    from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
+    if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract):
         raise ValueError('unsupported_natural_manifest')
     contract, fingerprints = candidate.CONTRACT, candidate.component_fingerprints
     root = ROOT/'examples/runtime_profiles'/('sol_necessity_v1' if candidate is sol_necessity_contract else 'sol_natural_v1')
+    if candidate is sol_review_contract:
+        root = sol_review_contract.ASSETS
     skill = SkillCatalog.from_directory(root/'skills').get('recent-form-review')
     value = dict(schema_version='1.0', program_id='recent-form-review-coach', program_version='4.0.0',
         skill_name='recent-form-review', skill_version='0.7.0', context_contract_id='context-builder-v1',

@@ -30,20 +30,22 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         from app.evaluation import natural_duty_contract as candidate
         provider_type, assets = NaturalDutyProvider, ASSETS
     else:
-        from app.evaluation import sol_natural_contract, sol_necessity_contract
+        from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
         from app.runtime.sol_natural_provider import SolNaturalProvider
-        if candidate not in (sol_natural_contract, sol_necessity_contract):
+        if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract):
             raise ValueError("unsupported_natural_candidate")
         provider_type, assets = SolNaturalProvider, ROOT/"examples/runtime_profiles/sol_natural_v1"
         if candidate is sol_necessity_contract:
             assets = ROOT/'examples/runtime_profiles/sol_necessity_v1'
+        elif candidate is sol_review_contract:
+            assets = sol_review_contract.ASSETS
     contract = candidate.CONTRACT
     if getattr(provider_factory.descriptor, 'contract_module', candidate) is not candidate:
         raise ValueError('natural_candidate_provider_contract')
     if execution_session is not None:
-        from app.evaluation import sol_natural_contract, sol_necessity_contract
+        from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
         from app.evaluation.sol_natural_session import CandidateSession
-        if (candidate not in (sol_natural_contract, sol_necessity_contract)
+        if (candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract)
                 or type(execution_session) is not CandidateSession
                 or execution_session.contract_module is not candidate):
             raise ValueError('session_requires_sol_candidate')

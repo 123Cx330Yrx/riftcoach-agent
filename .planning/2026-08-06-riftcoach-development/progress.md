@@ -1,3 +1,8 @@
+## 2026-10-25 通用双政策与原15/Runtime共同绑定
+
+新增sol_review_contract 1.6.6复用已封存facts/completion政策，去掉固定对照及继承facts例外。实际Runtime/owned worker/预算/trace/session共用模块，唯一应用及同稿fresh、当前项手动524/格式恢复和严格只读重放通过23项新增检查；87项旧路径回归及治理/diff通过，8个当前配置启动通过。原15标签/输入/来源不变，新30initial离线摘要绑定同一manifest；fresh待实际应用稿，不授新资格。0Provider/0Key，原seal/冻结树未变。
+下一动作：原15逐项执行及独立全文审查方案，不重买熟悉报告；阶段8E及产品消费/自然Coach/Training/前端等依赖保持。
+
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（当前）
 
 最后completion-fresh新增1HTTP/15.953秒/17891已知tokens，pass/100、issues为空，仅advisory21。主审和既有独立作者均实读完整实际新稿、来源、政策及公开响应后接受；真实native与作者原件逐字一致并唯一导入。其稿件SHA cf01c633与唯一application及facts-fresh完全相同，完整来源未变。OP.GG同Tier2已连到两局条件观摩、路线/参团/资源检查；观察身份及8.7–9.0/死亡≤3参照保留，未把可选澄清升级为错误。

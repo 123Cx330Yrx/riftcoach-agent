@@ -24,10 +24,10 @@ def inventory(directory):
 
 
 def selected_contract(value=None):
-    from app.evaluation import sol_necessity_contract, sol_completion_contract
+    from app.evaluation import sol_necessity_contract, sol_completion_contract, sol_review_contract
     if value is None or value is contract:
         return contract
-    if value in (sol_necessity_contract, sol_completion_contract):
+    if value in (sol_necessity_contract, sol_completion_contract, sol_review_contract):
         return value
     raise ValueError('sol_unsupported_contract')
 
@@ -268,7 +268,8 @@ class SolReviewProvider:
         """
         if (self.contract_module.CONTRACT.descriptor().get('output_recovery_mode')
                 != 'manual-reaped-format-v1' or self.response_mode not in (
-                    'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1')
+                    'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1',
+                    'natural-sol-dual-necessity-v1')
                 or self.failure_usage(error, request) is None):
             return False
         failure = self.last_failure
