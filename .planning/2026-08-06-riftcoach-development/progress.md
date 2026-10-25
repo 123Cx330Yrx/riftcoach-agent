@@ -1,3 +1,9 @@
+## 2026-10-25 本次明确费用授权已激活
+
+用户明确“授权”最多新增10HTTP/803840tokens（6职责+4手动补测）、累计14/870431/3600活动秒，企业专线Sol/high、估价新增0.7296元非账单硬限。本次新grant create-only，SHA753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e；issued2026-10-25T01:45:21.610715Z，expires2026-10-26T01:45:21.610715Z，不扩旧授权。
+冻结执行目录303c21b4的实际入口check(True)验证授权/源码/CI40095068270/真实native通过。入口仅替换AUTH_SHA，旧字节及激活后SHA分别留存；无需改源码/HEAD或重复全套测试。准备快照保持原样，新增activation和activation-check提供当前状态。初次直接load误用开发cwd被拒，未写授权/读Key/发请求；从正确执行cwd完成激活。
+待用户执行原control/start-authorized.ps1并隐藏输入Key。当前execution/claim不存在，新增Provider/Key0，automation PAUSED；成功前缀与原费用保留，后续每项须真实主审及独立native验收，超时/格式仅同项手动补测。
+
 ## 2026-10-25 冻结CI全绿与最终入口复核
 
 精确303c21b4的公共CI40095068270全部8个job success（含全套分片汇总）。冻结树clean；preparation-complete SHA63110b5f及所有control/operator/作者库存未变；最终PowerShell CheckOnly再次通过。该输出的pending_ci为旧固定文案，CI真实结论以本次GitHub回执为准；未改冻结入口。

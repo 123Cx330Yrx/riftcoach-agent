@@ -84,9 +84,9 @@
   },
   "new_qualification_inventory": "data/evaluation/results/natural_duty_qualification_inventory_completion_continuation_20261024.json",
   "remaining": [
-    "Specific new authorization activation before hidden-key entry"
+    "User starts the activated hidden-key entry; consume the actual result through primary and independent native review before the next model request."
   ],
-  "new_authorization": false,
+  "new_authorization": true,
   "semantic_improvement_proven": false,
   "qualified": false,
   "production_admitted": false,
@@ -210,5 +210,32 @@
     "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\authorization-proposal.json",
     "sha256": "ea4f1f76e96a695251029c6a7f8251b920626f2efb79cd36de3b10e120d82f0f",
     "status": "not_authorization"
+  },
+  "authorization_activation": {
+    "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\authorization-activation.json",
+    "sha256": "3dc6a98288c90e1613712387a601a2e25ad44e3c9ae517aa490e0d0f40b66095",
+    "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
+    "issued_at": "2026-10-25T01:45:21.610715+00:00",
+    "expires_at": "2026-10-26T01:45:21.610715+00:00",
+    "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
+    "head": "303c21b42565237a7101d3dcf2357e4940bb9bb7",
+    "entry_sha256": "82a1ad63884b195667d84eba9741829ba25a41e828a567cd79acb40cc6095282",
+    "check_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\authorization-activation-check.json",
+    "check_sha256": "98686e8c7d8f648ccf25f69e0ea9d615b966b5bacabaf2f070877d773aacdb9e",
+    "check": {
+      "phase": "activated_entry_verified",
+      "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
+      "activation_sha256": "3dc6a98288c90e1613712387a601a2e25ad44e3c9ae517aa490e0d0f40b66095",
+      "entry_sha256": "82a1ad63884b195667d84eba9741829ba25a41e828a567cd79acb40cc6095282",
+      "native_preflight": true,
+      "ci_verified": true,
+      "provider_requests": 0,
+      "key_reads": 0,
+      "execution_exists": false,
+      "claim_exists": false
+    },
+    "paid_launcher_ready": true,
+    "authorization_scope": "specific approved proposal; no extension of old grants",
+    "activation_diagnostic": "Initial direct load from development cwd refused actual_launch_binding before writing a grant or reading Key; rerun from the pinned execution cwd passed."
   }
 }

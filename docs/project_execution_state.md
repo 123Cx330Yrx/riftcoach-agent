@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "completion续接、冻结303c21b4、新原生作者/导入及入口检查完成；CI40095068270全绿，待具体新费用授权。零新请求，不需Key，automation PAUSED。"
+pause_reason: "completion续接、冻结303c21b4、新原生作者/导入及入口检查完成；CI40095068270全绿，本次新授权已激活至北京时间10月26日09:45；待用户隐藏输入Key启动。零新请求，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,10 +17,10 @@ pause_reason: "completion续接、冻结303c21b4、新原生作者/导入及入�
 2026-10-24完成completion诊断续接引擎与显式启动器。合同1.6.5复用既有session、owned worker、共享预算、原生审查及程序逐字补丁；顺序为b/c/d对照→原稿a的completion→兼容/编辑→唯一应用→实际同稿双fresh。它是诊断续接，不是完整产品Runtime注册或产品准入。
 原9个成功操作、原facts/作者/native及4HTTP/66591known/0unknown/0retry/255.657秒继承；旧失败保留，不重买生成/检索/facts或首次接受的a。超时及明确格式错误只暂停同项，普通resume不读Key/不重发，手动补测保留费用；身份、来源、真实语义及观测硬错不借此重试。
 整链/异常9项、启动/授权/关闭回放9项、相关旧回归67项（包含6库存检查）通过；7受影响配置实际启动校验通过。另以真实原proof/原作者/native实核新引擎，准确停在control-b发送前，原145件及3作者原件不变；新增Provider/Key均0。模拟检查不是新模型语义证明。
-显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。尚未获得本次费用授权，旧grant不扩范围/期限；当前不要填Key。
+显式CLI scripts/completion_diagnostic_launch.py已提供prepare/native/task/submit/run/replay/唯一seal；新计划拟新增最多10请求/803840tokens（6职责+4手动补测），累计14/870431/3600活动秒，新增估价0.7296元非账单硬限。本次已获明确授权并激活独立新grant；旧grant不扩范围/期限。
 首个冻结5f46413d的真实作者/check-answer/原生final/导入及最终PowerShell CheckOnly已通过；缺新grant的正常入口也实证拒发、未读Key、未创建execution。其CI40094551645发现测试glob无排序、Linux误取旧预算；生产回放已有排序，本包只修测试取最新账目方式，保留失败记录。
 排序修复后两项针对性检查通过（30.66秒）；业务app/scripts/skills/examples与5f46413d逐文件diff为空，无需再重复67项回归。已冻结303c21b42565237a7101d3dcf2357e4940bb9bb7于D:/riftcoach-completion-diagnostic-ci-execution，新Operator outputs/riftcoach-completion-diagnostic-v2-20261024，plan5218a0d2。该副本的独立作者/check-answer/唯一原生final/导入及只读回查已通过；最终PowerShell CheckOnly通过，正常未授权入口实证在Key/claim/execution之前拒绝。准备证据control/preparation-complete.json SHA63110b5ff1345d0785a6fa74f9bef6c1c2338a56c3b47f75388ed89c3fcfc37c。
-**下一动作：** 2026-10-25已现场核冻结303c21b4的CI40095068270全部8个job success；冻结树clean，准备文件、原生及作者库存未变，最终CheckOnly再次通过。具体新费用提案已备于control/authorization-proposal.json（不是授权），待用户批准后才激活同一隐藏Key入口，激活起24小时有效。新增Provider/Key0、execution不存在；旧grant不扩展，automation现场核PAUSED。新引擎语义有效性仍未实测，不授产品或同版本15资格。
+**下一动作：** 用户2026-10-25明确“授权”本次具体提案；已create-only写新grant并激活原隐藏Key入口，SHA753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e，北京时间2026-10-26 09:45:21截止。冻结303c21b4/CI40095068270全绿，实际cwd/Python下check(True)核授权/源码/CI/真实native通过；只有AUTH_SHA一处入口绑定改变，激活前原件保留。用户运行control/start-authorized.ps1后，逐项审实际结果再续接，不自动重试。新增Provider/Key0、execution不存在；旧grant不扩展，automation现场核PAUSED。新引擎语义有效性仍未实测，不授产品或同版本15资格。
 证据data/evaluation/results/completion_diagnostic_integration_20261024.json及当前资格库存completion_continuation_20261024。候选语义改善、完整产品链路、正式同版本15与阶段8E均未完成；后续产品依赖保持。
 
 以下为本包之前的材料准备记录，其下一动作已由上述离线前沿及接线工作接续。
