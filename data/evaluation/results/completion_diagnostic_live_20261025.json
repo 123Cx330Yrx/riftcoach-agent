@@ -4,13 +4,13 @@
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
   "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
   "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
-  "phase": "original-report-applied-awaiting-user-key-for-facts-fresh",
+  "phase": "facts-fresh-accepted-awaiting-user-key-for-completion-fresh",
   "closed": false,
-  "new_requests": 5,
-  "new_known_tokens": 84123,
+  "new_requests": 6,
+  "new_known_tokens": 104153,
   "cumulative": {
-    "http_requests": 9,
-    "known_tokens": 150714,
+    "http_requests": 10,
+    "known_tokens": 170744,
     "unknown_reserved_tokens": 68468,
     "retries": 1
   },
@@ -81,14 +81,14 @@
       "key_reads": 0
     }
   },
-  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise key for facts-fresh on the uniquely applied original-a report, then full native dual review before completion-fresh. No ManualRetry, repeated controls, generation, facts-initial, completion-initial or second application.",
+  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise key for the sole remaining completion-fresh on report cf01c633. No ManualRetry, repeated generation/controls/initial/facts-fresh or application. Review the actual final opinion, then read-only strict replay and create-only outer seal.",
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
   "automation": "PAUSED",
   "limitations": [
     "Three familiar development controls and original completion-initial accepted; no stability or broad causal improvement proof.",
-    "Actual edit and unique application completed; actual same-report facts-fresh and completion-fresh remain unsent and unapproved.",
+    "Actual edit, unique application and same-report facts-fresh accepted; completion-fresh remains unsent/unapproved.",
     "Diagnostic continuation, not product Runtime, full15 qualification or publication.",
     "Channel reported usage/group/model are not independently verified upstream billing/identity."
   ],
@@ -122,14 +122,14 @@
     "source_read_evidence": "Current report/policy/full deterministic sources and knowledge inspected; full pack/generation/facts/provenance/utterance are value-identical to those already read for control-b; only report block21 changes."
   },
   "current_original_stdout_roots": {
-    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0016.stdout.txt",
-    "stdout_sha256": "3a82a2ec95a0f03efda00fcff7f347119bde65a5f69fe5e7d5161a4344db4487",
-    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0016.exit.json",
-    "exit_sha256": "62d264aebe85c6a6742d09034aaaa1f66a623d8358baf290f9deefc73ffbbabf",
+    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.stdout.txt",
+    "stdout_sha256": "3a967b5a471bc12858464a4365cba073a21454915d76826a778d748f1128cdb7",
+    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0018.exit.json",
+    "exit_sha256": "ed5d620b98332ebb497344d2d2cd3894a0fafab6e52c4d59ac6de7692477d4a2",
     "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
-    "checkpoint_sha256": "8a327af736e328cd7c5a05bfa3b0933ba497b83f2f9373ec267b3d8cfc7478cd",
-    "checkpoint": "0086.json",
-    "root_source": "actual host-only adapter stdout; unique application completed; paused before new model intent"
+    "checkpoint_sha256": "107d01bee4f5b076e877669e54b8b8fff0305d7791a8d0836f25503c26a0c3a9",
+    "checkpoint": "0098.json",
+    "root_source": "actual facts-fresh native submit adapter stdout; next sole model duty is completion-fresh"
   },
   "new_unknown_reserved_tokens": 68468,
   "control_d": {
@@ -323,5 +323,39 @@
       "source": "observed tool failure and original segment exit/stdout files; not reconstructed original stdout"
     },
     "repair_record_sha256": "368fe3b8d1287b9f99026d85772e64e98175422aee31e6d656ce4082e5be39f1"
+  },
+  "facts_fresh": {
+    "material_sha256": "cb557ff594f0199d99c190ac8ebfaf19699126def419931150d645843f12d541",
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\facts-fresh-primary.json",
+    "primary_sha256": "2e930afb96dd59ea6f400a8860bdcd4e54d67c8d83f07fbd19dce2d706391b3b",
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "native": {
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a170f7-b010-7641-81e6-e7c98f4fa584/msg_0fe5a334390c61a5016add6f311840819692e931d6321557dd",
+      "author_sha256": "b41795f6e2efaafce0744280919a388d3fdb2002f173dfb4b5315319a4e649ce",
+      "native_final_sha256": "b41795f6e2efaafce0744280919a388d3fdb2002f173dfb4b5315319a4e649ce",
+      "checkpoint_sha256": "8991e16add7e80a99307d3dbc4c53c1ca2e27349ea6db0b5b440eb9be01d9a2b",
+      "original_guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "source_checkpoint_sha256": "19652f8901f07bed5931cd6e65902c7812c97fc6076bd35dd5ccfb6ed091396c"
+    },
+    "submission_sha256": "2af12cb18b78525302c085aa8fc5cbb0047b902b14a8c94269fc0ff8b989db6e",
+    "public_verdict": "pass",
+    "score": 100,
+    "issues": 0,
+    "advisory_blocks": [
+      11,
+      21
+    ],
+    "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-010\\receipt.json",
+    "receipt_sha256": "d2357ee9d4107366a9f0296c6eb73a0d712e6256a254a11e3913777f08a11685",
+    "http_requests": 1,
+    "usage_state": "known",
+    "known_tokens": 20030,
+    "input_tokens": 19127,
+    "output_tokens": 903,
+    "elapsed_s": 36.406,
+    "same_actual_application_report_sha256": "cf01c63370bacd3939bfba73b257621fab434715f5df246614b4d591471cd432",
+    "source_difference": "Report source_index/digest and catalog binding refreshed for actual new report; all original facts/provenance/knowledge and computed values retained."
   }
 }
