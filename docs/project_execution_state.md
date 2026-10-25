@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15逐项执行准备已完成：冻结HEAD公共CI全绿、真实作者行政预检及最终启动核验通过；待本批具体费用授权，尚未执行或授资格，automation PAUSED。"
+pause_reason: "原15具体费用授权已激活并通过最终核验；待用户在本机隐藏输入企业Key启动首项，0新请求/未授资格，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,7 @@ pause_reason: "原15逐项执行准备已完成：冻结HEAD公共CI全绿、真
 
 ## 当前行动
 
-## 2026-10-25 原15逐项执行准备完成，待费用授权（当前）
+## 2026-10-25 原15费用授权已激活，待本机输入Key（当前）
 
 新增固定报告入口复用1.6.6、CandidateSession、共享预算/owned worker与真实native门，不生成报告。
 前例完整只读回放并匹配才可进入后例；初审直过、必要修订/唯一应用/同稿双fresh、524与明确格式
@@ -26,13 +26,13 @@ pause_reason: "原15逐项执行准备已完成：冻结HEAD公共CI全绿、真
 10项新增整链通过（341.42秒），27项相关原生门/共同合同回归通过（254.25秒），3文件编译、
 治理/diff通过。全部HTTP和native业务事件均为模拟，0真实Provider/0Key，没有新语义或产品资格。
 范围：原15报告/标签/完整来源不变，顺利预期50职责审查，结构最多120实际请求/9646080 tokens，
-含每例4次手动恢复；估价8.7552元非账单硬限，尚未获费用授权。
+含每例4次手动恢复；估价8.7552元非账单硬限，用户本轮明确“确认”该范围。
 
 已推送执行HEAD34abe04e并冻结D:/riftcoach-original15-execution-20261025（clean）。Operator为
 C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025，plan SHA ef53345f。
 复用真实独立主体完成作者原件→check-answer→原生final→唯一submit；原件/native逐字匹配，
 严格只读回查通过。最初guard eca79f71与最新checkpoint6764fa0a来自原stdout及最早退出记录，
-不从文件事后重算。真实未授权入口在Key/cases创建之前拒发；控制器仍未激活。旧冻结303c21b4
+不从文件事后重算。真实未授权入口在Key/cases创建之前拒发；该证据保留，当前授权另见下述激活记录。旧冻结303c21b4
 clean、outer seal1c54efbd现场核未变。上述行政预检不是15项业务结果。
 
 执行HEAD34abe04e的公共CI40188299016已全绿（12:05:59Z完成），最终PowerShell CheckOnly退出0；
@@ -41,8 +41,13 @@ clean、outer seal1c54efbd现场核未变。上述行政预检不是15项业务�
 准备完成证据为Control/preparation-complete-v2.json，SHA acc65e7b29ef27643ff2fabcec3b703d9af21543f5f21546fab1c21c6a5e2e03；
 此前prepared-head.json及preparation-complete.json保留为原快照，由v2明确接续。
 
-**下一动作：** 请求本批具体费用授权：原15、顺利预计50职责审查、最多120实际请求/9646080 tokens，
-每例最多4次手动补测，企业专线Sol/high，最大包络估价8.7552元非账单硬限。当前未签发grant、0Key/0请求。
+用户本轮明确“确认”上述具体提案；新grant create-only绑定原plan/HEAD/合同/分组/包络，SHA 87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc，
+issued2026-10-25T15:46:27.795344Z，expires2026-10-26T15:46:27.795344Z（北京时间10月26日23:46:27），不自动延期。
+仅settings.authorization_sha256从null激活，原settings和准备快照保留；实际PowerShell CheckOnly及
+有效grant/冻结源码/CI/真实native复核通过。0Key/0新请求、cases尚未创建。
+**下一动作：** 用户在本机执行control/start-authorized.ps1并隐藏输入GPT-企业专线Key，发送首项一次；
+返回后主审及既有独立作者实读真实输出，再导入并续接。普通超时/格式只暂停当前项，保留成功/费用，手动同项恢复。
+证据：Control/authorization-activation.json、activation-check.json；原准备记录不改成已授权快照。
 旧封存/成功/失败/费用不动，不重买熟悉诊断报告。
 阶段8E及产品DB/API/UI、自然Coach/Training、前端等依赖保持，automation PAUSED。
 证据：data/evaluation/results/sol_original15_session_preparation_20261025.json；

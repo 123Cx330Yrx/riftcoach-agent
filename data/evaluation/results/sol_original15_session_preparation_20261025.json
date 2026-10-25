@@ -56,12 +56,12 @@
   "key_reads": 0,
   "synthetic_http_and_native_business_events_only": true,
   "execution_ready": true,
-  "execution_authorized": false,
+  "execution_authorized": true,
   "live_original15_results": false,
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
-  "next_action": "Request concrete paid authorization for the prepared original15 plan; no grant, key reads or provider requests yet.",
+  "next_action": "User runs the existing start-authorized.ps1 and enters the enterprise key locally for the first request; actual output requires primary and independent review before continuation.",
   "runbook": "docs/runbooks/sol-original15-session.md",
   "product_dependencies_unchanged": true,
   "execution_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
@@ -85,5 +85,11 @@
   "final_unauthorized_exit": 1,
   "powershell_exit_propagation_verified": true,
   "evidence_and_author_inventory_unchanged": true,
-  "automation_status": "PAUSED"
+  "automation_status": "PAUSED",
+  "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+  "authorization_issued_at": "2026-10-25T15:46:27.795344+00:00",
+  "authorization_expires_at": "2026-10-26T15:46:27.795344+00:00",
+  "activation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization-activation.json",
+  "activation_check": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\activation-check.json",
+  "activation_verified": true
 }

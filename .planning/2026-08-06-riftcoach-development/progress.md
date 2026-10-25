@@ -1,3 +1,12 @@
+## 2026-10-25 原15明确费用授权已激活
+
+用户明确“确认”前一具体提案：原15预计50职责、最多120实际请求/9646080 tokens，
+企业专线Sol/high、每例4次手动补测，最大包络估价8.7552元非账单硬限。新grant SHA 87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc，
+北京时间2026-10-26 23:46:27到期；只绑定本批，不自动延期。准备快照/原settings保留，
+仅settings授权SHA激活；实际冻结cwd/Python下PowerShell、有效grant、源码、CI和真实native核验通过。
+当前0Key/0Provider、cases未建；下一动作是用户运行control/start-authorized.ps1隐藏输入企业Key。
+首次返回后逐项全文双审再续接；超时/格式仅同项暂停并保留前缀与费用。automation PAUSED。
+
 ## 2026-10-25 原15准备完成：公共CI与最终入口核验通过
 
 执行HEAD34abe04e的CI40188299016全绿，最终PowerShell CheckOnly退出0；冻结执行树clean，
