@@ -1,3 +1,12 @@
+## 2026-10-25 原15逐项入口离线完成
+
+新增sol_original15_session及显式launcher，复用CandidateSession/SessionBudget/SessionWorkflow/native门。
+原15无生成、无旧成功继承；逐项回放前例、按原标签比较，错误保留前缀。新增10项整链通过
+（341.42秒）、27项相关回归通过（254.25秒），编译/治理/diff通过。实际launcher的Windows锁读取
+及失败库存分隔符差异已修，合成native跨case重复turn也修正。原收据实际HTTP/known/unknown独立核对。
+运行说明已写；新Operator控制器已离线核原stdout根/篡改拒绝及PowerShell语法，尚待最终执行树。
+0真实Provider/0Key，未授资格；下一步冻结与真实作者行政预检，再提出具体费用授权。
+
 ## 2026-10-25 通用双政策与原15/Runtime共同绑定
 
 新增sol_review_contract 1.6.6复用已封存facts/completion政策，去掉固定对照及继承facts例外。实际Runtime/owned worker/预算/trace/session共用模块，唯一应用及同稿fresh、当前项手动524/格式恢复和严格只读重放通过23项新增检查；87项旧路径回归及治理/diff通过，8个当前配置启动通过。原15标签/输入/来源不变，新30initial离线摘要绑定同一manifest；fresh待实际应用稿，不授新资格。0Provider/0Key，原seal/冻结树未变。

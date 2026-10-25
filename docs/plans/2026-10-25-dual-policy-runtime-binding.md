@@ -18,3 +18,14 @@
 手动暂停/恢复依赖CandidateSession及其真实native review gate；未提供session的依赖注入入口用于本地成功/失败检查，不是新的可恢复付费启动器。旧冻结303c21b4保持clean，outer seal 1c54efbd未变。政策源文件与冻结版逐字相同；新增上下文/传输标识显式隔离旧请求，旧成功不能迁为新版本资格。
 
 证据：data/evaluation/results/sol_review_runtime_binding_20261025.json；sol_review_qualification_inventory_20261025.json；natural_duty_qualification_inventory_dual_binding_20261025.json。历史库存保留，只有新的legacy当前库存及当前manifest记录共享源码变化。
+
+## 接续工作卡：原15逐项执行
+
+- 目标：为原15固定报告提供真实可恢复的逐项入口，使用1.6.6的完整双初审、Host兼容/编辑核验、唯一应用及同稿双fresh；不重新生成报告，不拼接旧版本结果。
+- 路径：复用CandidateSession、SessionBudget、SessionWorkflow、SessionReviewGate和owned worker；每例独立session及原stdout根，前例严格只读重放并接受后才能进入下一例，outer seal只创建一次。新模块只负责固定输入和顺序编排，不新建审查引擎。
+- 验收：原15逐字构造、标签不入模型或独立任务；实际worker与原生事件适配器的模拟整链；正常暂停/单项手动524及格式恢复、硬错误/错标签阻止后项、原件变动/未决intent拒发、只读回放/唯一封存；缺授权在Key/创建execution前拒绝。
+- 预算：沿用同候选自然任务包络，不冒充自然任务；固定报告每例最多4逻辑审查+4手动补测，15例最多120实际请求/9646080 tokens；按原标签顺利完成为50逻辑审查，不把50当结构硬上限。最坏未缓存估价8.7552元，非账单限额。当前只准备，未授费用或启动权限。
+- 失败分支：524/已知格式错误仅暂停同例同项，手动补测保留所有用量及成功项；真实语义拒绝、输入/身份/补丁完整性错误保留最早停止证据，不靠重试越过。预算耗尽暂停等待明确扩展，不自动循环。
+- 当前：入口离线整链10项通过（341.42秒）、27项相关回归通过（254.25秒），编译/治理/diff通过。3b290d9d公共CI40158661587已全绿；新提交CI/最终执行目录和真实作者行政预检待完成。Windows内核锁读取及失败库存分隔符差异已修，合成跨case事件ID重复已修，保留失败记录。旧封存保持，不新建Agent、不读取Key或发送模型请求。
+
+运行说明：docs/runbooks/sol-original15-session.md。准备完成必须包含最终clean执行树、同HEAD公共CI、实际cwd/Python启动以及真实独立作者行政预检；测试中的合成事件不代替该预检。

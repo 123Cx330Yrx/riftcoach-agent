@@ -1,0 +1,37 @@
+{
+  "kind": "sol-original15-session-offline-preparation-v1",
+  "date": "2026-10-25",
+  "candidate_contract": "natural-flash-sol-dual-necessity-development-v1",
+  "contract_version": "1.6.6",
+  "fixed_cases": 15,
+  "expected_labels": {"accept": 5, "reject": 10},
+  "expected_logical_reviews_if_labels_match": 50,
+  "envelope": {"max_requests": 120, "max_reserved_tokens": 9646080, "manual_retries_per_case": 4},
+  "estimated_maximum_uncached_cny": "8.7552",
+  "hard_billing_cap": false,
+  "checks": [
+    {"tests": "tests/test_sol_original15_session.py", "passed": 10, "seconds": 341.42},
+    {"tests": "tests/test_sol_session_review.py tests/test_sol_review_binding.py", "passed": 27, "seconds": 254.25},
+    {"check": "changed_python_compile", "files": 3, "passed": true},
+    {"check": "project_governance_and_diff", "passed": true},
+    {"check": "external_controller_preserved_stdout_and_tamper_rejection_powershell_parse", "passed": true}
+  ],
+  "retained_offline_failures": [
+    "Windows held session.lock read during previous-case inventory: fixed by excluding only protocol lock paths",
+    "Failure classification replay used a different Windows inventory key format: fixed by reusing provider inventory",
+    "Synthetic cross-case stage turn IDs were duplicated: test fixture now emits unique turn IDs",
+    "One test run detected source edits made during its pinned run: source freeze preserved and final suite rerun"
+  ],
+  "new_real_provider_requests": 0,
+  "key_reads": 0,
+  "synthetic_http_and_native_business_events_only": true,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "live_original15_results": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "next_action": "Freeze a clean execution checkout, verify same-HEAD public CI and real administrative author/check-answer/native import plus unauthorized refusal. Request concrete paid authorization only after preparation.",
+  "runbook": "docs/runbooks/sol-original15-session.md",
+  "product_dependencies_unchanged": true
+}

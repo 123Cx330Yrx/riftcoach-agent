@@ -1,3 +1,11 @@
+## 2026-10-25 原15逐项入口的离线反例
+
+实际launcher的跨case检查暴露Windows msvcrt锁文件被全Operator库存读取，产生PermissionError。
+只排除已知session.lock路径，仍拒绝链接且核验其余文件；不能靠取消前例回放绕过。
+新增原transport重放复用原收据验证器，失败用量/手动恢复分类则必须使用Provider自己的库存表示，
+不能混用as_posix与Windows分隔符。合成native测试也必须给每个case的同名stage不同turn ID，
+否则真实事件adapter正确拒绝ambiguous_turn。以上都是离线工程/fixture问题，不归因上游或模型。
+
 ## 2026-10-25 诊断成功不能直接等同通用Runtime合同
 
 1.6.5包含固定b/c/d材料和facts-initial继承例外，直接注册将把断点诊断语义带入动态产品。新增1.6.6只复用两项政策与既有引擎，四个职责阶段统一新context；业务messages/tools/参数与原诊断一致，旧新接收器互拒。

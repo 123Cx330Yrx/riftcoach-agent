@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-25当前工作：`docs/plans/2026-10-25-dual-policy-runtime-binding.md`。通用双政策1.6.6与实际Runtime/worker/session/trace接线及原15共同库存已完成离线验证：23项新增检查、30initial摘要、8配置启动通过；本包0Key/0新付费请求，未授资格。下一动作是准备原15逐项执行与独立全文审查方案，再提出具体付费授权；不重复上轮封存报告，不改阶段。
+2026-10-25当前工作：`docs/plans/2026-10-25-dual-policy-runtime-binding.md`。原15逐项入口已复用共同1.6.6与实际session/worker/native门，10项新增整链和27项相关回归通过；包含前例只读回放、原收据/已知未知费用、单项手动恢复与Host-only无Key边界。尚无真实15结果或费用授权。下一动作是冻结clean执行目录、核同HEAD公共CI并完成真实独立作者行政预检与未授权拒发检查，再提出具体费用授权；不重买上轮封存报告、不改阶段。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

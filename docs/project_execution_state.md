@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "通用双政策1.6.6已完成离线Runtime与原15库存共同绑定；待逐项执行方案及独立审查准备，无新付费授权，未授资格，automation PAUSED。"
+pause_reason: "原15逐项入口已通过离线整链，待最终冻结执行目录及真实作者行政预检；无新付费授权，未授资格，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,27 @@ pause_reason: "通用双政策1.6.6已完成离线Runtime与原15库存共同绑
 
 ## 当前行动
 
-## 2026-10-25 双政策同版本接线完成（当前）
+## 2026-10-25 原15逐项入口离线完成（当前）
+
+新增固定报告入口复用1.6.6、CandidateSession、共享预算/owned worker与真实native门，不生成报告。
+前例完整只读回放并匹配才可进入后例；初审直过、必要修订/唯一应用/同稿双fresh、524与明确格式
+手动恢复、语义/身份硬停、未决intent禁重发、错标签阻止后项及唯一seal均已离线覆盖。
+密钥只在真实新请求边界提示，查看/导入/关闭及普通timeout等待不读Key。回放核原transport
+请求/响应/HTTP/观测及known/unknown用量，不能只相信会话结果。实际launcher发现的Windows锁读取
+及失败库存分隔符差异已修复，合成事件跨case重复turn ID也已修正；不归因模型或上游。
+
+10项新增整链通过（341.42秒），27项相关原生门/共同合同回归通过（254.25秒），3文件编译、
+治理/diff通过。全部HTTP和native业务事件均为模拟，0真实Provider/0Key，没有新语义或产品资格。
+范围：原15报告/标签/完整来源不变，顺利预期50职责审查，结构最多120实际请求/9646080 tokens，
+含每例4次手动恢复；估价8.7552元非账单硬限，尚未获费用授权。
+
+**下一动作：** 提交并冻结clean执行目录，完成同HEAD公共CI和实际cwd/Python下真实独立作者行政
+预检及未授权拒发检查，之后再提出具体费用授权。旧封存/成功/失败/费用不动，不重买熟悉诊断报告。
+阶段8E及产品DB/API/UI、自然Coach/Training、前端等依赖保持，automation PAUSED。
+证据：data/evaluation/results/sol_original15_session_preparation_20261025.json；
+运行说明：docs/runbooks/sol-original15-session.md；活动工作卡仍为docs/plans/2026-10-25-dual-policy-runtime-binding.md。
+
+## 2026-10-25 双政策同版本接线完成（前包）
 
 已新增通用候选sol_review_contract 1.6.6：facts与completion政策逐字复用封存诊断，全部initial/fresh绑定同一动态版本。专用1.6.5的固定对照及继承facts例外未进入新候选。实际Application→Runtime→router/owned worker→共享预算/trace→唯一应用→同稿双fresh已离线验证；默认产品入口及发布状态未改变。使用CandidateSession时524或明确格式故障仅暂停当前项，普通resume不重发，手动同请求补测保留成功前缀及已知/未知费用；不带session的本地检查不是可恢复付费入口。
 
