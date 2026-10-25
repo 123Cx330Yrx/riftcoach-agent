@@ -1,3 +1,9 @@
+## 2026-10-25 冻结CI全绿与最终入口复核
+
+精确303c21b4的公共CI40095068270全部8个job success（含全套分片汇总）。冻结树clean；preparation-complete SHA63110b5f及所有control/operator/作者库存未变；最终PowerShell CheckOnly再次通过。该输出的pending_ci为旧固定文案，CI真实结论以本次GitHub回执为准；未改冻结入口。
+Control新增create-only ci-verified-20261025.json和authorization-proposal.json；后者只是具体范围提案，不是grant。待明确新费用授权后才激活，计划最多新增10HTTP/803840tokens、累计14/870431/3600活动秒、4次手动补测，估价新增0.7296元非账单硬限；24小时有效期从实际批准激活起算。普通继续不重发，成功前缀与原费用保留。
+本轮Provider/Key0、execution/claim/authorization均不存在，automation PAUSED；没有新增模型语义、产品或15项资格。证据completion_diagnostic_integration_20261024.json。
+
 ## 2026-10-24 completion成功前缀离线恢复已实核
 
 新增离线prepare入口在启动前核原seal/计划/全库存，再由冻结2b14583e/合同1.6.3严格replay。临时session复用9个成功操作、原facts journal/回执与原作者/native路由，实际Runtime准确停在completion发送前。继承4HTTP/66591known/0unknown/0retry及255.657活动秒，失败attempt保留；原145件封存和3件作者字节前后相同。

@@ -84,7 +84,6 @@
   },
   "new_qualification_inventory": "data/evaluation/results/natural_duty_qualification_inventory_completion_continuation_20261024.json",
   "remaining": [
-    "Exact frozen HEAD 303c21b42565237a7101d3dcf2357e4940bb9bb7 CI40095068270 success",
     "Specific new authorization activation before hidden-key entry"
   ],
   "new_authorization": false,
@@ -125,7 +124,7 @@
     "cwd": "D:\\riftcoach-completion-diagnostic-ci-execution",
     "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
     "ci_run": "40095068270",
-    "ci_state": "in_progress",
+    "ci_state": "success",
     "native_preflight": {
       "guard_sha256": "081def7f4ed081cff5fb333c0694c9ec0b2e9d2db382806cf5fad7b54e81e3b4",
       "checkpoint_sha256": "f1293930da43e0c8b2adee215350eec9f4cdc1c62e919e429e276b6e54d4235c",
@@ -141,5 +140,75 @@
     "key_reads": 0,
     "authorization_installed": false,
     "automation_status": "PAUSED"
+  },
+  "ci_verified_20261025": {
+    "conclusion": "success",
+    "databaseId": 40095068270,
+    "headSha": "303c21b42565237a7101d3dcf2357e4940bb9bb7",
+    "jobs": [
+      {
+        "name": "packaging-smoke",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T12:43:44Z"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T13:29:46Z"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T13:25:52Z"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T13:21:07Z"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T13:31:35Z"
+      },
+      {
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T12:46:44Z"
+      },
+      {
+        "name": "web-checks",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T12:46:37Z"
+      },
+      {
+        "name": "pytest",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-10-24T13:31:56Z"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/40095068270",
+    "verified_at": "2026-10-25T01:36:43.501839+00:00",
+    "preparation_sha256": "63110b5ff1345d0785a6fa74f9bef6c1c2338a56c3b47f75388ed89c3fcfc37c",
+    "preparation_and_author_inventories_unchanged": true,
+    "check_only_passed": true,
+    "provider_requests": 0,
+    "key_reads": 0,
+    "evidence_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\ci-verified-20261025.json",
+    "evidence_sha256": "729c28866153594b29a244d9a14dff2bc1f9ed3a6bbcc0e726a3763a9a539e2f"
+  },
+  "authorization_proposal": {
+    "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\authorization-proposal.json",
+    "sha256": "ea4f1f76e96a695251029c6a7f8251b920626f2efb79cd36de3b10e120d82f0f",
+    "status": "not_authorization"
   }
 }
