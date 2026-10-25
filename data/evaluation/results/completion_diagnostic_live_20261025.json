@@ -4,15 +4,15 @@
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
   "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
   "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
-  "phase": "control-d-timeout-awaiting-manual-retry",
+  "phase": "all-three-controls-accepted-awaiting-user-key-for-original-completion",
   "closed": false,
-  "new_requests": 3,
-  "new_known_tokens": 41266,
+  "new_requests": 4,
+  "new_known_tokens": 62948,
   "cumulative": {
-    "http_requests": 7,
-    "known_tokens": 107857,
+    "http_requests": 8,
+    "known_tokens": 129539,
     "unknown_reserved_tokens": 68468,
-    "retries": 0
+    "retries": 1
   },
   "control_b": {
     "public_verdict": "pass",
@@ -81,13 +81,13 @@
       "key_reads": 0
     }
   },
-  "next_action": "User invokes same start-authorized.ps1 -Resume -ManualRetry and hidden enterprise reviewer key to retry only control-d once. No automatic retry, new batch or repeated successful controls.",
+  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise reviewer key; original-a completion-initial is next. No ManualRetry, repeated controls, generation or facts-initial.",
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
   "automation": "PAUSED",
   "limitations": [
-    "Two completion controls accepted; no stability or policy-improvement conclusion.",
+    "Three completion controls each accepted once after one separately retained timeout/manual retry; familiar development cases, not stability or broad causal/policy-improvement proof.",
     "No original-a completion, actual edit/application or fresh review yet.",
     "Not product or full15 qualification."
   ],
@@ -121,33 +121,76 @@
     "source_read_evidence": "Current report/policy/full deterministic sources and knowledge inspected; full pack/generation/facts/provenance/utterance are value-identical to those already read for control-b; only report block21 changes."
   },
   "current_original_stdout_roots": {
-    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0006.stdout.txt",
-    "stdout_sha256": "82b8474027bb266ccc5106e15f7c377e0d77ae803ba531826136276e9fd606d3",
-    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0006.exit.json",
-    "exit_sha256": "2e256f0718461c690d415f8d28077d6f3d86da5ca39a38835a70851028ae8865",
+    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0008.stdout.txt",
+    "stdout_sha256": "3d7243665347f6f9d51cf47a51bdff56298cc72ddd88557642afc3bb6c8e9dc0",
+    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0008.exit.json",
+    "exit_sha256": "59b1c11f897d3cc405510b1b1152a8041f14e791680cad150aaae72e5ba8df8d",
     "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
-    "checkpoint_sha256": "ff4da71a2da3625dd32f4b5cfd15d5e315bc9f7dfacafb9e3074328c06efb63f",
-    "checkpoint": "0037.json",
-    "root_source": "actual launcher stdout; timeout paused, batch not closed"
+    "checkpoint_sha256": "ed04484006f601204728b57ff4663b16cd12f038a28cae57af0499fca52d811b",
+    "checkpoint": "0051.json",
+    "root_source": "actual native submit adapter stdout; all three controls accepted"
   },
   "new_unknown_reserved_tokens": 68468,
   "control_d": {
-    "phase": "timeout_waiting",
-    "semantic_verdict": null,
-    "http_requests": 1,
-    "worker_code": "http_status_524",
-    "http_status": 524,
-    "worker_reaped": true,
-    "worker_exit": 0,
-    "elapsed_s": 129.203,
-    "usage_state": "unknown",
-    "unknown_reserved_tokens": 68468,
-    "reservation_is_not_bill": true,
-    "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-007\\receipt.json",
-    "receipt_sha256": "75a1835e433264719fa2f5b98678e5ea099be207891a1be36cd8846dc9b487ad",
-    "worker_result_sha256": "b8bb26d4940d37bf99ebbb8199485ede9875c683d9f62d0fd56aca289b51ee48",
-    "manual_retries_used": 0,
-    "prior_controls_unchanged_and_native_replayed": true,
-    "retry_entry_verified_without_send": true
+    "phase": "accepted_after_one_manual_retry",
+    "initial_timeout": {
+      "phase": "timeout_waiting",
+      "semantic_verdict": null,
+      "http_requests": 1,
+      "worker_code": "http_status_524",
+      "http_status": 524,
+      "worker_reaped": true,
+      "worker_exit": 0,
+      "elapsed_s": 129.203,
+      "usage_state": "unknown",
+      "unknown_reserved_tokens": 68468,
+      "reservation_is_not_bill": true,
+      "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-007\\receipt.json",
+      "receipt_sha256": "75a1835e433264719fa2f5b98678e5ea099be207891a1be36cd8846dc9b487ad",
+      "worker_result_sha256": "b8bb26d4940d37bf99ebbb8199485ede9875c683d9f62d0fd56aca289b51ee48",
+      "manual_retries_used": 0,
+      "prior_controls_unchanged_and_native_replayed": true,
+      "retry_entry_verified_without_send": true
+    },
+    "retry": {
+      "http_requests": 1,
+      "worker_code": "ok",
+      "usage_state": "known",
+      "known_tokens": 21682,
+      "input_tokens": 20064,
+      "output_tokens": 1618,
+      "elapsed_s": 50.922,
+      "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-008\\receipt.json",
+      "receipt_sha256": "4f13d4fcc7161ed2b00811e0acbf234bcaa330373deab7fb3ab719bd07b3cc19",
+      "same_request_sha256": "6002315861f720c8f1b4cd6c1fd2e0339038cbd47e2102880f0ddf5710e137a0"
+    },
+    "public_verdict": "needs_revision",
+    "issues": 2,
+    "repair_operations": 2,
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "native": {
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a170d5-98e5-7102-b75b-c83e35bb8725/msg_0e47d5dffa67db2a016add66971bb88198aef30ea3df2cd94c",
+      "author_sha256": "b7491ad779ac455e2982b8247c35d9084f5717bc62e6ad5fe4aefff3dade6d62",
+      "native_final_sha256": "b7491ad779ac455e2982b8247c35d9084f5717bc62e6ad5fe4aefff3dade6d62",
+      "checkpoint_sha256": "f39cbff5df3bb4d1900caf4828b9d193037110a613d5348e5faa0b9f023b800e",
+      "original_guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
+      "source_checkpoint_sha256": "4a445bd5b9e0d53a8763925bd28f3c304d4b2d84abebb58e2614fd1e592828da"
+    },
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\control-d-primary.json",
+    "primary_sha256": "8d5eedfb334d8d17e6bf56daa2cd506288995325d796b12025efdab5abb9015d",
+    "patch_preview_check": {
+      "primary_sha256": "8d5eedfb334d8d17e6bf56daa2cd506288995325d796b12025efdab5abb9015d",
+      "patches_checked": 2,
+      "unique_anchors": true,
+      "no_overlap": true,
+      "correct_content_preserved": true,
+      "preview_only_not_application": true,
+      "preview_sha256": "bb57a21f79905f9121445b02af47634d433e03a89d6abc4f5578d91a043f54e1"
+    },
+    "actual_application": false,
+    "manual_retries_used": 1,
+    "timeout_receipt_and_unknown_reservation_retained": true
   }
 }
