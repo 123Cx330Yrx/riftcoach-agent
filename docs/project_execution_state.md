@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "control-b/c完成度意见已双审接受；累计6HTTP/107857known。检查点正常保存，待用户-Resume隐藏输入Key续control-d；未闭批，automation PAUSED。"
+pause_reason: "第三项control-d远端524且worker已回收，仅同项暂停；前两项双审保留。累计7HTTP/107857known/68468unknown预留，待-Resume -ManualRetry；未闭批，automation PAUSED。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,13 @@ pause_reason: "control-b/c完成度意见已双审接受；累计6HTTP/107857kno
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-25 第三项对照远端524，仅当前项暂停
+
+control-d第1次请求约129.203秒返回HTTP524（worker_code=http_status_524），无完整可审意见、用量unknown；worker已reaped、exit0，无未解决intent。不是模型语义失败、结构误拒或本地300秒到期；上游为何超时未判定。当前timeout_waiting=true/closed=false，前两项control-b/c的成功结果和真实native接受均保持并只读复核；未启动第二份。
+新增累计3HTTP/41266known/68468unknown预留，继承后累计7HTTP/107857known/68468unknown/0retry；预留不是账单，尚未消耗手动补测次数。原stdout/exit SHA与最初guard保留，当前0037检查点ff4da71a来自实际0006 stdout。原入口授权/CI/来源/先前native及同项补测状态只读检查通过，检查自身0请求/0Key。
+**下一动作：** 用户运行原control/start-authorized.ps1 -Resume -ManualRetry并隐藏输入企业Key，手动补control-d一次；前两项不重发，无自动循环/新批/新授权要求。原授权北京时间10月26日09:45截止，包络最多新增10次及4次手动补测保持，automation PAUSED。证据completion_diagnostic_live_20261025.json。
+
 
 ## 2026-10-25 第二项completion对照已双审接受
 

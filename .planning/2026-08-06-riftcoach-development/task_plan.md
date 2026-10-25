@@ -15,6 +15,13 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-25 第三项对照远端524，仅当前项暂停
+
+control-d第1次请求约129.203秒返回HTTP524（worker_code=http_status_524），无完整可审意见、用量unknown；worker已reaped、exit0，无未解决intent。不是模型语义失败、结构误拒或本地300秒到期；上游为何超时未判定。当前timeout_waiting=true/closed=false，前两项control-b/c的成功结果和真实native接受均保持并只读复核；未启动第二份。
+新增累计3HTTP/41266known/68468unknown预留，继承后累计7HTTP/107857known/68468unknown/0retry；预留不是账单，尚未消耗手动补测次数。原stdout/exit SHA与最初guard保留，当前0037检查点ff4da71a来自实际0006 stdout。原入口授权/CI/来源/先前native及同项补测状态只读检查通过，检查自身0请求/0Key。
+**下一动作：** 用户运行原control/start-authorized.ps1 -Resume -ManualRetry并隐藏输入企业Key，手动补control-d一次；前两项不重发，无自动循环/新批/新授权要求。原授权北京时间10月26日09:45截止，包络最多新增10次及4次手动补测保持，automation PAUSED。证据completion_diagnostic_live_20261025.json。
+
+
 ## 2026-10-25 第二项completion对照已双审接受
 
 control-c新增1HTTP/20873已知tokens；模型唯一issue正确发现第21段明示阅读者本人参赛及个人训练与观摩请求冲突，引用28原用户请求。唯一逐字补丁只替换冲突末句，保留8.7–9.0/死亡≤3观察参照、记录/回看动作及K3，未误报第18段已完成的OP.GG行动。主审及既有独立作者全文核验均接受，原生事件与run外作者字节一致，实际submit accepted。内存补丁预览不是实际应用或fresh；facts遗留问题未清除。
@@ -68,7 +75,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-control-b/c已双审接受；用户运行control/start-authorized.ps1 -Resume隐藏输入Key续control-d，submit适配器已真实验证保留stdout检查点。不重买成功前缀或首次接受的a，不扩旧grant。
+control-d远端524后仅同项暂停；用户运行control/start-authorized.ps1 -Resume -ManualRetry隐藏输入Key补当前项一次，前两项不重发。不重买成功前缀或首次接受的a，不扩旧grant。
 
 ## History
 

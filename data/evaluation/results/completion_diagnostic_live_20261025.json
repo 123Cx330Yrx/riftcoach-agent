@@ -4,14 +4,14 @@
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024",
   "plan_sha256": "5218a0d2e5fc740ce335ed6e16fe39edc23d6bc002cd13e2572ae7611fe665e4",
   "authorization_sha256": "753f5b2355c8429da203414f7aa0badc907379f05c83e5226593a1cd99f4430e",
-  "phase": "control-c-accepted-awaiting-user-key-for-control-d",
+  "phase": "control-d-timeout-awaiting-manual-retry",
   "closed": false,
-  "new_requests": 2,
+  "new_requests": 3,
   "new_known_tokens": 41266,
   "cumulative": {
-    "http_requests": 6,
+    "http_requests": 7,
     "known_tokens": 107857,
-    "unknown_reserved_tokens": 0,
+    "unknown_reserved_tokens": 68468,
     "retries": 0
   },
   "control_b": {
@@ -81,7 +81,7 @@
       "key_reads": 0
     }
   },
-  "next_action": "User invokes same start-authorized.ps1 -Resume and hidden enterprise reviewer key; control-d is next, no manual-retry flag.",
+  "next_action": "User invokes same start-authorized.ps1 -Resume -ManualRetry and hidden enterprise reviewer key to retry only control-d once. No automatic retry, new batch or repeated successful controls.",
   "qualified": false,
   "production_admitted": false,
   "publication_allowed": false,
@@ -121,13 +121,33 @@
     "source_read_evidence": "Current report/policy/full deterministic sources and knowledge inspected; full pack/generation/facts/provenance/utterance are value-identical to those already read for control-b; only report block21 changes."
   },
   "current_original_stdout_roots": {
-    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0005.stdout.txt",
-    "stdout_sha256": "53f08d8b3af507b00e15060ddcb5483c4fd609dab4a7c09bbf12ce4c3a864090",
-    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0005.exit.json",
-    "exit_sha256": "e71ae5d7d578e4c0d7d5c3b16bc089f3a372b862c2d9f4796d0b2585df0b58ca",
+    "stdout_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0006.stdout.txt",
+    "stdout_sha256": "82b8474027bb266ccc5106e15f7c377e0d77ae803ba531826136276e9fd606d3",
+    "exit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024-control\\segments\\0006.exit.json",
+    "exit_sha256": "2e256f0718461c690d415f8d28077d6f3d86da5ca39a38835a70851028ae8865",
     "guard_sha256": "5bb29a6bf1c756a0c9e4dfc78289e21327c6081d80f7a2e3720aa94c14616129",
-    "checkpoint_sha256": "9035ec20b6050e47e3a9432016a89b79ce2c6ead025ec8c0e487e1c84d8094dc",
-    "checkpoint": "0029.json",
-    "root_source": "actual native submit adapter stdout; no recovery needed"
+    "checkpoint_sha256": "ff4da71a2da3625dd32f4b5cfd15d5e315bc9f7dfacafb9e3074328c06efb63f",
+    "checkpoint": "0037.json",
+    "root_source": "actual launcher stdout; timeout paused, batch not closed"
+  },
+  "new_unknown_reserved_tokens": 68468,
+  "control_d": {
+    "phase": "timeout_waiting",
+    "semantic_verdict": null,
+    "http_requests": 1,
+    "worker_code": "http_status_524",
+    "http_status": 524,
+    "worker_reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 129.203,
+    "usage_state": "unknown",
+    "unknown_reserved_tokens": 68468,
+    "reservation_is_not_bill": true,
+    "receipt_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-diagnostic-v2-20261024\\execution\\transport\\review\\call-007\\receipt.json",
+    "receipt_sha256": "75a1835e433264719fa2f5b98678e5ea099be207891a1be36cd8846dc9b487ad",
+    "worker_result_sha256": "b8bb26d4940d37bf99ebbb8199485ede9875c683d9f62d0fd56aca289b51ee48",
+    "manual_retries_used": 0,
+    "prior_controls_unchanged_and_native_replayed": true,
+    "retry_entry_verified_without_send": true
   }
 }
