@@ -129,7 +129,65 @@
   "completed_replay_evidence_sha256": "a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854",
   "cases_completed": 1,
   "next_case": "claim-scope:4",
-  "next_stage": "facts-initial",
+  "next_stage": "native-dispatch-recovery",
   "retry_needed": false,
-  "all_cases_matched": false
+  "all_cases_matched": false,
+  "current_case": {
+    "key": "claim-scope:4",
+    "stage": "facts-initial",
+    "provider_verdict": "needs_revision",
+    "provider_issues": 1,
+    "primary_accepted": true,
+    "independent_authored_accepted": true,
+    "native_submission_accepted": false,
+    "native_import_error": "codex_review_host_rollout_dispatch_or_final_ambiguous",
+    "response_preserved": true,
+    "actual_edit_performed": false,
+    "status": {
+      "checkpoint_sha256": "7b26c37a70160dc510c81c1c8d2d91b26b6e9ed8b6a277255a9b9ef49efcad4c",
+      "closed": false,
+      "format_waiting": false,
+      "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7",
+      "operations": 3,
+      "production_admitted": false,
+      "publication_allowed": false,
+      "timeout_waiting": false,
+      "unresolved": []
+    },
+    "transport": {
+      "actual_attempts": 1,
+      "completed_calls": 1,
+      "failed_calls": 0,
+      "http_requests_known": 1,
+      "http_requests_unknown": 0,
+      "known_tokens": 21139,
+      "known_usage_calls": 1,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 0,
+      "unknown_usage_calls": 0
+    },
+    "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a173d4-4357-7e01-bc85-708c4c1a2822/msg_0abace014f84255e016ade2b4591f08192ba44b7e0d1346421",
+    "author_sha256": "12a652bc41359291350dac53397387d1be0586714cd0f7c95dc4143c85fc0b81",
+    "checkpoint_sha256": "0fe827a40c3c327bb5fcc3511433e612bbdbc2fd6f53d19bd8ab185a9e7bb775",
+    "original_stdout_roots": {
+      "checkpoint_sha256": "7b26c37a70160dc510c81c1c8d2d91b26b6e9ed8b6a277255a9b9ef49efcad4c",
+      "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7"
+    },
+    "failure_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-native-dispatch-failure.json",
+    "failure_evidence_sha256": "d61ddf29de614163ff05d2d81c79f062ba6538ab01a3f33bf2d51d1ae78a5585"
+  },
+  "batch_accounting": {
+    "calls": 3,
+    "known_tokens": 60564,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "http_requests_known": 3,
+    "http_requests_unknown": 0,
+    "receiptless_calls": 0,
+    "not_sent": 0
+  },
+  "next_action": "Resolve operator duplicate NEW_TASK provenance without modifying frozen inputs, discarding either dispatch, resending Provider calls or overwriting the existing final; current protocol rejects import.",
+  "batch_closed": false,
+  "qualification_failure_due_to_model": false
 }

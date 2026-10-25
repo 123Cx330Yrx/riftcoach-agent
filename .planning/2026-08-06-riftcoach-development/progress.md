@@ -1,4 +1,26 @@
-## 2026-10-26 原15首份报告双初审完成，1/15（当前）
+## 2026-10-26 第二报告模型意见正确，本地native派发冲突待恢复（当前）
+
+claim-scope:4/facts-initial新增1HTTP200/34.219秒/21139known（输入20114、输出1025），
+needs_revision/92、唯一issue及block_4逐字补丁。主审和独立作者均全文核验并接受：原稿明确的
+“每一个指标均值都被辅助局拉低”与视野33.75→45、早死1.5→2.6冲突；补刀8.9075→7.394、
+经济469.0525→435.76、伤害952.1375→869.504确实下降。补丁仅纠正该句，保留正确内容及观摩身份。
+模型请求、结构、身份echo high、完整响应观测、收据及已知用量均通过；这不是模型语义失败。
+
+实际导入未执行：主线程误用collaboration.followup_task恢复同任务，即使正文写MESSAGE，工具
+仍实际产生第二条NEW_TASK。真实同turn有两条NEW_TASK和两条MESSAGE；唯一native final与作者原件
+逐字一致（SHA12a652bc），但冻结reader按既有规则拒绝codex_review_host_rollout_dispatch_or_final_ambiguous。
+最早偏离是主线程恢复工具用法，不是API超时或模型质量；此前将interrupted快照当作需再次followup
+的信号也不充分。不能删/裁剪原dispatch、覆盖final、伪称native导入成功或偷偷改冻结reader。
+
+本批累计3HTTP/60564known、0unknown/0retry/0receiptless/0未发；已完成首份1/15保持。
+第二例closed=false、3operations、unresolved为空，原guard af6f69a2/checkpoint7b26c37a来自0009原stdout/最早exit；
+严格只读库存前后不变，无submission、无实际补丁应用、无completion发送。整批保持未关闭/未seal。
+**下一动作：** 准备显式零付费native交接恢复，保留两条真实派发及原作者/final、原收据和全部费用；
+现冻结协议无法导入，不再派发/重买或运行下一项。独立作者不重新写final；后续新任务首次用followup_task，
+同任务仅send_message且先核协作状态，不能把正文MESSAGE当作工具层MESSAGE。授权不延期，automation PAUSED。
+证据：Control/claim-scope-4-native-dispatch-failure.json；data/evaluation/results/sol_original15_live_20261025.json。
+
+## 2026-10-26 原15首份报告双初审完成，1/15（此前检查点）
 
 claim-scope:1的completion-initial新增1HTTP/14.641秒/18771已知tokens（输入18524、输出247），
 pass/100、issues/resolutions/advisories/repairs均为空。主审和既有独立作者实读完整25段、全部来源、

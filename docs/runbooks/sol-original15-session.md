@@ -59,6 +59,7 @@ session.lock不纳入证据字节库存；其他.lock文件仍核验，重定向
 ```
 
 task只显示尚未导入任务的原始dispatch，同任务恢复只用MESSAGE，不再NEW_TASK。
+这里指工具层消息类型：首次派发用`collaboration.followup_task`；同任务在现有运行者上只用`collaboration.send_message`。`followup_task`即使正文以MESSAGE开头，也会生成新的NEW_TASK。不要仅凭原生API的interrupted快照再次followup；先核协作运行状态。若已出现重复派发，保留全部真实消息及唯一作者/final，记录本地交接故障，不裁剪记录、不覆写final、不重发Provider、不将其判作模型语义失败。现reader没有此类恢复入口。
 submit后从本次原stdout更新根。仅推进Host/关闭时给run加`--host-only`；遇真实发送边界
 会暂停，不提示Key。新一例也须显式指定当前case。
 
