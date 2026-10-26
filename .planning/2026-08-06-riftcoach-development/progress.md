@@ -1,4 +1,16 @@
-## 2026-10-26 第五报告事实初审及逐字补丁双审接受（当前）
+## 2026-10-26 第五报告双初审及唯一逐字应用完成（当前）
+
+scope:4/completion-initial成功1HTTP200、14.11秒，输入18502/输出223，共18725known tokens；公开意见pass/100，issues、resolutions、advisories、repairs为空。主审和原独立作者实读完整原稿、来源、政策与公开意见后接受：K1—K5已连到实际观摩行动，第19段管辖后续条件练习，没有补造本人实战/固定目标义务；无OP.GG，资料缺口已说明。完成度通过未豁免第14段事实错误。
+
+随后compatibility与edit均由两位作者完成，真实native全文与各自原件相同并成功导入。唯一block_14补丁将中单早死明确为胜2.5、败0.5、相差2次，另列混合全样本胜2.5/败约2.67；保留其余正确比较、24段正文、知识及观摩任务。整稿四项ReportAssessment均true，程序已执行唯一application。实际稿SHA 03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e；application SHA 2ab2b91577f4a2723708d44748b2967f916cfecbea0f10b3b1200985629c94b7。静态原始preview/application标记不事后重写，真实Host接受另留证。
+
+两项fresh请求已离线重建并绑定这一实际新稿，当前正常停在facts-fresh发送前，fresh尚未发送。前四例及本例全部native、transport完整响应观测、作者原件、费用和唯一应用严格只读核验通过，核验前后库存不变，旧原件及事故保持。本例2HTTP/40499known；累计16HTTP/301243known，0unknown/0retry/0receiptless/0未发。完成仍4/15，第五份尚需同稿双复审；不提前计修订成功。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1，隐藏输入企业Key发送第五份facts-fresh；不加ManualRetry、不重买初审。冻结34abe04e与CI40188299016不变；本次仅状态及外部证据归档，无需重新等待全套CI。主线程Host-only推进可显式指定当前scope:4，省去重复定位；execute内部前缀/来源/native/授权核验完整保留。0058以来最初guard 79c4de34保持，0061—0067原stdout/exit已留存，最新checkpoint 87482a909d875791d4f8bd10533e038dadd8bddd356b167ecf00c9b4c40e122c。automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。整批未关闭/未seal，未授原15或产品资格。
+本次末尾只读核验脚本迁移时曾把当前scope:4误列入已完成前缀，查找尚不存在的terminal.json失败；已将清单纠正为第四份attribution:1后重做核验。这是主线程外部核验脚本选择错误，不是Provider或业务失败；0付费重发，冻结代码及run证据未改。前后脚本SHA及错误保留于Control/scope-4-audit-helper-correction.json。
+证据：Control/scope-4-initials-and-application-accepted.json（SHA c09795df6a0c9e940503606bb0d9adac4ea1686db4d0ab5581d55150a2e602e5）；scope-4-frontier-0067.json（SHA e3f1e8f2141a084f4c2a800fd3018d48cb481320b108f8b2724d296a99c95576）。
+
+## 2026-10-26 第五报告事实初审及逐字补丁双审接受（此前检查点）
 
 scope:4/facts-initial成功1HTTP200、65秒，输入20075/输出1699，共21774known tokens。模型返回needs_revision/92：唯一issue明确定位第14段把混合位置败局早死均值2.67写成中单败局。中单胜局3、2均值2.5，败局0、1均值0.5，胜局多2次；混合位置败局7、0、1均值约2.67。唯一block_14补丁同时保留正确的中单和全样本两种比较，将“差异很小”限定到后者；其余正确的补刀/伤害构成说明、能力/因果边界及24段正文保持。
 
