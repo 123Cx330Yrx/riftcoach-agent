@@ -43,7 +43,16 @@ Operator/作者SHA不变；冻结源码未改。Control/preparation-complete-v2.
 
 ## 当前实测前沿
 
-## 2026-10-26 第三报告已返回，独立审查连接待恢复（当前）
+## 2026-10-26 原Agent配置已修，等待彻底重启加载（当前）
+
+原15完成2/15；第三份claim-scope:3/facts-initial完整返回仍待双审及submit。累计7HTTP/131250known，0unknown/0retry；未新增第三方请求、应用补丁或封存。
+旧离线resume修复失败并停用。config.toml的custom定义已改为官方登录兼容项，无失效base_url或bearer覆盖；默认openai及原gpt-6.1-sol/high保持。旧Agent身份、数据库、会话历史和业务原件未手改，未创建替代作者；兼容定义也作用于其他仍标记custom的旧会话。
+新进程config/read通过，但11:20启动的原后台PID104888仍使用11:39配置变更前的地址。11:45恢复轮01a17650的真实HTTP日志仍指向127.0.0.1:15721，现已中断、无assistant条目/作者文件。旧轮01a17621及本恢复轮均保留，不声称全stage只有一条NEW_TASK；配置通过不等于实际回复恢复。
+**下一动作：** 用户彻底退出并重开Codex，不运行旧修复脚本、不输入企业Key、无需重启电脑。先核新进程、配置、原Agent及精确checkpoint；无活跃轮/无final时仅恢复一次，最终核真实turn内唯一派发及作者原件，以实际回复验收。若仍失败按新错误诊断或执行已获授权的作者交接，不重试旧地址、不重买成功返回。
+原stdout0025/最早exit、checkpoint3c077a66、material bf751a93及Operator/作者库存均已快照。冻结34abe04e clean、CI40188299016和automation PAUSED保持；原授权北京时间10月26日23:46:27截止不延展，未授产品或15项资格。
+证据：Control/claim-scope-3-restart-checkpoint-20261026.json，SHA 236a104daaa110204a83cc4b135e29038ed12f537b215156a3888192151e1f21；official-custom-compat-20261026-113958/config-verified.json；claim-scope-3-provider-recovery-failed.json。
+
+## 2026-10-26 第三报告已返回，独立审查连接待恢复（此前检查点）
 
 claim-scope:3/facts-initial成功1HTTP200，36.578秒，输入20160/输出936，共21096known tokens；完整响应、用量和观测原件已保存，模型返回needs_revision/94及block6补丁，尚未完成全文双审或submit。
 独立审查沿用01a166cd及唯一NEW_TASK；其Codex provider仍为custom，实际连接失效的127.0.0.1:15721，主会话已为openai。这是Host连接故障，不是本次企业API超时或语义失败。已中断无效重连，作者文件尚不存在。

@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-26当前工作：原15完成2/15，第三报告claim-scope:3/facts-initial已正常返回，尚未双审/submit。累计7HTTP/131250known，0unknown/重试。独立Agent仍绑定custom并连接失效本地入口，已停止重连；在线原生恢复被父会话active-writer约束拒绝，修复命令已准备但未应用。下一动作：外部PowerShell运行Control/repair-independent-offline.ps1后完全退出Codex，原生修复既有Agent绑定，保留原模型/力度/全部历史；成功后同stage MESSAGE续审，不发第二次NEW_TASK、不重买成功API返回。冻结HEAD/CI不变，automation PAUSED，整批未关闭/未seal，原授权北京时间10月26日23:46:27截止不延展。证据Control/claim-scope-3-provider-recovery-pending.json及sol_original15_live_20261025.json。
+2026-10-26当前工作：原15完成2/15，第三份facts-initial完整返回待双审，7HTTP/131250known保持。旧离线修复脚本已停用；custom配置已修，但旧进程仍访问15721，恢复轮已中断且无final。用户彻底退出重开Codex后核原Agent实际连接及精确checkpoint，满足无活跃轮/无final才恢复一次，真实turn内核唯一派发。保留旧作者/原件，不更换作者、不手改历史/DB、不重发成功API、不要求Key；冻结HEAD/CI不变，automation PAUSED。原授权10月26日23:46:27截止。证据Control/claim-scope-3-restart-checkpoint-20261026.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
