@@ -1,4 +1,13 @@
-## 2026-10-26 第三报告双初审与唯一修订完成，待同稿复审（当前）
+## 2026-10-26 第三报告事实复审双审接受，待最后完成度复审（当前）
+
+claim-scope:3/facts-fresh成功1HTTP200，23.656秒，输入17821/输出577，共18398known tokens。完整公开意见pass/100，issues及issue_resolutions为空，仅advisory block4。主审及原独立作者重新实读完整实际25段新稿、来源、政策、请求及公开响应，分别核实全文并接受；真实native与run外作者逐字一致，唯一派发、导入及submit通过，未更换作者或重发成功请求。
+第6段实际稿已修为全五局补刀8.81/6.45，原始均值8.805/6.453333…之差2.351666…支持未舍入差约2.35；正确四中单比较、其他正文及观摩身份保留。全样本早死2.5/2.67、伤害差669.235及混合695.418333…、timeline和K1—K5依据均核实。block4泛指不补全称，其advisory不掩盖真实错误；事实通过不代替完成度。
+唯一application SHA fbba09e50266bd535a37de239b3ad5b3e61b00615ef3bfb49d4f3a87b8f06c0a保持，新稿b52a27c31eca782dff9429ff0dc0dcc8706596e3ee58f8223e78bf6e93aef820与本次实际请求一致；最后completion-fresh离线重建绑定同一实际稿及完整来源。Host-only正常停于新请求之前，未读取Key或增加Provider请求。
+首两例与本例五份真实native、原transport/完整响应观测及费用严格只读核验通过，读前后库存不变，重启前业务原件/旧作者保持。当前18operations、无unresolved、未关闭；本例3HTTP/58329known，累计9HTTP/168483known，0unknown/0retry/0receiptless/0未发，仍完成2/15。原0036—0038 stdout/最早exit保留，最初guard b2cc18b1不变，最新原checkpoint f6f725efa21a9941fadf72e043e28361aee21e809a26aeb98c7f1c1ad599b893；旧中断、0028预发送未知原因及case4显式恢复/未知不变。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第三份最后completion-fresh；不加ManualRetry、不重发先前成功项或再应用。返回后实审，再正常结束本例并严格只读replay。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。第三份尚未完成，整批未关闭/未seal，未授原15或产品资格。
+证据：Control/claim-scope-3-facts-fresh-accepted.json（SHA 6a92d97fdf904641ef7485789f1caa5baa66383d2927cfe414793e932935bd16）；claim-scope-3-frontier-0038.json（SHA 670a38761637fe9f25259ba7de0a141b903b5435a10fac08806b3cd2f71ad662）。
+
+## 2026-10-26 第三报告双初审与唯一修订完成，待同稿复审（此前检查点）
 
 第三份claim-scope:3的completion-initial成功1HTTP200，14.75秒，输入18587/输出248，共18835known tokens；完整公开意见pass/100且issues/repairs为空。主审和原独立作者按完整来源、任务、政策及原稿双审接受，真实native与run外作者逐字一致并正常submit。原Agent连接实际恢复，未更换作者。
 compatibility与edit两阶段均完成全文双审、真实native导入及submit；唯一block6补丁准确把全五局胜败补刀误称持平改为8.81/6.45、未舍入差约2.35，保留正确四中单比较。实际25段新稿四项ReportAssessment均接受，观摩身份、条件性练习、来源引用及所有正确内容保持。程序唯一application已执行，新稿SHA b52a27c31eca782dff9429ff0dc0dcc8706596e3ee58f8223e78bf6e93aef820；application SHA fbba09e50266bd535a37de239b3ad5b3e61b00615ef3bfb49d4f3a87b8f06c0a。原件静态flags不改，Host语义接受单独留证。
