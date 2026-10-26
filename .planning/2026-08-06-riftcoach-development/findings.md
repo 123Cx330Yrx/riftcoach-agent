@@ -1,3 +1,7 @@
+## 2026-10-26 提交前作者草稿说明的局部自纠
+
+attribution:1/facts-initial作者自行发现未提交说明把两个相同669.24称作不同。此时未check-answer、无native final、无submission；真实native全页读证为0。同stage保留唯一NEW_TASK，先保存原字节/SHA，再明确一次提交前自纠例外，由原作者仅修该句、重读原checkpoint并check-answer后唯一final，严格原生导入及submit接受。原草稿与最终作者SHA均留存，主审不代写；Provider问题/补丁/费用、冻结源码、所有已接受原件保持。这是未提交作者草稿处理，不授权重写已提交作者或已封存证据。证据Control/attribution-1-author-draft-correction.json、author-draft-native-absent.json及facts-initial-accepted.json。
+
 ## 2026-10-26 重复派发的单事件恢复
 
 原生API的interrupted快照不充分证明协作者需要再次NEW_TASK；followup_task正文写MESSAGE不能改变工具层类型。

@@ -1,4 +1,13 @@
-## 2026-10-26 第三报告修订及同稿双复审完成，3/15（当前）
+## 2026-10-26 第四报告事实初审及逐字补丁双审接受（当前）
+
+第四份attribution:1/facts-initial成功1HTTP200，52.609秒，输入20150/输出1536，共21686known tokens；Provider返回needs_revision/92，唯一issue定位block14，另有advisory4。主审及原独立作者均实读25段、完整来源/政策/request/response和所有补丁，接受问题、解释和修法；真实native与run外作者逐字一致并正常submit。
+实错是将全样本补刀与伤害差距同时主要归于辅助局。伤害原差695.418333…，保留中单后仍669.235，仅变26.183333…/3.77%，不支持主要归因；补刀差由混合2.351666…变为中单-0.205，描述性构成说明有依据。唯一block14补丁拆分两指标，保留正确补刀说明、位置能力/因果边界和其他正文，伤害差按原精度HALF_UP写为695.42/669.24；唯一锚点、无重叠。该补丁尚未实际应用，原稿9d274a3d保持；完成度和双fresh仍待执行。
+独立作者在check-answer/native final/submit之前发现自己说明中一处669.24舍入比较的笔误。原草稿0196c8f9完整复制保留，真实native全页核对同binding无final后，仅授权原作者在原路径作一次提交前自纠；只改该句、其他字段相同，之后重读checkpoint/check-answer并输出唯一完整final 752af772。授权记录c35bba8c及无final证明保持；主审未代写独立意见，未改Provider响应、checkpoint、冻结源码或任何已提交原件，无新增付费调用。
+Host-only已消费事实审查并正常停在completion-initial发送前；下一请求离线重建与同一原稿及完整来源一致。前三例与本例native、原transport/完整响应观测、作者和费用只读核验通过，读前后库存不变。本例4operations、无unresolved、未关闭；累计11HTTP/206622known，0unknown/0retry/0receiptless/0未发，完成仍3/15。0042—0044原stdout/最早exit保持，最初guard 1cfd485b，最新原checkpoint 6ae0db53e111d1822d718ff8cfc88e7329eb3818b5f54c8f5987984af48c314f。旧中断、0028未知原因、case4显式恢复和未知不变。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第四份completion-initial；不加ManualRetry、不重买facts。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。整批未关闭/未seal，未授原15或产品资格。
+证据：Control/attribution-1-facts-initial-accepted.json（SHA 80ba3412c5a3266634f048b94e3c754c493d2a3c8f9ddabfb3350ad1bc39d8a9）；attribution-1-frontier-0044.json（SHA 4e8405de8235dd59382aa26e3df94b657e291e8ec16fb26c7f3e6e08133a549a）；attribution-1-completion-preflight.json。
+
+## 2026-10-26 第三报告修订及同稿双复审完成，3/15（此前检查点）
 
 最后completion-fresh成功1HTTP200，14.859秒，输入16248/输出205，共16453known tokens；完整公开意见pass/100，issues、issue_resolutions及advisories均为空。主审及原独立作者重新实读完整实际新稿、来源、用户任务、完成度政策和公开响应后接受；真实native与run外作者逐字一致，唯一派发、导入及submit通过，原作者身份保持。
 完整观摩任务已交付，第19段条件性观摩练习统领后文，未把ShowMaker变为阅读者本人；K1—K5实际连到死亡定位、路线比较、区间观察和记录，不只是列书目。无可用OP.GG快照且已说明缺口，不补造资料消费或个人训练要求。唯一application及实际稿b52a27c31eca782dff9429ff0dc0dcc8706596e3ee58f8223e78bf6e93aef820与双fresh完全相同，修正仅为block6全五局补刀比较，正确四中单比较及其余正文保留。
