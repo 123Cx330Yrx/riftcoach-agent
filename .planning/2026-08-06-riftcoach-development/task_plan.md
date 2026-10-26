@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-26当前工作：原15完成2/15，第三份facts-initial完整返回待双审，7HTTP/131250known保持。旧离线修复脚本已停用；custom配置已修，但旧进程仍访问15721，恢复轮已中断且无final。用户彻底退出重开Codex后核原Agent实际连接及精确checkpoint，满足无活跃轮/无final才恢复一次，真实turn内核唯一派发。保留旧作者/原件，不更换作者、不手改历史/DB、不重发成功API、不要求Key；冻结HEAD/CI不变，automation PAUSED。原授权10月26日23:46:27截止。证据Control/claim-scope-3-restart-checkpoint-20261026.json。
+2026-10-26当前工作：原独立Agent重启后真实回复及唯一native final已验证；第三份claim-scope:3/facts-initial完整双审、正常submit与严格只读replay接受，原Agent/作者身份不变，旧中断与case4显式恢复保留。下一动作：用户原start-authorized.ps1隐藏输入企业Key发送completion-initial，不加ManualRetry、不重买facts。Host-only已停新请求边界，completion同原稿及完整来源离线重建通过；无实际应用，仍2/15，累计7HTTP/131250known。冻结HEAD/CI保持，automation PAUSED；授权10月26日23:46:27截止不延展。证据Control/claim-scope-3-facts-initial-accepted.json及frontier-0027。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

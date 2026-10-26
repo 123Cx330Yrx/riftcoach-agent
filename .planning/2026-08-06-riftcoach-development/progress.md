@@ -1,4 +1,13 @@
-## 2026-10-26 原Agent配置已修，等待彻底重启加载（当前）
+## 2026-10-26 原Agent连接恢复，第三份事实初审已接受（当前）
+
+彻底重启后原独立Agent 01a166cd已实际回复、读取同一checkpoint、写出自己的run外原件并提交唯一完整native final；未更换作者、未手改会话历史/DB、未重新购买成功响应。恢复turn 01a1765b的原生事件与作者逐字一致，严格导入及submit均接受；两个此前中断轮继续留档，case4原显式恢复适配器及未知不变。
+主审与独立作者均实读25段、完整来源/政策/request/response和全部拟议补丁，接受facts-initial的唯一block6错误及修法：全五局胜败补刀均值8.805/6.453333…不持平，原精度差2.351666…，HALF_UP展示8.81/6.45/2.35；补丁注明差值未舍入，保留正确的四中单比较。block4泛指不补全称，早死范围、伤害归因、知识依据和观摩身份均按全文核实。
+Host-only已消费审查，正常暂停在completion-initial新请求之前，0Key/0新增Provider请求；completion请求离线重建与实际同一原稿792db98a及完整来源一致。没有应用补丁，第三份尚未完成，仍2/15。
+首两例及本例真实native、原transport/完整响应观测/费用严格只读核验通过，读前后库存不变，重启前全部业务原件/旧作者SHA保持。本例4operations、无unresolved、未关闭；累计7HTTP/131250known、0unknown/0retry/0receiptless/0未发。原guard b2cc18b1、0026/0027原stdout及最早exit保持，最新原checkpoint e0024a09df90387d1bb67aab65c216f0fdbc28f00a92e566476bcd9662630bed。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第三份completion-initial；不加ManualRetry，不重发facts。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。未关闭整批/未seal，未授15项或产品资格。
+证据：Control/claim-scope-3-facts-initial-accepted.json（SHA 4b1349eb6845bc279c0e08a5de942f98ea0f42b9d4e2f1178caf03342e04d106）；claim-scope-3-frontier-0027.json；claim-scope-3-completion-preflight.json。
+
+## 2026-10-26 原Agent配置已修，等待彻底重启加载（此前检查点）
 
 原15完成2/15；第三份claim-scope:3/facts-initial完整返回仍待双审及submit。累计7HTTP/131250known，0unknown/0retry；未新增第三方请求、应用补丁或封存。
 旧离线resume修复失败并停用。config.toml的custom定义已改为官方登录兼容项，无失效base_url或bearer覆盖；默认openai及原gpt-6.1-sol/high保持。旧Agent身份、数据库、会话历史和业务原件未手改，未创建替代作者；兼容定义也作用于其他仍标记custom的旧会话。
