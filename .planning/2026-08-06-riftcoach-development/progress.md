@@ -1,4 +1,15 @@
-## 2026-10-26 第四报告修订及同稿双复审完成，4/15（当前）
+## 2026-10-26 第五报告事实初审及逐字补丁双审接受（当前）
+
+scope:4/facts-initial成功1HTTP200、65秒，输入20075/输出1699，共21774known tokens。模型返回needs_revision/92：唯一issue明确定位第14段把混合位置败局早死均值2.67写成中单败局。中单胜局3、2均值2.5，败局0、1均值0.5，胜局多2次；混合位置败局7、0、1均值约2.67。唯一block_14补丁同时保留正确的中单和全样本两种比较，将“差异很小”限定到后者；其余正确的补刀/伤害构成说明、能力/因果边界及24段正文保持。
+
+主审与原独立作者均实读完整25段、全部来源/政策/request/公开response及所有补丁，接受解释、来源31/32与修法；唯一锚点、覆盖issue1、无重叠。advisories4/6属于可读性，不新增必要修订。真实native与作者全文逐字一致、唯一派发和导入及submit通过。原稿SHA a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4保持，尚未实际应用补丁；接受的是初审意见与补丁正确性，不是原稿通过。
+
+Host-only已消费审查并正常停在completion-initial发送前，下一请求已离线重建，仍绑定同一原稿及完整来源。前四例与当前真实native、transport/完整响应观测、费用及库存只读核验通过，读前后库存不变，旧原件保持；当前4operations，无unresolved，case未关闭。累计15HTTP/282518known，0unknown/0retry/0receiptless/0未发，原15仍完成4/15。0058—0060最初stdout及exit保留，guard 79c4de34不变，最新原checkpoint dc78c2a7f91364110205d5552345d3c3ad65852b200e603ceb489019f60ee6f2；全部旧事故、恢复及未知保持。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第五份completion-initial；不加ManualRetry、不重买事实初审。之后仍需兼容性、整稿双审、唯一应用和同稿双fresh。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。整批未关闭/未seal，未授原15或产品资格。
+证据：Control/scope-4-facts-initial-accepted.json（SHA c4791f55a8beb14619e488390b618fcfc497e771b15574c5212d209c78730c9c）；scope-4-facts-initial-frontier.json（SHA c89c179c18a03e04227d4f9f66dbe7308c3c4ef72d4a7a13cfa707a3d9108e60）。
+
+## 2026-10-26 第四报告修订及同稿双复审完成，4/15（此前检查点）
 
 attribution:1最后completion-fresh成功1HTTP200、30.859秒，输入16246/输出196，共16442known tokens。公开意见pass/100，issues、issue_resolutions及advisories均空。主审与原独立作者均重新实读当前25段实际稿、完整来源、用户任务和完成度政策后接受；真实native全文与作者逐字相同，唯一派发、导入和submit通过。正文已将K1—K5连到具体观摩行动，第19段限定后文条件性观摩练习，未变成阅读者本人实战或达标要求；没有OP.GG资料且已说明缺口，不补造外部建议。
 
