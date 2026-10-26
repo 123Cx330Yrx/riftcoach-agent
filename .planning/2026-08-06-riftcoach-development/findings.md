@@ -1,3 +1,8 @@
+## 2026-10-26 Key提示前后的静默核验与Host容量恢复
+
+启动入口在提示Key之前重放已完成前缀及当前Host记录，输入后又重查授权、源码、native和成功前缀。实际0052在credential_wait_finished后仍等待，再进入intent/attempt，因此“无输出”不能当作模型已发送或API失败。外部PowerShell仅新增交互核验提示，AST语法检查通过；原脚本备份及前后SHA保存，当前进程和冻结源码不变。该修改没有消除重复核验的耗时，后续性能优化须保留现有来源、作者与只读重放语义。证据Control/launcher-progress-20261026/change.json。
+同轮独立Host作者先因模型容量满失败，真实读取确认无作者/同binding final/submission后，以原作者/模型/精确checkpoint在新turn恢复成功；保留失败turn，完成turn的唯一派发/完整final正常导入。没有重买已成功Provider响应，也没有切换模型。证据Control/attribution-1-facts-fresh-host-capacity-stop.json及facts-fresh-accepted.json。
+
 ## 2026-10-26 提交前作者草稿说明的局部自纠
 
 attribution:1/facts-initial作者自行发现未提交说明把两个相同669.24称作不同。此时未check-answer、无native final、无submission；真实native全页读证为0。同stage保留唯一NEW_TASK，先保存原字节/SHA，再明确一次提交前自纠例外，由原作者仅修该句、重读原checkpoint并check-answer后唯一final，严格原生导入及submit接受。原草稿与最终作者SHA均留存，主审不代写；Provider问题/补丁/费用、冻结源码、所有已接受原件保持。这是未提交作者草稿处理，不授权重写已提交作者或已封存证据。证据Control/attribution-1-author-draft-correction.json、author-draft-native-absent.json及facts-initial-accepted.json。

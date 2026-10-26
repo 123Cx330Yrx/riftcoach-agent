@@ -43,7 +43,17 @@ Operator/作者SHA不变；冻结源码未改。Control/preparation-complete-v2.
 
 ## 当前实测前沿
 
-## 2026-10-26 第四报告双初审与唯一修订完成，待同稿复审（当前）
+## 2026-10-26 第四报告事实复审双审接受，待最后完成度复审（当前）
+
+attribution:1/facts-fresh成功1HTTP200，49.469秒，输入17819/输出1050，共18869known tokens。完整公开意见pass/100，issues及issue_resolutions为空，仅advisories block4/6。主审与原独立作者重新实读实际25段新稿、完整来源/知识/政策/request/response后接受，真实native与作者逐字一致并正常submit。第14段已用原精度伤害差695.418333…/669.235修正主要归因，展示695.42/669.24正确；全文其他事实、观摩身份、知识行动保持，两个可选标记不升级为事实问题。
+独立作者首次恢复turn 01a17767因Selected model is at capacity失败，未产生作者文件、同binding native final或submission；真实原生全页读取及记录保留。随后沿用原作者/模型和同一checkpoint在新turn恢复，完成turn唯一NEW_TASK、唯一完整final 9609985c及严格原生导入通过；失败turn不隐藏，不声称整个stage只有一个turn。未重发成功Provider请求、未换模型或新建作者，本次Provider重试仍0。
+唯一application SHA ef25743a32e3460ca44914a23a655c4b96e968e285f9dbe0a36b5ae64776b54c保持，实际稿3d5836fdea0474ac7d61126d11114eb36eff8dc9c74c8f7db3ecb36d05833d97与本次请求完全一致。Host-only已消费审查并正常停在最后completion-fresh发送前，两份fresh离线重建始终绑定同一实际稿；当前18operations、无unresolved、未关闭。前三例及本例五份真实native、原transport/完整响应观测/费用只读核验通过，读前后库存不变，原件与已提交作者保持。
+本例3HTTP/59366known，累计13HTTP/244302known，0unknown/0retry/0receiptless/0未发，完成仍3/15。0052—0054原stdout/最早exit保持，最初guard 1cfd485b不变，最新原checkpoint 18bdeef890d7ce03b796fc0d0ca02997768c80700bb98a853266e858fac70cac；旧中断、草稿自纠、0028未知原因、case4显式恢复及未知均保留。
+用户发现密钥提示前无输出：实际启动器在Key前重放记录，Key后仍有发送前复核，空日志不代表已发送或失败。仅给外部PowerShell入口增加交互核验提示，AST语法检查通过，原脚本4a7a8cc0完整备份，新SHA1b0e15de；CheckOnly/HostOnly及冻结源码/发送行为保持，当前进程未重启。这只改善说明，没有减少核验耗时。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第四份最后completion-fresh；先看到核验提示、后见Key提示，输入后等待同一进程。不要加ManualRetry或重发前项。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。第四份尚未完成，整批未关闭/未seal，未授原15或产品资格。
+证据：Control/attribution-1-facts-fresh-accepted.json（SHA 3c7ccdd4085cd1637713a897aa2c24845699b4bf6f665d5a40abe515216afc05）；attribution-1-frontier-0054.json（SHA 8206a19744a13f8f193a4b9e2aecbe699b161fa64dfb0a7d03498fe296c59bca）；facts-fresh-host-capacity-stop.json；launcher-progress-20261026/change.json。
+
+## 2026-10-26 第四报告双初审与唯一修订完成，待同稿复审（此前检查点）
 
 第四份attribution:1的completion-initial成功1HTTP200，15.313秒，输入18577/输出234，共18811known tokens；完整意见pass/100，issues/repairs均空。主审与原独立作者按完整来源、用户任务和完成度政策双审接受，真实native与run外作者逐字一致并正常submit。此前中断时后台0047已正常结束在compatibility，恢复先核无活跃执行进程后续接，未重复启动或补发请求。
 compatibility与edit两阶段均完成全文双审、真实native导入及submit。两份意见可共存：完成度通过没有冻结错误归因，事实唯一block14补丁正确保留补刀构成说明，改为全样本伤害差695.42、中单仍669.24，不能把主要伤害差距归于辅助局；原精度差695.418333…/669.235支持HALF_UP，两者差26.183333…/3.77%。完整实际新稿四项ReportAssessment均接受，观摩身份、知识行动及全部正确正文保持。

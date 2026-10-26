@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-26当前工作：第四份attribution:1双初审、compatibility/edit全文双审和真实native导入均接受；唯一block14伤害归因补丁已实际应用，新稿3d5836fd，四项ReportAssessment通过，正确正文/观摩任务保持。两份fresh已重建绑定实际同稿，下一动作用户原start-authorized.ps1隐藏输入企业Key发送facts-fresh，不加ManualRetry。第四份未完成，仍3/15，累计12HTTP/225433known，0unknown/0retry；前三例和本例只读审计、原件/作者SHA保持通过。0047后台已正常停兼容性，恢复未重复启动；旧事故、未提交草稿自纠及未知保留。冻结HEAD/CI不变，automation PAUSED，授权10月26日23:46:27截止不延展。证据Control/attribution-1-initials-and-application-accepted.json及frontier-0051。
+2026-10-26当前工作：第四份attribution:1/facts-fresh成功返回，主审与原独立作者全文同稿双审接受，真实native导入和submit通过。作者容量失败turn保留，同checkpoint/原模型恢复成功，未重发Provider。唯一应用及实际稿3d5836fd保持，最后completion-fresh已绑定同稿，Host-only停发送前。下一动作原start-authorized.ps1隐藏输入企业Key，只发送completion-fresh，不加ManualRetry；入口新增核验提示，AST通过，实际校验和冻结源码未改。第四份未完成，仍3/15，累计13HTTP/244302known，0unknown/0retry；前三例和本例五份native/transport/费用只读核验通过。旧事故/未知保持，automation PAUSED，原授权10月26日23:46:27截止。证据Control/attribution-1-facts-fresh-accepted.json及frontier-0054。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

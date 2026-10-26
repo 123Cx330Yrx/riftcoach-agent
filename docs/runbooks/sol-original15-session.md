@@ -53,6 +53,10 @@ session.lock不纳入证据字节库存；其他.lock文件仍核验，重定向
 不读Key。只有新请求前才隐藏提示天机阁企业Key，用户等待输入不消耗活动秒；输入后
 仍按真实UTC重查授权期限及文件绑定。普通run不会自动补测、循环15例或跨越Host门。
 
+本机Control/start-authorized.ps1在交互运行时先显示记录核验提示。成功记录重放完成后才
+出现隐藏Key输入；输入后还有发送前核验，因此回车不表示已发送请求。等待期间沿用现有
+进程，核对其stdout和退出记录；不要重复启动。此提示只改善等待说明，不改变核验或发送。
+
 ```powershell
 & $Python -X utf8 -m scripts.sol_original15_launch task --operator $Operator --plan-sha $PlanSha --case $Case --authorization-sha $AuthorizationSha --guard-sha $Guard --checkpoint-sha $Checkpoint
 & $Python -X utf8 -m scripts.sol_original15_launch submit --operator $Operator --plan-sha $PlanSha --case $Case --authorization-sha $AuthorizationSha --guard-sha $Guard --checkpoint-sha $Checkpoint --key $Stage --primary-file $PrimaryFile --event-id $EventId
