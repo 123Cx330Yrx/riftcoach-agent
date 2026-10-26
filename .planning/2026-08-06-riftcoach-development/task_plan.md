@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：23:25的0068失败为GitHub TLS查询超时，当时授权有效且0新增模型请求；同HEAD/CI已恢复全绿。原独立Agent真实中转回复通过，无需换作者/配置。外部入口已增加最多3次仅CI网络查询重试，8项检查及实际check通过；893执行文件/25作者原件不变，第五已应用新稿03d48822及四份Host接受保持。完成4/15、16HTTP/301243known。本次诊断已完成，原授权23:46到期；下一步准备保留旧授权/launch/session绑定和累计费用的显式续接入口（尚未实现），再从scope:4/facts-fresh继续，旧命令暂不能付费执行。不得覆盖原授权或重买成功项。冻结HEAD/CI不变，automation PAUSED，整批未关闭/未seal，不授产品资格。证据Control/connection-recovery-20261027/diagnosis.json。
+2026-10-27当前工作：同批附加授权已按用户“那你继续吧”激活（截至北京时间10月28日00:21:46），原授权/launch/session/guard及累计费用保持。外部校验包装器24项检查通过；真实CheckOnly确认有效，HostOnly完整核验后正常停新请求发送边界，0新评估请求/0Key。旧893执行文件/25作者原件保持，只追加0051暂停检查点，原stdout新根fc231733、guard79c4de34不变。下一步用户运行原start-authorized.ps1 -Case scope:4，隐藏输入企业Key仅发送第五份facts-fresh，不加ManualRetry、不重买成功项。累计16HTTP/301243known，完成4/15；104HTTP/9344837tokens是原全局包络未用上限，仍受各case上限约束，不是新预算。冻结34abe04e/CI40188299016保持，automation PAUSED，未关闭/未seal/未授资格。证据data/evaluation/results/sol_original15_continuation_20261027.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

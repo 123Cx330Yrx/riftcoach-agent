@@ -1,4 +1,15 @@
-## 2026-10-27 CI查询超时恢复与原独立Agent中转连接验证（当前）
+## 2026-10-27 原批附加授权已激活，真实入口恢复至发送边界（当前）
+
+用户在获知旧授权到期和必须保持原检查点绑定后明确回复“那你继续吧”，据此续接同一原15剩余范围。新增Control/authorization-continuation-20261027.json，SHA 8f69421caaa404aac53988a28fbc9ada93872c4fd7d961f2e0cd1a723ac82b2d；有效期北京时间10月27日00:21:46至10月28日00:21:46。原authorization.json及其87a47155摘要保持，旧期限不改；企业gpt-6.1-sol/high、15例/最多120HTTP/9646080tokens及全部原活动时间、手动补测和语义要求沿用，累计16HTTP/301243known不清零，全局未用上限104HTTP/9344837tokens不是新额度，且仍受各case原上限及成功case不重发约束。
+
+外部Control安装AdditiveAuthorization包装器，只替换launcher的授权校验入口：原授权在签发时刻按冻结校验器核历史结构和绑定，实际当前时刻由单独SHA固定的新授权校验。每次首发前及输入Key后均重读原件、附加授权和模块SHA，不能用历史时刻伪称旧授权仍有效。原launch/session/guard/checkpoint、Provider和业务政策沿原路，冻结源码/HEAD/CI不改。后续每个run的原stdout会记录所用附加授权SHA与实际期限，避免丢失续接来源。
+
+24项聚焦检查通过，覆盖有效续接、到期/未来/超长时段、输入等待后到期、预算/模型/分组变更、预算清零、自动重试、原件/模块篡改及重复安装。真实start-authorized -CheckOnly显示additive_continuation active；同一入口-HostOnly -Case scope:4通过原生/CI/前缀/当前case完整核验，正常停session_model_boundary。只新增0051 paused检查点，最初guard 79c4de34不变，新原stdout根fc231733；893份旧执行文件、25份作者原件、唯一application及全部16份成功receipt保持，0新评估请求/0Key，14operations无新增业务。
+
+**下一动作：** 用户运行Control/start-authorized.ps1 -Case scope:4，在隐藏提示输入企业Key，仅发送第五份facts-fresh；不加ManualRetry、不重发成功项。显式Case省去外层重复定位，内层完整前缀核验保留。第五仍未闭环，原15完成4/15、16HTTP/301243known、0unknown/0retry；整批未关闭/未seal，automation PAUSED，未授产品或原15资格。
+证据：data/evaluation/results/sol_original15_continuation_20261027.json；Control/authorization-continuation-20261027-preparation/prepared.json（SHA 5a5bb75e5ced6fd7c67829842d6d9a0193006ef799c70a72d8071f34f0a5cb40），0069原stdout/exit。实现scripts/original15_authorization_continuation.py已逐字部署至外部Control，模块SHA320d3029。准备过程一次测试误用目录枚举顺序已改为集合比较；一次零请求检查早于授权激活完成，观察旧期限无效后已顺序重验通过，均非模型失败。
+
+## 2026-10-27 CI查询超时恢复与原独立Agent中转连接验证（此前检查点）
 
 0068于北京时间10月26日23:25:10在GitHub CI查询阶段因TLS handshake timeout退出，尚未读Key、创建新checkpoint或发送facts-fresh。原授权当时有效；23:46:27之后到期是另一事件，不能将原报错归因于用户晚输入或Free账号。经进程代理12000重新核实，同一冻结HEAD 34abe04e与CI40188299016仍全绿，冻结树clean，无需新一轮CI。
 

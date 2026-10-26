@@ -158,10 +158,10 @@
       "unknown_usage_calls": 0
     },
     "original_stdout_roots": {
-      "checkpoint_sha256": "87482a909d875791d4f8bd10533e038dadd8bddd356b167ecf00c9b4c40e122c",
-      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60"
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+      "checkpoint_sha256": "fc231733664f38530ba76c04f9e7eb73dbb7b0e50c0877c438d2e650cec0cf3c"
     },
-    "checkpoint_sha256": "b3cc828e1d705d322f71c22556c9485c0efd7fc78d7881043cae5022ea2501cc",
+    "checkpoint_sha256": "fc231733664f38530ba76c04f9e7eb73dbb7b0e50c0877c438d2e650cec0cf3c",
     "material_sha256": "dd539c3106fc0153cbd7e33d760a8dcf8cfe659472c97432441ee16741fe210b",
     "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-initials-and-application-accepted.json",
     "accepted_evidence_sha256": "c09795df6a0c9e940503606bb0d9adac4ea1686db4d0ab5581d55150a2e602e5",
@@ -397,7 +397,8 @@
     "next_stage_sent": false,
     "actual_report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
     "application_sha256": "2ab2b91577f4a2723708d44748b2967f916cfecbea0f10b3b1200985629c94b7",
-    "fresh_same_actual_report_verified": true
+    "fresh_same_actual_report_verified": true,
+    "authorization_continuation_preflight_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization-continuation-20261027-preparation\\prepared.json"
   },
   "batch_accounting": {
     "calls": 16,
@@ -409,7 +410,7 @@
     "retries": 0,
     "unknown_reserved_tokens": 0
   },
-  "next_action": "Prepare an additive authorization continuation that preserves original launch/session bindings and cumulative accounting; the prior grant expired after the CI query failure. Then resume scope:4/facts-fresh, without resending accepted work. Continuation entry is not implemented or authorized yet.",
+  "next_action": "Run existing Control/start-authorized.ps1 -Case scope:4 and enter the enterprise Key at the hidden prompt to send facts-fresh. Explicit additive continuation is active through 2026-10-27T16:21:46.567089+00:00; original authorization/session bindings and cumulative budget remain unchanged. No ManualRetry or accepted-work resend.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -1590,7 +1591,24 @@
     "independent_native_route_verified": true,
     "configuration_changed": false,
     "authorization_expired": true,
-    "continuation_entry_ready": false,
+    "continuation_entry_ready": true,
+    "new_evaluation_requests": 0
+  },
+  "authorization_continuation": {
+    "active": true,
+    "selection": {
+      "file": "authorization-continuation-20261027.json",
+      "sha256": "8f69421caaa404aac53988a28fbc9ada93872c4fd7d961f2e0cd1a723ac82b2d",
+      "module_sha256": "320d3029bf7ef5411f68871b854e4c8ba4782f60e496b9e12900b284bdb3a7ff"
+    },
+    "issued_at": "2026-10-26T16:21:46.567089+00:00",
+    "expires_at": "2026-10-27T16:21:46.567089+00:00",
+    "original_authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+    "reset_accounting": false,
+    "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization-continuation-20261027-preparation\\prepared.json",
+    "sha256": "5a5bb75e5ced6fd7c67829842d6d9a0193006ef799c70a72d8071f34f0a5cb40",
+    "local_checks_passed": 24,
+    "real_host_only_frontier_verified": true,
     "new_evaluation_requests": 0
   }
 }
