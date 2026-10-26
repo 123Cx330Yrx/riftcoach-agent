@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成1/15；第二报告facts原结果已显式恢复导入，0新增请求；停在completion-initial发送前，等待本机隐藏输入企业Key。"
+pause_reason: "原15完成1/15；第二报告双初审/compatibility/edit已双审导入，唯一补丁已应用，停在facts-fresh发送前；累计4HTTP/79368known。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,22 @@ pause_reason: "原15完成1/15；第二报告facts原结果已显式恢复导入
 
 ## 当前行动
 
-## 2026-10-26 第二报告facts交接已恢复，续completion-initial（当前）
+## 2026-10-26 第二报告双初审及唯一应用完成，待facts-fresh（当前）
+
+本次completion-initial成功1HTTP200，输入18541/输出263，共18804known tokens，pass/100且所有意见数组为空。
+主审和既有独立作者实读完整25段、全部来源/知识/用户任务/政策/实际响应后接受；真实native与作者逐字匹配，
+单次NEW_TASK正常导入。观摩身份及条件练习未被误读为本人参赛，K1—K5实际消费，缺OP.GG不补造外部要求。
+compatibility随后双审clear；edit完整新稿四项ReportAssessment双审均true，原生原件逐字核验及submit通过。
+程序已唯一应用block_4一处原样补丁，纠正视野/早死方向，其他正文逐字保留；实际稿SHA cabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586。
+两个fresh请求已离线重建并核与实际同一新稿绑定，尚未发送。application原静态flags保留，真实Host接受另留原件。
+累计4HTTP/79368known、0unknown/0retry/0receiptless/0未发，仍完成1/15；第二例14operations、无unresolved、未关闭/未seal。
+首例严格只读replay、当前四个真实native（含显式恢复的facts）、原收据/观测/用量和原文件/作者SHA回查通过，库存不变。
+最初guard af6f69a2保持，0012—0018原stdout及最早exit留根，最新checkpoint0063bef1；冻结34abe04e clean及CI40188299016不变。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只续facts-fresh；不加ManualRetry、不重发初审/应用。
+原授权北京时间2026-10-26 23:46:27截止不延展，automation PAUSED。实际同稿双fresh尚未完成，不能称本例修订成功或15项/产品合格。
+证据：Control/claim-scope-4-initials-and-application-accepted.json（SHA ac847335a0ae200f69465b80ed758a8f186fb7575a5c351b03fcb6c0ec9905a3）；Control/claim-scope-4-frontier-0018.json。
+
+## 2026-10-26 第二报告facts交接恢复（此前检查点）
 
 用户明确要求“处理”后，已通过固定事件/SHA的外部Host适配器导入原facts意见，不重派发、不重买。
 原reader仍复现重复NEW_TASK拒绝；四条派发、唯一真实final/membership、作者原件、精确checkpoint

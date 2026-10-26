@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-26当前工作：原15完成1/15；第二报告claim-scope:4/facts-initial已通过固定事件/SHA外部适配器实际导入原意见，0新Provider/0Key。原reader不变，四条派发/唯一final/作者/checkpoint完整保留并重核，加密输入等价未知及原事故不抹除。HostOnly已推进到completion-initial发送边界；只读核验原件/首例/费用通过。20项新检查和102项原回归通过。累计3HTTP/60564known、0unknown/重试，未应用补丁、未闭批。下一动作：用户运行原start-authorized.ps1隐藏输入企业Key，只续completion-initial，不加ManualRetry；原授权北京时间10月26日23:46:27截止不延期。automation PAUSED。证据sol_original15_live_20261025.json及Control/claim-scope-4-recovery-accepted.json。
+2026-10-26当前工作：原15完成1/15；第二报告claim-scope:4双初审已双审接受，compatibility clear及edit四项ReportAssessment均双审接受并真实native导入。程序已唯一应用block_4逐字补丁，实际稿cabe0986，其余正文完整保留；两个fresh请求已核同稿，尚未发送。累计4HTTP/79368known、0unknown/重试，当前14operations、无unresolved、未闭批；原件/作者/原生/收据/费用严格只读核验通过，冻结HEAD/CI不变。下一动作：用户运行原start-authorized.ps1隐藏输入企业Key，只续facts-fresh，不加ManualRetry；原授权北京时间10月26日23:46:27截止不延期。automation PAUSED。证据sol_original15_live_20261025.json及Control/claim-scope-4-initials-and-application-accepted.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
@@ -89,7 +89,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-原15已完成首份；第二报告facts已导入，原入口隐藏输入企业Key后续completion-initial；不重买facts，不加ManualRetry。
+原15已完成首份；第二报告双初审及唯一应用已完成，原入口隐藏输入企业Key后续facts-fresh；不重买初审或应用，不加ManualRetry。
 
 ## History
 
