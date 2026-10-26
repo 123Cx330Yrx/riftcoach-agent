@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "第五报告双初审及唯一应用完成，待企业Key发送facts-fresh；原15完成4/15，16HTTP/301243known。"
+pause_reason: "CI查询及原Agent中转连接已验证；旧授权到期，待保留原绑定的续接入口。原15完成4/15，16HTTP/301243known。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,18 @@ pause_reason: "第五报告双初审及唯一应用完成，待企业Key发送fa
 
 ## 当前行动
 
-## 2026-10-26 第五报告双初审及唯一逐字应用完成（当前）
+## 2026-10-27 CI查询超时恢复与原独立Agent中转连接验证（当前）
+
+0068于北京时间10月26日23:25:10在GitHub CI查询阶段因TLS handshake timeout退出，尚未读Key、创建新checkpoint或发送facts-fresh。原授权当时有效；23:46:27之后到期是另一事件，不能将原报错归因于用户晚输入或Free账号。经进程代理12000重新核实，同一冻结HEAD 34abe04e与CI40188299016仍全绿，冻结树clean，无需新一轮CI。
+
+原独立Agent 01a166cd登记custom/gpt-6.1-sol/high，真实行政回复已完成，日志请求URL为https://api.mmcapi.cn/responses。未更换作者、模型或配置，不声称所有Free账号或未来模型权限均可用。通用app线程发送被multi-agent v2路由拒绝后，使用原collaboration.followup_task正确恢复；没有通过app-server绕过输入限制，没有新业务审查或重复业务派发。
+
+仅修复外部Control的CI查询：对明确临时网络故障最多3次只读查询，权限错误、CI失败、HEAD错误不自动重试，保留原clean/head/全部jobs门槛；查询失败明确ci_query_unavailable，不重发付费请求。8项聚焦验证及实际operator check通过。893份执行文件与25份作者原件逐字保持，第五四份native接受仍可回放，最新0050/checkpoint 87482a90不变，14operations无unresolved、未关闭。累计16HTTP/301243known，完成4/15，本次0新增评估请求、0Key。
+
+**下一动作：** 原authorization.json已经过期，旧start-authorized.ps1不能直接继续发送。需准备保持原授权/launch/session绑定、既有费用及成功项的显式续接授权入口，再从scope:4/facts-fresh继续；不能仅覆盖原授权或重置预算。当前诊断和连接核查完成，续接入口尚未实现，未宣称可直接填Key执行。整批未关闭/未seal，automation PAUSED，未授产品或原15资格。
+证据：Control/connection-recovery-20261027/diagnosis.json（SHA 29f8cb698eb2fcb35c3de6c60f2c87ac794483e9de2d0330d9b2d4669823f9e4）；post-fix-state.json；retry-checks-final.json。外部operator.py和original15_ci_query.py有修复前备份及SHA，冻结代码不改。
+
+## 2026-10-26 第五报告双初审及唯一逐字应用完成（此前检查点）
 
 scope:4/completion-initial成功1HTTP200、14.11秒，输入18502/输出223，共18725known tokens；公开意见pass/100，issues、resolutions、advisories、repairs为空。主审和原独立作者实读完整原稿、来源、政策与公开意见后接受：K1—K5已连到实际观摩行动，第19段管辖后续条件练习，没有补造本人实战/固定目标义务；无OP.GG，资料缺口已说明。完成度通过未豁免第14段事实错误。
 

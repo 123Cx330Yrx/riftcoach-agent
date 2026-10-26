@@ -10,7 +10,7 @@
   "publication_allowed": false,
   "production_admitted": false,
   "automation_status": "PAUSED",
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "stage": "case-completed",
   "accepted_stages": [
     {
@@ -409,7 +409,7 @@
     "retries": 0,
     "unknown_reserved_tokens": 0
   },
-  "next_action": "Run existing Control/start-authorized.ps1 and enter the enterprise Key to send scope:4 facts-fresh on the unique applied report. No ManualRetry or accepted-initial re-send. Both fresh duties remain required; original expiry unchanged.",
+  "next_action": "Prepare an additive authorization continuation that preserves original launch/session bindings and cumulative accounting; the prior grant expired after the CI query failure. Then resume scope:4/facts-fresh, without resending accepted work. Continuation entry is not implemented or authorized yet.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -1582,5 +1582,15 @@
         "native_submission_accepted": true
       }
     }
+  },
+  "connection_recovery": {
+    "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\connection-recovery-20261027\\diagnosis.json",
+    "sha256": "29f8cb698eb2fcb35c3de6c60f2c87ac794483e9de2d0330d9b2d4669823f9e4",
+    "ci_reverified": true,
+    "independent_native_route_verified": true,
+    "configuration_changed": false,
+    "authorization_expired": true,
+    "continuation_entry_ready": false,
+    "new_evaluation_requests": 0
   }
 }
