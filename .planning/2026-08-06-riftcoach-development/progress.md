@@ -1,4 +1,14 @@
-## 2026-10-26 第四报告事实初审及逐字补丁双审接受（当前）
+## 2026-10-26 第四报告双初审与唯一修订完成，待同稿复审（当前）
+
+第四份attribution:1的completion-initial成功1HTTP200，15.313秒，输入18577/输出234，共18811known tokens；完整意见pass/100，issues/repairs均空。主审与原独立作者按完整来源、用户任务和完成度政策双审接受，真实native与run外作者逐字一致并正常submit。此前中断时后台0047已正常结束在compatibility，恢复先核无活跃执行进程后续接，未重复启动或补发请求。
+compatibility与edit两阶段均完成全文双审、真实native导入及submit。两份意见可共存：完成度通过没有冻结错误归因，事实唯一block14补丁正确保留补刀构成说明，改为全样本伤害差695.42、中单仍669.24，不能把主要伤害差距归于辅助局；原精度差695.418333…/669.235支持HALF_UP，两者差26.183333…/3.77%。完整实际新稿四项ReportAssessment均接受，观摩身份、知识行动及全部正确正文保持。
+程序唯一application已执行，新稿SHA 3d5836fdea0474ac7d61126d11114eb36eff8dc9c74c8f7db3ecb36d05833d97；application SHA ef25743a32e3460ca44914a23a655c4b96e968e285f9dbe0a36b5ae64776b54c。原件静态flags不改，Host语义接受单独留证；两份fresh请求已离线重建并绑定该同一实际新稿。Host-only已正常停在facts-fresh发送前，0Key/0新增Provider请求。第四份尚需双fresh，原15仍完成3/15。
+前三例及本例四份真实native、原transport/完整响应观测/费用只读核验通过，读前后库存不变，重启前业务原件及旧作者SHA保持。此前facts作者的未提交草稿笔误、原稿0196c8f9、提交前自纠记录c35bba8c及唯一最终作者752af772全部保留，未改已提交原件。当前14operations、无unresolved、未关闭；本例2HTTP/40497known，累计12HTTP/225433known，0unknown/0retry/0receiptless/0未发。
+0045—0051原stdout/最早exit均保持，最初guard 1cfd485b不变，最新原checkpoint f10c40f4c7f586ec45a20c9adc096759c4ca979f9877767580b6eb0809718e67；旧中断、0028未知原因、case4显式恢复及未知保留。冻结34abe04e clean、公共CI40188299016不变，automation PAUSED；整批未关闭/未seal。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第四份facts-fresh；不加ManualRetry、不重发成功初审或再应用。原授权北京时间2026-10-26 23:46:27截止不延展。尚未完成第四份闭环，未授原15或产品资格。
+证据：Control/attribution-1-initials-and-application-accepted.json（SHA d3abfa0d7a0a740a65904b8d4300a0ec70c063a1e40561f554a80272ea20d540）；attribution-1-frontier-0051.json（SHA 0ac73b0ece3ebcdff545c2f1937bab579fd0d8700a3ca4a21f8914eca89b3d23）。
+
+## 2026-10-26 第四报告事实初审及逐字补丁双审接受（此前检查点）
 
 第四份attribution:1/facts-initial成功1HTTP200，52.609秒，输入20150/输出1536，共21686known tokens；Provider返回needs_revision/92，唯一issue定位block14，另有advisory4。主审及原独立作者均实读25段、完整来源/政策/request/response和所有补丁，接受问题、解释和修法；真实native与run外作者逐字一致并正常submit。
 实错是将全样本补刀与伤害差距同时主要归于辅助局。伤害原差695.418333…，保留中单后仍669.235，仅变26.183333…/3.77%，不支持主要归因；补刀差由混合2.351666…变为中单-0.205，描述性构成说明有依据。唯一block14补丁拆分两指标，保留正确补刀说明、位置能力/因果边界和其他正文，伤害差按原精度HALF_UP写为695.42/669.24；唯一锚点、无重叠。该补丁尚未实际应用，原稿9d274a3d保持；完成度和双fresh仍待执行。
