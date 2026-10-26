@@ -1,4 +1,13 @@
-## 2026-10-26 原Agent连接恢复，第三份事实初审已接受（当前）
+## 2026-10-26 第三报告双初审与唯一修订完成，待同稿复审（当前）
+
+第三份claim-scope:3的completion-initial成功1HTTP200，14.75秒，输入18587/输出248，共18835known tokens；完整公开意见pass/100且issues/repairs为空。主审和原独立作者按完整来源、任务、政策及原稿双审接受，真实native与run外作者逐字一致并正常submit。原Agent连接实际恢复，未更换作者。
+compatibility与edit两阶段均完成全文双审、真实native导入及submit；唯一block6补丁准确把全五局胜败补刀误称持平改为8.81/6.45、未舍入差约2.35，保留正确四中单比较。实际25段新稿四项ReportAssessment均接受，观摩身份、条件性练习、来源引用及所有正确内容保持。程序唯一application已执行，新稿SHA b52a27c31eca782dff9429ff0dc0dcc8706596e3ee58f8223e78bf6e93aef820；application SHA fbba09e50266bd535a37de239b3ad5b3e61b00615ef3bfb49d4f3a87b8f06c0a。原件静态flags不改，Host语义接受单独留证。
+Host-only正常停在facts-fresh发送前，两份fresh请求已离线重建并绑定该实际同一新稿。第三份尚需facts-fresh及completion-fresh，原15仍完成2/15，不能称第三份闭环完成。首两例及本例四份真实native、transport/完整响应观测/费用只读核验通过，读前后库存不变，重启前全部业务原件及旧作者SHA保持。当前14operations、无unresolved、未关闭；累计8HTTP/150085known，0unknown/0retry/0receiptless/0未发。
+0028在credential_wait_finished后以ValueError停于新intent之前，无新HTTP或预留；具体原因没有安全日志支持，保留unknown，不推定是Key错误。0029本次正常返回及0030—0035Host操作的原stdout/最早exit均保留；最初guard b2cc18b1不变，最新原checkpoint 72c905802373872a252b4cdd450b006065975d64d113f50c7a1e8dd963ec3d32。旧中断、case4显式恢复及未知不变。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只发送第三份facts-fresh；不加ManualRetry、不重发成功初审或再应用补丁。冻结34abe04e clean及公共CI40188299016不变，automation PAUSED；原授权北京时间2026-10-26 23:46:27截止不延展。未关闭整批/未seal，未授原15或产品资格。
+证据：Control/claim-scope-3-initials-and-application-accepted.json（SHA 83190866ff15c86e8e827c1444473348c2c65daad1d577a3912badd0d05e71c3）；claim-scope-3-frontier-0035.json（SHA 9b2936020270239503cac4f74a424664aaf1f0440b71bc61a8976c02098368eb）。
+
+## 2026-10-26 原Agent连接恢复，第三份事实初审已接受（此前检查点）
 
 彻底重启后原独立Agent 01a166cd已实际回复、读取同一checkpoint、写出自己的run外原件并提交唯一完整native final；未更换作者、未手改会话历史/DB、未重新购买成功响应。恢复turn 01a1765b的原生事件与作者逐字一致，严格导入及submit均接受；两个此前中断轮继续留档，case4原显式恢复适配器及未知不变。
 主审与独立作者均实读25段、完整来源/政策/request/response和全部拟议补丁，接受facts-initial的唯一block6错误及修法：全五局胜败补刀均值8.805/6.453333…不持平，原精度差2.351666…，HALF_UP展示8.81/6.45/2.35；补丁注明差值未舍入，保留正确的四中单比较。block4泛指不补全称，早死范围、伤害归因、知识依据和观摩身份均按全文核实。
