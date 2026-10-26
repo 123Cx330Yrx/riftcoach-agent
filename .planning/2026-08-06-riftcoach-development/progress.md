@@ -1,4 +1,15 @@
-## 2026-10-26 第四报告事实复审双审接受，待最后完成度复审（当前）
+## 2026-10-26 第四报告修订及同稿双复审完成，4/15（当前）
+
+attribution:1最后completion-fresh成功1HTTP200、30.859秒，输入16246/输出196，共16442known tokens。公开意见pass/100，issues、issue_resolutions及advisories均空。主审与原独立作者均重新实读当前25段实际稿、完整来源、用户任务和完成度政策后接受；真实native全文与作者逐字相同，唯一派发、导入和submit通过。正文已将K1—K5连到具体观摩行动，第19段限定后文条件性观摩练习，未变成阅读者本人实战或达标要求；没有OP.GG资料且已说明缺口，不补造外部建议。
+
+本例双初审、兼容性、实际整稿双审、唯一逐字应用及同一新稿双fresh全部完成，程序正常终止为candidate_repaired_pass_unqualified、matched=true。唯一block14补丁拆开补刀与伤害归因，伤害差全样本695.42、中单仍669.24；实际稿3d5836fdea0474ac7d61126d11114eb36eff8dc9c74c8f7db3ecb36d05833d97及application ef25743a保持。严格只读重放四例通过，本例六份真实native、原transport/完整响应观测、作者/来源/费用及唯一应用一致，读前后库存不变，旧原件保持；23operations已消费，无unresolved，case closed=true。此为第四份固定报告修订闭环完成，不是原15或产品准入。
+
+本例4HTTP/75808known，累计14HTTP/260744known，0unknown/0retry/0receiptless/0未发，完成4/15。0055—0057原stdout和最早exit保留，最初guard 1cfd485b不变，最新原checkpoint 9f8599b8a11451110b910530995e0f33592b7099212a2a7cb425cf8f90fbf539。本次Key后发送前历史核验等待较长，实际Provider耗时30.859秒；未因等待重复启动、重发或改冻结代码。旧容量失败turn及原作者恢复、未提交草稿自纠、0028未知原因、case4显式恢复与输入等价性未知全部保留。
+
+**下一动作：** 原Control/start-authorized.ps1隐藏输入企业Key，进入第五份scope:4的facts-initial；不加ManualRetry、不重买已完成四例。第五份尚未创建或发送。冻结34abe04e clean和公共CI40188299016保持，automation PAUSED，原授权北京时间2026-10-26 23:46:27截止不延展；整批未关闭/未seal。熟悉原15不作为新holdout；自然Coach/Training、产品注册与真实DB/UI消费、四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖不变。
+证据：Control/attribution-1-completed-accepted.json（SHA ab97aeab864704fa71dde9e1864ae904976d50677aead4a8fc1b2f7e2ff8bf20）；attribution-1-completed-replay.json（SHA b9a9f4beb73b0f12b228df35953b371d8859397c9702349e7482858c2b5df42e）。
+
+## 2026-10-26 第四报告事实复审双审接受，待最后完成度复审（此前检查点）
 
 attribution:1/facts-fresh成功1HTTP200，49.469秒，输入17819/输出1050，共18869known tokens。完整公开意见pass/100，issues及issue_resolutions为空，仅advisories block4/6。主审与原独立作者重新实读实际25段新稿、完整来源/知识/政策/request/response后接受，真实native与作者逐字一致并正常submit。第14段已用原精度伤害差695.418333…/669.235修正主要归因，展示695.42/669.24正确；全文其他事实、观摩身份、知识行动保持，两个可选标记不升级为事实问题。
 独立作者首次恢复turn 01a17767因Selected model is at capacity失败，未产生作者文件、同binding native final或submission；真实原生全页读取及记录保留。随后沿用原作者/模型和同一checkpoint在新turn恢复，完成turn唯一NEW_TASK、唯一完整final 9609985c及严格原生导入通过；失败turn不隐藏，不声称整个stage只有一个turn。未重发成功Provider请求、未换模型或新建作者，本次Provider重试仍0。
