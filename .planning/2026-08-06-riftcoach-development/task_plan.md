@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：同批附加授权已按用户“那你继续吧”激活（截至北京时间10月28日00:21:46），原授权/launch/session/guard及累计费用保持。外部校验包装器24项检查通过；真实CheckOnly确认有效，HostOnly完整核验后正常停新请求发送边界，0新评估请求/0Key。旧893执行文件/25作者原件保持，只追加0051暂停检查点，原stdout新根fc231733、guard79c4de34不变。下一步用户运行原start-authorized.ps1 -Case scope:4，隐藏输入企业Key仅发送第五份facts-fresh，不加ManualRetry、不重买成功项。累计16HTTP/301243known，完成4/15；104HTTP/9344837tokens是原全局包络未用上限，仍受各case上限约束，不是新预算。冻结34abe04e/CI40188299016保持，automation PAUSED，未关闭/未seal/未授资格。证据data/evaluation/results/sol_original15_continuation_20261027.json。
+2026-10-27当前工作：第五份scope:4/facts-fresh已成功返回并完成主审/原独立作者全文复核，submit accepted；Host-only已停在最后completion-fresh发送前。实际同一新稿03d48822及唯一application2ab2b915保持，本例3HTTP/58890known，累计17HTTP/319634known，完成仍4/15。一次Host导入只因作者原件末尾LF与native不同而失败，双原件及失败stdout保持；仅针对该确切checkpoint/event/两份SHA的外部兼容已通过15项检查和真实导入，不改正文、身份或冻结源码，不重发成功项。下一步用户运行原start-authorized.ps1 -Case scope:4隐藏输入企业Key，只发最后completion-fresh；不用ManualRetry。原附加授权截至北京时间10月28日00:21:46，累计费用不清零。冻结34abe04e/CI40188299016、guard79c4de34保持；最新原stdout根dec62907。整批未关闭/未seal/未授资格，automation PAUSED；历史回放的额外等待尚未优化。证据data/evaluation/results/sol_original15_facts_fresh_20261027.json及Control/scope-4-frontier-0073.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

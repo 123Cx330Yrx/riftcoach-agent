@@ -1,4 +1,15 @@
-## 2026-10-27 原批附加授权已激活，真实入口恢复至发送边界（当前）
+## 2026-10-27 第五报告事实复审双审接受，待最后完成度复审（当前）
+
+scope:4/facts-fresh成功1HTTP200，模型27.937秒，输入17827/输出564、18391known tokens。公开意见pass/100，issues和issue_resolutions为空，仅advisories4/6。主审及原独立作者均实读实际25段新稿、完整来源/政策/request/公开response后接受；中单早死胜2.5、败0.5，全样本胜2.5、败约2.67已明确区分，第4段省略由第14段补足，不另造中单或每一指标的全称。伤害差仍主要存在于中单内部；补刀构成影响、身份、K1—K5和其余正确内容均保持。事实接受不替代完成度。
+
+本次首次Host导入因作者文件末尾多一个LF而失败，原native正文及所有判断与原件相同。原件、真实native和失败0071 stdout/exit全部保持，未要求第二次final或重发Provider。外部Control仅对本checkpoint/event/author/raw-event四项绑定和两份原始SHA添加一次末尾LF差异兼容；只允许author=native+单个LF，不接受正文改动、JSON重排、CRLF、多个换行、另一任务或身份。原字节门槛未修改情况下确实未通过，不伪称原件字节相同；主审、作者身份、原件SHA、真实事件、来源及判断校验仍完整执行。15项聚焦检查及真实只读导入验证通过，随后submit accepted。观察helper起初误以为完整导入器仅做JSON等价；查实ExactNativeGate亦要求字节一致后才实施此明确例外，前后原因与控制SHA另留证。
+
+Host-only已沿原session消费facts-fresh并正常停session_model_boundary，未读Key/新增请求。前四例按原门槛严格只读replay通过，本例五份native按已记录的末尾LF例外核验接受；18operations已消费、无unresolved，读前后库存不变，恢复前全部业务原件和作者SHA保持。最后completion-fresh仍绑定唯一程序实际稿03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e及完整来源，application原SHA2ab2b915保持，无第二次应用。累计17HTTP/319634known，0unknown/0retry；本例3HTTP/58890known。原15完成仍4/15，第五尚未闭环，整批未关闭/未seal/未授资格，automation PAUSED。冻结34abe04e与CI40188299016保持，本次外部行政恢复不要求再次等冻结树整套CI。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:4，在隐藏提示输入GPT-企业专线Key，仅发送第五份最后completion-fresh；不加ManualRetry、不重发成功项。附加授权仍截至北京时间10月28日00:21:46，原授权及累计预算不改。guard79c4de34始终保持；0070模型成功原stdout/exit、0071失败、0072导入和0073Host-only均原样留存，最新原checkpoint dec629079db578da53ef7ded4ad9e1127be912723b9d665b96b606b2b3043117。发送前重复历史核验的耗时仍未优化，不把本地等待记成模型超时。
+证据：data/evaluation/results/sol_original15_facts_fresh_20261027.json；Control/scope-4-facts-fresh-accepted.json（SHA a3996e13c0797a4067487942c208e53af352a73b98c3dda5cf6e501d6a8ecf33）；scope-4-frontier-0073.json；scope-4-facts-fresh-terminal-lf-recovery.json。
+
+## 2026-10-27 原批附加授权已激活，真实入口恢复至发送边界（此前检查点）
 
 用户在获知旧授权到期和必须保持原检查点绑定后明确回复“那你继续吧”，据此续接同一原15剩余范围。新增Control/authorization-continuation-20261027.json，SHA 8f69421caaa404aac53988a28fbc9ada93872c4fd7d961f2e0cd1a723ac82b2d；有效期北京时间10月27日00:21:46至10月28日00:21:46。原authorization.json及其87a47155摘要保持，旧期限不改；企业gpt-6.1-sol/high、15例/最多120HTTP/9646080tokens及全部原活动时间、手动补测和语义要求沿用，累计16HTTP/301243known不清零，全局未用上限104HTTP/9344837tokens不是新额度，且仍受各case原上限及成功case不重发约束。
 

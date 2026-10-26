@@ -1,3 +1,9 @@
+## 2026-10-27 原生final末尾换行与真实语义判断分开处理
+
+第五份facts-fresh正常成功，旧ExactNativeGate仅因author原件比唯一真实native多一个末尾LF而拒绝导入。helper的初次字节比对失败无观测落盘；随后仅放宽helper发现冻结完整导入器还有同一字节检查，第一次submit仍失败。该误判是主线程工具诊断缺口，不是Provider或独立语义审查失败。保留两份真实SHA、原字节及0071失败，按确切checkpoint/binding/event/raw-event/author路径建立唯一LF例外；没有改原件或原生事件，也未用一般JSON等价替代字节审计。15项正反检查、真实NativeGate全校验和原精确门槛的指定例外通过。其余stage继续原字节规则；后续作者原件须与其native全文（含末尾换行）一致，避免重复机械失配。
+
+本次实际新稿03d48822的早死两口径明确，facts-fresh通过不意味着第五份完成或原15准入。最后completion-fresh仍未发送。Host-only历史重复回放耗时仍存在，此轮未做缓存/跳过验证的性能修改。
+
 ## 2026-10-26 Key提示前后的静默核验与Host容量恢复
 
 启动入口在提示Key之前重放已完成前缀及当前Host记录，输入后又重查授权、源码、native和成功前缀。实际0052在credential_wait_finished后仍等待，再进入intent/attempt，因此“无输出”不能当作模型已发送或API失败。外部PowerShell仅新增交互核验提示，AST语法检查通过；原脚本备份及前后SHA保存，当前进程和冻结源码不变。该修改没有消除重复核验的耗时，后续性能优化须保留现有来源、作者与只读重放语义。证据Control/launcher-progress-20261026/change.json。
