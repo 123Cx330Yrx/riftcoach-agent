@@ -43,7 +43,18 @@ Operator/作者SHA不变；冻结源码未改。Control/preparation-complete-v2.
 
 ## 当前实测前沿
 
-## 2026-10-26 第二报告修订及同稿双fresh完成，2/15（当前）
+## 2026-10-26 第三报告已返回，独立审查连接待恢复（当前）
+
+claim-scope:3/facts-initial成功1HTTP200，36.578秒，输入20160/输出936，共21096known tokens；完整响应、用量和观测原件已保存，模型返回needs_revision/94及block6补丁，尚未完成全文双审或submit。
+独立审查沿用01a166cd及唯一NEW_TASK；其Codex provider仍为custom，实际连接失效的127.0.0.1:15721，主会话已为openai。这是Host连接故障，不是本次企业API超时或语义失败。已中断无效重连，作者文件尚不存在。
+在线原生修复先被子Agent须通过父会话恢复的约束拒绝，随后父会话active-writer拒绝；未改provider、原记录或模型配置。外部修复命令已准备，静态编译和check-only通过，尚未应用或验证实际回复。
+完成仍2/15；累计7HTTP/131250known、0unknown/0retry。成功前缀和本次返回保留，未重发、未应用补丁、未关闭整批/未seal；冻结源码/HEAD及原CI保持，automation PAUSED。
+0025原stdout/最早exit SHA427d04d7保持，guard b2cc18b1、原checkpoint09136071；独立task-checkpoint 3c077a66、material bf751a93固定。
+**下一动作：** 用户在外部PowerShell运行Control/repair-independent-offline.ps1并完全退出Codex以释放父会话；脚本先备份，再用原生resume切换既有独立Agent到openai，保留gpt-6.1-sol/high，0模型请求。成功后重开本对话，核历史原件/真实连接，再以同stage MESSAGE续审，禁止第二次NEW_TASK或重发付费请求。若修复返回失败则按原错误诊断，不宣称修复完成。
+原授权北京时间2026-10-26 23:46:27截止不延展；恢复审查后再判断下一付费步骤是否仍在授权内。两份已完成结果及旧事故/显式恢复和未知均保留，不授15项或产品资格。
+证据：Control/claim-scope-3-provider-recovery-pending.json（SHA 85671617c89d052be3181056e216677c9b69b4b8683a0ec6d7b0ed8159b7a307）。
+
+## 2026-10-26 第二报告修订及同稿双fresh完成，2/15（此前检查点）
 
 最后completion-fresh成功1HTTP200，19.875秒，输入11991/输出152，共12143known tokens；pass/100，issues/issue_resolutions/advisories均为空。
 主审和既有独立作者重新按完整实际稿、完整来源、知识、用户原话及completion政策核验任务与资料消费，均接受；唯一NEW_TASK、run外作者与真实native逐字匹配，正常submit。
