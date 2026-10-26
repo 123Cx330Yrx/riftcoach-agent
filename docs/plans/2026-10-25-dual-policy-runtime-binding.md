@@ -43,7 +43,20 @@ Operator/作者SHA不变；冻结源码未改。Control/preparation-complete-v2.
 
 ## 当前实测前沿
 
-## 2026-10-26 第二报告facts-fresh双审通过，待最后completion-fresh（当前）
+## 2026-10-26 第二报告修订及同稿双fresh完成，2/15（当前）
+
+最后completion-fresh成功1HTTP200，19.875秒，输入11991/输出152，共12143known tokens；pass/100，issues/issue_resolutions/advisories均为空。
+主审和既有独立作者重新按完整实际稿、完整来源、知识、用户原话及completion政策核验任务与资料消费，均接受；唯一NEW_TASK、run外作者与真实native逐字匹配，正常submit。
+观摩身份及条件练习保持，K1—K5实际连到具体回看/记录行动，未因缺OP.GG快照而虚构消费义务；稿SHA cabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586与唯一application和facts-fresh相同。
+程序正常结束claim-scope:4：candidate_repaired_pass_unqualified，matched=true。本例完成双初审、compatibility/edit双审、唯一逐字补丁实际应用和同稿双fresh；说明该固定报告修订成功，不等于15项或产品合格。
+只读replay核首例和本例全部真实native（本例6份）、原件/作者SHA、完整响应观测、HTTP和费用通过，Operator/作者库存前后不变；facts-initial原派发事故及显式固定恢复、加密输入等价性未知均保留。
+本例4HTTP/70729known，23operations已消费、closed=true、无unresolved；累计6HTTP/110154known，0unknown/0retry/0receiptless/0未发，完成2/15。整批未关闭、未seal，下一例尚未创建/发送。
+0022—0024原stdout及最早exit SHA保持；最初guard af6f69a2不变，最新原checkpoint c9cd71c712a808851a8d69143fb1c74c0621d1a8b78a1234e97a0856cfb7b72b；冻结34abe04e clean及CI40188299016不变。
+**下一动作：** 用户运行同一Control/start-authorized.ps1隐藏输入企业Key，进入第三份claim-scope:3的facts-initial；不加ManualRetry，不重买已完成两例。
+原授权北京时间2026-10-26 23:46:27截止不延展，automation现场核PAUSED。原15是熟悉固定来源，不能称新holdout或产品准入；原后续依赖保持。
+证据：Control/claim-scope-4-completed-accepted.json（SHA d5c4d663e753f75f5b67ab063c629f1c540a4787b7a26ad54116f8f885e29901）；Control/claim-scope-4-completed-replay.json（SHA d332fdddbde5017ec5f31e0af791f68490c6719287df102399ab480d66a892a8）。
+
+## 2026-10-26 第二报告facts-fresh双审通过，待最后completion-fresh（此前检查点）
 
 本次facts-fresh成功1HTTP200，36.86秒，输入17776/输出867，共18643known tokens；pass/100，issues及issue_resolutions为空，仅advisories block4/6。
 主审和既有独立作者重新实读实际25段新稿、完整来源/知识/用户任务/事实政策及真实响应，均接受；唯一NEW_TASK、真实native与run外作者逐字一致并正常submit。

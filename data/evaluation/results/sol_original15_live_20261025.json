@@ -127,14 +127,14 @@
   },
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-1-completed-replay.json",
   "completed_replay_evidence_sha256": "a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854",
-  "cases_completed": 1,
-  "next_case": "claim-scope:4",
-  "next_stage": "completion-fresh",
+  "cases_completed": 2,
+  "next_case": "claim-scope:3",
+  "next_stage": "facts-initial",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
     "key": "claim-scope:4",
-    "stage": "facts-fresh-accepted-awaiting-completion-fresh",
+    "stage": "case-completed",
     "provider_verdict": "needs_revision",
     "provider_issues": 1,
     "primary_accepted": true,
@@ -144,24 +144,24 @@
     "response_preserved": true,
     "actual_edit_performed": true,
     "status": {
-      "checkpoint_sha256": "220e94895918d3b4d36e7307ef8e5ecce9b359c3abff39a3ac2a6df6f248441c",
-      "closed": false,
+      "checkpoint_sha256": "c9cd71c712a808851a8d69143fb1c74c0621d1a8b78a1234e97a0856cfb7b72b",
+      "closed": true,
       "format_waiting": false,
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7",
-      "operations": 18,
+      "operations": 23,
       "production_admitted": false,
       "publication_allowed": false,
       "timeout_waiting": false,
       "unresolved": []
     },
     "transport": {
-      "actual_attempts": 3,
-      "completed_calls": 3,
+      "actual_attempts": 4,
+      "completed_calls": 4,
       "failed_calls": 0,
-      "http_requests_known": 3,
+      "http_requests_known": 4,
       "http_requests_unknown": 0,
-      "known_tokens": 58586,
-      "known_usage_calls": 3,
+      "known_tokens": 70729,
+      "known_usage_calls": 4,
       "not_sent": 0,
       "receiptless_calls": 0,
       "unknown_reserved_tokens": 0,
@@ -171,7 +171,7 @@
     "author_sha256": "12a652bc41359291350dac53397387d1be0586714cd0f7c95dc4143c85fc0b81",
     "checkpoint_sha256": "0fe827a40c3c327bb5fcc3511433e612bbdbc2fd6f53d19bd8ab185a9e7bb775",
     "original_stdout_roots": {
-      "checkpoint_sha256": "220e94895918d3b4d36e7307ef8e5ecce9b359c3abff39a3ac2a6df6f248441c",
+      "checkpoint_sha256": "c9cd71c712a808851a8d69143fb1c74c0621d1a8b78a1234e97a0856cfb7b72b",
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7"
     },
     "failure_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-native-dispatch-failure.json",
@@ -269,26 +269,125 @@
         "input_tokens": 17776,
         "output_tokens": 867,
         "known_tokens": 18643
+      },
+      {
+        "stage": "completion-fresh",
+        "provider_verdict": "pass",
+        "primary_accepted": true,
+        "independent_accepted": true,
+        "native_submission_accepted": true,
+        "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a175fc-ce24-7c11-b697-75d0442d1c89/msg_0d4cbf8bc5ae60ea016adeb857c4688195855e5294b4af3d21",
+        "author_sha256": "58970edd471e87b586a821d4b61dba8ba7e1c213809e3787f8f20be3298b1164",
+        "native_final_sha256": "58970edd471e87b586a821d4b61dba8ba7e1c213809e3787f8f20be3298b1164",
+        "checkpoint_sha256": "acfb937d6e6869e6de3b494e3338da50f0bb918b086b326b5974cb8b347aa7fe",
+        "primary_sha256": "91fb445de7c621c198497955a20c1fc57ab3bfdca2b1b3299dd14da8dc4a8d8e",
+        "input_tokens": 11991,
+        "output_tokens": 152,
+        "known_tokens": 12143
       }
     ],
-    "latest_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-facts-fresh-accepted.json",
-    "latest_evidence_sha256": "74eba10e50dcb694f1e658a1247379333bfd287a02dc28a2a05b318859ee7f2d",
+    "latest_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-completed-accepted.json",
+    "latest_evidence_sha256": "d5c4d663e753f75f5b67ab063c629f1c540a4787b7a26ad54116f8f885e29901",
     "fresh_sent": [
-      "facts-fresh"
+      "facts-fresh",
+      "completion-fresh"
     ],
-    "completion_fresh_not_sent": true
+    "completion_fresh_not_sent": false,
+    "fresh_same_actual_report": true,
+    "result": {
+      "accounting": {
+        "attempts": [
+          {
+            "input_tokens": 20114,
+            "model": "gpt-6.1-sol",
+            "ordinal": 1,
+            "output_tokens": 1025,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "835726e1a43b733054c454530e4b3b6c6a32cef3a3a1f902129bd3bce1922d01",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 18541,
+            "model": "gpt-6.1-sol",
+            "ordinal": 2,
+            "output_tokens": 263,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "545a42b2ef6393cb77e0f391cd3c66645281daa3376d33ec45bb12b061675778",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 17776,
+            "model": "gpt-6.1-sol",
+            "ordinal": 3,
+            "output_tokens": 867,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "ec196e21b676a452b2f70b356a0b1913453b0cd382081a542caba69e40132a48",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 11991,
+            "model": "gpt-6.1-sol",
+            "ordinal": 4,
+            "output_tokens": 152,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "96219dfffb3b01c83977ef345671a8f28604fc6291e6bc311ba83c3e3b35880b",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          }
+        ],
+        "calls": 4,
+        "failed": false,
+        "logical": {
+          "generation": 0,
+          "review": 4
+        },
+        "reserved_tokens": 0,
+        "retries": 0,
+        "router_calls": 4,
+        "stopped": false,
+        "tokens": 70729
+      },
+      "actual_report_sha256": "cabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586",
+      "expected_outcome": "candidate_repaired_pass_unqualified",
+      "key": "claim-scope:4",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false
+    },
+    "strict_replay": true,
+    "accounting": {
+      "calls": 4,
+      "reserved_tokens": 0,
+      "retries": 0,
+      "tokens": 70729
+    },
+    "final_provider_verdict": "pass",
+    "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-completed-replay.json",
+    "completed_replay_evidence_sha256": "d332fdddbde5017ec5f31e0af791f68490c6719287df102399ab480d66a892a8"
   },
   "batch_accounting": {
-    "calls": 5,
-    "http_requests_known": 5,
+    "calls": 6,
+    "http_requests_known": 6,
     "http_requests_unknown": 0,
-    "known_tokens": 98011,
+    "known_tokens": 110154,
     "not_sent": 0,
     "receiptless_calls": 0,
     "retries": 0,
     "unknown_reserved_tokens": 0
   },
-  "next_action": "Run the existing Control/start-authorized.ps1 and enter the enterprise Key locally for completion-fresh on the same actual applied report only; no ManualRetry. Original authorization expires 2026-10-26T15:46:27.795344+00:00.",
+  "next_action": "Run the existing Control/start-authorized.ps1 and enter the enterprise Key locally for the third case claim-scope:3 facts-initial; no ManualRetry or replayed paid calls. Original authorization expires 2026-10-26T15:46:27.795344+00:00.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
