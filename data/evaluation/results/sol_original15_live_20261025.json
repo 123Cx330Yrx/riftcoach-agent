@@ -129,12 +129,12 @@
   "completed_replay_evidence_sha256": "a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854",
   "cases_completed": 1,
   "next_case": "claim-scope:4",
-  "next_stage": "facts-fresh",
+  "next_stage": "completion-fresh",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
     "key": "claim-scope:4",
-    "stage": "application-completed-awaiting-fresh",
+    "stage": "facts-fresh-accepted-awaiting-completion-fresh",
     "provider_verdict": "needs_revision",
     "provider_issues": 1,
     "primary_accepted": true,
@@ -144,24 +144,24 @@
     "response_preserved": true,
     "actual_edit_performed": true,
     "status": {
-      "checkpoint_sha256": "0063bef1fede65fe44f45635f98652573fcb5c90404160362f829584e0e1582e",
+      "checkpoint_sha256": "220e94895918d3b4d36e7307ef8e5ecce9b359c3abff39a3ac2a6df6f248441c",
       "closed": false,
       "format_waiting": false,
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7",
-      "operations": 14,
+      "operations": 18,
       "production_admitted": false,
       "publication_allowed": false,
       "timeout_waiting": false,
       "unresolved": []
     },
     "transport": {
-      "actual_attempts": 2,
-      "completed_calls": 2,
+      "actual_attempts": 3,
+      "completed_calls": 3,
       "failed_calls": 0,
-      "http_requests_known": 2,
+      "http_requests_known": 3,
       "http_requests_unknown": 0,
-      "known_tokens": 39943,
-      "known_usage_calls": 2,
+      "known_tokens": 58586,
+      "known_usage_calls": 3,
       "not_sent": 0,
       "receiptless_calls": 0,
       "unknown_reserved_tokens": 0,
@@ -171,7 +171,7 @@
     "author_sha256": "12a652bc41359291350dac53397387d1be0586714cd0f7c95dc4143c85fc0b81",
     "checkpoint_sha256": "0fe827a40c3c327bb5fcc3511433e612bbdbc2fd6f53d19bd8ab185a9e7bb775",
     "original_stdout_roots": {
-      "checkpoint_sha256": "0063bef1fede65fe44f45635f98652573fcb5c90404160362f829584e0e1582e",
+      "checkpoint_sha256": "220e94895918d3b4d36e7307ef8e5ecce9b359c3abff39a3ac2a6df6f248441c",
       "guard_sha256": "af6f69a2a2c730f138635f07543d2637ca28128e812fc21b4592ce69eb73ecf7"
     },
     "failure_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-native-dispatch-failure.json",
@@ -206,7 +206,7 @@
     "application_sha256": "e7ccebca1602d5fe5ddeef156168726cfe9e360fc9df967916833a78f281cff0",
     "application_count": 1,
     "fresh_requests_use_same_actual_report": true,
-    "fresh_not_sent": true,
+    "fresh_not_sent": false,
     "accepted_stages": [
       {
         "stage": "compatibility",
@@ -254,22 +254,41 @@
           "source_review": "\u5df2\u6838\u9a8c\u672c\u6b21edit\u6750\u6599SHA256\uff0c\u5e76\u76f4\u63a5\u5ba1\u67e5\u5b9e\u9645\u7ec4\u88c5\u540e\u7684\u5b8c\u657425\u6bb5\u62a5\u544a\uff0c\u800c\u975e\u7531\u524d\u8f6e\u610f\u89c1\u6216\u517c\u5bb9\u7ed3\u8bba\u63a8\u5b9a\u901a\u8fc7\u3002\u540c\u65f6\u5b8c\u6574\u8bfb\u53d6\u539f\u7a3f\u3001\u4e24\u4efdProvider\u539f\u59cb\u610f\u89c1\u3001\u5168\u90e8\u5b9e\u9645operations\u53cabefore/after/reason\u3001\u4e24\u5957\u5b8c\u6574\u653f\u7b56\u4e0e\u5fc5\u8981\u4fee\u8ba2\u5224\u5b9a\u65b9\u6cd5\u3001\u7528\u6237\u539f\u8bdd\u3001generation_facts\u3001deterministic_source_facts\u3001source_index\u3001facts_and_provenance\u3001pack_json\u3001K1\u2013K5\u77e5\u8bc6\u3001\u65e0\u635f\u6295\u5f71\u548ccomputed_evidence\u3002\u5b8c\u6574pack\u4e0efacts_and_provenance\u76f8\u7b49\uff0c\u8bf7\u6c42\u4e8b\u5b9e\u8868\u53ca\u51fa\u5904\u8868\u6309\u663e\u5f0f\u884c\u53f7\u590d\u539f\u540e\u5206\u522b\u4e0e\u5b8c\u6574pack\u7684facts\u53caprovenance\u5b8c\u5168\u4e00\u81f4\uff1b\u4e24\u4efd\u8bf7\u6c42\u6765\u6e90\u6d88\u606f\u4e00\u81f4\uff0c\u6295\u5f71\u77e5\u8bc6\u53ca\u7528\u6237\u539f\u8bdd\u3001metadata\u4e2d\u539f\u62a5\u544a\u4e0e\u5b8c\u6574\u6765\u6e90\u5747\u5339\u914d\u672c\u6750\u6599\u3002\u539f\u7a3fSHA256\u4e3a2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2\uff0c\u5b9e\u9645\u7ec4\u88c5\u7a3fSHA256\u4e3acabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586\uff0c\u540e\u8005\u4e0e\u5f53\u524d\u4efb\u52a1\u7ed1\u5b9a\u4e00\u81f4\u3002journal\u53ea\u6709\u4e00\u9879facts\u64cd\u4f5c\uff0cblock=4\u3001selector=block_4\u3001issue_ids=[1]\uff0c\u5176before/after/reason\u4e0e\u4e8b\u5b9eProvider\u552f\u4e00repair\u9010\u5b57\u4e00\u81f4\uff0c\u539f\u6587\u5728\u7b2c4\u6bb5\u548c\u5168\u6587\u5747\u552f\u4e00\u51fa\u73b0\uff0c\u5168\u6587\u5b57\u7b26\u533a\u95f4[291,340)\u51c6\u786e\u547d\u4e2dbefore\u3002\u5bf9\u539f\u7a3f\u4ec5\u4f5c\u8fd9\u6b21\u66ff\u6362\u9010\u5b57\u5f97\u5230\u5b9e\u9645\u7ec4\u88c5\u7a3f\uff0c\u53cd\u5411\u66ff\u6362\u6062\u590d\u6574\u4e2a\u539f\u7a3f\uff0c\u6545\u6ca1\u6709\u9690\u85cf\u5220\u6539\u3001\u8865\u4e01\u91cd\u53e0\u3001\u4fee\u8ba2\u6307\u4ee4\u5165\u6587\u6216\u5176\u4ed6\u6b63\u786e\u5185\u5bb9\u635f\u5931\u3002\u539f\u53e5\u660e\u786e\u628a\u6bcf\u4e00\u4e2a\u6307\u6807\u90fd\u8bf4\u6210\u88ab\u8f85\u52a9\u5c40\u62c9\u4f4e\u4e14\u7279\u522b\u70b9\u540d\u89c6\u91ce\u5206\u300115\u5206\u949f\u524d\u6b7b\u4ea1\uff0c\u662f\u5b9e\u9645\u9519\u8bef\uff1b\u65b0\u53e5\u5df2\u5220\u9664\u8be5\u9519\u8bef\u5168\u79f0\u5e76\u9010\u9879\u7ea0\u6b63\u65b9\u5411\u3002\u6309\u4e94\u5c40\u5b8c\u6574\u539f\u59cb\u6210\u5458\u91cd\u7b97\uff0c\u4ec5\u4e2d\u53554\u5c40\u4e0e\u6df7\u54085\u5c40\u7684\u8865\u5200/\u5206\u949f\u5206\u522b8.9075\u4e0e7.394\uff0c\u7ecf\u6d4e/\u5206\u949f469.0525\u4e0e435.76\uff0c\u4f24\u5bb3/\u5206\u949f952.1375\u4e0e869.504\uff0c\u89c6\u91ce\u520633.75\u4e0e45\uff0c15\u5206\u949f\u524d\u6b7b\u4ea11.5\u4e0e2.6\uff0c\u5b8c\u5168\u652f\u6301\u65b0\u53e5\u524d\u4e09\u9879\u964d\u4f4e\u3001\u540e\u4e24\u9879\u5347\u9ad8\u53careason\u3002\u5f15\u7528\u683931\u548c32\u5b9e\u9645\u652f\u6301\u6b64\u4fee\u8ba2\uff0c\u4e0d\u662f\u51ed\u6765\u6e90\u6839\u5b58\u5728\u5c31\u63a5\u53d7\u3002\u5bf9\u65b0\u7a3f\u5168\u90e8\u4fdd\u7559\u65ad\u8a00\u4e5f\u91cd\u65b0\u6838\u9a8c\uff1a5\u5c402\u80dc3\u8d1f40%\u3001\u4e2d\u53554\u5c402\u80dc2\u8d1f\u4e0e\u8f85\u52a9\u5361\u871c\u5c14\u8d25\u5c40\u3001\u8f9b\u5fb7\u62c914/5/10\u548c1430.11\u4f24\u5bb3/\u5206\u949f\u53ca27.53%\u53d627.5%\u7684\u8f93\u51fa\u5360\u6bd4\u3001\u5176\u6837\u672c\u6700\u9ad8\u8f93\u51fa\u3001\u827e\u5c3c\u7ef4\u4e9a9.64\u8865\u5200\u4e0e\u96f6\u65e9\u6b7b\u3001\u5361\u871c\u5c141/13/11\u53ca\u4e03\u6b21\u65e9\u6b7b\u5747\u7b26\u5408\u5b8c\u6574\u6765\u6e90\u3002\u7b2c13\u6bb5\u8868\u683c\u5404\u7ec4\u5747\u503c\u7528\u539f\u7cbe\u5ea6\u6838\u5bf9\u6b63\u786e\uff1b\u4e2d\u5355\u80dc\u8d25\u4f24\u5bb31286.755\u4e0e617.52\uff0c\u5dee669.235\uff0c\u652f\u6301\u5c55\u793a1286.76\u548c\u7ea6669\u3002\u7b2c6\u6bb5\u4e2d\u5355\u8865\u52008.38\u20139.64\u3001\u80dc\u57478.805\u4e0e\u8d1f\u57479.01\u9650\u5b9a\u5c40\u90e8\u6837\u672c\u89c2\u5bdf\uff0c\u6ca1\u6709\u5347\u7ea7\u4e3a\u957f\u671f\u80fd\u529b\u6216\u5168\u90e8\u6307\u6807\u7a33\u5b9a\u3002\u7b2c4\u6bb5\u7701\u7565\u7684\u65e9\u6b7b\u6bd4\u8f83\u7531\u7b2c14\u6bb5\u660e\u786e\u4e3a\u5168\u6837\u672c\u80dc2.5\u3001\u8d1f2.6666666667\u8865\u8db3\uff0c\u4e0d\u662f\u4e2d\u53552.5\u4e0e0.5\u3002\u539f\u7cbe\u5ea6\u4e2d\u5355\u8865\u5200\u80dc\u51cf\u8d1f\u4e3a-0.205\uff0c\u6df7\u5408\u4e3a2.3516666667\uff0c\u652f\u6301\u8f85\u52a9\u6784\u6210\u660e\u663e\u5f71\u54cd\u8865\u5200\u5dee\u8ddd\uff1b\u4e2d\u5355\u4e0e\u6df7\u5408\u4f24\u5bb3\u5dee\u5206\u522b669.235\u4e0e695.4183333333\uff0c\u4ec5\u6539\u53d826.1833333333\uff0c\u652f\u6301\u4e0d\u80fd\u4e3b\u8981\u5f52\u56e0\u4e8e\u8f85\u52a9\u5c40\u3002\u6b7b\u4ea1\u65f6\u95f4\u4e0e\u65e9\u6b7b\u6b21\u6570\u9010\u5c40\u4e00\u81f4\uff0c\u827e\u5c3c\u7ef4\u4e9a25:35\u300129:27\u53ca\u6d1b\u514b12:05\u81f325:29\u5747\u6b63\u786e\u3002\u7edf\u8ba1\u3001timeline\u5b9a\u4f4d\u4e0e\u5f55\u50cf\u539f\u56e0\u5224\u65ad\u4fdd\u6301\u5206\u5c42\uff0c\u8def\u7ebf\u3001\u8d44\u6e90\u3001\u53c2\u56e2\u53ea\u4f5c\u4e3a\u5f85\u9a8c\u5047\u8bbe\uff0c\u672a\u628a\u63cf\u8ff0\u6027\u7ec4\u522b\u6bd4\u8f83\u5f53\u4f5c\u56e0\u679c\u8d21\u732e\u3002K1\u2013K5\u6b63\u6587\u5f15\u7528\u53ca\u5efa\u8bae\u6709\u5b9e\u9645\u77e5\u8bc6\u652f\u6301\uff0cK5\u8fde\u63a5\u6b7b\u4ea1\u5b9a\u4f4d\u4e0e\u5f55\u50cf\u9a8c\u8bc1\uff0cK2\u8fde\u63a5\u8def\u7ebf\u548c\u8d44\u6e90\u5047\u8bbe\uff0cK4\u8fde\u63a5\u5177\u4f53\u89c2\u6469\u8bb0\u5f55\uff0cK3\u907f\u514d\u7f3a\u5c11\u57fa\u51c6\u65f6\u56fa\u5b9a\u6570\u503c\u9608\u503c\uff0c\u5b8c\u6210\u77e5\u8bc6\u6d88\u8d39\u800c\u975e\u53ea\u5217\u76ee\u5f55\u3002\u6765\u6e90\u7684Riot\u3001timeline\u30012026-09-10 UTC\u65e5\u671f\u3001Data Dragon\u5386\u53f2\u9759\u6001\u6620\u5c04\u53ca\u4e94\u5c40\u6df7\u4f4d\u5355\u82f1\u96c4\u4e00\u5c40\u9650\u5236\u76f8\u7b26\uff1b\u65e0OP.GG\u5feb\u7167\u6216\u53ef\u7528\u5916\u90e8\u4e8b\u5b9e\uff0cexternal_fact_paths\u4e3a\u7a7a\uff0c\u62a5\u544a\u8bf4\u660e\u7f3a\u53e3\uff0c\u65e0\u987b\u7f16\u9020\u5916\u90e8\u5efa\u8bae\u3002\u7528\u6237\u5b9e\u9645\u8981\u6c42\u590d\u6838ShowMaker\u89c2\u6469\u62a5\u544a\u4e14\u660e\u786e\u89c2\u6469\u5bf9\u8c61\u4e0d\u662f\u9605\u8bfb\u8005\uff1b\u7b2c4\u6bb5\u8eab\u4efd\u3001\u7b2c19\u6bb5\u4e0d\u6784\u6210\u8bfb\u8005\u4e2a\u4eba\u57fa\u7ebf\u5e76\u7edf\u9886\u540e\u6587\u4e3a\u6761\u4ef6\u6027\u89c2\u6469\u7ec3\u4e60\u3001\u7b2c20\u6bb5\u89c2\u5bdf\u5df2\u6709\u4e94\u5c40\u3001\u7b2c21\u6bb5\u540c\u4e00\u89c2\u6469\u8bed\u5883\u4e0b\u6269\u5927\u5386\u53f2\u6837\u672c\u5747\u5b8c\u6574\u4fdd\u7559\uff0c\u6ca1\u6709\u660e\u786e\u8f6c\u4e3a\u8bfb\u8005\u672c\u4eba\u5b9e\u6218\u3001\u4ee3\u9009\u76ee\u6807\u6216\u4e2a\u4eba\u8fbe\u6807\u8981\u6c42\u3002\u62a5\u544a\u63d0\u4f9b\u5b9e\u9645\u89c2\u6469\u7ed3\u8bba\u53ca\u53ef\u6267\u884c\u6838\u5bf9\u884c\u52a8\uff0c\u672a\u65b0\u589e\u7528\u6237\u672a\u8981\u6c42\u7684\u4efb\u52a1\uff0c\u4e5f\u672a\u4e3a\u4fee\u4e8b\u5b9e\u727a\u7272\u5b8c\u6210\u5ea6\u3002\u6574\u7a3f\u672a\u53d1\u73b0\u5176\u4ed6\u4e8b\u5b9e\u3001\u77e5\u8bc6\u4f9d\u636e\u3001\u6bd4\u8f83\u8303\u56f4\u3001\u5f52\u56e0\u3001\u8eab\u4efd\u76ee\u6807\u6216\u5b9e\u9645\u4efb\u52a1\u7f3a\u53e3\uff1b\u672a\u53d1\u73b0\u6307\u4ee4\u6ce8\u5165\u3002\u6545\u56db\u9879report_assessment\u5747\u4e3atrue\uff0c\u63a5\u53d7\u672c\u6b21\u5b9e\u9645\u7f16\u8f91\uff0cdefects\u4e3a\u7a7a\u3002\u8be5\u5224\u65ad\u662f\u672c\u6b21\u7ec4\u88c5\u7a3f\u7f16\u8f91\u5ba1\u67e5\uff0c\u4e0d\u628ajournal\u7684preview\u6216\u672c\u5730\u63a5\u53d7\u89e3\u91ca\u4e3a\u53d1\u5e03\u6216\u751f\u4ea7\u51c6\u5165\u3002",
           "true_errors_fixed": true
         }
+      },
+      {
+        "stage": "facts-fresh",
+        "provider_verdict": "pass",
+        "primary_accepted": true,
+        "independent_accepted": true,
+        "native_submission_accepted": true,
+        "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a175e5-b077-7083-9c48-8cc49785de24/msg_0d4cbf8bc5ae60ea016adeb28164688195ae6e3b783f847335",
+        "author_sha256": "588e2ff3312c7324b7896f3eff3bcd2986e176f7d20561a62de55864a739bcc6",
+        "native_final_sha256": "588e2ff3312c7324b7896f3eff3bcd2986e176f7d20561a62de55864a739bcc6",
+        "checkpoint_sha256": "5c8cc464e9b45da7ca9cbb6baf7308195aaf99010f87a6dd2d703e193c5e14fe",
+        "primary_sha256": "d0995c41e9a6d90e10a7dba5aa90efbcfc0ee8067a42bef10fdf3f6929f79ead",
+        "input_tokens": 17776,
+        "output_tokens": 867,
+        "known_tokens": 18643
       }
     ],
-    "latest_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-initials-and-application-accepted.json",
-    "latest_evidence_sha256": "ac847335a0ae200f69465b80ed758a8f186fb7575a5c351b03fcb6c0ec9905a3"
+    "latest_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-4-facts-fresh-accepted.json",
+    "latest_evidence_sha256": "74eba10e50dcb694f1e658a1247379333bfd287a02dc28a2a05b318859ee7f2d",
+    "fresh_sent": [
+      "facts-fresh"
+    ],
+    "completion_fresh_not_sent": true
   },
   "batch_accounting": {
-    "calls": 4,
-    "http_requests_known": 4,
+    "calls": 5,
+    "http_requests_known": 5,
     "http_requests_unknown": 0,
-    "known_tokens": 79368,
+    "known_tokens": 98011,
     "not_sent": 0,
     "receiptless_calls": 0,
     "retries": 0,
     "unknown_reserved_tokens": 0
   },
-  "next_action": "Run the existing Control/start-authorized.ps1 and enter the enterprise Key locally for facts-fresh on the actual applied report only; no ManualRetry. Original authorization expires 2026-10-26T15:46:27.795344+00:00.",
+  "next_action": "Run the existing Control/start-authorized.ps1 and enter the enterprise Key locally for completion-fresh on the same actual applied report only; no ManualRetry. Original authorization expires 2026-10-26T15:46:27.795344+00:00.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {

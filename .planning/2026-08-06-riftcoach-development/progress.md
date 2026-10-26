@@ -1,4 +1,18 @@
-## 2026-10-26 第二报告双初审及唯一应用完成，待facts-fresh（当前）
+## 2026-10-26 第二报告facts-fresh双审通过，待最后completion-fresh（当前）
+
+本次facts-fresh成功1HTTP200，36.86秒，输入17776/输出867，共18643known tokens；pass/100，issues及issue_resolutions为空，仅advisories block4/6。
+主审和既有独立作者重新实读实际25段新稿、完整来源/知识/用户任务/事实政策及真实响应，均接受；唯一NEW_TASK、真实native与run外作者逐字一致并正常submit。
+重算确认中单→全五局补刀8.9075→7.394、经济469.0525→435.76、伤害952.1375→869.504下降，视野33.75→45及早死1.5→2.6升高；实际补丁已修正方向。
+全样本早死2.5/2.67、局部补刀观察、伤害差归因、timeline与K1—K5建议及观摩身份均符合来源；可选措辞标记不升级为事实错误。
+唯一application及实际稿cabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586保持；最后completion-fresh离线重建与该实际稿及完整来源一致，尚未发送。
+累计5HTTP/98011known，0unknown/0retry/0receiptless/0未发；第二例3HTTP/58586known，18operations、无unresolved、未关闭；完成仍1/15，整批未seal。
+首例及当前五个真实native（facts-initial显式固定恢复保留）、原transport/完整响应观测/费用严格只读核验通过，Operator与作者库存不变，冻结34abe04e clean。
+0019—0021原stdout及最早exit SHA留存，最初guard af6f69a2不变，最新原checkpoint220e94895918d3b4d36e7307ef8e5ecce9b359c3abff39a3ac2a6df6f248441c。
+**下一动作：** 用户运行原Control/start-authorized.ps1隐藏输入企业Key，只续本例最后completion-fresh；不加ManualRetry，不重发已接受项或再次应用。
+原授权北京时间2026-10-26 23:46:27截止不延展，CI40188299016不变，automation PAUSED；尚未完成同稿双fresh，不称本例修订成功或15项/产品合格。
+证据：Control/claim-scope-4-facts-fresh-accepted.json（SHA 74eba10e50dcb694f1e658a1247379333bfd287a02dc28a2a05b318859ee7f2d）；Control/claim-scope-4-frontier-0021.json。
+
+## 2026-10-26 第二报告双初审及唯一应用完成，待facts-fresh（此前检查点）
 
 本次completion-initial成功1HTTP200，输入18541/输出263，共18804known tokens，pass/100且所有意见数组为空。
 主审和既有独立作者实读完整25段、全部来源/知识/用户任务/政策/实际响应后接受；真实native与作者逐字匹配，
