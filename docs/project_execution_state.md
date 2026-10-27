@@ -14,6 +14,12 @@ pause_reason: "原15完成7/15；第七份双初审直过并严格只读回放�
 
 ## 当前行动
 
+## 2026-10-28 同批余8例授权续接24小时，第八例已启动（当前）
+
+用户明确选择“授权续接24小时，原余量不变”。新增独立续接记录authorization-continuation-20261028.json（SHA af5e7d9a），北京时间10月28日00:25:43至10月29日00:25:43生效；旧原始及上一续接授权不改，settings只切换续接选择。现时校验和到期拒绝检查通过，原包络及run库存未变；26HTTP/451214known/137228unknown预留/2retry、7/15完成保持，未清零额度，不重发成功项。
+
+**当前动作：** 第八份claim-scope:5的facts-initial已由保存凭据入口启动，0109 stdout/现有进程是唯一执行者；先读取实际返回，不另启第二份。返回后继续完整来源双审及后续原链路。续接本身0Key/0Provider；实际新用量按回执另记。原时间追加仍仅scope:3，别例3600秒保持；阶段8E、产品未准入及automation PAUSED保持。证据：data/evaluation/results/sol_original15_authorization_continuation_20261028.json。
+
 ## 2026-10-28 第七份双初审直过完成，原15进度7/15（当前）
 
 第七份claim-scope:2完成度初审通过已保存的Windows凭据非交互执行，HTTP200、13.563秒、输入18640/输出227，共18867known tokens，100/pass且issues/issue_resolutions/advisories/repairs全空。主审和原独立作者完整核验原稿、来源、当前政策及响应后接受，作者原件和唯一真实native逐字相等，已导入。第19段条件性观摩限定统领后文，第20段实际使用K4安排选局/5分钟观察/记录，K2/K5已接具体死亡与路线复盘；OP.GG无可用资料已如实说明，不补造本人训练或新任务要求。

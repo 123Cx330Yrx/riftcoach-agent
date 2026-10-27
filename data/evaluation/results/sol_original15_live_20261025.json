@@ -203,7 +203,7 @@
     "retries": 2,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Await explicit 24-hour continuation of the same remaining envelope; then start claim-scope:5 with the saved key. No successful calls repeated.",
+  "next_action": "Eighth-case claim-scope:5 facts-initial is running through the saved-key entry; inspect the existing process and stdout before any resume.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2419,19 +2419,13 @@
   },
   "authorization_continuation": {
     "active": true,
-    "selection": {
-      "file": "authorization-continuation-20261027.json",
-      "sha256": "8f69421caaa404aac53988a28fbc9ada93872c4fd7d961f2e0cd1a723ac82b2d",
-      "module_sha256": "320d3029bf7ef5411f68871b854e4c8ba4782f60e496b9e12900b284bdb3a7ff"
-    },
-    "issued_at": "2026-10-26T16:21:46.567089+00:00",
-    "expires_at": "2026-10-27T16:21:46.567089+00:00",
+    "selection": "af5e7d9a7939ddbfa50dac4f9306b7f64e4d6030ddae2089ae5d70f82b1245c8",
+    "issued_at": "2026-10-27T16:25:43.295847+00:00",
+    "expires_at": "2026-10-28T16:25:43.295847+00:00",
     "original_authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
     "reset_accounting": false,
-    "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization-continuation-20261027-preparation\\prepared.json",
-    "sha256": "5a5bb75e5ced6fd7c67829842d6d9a0193006ef799c70a72d8071f34f0a5cb40",
-    "local_checks_passed": 24,
-    "real_host_only_frontier_verified": true,
+    "evidence": "data/evaluation/results/sol_original15_authorization_continuation_20261028.json",
+    "local_checks_passed": true,
     "new_evaluation_requests": 0
   },
   "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
@@ -2537,12 +2531,13 @@
   "latest_completed_replay_scope": "current_completed_case_with_prior_six_unchanged",
   "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
   "authorization_continuation_pending": {
-    "requested": true,
+    "requested": false,
     "requested_duration_hours": 24,
     "scope": "remaining_original_batch",
     "remaining_cases": 8,
     "reset_accounting": false,
     "original_deadline_utc": "2026-10-27T16:21:46.567089+00:00",
-    "new_paid_send_started": false
+    "new_paid_send_started": false,
+    "approved": true
   }
 }
