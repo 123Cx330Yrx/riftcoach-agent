@@ -1,4 +1,4 @@
-"""One recorded native final differs only by an author-file terminal LF.
+"""Recorded native finals differ only by an author-file terminal LF.
 
 External recovery only: retain both original byte strings and their hashes.
 All frozen identity, source, dispatch, schema and decision checks still run.
@@ -36,7 +36,17 @@ def install(control, config):
         if (value['version'] != 'original15-one-native-terminal-lf-recovery-v1'
                 or value['launch_plan_sha256'] != config['plan_sha256']):
             raise ValueError('original15_terminal_lf_plan_binding')
-        return value
+        values = [value]
+        for entry in selected.get('additional_manifests', []):
+            path = control / entry['file']
+            if path.parent != control or digest(path.read_bytes()) != entry['sha256']:
+                raise ValueError('original15_terminal_lf_controls_changed')
+            extra = json.loads(path.read_bytes())
+            if (extra['version'] != value['version']
+                    or extra['launch_plan_sha256'] != config['plan_sha256']):
+                raise ValueError('original15_terminal_lf_plan_binding')
+            values.append(extra)
+        return values
 
     load()
     from scripts import reviewer_profile_batch as batch
@@ -49,7 +59,7 @@ def install(control, config):
         return
 
     def validate(self, handle, submission):
-        record = load()
+        records = load()
         try:
             return previous(self, handle, submission)
         except ValueError as error:
@@ -57,11 +67,14 @@ def install(control, config):
                 raise
             original_error = error
         event = submission['independent']['independent_source_event']
-        if (handle['checkpoint_sha256'] != record['checkpoint_sha256']
-                or handle['binding'] != record['binding']
-                or event['event_id'] != record['event_id']
-                or event['raw_event_sha256'] != record['raw_event_sha256']):
+        matches = [record for record in records
+                   if handle['checkpoint_sha256'] == record['checkpoint_sha256']
+                   and handle['binding'] == record['binding']
+                   and event['event_id'] == record['event_id']
+                   and event['raw_event_sha256'] == record['raw_event_sha256']]
+        if len(matches) != 1:
             raise original_error
+        record = matches[0]
         # Repeat all unchanged provenance checks, then read actual native bytes.
         accepted = NativeGate._validate(self, handle, submission)
         client = batch._CapturingClient(self.event_source.client)

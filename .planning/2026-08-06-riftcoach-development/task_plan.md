@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：第五份scope:4/facts-fresh已成功返回并完成主审/原独立作者全文复核，submit accepted；Host-only已停在最后completion-fresh发送前。实际同一新稿03d48822及唯一application2ab2b915保持，本例3HTTP/58890known，累计17HTTP/319634known，完成仍4/15。一次Host导入只因作者原件末尾LF与native不同而失败，双原件及失败stdout保持；仅针对该确切checkpoint/event/两份SHA的外部兼容已通过15项检查和真实导入，不改正文、身份或冻结源码，不重发成功项。下一步用户运行原start-authorized.ps1 -Case scope:4隐藏输入企业Key，只发最后completion-fresh；不用ManualRetry。原附加授权截至北京时间10月28日00:21:46，累计费用不清零。冻结34abe04e/CI40188299016、guard79c4de34保持；最新原stdout根dec62907。整批未关闭/未seal/未授资格，automation PAUSED；历史回放的额外等待尚未优化。证据data/evaluation/results/sol_original15_facts_fresh_20261027.json及Control/scope-4-frontier-0073.json。
+2026-10-27当前工作：第五份scope:4双初审、compatibility/edit双审、唯一逐字应用及同实际稿双fresh均完成，终态candidate_repaired_pass_unqualified、matched=true。首五例只读replay通过，本例六份native及作者/来源/观测/费用核验，23operations无unresolved；本例4HTTP/75330known，累计18HTTP/336074known、0unknown/0retry，完成5/15。facts与completion两条确切末尾单LF行政例外、原字节/失败和16项聚焦检查均留档，不称原精确字节门槛无例外通过。唯一application2ab2b915和实际稿03d48822保持，0074—0076原stdout/exit保持，最新原stdout根ddef7814。下一步用户运行原start-authorized.ps1 -Case scope:3隐藏输入企业Key进入第六份facts-initial；第六尚未创建/发送，不加ManualRetry、不重发成功项。附加授权至北京时间10月28日00:21:46，累计不清零。冻结34abe04e clean/CI40188299016保持；整批未关闭/未seal/未授资格，automation PAUSED。输入Key到预留请求本地454.478秒、Provider14.391秒，重复核验尚未优化。证据data/evaluation/results/sol_original15_scope4_completed_20261027.json及Control/scope-4-completed-replay.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

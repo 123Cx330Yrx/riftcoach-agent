@@ -1,4 +1,12 @@
-## 2026-10-27 第五报告事实复审双审接受，待最后完成度复审（当前）
+## 2026-10-27 第五报告完整闭环完成，5/15（当前）
+
+scope:4最后completion-fresh成功1HTTP200、14.391秒、16440known tokens；公开pass/100、全部问题与advisories为空。主审/原独立作者全文双审接受，唯一真实native导入并submit，Host-only正常结束为candidate_repaired_pass_unqualified且matched=true。六阶段Host审查、唯一application2ab2b915与同实际稿03d48822双fresh均完成，首五例只读replay通过；23operations、无unresolved、库存前后不变。仅case关闭，batch未close/seal。
+
+completion作者末尾单LF与native不同，按第二条确切checkpoint/event/两原始SHA的行政例外处理，保留原facts例外和全部原字节；16项聚焦检查及真实完整导入通过，不称原精确字节门槛无例外通过。0074—0076原stdout/exit及最初guard保持，最新原stdout根ddef7814。发送前本地墙钟454.478秒与Provider14.391秒分开记录，重复核验性能尚未优化。
+
+本例4HTTP/75330known，累计18HTTP/336074known、0unknown/0retry，完成5/15。下一份scope:3未创建/发送；用户原隐藏Key入口加-Case scope:3即可，授权至北京时间10月28日00:21:46、累计不清零，不加ManualRetry。冻结34abe04e/CI40188299016保持，无需再等冻结树整套CI，automation PAUSED；未授产品或原15资格。证据data/evaluation/results/sol_original15_scope4_completed_20261027.json、Control/scope-4-completed-accepted.json（44791e77）及scope-4-completed-replay.json（9417b8c2）。
+
+## 2026-10-27 第五报告事实复审双审接受，待最后完成度复审（此前检查点）
 
 scope:4/facts-fresh成功1HTTP200，模型27.937秒，输入17827/输出564、18391known tokens。公开意见pass/100，issues和issue_resolutions为空，仅advisories4/6。主审及原独立作者均实读实际25段新稿、完整来源/政策/request/公开response后接受；中单早死胜2.5、败0.5，全样本胜2.5、败约2.67已明确区分，第4段省略由第14段补足，不另造中单或每一指标的全称。伤害差仍主要存在于中单内部；补刀构成影响、身份、K1—K5和其余正确内容均保持。事实接受不替代完成度。
 

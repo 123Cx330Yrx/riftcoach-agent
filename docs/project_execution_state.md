@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "第五份facts-fresh双审已接受，待本机企业Key发送最后completion-fresh。原15完成4/15，17HTTP/319634known。"
+pause_reason: "第五份修订及同稿双复审完成，原15完成5/15，18HTTP/336074known；下一份scope:3待本机企业Key。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,20 @@ pause_reason: "第五份facts-fresh双审已接受，待本机企业Key发送最
 
 ## 当前行动
 
-## 2026-10-27 第五报告事实复审双审接受，待最后完成度复审（当前）
+## 2026-10-27 第五报告修订及同稿双复审完成，5/15（当前）
+
+scope:4最后completion-fresh成功1HTTP200、14.391秒，输入16254/输出186，共16440known tokens。完整公开意见pass/100，issues、issue_resolutions及advisories均空。主审与原独立作者实读完整25段实际稿、全部来源、用户任务和政策后接受，真实native唯一final已导入并submit。观摩身份及第19段对后文条件练习的限定保持，K1—K5已连到实际观摩动作；没有OP.GG资料，不补造个人训练或外部数据义务。
+
+双初审、兼容性/实际整稿双审、唯一逐字应用和同稿双fresh均完成，程序正常返回candidate_repaired_pass_unqualified、matched=true。实际稿03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e及唯一application2ab2b915保持；早死中单2.5/0.5与全样本2.5/约2.67已正确分开，其余24段保持。首五例只读replay通过，本例六份真实native、费用、完整响应观测、作者及来源均核验；23operations已消费，无unresolved，case正常closed，读前后库存不变。
+
+facts-fresh和completion-fresh作者文件均比唯一真实native多末尾一个LF，现分别以确切checkpoint/event/raw-event/author路径和双原始SHA记录两条外部兼容；不改两份原件、真实事件或冻结源码，不一般性接受JSON等价。第二条在submit前显式登记，未再次派发或要求第二次final；原facts导入失败记录保持。新增清单支持保留原条目且每次重读SHA，16项聚焦检查和真实导入通过。这里是带两条已记录行政字节例外的严格回放，不能说原精确字节门槛无例外通过。
+
+本例4HTTP/75330known，累计18HTTP/336074known，0unknown/0retry/0receiptless/0未发，原15完成5/15。0074真实请求、0075导入、0076正常关闭的原stdout/exit均保留，最初guard79c4de34不变，最新原stdout检查点ddef7814dadee4d788e692a39305600cc9bb06753a1c6a53f9544c8c3ae72bab。Key输入结束到attempt_reserved的本地墙钟454.478秒，Provider仅14.391秒；本地重复核验尚未优化，不能报为上游超时或已加速。旧事故、原件、封存及未知保持。
+
+**下一动作：** 原Control/start-authorized.ps1 -Case scope:3隐藏输入GPT-企业专线Key，进入第六份facts-initial；不加ManualRetry、不重买成功项。第六份尚未创建/发送。附加授权仍至北京时间10月28日00:21:46，累计预算不清零。冻结34abe04e clean及公共CI40188299016不变，外部行政收尾无需重跑冻结树整套CI；automation PAUSED。整批未关闭/未seal，5/15不是15项完成、holdout稳定率或产品准入；后续自然Coach/Training、Runtime/DB/UI消费、四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估与学习依赖保持。
+证据：data/evaluation/results/sol_original15_scope4_completed_20261027.json；Control/scope-4-completed-accepted.json（SHA44791e77f6e8f31662c5b51c255dd2d07a0bc52fb2cbcb07a363f25e0180193d）；scope-4-completed-replay.json（SHA9417b8c29fc959e2a0b3639a354de71c302bc2bf9de0d5686d4a26bd7edfd7c4）；scope-4-completion-local-wait.json。
+
+## 2026-10-27 第五报告事实复审双审接受，待最后完成度复审（此前检查点）
 
 scope:4/facts-fresh成功1HTTP200，模型27.937秒，输入17827/输出564、18391known tokens。公开意见pass/100，issues和issue_resolutions为空，仅advisories4/6。主审及原独立作者均实读实际25段新稿、完整来源/政策/request/公开response后接受；中单早死胜2.5、败0.5，全样本胜2.5、败约2.67已明确区分，第4段省略由第14段补足，不另造中单或每一指标的全称。伤害差仍主要存在于中单内部；补刀构成影响、身份、K1—K5和其余正确内容均保持。事实接受不替代完成度。
 

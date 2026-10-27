@@ -1,3 +1,9 @@
+## 2026-10-27 第二条末尾LF原件兼容与本地等待实测
+
+第五份completion-fresh再次出现author=native+单LF，公开意见与双审均接受。没有让作者重发final或重写原件；submit前将第二对确切checkpoint/binding/event/raw-event/author及双SHA单独登记，外部适配器支持多个固定清单但要求唯一匹配、逐次重读，保留原facts清单。16项聚焦检查与真实导入/首五例只读replay通过。此修复没有根除未来作者末尾换行失配，也没有授权一般JSON等价或其他任务字节差异；原facts失败仍是历史事实。
+
+0067 credential_wait_finished至0070 attempt_reserved本地墙钟454.478秒，实际Provider仅14.391秒且1HTTP200。启动入口、输入后frontier、session和capture_attempt重复重放前缀及native/source，是应继续测量和优化的本地路径；本次未做性能修改，不把墙钟归为模型超时，也不声称已加速。该例正常修订闭环，原15达5/15，费用累计18HTTP/336074known；第六份未创建，不能据单例宣称稳定率或产品准入。
+
 ## 2026-10-27 原生final末尾换行与真实语义判断分开处理
 
 第五份facts-fresh正常成功，旧ExactNativeGate仅因author原件比唯一真实native多一个末尾LF而拒绝导入。helper的初次字节比对失败无观测落盘；随后仅放宽helper发现冻结完整导入器还有同一字节检查，第一次submit仍失败。该误判是主线程工具诊断缺口，不是Provider或独立语义审查失败。保留两份真实SHA、原字节及0071失败，按确切checkpoint/binding/event/raw-event/author路径建立唯一LF例外；没有改原件或原生事件，也未用一般JSON等价替代字节审计。15项正反检查、真实NativeGate全校验和原精确门槛的指定例外通过。其余stage继续原字节规则；后续作者原件须与其native全文（含末尾换行）一致，避免重复机械失配。

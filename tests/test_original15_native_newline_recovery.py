@@ -86,3 +86,31 @@ def test_control_tampering_is_rechecked_on_every_validation(tmp_path, monkeypatc
     manifest.write_bytes(manifest.read_bytes() + b' ')
     with pytest.raises(ValueError, match='terminal_lf_controls_changed'):
         Gate()._validate({}, {})
+
+
+def test_additional_record_retains_original_and_rechecks_both(tmp_path, monkeypatch):
+    from scripts import reviewer_profile_batch as batch
+
+    class Gate:
+        def _validate(self, handle, submission):
+            return True
+
+    monkeypatch.setattr(batch, 'ExactNativeGate', Gate)
+    module = tmp_path / 'original15_native_newline_recovery.py'
+    module.write_bytes(b'pinned test module')
+    value = dict(version='original15-one-native-terminal-lf-recovery-v1',
+                 launch_plan_sha256='plan')
+    manifest = tmp_path / 'scope-4-facts-fresh-terminal-lf-recovery.json'
+    manifest.write_text(json.dumps(value), encoding='utf-8')
+    original = manifest.read_bytes()
+    extra = tmp_path / 'completion-fresh.json'
+    extra.write_text(json.dumps(value), encoding='utf-8')
+    selected = dict(module_sha256=digest(module.read_bytes()),
+                    manifest_sha256=digest(manifest.read_bytes()),
+                    additional_manifests=[dict(file=extra.name, sha256=digest(extra.read_bytes()))])
+    install(tmp_path, dict(plan_sha256='plan', native_terminal_lf_recovery=selected))
+    assert Gate()._validate({}, {}) is True
+    assert manifest.read_bytes() == original
+    extra.write_bytes(extra.read_bytes() + b' ')
+    with pytest.raises(ValueError, match='terminal_lf_controls_changed'):
+        Gate()._validate({}, {})
