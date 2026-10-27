@@ -4,176 +4,161 @@
   "ci_run": "40188299016",
   "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
   "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
-  "case": "claim-scope:7",
-  "actual_edit_performed": false,
+  "case": "observed:2",
+  "actual_edit_performed": true,
   "qualified": false,
   "publication_allowed": false,
   "production_admitted": false,
   "automation_status": "PAUSED",
   "date": "2026-10-28",
-  "stage": "case-completed",
+  "stage": "facts-fresh-accepted",
   "accepted_stages": [
     {
       "stage": "facts-initial",
-      "primary_accepted": true,
-      "independent_accepted": true,
-      "native_submission_accepted": true,
-      "checkpoint_sha256": "50e942d867a21c7e8f00b1a9c88a43e07d15c2e0e7054764d2faea7790d0d334",
-      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17f09-5ba9-7e83-8143-66318c728f1a/msg_0fa7991d0f4b7cf5016ae10945e8e48196a7ab9acd4ab09541",
-      "author_sha256": "324d2f01a53510202fa8d44b65d61a30f9a659ef7f3c4000835364be30c7e1bc",
-      "native_final_sha256": "324d2f01a53510202fa8d44b65d61a30f9a659ef7f3c4000835364be30c7e1bc",
-      "raw_event_sha256": "0ef4810fd31c25ee922f2d169915187e5a51ca5d638474a472f4648a45493119",
+      "native_observation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-facts-initial-native-observed.json",
+      "native_observation_sha256": "68bdc59852b28981c8a65a9ab987479fb6924d4f8d4cded9f19ac74d1c3c0580",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17f7b-1f1f-7f20-aaef-20732042c9fd/msg_0fa7991d0f4b7cf5016ae126394ea88196a25a6fc0149960be",
+      "author_sha256": "2a5e13d17f2572cc627d5d5e6cf7fbd5e20af52f03acbde958cad8c44ec1590c",
+      "native_final_sha256": "2a5e13d17f2572cc627d5d5e6cf7fbd5e20af52f03acbde958cad8c44ec1590c",
+      "raw_event_sha256": "00f77fee77bc421fa555b84abca7d94535fcf0a7c334513b2a781f9281adc941",
+      "checkpoint_sha256": "fc14e21026df6b5aa49b1327e1201a8982aa93ab6c407375b5d059b804b8c7b8",
+      "primary_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-facts-initial-primary.json",
+      "primary_sha256": "fb442d77d4224afe3dc1c24fb6225678bb6655f89af5094372a611c7b84f1dbe",
+      "submission_sha256": "4efdcb37da55846bfd25d7345cf640b064d382b296967233c55ddb268747fab1",
       "author_text_equal": true,
-      "terminal_lf_exception": false,
-      "primary_sha256": "5490348befc9171de5576b2214fb48403871e37339caa12b12590b2e1c3185a0",
-      "submission_sha256": "d521f45c67e9c45cf11c91f5882baa146a770f26eaf1f00526162483058d51e0",
-      "native_observation_sha256": "7753c9cd00362644aea7fcf6bce1eab83bc45489dbe2d8016a3130d562657778"
+      "primary_accepted": true,
+      "independent_accepted": true
     },
     {
       "stage": "completion-initial",
+      "native_observation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-completion-initial-native-observed.json",
+      "native_observation_sha256": "9ff041ab5322758312b529d5ddc58dda9627c46788ec5c614cf9c4fcfb5ce741",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17f94-e1c7-7501-9e63-9e87ef48d4f4/msg_0fa7991d0f4b7cf5016ae12ca7aeac81969d4655bc307ef092",
+      "author_sha256": "b1b970dbf173e99b5fff4c3ef6864f5bd0f4d20c7a77eda139a7ae7367cda3f9",
+      "native_final_sha256": "b1b970dbf173e99b5fff4c3ef6864f5bd0f4d20c7a77eda139a7ae7367cda3f9",
+      "raw_event_sha256": "23bd84d2505a9ad48060a74d4d72f38eeb3b1559fe4835e5431c99288c02facc",
+      "checkpoint_sha256": "87499aa1a816094036653a3c9d148b08db0320bd843d7c55dbb7ef31f1efc4d3",
+      "primary_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-completion-initial-primary.json",
+      "primary_sha256": "91b701f8d04cf98e84038e6a8bf9205576a0d3da7298ae991d82d4ea15b09690",
+      "submission_sha256": "bb5d33df009b1cae50a5d89739bb51d0c1e587b1c46561f5a1229d52cae38b17",
+      "author_text_equal": true,
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "compatibility",
+      "native_observation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-compatibility-native-observed.json",
+      "native_observation_sha256": "c01b0cdd7ea344848dd0ad4023aa7b7ac28036f17639625557cd3320bc65d45f",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17f9d-5d6f-7313-b577-30f5920fae24/msg_0180e5ce39e7462a016ae12f20ca988195924d9e675731d68e",
+      "author_sha256": "8486433629563651ea09a94a3200401695189b6fe207245f11901cb5e3df9bc1",
+      "native_final_sha256": "8486433629563651ea09a94a3200401695189b6fe207245f11901cb5e3df9bc1",
+      "raw_event_sha256": "da0541b37e6c52982b3549e2b7764ca78a6361cd3c33b4bc9dadccb420463788",
+      "checkpoint_sha256": "45b96f1c7c1c2fc78d1c0bd8dbeae6f8105a833b9a10b0b669026f5fb1352db9",
+      "primary_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-compatibility-primary.json",
+      "primary_sha256": "ef4556459f97baa97da713d14a1280f66118ad8bc8d82689274f55cd88030c3f",
+      "submission_sha256": "f35af7d2ee22f51466758af58fd9a1eb2ab8e9b07dded0f3561f63a2fbd30dc7",
+      "author_text_equal": true,
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "edit",
+      "native_observation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-edit-native-observed.json",
+      "native_observation_sha256": "d356ee808b4d0657fc410f0041745932da6bab1f132e573ba79ea61507ba2d47",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17fa7-011a-71e1-9923-f3a936c3547d/msg_0180e5ce39e7462a016ae131ba7a2081958e183c2286265fe1",
+      "author_sha256": "834b36f357feb72efd7dd1111195347fae332f7e3f17d58bcc699243d076c868",
+      "native_final_sha256": "834b36f357feb72efd7dd1111195347fae332f7e3f17d58bcc699243d076c868",
+      "raw_event_sha256": "7418f24ee181e88993ccefbd6adce8bfa947aa3d984c64a1e3d1f6bcc83f5baf",
+      "checkpoint_sha256": "e87291927f8cb57fc9796da21b5ab0b04db8ac2d032925e131727a5eb1c72317",
+      "primary_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-edit-primary.json",
+      "primary_sha256": "3adef1d3a3cfc944bcb2d43d54ebe8e2dd3c2224c58f4c2bc840c35cff901c25",
+      "submission_sha256": "e78115a0de7edeeb4ab900ebca17a9161cc74de62fbfa593be51352fac7cae1b",
+      "author_text_equal": true,
       "primary_accepted": true,
       "independent_accepted": true,
-      "native_submission_accepted": true,
-      "checkpoint_sha256": "9ddfbcebd57d7f3fe2af03c3569967f8d82e2935d82a3976a0cda4ec575c880a",
-      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17f22-3dec-7f32-9d57-55edf24af5d8/msg_0fa7991d0f4b7cf5016ae10f499f3881968d5e05c6adccdd86",
-      "author_sha256": "fa414a4a9194c20bb80c61c5e32ba9f3c25fa35da4491d28a898e8c41145fe47",
-      "native_final_sha256": "fa414a4a9194c20bb80c61c5e32ba9f3c25fa35da4491d28a898e8c41145fe47",
-      "raw_event_sha256": "f4225c6bf92e145391385855d213db108c9768fa6ae82029e6acb4a441ac1028",
-      "author_text_equal": true,
-      "terminal_lf_exception": false,
-      "primary_sha256": "92a573b9839dd53c0a5c5e202f1fc21ab258fc34cf8f3f535a248ed5c42b9236",
-      "submission_sha256": "d3e918600c7c4219d71cfc83db558859bd975aaa8aba20418e96f145194314c5",
-      "native_observation_sha256": "c1cdac3c1e5ce4da8e8366991ad855b6c3721942dcc0e182c57793ef26422ef3"
+      "primary_report_assessment": {
+        "report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
+        "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "source_review": "\u6309\u672c\u6b21\u7cbe\u786echeckpoint e8729192\u53caSHA\u8bfb\u53d6edit\u4efb\u52a1\u548cmaterial 4803f331\u3002\u672c\u6b21\u8bc4\u4f30\u7a0b\u5e8f\u5b9e\u9645\u7ec4\u88c5\u7684\u5b8c\u6574\u9884\u89c8\u7a3fb4e7e336\uff0c\u4e0d\u8bc4\u4e00\u6bb5\u53e3\u5934\u4fee\u8ba2\u5efa\u8bae\u3002\u5f53\u524d\u5b8c\u6574\u539f\u7a3f\u3001\u5b9e\u9645\u9884\u89c8\u5168\u6587\u3001\u4e24\u4efd\u521d\u5ba1\u5b8c\u6574\u8bf7\u6c42\u53ca\u5168\u90e8\u653f\u7b56\u3001\u4e24\u4efd\u539f\u59cb\u610f\u89c1\u3001\u5b8c\u6574patch operation/reason\u548c\u6240\u6709complete_source\u5747\u5df2\u8bfb\u53d6\u6838\u5bf9\uff1b\u5f53\u524d\u8fd9\u4e9b\u7ec4\u4ef6\u4e0e\u672c\u4f1a\u8bdd\u521a\u5b8c\u6574\u5b9e\u8bfb\u7684\u5bf9\u5e94\u539f\u4ef6\u53ca\u540c\u4e00\u9884\u89c8\u9010\u9879\u7cbe\u786e\u76f8\u7b49\uff0c\u6750\u6599\u548c\u62a5\u544aSHA\u5339\u914dtask binding\u3002\u6765\u6e90\u5305\u62ec\u5168\u90e8\u4e94\u5c40\u4e8b\u5b9e/\u51fa\u5904\u3001generation_facts\u53catimeline\u6b7b\u4ea1/\u88c5\u5907\u3001\u786e\u5b9a\u6027\u62a5\u544a\u3001\u5b8c\u6574\u4f4d\u7f6e\u4e0a\u4e0b\u6587\u3001K1\u81f3K3\u5168\u6587\u3001OP.GG\u4e24\u4e2a\u4f4d\u7f6e\u5f52\u6863\u3001\u5b98\u65b9\u8865\u4e01\u4e0eDataDragon\u3002\u6ca1\u6709\u4ee5\u517c\u5bb9\u6027\u901a\u8fc7\u3001\u6a21\u578b\u5206\u6570\u3001journal\u5185semantic\u6807\u8bb0\u6216\u65e7\u6807\u7b7e\u66ff\u4ee3\u6574\u7a3f\u5ba1\u67e5\u3002\n\u771f\u5b9e\u9519\u8bef\u5df2\u4fee\u590d\uff1a\u539fblock_10\u540e\u53e5\u660e\u786e\u9884\u6d4b\u4ee5\u540e\u6240\u6709ShowMaker\u4e2d\u5355\u8f93\u5c40\u4f24\u5bb3\u5747\u4f4e\u4e8e\u6240\u6709\u8d62\u5c40\uff1b\u56db\u573a\u5f53\u524d\u4e2d\u5355\u6570\u636e\u4e0d\u8db3\u4ee5\u652f\u6301\u672a\u6765\u4fdd\u8bc1\u3002\u5b9e\u9645\u552f\u4e00operation\u5c06\u8be5\u53e5\u66ff\u6362\u4e3a\u8fd9\u4e00\u5dee\u5f02\u4ec5\u9650\u6240\u9009\u56db\u573a\u3001\u4e0d\u80fd\u636e\u6b64\u63a8\u65ad\u672a\u6765\u6240\u6709\u4e2d\u5355\u8f93\u5c40\u4f24\u5bb3\u90fd\u4f1a\u4f4e\u4e8e\u6240\u6709\u4e2d\u5355\u8d62\u5c40\u3002\u65b0\u53e5\u64a4\u56de\u5b9e\u9645\u672a\u6765\u5168\u79f0\uff0c\u65e2\u4e0d\u4fdd\u8bc1\u672a\u6765\u4e00\u81f4\u4e5f\u4e0d\u9884\u6d4b\u4e00\u5b9a\u53cd\u8f6c\uff0c\u6ca1\u6709\u589e\u52a0\u65e0\u4f9d\u636e\u56e0\u679c\u6216\u80fd\u529b\u65ad\u8a00\u3002\u7b2c3\u6bb5\u4e0d\u5916\u63a8\u957f\u671f\u4e0e\u65b0\u7b2c10\u6bb5\u73b0\u5728\u76f8\u5bb9\u3002\u4e8b\u5b9e\u521d\u5ba1\u552f\u4e00issue 1\u88ab\u4fee\u590d\uff0c\u5b8c\u6210\u5ea6\u521d\u5ba1\u6ca1\u6709\u5176\u4ed6\u5fc5\u8981\u4fee\u8ba2\uff0c\u4e0d\u5b58\u5728\u672a\u5904\u7406\u7684\u7b2c\u4e8c\u95ee\u9898\u3002\n\u6b63\u786e\u5185\u5bb9\u4fdd\u6301\uff1a\u7a0b\u5e8foperation\u4e3afacts/block_10/issue_ids=[1]\uff0cbefore\u662f\u539f\u6bb5\u552f\u4e00\u8fde\u7eed\u539f\u53e5\uff0c\u539f\u7a3f[start708:end746]\u7cbe\u786e\u76f8\u7b49\uff1b\u6309\u8be5\u533a\u95f4\u9010\u5b57\u66ff\u6362\u540e\u5168\u6587\u7b49\u4e8e\u5b9e\u9645\u9884\u89c8\u4e14SHA\u4e00\u81f4\uff0c\u65e0\u91cd\u53e0\u6216\u64c5\u6539\u3002\u7b2c10\u6bb5\u524d\u53e5\u4fdd\u7559\u201c\u5728\u8fd9\u56db\u573a\u4e2d\u5355\u4e2d\uff0c\u7ecf\u6d4e\u548c\u4f24\u5bb3\u662f\u8f83\u7a33\u5b9a\u7684\u5dee\u5f02\u9879\u201d\uff0c\u6765\u6e90\u56db\u4e2d\u5355\u7ecf\u6d4e482.76/527.82\u5206\u522b\u9ad8\u4e8e435.77/429.86\uff0c\u4f24\u5bb31143.4/1430.11\u5206\u522b\u9ad8\u4e8e629.54/605.5\uff0c\u5f53\u524d\u6837\u672c\u63cf\u8ff0\u6b63\u786e\uff0c\u4e0d\u80fd\u4e3a\u4e86\u4fee\u672a\u6765\u9884\u6d4b\u5220\u9664\u8be5\u89c2\u5bdf\u3002\u5176\u4f5927\u6bb5\u548c\u7b2c10\u6bb5\u5176\u4f59\u5185\u5bb9\u9010\u5b57\u4e0d\u53d8\uff0c\u6b63\u786e\u7edf\u8ba1\u3001\u77e5\u8bc6\u3001\u6761\u4ef6\u884c\u52a8\u53ca\u9650\u5236\u6ca1\u6709\u4e22\u5931\u3002\n\u5b8c\u6574\u65b0\u7a3f\u7684\u4e8b\u5b9e\u4e0e\u6765\u6e90\u6b63\u786e\uff1a\u4e94\u5c402\u80dc3\u8d1f40%\u3001\u56db\u4e2d\u53552\u80dc\u548c\u4e00\u8f85\u52a9\u8d1f\u3001\u5b9e\u9645queue420\u53ca\u5404match ID/KDA\u4e00\u81f4\u3002\u4e2d\u5355\u7ecf\u6d4e505.29/432.815\u6309HALF_UP\u663e\u793a432.82\u3001\u4f24\u5bb31286.755\u663e\u793a1286.76/617.52\u3001\u8865\u52008.805\u663e\u793a8.81/9.01\u3001\u5168\u4e2d\u5355\u8865\u5200\u5747\u503c8.9075\u7ea68.91\u3001\u4e2d\u4f4d\u65708.805\u3001\u65e9\u6b7b\u5747\u503c1.5\u5747\u6b63\u786e\u3002\u6df7\u4f4d\u88688.8/6.45\u3001505.29/389.41\u30011286.76/591.34\u3001\u89c6\u91ce33.5/52.67\u3001\u65e9\u6b7b2.5/2.67\u4e0e\u6765\u6e90\u4e00\u81f4\uff0c\u8f85\u52a91.34\u62c9\u4f4e\u8865\u5200\u53ca90\u62ac\u9ad8\u89c6\u91ce\u7684\u6837\u672c\u6784\u6210\u89e3\u91ca\u6b63\u786e\uff0c\u672a\u6cdb\u5316\u4e3a\u6240\u6709\u6307\u6807\u540c\u5411\u6216\u89e3\u91ca\u4e3b\u8981\u4f24\u5bb3\u5dee\u8ddd\u3002\u827e\u5c3c\u7ef4\u4e9a9.64/0\u65e9\u6b7b\u53ea\u63cf\u8ff0\u7ed3\u679c\uff0c\u4e0d\u8bc1\u660e\u9632\u6293\uff1b\u4e24\u80dc\u4f24\u5bb3\u53ca\u53c2\u56e2\u7387\u9ad8\u4e8e\u4e94\u5c40\u6574\u4f53869.5/50.4%\uff0c\u6d1b\u514b36.4%/25\u89c6\u91ce\u3001\u5361\u871c\u5c1413\u6b7b\u53ca7\u65e9\u6b7b\u3001\u827e\u5c3c\u7ef4\u4e9a27.8%\u3001\u6d1b\u514b\u4e0e\u8f9b\u5fb7\u62c9\u6240\u9009\u5c40\u53ca605.5/1430.11\u5bf9\u7167\u5747\u652f\u6301\u6b63\u6587\u3002\n\u77e5\u8bc6\u548c\u5916\u90e8\u7528\u9014\u5728\u65b0\u7a3f\u4e5f\u5b9e\u9645\u6b63\u786e\uff1aK1\u9650\u5236\u65e9\u6b7b\u4e0e\u80fd\u529b\u89e3\u91ca\uff0cK2\u907f\u514d\u7f3a\u4e2a\u4eba\u57fa\u51c6\u65f6\u4f2a\u7cbe\u786e\u76ee\u6807\uff0cK3\u652f\u6301\u5c06\u8d44\u6e90\u4e0e\u53c2\u56e2\u4f5c\u4e3a\u5f55\u50cf\u5f85\u9a8c\u7ebf\u7d22\uff0c\u7b2c14\u300116\u300117\u6bb5\u4e0d\u5047\u88c5\u5df2\u89c2\u5bdf\u8fc7\u7a0b\u6216\u786e\u5b9a\u8d25\u56e0\u3002\u4e2d\u5355\u5f52\u68632026-09-10T12:15:25Z\u7684\u8f9b\u5fb7\u62c9T2/12/\u4e0a\u671f18\u3001\u8587\u53e4\u4e1dT2/14/52%\uff0c\u8f85\u52a912:15:28Z\u7684\u5361\u871c\u5c14T4/35/46%\uff0c\u5747\u4e0e\u5b8c\u6574\u6765\u6e90\u5339\u914d\uff0c\u672a\u628arank_previous18\u6df7\u4e3arank_previous_patch5\u3002\u7b2c18\u300121\u300122\u6bb5\u636e\u6b64\u7ec4\u7ec7\u6761\u4ef6\u6027\u5386\u53f2\u89c2\u6469\u884c\u52a8\uff0c\u4ecd\u4fdd\u7559\u4f4d\u7f6e\u3001\u68c0\u7d22\u65f6\u70b9\u3001\u975e\u540c\u7248\u672c\u540c\u6bb5\u4f4d\u3001\u975e\u4e2a\u4eba\u80dc\u7387\u548c\u975e\u5f53\u524d\u9009\u82f1\u96c4\u63a8\u8350\u8fb9\u754c\uff1b\u7b2c27\u6bb5\u58f0\u660e\u5f53\u524d\u63a8\u8350\u9700\u91cd\u65b0\u6838\u65f6\u6548\uff0c\u6ca1\u6709\u5bf9partial\u3001upstream_patch null\u548c\u8fc7\u671f\u5feb\u7167\u7f16\u9020\u786e\u5b9a\u6027\u3002\u5b98\u65b916.17\u57282026-08-25\u53d1\u5e03\uff0c\u53ea\u7248\u672c\u5bf9\u9f50\u4e0d\u63a8\u7f3a\u5c11\u7684\u6539\u52a8\u6b63\u6587\uff1bDataDragon16.17.1\u4ec5\u540d\u79f0\u6620\u5c04\uff1b\u5f55\u50cf\u7c92\u5ea6\u9650\u5236\u4fdd\u7559\u3002\n\u8eab\u4efd\u4e0e\u5b9e\u9645\u4efb\u52a1\u4fdd\u6301\uff1aShowMaker\u662f\u89c2\u6469\u5bf9\u8c61\uff0c\u4e0d\u662f\u9605\u8bfb\u8005\uff0c\u7b2c20\u6bb5\u7edf\u9886\u540e\u7eed\u89c2\u6469\u9009\u9879\uff1b\u672a\u7ed9\u8bfb\u8005\u4e2a\u4eba\u5bf9\u5c40\u3001\u76ee\u6807\u6216\u6307\u5b9a\u8bad\u7ec3\u4f4d\u7f6e\uff0c\u5b9e\u9645\u65b0\u7a3f\u6ca1\u6709\u4ee3\u9009\u82f1\u96c4\u3001\u65e5\u7a0b\u3001\u9608\u503c\u6216\u6539\u53d8\u5386\u53f2\u89d2\u8272/\u8865\u4f4d\u610f\u56fe\u3002\u539f\u5177\u4f53\u6570\u503c\u6838\u5bf9\u4e0e\u6709\u5f55\u50cf\u540e\u6bd4\u8f83\u573a\u666f\u7684\u884c\u52a8\u4ecd\u5b58\u5728\uff1bK3\u53caOP.GG\u6570\u503c\u5230\u884c\u52a8\u7684\u8d44\u6599\u6d88\u8d39\u8fde\u63a5\u4fdd\u7559\uff0c\u4e0d\u56e0\u5b8c\u6210\u5ea6\u4fee\u8ba2\u53e6\u9020\u4e2a\u4eba\u8bad\u7ec3\u4e49\u52a1\u3002\u672a\u53d1\u73b0\u65b0\u4e8b\u5b9e\u9519\u8bef\u3001\u4efb\u52a1\u7f3a\u53e3\u3001\u6765\u6e90\u51b2\u7a81\u6216\u6ce8\u5165\u3002\n\u636e\u5b9e\u9645\u5168\u6587\uff0c\u56db\u9879ReportAssessment\u5747\u4e3atrue\uff1afacts_and_sources_correct\u3001correct_content_preserved\u3001identity_and_goal_preserved\u3001true_errors_fixed\u3002accepted=true\u3001defects\u4e3a\u7a7a\u3001actual_report_checked=true\u3002\u6b64\u523b\u4ecd\u4e3aHost-only\u7a0b\u5e8f\u9884\u89c8\uff0c\u5c1a\u4e0d\u58f0\u79f0\u552f\u4e00application\u6216\u4e24\u9879fresh\u5df2\u5b8c\u6210\uff0c\u4e0d\u8868\u793a\u53d1\u5e03\u3001\u751f\u4ea7\u6216\u6574\u6279\u51c6\u5165\u3002",
+        "facts_and_sources_correct": true,
+        "correct_content_preserved": true,
+        "identity_and_goal_preserved": true,
+        "true_errors_fixed": true
+      },
+      "independent_report_assessment": {
+        "correct_content_preserved": true,
+        "facts_and_sources_correct": true,
+        "identity_and_goal_preserved": true,
+        "report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
+        "reviewer": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+        "source_review": "\u5df2\u5bf9binding\u6240\u6307\u5b9e\u9645\u65b0\u7a3f\u5168\u6587\u3001\u539f\u7a3f\u3001\u5168\u90e8\u64cd\u4f5c\u548creason\u53ca\u5b8c\u6574\u6765\u6e90\u9010\u9879\u6838\u5bf9\u3002\u552f\u4e00\u4fee\u6539\u64a4\u56de\u7b2c10\u6bb5\u65e0\u4f9d\u636e\u672a\u6765\u5168\u79f0\u9884\u6d4b\uff0c\u4fdd\u7559\u56db\u573a\u4e2d\u5355\u7ecf\u6d4e\u548c\u4f24\u5bb3\u9010\u5c40\u5206\u79bb\u7684\u6b63\u786e\u89c2\u5bdf\uff1b\u64cd\u4f5c\u524d\u540e\u5176\u4ed627\u6bb5\u53ca\u8be5\u6bb5\u6b63\u786e\u7b2c\u4e00\u53e5\u9010\u5b57\u4e0d\u53d8\u3002\u5b9e\u9645\u7ec4\u88c5\u4e0e\u65b0\u7a3f\u5168\u6587\u3001SHA256\u4e00\u81f4\u3002\u6240\u6709\u6bd4\u8d5b\u6570\u503c\u3001\u4f4d\u7f6e\u548c\u6837\u672c\u8fb9\u754c\u3001K1\u81f3K3\u5f15\u7528\u3001OP.GG\u5f52\u6863\u7528\u9014\u53ca\u6761\u4ef6\u884c\u52a8\u3001\u5b98\u65b9\u8865\u4e01\u4e0e\u9759\u6001\u6620\u5c04\u8fb9\u754c\u5747\u6709\u6765\u6e90\u652f\u6301\u3002ShowMaker\u89c2\u6469\u5bf9\u8c61\u4e0e\u8bfb\u8005\u8eab\u4efd\u672a\u6df7\u6dc6\uff0c\u76ee\u6807\u672a\u77e5\u65f6\u4fdd\u7559\u89c2\u6469\u9009\u9879\u4e14\u4e0d\u8bbe\u4e2a\u4eba\u8bad\u7ec3\u9608\u503c\u6216\u65e5\u7a0b\u3002\u56db\u9879\u62a5\u544a\u8bc4\u4f30\u5747\u4e3atrue\uff1b\u5224\u65ad\u6765\u81ea\u672c\u6b21\u5168\u6587\u68c0\u67e5\uff0c\u4e0d\u6765\u81ea\u65e7\u610f\u89c1\u5206\u6570\u6216journal\u6807\u8bb0\u3002",
+        "true_errors_fixed": true
+      }
+    },
+    {
+      "stage": "facts-fresh",
+      "native_observation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-facts-fresh-native-observed.json",
+      "native_observation_sha256": "1bded35c199e48fff435ce7b9fc44bf51c3f542221723f2c24fae9bb8f1a3def",
+      "primary_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-facts-fresh-primary.json",
+      "primary_sha256": "7fcb7a27f81e6a45ad77a917460001f31523ca52db086822abdbc7c4ac45517d",
+      "submission_sha256": "d758fd1cc7c6f90a53330b5f0b22797b211fe6bb657830cf42bd52dbf7aa3ab5",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17fc3-877e-7db3-837f-16279c4abf87/msg_0180e5ce39e7462a016ae138d3f90081959e46ac147e01c9c2",
+      "author_sha256": "e5ff1c2b2dce490a2e843c221d4ef2bb4fae01d021dd0c4440994962990192d2",
+      "native_final_sha256": "e5ff1c2b2dce490a2e843c221d4ef2bb4fae01d021dd0c4440994962990192d2",
+      "raw_event_sha256": "38c6835b11aee5dd9fdc4ca836dc8f530847ec1ad68251d6c83ccc109e04bb44",
+      "checkpoint_sha256": "d5124254fec56b07f7c17df56ee5f30c85058f109d807d45b00f61fd10630146",
+      "author_text_equal": true
     }
   ],
-  "native_reviews": 2,
+  "native_reviews": 5,
   "inventory_unchanged": null,
-  "status": "completed-prefix-awaiting-next-case",
-  "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
-  "completed_replay_evidence_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
-  "cases_completed": 10,
-  "next_case": "observed:1",
-  "next_stage": "facts-initial",
+  "status": "in_progress",
+  "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
+  "completed_replay_evidence_sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1",
+  "cases_completed": 11,
+  "next_case": "observed:2",
+  "next_stage": "completion-fresh",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
-    "key": "claim-scope:7",
-    "stage": "case-completed",
-    "closed": true,
-    "explicit_case_exceptions": [],
-    "original_envelope_pass": true,
-    "actual_edit_performed": false,
-    "application_count": 0,
-    "actual_report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
-    "native_reviews": 2,
+    "key": "observed:2",
+    "stage": "facts-fresh-accepted",
+    "closed": false,
+    "actual_edit_performed": true,
+    "application_count": 1,
+    "actual_report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
     "accepted_host_stages": {
       "facts-initial": true,
-      "completion-initial": true
+      "completion-initial": true,
+      "compatibility": true,
+      "edit": true,
+      "facts-fresh": true
     },
-    "strict_replay": true,
-    "replay_scope": "current_completed_case",
-    "status": {
-      "checkpoint_sha256": "ea6eb57afba2cc198d3fe633f3283f1d20682a5329042efda6f51ba710e49c9f",
-      "closed": true,
-      "format_waiting": false,
-      "guard_sha256": "449d1367c4888a1122ece0ec7cdabce7cd54cb1e076b54b073570ea7e2317d35",
-      "operations": 9,
-      "production_admitted": false,
-      "publication_allowed": false,
-      "timeout_waiting": false,
-      "transport_waiting": false,
-      "unresolved": []
-    },
-    "operations": 9,
-    "result": {
-      "accounting": {
-        "attempts": [
-          {
-            "input_tokens": 20111,
-            "model": "gpt-6.1-sol",
-            "ordinal": 1,
-            "output_tokens": 688,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "9cf43cd291fe3b920d7fe5347b5ce7af1f947e5d8379475b1af7b4959146c7d8",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-          },
-          {
-            "input_tokens": 18538,
-            "model": "gpt-6.1-sol",
-            "ordinal": 2,
-            "output_tokens": 281,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "1c06f8e702653acec2044080b7d4975e1cce6af1724415a1683787611fd3d3f8",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-          }
-        ],
-        "calls": 2,
-        "failed": false,
-        "logical": {
-          "generation": 0,
-          "review": 2
-        },
-        "reserved_tokens": 0,
-        "retries": 0,
-        "router_calls": 2,
-        "stopped": false,
-        "tokens": 39618
-      },
-      "actual_report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
-      "expected_outcome": "candidate_initial_pass_unqualified",
-      "key": "claim-scope:7",
-      "matched": true,
-      "outcome": "candidate_initial_pass_unqualified",
-      "production_admitted": false,
-      "publication_allowed": false
-    },
-    "transport": {
-      "actual_attempts": 2,
-      "completed_calls": 2,
-      "failed_calls": 0,
-      "http_requests_known": 2,
-      "http_requests_unknown": 0,
-      "known_tokens": 39618,
-      "known_usage_calls": 2,
-      "not_sent": 0,
-      "receiptless_calls": 0,
-      "unknown_reserved_tokens": 0,
-      "unknown_usage_calls": 0
-    },
-    "accounting": {
-      "calls": 2,
-      "reserved_tokens": 0,
-      "retries": 0,
-      "tokens": 39618
-    },
-    "original_stdout_roots": {
-      "checkpoint_sha256": "ea6eb57afba2cc198d3fe633f3283f1d20682a5329042efda6f51ba710e49c9f",
-      "guard_sha256": "449d1367c4888a1122ece0ec7cdabce7cd54cb1e076b54b073570ea7e2317d35"
-    },
-    "active_seconds": 2008.0479999999807,
-    "next_stage": null,
-    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-7-completed-accepted.json",
-    "accepted_evidence_sha256": "0bc03a5429028a65affc7a13b5735377a88b7d5799f79cbd8162188c2d264a76",
-    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-7-completed-replay.json",
-    "strict_read_only_frontier_sha256": "a61ce25f6d28326f0f74ab226c19ce7c98e2aab31c54336be65e6521df4e1800"
+    "native_reviews": 5,
+    "next_stage": "completion-fresh",
+    "active_executor_segment": "0149",
+    "evidence": "data/evaluation/results/sol_original15_observed2_facts_fresh_20261028.json",
+    "original_envelope_pass": false,
+    "explicit_case_exceptions": [
+      {
+        "kind": "execution_time_allowance",
+        "manifest_sha256": "fc4f8b4e25f12acaee178224b45c6a251ea8eda18e7bd13bcc499253fad54925"
+      }
+    ]
   },
   "batch_accounting": {
-    "calls": 35,
-    "http_requests_known": 35,
+    "calls": 40,
+    "http_requests_known": 40,
     "http_requests_unknown": 0,
-    "known_tokens": 605307,
+    "known_tokens": 711341,
     "not_sent": 0,
     "receiptless_calls": 0,
     "retries": 3,
     "unknown_reserved_tokens": 195578
   },
-  "next_action": "Continue the same batch at observed:1 using saved credentials; retain all original accounting.",
+  "next_action": "Continue the unique saved-key completion-fresh executor 0149, then full-source dual review and strict read-only case replay.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -3033,6 +3018,113 @@
       "accepted_evidence_sha256": "0bc03a5429028a65affc7a13b5735377a88b7d5799f79cbd8162188c2d264a76",
       "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-7-completed-replay.json",
       "strict_read_only_frontier_sha256": "a61ce25f6d28326f0f74ab226c19ce7c98e2aab31c54336be65e6521df4e1800"
+    },
+    "observed:1": {
+      "explicit_case_exceptions": [],
+      "original_envelope_pass": true,
+      "actual_edit_performed": false,
+      "application_count": 0,
+      "actual_report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+      "native_reviews": 2,
+      "strict_replay": true,
+      "replay_scope": "current_completed_case",
+      "status": {
+        "checkpoint_sha256": "60bf23cbf09cf05a266c332605878d8f5d4ccb1b35966e387fa500f76d98dbaf",
+        "closed": true,
+        "format_waiting": false,
+        "guard_sha256": "746dbe129d048a1bc1fcb49de6bac0e99d44887d330b6d01035a3b6ac9afe5e3",
+        "operations": 9,
+        "production_admitted": false,
+        "publication_allowed": false,
+        "timeout_waiting": false,
+        "transport_waiting": false,
+        "unresolved": []
+      },
+      "result": {
+        "accounting": {
+          "attempts": [
+            {
+              "input_tokens": 21833,
+              "model": "gpt-6.1-sol",
+              "ordinal": 1,
+              "output_tokens": 504,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "e28763fe492a0f81ac5e42c56520fc34ef3eb4d936c196dc1f32d28e79b86a1a",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 20260,
+              "model": "gpt-6.1-sol",
+              "ordinal": 2,
+              "output_tokens": 188,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "b020ba188f0b8ee5d6cd350cab0b60c26952290b27e5087ed82db5fb569a4286",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            }
+          ],
+          "calls": 2,
+          "failed": false,
+          "logical": {
+            "generation": 0,
+            "review": 2
+          },
+          "reserved_tokens": 0,
+          "retries": 0,
+          "router_calls": 2,
+          "stopped": false,
+          "tokens": 42785
+        },
+        "actual_report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+        "expected_outcome": "candidate_initial_pass_unqualified",
+        "key": "observed:1",
+        "matched": true,
+        "outcome": "candidate_initial_pass_unqualified",
+        "production_admitted": false,
+        "publication_allowed": false
+      },
+      "transport": {
+        "actual_attempts": 2,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "http_requests_known": 2,
+        "http_requests_unknown": 0,
+        "known_tokens": 42785,
+        "known_usage_calls": 2,
+        "not_sent": 0,
+        "receiptless_calls": 0,
+        "unknown_reserved_tokens": 0,
+        "unknown_usage_calls": 0
+      },
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 42785
+      },
+      "original_stdout_roots": {
+        "checkpoint_sha256": "60bf23cbf09cf05a266c332605878d8f5d4ccb1b35966e387fa500f76d98dbaf",
+        "guard_sha256": "746dbe129d048a1bc1fcb49de6bac0e99d44887d330b6d01035a3b6ac9afe5e3"
+      },
+      "active_seconds": 2054.905999999988,
+      "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-accepted.json",
+      "accepted_evidence_sha256": "f9e3c4e3b8ff2301322273a68e02366398e3de8109eb80e3ae1812a222378c69",
+      "key": "observed:1",
+      "stage": "case-completed",
+      "closed": true,
+      "accepted_host_stages": {
+        "facts-initial": true,
+        "completion-initial": true
+      },
+      "operations": 9,
+      "next_stage": null,
+      "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
+      "strict_read_only_frontier_sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1"
     }
   },
   "connection_recovery": {
@@ -3056,8 +3148,8 @@
     "local_checks_passed": true,
     "new_evaluation_requests": 0
   },
-  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-7-completed-replay.json",
-  "latest_completed_replay_evidence_sha256": "a61ce25f6d28326f0f74ab226c19ce7c98e2aab31c54336be65e6521df4e1800",
+  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
+  "latest_completed_replay_evidence_sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1",
   "completed_cases_all_matched": true,
   "retry_preparation_result": "data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json",
   "scope3_facts_initial_result": "data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json",
@@ -3111,80 +3203,33 @@
   "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
   "authorization_continuation_pending": false,
   "claim_scope5_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope5_facts_initial_20261028.json",
-  "strict_replay": true,
-  "result": {
-    "accounting": {
-      "attempts": [
-        {
-          "input_tokens": 20111,
-          "model": "gpt-6.1-sol",
-          "ordinal": 1,
-          "output_tokens": 688,
-          "phase": "native_business_review",
-          "profile": "sol-high-nonstream-v1",
-          "request_sha256": "9cf43cd291fe3b920d7fe5347b5ce7af1f947e5d8379475b1af7b4959146c7d8",
-          "role": "review",
-          "status": "completed",
-          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-        },
-        {
-          "input_tokens": 18538,
-          "model": "gpt-6.1-sol",
-          "ordinal": 2,
-          "output_tokens": 281,
-          "phase": "native_business_review",
-          "profile": "sol-high-nonstream-v1",
-          "request_sha256": "1c06f8e702653acec2044080b7d4975e1cce6af1724415a1683787611fd3d3f8",
-          "role": "review",
-          "status": "completed",
-          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-        }
-      ],
-      "calls": 2,
-      "failed": false,
-      "logical": {
-        "generation": 0,
-        "review": 2
-      },
-      "reserved_tokens": 0,
-      "retries": 0,
-      "router_calls": 2,
-      "stopped": false,
-      "tokens": 39618
-    },
-    "actual_report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
-    "expected_outcome": "candidate_initial_pass_unqualified",
-    "key": "claim-scope:7",
-    "matched": true,
-    "outcome": "candidate_initial_pass_unqualified",
-    "production_admitted": false,
-    "publication_allowed": false
-  },
+  "strict_replay": false,
+  "result": null,
   "original_stdout_roots": {
-    "checkpoint_sha256": "ea6eb57afba2cc198d3fe633f3283f1d20682a5329042efda6f51ba710e49c9f",
-    "guard_sha256": "449d1367c4888a1122ece0ec7cdabce7cd54cb1e076b54b073570ea7e2317d35"
+    "guard_sha256": "41e41c09732d203b913940869e071363b4e3c71a176a797eef2ae22eb3e95599",
+    "checkpoint_sha256": "a6266aece5fa453070268fee3c91fbd380f6780a871fdf4909b4af2d086e52b2"
   },
   "transport": {
-    "actual_attempts": 2,
-    "completed_calls": 2,
+    "actual_attempts": 3,
+    "completed_calls": 3,
     "failed_calls": 0,
-    "http_requests_known": 2,
+    "http_requests_known": 3,
     "http_requests_unknown": 0,
-    "known_tokens": 39618,
-    "known_usage_calls": 2,
+    "known_tokens": 63249,
+    "known_usage_calls": 3,
     "not_sent": 0,
     "receiptless_calls": 0,
     "unknown_reserved_tokens": 0,
     "unknown_usage_calls": 0
   },
   "accounting": {
-    "calls": 2,
+    "calls": 3,
+    "tokens": 63249,
     "reserved_tokens": 0,
-    "retries": 0,
-    "tokens": 39618
+    "retries": 0
   },
-  "latest_completed_result": "data/evaluation/results/sol_original15_claim_scope_7_completed_20261028.json",
-  "strict_replay_status": "current_completed_case_verified; prior_prefix_unchanged",
+  "latest_completed_result": "data/evaluation/results/sol_original15_observed_1_completed_20261028.json",
+  "strict_replay_status": "current_case_pending_completion_fresh_and_closed_replay; completed_prefix_11_verified",
   "claim_scope6_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json",
   "claim_scope6_edit_accepted_result": "data/evaluation/results/sol_original15_claim_scope6_edit_accepted_20261028.json",
   "claim_scope6_facts_fresh_result": "data/evaluation/results/sol_original15_claim_scope6_facts_fresh_20261028.json",
@@ -3192,5 +3237,13 @@
   "recovery_ready_evidence": "data/evaluation/results/sol_original15_claim_scope6_connect_recovery_ready_20261028.json",
   "recovery_ready_sha256": "dd55b55ebf9103773d8971bb8ac910cd94f6edfb9f290e1091a5f4faa5199e89",
   "next_launch_manual_retry": false,
-  "claim_scope7_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope7_facts_initial_20261028.json"
+  "claim_scope7_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope7_facts_initial_20261028.json",
+  "rollup_correction": {
+    "previous_cases_completed": 10,
+    "verified_cases_completed": 11,
+    "reason": "The observed:1 accepted result and canonical were current, but the aggregate result had not been synchronized; retain every existing completed record.",
+    "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
+    "sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1"
+  },
+  "observed2_facts_fresh_result": "data/evaluation/results/sol_original15_observed2_facts_fresh_20261028.json"
 }

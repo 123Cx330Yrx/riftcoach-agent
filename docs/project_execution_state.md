@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成11/15；observed:2四阶段双审接受、唯一应用/事实复审续接中；累计39HTTP/691496known/195578unknown预留/3retry。"
+pause_reason: "原15完成11/15；observed:2事实复审双审接受，末项完成度复审续接中；累计40HTTP/711341known/195578unknown预留/3retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,17 @@ pause_reason: "原15完成11/15；observed:2四阶段双审接受、唯一应用
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-28 第十二例事实复审双审接受，末项完成度复审续接中（当前）
+
+observed:2唯一补丁已实际应用，新稿b4e7e336与整稿双审预览逐字相同，其余27段及正确观察保持。facts-fresh正常HTTP200、23.906秒、19845known tokens，100/pass且issues/issue_resolutions/advisories均空；主审与原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并0148唯一导入，无新增LF例外。
+
+原15仍完成11/15，第十二例只余completion-fresh及闭环回放；累计40HTTP/711341known/195578unknown预留/3retry。0149为末项唯一保存凭据执行者，不重发成功项或再次应用。真实0058累计活动3443.939秒，原3600秒仅余约156秒，故依据用户既有时间预算授权，另建只属于本例末项的+3600秒行政追加，累计7200秒；不借scope:3/claim-scope:6旧例外，不增请求/token、不清零、不延费用截止。第三条时间记录严格链接前一manifest SHA及61200→64800累计时间；22项检查、实际冻结来源/完整控制安装和准确completion-fresh请求重建预检通过，零Key/零Provider，其他例仍3600秒。本例不能称原时间包络内通过。
+
+核对时发现聚合live结果仍停10/15，但observed:1真实接受结果、只读回放及canonical已为11/15；已依据原接受/回放SHA补齐缺少的聚合记录，原十例逐项保持，不改原件或重买。冻结源码、旧失败/费用、授权截止北京时间10月29日00:25:43、automation PAUSED及Stage8E/产品未准入保持。
+
+证据：data/evaluation/results/sol_original15_observed2_facts_fresh_20261028.json。
+
 
 ## 2026-10-28 第十二例四阶段双审接受，唯一应用及事实复审续接中（当前）
 
