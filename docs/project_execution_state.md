@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成5/15；第六份scope:3双初审及compatibility/edit均双审导入，唯一实际应用完成，待facts-fresh。累计22HTTP/376220known/137228unknown预留/2retry。"
+pause_reason: "原15完成5/15；第六份scope:3事实复审已双审接受，待最后completion-fresh。累计23HTTP/394859known/137228unknown预留/2retry；本例执行时间显式追加3600秒，不重置计数。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,17 @@ pause_reason: "原15完成5/15；第六份scope:3双初审及compatibility/edit�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-27 第六份事实复审双审接受，最后完成度复审就绪（当前）
+
+第六份scope:3/facts-fresh正常成功：1HTTP200、41.109秒、输入17856/输出783，共18639known tokens。公开意见pass/100、issues和issue_resolutions为空，仅advisories4/6/23。主审和原独立作者完整实读实际25段新稿、全部来源、政策、请求及公开响应后接受；本次无损表格及generation视图重新复原逐项相等，真实native与作者原件逐字一致并已导入。中单早死2.5/0.5与全样本2.5/约2.67分别正确；未将泛指补成全称或把可读性改善升级事实错误。实际稿1aa311e2、唯一application2d122986及其余24段保持。
+
+0095消费facts-fresh接受，0096使用时间适配器实测零Key/零新增请求，均正常停session_model_boundary。五份native及完整transport只读审计通过，23operations、无unresolved，1012旧原件SHA保持。原15完成仍5/15，第六份只余completion-fresh，整批未close/seal、未授资格。累计23HTTP/394859known/137228unknown预留/2retry；旧两次500、未知费用、原历史closed及旧单LF例外保持。
+
+本例累计活动3425.111秒中含大量本地历史核验；0093中attempt_boundary至attempt_reserved为240.531秒，Provider本身仅41.109秒。原3600秒只余174.889秒，不应据此发送一个必被本地计时压缩的最后请求。按用户既有“预算改加就加”授权，另以Control/scope-3-execution-time-allowance.json（SHA34afd405）明确追加本例3600执行秒：有效本例7200、全批57600；原累计计时不清零，原合同/计划/冻结源码不改。只对本例实际同稿completion-fresh及其既有手动恢复生效；请求数、token、单次300秒、补测方式和授权期限不扩。不声称原时间包络无变更通过。11项本地检查及真实请求绑定、实际启动和HostOnly通过；这是外部行政时间例外，不是新的质量或付费请求授权。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入GPT-企业专线Key，仅续最后completion-fresh，不加ManualRetry、不重发已成功项。返回后完整双审及本例只读回放；普通服务错误只暂停原项手动恢复。授权仍截至北京时间10月28日00:21:46，不延展；冻结34abe04e clean/公共CI40188299016保持，本次外部适配不重新等待冻结树全套CI。automation现场核PAUSED，后续自然任务/产品资格及原有依赖保持。
+证据：data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json；Control/scope-3-facts-fresh-accepted.json；Control/scope-3-facts-fresh-frontier-0096.json。最初guard38d6f040保持；0093原stdout1a5a6cf0、0096原stdout2399e3ba，最新0087 checkpoint b6ec4a44均从原stdout保留。
 
 ## 2026-10-27 第六份实际修订完成，待同稿双复审（当前）
 

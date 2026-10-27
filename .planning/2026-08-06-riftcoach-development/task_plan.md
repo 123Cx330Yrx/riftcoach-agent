@@ -15,14 +15,16 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：第六份scope:3完成度初审call-004成功：1HTTP200、15.234秒、输入18587/输出198，共18785known tokens，pass/100、issues及repairs为空。主审和既有独立作者全文核验后接受；兼容性clear、实际组装稿四项ReportAssessment也均经双审接受并导入，三份新增作者原件与真实native逐字一致，不需新增LF例外。
+## 2026-10-27 第六份事实复审双审接受，最后完成度复审就绪
 
-程序唯一应用facts初审的一处block_4补丁：中单早死改为胜2.5/败0.5、保留非因果边界；其余24段和第14段正确全样本2.5/2.67逐字保持。实际稿SHA1aa311e2，与已审预览及待发双fresh绑定一致，application SHA2d122986。0092正常停session_model_boundary；19operations已消费、无unresolved，完整transport及四份native只读回放通过，1012旧原件SHA不变。原15仍完成5/15，本份双fresh未发，不能计为第六份闭环。
+第六份scope:3/facts-fresh正常成功：1HTTP200、41.109秒、输入17856/输出783，共18639known tokens。公开意见pass/100、issues和issue_resolutions为空，仅advisories4/6/23。主审和原独立作者完整实读实际25段新稿、全部来源、政策、请求及公开响应后接受；本次无损表格及generation视图重新复原逐项相等，真实native与作者原件逐字一致并已导入。中单早死2.5/0.5与全样本2.5/约2.67分别正确；未将泛指补成全称或把可读性改善升级事实错误。实际稿1aa311e2、唯一application2d122986及其余24段保持。
 
-累计22HTTP/376220known/137228unknown预留/2retry；旧两次500及费用、旧facts单LF例外和历史closed失败保持，500根因仍未知。本次Host续接0Key/0新增请求。最初guard38d6f040保持；0092原stdout SHAc0bdce8a、exit SHA83cfe015，最新0071 checkpoint806e1338均从原stdout保留。活动2521.33/3600秒，原请求与token包络不重置。
+0095消费facts-fresh接受，0096使用时间适配器实测零Key/零新增请求，均正常停session_model_boundary。五份native及完整transport只读审计通过，23operations、无unresolved，1012旧原件SHA保持。原15完成仍5/15，第六份只余completion-fresh，整批未close/seal、未授资格。累计23HTTP/394859known/137228unknown预留/2retry；旧两次500、未知费用、原历史closed及旧单LF例外保持。
 
-**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续facts-fresh；不要加ManualRetry，不重发初审或应用。其后仍须同稿completion-fresh、真实双审和本例只读回放。授权截至北京时间10月28日00:21:46不延展；冻结34abe04e clean/公共CI40188299016保持，本次状态记录无需重跑冻结CI。batch未close/seal，automation现场核PAUSED，未授原15或产品资格。
-证据：data/evaluation/results/sol_original15_scope3_applied_20261027.json；Control/scope-3-initials-and-application-accepted.json；Control/scope-3-frontier-0092.json。
+本例累计活动3425.111秒中含大量本地历史核验；0093中attempt_boundary至attempt_reserved为240.531秒，Provider本身仅41.109秒。原3600秒只余174.889秒，不应据此发送一个必被本地计时压缩的最后请求。按用户既有“预算改加就加”授权，另以Control/scope-3-execution-time-allowance.json（SHA34afd405）明确追加本例3600执行秒：有效本例7200、全批57600；原累计计时不清零，原合同/计划/冻结源码不改。只对本例实际同稿completion-fresh及其既有手动恢复生效；请求数、token、单次300秒、补测方式和授权期限不扩。不声称原时间包络无变更通过。11项本地检查及真实请求绑定、实际启动和HostOnly通过；这是外部行政时间例外，不是新的质量或付费请求授权。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入GPT-企业专线Key，仅续最后completion-fresh，不加ManualRetry、不重发已成功项。返回后完整双审及本例只读回放；普通服务错误只暂停原项手动恢复。授权仍截至北京时间10月28日00:21:46，不延展；冻结34abe04e clean/公共CI40188299016保持，本次外部适配不重新等待冻结树全套CI。automation现场核PAUSED，后续自然任务/产品资格及原有依赖保持。
+证据：data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json；Control/scope-3-facts-fresh-accepted.json；Control/scope-3-facts-fresh-frontier-0096.json。最初guard38d6f040保持；0093原stdout1a5a6cf0、0096原stdout2399e3ba，最新0087 checkpoint b6ec4a44均从原stdout保留。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 
@@ -96,7 +98,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-原15已完成首份；第二报告双初审及唯一应用已完成，原入口隐藏输入企业Key后续facts-fresh；不重买初审或应用，不加ManualRetry。
+原15已完成5/15；第六份scope:3事实复审已双审导入，原入口隐藏输入企业Key只续最后completion-fresh；显式追加本例执行时间，累计计数保持，不重买成功项、不加ManualRetry。
 
 ## History
 
