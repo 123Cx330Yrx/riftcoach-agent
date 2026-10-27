@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成6/15；第六份同稿双复审接受且严格只读回放通过。待第七份claim-scope:2；累计24HTTP/411323known/137228unknown预留/2retry。"
+pause_reason: "原15完成6/15；第七份claim-scope:2事实初审已双审接受，待completion-initial。累计25HTTP/432347known/137228unknown预留/2retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,15 @@ pause_reason: "原15完成6/15；第六份同稿双复审接受且严格只读�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-27 第七份事实初审双审接受，待完成度初审（当前）
+
+第七份claim-scope:2的facts-initial正常返回：HTTP200、40.281秒、输入20213/输出811，共21024known tokens；100/pass，issues、issue_resolutions及repairs为空，仅block4可选advisory。主审和原独立作者完整核验25段原稿、全部来源/政策/请求/公开响应后接受，作者原件与唯一真实native final逐字相等并已导入，不需新增LF例外。第4段全样本早死2.5/约2.67与四中单2.5/0.5分别正确；第6段限定四中单补刀稳定，重分组补刀差改变2.5567、伤害差仅改变26.1833，未把描述比较升级为因果。未发现需要修订的事实问题；初审pass没有编辑成功证据。
+
+本地HostOnly正常停session_model_boundary；本例一个成功请求、一份已接受native、无未决操作，completion-initial尚未发，无application/fresh或新seal。实际原稿f29b7b41不变；外层审计严格只读，作者及run库存不变、原1012件SHA保持，前六份完成记录完整保留。原15仍完成6/15，第七份尚未完成；实际回执累计25HTTP/432347known/137228unknown预留/2retry，旧失败及未知费用保持。本例累计活动1000.828秒，scope:3专用时间例外不扩到本例。本次Host导入和准备0新Provider/0Key，冻结34abe04e clean及既有CI40188299016保持，不重复等待冻结全套CI；automation保持PAUSED，阶段8E与全15/产品未准入边界不变。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case 'claim-scope:2'，隐藏输入GPT-企业专线Key，仅续本例completion-initial，不加ManualRetry，不重买已成功项。授权北京时间10月28日00:21:46截止不延展；普通服务故障保留成功项，暂停同项手动恢复，不关闭整批。正式15余9份及自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估及学习依赖保持。
+证据：data/evaluation/results/sol_original15_claim_scope2_facts_initial_20261027.json；Control/claim-scope-2-facts-initial-accepted.json；claim-scope-2-facts-initial-frontier.json。0103原返回、0104真实native导入、0105零发送边界的原stdout/exit保持，最新checkpoint根1d7958ef来自真实stdout。
 
 ## 2026-10-27 第六份同稿双复审闭环完成，原15进度6/15（当前）
 
