@@ -1,3 +1,13 @@
+## 2026-10-28 observed:1完成，原15进度11/15（当前）
+
+第十一例observed:1两项初审均100/pass，分别22337和20448known tokens、18.485和11.719秒；主审与原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。四中单逐局经济/伤害方向、中位数与混位边界正确；OP.GG中单及辅助归档的tier/rank/rate已连到具体条件性观摩行动，保留检索时点、位置、过期与身份边界，不造个人训练义务。
+
+原程序正常结束candidate_initial_pass_unqualified，matched=true。原稿f6a6c508保持，无编辑/application/fresh，不称修订成功。当前例严格只读replay匹配；前十例由真实启动器在发送及本地结束前核验，外层复用既有回放链并核对terminal、原1012件SHA及当前库存保持。外部只读辅助校验器起初漏还原external_fact_paths五条OP.GG行，已补全精确事实与出处重建；两项实际材料均核对通过。这是辅助检查缺口，未改冻结源码/请求/原件或重买API，不是模型或上游失败。
+
+原15完成11/15；本例2HTTP/42785known/0unknown/0retry，累计37HTTP/648092known/195578unknown预留/3retry。两次Provider合计30.204秒，长等待来自本地重复历史/native回放；本例活动2054.906秒，在原3600秒内，无新增时间例外。下一例observed:2，保存凭据入口继续，不重发成功项，不清零余量。授权截至北京时间10月29日00:25:43；整批尚未seal，未授全15或产品资格，automation PAUSED、Stage8E及后续产品/学习依赖保持。
+
+证据：data/evaluation/results/sol_original15_observed_1_completed_20261028.json。
+
 ## 2026-10-28 claim-scope:7完成，原15进度10/15（当前）
 
 第十例claim-scope:7的facts-initial与completion-initial均100/pass，分别20799和18819known tokens、26.296和15.407秒；两份意见均经主审和原独立作者全文审查接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。第6段分别明示四中单8.805/9.01与纳入辅助8.805/约6.45，两种条件均正确；第4段早死省略由第14段全样本限定消解，不补造中单或全称断言。完成度核实已有观摩行动和正文知识消费，没有OP.GG可用快照，不造本人训练义务。
