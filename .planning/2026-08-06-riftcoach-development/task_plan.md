@@ -15,6 +15,17 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-28 claim-scope:6完成，原15进度9/15（当前）
+
+第九例claim-scope:6完成初审逐字补丁→compatibility/edit整稿双审→唯一application→同稿双fresh的闭环。唯一block_6补丁将补刀比较明确为四中单胜8.805、败9.01，实际新稿1068d56a，其余24段保持。最后completion-fresh连接补测正常HTTP200、11.875秒、16411known tokens，100/pass且issues、issue_resolutions、advisories全空；主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。
+
+最后一次connect_error的原terminal/outcome、无响应头/无正文观测及58350未知预留全部保留；恢复器遗漏已修，32项针对性检查和真实双遍禁发预检通过，仅补未成功的completion-fresh，没有重发前五审或第二次应用。本例严格只读replay匹配，前八例真实启动器回放与原记录保持。原时间包络之外另有仅此例末项的3600秒行政追加、累计7200秒，独立记录并保留scope:3旧例外；不能称原时间包络内通过。
+
+原15完成9/15，本例5HTTP/75111known/58350unknown预留/1retry，累计33HTTP/565689known/195578unknown预留/3retry。补测Provider仅11.875秒，长等待主要为启动、凭据后和attempt边界的重复本地历史/native回放，不归因上游。整批尚未seal，不授产品或全15资格；冻结执行HEAD、旧失败/费用、automation PAUSED、Stage8E及后续产品/学习依赖保持。同批下一例按真实coverage顺序继续，保存凭据入口无需重复输入Key；授权截止北京时间10月29日00:25:43，请求/token余量不重置。
+
+证据：data/evaluation/results/sol_original15_claim_scope_6_completed_20261028.json。
+
+
 ## 2026-10-28 第九例连接恢复双遍零发送预检通过（当前）
 
 连接故障恢复器已安装，32项针对性检查通过；真实execute入口完成读取凭据前后双遍预检，使用假凭据及新intent前禁发拦截，0Key/0Provider。前八例真实原生回放匹配；第九例五审、唯一application、原terminal/outcome及全部旧库存逐字保持。保存凭据适配仅更新operator代码绑定，vault目标、分组与服务地址不变，零读取校验通过。
@@ -220,7 +231,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-仅续claim-scope:6最后completion-fresh：保存凭据入口，不加ManualRetry；单次批准已暂存，成功项不重发，传输再失败仍暂停。费用期限及请求/token余量不变。
+原15完成9/15；同批下一例claim-scope:7，使用保存凭据入口，不重发成功项、不清零预算。授权截至北京时间10月29日00:25:43。
 
 ## History
 
