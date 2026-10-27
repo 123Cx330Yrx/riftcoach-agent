@@ -1,3 +1,14 @@
+## 2026-10-27 第六份事实初审已双审接受并续接至完成度（当前）
+
+Provider为needs_revision/92，唯一issue正确指出第4段明确“中单口径”却把早死胜败称几乎相同：胜局3/2均值2.5，败局0/1均值0.5；第14段正确的全样本2.5/约2.67不能替代该对象。单一block_4逐字补丁写明2.5对0.5并保留K5因果边界，其余24段保持；主审与原独立作者完整实读来源/请求/政策/意见/补丁后接受，唯一真实native已导入submit accepted。没有实际应用，完成度与后续兼容/整稿/双fresh尚未做。
+
+作者原件再次比真实native多一个末尾LF，按既有机制为本checkpoint/event/raw-event/作者路径和双原始SHA显式登记第三条行政例外，不改原件、不要求重发final，不宣称原精确字节门槛无例外通过。用户搬机中断0084时只有续接绑定stdout、无exit；核实原控制进程退出、内核锁可取得、0035原检查点与8项操作完整后，create-only保存实际退出状态未知（exit_code=null）的中断恢复记录，未伪造成功退出或事后checkpoint信任根。
+
+恢复后0085 HostOnly完整核前五例/native/来源并消费本次facts接受，正常停session_model_boundary，9operations、无unresolved；完整transport审计及只读库存检查通过，1012旧原件SHA未变，未产生第四请求。本次续接0Key/0新增Provider。call-003与前两次request/context/profile逐字相同，HTTP500根因仍未知；成功不能倒推出先前故障层。
+
+成功请求和两次500使用相同wire及请求上下文/参数，不能把此次成功归为本地JSON格式修改的效果。普通服务失败没有抹去成功前缀，两次未知预留仍累计；事实意见正确不等于实际报告已修订或第六份已完成。
+证据：data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json；Control/scope-3-facts-initial-accepted.json（51ed5f04）。0082成功原stdout SHA5ef49c48、0083导入原stdout保留；0085原stdout/exit锚最新0038 checkpoint50d5b23c，最初guard38d6f040不变。LF清单f0257d88、主审aa83feba、作者98df5df5及原native7d3463c3分别保留。
+
 ## 2026-10-27 撤回无证上游归因并完成本地核验准备（当前）
 
 重新核scope:4成功首审与scope:3失败请求：参数、工具Schema、系统政策相同，大小50681/50702字节；仅报告4/14段与其绑定摘要变化，来源投影除三项绑定摘要外相同。同SDK序列化合法、stream=false/high。经本机代理公共站点状态HTTP200、direct连接超时，但公共页面可达不代表模型路径；浏览器未取得新日志。两次HTTP500的具体根因仍未定位，不再以“等待上游恢复”作为已证实前提，也不把冒号错误擅判为SSE或本地格式错。

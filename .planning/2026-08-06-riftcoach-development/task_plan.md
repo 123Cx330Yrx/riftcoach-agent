@@ -15,14 +15,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：原15仍完成5/15，第六份scope:3/facts-initial暂停待原项手动补测；累计20HTTP/336074known/137228unknown预留/1retry保持。本轮0新增Provider/0Key，1012份原库存逐文件SHA未变，原作者与五例真实native/source按原规则重放接受；无call-003、无新恢复终态或seal。
+2026-10-27当前工作：第六份scope:3/facts-initial原项第三次请求成功：1HTTP200、45.719秒、输入20160/输出1201，共21361known tokens。原15完成仍5/15，第六份尚未完成；累计21HTTP/357435known/137228unknown预留/2retry，旧两次500及费用原样保留。
 
-重新核scope:4成功首审与scope:3失败请求：参数、工具Schema、系统政策相同，大小50681/50702字节；仅报告4/14段与其绑定摘要变化，来源投影除三项绑定摘要外相同。同SDK序列化合法、stream=false/high。经本机代理公共站点状态HTTP200、direct连接超时，但公共页面可达不代表模型路径；浏览器未取得新日志。两次HTTP500的具体根因仍未定位，不再以“等待上游恢复”作为已证实前提，也不把冒号错误擅判为SSE或本地格式错。
+Provider为needs_revision/92，唯一issue正确指出第4段明确“中单口径”却把早死胜败称几乎相同：胜局3/2均值2.5，败局0/1均值0.5；第14段正确的全样本2.5/约2.67不能替代该对象。单一block_4逐字补丁写明2.5对0.5并保留K5因果边界，其余24段保持；主审与原独立作者完整实读来源/请求/政策/意见/补丁后接受，唯一真实native已导入submit accepted。没有实际应用，完成度与后续兼容/整稿/双fresh尚未做。
 
-已定位本地重复核验：230次ExactNativeGate验证中，来源检查与逐字检查重复读取同一native响应。外部Control仅在单次验证内共享同方法/精确参数的即时RPC快照，深拷贝防修改，finally清理；下一次验证重新真实读取，故障不回退旧成功，515次协作日志仍逐次读取。冻结源码/业务请求/原审查及预算不改。两次同cProfile真实HostOnly从355.677降至269.992秒（约24.1%），底层native client request从996降至464，230次原验证全部执行并正确停original15_awaiting_manual_retry。负载有波动，不能承诺后续固定耗时，也不是500修复。
+恢复后0085 HostOnly完整核前五例/native/来源并消费本次facts接受，正常停session_model_boundary，9operations、无unresolved；完整transport审计及只读库存检查通过，1012旧原件SHA未变，未产生第四请求。本次续接0Key/0新增Provider。call-003与前两次request/context/profile逐字相同，HTTP500根因仍未知；成功不能倒推出先前故障层。
 
-**下一动作：** 用户可用原start-authorized.ps1 -Case scope:3 -ManualRetry隐藏输入企业Key，仅补未完成首审；不自动付费、不重买前五份、不清零累计。普通服务错误继续只暂停本项。授权北京时间10月28日00:21:46截止不延展；冻结34abe04e clean及CI40188299016保持，外部性能适配无需再等冻结树全套CI。batch未close/seal、automation PAUSED、资格未授。
-证据：data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json；Control/scope-3-retry-preparation-20261027.json（08b7207a）、scope-3-request-recheck-20261027.json、0080/0081原stdout及exit。最初guard38d6f040保持，0081原stdout SHA69f0b838，最新0021 checkpoint9c01fcbc；旧失败根不覆盖。103项非流/恢复、7项快照、16项换行回归分别通过；不是同一轮全套。
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续completion-initial；不要加ManualRetry，不重发facts、不重买前五份、不清零预算。授权仍截至北京时间10月28日00:21:46，不延展；冻结34abe04e clean/CI40188299016保持，无需新冻结CI。batch未close/seal、automation PAUSED、未授原15或产品资格。
+证据：data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json；Control/scope-3-facts-initial-accepted.json（51ed5f04）。0082成功原stdout SHA5ef49c48、0083导入原stdout保留；0085原stdout/exit锚最新0038 checkpoint50d5b23c，最初guard38d6f040不变。LF清单f0257d88、主审aa83feba、作者98df5df5及原native7d3463c3分别保留。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

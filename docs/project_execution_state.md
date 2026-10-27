@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成5/15；第六份scope:3首审手动补测再次HTTP500，只暂停本项。累计20HTTP/336074known/137228unknown预留/1retry。"
+pause_reason: "原15完成5/15；第六份scope:3事实初审成功并双审导入，待completion-initial。累计21HTTP/357435known/137228unknown预留/2retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,20 @@ pause_reason: "原15完成5/15；第六份scope:3首审手动补测再次HTTP500
 
 ## 当前行动
 
-## 2026-10-27 请求复核与本地性能修复完成，原项补测就绪（当前）
+## 2026-10-27 第六份事实初审成功，双审导入后续完成度（当前）
+
+第六份scope:3/facts-initial原项第三次请求成功：1HTTP200、45.719秒、输入20160/输出1201，共21361known tokens。原15完成仍5/15，第六份尚未完成；累计21HTTP/357435known/137228unknown预留/2retry，旧两次500及费用原样保留。
+
+Provider为needs_revision/92，唯一issue正确指出第4段明确“中单口径”却把早死胜败称几乎相同：胜局3/2均值2.5，败局0/1均值0.5；第14段正确的全样本2.5/约2.67不能替代该对象。单一block_4逐字补丁写明2.5对0.5并保留K5因果边界，其余24段保持；主审与原独立作者完整实读来源/请求/政策/意见/补丁后接受，唯一真实native已导入submit accepted。没有实际应用，完成度与后续兼容/整稿/双fresh尚未做。
+
+作者原件再次比真实native多一个末尾LF，按既有机制为本checkpoint/event/raw-event/作者路径和双原始SHA显式登记第三条行政例外，不改原件、不要求重发final，不宣称原精确字节门槛无例外通过。用户搬机中断0084时只有续接绑定stdout、无exit；核实原控制进程退出、内核锁可取得、0035原检查点与8项操作完整后，create-only保存实际退出状态未知（exit_code=null）的中断恢复记录，未伪造成功退出或事后checkpoint信任根。
+
+恢复后0085 HostOnly完整核前五例/native/来源并消费本次facts接受，正常停session_model_boundary，9operations、无unresolved；完整transport审计及只读库存检查通过，1012旧原件SHA未变，未产生第四请求。本次续接0Key/0新增Provider。call-003与前两次request/context/profile逐字相同，HTTP500根因仍未知；成功不能倒推出先前故障层。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续completion-initial；不要加ManualRetry，不重发facts、不重买前五份、不清零预算。授权仍截至北京时间10月28日00:21:46，不延展；冻结34abe04e clean/CI40188299016保持，无需新冻结CI。batch未close/seal、automation PAUSED、未授原15或产品资格。
+证据：data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json；Control/scope-3-facts-initial-accepted.json（51ed5f04）。0082成功原stdout SHA5ef49c48、0083导入原stdout保留；0085原stdout/exit锚最新0038 checkpoint50d5b23c，最初guard38d6f040不变。LF清单f0257d88、主审aa83feba、作者98df5df5及原native7d3463c3分别保留。
+
+## 2026-10-27 请求复核与本地性能修复完成，原项补测就绪（此前检查点）
 
 原15仍完成5/15，第六份scope:3/facts-initial暂停待原项手动补测；累计20HTTP/336074known/137228unknown预留/1retry保持。本轮0新增Provider/0Key，1012份原库存逐文件SHA未变，原作者与五例真实native/source按原规则重放接受；无call-003、无新恢复终态或seal。
 
