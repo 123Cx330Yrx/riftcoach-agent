@@ -1,3 +1,19 @@
+## 2026-10-28 claim-scope:5完成，原15进度8/15（当前）
+
+第八例claim-scope:5的facts-initial与completion-initial均100/pass，分别20608和18756known tokens、21.765和12.828秒；两份意见均经主审和原独立作者全文审查接受，作者原件与真实native精确字节一致，已唯一导入。事实初审仅advisory block4；早死省略由第14段明确全样本2.5/2.67消解，辅助对败组补刀降低、视野和早死升高均正确。完成度核实已有具体观摩行动及K知识使用，没有可用OP.GG快照，不造个人训练或新任务义务。
+
+原程序正常结束candidate_initial_pass_unqualified，matched=true。原稿8894f4ef保持，无编辑、application或fresh，不称修订成功。当前例严格只读回放匹配；前七例由真实启动器在发送及本地结束前再次验证，外层复用其既有只读证据并核对结果、原1012件SHA及当前库存保持，不无意义重跑整前缀。旧500、未知费用、LF和scope:3时间例外保持，当前例无新增例外。
+
+原15完成8/15；本例2HTTP/39364known/0unknown/0retry，累计28HTTP/490578known/137228unknown预留/2retry。两次HTTP合计34.593秒，长等待主要为本地多遍历史核验，不归咎模型或上游。下一例claim-scope:6，继续使用已保存凭据，不重发成功项；用户续接授权至北京时间10月29日00:25:43，原余量不变。整批未close/seal，未授产品或全15资格；Stage8E、automation PAUSED及后续产品/学习依赖保持。
+
+证据：data/evaluation/results/sol_original15_claim_scope_5_completed_20261028.json。
+
+## 2026-10-28 第八例事实初审双审接受，完成度续接中（当前）
+
+claim-scope:5/facts-initial成功1HTTP200、21.765秒、20608known tokens，100/pass且无issues/repairs，仅advisory block4。主审及原独立作者全文核对25段、完整来源、当前政策及公开意见后接受；早死省略范围由第14段明确为全样本2.5/2.67消解，不能凭邻近中单伤害强制补成中单比较。辅助对败组补刀降低、视野和早死升高均正确。作者原件与唯一真实native逐字相等，0110已导入；无新增LF例外、无修改报告或application。
+
+原15仍完成7/15，第八例未闭环；累计27HTTP/471822known/137228unknown预留/2retry。0111为当前完成度初审的唯一续接进程，使用已保存Key，无需用户输入；先核现有进程和stdout，不重复启动或重买成功项。新授权有效至北京时间10月29日00:25:43，原余量和历史保持，automation PAUSED、Stage8E及产品未准入边界不变。证据：data/evaluation/results/sol_original15_claim_scope5_facts_initial_20261028.json。
+
 ## 2026-10-28 同批余8例授权续接24小时，第八例已启动（当前）
 
 用户明确选择“授权续接24小时，原余量不变”。新增独立续接记录authorization-continuation-20261028.json（SHA af5e7d9a），北京时间10月28日00:25:43至10月29日00:25:43生效；旧原始及上一续接授权不改，settings只切换续接选择。现时校验和到期拒绝检查通过，原包络及run库存未变；26HTTP/451214known/137228unknown预留/2retry、7/15完成保持，未清零额度，不重发成功项。

@@ -4,7 +4,7 @@
   "ci_run": "40188299016",
   "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
   "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
-  "case": "claim-scope:2",
+  "case": "claim-scope:5",
   "actual_edit_performed": false,
   "qualified": false,
   "publication_allowed": false,
@@ -18,98 +18,63 @@
       "primary_accepted": true,
       "independent_accepted": true,
       "native_submission_accepted": true,
-      "checkpoint_sha256": "0e89756d7ee69ba2fb238eab20f82d93ecc155ff4a52ed58bb7bb5ad935ed593",
-      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17dfc-5a0f-7570-8280-e11f41f1e640/msg_0730884fbbcfc5f8016ae0c43717188197901d04c17f5c3302",
-      "author_sha256": "895d883979414f34a8471f5a5110cc4033c27d046c308de9bca715e9dc302b53",
-      "native_final_sha256": "895d883979414f34a8471f5a5110cc4033c27d046c308de9bca715e9dc302b53",
-      "raw_event_sha256": "80d92dda0bf0079ab5a9204a36d7df9a2f1c27aeebdc51a5789f61961e77282c",
+      "checkpoint_sha256": "d19e1f63c4a48a9ac4b04b9cf3c017c1b65cbe7cba3bfb88ac844d0224444c10",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e3e-b7a3-79c1-aee8-110189253cf7/msg_0730884fbbcfc5f8016ae0d528fa9881978ba1c36d4df77aed",
+      "author_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "native_final_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "raw_event_sha256": "413522d7ac1e8a8b9497f58c911ba05645df21c855a2f72f8c8845a54d82c569",
       "author_text_equal": true,
       "terminal_lf_exception": false,
-      "primary_sha256": "d4720b3b4952c49e41186cd45803077b046d5c0fca68674673d0667633a25282",
-      "submission_sha256": "3b2e98d7136919d031632cedfec9675ee1f59780890add58103691deedb64db9"
+      "primary_sha256": "53a75cab5d858de9970edc2f425a57ea46bd36e781e37fabd9208b0ce16fb585",
+      "submission_sha256": "509ddb36d631cdad7de67443174962689752a254139d1698fb6eceed1eb6a719",
+      "native_observation_sha256": "15e29a187b9f1e5ff34c2292afb737f4c0e73afe4570e041c4c2520510117917"
     },
     {
       "stage": "completion-initial",
       "primary_accepted": true,
       "independent_accepted": true,
       "native_submission_accepted": true,
-      "checkpoint_sha256": "cdb563aa7c7d1a5b5f96a53815c526d180eec0409b1f100ff5d25173e95f1b1b",
-      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e1f-a658-7532-8d5b-6ba7100e9c4d/msg_0730884fbbcfc5f8016ae0cd1710f481978d79c16dd3c229d5",
-      "author_sha256": "273cffb997d3819ec78a387c32b4973be89d4e0e3a593d47428beee94a3051fb",
-      "native_final_sha256": "273cffb997d3819ec78a387c32b4973be89d4e0e3a593d47428beee94a3051fb",
-      "raw_event_sha256": "5e4f5256d9d181fa21fe6afe15d1d2f90df61590d90390ff074a09c3c7793e76",
+      "checkpoint_sha256": "b380b40df455bc4e19b5767daf1810aa5d73cc65493bf2aa3523093929f14bea",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e51-29fb-7c10-b2be-24c5e6ca20dd/msg_0ecbd62c944c67ef016ae0da617e1881938873dda1224a70b3",
+      "author_sha256": "93d194dc0be910e0c147261ad63ab3485cd0a50d8f2675ad32b27bd7d1181cfe",
+      "native_final_sha256": "93d194dc0be910e0c147261ad63ab3485cd0a50d8f2675ad32b27bd7d1181cfe",
+      "raw_event_sha256": "55122d51e5ac443350d1817d733da172062165475f03d558d14487c96cb72848",
       "author_text_equal": true,
       "terminal_lf_exception": false,
-      "primary_sha256": "97a658aa5f2ad263492284e58c3458b4307eb3a75b11c3dc7cb69b154051862a",
-      "submission_sha256": "2912caaea350d2ba97127037d589f0aec698589d396d0c4875d290ca1215025e"
+      "primary_sha256": "cdcf6344fed044acc5c53795a910dfe1a0ce9bd399947a63873dfd9a93c383c7",
+      "submission_sha256": "87db3cbacce9fcdbb2edaf90dda89938ebba90e740eb6b86ee8dbc7013a8df03",
+      "native_observation_sha256": "7cbfbe912ee3ac414a5836a271e1949f9071136b6caca6dd388e9ecbca55ad1f"
     }
   ],
-  "original_stdout_roots": {
-    "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
-    "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
-  },
-  "transport": {
-    "actual_attempts": 2,
-    "completed_calls": 2,
-    "failed_calls": 0,
-    "http_requests_known": 2,
-    "http_requests_unknown": 0,
-    "known_tokens": 39891,
-    "known_usage_calls": 2,
-    "not_sent": 0,
-    "receiptless_calls": 0,
-    "unknown_reserved_tokens": 0,
-    "unknown_usage_calls": 0
-  },
-  "accounting": {
-    "calls": 2,
-    "reserved_tokens": 0,
-    "retries": 0,
-    "tokens": 39891
-  },
   "native_reviews": 2,
   "inventory_unchanged": true,
-  "status": "seven-cases-completed-awaiting-next-case",
+  "status": "completed-prefix-awaiting-next-case",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
   "completed_replay_evidence_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
-  "cases_completed": 7,
-  "next_case": "claim-scope:5",
+  "cases_completed": 8,
+  "next_case": "claim-scope:6",
   "next_stage": "facts-initial",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
-    "key": "claim-scope:2",
+    "key": "claim-scope:5",
     "stage": "case-completed",
-    "provider_stage": "completion-initial",
-    "provider_verdict": "pass",
-    "provider_score": 100,
-    "provider_issues": [],
-    "necessary_issue_count": 0,
-    "primary_accepted": true,
-    "independent_accepted": true,
-    "native_submission_accepted": true,
+    "closed": true,
+    "actual_edit_performed": false,
+    "application_count": 0,
+    "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+    "native_reviews": 2,
     "accepted_host_stages": {
       "facts-initial": true,
       "completion-initial": true
     },
-    "native_reviews": 2,
-    "actual_edit_performed": false,
-    "application_count": 0,
-    "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
-    "closed": true,
-    "unresolved": [],
-    "next_stage": null,
-    "next_stage_sent": false,
-    "next_attempt_sent": false,
-    "original_stdout_roots": {
-      "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
-      "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
-    },
+    "strict_replay": true,
+    "replay_scope": "current_completed_case",
     "status": {
-      "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
+      "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
       "closed": true,
       "format_waiting": false,
-      "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd",
+      "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676",
       "operations": 9,
       "production_admitted": false,
       "publication_allowed": false,
@@ -117,54 +82,30 @@
       "transport_waiting": false,
       "unresolved": []
     },
-    "transport": {
-      "actual_attempts": 2,
-      "completed_calls": 2,
-      "failed_calls": 0,
-      "http_requests_known": 2,
-      "http_requests_unknown": 0,
-      "known_tokens": 39891,
-      "known_usage_calls": 2,
-      "not_sent": 0,
-      "receiptless_calls": 0,
-      "unknown_reserved_tokens": 0,
-      "unknown_usage_calls": 0
-    },
-    "accounting": {
-      "calls": 2,
-      "reserved_tokens": 0,
-      "retries": 0,
-      "tokens": 39891
-    },
-    "active_seconds": 1726.171000000002,
     "operations": 9,
-    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
-    "strict_read_only_frontier_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
-    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-accepted.json",
-    "accepted_evidence_sha256": "c0ca8c4ae67419d184f298c6b7f3e31fc1ab00133148f2c971e16106a08eea8a",
     "result": {
       "accounting": {
         "attempts": [
           {
-            "input_tokens": 20213,
+            "input_tokens": 20137,
             "model": "gpt-6.1-sol",
             "ordinal": 1,
-            "output_tokens": 811,
+            "output_tokens": 471,
             "phase": "native_business_review",
             "profile": "sol-high-nonstream-v1",
-            "request_sha256": "659b5257aa66df1fdfa78110c9165093d074ea8411faff227107d6a53ab8b0c2",
+            "request_sha256": "5b8b9b6693233fae61edbbc557e649d54c830a9a5dc9628260c0159693d1b7ed",
             "role": "review",
             "status": "completed",
             "transport_id": "natural-sol-dual-necessity-nonstream-v1"
           },
           {
-            "input_tokens": 18640,
+            "input_tokens": 18564,
             "model": "gpt-6.1-sol",
             "ordinal": 2,
-            "output_tokens": 227,
+            "output_tokens": 192,
             "phase": "native_business_review",
             "profile": "sol-high-nonstream-v1",
-            "request_sha256": "d02ea7b320a8e825f97e5f68ca086333924a9fb6a35c950ce8fa864d2c1507e9",
+            "request_sha256": "31ec2fede6214d52750dcdc6d42bc179ff6269ce648df9af0e84289440c27028",
             "role": "review",
             "status": "completed",
             "transport_id": "natural-sol-dual-necessity-nonstream-v1"
@@ -180,30 +121,57 @@
         "retries": 0,
         "router_calls": 2,
         "stopped": false,
-        "tokens": 39891
+        "tokens": 39364
       },
-      "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+      "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
       "expected_outcome": "candidate_initial_pass_unqualified",
-      "key": "claim-scope:2",
+      "key": "claim-scope:5",
       "matched": true,
       "outcome": "candidate_initial_pass_unqualified",
       "production_admitted": false,
       "publication_allowed": false
     },
-    "strict_replay": true,
-    "replay_scope": "current_completed_case"
+    "transport": {
+      "actual_attempts": 2,
+      "completed_calls": 2,
+      "failed_calls": 0,
+      "http_requests_known": 2,
+      "http_requests_unknown": 0,
+      "known_tokens": 39364,
+      "known_usage_calls": 2,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 0,
+      "unknown_usage_calls": 0
+    },
+    "accounting": {
+      "calls": 2,
+      "reserved_tokens": 0,
+      "retries": 0,
+      "tokens": 39364
+    },
+    "original_stdout_roots": {
+      "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+      "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676"
+    },
+    "active_seconds": 1492.5610000000015,
+    "next_stage": null,
+    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-accepted.json",
+    "accepted_evidence_sha256": "25cc0d45bf1ca8d28c230a8b6d81cb06ecef623268c4409bf0ca44b007ce94ca",
+    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-replay.json",
+    "strict_read_only_frontier_sha256": "c53075fd354dab4eeec4eb42e332efd3c3eccfe4845aedbc11f8822f7cd98e60"
   },
   "batch_accounting": {
-    "calls": 26,
-    "http_requests_known": 26,
+    "calls": 28,
+    "http_requests_known": 28,
     "http_requests_unknown": 0,
-    "known_tokens": 451214,
+    "known_tokens": 490578,
     "not_sent": 0,
     "receiptless_calls": 0,
     "retries": 2,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Eighth-case claim-scope:5 facts-initial is running through the saved-key entry; inspect the existing process and stdout before any resume.",
+  "next_action": "Continue the same batch at claim-scope:6 using saved credentials; retain all original accounting.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2405,6 +2373,111 @@
       },
       "strict_replay": true,
       "replay_scope": "current_completed_case"
+    },
+    "claim-scope:5": {
+      "key": "claim-scope:5",
+      "stage": "case-completed",
+      "closed": true,
+      "actual_edit_performed": false,
+      "application_count": 0,
+      "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+      "native_reviews": 2,
+      "accepted_host_stages": {
+        "facts-initial": true,
+        "completion-initial": true
+      },
+      "strict_replay": true,
+      "replay_scope": "current_completed_case",
+      "status": {
+        "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+        "closed": true,
+        "format_waiting": false,
+        "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676",
+        "operations": 9,
+        "production_admitted": false,
+        "publication_allowed": false,
+        "timeout_waiting": false,
+        "transport_waiting": false,
+        "unresolved": []
+      },
+      "operations": 9,
+      "result": {
+        "accounting": {
+          "attempts": [
+            {
+              "input_tokens": 20137,
+              "model": "gpt-6.1-sol",
+              "ordinal": 1,
+              "output_tokens": 471,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "5b8b9b6693233fae61edbbc557e649d54c830a9a5dc9628260c0159693d1b7ed",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 18564,
+              "model": "gpt-6.1-sol",
+              "ordinal": 2,
+              "output_tokens": 192,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "31ec2fede6214d52750dcdc6d42bc179ff6269ce648df9af0e84289440c27028",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            }
+          ],
+          "calls": 2,
+          "failed": false,
+          "logical": {
+            "generation": 0,
+            "review": 2
+          },
+          "reserved_tokens": 0,
+          "retries": 0,
+          "router_calls": 2,
+          "stopped": false,
+          "tokens": 39364
+        },
+        "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+        "expected_outcome": "candidate_initial_pass_unqualified",
+        "key": "claim-scope:5",
+        "matched": true,
+        "outcome": "candidate_initial_pass_unqualified",
+        "production_admitted": false,
+        "publication_allowed": false
+      },
+      "transport": {
+        "actual_attempts": 2,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "http_requests_known": 2,
+        "http_requests_unknown": 0,
+        "known_tokens": 39364,
+        "known_usage_calls": 2,
+        "not_sent": 0,
+        "receiptless_calls": 0,
+        "unknown_reserved_tokens": 0,
+        "unknown_usage_calls": 0
+      },
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39364
+      },
+      "original_stdout_roots": {
+        "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+        "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676"
+      },
+      "active_seconds": 1492.5610000000015,
+      "next_stage": null,
+      "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-accepted.json",
+      "accepted_evidence_sha256": "25cc0d45bf1ca8d28c230a8b6d81cb06ecef623268c4409bf0ca44b007ce94ca",
+      "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-replay.json",
+      "strict_read_only_frontier_sha256": "c53075fd354dab4eeec4eb42e332efd3c3eccfe4845aedbc11f8822f7cd98e60"
     }
   },
   "connection_recovery": {
@@ -2428,8 +2501,8 @@
     "local_checks_passed": true,
     "new_evaluation_requests": 0
   },
-  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
-  "latest_completed_replay_evidence_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
+  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-replay.json",
+  "latest_completed_replay_evidence_sha256": "c53075fd354dab4eeec4eb42e332efd3c3eccfe4845aedbc11f8822f7cd98e60",
   "completed_cases_all_matched": true,
   "retry_preparation_result": "data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json",
   "scope3_facts_initial_result": "data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json",
@@ -2479,30 +2552,34 @@
     "activation_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
     "secret_in_logs": false
   },
+  "latest_completed_replay_scope": "current_completed_case_with_prior_prefix_unchanged",
+  "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
+  "authorization_continuation_pending": false,
+  "claim_scope5_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope5_facts_initial_20261028.json",
   "strict_replay": true,
   "result": {
     "accounting": {
       "attempts": [
         {
-          "input_tokens": 20213,
+          "input_tokens": 20137,
           "model": "gpt-6.1-sol",
           "ordinal": 1,
-          "output_tokens": 811,
+          "output_tokens": 471,
           "phase": "native_business_review",
           "profile": "sol-high-nonstream-v1",
-          "request_sha256": "659b5257aa66df1fdfa78110c9165093d074ea8411faff227107d6a53ab8b0c2",
+          "request_sha256": "5b8b9b6693233fae61edbbc557e649d54c830a9a5dc9628260c0159693d1b7ed",
           "role": "review",
           "status": "completed",
           "transport_id": "natural-sol-dual-necessity-nonstream-v1"
         },
         {
-          "input_tokens": 18640,
+          "input_tokens": 18564,
           "model": "gpt-6.1-sol",
           "ordinal": 2,
-          "output_tokens": 227,
+          "output_tokens": 192,
           "phase": "native_business_review",
           "profile": "sol-high-nonstream-v1",
-          "request_sha256": "d02ea7b320a8e825f97e5f68ca086333924a9fb6a35c950ce8fa864d2c1507e9",
+          "request_sha256": "31ec2fede6214d52750dcdc6d42bc179ff6269ce648df9af0e84289440c27028",
           "role": "review",
           "status": "completed",
           "transport_id": "natural-sol-dual-necessity-nonstream-v1"
@@ -2518,26 +2595,38 @@
       "retries": 0,
       "router_calls": 2,
       "stopped": false,
-      "tokens": 39891
+      "tokens": 39364
     },
-    "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+    "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
     "expected_outcome": "candidate_initial_pass_unqualified",
-    "key": "claim-scope:2",
+    "key": "claim-scope:5",
     "matched": true,
     "outcome": "candidate_initial_pass_unqualified",
     "production_admitted": false,
     "publication_allowed": false
   },
-  "latest_completed_replay_scope": "current_completed_case_with_prior_six_unchanged",
-  "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
-  "authorization_continuation_pending": {
-    "requested": false,
-    "requested_duration_hours": 24,
-    "scope": "remaining_original_batch",
-    "remaining_cases": 8,
-    "reset_accounting": false,
-    "original_deadline_utc": "2026-10-27T16:21:46.567089+00:00",
-    "new_paid_send_started": false,
-    "approved": true
-  }
+  "original_stdout_roots": {
+    "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+    "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676"
+  },
+  "transport": {
+    "actual_attempts": 2,
+    "completed_calls": 2,
+    "failed_calls": 0,
+    "http_requests_known": 2,
+    "http_requests_unknown": 0,
+    "known_tokens": 39364,
+    "known_usage_calls": 2,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 0,
+    "unknown_usage_calls": 0
+  },
+  "accounting": {
+    "calls": 2,
+    "reserved_tokens": 0,
+    "retries": 0,
+    "tokens": 39364
+  },
+  "latest_completed_result": "data/evaluation/results/sol_original15_claim_scope_5_completed_20261028.json"
 }

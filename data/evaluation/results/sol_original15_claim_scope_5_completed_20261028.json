@@ -1,0 +1,309 @@
+{
+  "accounting": {
+    "calls": 2,
+    "reserved_tokens": 0,
+    "retries": 0,
+    "tokens": 39364
+  },
+  "active_seconds": 1492.5610000000015,
+  "actual_edit_performed": false,
+  "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+  "application_count": 0,
+  "batch_accounting": {
+    "calls": 28,
+    "http_requests_known": 28,
+    "http_requests_unknown": 0,
+    "known_tokens": 490578,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "retries": 2,
+    "unknown_reserved_tokens": 137228
+  },
+  "batch_closed": false,
+  "case": "claim-scope:5",
+  "cases_completed": 8,
+  "fresh_sent": false,
+  "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "frozen_status": "",
+  "key_reads": 0,
+  "last_exit": {
+    "case": "claim-scope:5",
+    "exit_code": 0,
+    "operation": "run",
+    "stdout": "0113.stdout.txt",
+    "stdout_sha256": "d9664b3d1a9dac51bc78d066a382847e990563c21a2b86343560d40bd6f3905e"
+  },
+  "last_exit_sha256": "08efa16ad6eaba45e7bc63e8cfb26ded115a5ff6f4867387e9a5bc61c2360b13",
+  "last_return": {
+    "phase": "case_closed",
+    "publication_allowed": false,
+    "result": {
+      "accounting": {
+        "attempts": [
+          {
+            "input_tokens": 20137,
+            "model": "gpt-6.1-sol",
+            "ordinal": 1,
+            "output_tokens": 471,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "5b8b9b6693233fae61edbbc557e649d54c830a9a5dc9628260c0159693d1b7ed",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 18564,
+            "model": "gpt-6.1-sol",
+            "ordinal": 2,
+            "output_tokens": 192,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "31ec2fede6214d52750dcdc6d42bc179ff6269ce648df9af0e84289440c27028",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          }
+        ],
+        "calls": 2,
+        "failed": false,
+        "logical": {
+          "generation": 0,
+          "review": 2
+        },
+        "reserved_tokens": 0,
+        "retries": 0,
+        "router_calls": 2,
+        "stopped": false,
+        "tokens": 39364
+      },
+      "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+      "expected_outcome": "candidate_initial_pass_unqualified",
+      "key": "claim-scope:5",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false
+    }
+  },
+  "native_reviews": 2,
+  "native_stages": [
+    "facts-initial",
+    "completion-initial"
+  ],
+  "new_provider_requests": 0,
+  "next_case": "claim-scope:6",
+  "next_case_created": false,
+  "original_inventory_files_preserved": 1012,
+  "original_stdout_roots": {
+    "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+    "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676"
+  },
+  "prior_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
+  "prior_completed_replay_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
+  "prior_prefix_validated_by_original_launcher": true,
+  "prior_results_unchanged": true,
+  "publication_allowed": false,
+  "qualified": false,
+  "read_only_inventory_unchanged": true,
+  "replay_scope": "current_completed_case",
+  "result": {
+    "accounting": {
+      "attempts": [
+        {
+          "input_tokens": 20137,
+          "model": "gpt-6.1-sol",
+          "ordinal": 1,
+          "output_tokens": 471,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "5b8b9b6693233fae61edbbc557e649d54c830a9a5dc9628260c0159693d1b7ed",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        },
+        {
+          "input_tokens": 18564,
+          "model": "gpt-6.1-sol",
+          "ordinal": 2,
+          "output_tokens": 192,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "31ec2fede6214d52750dcdc6d42bc179ff6269ce648df9af0e84289440c27028",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        }
+      ],
+      "calls": 2,
+      "failed": false,
+      "logical": {
+        "generation": 0,
+        "review": 2
+      },
+      "reserved_tokens": 0,
+      "retries": 0,
+      "router_calls": 2,
+      "stopped": false,
+      "tokens": 39364
+    },
+    "actual_report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+    "expected_outcome": "candidate_initial_pass_unqualified",
+    "key": "claim-scope:5",
+    "matched": true,
+    "outcome": "candidate_initial_pass_unqualified",
+    "production_admitted": false,
+    "publication_allowed": false
+  },
+  "status": {
+    "checkpoint_sha256": "bd0ca0f45d7ca3151312d678265d8f45b3bb5daf8842ccbbc938fb833001de93",
+    "closed": true,
+    "format_waiting": false,
+    "guard_sha256": "d368c0e797af99b55de9df618eac701276bb080d18e6156f2c3270a083a8f676",
+    "operations": 9,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "timeout_waiting": false,
+    "transport_waiting": false,
+    "unresolved": []
+  },
+  "strict_replay": true,
+  "transport": {
+    "actual_attempts": 2,
+    "completed_calls": 2,
+    "failed_calls": 0,
+    "http_requests_known": 2,
+    "http_requests_unknown": 0,
+    "known_tokens": 39364,
+    "known_usage_calls": 2,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 0,
+    "unknown_usage_calls": 0
+  },
+  "version": "original15-current-completed-case-replay-v1",
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "d19e1f63c4a48a9ac4b04b9cf3c017c1b65cbe7cba3bfb88ac844d0224444c10",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e3e-b7a3-79c1-aee8-110189253cf7/msg_0730884fbbcfc5f8016ae0d528fa9881978ba1c36d4df77aed",
+      "author_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "native_final_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "raw_event_sha256": "413522d7ac1e8a8b9497f58c911ba05645df21c855a2f72f8c8845a54d82c569",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "53a75cab5d858de9970edc2f425a57ea46bd36e781e37fabd9208b0ce16fb585",
+      "submission_sha256": "509ddb36d631cdad7de67443174962689752a254139d1698fb6eceed1eb6a719",
+      "native_observation_sha256": "15e29a187b9f1e5ff34c2292afb737f4c0e73afe4570e041c4c2520510117917"
+    },
+    {
+      "stage": "completion-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "b380b40df455bc4e19b5767daf1810aa5d73cc65493bf2aa3523093929f14bea",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e51-29fb-7c10-b2be-24c5e6ca20dd/msg_0ecbd62c944c67ef016ae0da617e1881938873dda1224a70b3",
+      "author_sha256": "93d194dc0be910e0c147261ad63ab3485cd0a50d8f2675ad32b27bd7d1181cfe",
+      "native_final_sha256": "93d194dc0be910e0c147261ad63ab3485cd0a50d8f2675ad32b27bd7d1181cfe",
+      "raw_event_sha256": "55122d51e5ac443350d1817d733da172062165475f03d558d14487c96cb72848",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "cdcf6344fed044acc5c53795a910dfe1a0ce9bd399947a63873dfd9a93c383c7",
+      "submission_sha256": "87db3cbacce9fcdbb2edaf90dda89938ebba90e740eb6b86ee8dbc7013a8df03",
+      "native_observation_sha256": "7cbfbe912ee3ac414a5836a271e1949f9071136b6caca6dd388e9ecbca55ad1f"
+    }
+  ],
+  "receipts": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\claim-scope-5\\transport\\review\\call-001\\receipt.json",
+      "sha256": "9078be7febaec138a4af44f149d5e110d260587666dc3607d18f14a73b240236",
+      "receipt": {
+        "version": "research-responses-single-call-v1",
+        "ok": true,
+        "code": "ok",
+        "worker_code": "ok",
+        "failure_category": null,
+        "request_sha256": "44a1f9e278ec4d770bd9a64365f8686649856cfef47d7792e4e801da19450c7a",
+        "wire_sha256": "f8413c7f31b47b87f429e59bee30b3f8f1383220b5e09820115f53ac476f94db",
+        "profile": {
+          "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+          "base_url": "https://yujianwudi.top/v1",
+          "model": "gpt-6.1-sol",
+          "route": "proxy-12000"
+        },
+        "usage": {
+          "input_tokens": 20137,
+          "output_tokens": 471,
+          "total_tokens": 20608,
+          "cached_input_tokens": 0,
+          "reasoning_tokens": 423
+        },
+        "usage_state": "known",
+        "usage_conflict": false,
+        "conflicting_worker_usage": null,
+        "usage_basis": "channel_reported_unverified_upstream",
+        "http_requests": 1,
+        "reaped": true,
+        "worker_exit": 0,
+        "elapsed_s": 21.765,
+        "semantic_approval": false,
+        "group_verified": false,
+        "upstream_identity_verified": false,
+        "qualified": false,
+        "response_mode": "natural-sol-dual-necessity-v1",
+        "validation_context_sha256": "a276dbfebd1ce01eb464ff077541dedcdfb525b18737bae8fb1086cdcc0c0c04"
+      }
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\claim-scope-5\\transport\\review\\call-002\\receipt.json",
+      "sha256": "25307a8709dc6afb684ffdcad9eb812be5289ee92fab763879bd622b2d55b6b6",
+      "receipt": {
+        "version": "research-responses-single-call-v1",
+        "ok": true,
+        "code": "ok",
+        "worker_code": "ok",
+        "failure_category": null,
+        "request_sha256": "87fbec6772d486b2951fc66190da21859a8dc0a09cadf4533a9ca13ae682a3c8",
+        "wire_sha256": "ed18b511c9eb2d7c7c4dd8ce3c295b2f9e3d356c8bd28f0da89bb00fc9fbceb3",
+        "profile": {
+          "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+          "base_url": "https://yujianwudi.top/v1",
+          "model": "gpt-6.1-sol",
+          "route": "proxy-12000"
+        },
+        "usage": {
+          "input_tokens": 18564,
+          "output_tokens": 192,
+          "total_tokens": 18756,
+          "cached_input_tokens": 0,
+          "reasoning_tokens": 119
+        },
+        "usage_state": "known",
+        "usage_conflict": false,
+        "conflicting_worker_usage": null,
+        "usage_basis": "channel_reported_unverified_upstream",
+        "http_requests": 1,
+        "reaped": true,
+        "worker_exit": 0,
+        "elapsed_s": 12.828,
+        "semantic_approval": false,
+        "group_verified": false,
+        "upstream_identity_verified": false,
+        "qualified": false,
+        "response_mode": "natural-sol-dual-necessity-v1",
+        "validation_context_sha256": "69b6797df6ec0306416f6f5c6e27cadbabad7df742b325ae642ac5591bb7a2e2"
+      }
+    }
+  ],
+  "case_completed": true,
+  "production_admitted": false,
+  "automation_status": "PAUSED",
+  "replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-replay.json",
+  "replay_sha256": "c53075fd354dab4eeec4eb42e332efd3c3eccfe4845aedbc11f8822f7cd98e60",
+  "historical_failures_and_costs_preserved": true,
+  "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-5-completed-accepted.json",
+  "accepted_evidence_sha256": "25cc0d45bf1ca8d28c230a8b6d81cb06ecef623268c4409bf0ca44b007ce94ca"
+}

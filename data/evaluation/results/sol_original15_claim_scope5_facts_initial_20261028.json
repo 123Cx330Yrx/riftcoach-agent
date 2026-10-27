@@ -1,0 +1,75 @@
+{
+  "kind": "original15-claim-scope5-facts-initial-accepted-v1",
+  "case": "claim-scope:5",
+  "cases_completed": 7,
+  "case_completed": false,
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "d19e1f63c4a48a9ac4b04b9cf3c017c1b65cbe7cba3bfb88ac844d0224444c10",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e3e-b7a3-79c1-aee8-110189253cf7/msg_0730884fbbcfc5f8016ae0d528fa9881978ba1c36d4df77aed",
+      "author_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "native_final_sha256": "927aafa822c1fd19204aa486a15430e06986ebb30b48e35572f0516fd74bdb88",
+      "raw_event_sha256": "413522d7ac1e8a8b9497f58c911ba05645df21c855a2f72f8c8845a54d82c569",
+      "author_text_equal": true,
+      "primary_sha256": "53a75cab5d858de9970edc2f425a57ea46bd36e781e37fabd9208b0ce16fb585",
+      "submission_sha256": "509ddb36d631cdad7de67443174962689752a254139d1698fb6eceed1eb6a719"
+    }
+  ],
+  "receipt": {
+    "version": "research-responses-single-call-v1",
+    "ok": true,
+    "code": "ok",
+    "worker_code": "ok",
+    "failure_category": null,
+    "request_sha256": "44a1f9e278ec4d770bd9a64365f8686649856cfef47d7792e4e801da19450c7a",
+    "wire_sha256": "f8413c7f31b47b87f429e59bee30b3f8f1383220b5e09820115f53ac476f94db",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "usage": {
+      "input_tokens": 20137,
+      "output_tokens": 471,
+      "total_tokens": 20608,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 423
+    },
+    "usage_state": "known",
+    "usage_conflict": false,
+    "conflicting_worker_usage": null,
+    "usage_basis": "channel_reported_unverified_upstream",
+    "http_requests": 1,
+    "reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 21.765,
+    "semantic_approval": false,
+    "group_verified": false,
+    "upstream_identity_verified": false,
+    "qualified": false,
+    "response_mode": "natural-sol-dual-necessity-v1",
+    "validation_context_sha256": "a276dbfebd1ce01eb464ff077541dedcdfb525b18737bae8fb1086cdcc0c0c04"
+  },
+  "receipt_sha256": "9078be7febaec138a4af44f149d5e110d260587666dc3607d18f14a73b240236",
+  "source_check_sha256": "26b2e4c80daf020c81afca3f6d39f1968867bd6b2bba5534d67fd56254dd9fdc",
+  "batch_accounting": {
+    "calls": 27,
+    "http_requests_known": 27,
+    "http_requests_unknown": 0,
+    "known_tokens": 471822,
+    "unknown_reserved_tokens": 137228,
+    "retries": 2,
+    "not_sent": 0,
+    "receiptless_calls": 0
+  },
+  "next_stage": "completion-initial",
+  "continuation_segment": "0111.stdout.txt",
+  "qualified": false,
+  "publication_allowed": false,
+  "actual_edit_performed": false
+}

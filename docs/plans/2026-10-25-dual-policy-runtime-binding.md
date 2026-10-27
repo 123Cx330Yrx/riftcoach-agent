@@ -1,5 +1,16 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-28 claim-scope:5完成，原15进度8/15（当前）
+
+第八例claim-scope:5的facts-initial与completion-initial均100/pass，分别20608和18756known tokens、21.765和12.828秒；两份意见均经主审和原独立作者全文审查接受，作者原件与真实native精确字节一致，已唯一导入。事实初审仅advisory block4；早死省略由第14段明确全样本2.5/2.67消解，辅助对败组补刀降低、视野和早死升高均正确。完成度核实已有具体观摩行动及K知识使用，没有可用OP.GG快照，不造个人训练或新任务义务。
+
+原程序正常结束candidate_initial_pass_unqualified，matched=true。原稿8894f4ef保持，无编辑、application或fresh，不称修订成功。当前例严格只读回放匹配；前七例由真实启动器在发送及本地结束前再次验证，外层复用其既有只读证据并核对结果、原1012件SHA及当前库存保持，不无意义重跑整前缀。旧500、未知费用、LF和scope:3时间例外保持，当前例无新增例外。
+
+原15完成8/15；本例2HTTP/39364known/0unknown/0retry，累计28HTTP/490578known/137228unknown预留/2retry。两次HTTP合计34.593秒，长等待主要为本地多遍历史核验，不归咎模型或上游。下一例claim-scope:6，继续使用已保存凭据，不重发成功项；用户续接授权至北京时间10月29日00:25:43，原余量不变。整批未close/seal，未授产品或全15资格；Stage8E、automation PAUSED及后续产品/学习依赖保持。
+
+证据：data/evaluation/results/sol_original15_claim_scope_5_completed_20261028.json。
+
+
 ## 2026-10-28 第七份双初审直过完成，原15进度7/15（当前）
 
 第七份claim-scope:2完成度初审通过已保存的Windows凭据非交互执行，HTTP200、13.563秒、输入18640/输出227，共18867known tokens，100/pass且issues/issue_resolutions/advisories/repairs全空。主审和原独立作者完整核验原稿、来源、当前政策及响应后接受，作者原件和唯一真实native逐字相等，已导入。第19段条件性观摩限定统领后文，第20段实际使用K4安排选局/5分钟观察/记录，K2/K5已接具体死亡与路线复盘；OP.GG无可用资料已如实说明，不补造本人训练或新任务要求。
