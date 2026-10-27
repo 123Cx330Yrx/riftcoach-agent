@@ -26,12 +26,14 @@ def read(path):
 
 
 def validate(manifest, *, plan_sha, authorization_sha, original_limits):
+    prior_seconds = manifest.get('prior_batch_active_seconds')
     legacy = (manifest.get('version') == VERSION and manifest.get('case') == 'scope:3'
         and manifest.get('effective_batch_active_seconds') == 57600)
     additive = (manifest.get('version') == ADDITIVE_VERSION
         and isinstance(manifest.get('case'), str) and bool(manifest['case'])
-        and manifest.get('prior_batch_active_seconds') == 57600
-        and manifest.get('effective_batch_active_seconds') == 61200
+        and type(prior_seconds) is int and prior_seconds >= 57600
+        and (prior_seconds - original_limits['maximum_active_seconds']) % 3600 == 0
+        and manifest.get('effective_batch_active_seconds') == prior_seconds + 3600
         and isinstance(manifest.get('prior_allowance_manifest_sha256'), str)
         and len(manifest['prior_allowance_manifest_sha256']) == 64)
     if (not (legacy or additive)
@@ -67,6 +69,18 @@ def adjusted_limits(budget, request, manifest, verify):
     if limits['execution_timeout_s'] != manifest['original_limits']['per_case_active_seconds']:
         raise ValueError('original15_execution_time_allowance_base_limit')
     return dict(limits, execution_timeout_s=manifest['effective_case_active_seconds'])
+
+
+def validate_lineage(manifests, selections, original_limits):
+    """Every time-only addition must extend the immediately preceding record."""
+    for index, manifest in enumerate(manifests):
+        if (index == 0 and manifest['version'] != VERSION) or (index > 0 and (
+                manifest['version'] != ADDITIVE_VERSION
+                or manifest['prior_allowance_manifest_sha256'] != selections[index-1]['sha256']
+                or manifest['prior_batch_active_seconds'] != manifests[index-1]['effective_batch_active_seconds'])):
+            raise ValueError('original15_execution_time_allowance_lineage')
+        if manifest['effective_batch_active_seconds'] != original_limits['maximum_active_seconds'] + 3600*(index+1):
+            raise ValueError('original15_execution_time_allowance_lineage')
 
 
 def compile_chat(function, limits_for):
@@ -149,7 +163,7 @@ def install(control, config, launch):
         raise ValueError('original15_execution_time_allowance_duplicate_scope')
 
     def verify():
-        for index, (path, item, manifest) in enumerate(zip(paths, selections, manifests, strict=True)):
+        for path, item, manifest in zip(paths, selections, manifests, strict=True):
             if (sha(path) != item['sha256'] or sha(module) != item['module_sha256']
                     or read(path) != manifest):
                 raise ValueError('original15_execution_time_allowance_controls_changed')
@@ -159,9 +173,6 @@ def install(control, config, launch):
             expected_root = control.with_name('riftcoach-sol-original15-20261025')/'cases'/launch.engine.case_slug(manifest['case'])/'session'
             if Path(manifest['session_root']) != expected_root:
                 raise ValueError('original15_execution_time_allowance_case_root')
-            if manifest['version'] == ADDITIVE_VERSION and (index != 1
-                    or manifest['prior_allowance_manifest_sha256'] != selections[0]['sha256']):
-                raise ValueError('original15_execution_time_allowance_lineage')
             baseline = Path(manifest['baseline_checkpoint'])
             if (sha(baseline) != manifest['baseline_checkpoint_sha256']
                     or sha(Path(manifest['session_root']) / 'guard.json') != manifest['guard_sha256']
@@ -172,6 +183,7 @@ def install(control, config, launch):
             for name, pin in manifest['stdout_evidence'].items():
                 if Path(name).name != name or sha(control / 'segments' / name) != pin:
                     raise ValueError('original15_execution_time_allowance_stdout_changed')
+        validate_lineage(manifests, selections, launch.ENVELOPE)
 
     def selected(budget):
         session = getattr(budget, 'session', None)

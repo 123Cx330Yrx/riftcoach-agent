@@ -189,3 +189,49 @@ def test_additive_time_record_keeps_legacy_scope_and_money_unchanged():
         changed = dict(manifest, **{field:value})
         with pytest.raises(ValueError, match='allowance_invalid'):
             allowance.validate(changed, plan_sha='plan', authorization_sha='auth', original_limits=ENVELOPE)
+
+
+def time_chain():
+    first, _, _, _ = fixture()
+    second = dict(first, version=allowance.ADDITIVE_VERSION, case='claim-scope:6',
+        prior_batch_active_seconds=57600, effective_batch_active_seconds=61200,
+        prior_allowance_manifest_sha256='a'*64)
+    third = dict(first, version=allowance.ADDITIVE_VERSION, case='observed:2',
+        prior_batch_active_seconds=61200, effective_batch_active_seconds=64800,
+        prior_allowance_manifest_sha256='b'*64)
+    return [first, second, third], [dict(sha256=letter*64) for letter in 'abc']
+
+
+def test_third_case_extends_prior_total_without_borrowing_old_case_time():
+    manifests, selections = time_chain()
+    for manifest in manifests:
+        allowance.validate(manifest, plan_sha='plan', authorization_sha='auth', original_limits=ENVELOPE)
+    allowance.validate_lineage(manifests, selections, ENVELOPE)
+    _, budget, request, original = fixture()
+    for manifest in manifests[1:]:
+        # Another case's entry alone must not change the selected session.
+        manifest['session_root'] = str(Path(manifest['case'])/'session')
+        assert allowance.adjusted_limits(budget, request, manifest, lambda:None) == original
+    assert [m['effective_batch_active_seconds'] for m in manifests] == [57600, 61200, 64800]
+
+
+@pytest.mark.parametrize('field,value', [
+    ('prior_allowance_manifest_sha256', 'a'*64),
+    ('prior_batch_active_seconds', 57600),
+    ('effective_batch_active_seconds', 68400),
+    ('version', allowance.VERSION),
+])
+def test_third_time_record_cannot_skip_reset_or_duplicate_lineage(field, value):
+    manifests, selections = time_chain()
+    manifests[2][field] = value
+    with pytest.raises(ValueError, match='allowance_lineage'):
+        allowance.validate_lineage(manifests, selections, ENVELOPE)
+
+
+@pytest.mark.parametrize('value', [True, 61201, 54000])
+def test_additive_time_record_requires_whole_existing_additions(value):
+    manifests, _ = time_chain()
+    manifests[2]['prior_batch_active_seconds'] = value
+    manifests[2]['effective_batch_active_seconds'] = value + 3600
+    with pytest.raises(ValueError, match='allowance_invalid'):
+        allowance.validate(manifests[2], plan_sha='plan', authorization_sha='auth', original_limits=ENVELOPE)
