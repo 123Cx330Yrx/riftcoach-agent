@@ -1,4 +1,12 @@
-## 2026-10-27 第五报告完整闭环完成，5/15（当前）
+## 2026-10-27 第六份首审500的原项手动恢复就绪（当前）
+
+scope:3首发1HTTP、53.563秒后渠道500，无模型意见，68614tokens未知预留。原入口对500未分类为暂停而生成失败关闭；不是模型质量结论。0077及旧terminal/outcome/检查点保留，只读重放复现ProviderResponseError并确认原件不变，前五份仍完成5/15。累计19HTTP/336074known/68614unknown预留/0retry。
+
+外部Control显式append-only恢复保留原closed历史，新增控制及单独恢复终态路径；失败model和outcome照原序重放，再记录手动service-retry，同请求补未完成首审，不清零费用/活动时间。未来429/500/502/503活跃case暂停；身份/权限/协议/语义等不转服务重试。9项本地检查通过，覆盖连续500、手动恢复完整模拟native闭环/只读回放、原件防改和未来case无失败关闭。真实原入口-HostOnly停original15_awaiting_manual_retry，0Key/0新增请求，0078原stdout根7b6cf138；冻结源码/HEAD/CI保持，无需新一轮冻结CI。
+
+下一动作：原start-authorized.ps1 -Case scope:3 -ManualRetry隐藏输入企业Key，仅补当前首审。补测未发送，授权北京时间10月28日00:21:46截止不延展；不重买前五份，原批未close/seal，automation PAUSED，资格未授。本地重复核验性能尚未优化。证据data/evaluation/results/sol_original15_scope3_service_recovery_20261027.json、Control/scope-3-service-failure.json及scope-3-service-recovery-ready.json（2e9d6062）。
+
+## 2026-10-27 第五报告完整闭环完成，5/15（此前检查点）
 
 scope:4最后completion-fresh成功1HTTP200、14.391秒、16440known tokens；公开pass/100、全部问题与advisories为空。主审/原独立作者全文双审接受，唯一真实native导入并submit，Host-only正常结束为candidate_repaired_pass_unqualified且matched=true。六阶段Host审查、唯一application2ab2b915与同实际稿03d48822双fresh均完成，首五例只读replay通过；23operations、无unresolved、库存前后不变。仅case关闭，batch未close/seal。
 

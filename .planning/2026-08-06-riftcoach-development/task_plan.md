@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：第五份scope:4双初审、compatibility/edit双审、唯一逐字应用及同实际稿双fresh均完成，终态candidate_repaired_pass_unqualified、matched=true。首五例只读replay通过，本例六份native及作者/来源/观测/费用核验，23operations无unresolved；本例4HTTP/75330known，累计18HTTP/336074known、0unknown/0retry，完成5/15。facts与completion两条确切末尾单LF行政例外、原字节/失败和16项聚焦检查均留档，不称原精确字节门槛无例外通过。唯一application2ab2b915和实际稿03d48822保持，0074—0076原stdout/exit保持，最新原stdout根ddef7814。下一步用户运行原start-authorized.ps1 -Case scope:3隐藏输入企业Key进入第六份facts-initial；第六尚未创建/发送，不加ManualRetry、不重发成功项。附加授权至北京时间10月28日00:21:46，累计不清零。冻结34abe04e clean/CI40188299016保持；整批未关闭/未seal/未授资格，automation PAUSED。输入Key到预留请求本地454.478秒、Provider14.391秒，重复核验尚未优化。证据data/evaluation/results/sol_original15_scope4_completed_20261027.json及Control/scope-4-completed-replay.json。
+2026-10-27当前工作：原15完成5/15，前五份成功保持。第六份scope:3/facts-initial渠道1HTTP500、53.563秒，无模型意见；原入口误落通用失败关闭，失败原件/终态/检查点与0077保留，已只读重放复现。外部Control已安装显式append-only服务恢复，保留历史closed，当前终态另名，重放旧失败model/outcome后追加手动service-retry；请求、未知预留、费用及活动时间累计不清零。9项本地检查及真实原入口-HostOnly通过，停original15_awaiting_manual_retry，0Key/0新增请求；最新0078原stdout根7b6cf138，guard38d6f040不变。累计19HTTP/336074known/68614unknown预留/0retry；第六份补测未发送。下一步用户运行原start-authorized.ps1 -Case scope:3 -ManualRetry隐藏输入同企业Key，只补该首审；再遇普通服务故障暂停当前项，不自动循环。授权至北京时间10月28日00:21:46不延展，冻结34abe04e clean/CI40188299016保持，不再等冻结树整套CI。batch未close/seal、automation PAUSED、未授产品/15项资格，本地重复核验尚未优化。证据data/evaluation/results/sol_original15_scope3_service_recovery_20261027.json及Control/scope-3-service-recovery-ready.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

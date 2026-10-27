@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "第五份修订及同稿双复审完成，原15完成5/15，18HTTP/336074known；下一份scope:3待本机企业Key。"
+pause_reason: "原15完成5/15；第六份scope:3首审HTTP500，已准备手动原项补测。累计19HTTP/336074known/68614unknown预留。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,20 @@ pause_reason: "第五份修订及同稿双复审完成，原15完成5/15，18HTT
 
 ## 当前行动
 
-## 2026-10-27 第五报告修订及同稿双复审完成，5/15（当前）
+## 2026-10-27 第六份HTTP500原项恢复已就绪，前五份保持（当前）
+
+scope:3/facts-initial首发实际1HTTP，渠道53.563秒后返回500，未产生可用模型意见；不是524、晚输入Key或Free账号权限的已证实问题。未知用量按68614tokens预留，非零费用、非账单。本次原冻结启动器只将超时/可恢复格式暂停，服务500落入通用ProviderResponseError分支，写candidate_execution_failed及closed；这一恢复分类缺口属启动器问题，不是模型语义不通过。0077原stdout/exit、最初guard38d6f040、原0010检查点204fbd60及失败回执全部保留，原失败只读重放复现且库存不变。
+
+外部Control已安装SHA固定的append-only服务恢复：旧terminal.json、outcome.json和全部原件不改，明确追加续接控制，当前结束状态另写terminal-service-recovery.json和outcome-service-recovery.json，不能伪称旧关闭未发生。依原操作顺序重放失败model及其outcome，再记录手动service-retry决定，同一已发业务请求原项补测；失败请求、未知预留、重试计数及活动时间累计不清零。后续活跃任务遇到经完整回执/观测证明的429/500/502/503会暂停，不再自动失败关闭；只允许手动补测，不自动循环。身份/权限/来源/输出协议/语义拒绝及缺观测继续停止，完整冻结审计器仍核request/profile/wire/用量绑定。
+
+9项本地检查通过：连续500两次仍暂停、手动成功后模拟作者原件/check-answer/native导入的实际程序路径与完整闭环、同请求重试/费用保留、只读重放、原件篡改拒绝、权限/身份等非服务故障不放行，以及未来新case遇500不写失败终态。真实原隐藏Key入口-Case scope:3 -HostOnly已完整核前五例/native/来源/CI并正确停original15_awaiting_manual_retry，0Key/0新增Provider；0078原stdout根7b6cf1384859a1c5c5e57a65f5a850ef91276e15b28718c4c43853870a1a8992。原0010历史closed保持，当前显式恢复尚未关闭；没有通过删除终态或修改旧checkpoint恢复。
+
+完成仍5/15，累计19HTTP/336074known/68614unknown预留/0retry；第六份无已接受意见，补测尚未发送。冻结34abe04e clean、公共CI40188299016不变，外部修复不要求再跑冻结树整套CI；automation PAUSED、batch未close/seal、未授产品或原15资格。Live索引同时明确all_cases_matched=false（未完成15），前五份匹配单独记completed_cases_all_matched=true，不能把成功前缀写成全15通过。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3 -ManualRetry，隐藏输入同企业Key，只补第六份未完成的facts-initial；不重跑前五份，不重置预算。授权仍至北京时间10月28日00:21:46，不延展。再次临时服务错误停在本项等待手动恢复；成功后按完整主审/独立审查流程继续。本地重复前缀核验较慢的问题尚未优化。
+证据：data/evaluation/results/sol_original15_scope3_service_recovery_20261027.json；Control/scope-3-service-failure.json（93fe70f1）；scope-3-service-recovery-ready.json（SHA2e9d6062fd4047b8dec3e3602c469c956bf8553ee94a509a6a2d83ee8526cd8c）；scope-3-service-recovery.json（b7206583），安装模块0e0c7d24。
+
+## 2026-10-27 第五报告修订及同稿双复审完成，5/15（此前检查点）
 
 scope:4最后completion-fresh成功1HTTP200、14.391秒，输入16254/输出186，共16440known tokens。完整公开意见pass/100，issues、issue_resolutions及advisories均空。主审与原独立作者实读完整25段实际稿、全部来源、用户任务和政策后接受，真实native唯一final已导入并submit。观摩身份及第19段对后文条件练习的限定保持，K1—K5已连到实际观摩动作；没有OP.GG资料，不补造个人训练或外部数据义务。
 
