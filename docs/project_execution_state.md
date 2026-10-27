@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成5/15；第六份最后completion-fresh待发。应用回放时限漏项已修，真实双遍续接零发送通过；累计23HTTP/394859known/137228unknown预留/2retry保持。"
+pause_reason: "原15完成6/15；第六份同稿双复审接受且严格只读回放通过。待第七份claim-scope:2；累计24HTTP/411323known/137228unknown预留/2retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,17 @@ pause_reason: "原15完成5/15；第六份最后completion-fresh待发。应用�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-27 第六份同稿双复审闭环完成，原15进度6/15（当前）
+
+第六份scope:3最后completion-fresh正常返回：1HTTP200、18.094秒、输入16283/输出181，共16464known tokens；100/pass，issues、issue_resolutions及advisories均空。主审与原独立作者完整实读实际25段新稿、全部来源/政策/请求/响应后接受，原生final与作者原件逐字一致并唯一导入。第19段条件性观摩限定统领后文，第20段据K4选1至2局/5分钟窗口观察并记录；K2/K5已连到死亡与路线核验，OP.GG不可用已明确说明，不补造本人训练或缺失资料消费要求。
+
+本例完成双初审、compatibility/edit双审、唯一block_4修订及同稿双fresh。实际稿1aa311e2、application2d122986保持；其余24段及第14段全样本正确比较未改。0102本地HostOnly返回case_closed/candidate_repaired_pass_unqualified；其后六例完整前缀严格只读replay匹配，六份native、全部transport、原1012件及作者库存保持。旧首审单LF、两次500/未知费用、历史terminal、0097/0098回放失败和显式时间追加均保留；回放在已记录的LF/时间例外下通过，不称原时间包络无例外通过。观察辅助脚本一处选错前例stdout根的行政记录原样保留，另建更正；作者/native事件和真实提交不变。
+
+原15现完成6/15，累计24HTTP/411323known/137228unknown预留/2retry，未知预留不是账单。当前本例活动4501.268秒；本次Host导入/关闭/回放0新Provider、0Key。整批未close/seal、未授产品或全15资格，automation保持PAUSED；冻结34abe04e clean/CI40188299016保持，本轮无新增业务代码，不重等冻结CI。
+
+**下一动作：** 同一批第七份claim-scope:2的facts-initial，用户用原Control/start-authorized.ps1 -Case 'claim-scope:2'隐藏输入企业Key；不加ManualRetry、不重买前六份。该case目录尚未创建，原请求/token累计不清零，scope:3时间例外不扩到别例；原授权北京时间10月28日00:21:46截止不延展。后续正式15余9份、自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估及学习依赖保持，阶段8E不变。
+证据：data/evaluation/results/sol_original15_scope3_completed_20261027.json；Control/scope-3-completed-accepted.json；scope-3-completed-replay.json。0100/0101/0102原stdout及exit保留，最新checkpoint根7ca04d48来自真实stdout。
 
 ## 2026-10-27 第六份应用回放时限漏项已修复，真实双遍续接通过（当前）
 
