@@ -3515,7 +3515,7 @@
     "tokens": 75111
   },
   "latest_completed_result": "data/evaluation/results/sol_original15_claim_scope_6_completed_20261028.json",
-  "strict_replay_status": "current_case_not_completed; prior_completed_replay_retained",
+  "strict_replay_status": "current_completed_case_verified; prior_prefix_unchanged",
   "claim_scope6_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json",
   "claim_scope6_edit_accepted_result": "data/evaluation/results/sol_original15_claim_scope6_edit_accepted_20261028.json",
   "claim_scope6_facts_fresh_result": "data/evaluation/results/sol_original15_claim_scope6_facts_fresh_20261028.json",
