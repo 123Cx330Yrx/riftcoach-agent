@@ -22,7 +22,7 @@ pause_reason: "原15完成7/15；第七份双初审直过并严格只读回放�
 
 原15完成7/15，累计26HTTP/451214known/137228unknown预留/2retry。此次首次真实证明保存的Key可以自动读取并成功调用；未将Key、Key哈希或环境写入日志/Git，原手填入口保留。0106启动有两次GitHub查询网络重试，后续同HEAD CI全绿；长等待主要是读取Key前、读取后及attempt边界重复回放旧前缀，Provider实际仅13.563秒，不归因于上游。该本地开销作为后续执行效率问题保留，不在本轮运行中改变验证机制。
 
-**下一动作：** 同批第八份claim-scope:5的facts-initial，使用原Control/start-with-stored-key.ps1，无需再输入Key，不加ManualRetry、不重买成功项。原费用授权北京时间10月28日00:21:46到期不延展；新发送必须在有效授权内，Host审查/保存不受费用到期影响。automation保持PAUSED，冻结34abe04e clean/既有CI40188299016保持。正式15余8份、自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估与学习保持。
+**下一动作：** 第八份claim-scope:5输入和保存凭据入口已就绪；原费用窗口不足以完成当前重复启动核验后再发送，已征求仅续接24小时、原余量不变的确认，尚未开始第八份或新的付费发送。获准后使用原Control/start-with-stored-key.ps1，无需再输入Key，不加ManualRetry、不重买成功项。原费用授权北京时间10月28日00:21:46到期不延展；新发送必须在有效授权内，Host审查/保存不受费用到期影响。automation保持PAUSED，冻结34abe04e clean/既有CI40188299016保持。正式15余8份、自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估与学习保持。
 证据：data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json；Control/claim-scope-2-completed-accepted.json；claim-scope-2-completed-replay.json。0106真实返回、0107原生导入和0108本地结束的原stdout/exit保持；最新checkpoint根80e22e65来自原stdout。
 
 ## 2026-10-27 本机天机阁凭据入口就绪，待一次隐藏保存（当前）

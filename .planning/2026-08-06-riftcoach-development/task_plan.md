@@ -146,7 +146,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-原15完成7/15；下一项claim-scope:5，使用已保存凭据的入口，只发facts-initial，不重买已成功项。原授权北京时间10月28日00:21:46到期不延展，累计预算不清零；费用续接前先完成所有可独立Host核验与保存。
+原15完成7/15，第八份claim-scope:5输入及凭据入口已就绪。当前等待同批剩余8例仅续接24小时、原余量不变的确认；原截止北京时间10月28日00:21:46不擅延，尚未发第八份。确认后使用保存的Key入口，累计预算、旧失败和成功项保持。
 
 ## History
 

@@ -203,7 +203,7 @@
     "retries": 2,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Prepare same-batch claim-scope:5 via start-with-stored-key.ps1; retain original accounting and authorization deadline.",
+  "next_action": "Await explicit 24-hour continuation of the same remaining envelope; then start claim-scope:5 with the saved key. No successful calls repeated.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2535,5 +2535,14 @@
     "publication_allowed": false
   },
   "latest_completed_replay_scope": "current_completed_case_with_prior_six_unchanged",
-  "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json"
+  "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
+  "authorization_continuation_pending": {
+    "requested": true,
+    "requested_duration_hours": 24,
+    "scope": "remaining_original_batch",
+    "remaining_cases": 8,
+    "reset_accounting": false,
+    "original_deadline_utc": "2026-10-27T16:21:46.567089+00:00",
+    "new_paid_send_started": false
+  }
 }
