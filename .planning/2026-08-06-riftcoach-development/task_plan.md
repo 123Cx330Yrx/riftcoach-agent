@@ -15,7 +15,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：原15完成5/15，前五份成功保持。第六份scope:3/facts-initial渠道1HTTP500、53.563秒，无模型意见；原入口误落通用失败关闭，失败原件/终态/检查点与0077保留，已只读重放复现。外部Control已安装显式append-only服务恢复，保留历史closed，当前终态另名，重放旧失败model/outcome后追加手动service-retry；请求、未知预留、费用及活动时间累计不清零。9项本地检查及真实原入口-HostOnly通过，停original15_awaiting_manual_retry，0Key/0新增请求；最新0078原stdout根7b6cf138，guard38d6f040不变。累计19HTTP/336074known/68614unknown预留/0retry；第六份补测未发送。下一步用户运行原start-authorized.ps1 -Case scope:3 -ManualRetry隐藏输入同企业Key，只补该首审；再遇普通服务故障暂停当前项，不自动循环。授权至北京时间10月28日00:21:46不延展，冻结34abe04e clean/CI40188299016保持，不再等冻结树整套CI。batch未close/seal、automation PAUSED、未授产品/15项资格，本地重复核验尚未优化。证据data/evaluation/results/sol_original15_scope3_service_recovery_20261027.json及Control/scope-3-service-recovery-ready.json。
+2026-10-27当前工作：原15仍完成5/15。第六份scope:3/facts-initial用户触发0079手动补测，49.703秒后再次HTTP500，无审查意见；本次正确暂停当前项，历史closed保持、当前恢复终态未写、无第三次请求。只读重放及完整transport审计通过，旧原件/作者及前五份保持，累计20HTTP/336074known/137228unknown预留/1retry。用户平台日志为invalid character ':' looking for beginning of value；同SDK零网络重建核wire SHA、JSON合法、/v1/responses及stream=false，不据此擅改业务格式或确诊SSE。输入Key后的本地核验595.39秒，Provider49.703秒，性能尚未优化。下一动作待渠道恢复后同入口-Case scope:3 -ManualRetry，仅补当前首审；不自动重发、不重买成功项。授权至北京时间10月28日00:21:46不延展，冻结34abe04e/CI40188299016保持，无需再等冻结CI。batch未close/seal、automation PAUSED、资格未授。证据data/evaluation/results/sol_original15_scope3_service_retry_20261027.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

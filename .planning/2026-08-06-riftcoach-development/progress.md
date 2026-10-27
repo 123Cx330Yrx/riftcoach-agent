@@ -1,3 +1,9 @@
+## 2026-10-27 第六份手动补测再次500，仅本项暂停（当前）
+
+0079/call-002实际1HTTP500、49.703秒，无公开意见及已知用量；只读重放/transport审计通过，当前恢复未closed、4operations已消费且无unresolved/第三请求。旧全库存及作者保持；累计20HTTP/336074known/137228unknown预留/1retry，完成5/15。最新原stdout根ee90c7b0，0079 stdout SHA d1a8af9d保留。
+
+用户平台日志报invalid character ':' looking for beginning of value。同SDK零网络序列化重建与真实wire SHA一致，JSON合法、/v1/responses、stream=false；具体渠道/上游解析层未知，不用推测冒充根因。Key后本地核验595.39秒，Provider49.703秒，本地慢未解决。保留原项手动入口等渠道恢复，不自动付费、不重新等冻结CI；batch未close/seal、automation PAUSED、未授资格。证据sol_original15_scope3_service_retry_20261027.json及Control两份audit/wire-check。
+
 ## 2026-10-27 第六份首审500的原项手动恢复就绪（当前）
 
 scope:3首发1HTTP、53.563秒后渠道500，无模型意见，68614tokens未知预留。原入口对500未分类为暂停而生成失败关闭；不是模型质量结论。0077及旧terminal/outcome/检查点保留，只读重放复现ProviderResponseError并确认原件不变，前五份仍完成5/15。累计19HTTP/336074known/68614unknown预留/0retry。

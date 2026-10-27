@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成5/15；第六份scope:3首审HTTP500，已准备手动原项补测。累计19HTTP/336074known/68614unknown预留。"
+pause_reason: "原15完成5/15；第六份scope:3首审手动补测再次HTTP500，只暂停本项。累计20HTTP/336074known/137228unknown预留/1retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,18 @@ pause_reason: "原15完成5/15；第六份scope:3首审HTTP500，已准备手动
 
 ## 当前行动
 
-## 2026-10-27 第六份HTTP500原项恢复已就绪，前五份保持（当前）
+## 2026-10-27 第六份补测再次500，正常暂停本项（当前）
+
+用户触发0079手动原项补测，call-002实际1HTTP、49.703秒后仍返回500；无可用审查意见、用量未知，再预留68614tokens。恢复逻辑本次真实生效，正常停session_service_awaiting_manual_retry；当前恢复终态未写入，4operations全部消费、无unresolved，没有call-003。原历史closed及全部旧失败保持，未把服务失败判为模型语义拒绝。
+
+只读程序重放同样停在服务暂停；完整transport审计通过，两次request/context/profile逐字相同。原始全库存与作者文件保持，前五份完成5/15，本次未产生Host任务或补签。0079真实stdout SHA d1a8af9d07f43f2e55ed02ba676f95270d4a642e7203fca3547e5282a85700ab，guard38d6f040不变，最新0019检查点ee90c7b07b7e8259f01620d1cd2d7017567f7311c8313ea9ea3ec176030041c7。累计20HTTP/336074known/137228unknown预留/1retry；未知预留不是实际账单。
+
+用户在渠道控制台查到“status_code=500, invalid character ':' looking for beginning of value”。这是用户提供的平台日志，非本地保存的原始错误正文。零网络MockTransport用同SDK重建并核回执wire SHA，JSON序列化合法、POST /v1/responses、stream=false、high；未发现本地请求JSON格式错误。渠道或其上游解析非预期内容更符合线索，但无法仅凭冒号证明SSE/心跳解析或具体故障层，不修改业务格式来碰运气。输入Key后到attempt_reserved的本地墙钟595.39秒，渠道49.703秒；重复历史核验仍慢，未宣称修复性能。
+
+**下一动作：** 保留第六份原项手动续接入口，待渠道恢复后仍用start-authorized.ps1 -Case scope:3 -ManualRetry；不自动第三次付费、不重买前五份、不清零累计。授权北京时间10月28日00:21:46截止不延展；冻结34abe04e clean/CI40188299016保持，本次只读核验和状态记录不重跑冻结树CI。batch未close/seal、automation PAUSED、未授产品/15项资格。
+证据：data/evaluation/results/sol_original15_scope3_service_retry_20261027.json；Control/scope-3-service-retry-0079-audit.json；scope-3-service-500-wire-check.json。
+
+## 2026-10-27 第六份HTTP500原项恢复已就绪，前五份保持（此前检查点）
 
 scope:3/facts-initial首发实际1HTTP，渠道53.563秒后返回500，未产生可用模型意见；不是524、晚输入Key或Free账号权限的已证实问题。未知用量按68614tokens预留，非零费用、非账单。本次原冻结启动器只将超时/可恢复格式暂停，服务500落入通用ProviderResponseError分支，写candidate_execution_failed及closed；这一恢复分类缺口属启动器问题，不是模型语义不通过。0077原stdout/exit、最初guard38d6f040、原0010检查点204fbd60及失败回执全部保留，原失败只读重放复现且库存不变。
 

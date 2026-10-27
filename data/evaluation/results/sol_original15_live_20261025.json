@@ -117,7 +117,7 @@
   "strict_replay": true,
   "native_reviews": 2,
   "inventory_unchanged": true,
-  "status": "five-completed-sixth-service-retry-ready",
+  "status": "five-completed-sixth-service-retry-paused",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-1-completed-replay.json",
   "completed_replay_evidence_sha256": "a09715f772888ce24bc6d93941a90b07b736ea40fcd057888288d73330a55854",
   "cases_completed": 5,
@@ -127,14 +127,14 @@
   "all_cases_matched": false,
   "current_case": {
     "key": "scope:3",
-    "stage": "facts-initial-service-failure-awaiting-manual-retry",
+    "stage": "facts-initial-service-paused",
     "response_preserved": false,
     "failure_receipt_preserved": true,
     "semantic_output_available": false,
     "actual_edit_performed": false,
     "native_reviews": 0,
     "accepted_host_stages": {},
-    "operations": 2,
+    "operations": 4,
     "unresolved": [],
     "closed": false,
     "historical_closed_failure_preserved": true,
@@ -143,45 +143,55 @@
       "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
     },
     "original_stdout_roots": {
-      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
-      "checkpoint_sha256": "7b6cf1384859a1c5c5e57a65f5a850ef91276e15b28718c4c43853870a1a8992"
+      "checkpoint_sha256": "ee90c7b07b7e8259f01620d1cd2d7017567f7311c8313ea9ea3ec176030041c7",
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
     },
     "accounting": {
-      "calls": 1,
-      "reserved_tokens": 68614,
-      "retries": 0,
+      "calls": 2,
+      "reserved_tokens": 137228,
+      "retries": 1,
       "tokens": 0
     },
     "transport": {
-      "actual_attempts": 1,
+      "actual_attempts": 2,
       "completed_calls": 0,
-      "failed_calls": 1,
-      "http_requests_known": 1,
+      "failed_calls": 2,
+      "http_requests_known": 2,
       "http_requests_unknown": 0,
       "known_tokens": 0,
       "known_usage_calls": 0,
       "not_sent": 0,
       "receiptless_calls": 0,
-      "unknown_reserved_tokens": 68614,
-      "unknown_usage_calls": 1
+      "unknown_reserved_tokens": 137228,
+      "unknown_usage_calls": 2
     },
     "service_error_status": 500,
-    "elapsed_s": 53.563,
+    "elapsed_s": 49.703,
     "manual_retry_required": true,
     "recovery_ready_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-recovery-ready.json",
     "recovery_ready_sha256": "2e9d6062fd4047b8dec3e3602c469c956bf8553ee94a509a6a2d83ee8526cd8c",
     "next_stage": "facts-initial",
-    "next_stage_sent": false
+    "next_stage_sent": true,
+    "last_attempt": 2,
+    "next_attempt_sent": false,
+    "retry_audit_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-retry-0079-audit.json",
+    "retry_audit_sha256": "b08180931bd158f72577e5da7d1ec299e0ff3ea4f85309bf416109904a301ec6",
+    "local_seconds_after_key_before_attempt": 595.3899999999994,
+    "user_reported_console_error": "status_code=500, invalid character ':' looking for beginning of value",
+    "wire_check_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-500-wire-check.json",
+    "wire_check_sha256": "784247096ed30ff8564eab0858b33cf59e200747bbd72c7a3a01e76997002e72",
+    "active_seconds": 1244.2669999999925,
+    "transport_waiting": true
   },
   "batch_accounting": {
-    "calls": 19,
-    "http_requests_known": 19,
+    "calls": 20,
+    "http_requests_known": 20,
     "http_requests_unknown": 0,
     "known_tokens": 336074,
-    "retries": 0,
-    "unknown_reserved_tokens": 68614
+    "retries": 1,
+    "unknown_reserved_tokens": 137228
   },
-  "next_action": "Run original hidden-key launcher with -Case scope:3 -ManualRetry; only the unfinished first review is retried.",
+  "next_action": "Wait for channel recovery; use the same manual-retry hidden-key launcher for scope:3 only. No automatic retry or successful-case resend.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {

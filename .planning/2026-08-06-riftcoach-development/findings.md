@@ -1,3 +1,11 @@
+## 2026-10-27 原项补测500的真实恢复行为与格式线索
+
+两次完全相同request/context/profile分别53.563/49.703秒返回HTTP500。第二次在已修复恢复逻辑下真实暂停、无新终态/第三请求，说明恢复控制已生效，但没有任何新语义证据。未知预留累计137228，不作零费用或账单。
+
+用户平台日志invalid character ':' looking for beginning of value表明平台记录了解析错误，不能直接定位哪一层或确诊SSE心跳。用同SDK和MockTransport零网络捕获重建HTTP body，JSON合法、首字符{、Content-Type application/json、POST /v1/responses、stream=false、high，重建wire与真实receipt SHA一致；本地SDK按HTTP500进入APIStatusError，未把模型业务JSON判坏。不能因冒号就修改提示词/逐字补丁格式。当前证据未发现客户端请求JSON错误，渠道/上游仍待确认。
+
+输入Key后的本地重复历史核验595.39秒，Provider49.703秒。前者确定是本地执行效率问题，不能再混称上游超时；本次没有优化或删减核验。
+
 ## 2026-10-27 服务500落入通用关闭分支及显式原项恢复
 
 第六份scope:3真实响应状态500、53.563秒、无可用审查意见，已收割worker且观测EOF/closed，未知用量68614预留。原retryable只识别408/504/524及明确IO超时；500未获暂停分类，通用workflow记失败outcome，advance_case写closed。这是确定的启动器分类缺口，不足以归因用户晚输Key、Free账号权限或模型语义质量。
