@@ -15,14 +15,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：第六份scope:3/facts-initial原项第三次请求成功：1HTTP200、45.719秒、输入20160/输出1201，共21361known tokens。原15完成仍5/15，第六份尚未完成；累计21HTTP/357435known/137228unknown预留/2retry，旧两次500及费用原样保留。
+2026-10-27当前工作：第六份scope:3完成度初审call-004成功：1HTTP200、15.234秒、输入18587/输出198，共18785known tokens，pass/100、issues及repairs为空。主审和既有独立作者全文核验后接受；兼容性clear、实际组装稿四项ReportAssessment也均经双审接受并导入，三份新增作者原件与真实native逐字一致，不需新增LF例外。
 
-Provider为needs_revision/92，唯一issue正确指出第4段明确“中单口径”却把早死胜败称几乎相同：胜局3/2均值2.5，败局0/1均值0.5；第14段正确的全样本2.5/约2.67不能替代该对象。单一block_4逐字补丁写明2.5对0.5并保留K5因果边界，其余24段保持；主审与原独立作者完整实读来源/请求/政策/意见/补丁后接受，唯一真实native已导入submit accepted。没有实际应用，完成度与后续兼容/整稿/双fresh尚未做。
+程序唯一应用facts初审的一处block_4补丁：中单早死改为胜2.5/败0.5、保留非因果边界；其余24段和第14段正确全样本2.5/2.67逐字保持。实际稿SHA1aa311e2，与已审预览及待发双fresh绑定一致，application SHA2d122986。0092正常停session_model_boundary；19operations已消费、无unresolved，完整transport及四份native只读回放通过，1012旧原件SHA不变。原15仍完成5/15，本份双fresh未发，不能计为第六份闭环。
 
-恢复后0085 HostOnly完整核前五例/native/来源并消费本次facts接受，正常停session_model_boundary，9operations、无unresolved；完整transport审计及只读库存检查通过，1012旧原件SHA未变，未产生第四请求。本次续接0Key/0新增Provider。call-003与前两次request/context/profile逐字相同，HTTP500根因仍未知；成功不能倒推出先前故障层。
+累计22HTTP/376220known/137228unknown预留/2retry；旧两次500及费用、旧facts单LF例外和历史closed失败保持，500根因仍未知。本次Host续接0Key/0新增请求。最初guard38d6f040保持；0092原stdout SHAc0bdce8a、exit SHA83cfe015，最新0071 checkpoint806e1338均从原stdout保留。活动2521.33/3600秒，原请求与token包络不重置。
 
-**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续completion-initial；不要加ManualRetry，不重发facts、不重买前五份、不清零预算。授权仍截至北京时间10月28日00:21:46，不延展；冻结34abe04e clean/CI40188299016保持，无需新冻结CI。batch未close/seal、automation PAUSED、未授原15或产品资格。
-证据：data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json；Control/scope-3-facts-initial-accepted.json（51ed5f04）。0082成功原stdout SHA5ef49c48、0083导入原stdout保留；0085原stdout/exit锚最新0038 checkpoint50d5b23c，最初guard38d6f040不变。LF清单f0257d88、主审aa83feba、作者98df5df5及原native7d3463c3分别保留。
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续facts-fresh；不要加ManualRetry，不重发初审或应用。其后仍须同稿completion-fresh、真实双审和本例只读回放。授权截至北京时间10月28日00:21:46不延展；冻结34abe04e clean/公共CI40188299016保持，本次状态记录无需重跑冻结CI。batch未close/seal，automation现场核PAUSED，未授原15或产品资格。
+证据：data/evaluation/results/sol_original15_scope3_applied_20261027.json；Control/scope-3-initials-and-application-accepted.json；Control/scope-3-frontier-0092.json。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

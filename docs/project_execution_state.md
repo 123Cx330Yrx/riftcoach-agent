@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成5/15；第六份scope:3事实初审成功并双审导入，待completion-initial。累计21HTTP/357435known/137228unknown预留/2retry。"
+pause_reason: "原15完成5/15；第六份scope:3双初审及compatibility/edit均双审导入，唯一实际应用完成，待facts-fresh。累计22HTTP/376220known/137228unknown预留/2retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,18 @@ pause_reason: "原15完成5/15；第六份scope:3事实初审成功并双审导�
 
 ## 当前行动
 
-## 2026-10-27 第六份事实初审成功，双审导入后续完成度（当前）
+## 2026-10-27 第六份实际修订完成，待同稿双复审（当前）
+
+第六份scope:3完成度初审call-004成功：1HTTP200、15.234秒、输入18587/输出198，共18785known tokens，pass/100、issues及repairs为空。主审和既有独立作者全文核验后接受；兼容性clear、实际组装稿四项ReportAssessment也均经双审接受并导入，三份新增作者原件与真实native逐字一致，不需新增LF例外。
+
+程序唯一应用facts初审的一处block_4补丁：中单早死改为胜2.5/败0.5、保留非因果边界；其余24段和第14段正确全样本2.5/2.67逐字保持。实际稿SHA1aa311e2，与已审预览及待发双fresh绑定一致，application SHA2d122986。0092正常停session_model_boundary；19operations已消费、无unresolved，完整transport及四份native只读回放通过，1012旧原件SHA不变。原15仍完成5/15，本份双fresh未发，不能计为第六份闭环。
+
+累计22HTTP/376220known/137228unknown预留/2retry；旧两次500及费用、旧facts单LF例外和历史closed失败保持，500根因仍未知。本次Host续接0Key/0新增请求。最初guard38d6f040保持；0092原stdout SHAc0bdce8a、exit SHA83cfe015，最新0071 checkpoint806e1338均从原stdout保留。活动2521.33/3600秒，原请求与token包络不重置。
+
+**下一动作：** 用户运行原Control/start-authorized.ps1 -Case scope:3，隐藏输入企业Key，仅续facts-fresh；不要加ManualRetry，不重发初审或应用。其后仍须同稿completion-fresh、真实双审和本例只读回放。授权截至北京时间10月28日00:21:46不延展；冻结34abe04e clean/公共CI40188299016保持，本次状态记录无需重跑冻结CI。batch未close/seal，automation现场核PAUSED，未授原15或产品资格。
+证据：data/evaluation/results/sol_original15_scope3_applied_20261027.json；Control/scope-3-initials-and-application-accepted.json；Control/scope-3-frontier-0092.json。
+
+## 2026-10-27 第六份事实初审成功，双审导入后续完成度（此前检查点）
 
 第六份scope:3/facts-initial原项第三次请求成功：1HTTP200、45.719秒、输入20160/输出1201，共21361known tokens。原15完成仍5/15，第六份尚未完成；累计21HTTP/357435known/137228unknown预留/2retry，旧两次500及费用原样保留。
 
