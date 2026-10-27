@@ -15,6 +15,12 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-27 本机天机阁凭据入口就绪，待一次隐藏保存
+
+按用户要求新增Windows凭据管理器入口，一次隐藏保存后由执行者直接续接各例。外部adapter仅替换原continuation_credentials，真实发送边界才读取；5项本地检查及实际解释器启动通过，假凭据已清理，0真实profile Key读取/0Provider请求，原25回执和冻结源码保持。真实Key尚未保存；费用授权仍截至北京时间10月28日00:21:46，预算与审查/恢复规则不变。原15仍6/15，第七份claim-scope:2事实初审已接受，completion-initial未发。
+
+**下一动作：** 用户运行Control/configure-tianjige-key.ps1一次隐藏保存；成功后当前执行者使用start-with-stored-key.ps1 -Case claim-scope:2非交互继续同例，每次返回仍完整审查，不自动重试。原手填入口保留。方案及操作：docs/plans/2026-10-27-local-reviewer-credential.md；证据：data/evaluation/results/sol_original15_stored_credential_ready_20261027.json。automation保持PAUSED，阶段8E及后续产品依赖不变。
+
 ## 2026-10-27 第七份事实初审双审接受，待完成度初审
 
 第七份claim-scope:2的facts-initial正常返回：HTTP200、40.281秒、输入20213/输出811，共21024known tokens；100/pass，issues、issue_resolutions及repairs为空，仅block4可选advisory。主审和原独立作者完整核验25段原稿、全部来源/政策/请求/公开响应后接受，作者原件与唯一真实native final逐字相等并已导入，不需新增LF例外。第4段全样本早死2.5/约2.67与四中单2.5/0.5分别正确；第6段限定四中单补刀稳定，重分组补刀差改变2.5567、伤害差仅改变26.1833，未把描述比较升级为因果。未发现需要修订的事实问题；初审pass没有编辑成功证据。
@@ -129,7 +135,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-原15已完成6/15；第七份claim-scope:2事实初审已双审接受并导入。原入口隐藏输入企业Key仅续completion-initial；不重买成功项、不加ManualRetry，原截止北京时间10月28日00:21:46不延展。
+原15已完成6/15；用户一次运行Control/configure-tianjige-key.ps1隐藏保存天机阁企业Key后，当前执行者使用start-with-stored-key.ps1只续第七份claim-scope:2的completion-initial。原截止北京时间10月28日00:21:46、成功项和预算不变；不加ManualRetry、不自动补测。
 
 ## History
 

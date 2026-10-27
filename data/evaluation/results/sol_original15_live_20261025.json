@@ -137,7 +137,7 @@
     "retries": 2,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Run original start-authorized.ps1 -Case 'claim-scope:2'; completion-initial only, no ManualRetry or resend.",
+  "next_action": "Save the key once using configure-tianjige-key.ps1; then operator runs start-with-stored-key.ps1 -Case claim-scope:2 at the existing completion-initial boundary.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2289,5 +2289,15 @@
   "scope3_facts_fresh_result": "data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json",
   "scope3_application_clock_recovery_result": "data/evaluation/results/sol_original15_scope3_application_clock_recovery_20261027.json",
   "scope3_completed_result": "data/evaluation/results/sol_original15_scope3_completed_20261027.json",
-  "claim_scope2_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope2_facts_initial_20261027.json"
+  "claim_scope2_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope2_facts_initial_20261027.json",
+  "stored_reviewer_credential": {
+    "storage": "windows-credential-manager",
+    "setup_completed": false,
+    "entrypoint": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025-control/configure-tianjige-key.ps1",
+    "execution_entrypoint": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025-control/start-with-stored-key.ps1",
+    "evidence": "data/evaluation/results/sol_original15_stored_credential_ready_20261027.json",
+    "real_key_reads_during_preparation": 0,
+    "provider_requests_during_preparation": 0,
+    "authorization_expiry_extended": false
+  }
 }
