@@ -172,3 +172,20 @@ def test_new_application_still_has_finite_time_and_exact_scope(tmp_path):
     budget.session.root=tmp_path/'other'
     budget.clock=lambda:4000
     assert allowance.application_time_exhausted(workflow,request,manifest,lambda:None) is True
+
+
+def test_additive_time_record_keeps_legacy_scope_and_money_unchanged():
+    manifest, budget, request, original = fixture()
+    legacy = dict(manifest)
+    manifest.update(version=allowance.ADDITIVE_VERSION, case='claim-scope:6',
+        prior_batch_active_seconds=57600, effective_batch_active_seconds=61200,
+        prior_allowance_manifest_sha256='a'*64)
+    allowance.validate(manifest, plan_sha='plan', authorization_sha='auth', original_limits=ENVELOPE)
+    assert allowance.adjusted_limits(budget, request, manifest, lambda:None) == dict(original, execution_timeout_s=7200)
+    assert budget.contract.descriptor() == original
+    assert legacy['case'] == 'scope:3' and legacy['effective_batch_active_seconds'] == 57600
+    for field, value in [('additional_requests',1), ('additional_tokens',1), ('reset_accounting',True),
+                         ('prior_batch_active_seconds',0), ('effective_batch_active_seconds',999999)]:
+        changed = dict(manifest, **{field:value})
+        with pytest.raises(ValueError, match='allowance_invalid'):
+            allowance.validate(changed, plan_sha='plan', authorization_sha='auth', original_limits=ENVELOPE)

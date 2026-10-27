@@ -14,6 +14,7 @@ import types
 
 
 VERSION = 'original15-one-case-execution-time-allowance-v1'
+ADDITIVE_VERSION = 'original15-additive-case-execution-time-allowance-v2'
 
 
 def sha(path):
@@ -25,16 +26,22 @@ def read(path):
 
 
 def validate(manifest, *, plan_sha, authorization_sha, original_limits):
-    if (manifest.get('version') != VERSION
+    legacy = (manifest.get('version') == VERSION and manifest.get('case') == 'scope:3'
+        and manifest.get('effective_batch_active_seconds') == 57600)
+    additive = (manifest.get('version') == ADDITIVE_VERSION
+        and isinstance(manifest.get('case'), str) and bool(manifest['case'])
+        and manifest.get('prior_batch_active_seconds') == 57600
+        and manifest.get('effective_batch_active_seconds') == 61200
+        and isinstance(manifest.get('prior_allowance_manifest_sha256'), str)
+        and len(manifest['prior_allowance_manifest_sha256']) == 64)
+    if (not (legacy or additive)
             or manifest.get('plan_sha256') != plan_sha
             or manifest.get('authorization_sha256') != authorization_sha
-            or manifest.get('case') != 'scope:3'
             or manifest.get('remaining_stage') != 'completion-fresh'
             or manifest.get('original_limits') != original_limits
             or type(manifest.get('additional_active_seconds')) is not int
             or manifest['additional_active_seconds'] != 3600
             or manifest.get('effective_case_active_seconds') != 7200
-            or manifest.get('effective_batch_active_seconds') != 57600
             or manifest.get('reset_accounting') is not False
             or manifest.get('additional_requests') != 0
             or manifest.get('additional_tokens') != 0
@@ -129,41 +136,61 @@ def install(control, config, launch):
     from app.runtime.sol_session_receipts import request_from_raw
     from app.evaluation.natural_duty_workflow import NaturalDutyWorkflow
     control = Path(control)
-    path = control / selection['file']
     module = control / 'original15_execution_time_allowance.py'
-    if path.parent != control or module.resolve() != module or path.resolve() != path:
+    selections = [selection, *config.get('execution_time_allowance_extensions', [])]
+    paths = [control / item['file'] for item in selections]
+    if (module.resolve() != module or any(p.parent != control or p.resolve() != p for p in paths)):
         raise ValueError('original15_execution_time_allowance_path')
     original_chat = CoachBudgetedProvider._chat_once
     if getattr(original_chat, '_original15_time_allowance', False):
         raise ValueError('original15_execution_time_allowance_duplicate')
-    manifest = read(path)
+    manifests = [read(path) for path in paths]
+    if len({m['session_root'] for m in manifests}) != len(manifests):
+        raise ValueError('original15_execution_time_allowance_duplicate_scope')
 
     def verify():
-        if (sha(path) != selection['sha256'] or sha(module) != selection['module_sha256']
-                or read(path) != manifest):
-            raise ValueError('original15_execution_time_allowance_controls_changed')
-        validate(manifest, plan_sha=config['plan_sha256'],
-                 authorization_sha=config['authorization_sha256'], original_limits=launch.ENVELOPE)
-        baseline = Path(manifest['baseline_checkpoint'])
-        if (sha(baseline) != manifest['baseline_checkpoint_sha256']
-                or sha(Path(manifest['session_root']) / 'guard.json') != manifest['guard_sha256']
-                or sha(Path(manifest['application_path'])) != manifest['application_sha256']):
-            raise ValueError('original15_execution_time_allowance_original_changed')
-        if hashlib.sha256(inspect.getsource(original_chat).encode('utf-8')).hexdigest() != manifest['budget_chat_source_sha256']:
-            raise ValueError('original15_execution_time_allowance_source_changed')
-        for name, pin in manifest['stdout_evidence'].items():
-            if Path(name).name != name or sha(control / 'segments' / name) != pin:
-                raise ValueError('original15_execution_time_allowance_stdout_changed')
+        for index, (path, item, manifest) in enumerate(zip(paths, selections, manifests, strict=True)):
+            if (sha(path) != item['sha256'] or sha(module) != item['module_sha256']
+                    or read(path) != manifest):
+                raise ValueError('original15_execution_time_allowance_controls_changed')
+            validate(manifest, plan_sha=config['plan_sha256'],
+                     authorization_sha=config['authorization_sha256'], original_limits=launch.ENVELOPE)
+            launch.engine.case_for(manifest['case'])
+            expected_root = control.with_name('riftcoach-sol-original15-20261025')/'cases'/launch.engine.case_slug(manifest['case'])/'session'
+            if Path(manifest['session_root']) != expected_root:
+                raise ValueError('original15_execution_time_allowance_case_root')
+            if manifest['version'] == ADDITIVE_VERSION and (index != 1
+                    or manifest['prior_allowance_manifest_sha256'] != selections[0]['sha256']):
+                raise ValueError('original15_execution_time_allowance_lineage')
+            baseline = Path(manifest['baseline_checkpoint'])
+            if (sha(baseline) != manifest['baseline_checkpoint_sha256']
+                    or sha(Path(manifest['session_root']) / 'guard.json') != manifest['guard_sha256']
+                    or sha(Path(manifest['application_path'])) != manifest['application_sha256']):
+                raise ValueError('original15_execution_time_allowance_original_changed')
+            if hashlib.sha256(inspect.getsource(original_chat).encode('utf-8')).hexdigest() != manifest['budget_chat_source_sha256']:
+                raise ValueError('original15_execution_time_allowance_source_changed')
+            for name, pin in manifest['stdout_evidence'].items():
+                if Path(name).name != name or sha(control / 'segments' / name) != pin:
+                    raise ValueError('original15_execution_time_allowance_stdout_changed')
+
+    def selected(budget):
+        session = getattr(budget, 'session', None)
+        return next((m for m in manifests if session is not None
+            and Path(session.root) == Path(m['session_root'])), None)
+
+    def limits_for(budget, request):
+        manifest = selected(budget)
+        return (budget.contract.descriptor() if manifest is None else
+            adjusted_limits(budget, request, manifest, verify))
 
     verify()
-    patched = compile_chat(original_chat,
-        lambda budget, request: adjusted_limits(budget, request, manifest, verify))
+    patched = compile_chat(original_chat, limits_for)
     patched._original15_time_allowance = True
     CoachBudgetedProvider._chat_once = patched
     def retry_limits(budget, failed):
         attempt = failed.get('reaped_timeout') or failed.get('recoverable_format')
         request = request_from_raw(attempt['issued_raw'])
-        return adjusted_limits(budget, request, manifest, verify)
+        return limits_for(budget, request)
 
     SessionBudget._manual_retry = compile_retry(SessionBudget._manual_retry,
         'limits = self.contract_module.CONTRACT.descriptor()',
@@ -174,9 +201,15 @@ def install(control, config, launch):
     service_budget.chat = compile_retry(service_budget.chat,
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, request)',
-        lambda budget, request: adjusted_limits(budget, request, manifest, verify))
+        limits_for)
+    def application_limits(workflow, request):
+        manifest = selected(workflow.send.provider)
+        if manifest is None:
+            budget = workflow.send.provider
+            return budget.clock() - budget.started >= budget.contract.descriptor()['execution_timeout_s']
+        return application_time_exhausted(workflow, request, manifest, verify)
     NaturalDutyWorkflow.revise = compile_retry(NaturalDutyWorkflow.revise,
         "if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:",
         'if _original15_retry_limits(self, request):',
-        lambda workflow, request: application_time_exhausted(workflow, request, manifest, verify))
-    return deepcopy(manifest)
+        application_limits)
+    return deepcopy(manifests[0] if len(manifests) == 1 else dict(allowances=manifests))

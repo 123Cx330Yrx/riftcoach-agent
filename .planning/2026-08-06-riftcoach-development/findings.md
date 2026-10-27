@@ -1,3 +1,39 @@
+## 2026-10-28 第九例连接恢复双遍零发送预检通过（当前）
+
+连接故障恢复器已安装，32项针对性检查通过；真实execute入口完成读取凭据前后双遍预检，使用假凭据及新intent前禁发拦截，0Key/0Provider。前八例真实原生回放匹配；第九例五审、唯一application、原terminal/outcome及全部旧库存逐字保持。保存凭据适配仅更新operator代码绑定，vault目标、分组与服务地址不变，零读取校验通过。
+
+另建仅claim-scope:6/completion-fresh的3600秒时间追加，累计7200秒；scope:3旧额度单独保留。追加不增加请求/token、不清零用量、不延费用截止，明确不称原时间包络内通过。恢复预检已追加一份单次service-retry批准；下次真实保存凭据启动不再加ManualRetry，只续最后completion-fresh，若再次传输失败仍暂停同项，不自动连买。
+
+原15仍8/15，累计32HTTP/549278known/195578unknown预留保持；最后一次连接失败58350未知预留保留。累计retry预算由2变3，新增一份单次批准尚未发送，不把批准当作成功调用。下一步同稿末项单次发送，返回后完整来源双审与严格只读闭环，再推进第十例。授权截至北京时间10月29日00:25:43，冻结执行树、automation PAUSED、Stage8E及产品未准入边界保持。
+
+证据：data/evaluation/results/sol_original15_claim_scope6_connect_recovery_ready_20261028.json。
+
+## 2026-10-28 第九例末项连接故障，保留成功项并修复恢复缺口（当前）
+
+最后completion-fresh第4次请求发生connect_error：无HTTP响应头、无正文和模型答案，未知用量预留58350保留。不是语义失败。现恢复器仅识别部分HTTP服务错误，漏掉了这一已观测连接故障，导致本例写下历史terminal/outcome；原记录保持，不将整批作废。严格只读重放复现最早ProviderResponseError，五份native、唯一application及作者/全部run库存保持。
+
+原15仍完成8/15；第九例前三次成功共58700known和五阶段双审不重发。累计32HTTP/549278known/195578unknown预留/2retry。当前无付费进程。工作卡：仅修外部恢复分类和多例历史终止映射，完成晚期失败→保留五审/唯一应用→同项单次重试→原生导入→只读回放的本地测试，并以真实双遍execute禁发sender核验。内容、身份、观测缺失与真实语义错误仍停止；不放宽质量门。
+
+本例原活动3373.578秒只剩226.422秒，重复本地核验已不足以再次运行；按用户既有“预算改加就加”的执行时间授权，准备另建仅本例completion-fresh的3600秒行政追加，不复用scope:3专用额度、不重置时钟或新增请求/token授权，尚未安装。原授权截止与Stage8E/产品未准入保持，automation PAUSED。下一步完成针对性检查、安装追加控制并做零付费实际入口预检，再决定同项发送。
+
+证据：data/evaluation/results/sol_original15_claim_scope6_connect_failure_20261028.json。
+
+## 2026-10-28 第九例事实复审双审接受，最后完成度复审中（当前）
+
+第九例claim-scope:6唯一block_6补丁已实际应用，新稿1068d56a与双审预览一致，其余24段保持。facts-fresh正常1HTTP200、31.219秒、18655known tokens，100/pass、issues空、仅advisory4。主审和原独立作者核对完整实际新稿、来源与当前政策后接受，作者原件与真实native逐字相等，0123已唯一导入；五个Host阶段均接受，无新增LF例外。
+
+原15仍完成8/15，第九例只余completion-fresh和闭环回放；累计31HTTP/549278known/137228unknown预留/2retry。0124为最后完成度复审唯一执行者，使用保存凭据，不重发成功项、不改冻结源码或预算。当前0060边界活动约2497秒，原本例3600秒保持；旧失败/费用、automation PAUSED、阶段8E和产品未准入边界保持。授权截至北京时间10月29日00:25:43。
+
+证据：data/evaluation/results/sol_original15_claim_scope6_facts_fresh_20261028.json。
+
+## 2026-10-28 第九例整稿双审接受，同稿复审续接中（当前）
+
+第九例claim-scope:6完成度初审100/pass，1HTTP200、14.938秒、18748known tokens；两份初审、compatibility及edit均经主审和原独立作者完整来源审查接受，四阶段作者原件与唯一真实native逐字一致并唯一导入，无新增LF例外。实际程序预览仅将第6段补刀比较明确为四中单8.805/9.01，其余24段保留，整稿四项ReportAssessment均通过；目前不能称application或fresh成功。
+
+原15仍完成8/15；累计30HTTP/530623known/137228unknown预留/2retry。0122为同例application/facts-fresh的唯一续接执行者，使用保存凭据；先核真实返回，不重复启动或重发成功项。当前0044边界活动1626.406秒，本例3600秒上限不变。旧失败/费用、冻结HEAD及automation PAUSED保持；阶段8E及产品/全15未准入边界保持。授权截至北京时间10月29日00:25:43，原余量不变。
+
+证据：data/evaluation/results/sol_original15_claim_scope6_edit_accepted_20261028.json。
+
 ## 2026-10-28 第九例事实初审双审接受，完成度续接中（当前）
 
 第九例claim-scope:6事实初审正常返回1HTTP200、40.015秒、21297known tokens，94/needs_revision。主审及原独立作者完整来源双审接受：第6段主动保留是否纳入辅助局的不确定性，却断言补刀均值持平；中单8.805/9.01接近，含辅助败组6.453333则不同。唯一block_6补丁将比较明确为四中单8.805/9.01，解释、来源、reason及唯一锚点正确。作者原件与真实native逐字相等，0115已唯一导入；尚无application或新稿通过。

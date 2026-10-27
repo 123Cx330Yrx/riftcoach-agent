@@ -36,17 +36,26 @@ def service_failure(session, value):
         ('receipt.json', 'observation/observation.json', 'worker-result.json'))
     status = obs.get('response_status')
     code = f'http_status_{status}'
-    if (type(status) is not int or status not in SERVICE_STATUSES
+    http_error = (type(status) is int and status in SERVICE_STATUSES
+        and receipt.get('worker_code') == code and worker.get('code') == code
+        and obs.get('eof') is True and obs.get('closed') is True)
+    connect_error = (status is None and receipt.get('worker_code') == 'request_failed'
+        and worker.get('code') == 'request_failed'
+        and receipt.get('failure_category') == worker.get('failure_category') == 'connect_error'
+        and obs.get('phase') == 'response_headers_failed'
+        and obs.get('exception_type') == 'connect_error'
+        and obs.get('read_calls') == obs.get('raw_chunks') == obs.get('raw_bytes') == 0
+        and obs.get('eof') is False and obs.get('closed') is False)
+    if (not (http_error or connect_error)
             or receipt.get('ok') is not False or receipt.get('code') != 'worker_rejected'
-            or receipt.get('worker_code') != code or worker.get('code') != code
             or receipt.get('reaped') is not True or receipt.get('worker_exit') != 0
             or receipt.get('usage_state') != 'unknown' or receipt.get('usage') is not None
             or receipt.get('usage_conflict') is not False
             or receipt.get('http_requests') != 1 or type(obs.get('http_requests')) is not int
             or obs['http_requests'] != 1 or obs.get('schema_version') != 'stream-observation-v1'
-            or obs.get('body_free') is not True or obs.get('eof') is not True
-            or obs.get('closed') is not True or obs.get('response_contract') is not None
-            or worker.get('public_tool_call') is not None or worker.get('usage') is not None):
+            or obs.get('body_free') is not True or obs.get('response_contract') is not None
+            or worker.get('public_tool_call') is not None or worker.get('usage') is not None
+            or worker.get('diagnostic_tool_call') is not None):
         return None
     attempt = read(session.root / 'operations' / f'attempt-{ordinal:03d}.json')
     return dict(status=status, ordinal=ordinal, issued_raw=attempt['issued_raw'],
@@ -89,19 +98,22 @@ def activate(launch, manifest, reload_manifest):
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
     if getattr(launch, '_service_recovery_installed', False):
         raise ValueError('original15_service_recovery_already_installed')
-    if function_pins(launch) != manifest['function_sha256']:
+    manifests = manifest.get('recoveries', [manifest])
+    if (not manifests or len({m['case_root'] for m in manifests}) != len(manifests)
+            or any(function_pins(launch) != m['function_sha256'] for m in manifests)):
         raise ValueError('original15_service_recovery_source_changed')
     original_open = launch.open_case
     original_budget = launch.engine.SessionBudget
     original_workflow = launch.engine.FixedReportWorkflow
-    record_root = Path(manifest['case_root']) / 'session'
+    record_roots = {Path(m['case_root']) / 'session': m for m in manifests}
 
     def verify_manifest(session=None):
         if reload_manifest() != manifest:
             raise SessionBlocked('original15_service_recovery_controls_changed')
-        if session is not None and session.root == record_root:
-            for name, pin in manifest['inventory'].items():
-                path = Path(manifest['case_root']) / name
+        selected = record_roots.get(session.root) if session is not None else None
+        if selected is not None:
+            for name, pin in selected['inventory'].items():
+                path = Path(selected['case_root']) / name
                 if path.resolve() != path or path.stat().st_nlink != 1 or digest(path.read_bytes()) != pin:
                     raise SessionBlocked('original15_service_recovery_parent_changed')
 
@@ -115,8 +127,10 @@ def activate(launch, manifest, reload_manifest):
             paths = sorted((self.root / 'operations').glob('*-result.json'))
             failed = read(paths[-1])['value'] if paths else None
             # The historical failure journal follows its failed model operation.
-            if self.service_recovery and len(paths) == 2:
-                failed = read(paths[0])['value']
+            if self.service_recovery:
+                ordinal = self.service_recovery.get('failed_operation_ordinal', 1)
+                if len(paths) == ordinal + 1:
+                    failed = read(self.root/'operations'/f'{ordinal:04d}-result.json')['value']
             value['transport_waiting'] = (not value['closed'] and not value['unresolved']
                 and service_failure(self, failed) is not None)
             return value
@@ -135,7 +149,7 @@ def activate(launch, manifest, reload_manifest):
     def open_case(*args, **kwargs):
         session, gate = original_open(*args, **kwargs)
         session.__class__ = RecoverySession
-        session.service_recovery = manifest if session.root == record_root else None
+        session.service_recovery = record_roots.get(session.root)
         gate.submit = patched_submit.__get__(gate, type(gate))
         return session, gate
 
@@ -158,14 +172,15 @@ def activate(launch, manifest, reload_manifest):
                     # Verify request/profile/transport/unknown reservation using
                     # the unchanged full receipt auditor before retry authority.
                     launch.audit_transport(session)
-                    if session.service_recovery and session.cursor == 1:
-                        journal = read(session.root / 'operations/0002-intent.json')
-                        if journal['request']['name'] != 'outcome':
+                    selected = session.service_recovery
+                    if selected and session.cursor == selected.get('failed_operation_ordinal', 1):
+                        journal = read(session.root / 'operations' / f'{session.cursor+1:04d}-intent.json')
+                        if journal['kind'] != 'journal' or journal['request']['name'] != 'outcome':
                             raise SessionBlocked('original15_service_recovery_journal_changed')
                         session.operation('journal', journal['request'],
                             lambda: (_ for _ in ()).throw(AssertionError('historical replay only')))
                     bound = dict(failed_result_sha256=digest(path.read_bytes()), failure=failure,
-                        budget=value['budget'], recovery_manifest_sha256=manifest['manifest_identity'])
+                        budget=value['budget'], recovery_manifest_sha256=(selected or manifests[0])['manifest_identity'])
                     next_path = session.root / 'operations' / f'{session.cursor+1:04d}-intent.json'
                     if not next_path.exists():
                         if session.read_only or not session.manual_retry:
@@ -189,6 +204,9 @@ def activate(launch, manifest, reload_manifest):
                     decision, replayed = session.operation('service-retry', bound, approve)
                     if replayed:
                         self.restore(decision['budget'])
+                        next_result = session.root / 'operations' / f'{session.cursor+1:04d}-result.json'
+                        if not next_result.exists():
+                            session.manual_retry = False
 
     class RecoveryWorkflow(original_workflow):
         def record(self, name, data):
@@ -201,7 +219,7 @@ def activate(launch, manifest, reload_manifest):
 
     def case_terminal(folder):
         folder = Path(folder)
-        return folder / ('session/' + TERMINAL if folder / 'session' == record_root else 'session/terminal.json')
+        return folder / ('session/' + TERMINAL if folder / 'session' in record_roots else 'session/terminal.json')
 
     launch.open_case = open_case
     launch.engine.SessionBudget = ServiceBudget
@@ -225,16 +243,19 @@ def install(control, config, launch):
     control = Path(control)
     def load():
         module = control / 'original15_transport_recovery.py'
-        path = control / selection['file']
-        if (path.parent != control or digest(module.read_bytes()) != selection['module_sha256']
-                or digest(path.read_bytes()) != selection['sha256']):
-            raise ValueError('original15_service_recovery_controls_changed')
-        value = read(path)
-        if value['plan_sha256'] != config['plan_sha256']:
-            raise ValueError('original15_service_recovery_plan_changed')
-        identity = dict(value)
-        identity.pop('manifest_identity')
-        if digest(canonical(identity)) != value['manifest_identity']:
-            raise ValueError('original15_service_recovery_manifest_identity')
-        return value
+        values = []
+        for item in [selection, *config.get('service_error_recovery_extensions', [])]:
+            path = control / item['file']
+            if (path.parent != control or digest(module.read_bytes()) != item['module_sha256']
+                    or digest(path.read_bytes()) != item['sha256']):
+                raise ValueError('original15_service_recovery_controls_changed')
+            value = read(path)
+            if value['plan_sha256'] != config['plan_sha256']:
+                raise ValueError('original15_service_recovery_plan_changed')
+            identity = dict(value)
+            identity.pop('manifest_identity')
+            if digest(canonical(identity)) != value['manifest_identity']:
+                raise ValueError('original15_service_recovery_manifest_identity')
+            values.append(value)
+        return values[0] if len(values) == 1 else dict(recoveries=values)
     return activate(launch, load(), load)

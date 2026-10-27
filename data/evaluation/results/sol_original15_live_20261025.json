@@ -5,27 +5,58 @@
   "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
   "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
   "case": "claim-scope:6",
-  "actual_edit_performed": false,
+  "actual_edit_performed": true,
   "qualified": false,
   "publication_allowed": false,
   "production_admitted": false,
   "automation_status": "PAUSED",
   "date": "2026-10-28",
-  "stage": "facts-initial",
+  "stage": "completion-fresh-connect-recovery-ready",
   "accepted_stages": [
     {
       "stage": "facts-initial",
-      "primary_accepted": true,
-      "independent_accepted": true,
-      "native_submission_accepted": true,
-      "checkpoint_sha256": "6401aac80b5662d17ccb9239e4cc50038fdaa3f823203d2af1aa138e17c307e5",
       "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e6d-6dbc-7f00-bd82-330ab5b625c4/msg_0ecbd62c944c67ef016ae0e145e9048193a09a3356fae73e31",
       "author_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
       "native_final_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
-      "raw_event_sha256": "d6efc3b6de3d665822c714f398cef9f65216a0c40551614ee55b5b7dcd0a2978",
-      "author_text_equal": true,
-      "primary_sha256": "acb5623b4be6a2932d0671e736be607c1e0125ed472a8f173aee2b50678a4c2a",
-      "submission_sha256": "c6f03ede1fe6655e3d24ea031e66a6a0efc55706b80355be39bc7bd0839f6828"
+      "checkpoint_sha256": "6401aac80b5662d17ccb9239e4cc50038fdaa3f823203d2af1aa138e17c307e5",
+      "submission_sha256": "c6f03ede1fe6655e3d24ea031e66a6a0efc55706b80355be39bc7bd0839f6828",
+      "accepted": true
+    },
+    {
+      "stage": "completion-initial",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e81-8b1c-7d43-93b3-59b3a91b0fbe/msg_0ecbd62c944c67ef016ae0e63938588193bb4a7407927788e4",
+      "author_sha256": "07c9dbbe56dcdd2f1a8e7f294763f01c7c39cadf699194ffcb91f13eb5948446",
+      "native_final_sha256": "07c9dbbe56dcdd2f1a8e7f294763f01c7c39cadf699194ffcb91f13eb5948446",
+      "checkpoint_sha256": "ca9cf2ab41336fbcadb80ddc303767ba735eff3504024a38cf7280925068a811",
+      "submission_sha256": "c5c1a0393e57d17327a68159f7a08564565bf2ae06ddc1555af2529c19f26298",
+      "accepted": true
+    },
+    {
+      "stage": "compatibility",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e89-3dcc-7920-bc02-a7119aaed537/msg_0ecbd62c944c67ef016ae0e857bdfc8193a623be969b98162b",
+      "author_sha256": "065dabc85d4c8323e58215a0f569a035c9131ec379f12d9574c998a281597dd9",
+      "native_final_sha256": "065dabc85d4c8323e58215a0f569a035c9131ec379f12d9574c998a281597dd9",
+      "checkpoint_sha256": "8d50d57d08b729d41f40bf6b39b3e6f0438c28833461cb7957a7935b25d445ba",
+      "submission_sha256": "c2670409f13d3c730586389cbb42f74640b251aeeca8e292a78549affb5b0ae4",
+      "accepted": true
+    },
+    {
+      "stage": "edit",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e92-ad78-7161-ac55-e75037b06215/msg_0ecbd62c944c67ef016ae0eaab58c48193a4d519b22757c003",
+      "author_sha256": "252f80a479609702d4921969cde214650ceaab25736eda80d9946afa0334a483",
+      "native_final_sha256": "252f80a479609702d4921969cde214650ceaab25736eda80d9946afa0334a483",
+      "checkpoint_sha256": "45cb334f60a7b526cac18389870f91901d86db7c07303b4b6fa6a3420c11cf0f",
+      "submission_sha256": "03197b3201550c75b2101533fd270e73de9b59773e0db6386f73fd0159c77d9b",
+      "accepted": true
+    },
+    {
+      "stage": "facts-fresh",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17ea7-2661-7d10-8ba4-c5841c0d8bac/msg_0ecbd62c944c67ef016ae0eff180e88193b1fd2bb07f272e10",
+      "author_sha256": "a8ebdd6339aef4c55a955d47977234471a3a05750b994abeb0997af08451dc94",
+      "native_final_sha256": "a8ebdd6339aef4c55a955d47977234471a3a05750b994abeb0997af08451dc94",
+      "checkpoint_sha256": "bb6f2b28a73ed6906532f0879f8395cb0dd777671af90f0fa169c59b57dc2b8c",
+      "submission_sha256": "1d8946f625c1b6ee3dff52dab77b528f835bd39fd7d5f6b5ee4fb479d6c473bb",
+      "accepted": true
     }
   ],
   "native_reviews": [
@@ -33,43 +64,73 @@
       "stage": "facts-initial",
       "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e6d-6dbc-7f00-bd82-330ab5b625c4/msg_0ecbd62c944c67ef016ae0e145e9048193a09a3356fae73e31",
       "native_import_verified": true
+    },
+    {
+      "stage": "completion-initial",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e81-8b1c-7d43-93b3-59b3a91b0fbe/msg_0ecbd62c944c67ef016ae0e63938588193bb4a7407927788e4",
+      "native_import_verified": true
+    },
+    {
+      "stage": "compatibility",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e89-3dcc-7920-bc02-a7119aaed537/msg_0ecbd62c944c67ef016ae0e857bdfc8193a623be969b98162b",
+      "native_import_verified": true
+    },
+    {
+      "stage": "edit",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e92-ad78-7161-ac55-e75037b06215/msg_0ecbd62c944c67ef016ae0eaab58c48193a4d519b22757c003",
+      "native_import_verified": true
+    },
+    {
+      "stage": "facts-fresh",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17ea7-2661-7d10-8ba4-c5841c0d8bac/msg_0ecbd62c944c67ef016ae0eff180e88193b1fd2bb07f272e10",
+      "native_import_verified": true
     }
   ],
   "inventory_unchanged": null,
-  "status": "facts-initial-accepted-completion-initial-running",
+  "status": "eight-completed-ninth-final-review-single-retry-ready",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
   "completed_replay_evidence_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
   "cases_completed": 8,
   "next_case": "claim-scope:6",
-  "next_stage": "completion-initial",
-  "retry_needed": false,
+  "next_stage": "completion-fresh",
+  "retry_needed": true,
   "all_cases_matched": false,
   "current_case": {
     "key": "claim-scope:6",
-    "stage": "facts-initial",
+    "stage": "completion-fresh-connect-recovery-ready",
     "closed": false,
     "accepted_host_stages": {
-      "facts-initial": true
+      "facts-initial": true,
+      "completion-initial": true,
+      "compatibility": true,
+      "edit": true,
+      "facts-fresh": true
     },
-    "actual_report_sha256": "a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14",
-    "actual_edit_performed": false,
-    "application_count": 0,
+    "actual_report_sha256": "1068d56a74f779f59bcefbfb6d7b49261b6e101259e74d48876f897cc8ac193a",
+    "actual_edit_performed": true,
+    "application_count": 1,
     "original_stdout_roots": {
-      "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565",
-      "checkpoint_sha256": "ffb7e9e99216a469aecf21c61200b9525d690589099e723fe4145d13759f9914"
-    }
+      "checkpoint_sha256": "041546a1c544967e67aac9d471a82fca5d5850f3fa9f60202be1ff35e88ff10a",
+      "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565"
+    },
+    "preview_report_sha256": "1068d56a74f779f59bcefbfb6d7b49261b6e101259e74d48876f897cc8ac193a",
+    "historical_terminal_closed": true,
+    "semantic_output_available": false,
+    "recovery_ready_evidence": "data/evaluation/results/sol_original15_claim_scope6_connect_recovery_ready_20261028.json",
+    "recovery_ready_sha256": "dd55b55ebf9103773d8971bb8ac910cd94f6edfb9f290e1091a5f4faa5199e89",
+    "execution_time_allowance": "b3d92833da840e435404f78c516eaf6a14d26c1acbe44110f7eea8f5f9d8808a",
+    "original_envelope_pass": false,
+    "single_use_retry_approval_staged": true
   },
   "batch_accounting": {
-    "calls": 29,
-    "http_requests_known": 29,
+    "calls": 32,
+    "http_requests_known": 32,
     "http_requests_unknown": 0,
-    "known_tokens": 511875,
-    "not_sent": 0,
-    "receiptless_calls": 0,
-    "retries": 2,
-    "unknown_reserved_tokens": 137228
+    "known_tokens": 549278,
+    "retries": 3,
+    "unknown_reserved_tokens": 195578
   },
-  "next_action": "Continue the existing unique 0116 execution, review its response, then compatibility/edit and fresh as required; do not duplicate sends.",
+  "next_action": "Use the stored-key launcher once at claim-scope:6 without ManualRetry: the existing single-use service-retry approval is staged. Only completion-fresh may send; no automatic retry loop.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2457,29 +2518,35 @@
   "strict_replay": false,
   "result": null,
   "original_stdout_roots": {
-    "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565",
-    "checkpoint_sha256": "ffb7e9e99216a469aecf21c61200b9525d690589099e723fe4145d13759f9914"
+    "checkpoint_sha256": "041546a1c544967e67aac9d471a82fca5d5850f3fa9f60202be1ff35e88ff10a",
+    "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565"
   },
   "transport": {
-    "actual_attempts": 1,
-    "completed_calls": 1,
-    "failed_calls": 0,
-    "http_requests_known": 1,
+    "actual_attempts": 4,
+    "completed_calls": 3,
+    "failed_calls": 1,
+    "http_requests_known": 4,
     "http_requests_unknown": 0,
-    "known_tokens": 21297,
-    "known_usage_calls": 1,
+    "known_tokens": 58700,
+    "known_usage_calls": 3,
     "not_sent": 0,
     "receiptless_calls": 0,
-    "unknown_reserved_tokens": 0,
-    "unknown_usage_calls": 0
+    "unknown_reserved_tokens": 58350,
+    "unknown_usage_calls": 1
   },
   "accounting": {
-    "calls": 1,
-    "reserved_tokens": 0,
+    "calls": 4,
+    "reserved_tokens": 58350,
     "retries": 0,
-    "tokens": 21297
+    "tokens": 58700
   },
   "latest_completed_result": "data/evaluation/results/sol_original15_claim_scope_5_completed_20261028.json",
   "strict_replay_status": "current_case_not_completed; prior_completed_replay_retained",
-  "claim_scope6_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json"
+  "claim_scope6_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json",
+  "claim_scope6_edit_accepted_result": "data/evaluation/results/sol_original15_claim_scope6_edit_accepted_20261028.json",
+  "claim_scope6_facts_fresh_result": "data/evaluation/results/sol_original15_claim_scope6_facts_fresh_20261028.json",
+  "claim_scope6_connect_failure_result": "data/evaluation/results/sol_original15_claim_scope6_connect_failure_20261028.json",
+  "recovery_ready_evidence": "data/evaluation/results/sol_original15_claim_scope6_connect_recovery_ready_20261028.json",
+  "recovery_ready_sha256": "dd55b55ebf9103773d8971bb8ac910cd94f6edfb9f290e1091a5f4faa5199e89",
+  "next_launch_manual_retry": false
 }
