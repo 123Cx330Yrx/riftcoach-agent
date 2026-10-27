@@ -15,7 +15,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-27当前工作：原15仍完成5/15。第六份scope:3/facts-initial用户触发0079手动补测，49.703秒后再次HTTP500，无审查意见；本次正确暂停当前项，历史closed保持、当前恢复终态未写、无第三次请求。只读重放及完整transport审计通过，旧原件/作者及前五份保持，累计20HTTP/336074known/137228unknown预留/1retry。用户平台日志为invalid character ':' looking for beginning of value；同SDK零网络重建核wire SHA、JSON合法、/v1/responses及stream=false，不据此擅改业务格式或确诊SSE。输入Key后的本地核验595.39秒，Provider49.703秒，性能尚未优化。下一动作待渠道恢复后同入口-Case scope:3 -ManualRetry，仅补当前首审；不自动重发、不重买成功项。授权至北京时间10月28日00:21:46不延展，冻结34abe04e/CI40188299016保持，无需再等冻结CI。batch未close/seal、automation PAUSED、资格未授。证据data/evaluation/results/sol_original15_scope3_service_retry_20261027.json。
+2026-10-27当前工作：原15仍完成5/15，第六份scope:3/facts-initial暂停待原项手动补测；累计20HTTP/336074known/137228unknown预留/1retry保持。本轮0新增Provider/0Key，1012份原库存逐文件SHA未变，原作者与五例真实native/source按原规则重放接受；无call-003、无新恢复终态或seal。
+
+重新核scope:4成功首审与scope:3失败请求：参数、工具Schema、系统政策相同，大小50681/50702字节；仅报告4/14段与其绑定摘要变化，来源投影除三项绑定摘要外相同。同SDK序列化合法、stream=false/high。经本机代理公共站点状态HTTP200、direct连接超时，但公共页面可达不代表模型路径；浏览器未取得新日志。两次HTTP500的具体根因仍未定位，不再以“等待上游恢复”作为已证实前提，也不把冒号错误擅判为SSE或本地格式错。
+
+已定位本地重复核验：230次ExactNativeGate验证中，来源检查与逐字检查重复读取同一native响应。外部Control仅在单次验证内共享同方法/精确参数的即时RPC快照，深拷贝防修改，finally清理；下一次验证重新真实读取，故障不回退旧成功，515次协作日志仍逐次读取。冻结源码/业务请求/原审查及预算不改。两次同cProfile真实HostOnly从355.677降至269.992秒（约24.1%），底层native client request从996降至464，230次原验证全部执行并正确停original15_awaiting_manual_retry。负载有波动，不能承诺后续固定耗时，也不是500修复。
+
+**下一动作：** 用户可用原start-authorized.ps1 -Case scope:3 -ManualRetry隐藏输入企业Key，仅补未完成首审；不自动付费、不重买前五份、不清零累计。普通服务错误继续只暂停本项。授权北京时间10月28日00:21:46截止不延展；冻结34abe04e clean及CI40188299016保持，外部性能适配无需再等冻结树全套CI。batch未close/seal、automation PAUSED、资格未授。
+证据：data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json；Control/scope-3-retry-preparation-20261027.json（08b7207a）、scope-3-request-recheck-20261027.json、0080/0081原stdout及exit。最初guard38d6f040保持，0081原stdout SHA69f0b838，最新0021 checkpoint9c01fcbc；旧失败根不覆盖。103项非流/恢复、7项快照、16项换行回归分别通过；不是同一轮全套。
 
 ## 2026-10-25 实际修订及同稿双复审闭环完成，已封存（前包依据）
 

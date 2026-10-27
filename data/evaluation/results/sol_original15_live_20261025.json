@@ -143,8 +143,8 @@
       "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
     },
     "original_stdout_roots": {
-      "checkpoint_sha256": "ee90c7b07b7e8259f01620d1cd2d7017567f7311c8313ea9ea3ec176030041c7",
-      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+      "checkpoint_sha256": "9c01fcbcb497f9ad1529dd2717bef2db3fd618d1bee127e45c647f107fdd4cd5"
     },
     "accounting": {
       "calls": 2,
@@ -180,8 +180,12 @@
     "user_reported_console_error": "status_code=500, invalid character ':' looking for beginning of value",
     "wire_check_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-500-wire-check.json",
     "wire_check_sha256": "784247096ed30ff8564eab0858b33cf59e200747bbd72c7a3a01e76997002e72",
-    "active_seconds": 1244.2669999999925,
-    "transport_waiting": true
+    "active_seconds": 1244.5639999999985,
+    "transport_waiting": true,
+    "retry_preparation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-retry-preparation-20261027.json",
+    "retry_preparation_sha256": "08b7207a3a31d6e913efcd4a0cf177ea3421dbf670cbe4de4251764dbb52d4ca",
+    "root_cause_500": "unresolved",
+    "ready_for_manual_retry": true
   },
   "batch_accounting": {
     "calls": 20,
@@ -191,7 +195,7 @@
     "retries": 1,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Wait for channel recovery; use the same manual-retry hidden-key launcher for scope:3 only. No automatic retry or successful-case resend.",
+  "next_action": "Manual same-stage retry: start-authorized.ps1 -Case scope:3 -ManualRetry. Request recheck and optimized real HostOnly verification passed; do not require an unproven upstream outage to clear. Preserve costs and successes; no automatic request.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -1931,5 +1935,6 @@
   },
   "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completed-replay.json",
   "latest_completed_replay_evidence_sha256": "9417b8c29fc959e2a0b3639a354de71c302bc2bf9de0d5686d4a26bd7edfd7c4",
-  "completed_cases_all_matched": true
+  "completed_cases_all_matched": true,
+  "retry_preparation_result": "data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json"
 }
