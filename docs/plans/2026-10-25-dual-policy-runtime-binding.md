@@ -1,5 +1,16 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-28 claim-scope:7完成，原15进度10/15（当前）
+
+第十例claim-scope:7的facts-initial与completion-initial均100/pass，分别20799和18819known tokens、26.296和15.407秒；两份意见均经主审和原独立作者全文审查接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。第6段分别明示四中单8.805/9.01与纳入辅助8.805/约6.45，两种条件均正确；第4段早死省略由第14段全样本限定消解，不补造中单或全称断言。完成度核实已有观摩行动和正文知识消费，没有OP.GG可用快照，不造本人训练义务。
+
+原程序正常结束candidate_initial_pass_unqualified，matched=true。原稿ebcd0683保持，无编辑、application或fresh，不称修订成功。本例严格只读replay匹配；前九例由真实启动器在发送及本地结束前再次核验，外层复用此前回放证据并核对保留的terminal、原1012件SHA和当前库存保持。旧失败、费用、LF及scope:3和claim-scope:6各自时间例外保持，本例无新增例外。
+
+原15完成10/15；本例2HTTP/39618known/0unknown/0retry，累计35HTTP/605307known/195578unknown预留/3retry。两次Provider合计41.703秒，长等待主要来自本地重复历史/native回放，不归因CI或上游。下一例observed:1，使用保存凭据入口，不重发成功项，不清零额度。授权截至北京时间10月29日00:25:43；整批尚未seal、未授全15或产品资格，automation PAUSED、Stage8E及后续产品/学习依赖保持。
+
+证据：data/evaluation/results/sol_original15_claim_scope_7_completed_20261028.json。
+
+
 ## 2026-10-28 第十例事实初审双审接受，完成度续接中（当前）
 
 第十例claim-scope:7事实初审正常HTTP200、26.296秒、20799known tokens，100/pass，仅advisory block4，无issues/repairs。主审与原独立作者全文核对25段报告、完整来源和当前政策后接受；第6段分别明确中单双方8.805/9.01及含辅助8.805/约6.45，两种条件均正确。作者原件与真实native逐字相等，0130唯一导入，无新增LF例外。
