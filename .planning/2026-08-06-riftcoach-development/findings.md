@@ -1,3 +1,11 @@
+## 2026-10-28 第九例事实初审双审接受，完成度续接中（当前）
+
+第九例claim-scope:6事实初审正常返回1HTTP200、40.015秒、21297known tokens，94/needs_revision。主审及原独立作者完整来源双审接受：第6段主动保留是否纳入辅助局的不确定性，却断言补刀均值持平；中单8.805/9.01接近，含辅助败组6.453333则不同。唯一block_6补丁将比较明确为四中单8.805/9.01，解释、来源、reason及唯一锚点正确。作者原件与真实native逐字相等，0115已唯一导入；尚无application或新稿通过。
+
+原15仍完成8/15，第九例未闭环；累计29HTTP/511875known/137228unknown预留/2retry。当前0116为同例completion-initial唯一执行者，使用保存凭据，不重买事实初审。授权截至北京时间10月29日00:25:43，原余量不变；scope:3时间例外不扩到此例。等待主要为本地重复历史回放，不归因上游。冻结执行HEAD、旧失败和费用保持，automation PAUSED、阶段8E及产品未准入边界保持。
+
+证据：data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json。
+
 ## 2026-10-28 claim-scope:5完成，原15进度8/15（当前）
 
 第八例claim-scope:5的facts-initial与completion-initial均100/pass，分别20608和18756known tokens、21.765和12.828秒；两份意见均经主审和原独立作者全文审查接受，作者原件与真实native精确字节一致，已唯一导入。事实初审仅advisory block4；早死省略由第14段明确全样本2.5/2.67消解，辅助对败组补刀降低、视野和早死升高均正确。完成度核实已有具体观摩行动及K知识使用，没有可用OP.GG快照，不造个人训练或新任务义务。
