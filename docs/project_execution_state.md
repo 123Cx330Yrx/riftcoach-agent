@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成11/15；下一例observed:2；累计37HTTP/648092known/195578unknown预留/3retry。"
+pause_reason: "原15完成11/15；observed:2事实初审双审接受、完成度续接中；累计38HTTP/670974known/195578unknown预留/3retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,14 @@ pause_reason: "原15完成11/15；下一例observed:2；累计37HTTP/648092known
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-28 第十二例事实初审双审接受，完成度续接中（当前）
+
+observed:2事实初审HTTP200、30.578秒、22882known tokens，90/needs_revision；唯一block_10补丁撤销明确的未来所有中单比赛伤害全称预测，保留正确的四场经济/伤害观察。主审与原独立作者完整来源双审接受；作者原件与唯一真实native逐字相等，0140已唯一导入，无新增LF例外。完整来源及五条外部事实/出处重建通过，尚无application或新稿通过。
+
+原15仍完成11/15，第十二例未闭环；累计38HTTP/670974known/195578unknown预留/3retry。0141为同例completion-initial唯一执行者，保存凭据无需重复输入，不重买事实初审。当前0014活动1112.579秒，原本例3600秒与既有两例各自时间追加保持。长等待主要来自本地重复历史/native回放，不归因CI或上游；费用授权截止北京时间10月29日00:25:43不变。冻结源码/HEAD、旧失败与费用、automation PAUSED、Stage8E及产品未准入边界保持。
+
+证据：data/evaluation/results/sol_original15_observed2_facts_initial_20261028.json。
 
 ## 2026-10-28 observed:1完成，原15进度11/15（当前）
 
