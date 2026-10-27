@@ -10,8 +10,8 @@
   "publication_allowed": false,
   "production_admitted": false,
   "automation_status": "PAUSED",
-  "date": "2026-10-27",
-  "stage": "facts-initial-accepted",
+  "date": "2026-10-28",
+  "stage": "case-completed",
   "accepted_stages": [
     {
       "stage": "facts-initial",
@@ -27,45 +27,60 @@
       "terminal_lf_exception": false,
       "primary_sha256": "d4720b3b4952c49e41186cd45803077b046d5c0fca68674673d0667633a25282",
       "submission_sha256": "3b2e98d7136919d031632cedfec9675ee1f59780890add58103691deedb64db9"
+    },
+    {
+      "stage": "completion-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "cdb563aa7c7d1a5b5f96a53815c526d180eec0409b1f100ff5d25173e95f1b1b",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e1f-a658-7532-8d5b-6ba7100e9c4d/msg_0730884fbbcfc5f8016ae0cd1710f481978d79c16dd3c229d5",
+      "author_sha256": "273cffb997d3819ec78a387c32b4973be89d4e0e3a593d47428beee94a3051fb",
+      "native_final_sha256": "273cffb997d3819ec78a387c32b4973be89d4e0e3a593d47428beee94a3051fb",
+      "raw_event_sha256": "5e4f5256d9d181fa21fe6afe15d1d2f90df61590d90390ff074a09c3c7793e76",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "97a658aa5f2ad263492284e58c3458b4307eb3a75b11c3dc7cb69b154051862a",
+      "submission_sha256": "2912caaea350d2ba97127037d589f0aec698589d396d0c4875d290ca1215025e"
     }
   ],
   "original_stdout_roots": {
-    "checkpoint_sha256": "1d7958efc7fa8dec77dbe1c06c3b97fcf6614f28c91d71bce801f56df1ecb3f6",
+    "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
     "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
   },
   "transport": {
-    "actual_attempts": 1,
-    "completed_calls": 1,
+    "actual_attempts": 2,
+    "completed_calls": 2,
     "failed_calls": 0,
-    "http_requests_known": 1,
+    "http_requests_known": 2,
     "http_requests_unknown": 0,
-    "known_tokens": 21024,
-    "known_usage_calls": 1,
+    "known_tokens": 39891,
+    "known_usage_calls": 2,
     "not_sent": 0,
     "receiptless_calls": 0,
     "unknown_reserved_tokens": 0,
     "unknown_usage_calls": 0
   },
   "accounting": {
-    "calls": 1,
+    "calls": 2,
     "reserved_tokens": 0,
     "retries": 0,
-    "tokens": 21024
+    "tokens": 39891
   },
-  "native_reviews": 1,
+  "native_reviews": 2,
   "inventory_unchanged": true,
-  "status": "seventh-case-awaiting-completion-initial",
+  "status": "seven-cases-completed-awaiting-next-case",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
   "completed_replay_evidence_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
-  "cases_completed": 6,
-  "next_case": "claim-scope:2",
-  "next_stage": "completion-initial",
+  "cases_completed": 7,
+  "next_case": "claim-scope:5",
+  "next_stage": "facts-initial",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
     "key": "claim-scope:2",
-    "stage": "facts-initial-accepted",
-    "provider_stage": "facts-initial",
+    "stage": "case-completed",
+    "provider_stage": "completion-initial",
     "provider_verdict": "pass",
     "provider_score": 100,
     "provider_issues": [],
@@ -74,27 +89,28 @@
     "independent_accepted": true,
     "native_submission_accepted": true,
     "accepted_host_stages": {
-      "facts-initial": true
+      "facts-initial": true,
+      "completion-initial": true
     },
-    "native_reviews": 1,
+    "native_reviews": 2,
     "actual_edit_performed": false,
     "application_count": 0,
     "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
-    "closed": false,
+    "closed": true,
     "unresolved": [],
-    "next_stage": "completion-initial",
+    "next_stage": null,
     "next_stage_sent": false,
     "next_attempt_sent": false,
     "original_stdout_roots": {
-      "checkpoint_sha256": "1d7958efc7fa8dec77dbe1c06c3b97fcf6614f28c91d71bce801f56df1ecb3f6",
+      "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
       "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
     },
     "status": {
-      "checkpoint_sha256": "1d7958efc7fa8dec77dbe1c06c3b97fcf6614f28c91d71bce801f56df1ecb3f6",
-      "closed": false,
+      "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
+      "closed": true,
       "format_waiting": false,
       "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd",
-      "operations": 4,
+      "operations": 9,
       "production_admitted": false,
       "publication_allowed": false,
       "timeout_waiting": false,
@@ -102,42 +118,92 @@
       "unresolved": []
     },
     "transport": {
-      "actual_attempts": 1,
-      "completed_calls": 1,
+      "actual_attempts": 2,
+      "completed_calls": 2,
       "failed_calls": 0,
-      "http_requests_known": 1,
+      "http_requests_known": 2,
       "http_requests_unknown": 0,
-      "known_tokens": 21024,
-      "known_usage_calls": 1,
+      "known_tokens": 39891,
+      "known_usage_calls": 2,
       "not_sent": 0,
       "receiptless_calls": 0,
       "unknown_reserved_tokens": 0,
       "unknown_usage_calls": 0
     },
     "accounting": {
-      "calls": 1,
+      "calls": 2,
       "reserved_tokens": 0,
       "retries": 0,
-      "tokens": 21024
+      "tokens": 39891
     },
-    "active_seconds": 1000.8279999999941,
-    "operations": 4,
-    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-frontier.json",
-    "strict_read_only_frontier_sha256": "9b682f58113366ac6e6dbcaf02f17892f66ab9e6bdbfbc56fc5c6234c865a69f",
-    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-accepted.json",
-    "accepted_evidence_sha256": "e82feb9922c717923c3c72903dfcb8f8f5207196e3c6d42abc3f653ef995a05a"
+    "active_seconds": 1726.171000000002,
+    "operations": 9,
+    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
+    "strict_read_only_frontier_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
+    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-accepted.json",
+    "accepted_evidence_sha256": "c0ca8c4ae67419d184f298c6b7f3e31fc1ab00133148f2c971e16106a08eea8a",
+    "result": {
+      "accounting": {
+        "attempts": [
+          {
+            "input_tokens": 20213,
+            "model": "gpt-6.1-sol",
+            "ordinal": 1,
+            "output_tokens": 811,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "659b5257aa66df1fdfa78110c9165093d074ea8411faff227107d6a53ab8b0c2",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 18640,
+            "model": "gpt-6.1-sol",
+            "ordinal": 2,
+            "output_tokens": 227,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "d02ea7b320a8e825f97e5f68ca086333924a9fb6a35c950ce8fa864d2c1507e9",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          }
+        ],
+        "calls": 2,
+        "failed": false,
+        "logical": {
+          "generation": 0,
+          "review": 2
+        },
+        "reserved_tokens": 0,
+        "retries": 0,
+        "router_calls": 2,
+        "stopped": false,
+        "tokens": 39891
+      },
+      "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+      "expected_outcome": "candidate_initial_pass_unqualified",
+      "key": "claim-scope:2",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false
+    },
+    "strict_replay": true,
+    "replay_scope": "current_completed_case"
   },
   "batch_accounting": {
-    "calls": 25,
-    "http_requests_known": 25,
+    "calls": 26,
+    "http_requests_known": 26,
     "http_requests_unknown": 0,
-    "known_tokens": 432347,
+    "known_tokens": 451214,
     "not_sent": 0,
     "receiptless_calls": 0,
     "retries": 2,
     "unknown_reserved_tokens": 137228
   },
-  "next_action": "Save the key once using configure-tianjige-key.ps1; then operator runs start-with-stored-key.ps1 -Case claim-scope:2 at the existing completion-initial boundary.",
+  "next_action": "Prepare same-batch claim-scope:5 via start-with-stored-key.ps1; retain original accounting and authorization deadline.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -2223,6 +2289,122 @@
       "strict_replay": true,
       "completion_native_byte_equal": true,
       "strict_replay_under_recorded_terminal_lf_and_time_exceptions": true
+    },
+    "claim-scope:2": {
+      "key": "claim-scope:2",
+      "stage": "case-completed",
+      "provider_stage": "completion-initial",
+      "provider_verdict": "pass",
+      "provider_score": 100,
+      "provider_issues": [],
+      "necessary_issue_count": 0,
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "accepted_host_stages": {
+        "facts-initial": true,
+        "completion-initial": true
+      },
+      "native_reviews": 2,
+      "actual_edit_performed": false,
+      "application_count": 0,
+      "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+      "closed": true,
+      "unresolved": [],
+      "next_stage": null,
+      "next_stage_sent": false,
+      "next_attempt_sent": false,
+      "original_stdout_roots": {
+        "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
+        "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
+      },
+      "status": {
+        "checkpoint_sha256": "80e22e6516c75a3f331ec75fee60d5e65d2db4549e95ecd34548c951784881a8",
+        "closed": true,
+        "format_waiting": false,
+        "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd",
+        "operations": 9,
+        "production_admitted": false,
+        "publication_allowed": false,
+        "timeout_waiting": false,
+        "transport_waiting": false,
+        "unresolved": []
+      },
+      "transport": {
+        "actual_attempts": 2,
+        "completed_calls": 2,
+        "failed_calls": 0,
+        "http_requests_known": 2,
+        "http_requests_unknown": 0,
+        "known_tokens": 39891,
+        "known_usage_calls": 2,
+        "not_sent": 0,
+        "receiptless_calls": 0,
+        "unknown_reserved_tokens": 0,
+        "unknown_usage_calls": 0
+      },
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39891
+      },
+      "active_seconds": 1726.171000000002,
+      "operations": 9,
+      "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
+      "strict_read_only_frontier_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
+      "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-accepted.json",
+      "accepted_evidence_sha256": "c0ca8c4ae67419d184f298c6b7f3e31fc1ab00133148f2c971e16106a08eea8a",
+      "result": {
+        "accounting": {
+          "attempts": [
+            {
+              "input_tokens": 20213,
+              "model": "gpt-6.1-sol",
+              "ordinal": 1,
+              "output_tokens": 811,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "659b5257aa66df1fdfa78110c9165093d074ea8411faff227107d6a53ab8b0c2",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            },
+            {
+              "input_tokens": 18640,
+              "model": "gpt-6.1-sol",
+              "ordinal": 2,
+              "output_tokens": 227,
+              "phase": "native_business_review",
+              "profile": "sol-high-nonstream-v1",
+              "request_sha256": "d02ea7b320a8e825f97e5f68ca086333924a9fb6a35c950ce8fa864d2c1507e9",
+              "role": "review",
+              "status": "completed",
+              "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+            }
+          ],
+          "calls": 2,
+          "failed": false,
+          "logical": {
+            "generation": 0,
+            "review": 2
+          },
+          "reserved_tokens": 0,
+          "retries": 0,
+          "router_calls": 2,
+          "stopped": false,
+          "tokens": 39891
+        },
+        "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+        "expected_outcome": "candidate_initial_pass_unqualified",
+        "key": "claim-scope:2",
+        "matched": true,
+        "outcome": "candidate_initial_pass_unqualified",
+        "production_admitted": false,
+        "publication_allowed": false
+      },
+      "strict_replay": true,
+      "replay_scope": "current_completed_case"
     }
   },
   "connection_recovery": {
@@ -2252,8 +2434,8 @@
     "real_host_only_frontier_verified": true,
     "new_evaluation_requests": 0
   },
-  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
-  "latest_completed_replay_evidence_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
+  "latest_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-completed-replay.json",
+  "latest_completed_replay_evidence_sha256": "576b3ff5d408b221ae2ff128414045d32d2f56438ca7f77ba7321facc7bb6b46",
   "completed_cases_all_matched": true,
   "retry_preparation_result": "data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json",
   "scope3_facts_initial_result": "data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json",
@@ -2292,12 +2474,66 @@
   "claim_scope2_facts_initial_result": "data/evaluation/results/sol_original15_claim_scope2_facts_initial_20261027.json",
   "stored_reviewer_credential": {
     "storage": "windows-credential-manager",
-    "setup_completed": false,
+    "setup_completed": true,
     "entrypoint": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025-control/configure-tianjige-key.ps1",
     "execution_entrypoint": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025-control/start-with-stored-key.ps1",
     "evidence": "data/evaluation/results/sol_original15_stored_credential_ready_20261027.json",
     "real_key_reads_during_preparation": 0,
     "provider_requests_during_preparation": 0,
-    "authorization_expiry_extended": false
-  }
+    "authorization_expiry_extended": false,
+    "actual_request_succeeded": true,
+    "activation_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
+    "secret_in_logs": false
+  },
+  "strict_replay": true,
+  "result": {
+    "accounting": {
+      "attempts": [
+        {
+          "input_tokens": 20213,
+          "model": "gpt-6.1-sol",
+          "ordinal": 1,
+          "output_tokens": 811,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "659b5257aa66df1fdfa78110c9165093d074ea8411faff227107d6a53ab8b0c2",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        },
+        {
+          "input_tokens": 18640,
+          "model": "gpt-6.1-sol",
+          "ordinal": 2,
+          "output_tokens": 227,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "d02ea7b320a8e825f97e5f68ca086333924a9fb6a35c950ce8fa864d2c1507e9",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        }
+      ],
+      "calls": 2,
+      "failed": false,
+      "logical": {
+        "generation": 0,
+        "review": 2
+      },
+      "reserved_tokens": 0,
+      "retries": 0,
+      "router_calls": 2,
+      "stopped": false,
+      "tokens": 39891
+    },
+    "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+    "expected_outcome": "candidate_initial_pass_unqualified",
+    "key": "claim-scope:2",
+    "matched": true,
+    "outcome": "candidate_initial_pass_unqualified",
+    "production_admitted": false,
+    "publication_allowed": false
+  },
+  "latest_completed_replay_scope": "current_completed_case_with_prior_six_unchanged",
+  "claim_scope2_completed_result": "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json"
 }

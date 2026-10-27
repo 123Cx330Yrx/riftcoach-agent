@@ -1,5 +1,17 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-28 第七份双初审直过完成，原15进度7/15（当前）
+
+第七份claim-scope:2完成度初审通过已保存的Windows凭据非交互执行，HTTP200、13.563秒、输入18640/输出227，共18867known tokens，100/pass且issues/issue_resolutions/advisories/repairs全空。主审和原独立作者完整核验原稿、来源、当前政策及响应后接受，作者原件和唯一真实native逐字相等，已导入。第19段条件性观摩限定统领后文，第20段实际使用K4安排选局/5分钟观察/记录，K2/K5已接具体死亡与路线复盘；OP.GG无可用资料已如实说明，不补造本人训练或新任务要求。
+
+本例facts及completion双initial均pass，原程序正常结束candidate_initial_pass_unqualified；无编辑、application或fresh，不能称修订成功。实际稿f29b7b41保持，严格只读当前例replay匹配；本轮原启动器已重新核验前六例，外层复用前六已完成replay证据并核对原结果与旧库存未变，没有额外重跑整前缀。原1012件SHA保持，旧失败、费用、LF/时间例外原样保留。当前本例活动1726.171秒，未扩本例3600秒包络。整批未close/seal、未授产品或原15资格，阶段8E及后续依赖不变。
+
+原15完成7/15，累计26HTTP/451214known/137228unknown预留/2retry。此次首次真实证明保存的Key可以自动读取并成功调用；未将Key、Key哈希或环境写入日志/Git，原手填入口保留。0106启动有两次GitHub查询网络重试，后续同HEAD CI全绿；长等待主要是读取Key前、读取后及attempt边界重复回放旧前缀，Provider实际仅13.563秒，不归因于上游。该本地开销作为后续执行效率问题保留，不在本轮运行中改变验证机制。
+
+**下一动作：** 同批第八份claim-scope:5的facts-initial，使用原Control/start-with-stored-key.ps1，无需再输入Key，不加ManualRetry、不重买成功项。原费用授权北京时间10月28日00:21:46到期不延展；新发送必须在有效授权内，Host审查/保存不受费用到期影响。automation保持PAUSED，冻结34abe04e clean/既有CI40188299016保持。正式15余8份、自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估与学习保持。
+证据：data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json；Control/claim-scope-2-completed-accepted.json；claim-scope-2-completed-replay.json。0106真实返回、0107原生导入和0108本地结束的原stdout/exit保持；最新checkpoint根80e22e65来自原stdout。
+
+
 ## 2026-10-27 第七份事实初审双审接受，待完成度初审（当前）
 
 第七份claim-scope:2的facts-initial正常返回：HTTP200、40.281秒、输入20213/输出811，共21024known tokens；100/pass，issues、issue_resolutions及repairs为空，仅block4可选advisory。主审和原独立作者完整核验25段原稿、全部来源/政策/请求/公开响应后接受，作者原件与唯一真实native final逐字相等并已导入，不需新增LF例外。第4段全样本早死2.5/约2.67与四中单2.5/0.5分别正确；第6段限定四中单补刀稳定，重分组补刀差改变2.5567、伤害差仅改变26.1833，未把描述比较升级为因果。未发现需要修订的事实问题；初审pass没有编辑成功证据。

@@ -4,15 +4,26 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成6/15；第七份claim-scope:2事实初审已双审接受，待completion-initial。累计25HTTP/432347known/137228unknown预留/2retry。"
+pause_reason: "原15完成7/15；第七份双初审直过并严格只读回放匹配。待第八份claim-scope:5；累计26HTTP/451214known/137228unknown预留/2retry。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-27。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+2026-10-28。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-28 第七份双初审直过完成，原15进度7/15（当前）
+
+第七份claim-scope:2完成度初审通过已保存的Windows凭据非交互执行，HTTP200、13.563秒、输入18640/输出227，共18867known tokens，100/pass且issues/issue_resolutions/advisories/repairs全空。主审和原独立作者完整核验原稿、来源、当前政策及响应后接受，作者原件和唯一真实native逐字相等，已导入。第19段条件性观摩限定统领后文，第20段实际使用K4安排选局/5分钟观察/记录，K2/K5已接具体死亡与路线复盘；OP.GG无可用资料已如实说明，不补造本人训练或新任务要求。
+
+本例facts及completion双initial均pass，原程序正常结束candidate_initial_pass_unqualified；无编辑、application或fresh，不能称修订成功。实际稿f29b7b41保持，严格只读当前例replay匹配；本轮原启动器已重新核验前六例，外层复用前六已完成replay证据并核对原结果与旧库存未变，没有额外重跑整前缀。原1012件SHA保持，旧失败、费用、LF/时间例外原样保留。当前本例活动1726.171秒，未扩本例3600秒包络。整批未close/seal、未授产品或原15资格，阶段8E及后续依赖不变。
+
+原15完成7/15，累计26HTTP/451214known/137228unknown预留/2retry。此次首次真实证明保存的Key可以自动读取并成功调用；未将Key、Key哈希或环境写入日志/Git，原手填入口保留。0106启动有两次GitHub查询网络重试，后续同HEAD CI全绿；长等待主要是读取Key前、读取后及attempt边界重复回放旧前缀，Provider实际仅13.563秒，不归因于上游。该本地开销作为后续执行效率问题保留，不在本轮运行中改变验证机制。
+
+**下一动作：** 同批第八份claim-scope:5的facts-initial，使用原Control/start-with-stored-key.ps1，无需再输入Key，不加ManualRetry、不重买成功项。原费用授权北京时间10月28日00:21:46到期不延展；新发送必须在有效授权内，Host审查/保存不受费用到期影响。automation保持PAUSED，冻结34abe04e clean/既有CI40188299016保持。正式15余8份、自然Coach/Training、真实产品消费、四块/journal、前端头像、Memory、身份运维、两树整合、独立评估与学习保持。
+证据：data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json；Control/claim-scope-2-completed-accepted.json；claim-scope-2-completed-replay.json。0106真实返回、0107原生导入和0108本地结束的原stdout/exit保持；最新checkpoint根80e22e65来自原stdout。
 
 ## 2026-10-27 本机天机阁凭据入口就绪，待一次隐藏保存（当前）
 

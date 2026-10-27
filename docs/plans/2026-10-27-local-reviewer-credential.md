@@ -1,5 +1,7 @@
 # 原15评估的本机凭据入口
 
+2026-10-28 实际激活：用户已隐藏保存，非交互入口成功完成claim-scope:2/completion-initial（1HTTP200、13.563秒、18867known tokens），双审接受并导入，本例双初审直过结束。Key无需再次输入。准备时未保存的状态是此前记录；当前结果见data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json。
+
 2026-10-27。用户要求天机阁Key像现有智谱配置一样可重复使用，让执行者能直接续接每一例。智谱原来是显式读取本机.env；天机阁原函数每次getpass，没有后台自动取Key的入口。
 
 - 目标：一次隐藏输入，Windows凭据管理器保存；后续在原发送前检查通过、实际需要Key时才读取，不经过聊天、命令参数、环境变量、Git或运行日志。
