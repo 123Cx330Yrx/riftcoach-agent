@@ -11,7 +11,7 @@
   "production_admitted": false,
   "automation_status": "PAUSED",
   "date": "2026-10-27",
-  "stage": "facts-fresh-accepted-awaiting-completion-fresh",
+  "stage": "completion-fresh-ready-after-application-replay-clock-recovery",
   "accepted_stages": [
     {
       "stage": "facts-initial",
@@ -90,7 +90,7 @@
     }
   ],
   "original_stdout_roots": {
-    "checkpoint_sha256": "b6ec4a4415748422ee294bd6efe29162569a8b55274dd3aeadd7a5247fda226c",
+    "checkpoint_sha256": "37210fd946615bad402221ceab0ec65162f03621a2a8e2830798f6fa94852282",
     "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
   },
   "transport": {
@@ -116,7 +116,7 @@
   "strict_replay": false,
   "native_reviews": 5,
   "inventory_unchanged": true,
-  "status": "five-completed-sixth-facts-fresh-accepted",
+  "status": "five-completed-sixth-completion-fresh-replay-recovered",
   "completed_replay_evidence": null,
   "completed_replay_evidence_sha256": null,
   "cases_completed": 5,
@@ -126,7 +126,7 @@
   "all_cases_matched": false,
   "current_case": {
     "key": "scope:3",
-    "stage": "facts-fresh-accepted-awaiting-completion-fresh",
+    "stage": "completion-fresh-ready-after-application-replay-clock-recovery",
     "response_preserved": true,
     "failure_receipt_preserved": true,
     "semantic_output_available": true,
@@ -148,7 +148,7 @@
       "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
     },
     "original_stdout_roots": {
-      "checkpoint_sha256": "b6ec4a4415748422ee294bd6efe29162569a8b55274dd3aeadd7a5247fda226c",
+      "checkpoint_sha256": "37210fd946615bad402221ceab0ec65162f03621a2a8e2830798f6fa94852282",
       "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
     },
     "accounting": {
@@ -173,8 +173,8 @@
     "service_error_status": null,
     "elapsed_s": 41.109,
     "manual_retry_required": false,
-    "recovery_ready_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-recovery-ready.json",
-    "recovery_ready_sha256": "2e9d6062fd4047b8dec3e3602c469c956bf8553ee94a509a6a2d83ee8526cd8c",
+    "recovery_ready_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-application-clock-recovery-ready.json",
+    "recovery_ready_sha256": "718448a7169c426db71b7d49a7579567b805ae8e5961d1191c509d33fc8c81eb",
     "next_stage": "completion-fresh",
     "next_stage_sent": false,
     "last_attempt": 5,
@@ -184,7 +184,7 @@
     "user_reported_console_error": "status_code=500, invalid character ':' looking for beginning of value",
     "wire_check_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-500-wire-check.json",
     "wire_check_sha256": "784247096ed30ff8564eab0858b33cf59e200747bbd72c7a3a01e76997002e72",
-    "active_seconds": 3425.1110000000044,
+    "active_seconds": 3829.360000000015,
     "transport_waiting": false,
     "retry_preparation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-retry-preparation-20261027.json",
     "retry_preparation_sha256": "08b7207a3a31d6e913efcd4a0cf177ea3421dbf670cbe4de4251764dbb52d4ca",
@@ -198,7 +198,7 @@
     "patch_block": 4,
     "host_only_stop": "session_model_boundary",
     "status": {
-      "checkpoint_sha256": "b6ec4a4415748422ee294bd6efe29162569a8b55274dd3aeadd7a5247fda226c",
+      "checkpoint_sha256": "37210fd946615bad402221ceab0ec65162f03621a2a8e2830798f6fa94852282",
       "closed": false,
       "format_waiting": false,
       "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
@@ -231,7 +231,7 @@
     "execution_time_allowance": {
       "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-execution-time-allowance.json",
       "sha256": "34afd405cd8d1934e65c37fad45b212bbbf47a1538d55d1098af1178c5b87be9",
-      "module_sha256": "83231d3a2785f480a21a738e9aecde7ca10ae2886d4f16f7450813c2876b5430",
+      "module_sha256": "be3db016ec1a38e0903ff015cc610279a407d305e4f3f5d2250de1f605491386",
       "original_case_active_seconds": 3600,
       "additional_active_seconds": 3600,
       "effective_case_active_seconds": 7200,
@@ -252,12 +252,17 @@
         "all_other_limits_unchanged": true,
         "provider_requests": 0,
         "key_reads": 0
-      }
+      },
+      "application_replay_clock_recovery_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-application-clock-recovery-ready.json",
+      "application_replay_clock_recovery_sha256": "718448a7169c426db71b7d49a7579567b805ae8e5961d1191c509d33fc8c81eb"
     },
     "initial_provider_verdict": "needs_revision",
     "initial_necessary_issue_count": 1,
     "latest_attempt_capture_revalidation_seconds": 240.531,
-    "previous_service_retry_local_seconds_after_key_before_attempt": 595.3899999999994
+    "previous_service_retry_local_seconds_after_key_before_attempt": 595.3899999999994,
+    "resume_two_pass_stop": "session_diagnostic_verified_unsent_boundary",
+    "latest_local_failure": "session_replay_request_changed",
+    "latest_local_failure_fixed": true
   },
   "batch_accounting": {
     "calls": 23,
@@ -269,14 +274,22 @@
     "receiptless_calls": 0,
     "not_sent": 0
   },
-  "next_action": "Run original start-authorized.ps1 -Case scope:3; hidden enterprise Key; completion-fresh only; no ManualRetry. Separate +3600 elapsed allowance, all original counts retained.",
+  "next_action": "Run original start-authorized.ps1 -Case scope:3; send only unsent completion-fresh; no ManualRetry.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
     "new_tests_passed": 20,
     "existing_regressions_passed": 102,
     "read_only_inventory_unchanged": true,
-    "frozen_source_unchanged": true
+    "frozen_source_unchanged": true,
+    "application_replay_clock_recovery": {
+      "tests_passed": 13,
+      "actual_two_pass_execute_verified": true,
+      "new_provider_requests": 0,
+      "evidence": "data/evaluation/results/sol_original15_scope3_application_clock_recovery_20261027.json",
+      "read_only_inventory_unchanged": true,
+      "frozen_source_unchanged": true
+    }
   },
   "completed_case_records": {
     "claim-scope:4": {
@@ -2124,7 +2137,7 @@
   "execution_time_allowance": {
     "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-execution-time-allowance.json",
     "sha256": "34afd405cd8d1934e65c37fad45b212bbbf47a1538d55d1098af1178c5b87be9",
-    "module_sha256": "83231d3a2785f480a21a738e9aecde7ca10ae2886d4f16f7450813c2876b5430",
+    "module_sha256": "be3db016ec1a38e0903ff015cc610279a407d305e4f3f5d2250de1f605491386",
     "original_case_active_seconds": 3600,
     "additional_active_seconds": 3600,
     "effective_case_active_seconds": 7200,
@@ -2145,7 +2158,10 @@
       "all_other_limits_unchanged": true,
       "provider_requests": 0,
       "key_reads": 0
-    }
+    },
+    "application_replay_clock_recovery_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-application-clock-recovery-ready.json",
+    "application_replay_clock_recovery_sha256": "718448a7169c426db71b7d49a7579567b805ae8e5961d1191c509d33fc8c81eb"
   },
-  "scope3_facts_fresh_result": "data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json"
+  "scope3_facts_fresh_result": "data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json",
+  "scope3_application_clock_recovery_result": "data/evaluation/results/sol_original15_scope3_application_clock_recovery_20261027.json"
 }

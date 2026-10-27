@@ -1,5 +1,17 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-27 第六份应用回放时限漏项已修复，真实双遍续接通过（当前）
+
+0097在输入Key后、任何新请求前报session_replay_request_changed；0098零网络真实execute复现到ordinal19：本应回放application，却因NaturalDutyWorkflow.revise仍检查旧3600秒而尝试写candidate_application_failed/outcome。原因是上一轮外部时间适配漏掉修订分支，HostOnly验证未覆盖“输入Key后before全前缀核验→第二遍回放”；这是本地实现和验证覆盖问题，不归因用户、Key或上游。
+
+已修外部时间适配：精确同一guard/实际稿/原稿/ordinal且已提交的application及result按原决定回放，继续执行原preview、来源及严格operation比对，不再次应用；新application仍受7200秒约束，别例保持原限额。同时保留克隆函数keyword-only默认值。13项针对性检查通过。0099使用真实execute、模拟凭证、禁发sender，实际完成双遍续接，正确停session_diagnostic_verified_unsent_boundary；其后只读核五份native、完整transport、23operations/无unresolved和1012旧原件SHA均通过。旧application2d122986及实际稿1aa311e2不变，冻结源码/HEAD/CI不改。
+
+本轮0新增Provider/0真Key读取，累计23HTTP/394859known/137228unknown预留/2retry保持；原15仍5/15，第六份只余completion-fresh。原计时不清零，当前累计3829.360秒，有效7200秒；请求/token/单次300秒及授权截止不扩。0097/0098失败与原时间追加记录保持，未关闭整批、未创建新批或seal、未授资格。
+
+**下一动作：** 用户使用原Control/start-authorized.ps1 -Case scope:3隐藏输入企业Key，仅续尚未发送的completion-fresh；不加ManualRetry、不重买成功项。返回后继续完整双审及本例只读回放。授权北京时间10月28日00:21:46截止不延展，原冻结CI40188299016保持，不重等全套CI。automation保持PAUSED；正式15/自然Coach与Training/产品消费等依赖不变。
+证据：data/evaluation/results/sol_original15_scope3_application_clock_recovery_20261027.json；Control/scope-3-application-clock-recovery-ready.json；0099原stdout/exit及其输出的checkpoint根（37210fd9）。
+
+
 ## 工作卡
 
 - 目标：将已实测的facts及completion必要修订政策绑定到一个动态候选，原15固定报告评估与自然任务Runtime消费同一模块，避免诊断版本与实际运行版本分离。

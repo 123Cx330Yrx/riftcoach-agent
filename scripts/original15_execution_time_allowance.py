@@ -88,8 +88,36 @@ def compile_retry(function, old, replacement, helper):
     compiled = getattr(namespace['_TimeAllowanceScope'], function.__name__)
     cells = dict(zip(function.__code__.co_freevars, function.__closure__ or (), strict=True))
     closure = tuple(cells[name] for name in compiled.__code__.co_freevars)
-    return types.FunctionType(compiled.__code__, namespace, function.__name__,
-                              function.__defaults__, closure or None)
+    patched = types.FunctionType(compiled.__code__, namespace, function.__name__,
+                                 function.__defaults__, closure or None)
+    patched.__kwdefaults__ = deepcopy(function.__kwdefaults__)
+    return patched
+
+
+def application_time_exhausted(workflow, request, manifest, verify):
+    """A committed application replays its original decision, not a new clock gate."""
+    budget = workflow.send.provider
+    original_limit = budget.contract.descriptor()['execution_timeout_s']
+    session = getattr(workflow, 'session', None)
+    if session is None or Path(session.root) != Path(manifest['session_root']):
+        return budget.clock() - budget.started >= original_limit
+    verify()
+    if (session.guard_sha != manifest['guard_sha256']
+            or hashlib.sha256(workflow.assembly.report.encode('utf-8')).hexdigest() != manifest['report_sha256']):
+        raise ValueError('original15_application_time_binding')
+    path = session.root / 'operations' / f'{session.cursor+1:04d}-intent.json'
+    result = path.with_name(path.name.replace('-intent', '-result'))
+    expected = dict(ordinal=session.cursor+1, kind='journal', request=dict(name='application', data=dict(
+        version=workflow.contract_module.VERSION,
+        report_sha256=hashlib.sha256(workflow.assembly.report.encode('utf-8')).hexdigest(),
+        original_report_sha256=hashlib.sha256(request.report.encode('utf-8')).hexdigest(),
+        deterministic_application=True, host_semantics_verified=False, production_admitted=False)))
+    if (path.is_file() and result.is_file() and read(path) == expected
+            and read(result) == dict(intent_sha256=sha(path), value=dict(recorded=True))):
+        # Other source/preview/body checks and the exact operation replay still
+        # execute in revise(). No clock, counter, checkpoint or original changes.
+        return False
+    return budget.clock() - budget.started >= manifest['effective_case_active_seconds']
 
 
 def install(control, config, launch):
@@ -99,6 +127,7 @@ def install(control, config, launch):
     from app.runtime.coach_budget import CoachBudgetedProvider
     from app.runtime.sol_session_runtime import SessionBudget
     from app.runtime.sol_session_receipts import request_from_raw
+    from app.evaluation.natural_duty_workflow import NaturalDutyWorkflow
     control = Path(control)
     path = control / selection['file']
     module = control / 'original15_execution_time_allowance.py'
@@ -146,4 +175,8 @@ def install(control, config, launch):
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, request)',
         lambda budget, request: adjusted_limits(budget, request, manifest, verify))
+    NaturalDutyWorkflow.revise = compile_retry(NaturalDutyWorkflow.revise,
+        "if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:",
+        'if _original15_retry_limits(self, request):',
+        lambda workflow, request: application_time_exhausted(workflow, request, manifest, verify))
     return deepcopy(manifest)

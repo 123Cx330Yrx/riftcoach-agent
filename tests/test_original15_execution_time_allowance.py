@@ -1,8 +1,10 @@
 """Time-only continuation keeps money/accounting and unrelated cases bounded."""
 import hashlib
 import inspect
+import json
 from pathlib import Path
 from types import SimpleNamespace
+import threading
 
 import pytest
 
@@ -10,6 +12,8 @@ from scripts import original15_execution_time_allowance as allowance
 from scripts.sol_original15_launch import ENVELOPE
 from app.runtime.coach_budget import CoachBudgetedProvider
 from app.runtime.sol_session_runtime import SessionBudget
+from app.evaluation.sol_natural_session import CandidateSession
+from app.evaluation.natural_duty_workflow import NaturalDutyWorkflow
 from app.providers.errors import ProviderResponseError
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 
@@ -98,6 +102,7 @@ def test_retry_patch_preserves_real_source_and_closure():
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, failed)',lambda owner,failed:{})
     assert callable(fn) and inspect.getsourcefile(fn)=='<original15-recorded-time-allowance>'
+    assert fn.__kwdefaults__ == SessionBudget._manual_retry.__kwdefaults__ == {'format_repair': False}
 
     class Parent:
         def chat(self,request):return 'parent'
@@ -110,3 +115,60 @@ def test_retry_patch_preserves_real_source_and_closure():
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, request)',lambda owner,request:7200)
     assert fn(Child(),None)==('parent','closure stays',7200)
+
+
+def test_committed_application_replays_after_old_and_new_time_limits(tmp_path,monkeypatch):
+    manifest,stub,_,_=fixture()
+    session=CandidateSession.__new__(CandidateSession)
+    session.root=tmp_path/'session';(session.root/'operations').mkdir(parents=True)
+    session.guard_sha='guard';session.cursor=18;session._open=True
+    session.read_only=True;session.reconciling=False;session.continuation=None
+    session.binding={};session._mutex=threading.RLock();session.verify=lambda:None
+    manifest['session_root']=str(session.root)
+    budget=stub;budget.session=session;budget.stopped=False;budget.calls=5
+    budget.tokens=58785;budget.reserved_tokens=137228;budget.started=0;budget.clock=lambda:9000
+    draft='unchanged actual report';old='original report'
+    evaluation=object()
+    request=SimpleNamespace(evaluation=evaluation,player_summary=None,
+        deterministic_report='',knowledge=None,report=old)
+    data=dict(version='contract',report_sha256=hashlib.sha256(draft.encode()).hexdigest(),
+        original_report_sha256=hashlib.sha256(old.encode()).hexdigest(),
+        deterministic_application=True,host_semantics_verified=False,production_admitted=False)
+    intent=dict(ordinal=19,kind='journal',request=dict(name='application',data=data))
+    path=session.root/'operations/0019-intent.json';path.write_text(json.dumps(intent),encoding='utf-8')
+    result=path.with_name('0019-result.json')
+    result.write_text(json.dumps(dict(intent_sha256=allowance.sha(path),value=dict(recorded=True))),encoding='utf-8')
+    original_bytes=path.read_bytes(),result.read_bytes()
+    calls=[]
+    def forbidden():raise AssertionError('must replay the committed application')
+    def record(name,payload):
+        calls.append(name)
+        assert session.operation('journal',dict(name=name,data=payload),forbidden)==(dict(recorded=True),True)
+    workflow=SimpleNamespace(send=SimpleNamespace(provider=budget),session=session,
+        assembly=SimpleNamespace(report=draft),original_request=request,original=SimpleNamespace(source=SimpleNamespace(report=old)),
+        proposals=[],initial_result=evaluation,state='revision',contract_module=SimpleNamespace(VERSION='contract'),
+        record=record,stop=forbidden)
+    monkeypatch.setattr(NaturalDutyWorkflow.revise.__globals__['direct'],'preview',lambda *args:workflow.assembly)
+    patched=allowance.compile_retry(NaturalDutyWorkflow.revise,
+        "if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:",
+        'if _original15_retry_limits(self, request):',
+        lambda owner,req:allowance.application_time_exhausted(owner,req,manifest,lambda:None))
+    assert patched(workflow,request).report==draft
+    assert workflow.state=='fresh' and session.cursor==19 and calls==['application']
+    assert original_bytes==(path.read_bytes(),result.read_bytes())
+    assert budget.clock()==9000 and budget.tokens==58785 and budget.reserved_tokens==137228
+
+
+def test_new_application_still_has_finite_time_and_exact_scope(tmp_path):
+    manifest,budget,_,_=fixture();manifest['session_root']=str(tmp_path)
+    budget.session=SimpleNamespace(root=tmp_path,guard_sha='guard',cursor=18)
+    budget.started=0;budget.clock=lambda:4000
+    workflow=SimpleNamespace(session=budget.session,send=SimpleNamespace(provider=budget),
+        assembly=SimpleNamespace(report='unchanged actual report'),contract_module=SimpleNamespace(VERSION='contract'))
+    request=SimpleNamespace(report='original')
+    assert allowance.application_time_exhausted(workflow,request,manifest,lambda:None) is False
+    budget.clock=lambda:7201
+    assert allowance.application_time_exhausted(workflow,request,manifest,lambda:None) is True
+    budget.session.root=tmp_path/'other'
+    budget.clock=lambda:4000
+    assert allowance.application_time_exhausted(workflow,request,manifest,lambda:None) is True
