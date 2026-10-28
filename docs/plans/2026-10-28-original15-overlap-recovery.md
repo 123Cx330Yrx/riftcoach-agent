@@ -53,3 +53,14 @@
 继承器、真实native协调/整稿双审及实际双fresh仍待完成；开发启动器的参数接通不能代替该继承器。下一步复用已有sealed-parent导入模式，先在新目录做零发送的原件→实际native回放→协调任务边界核验，再冻结版本/CI并核对有效授权与剩余费用。当前原独立作者线程仍能读取，协作工具未列出可恢复的live agent；尚未向其发送新任务，也未更换作者。
 
 未来资格判断需区分原冻结版本结果与修复版的整体证据；不把开发预览拼为原版本全15通过，也不由此要求重买已成功模型输出。先验证证据在修复版中的等价消费与必要剩余项，再据既有合同判断能支持的结论。本工作不授权新付费批或改变产品准入。
+
+
+## 2026-10-28 第十三例封存前缀继承与真实零发送核验完成
+
+新继承器精确保留第13例前8步、两项attempt、全部原transport及两份journal共38件原字节；原第9步失败outcome/terminal/seal留在原目录。两项原生事件与作者原件经当前真实读取重新校验，两次成功回执重新消费，新工作流准确回放至协调选择边界，未读取Key、未产生新Provider或新native任务。准备目录临时session已清理，尚未建立真实恢复session。
+
+保留本例2HTTP/43742known/0unknown/0retry和2727.218活动秒，原批43HTTP/773045known/195578unknown预留/3retry及前12例成功不变。原3600秒尚余约872.782秒；后续不可清零时间或借新目录扩预算。继承器没有授权能力，缺发送guard在模型intent之前拒绝。原件库存/作者变化、伪造历史账目/时间/句柄/路径均拒绝；已接受旧句柄不能补签重交。
+
+模拟整链成功/拒绝两项99.58秒通过；增加实际准备入口、缺send guard与父库存变化断言后成功分支87.24秒通过。真实预检preparation SHA a79630b1030424ddb8b2b76811e5ceaa04052bd47d67e9522dcf744f26a16f8f，parent proof SHA693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4；最初guard及退出checkpoint取原stdout记录，非事后重算。第一次模拟读取terminal层级错误已修正并保留说明。证据data/evaluation/results/sol_original15_patch_inheritance_local_20261028.json。
+
+下一动作：将该继承器接入独立版本的恢复启动器，固定来源/HEAD/CI与原有效授权/余量，再发布协调及整稿双审，最后才发送实际同稿双fresh。当前paid_launcher_ready=false；原15仍12/15，observed:4/5未测，automation PAUSED、Stage8E和产品未准入保持。

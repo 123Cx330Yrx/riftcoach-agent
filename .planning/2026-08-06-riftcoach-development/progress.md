@@ -1,3 +1,13 @@
+## 2026-10-28 第十三例封存前缀继承与真实零发送核验完成
+
+新继承器精确保留第13例前8步、两项attempt、全部原transport及两份journal共38件原字节；原第9步失败outcome/terminal/seal留在原目录。两项原生事件与作者原件经当前真实读取重新校验，两次成功回执重新消费，新工作流准确回放至协调选择边界，未读取Key、未产生新Provider或新native任务。准备目录临时session已清理，尚未建立真实恢复session。
+
+保留本例2HTTP/43742known/0unknown/0retry和2727.218活动秒，原批43HTTP/773045known/195578unknown预留/3retry及前12例成功不变。原3600秒尚余约872.782秒；后续不可清零时间或借新目录扩预算。继承器没有授权能力，缺发送guard在模型intent之前拒绝。原件库存/作者变化、伪造历史账目/时间/句柄/路径均拒绝；已接受旧句柄不能补签重交。
+
+模拟整链成功/拒绝两项99.58秒通过；增加实际准备入口、缺send guard与父库存变化断言后成功分支87.24秒通过。真实预检preparation SHA a79630b1030424ddb8b2b76811e5ceaa04052bd47d67e9522dcf744f26a16f8f，parent proof SHA693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4；最初guard及退出checkpoint取原stdout记录，非事后重算。第一次模拟读取terminal层级错误已修正并保留说明。证据data/evaluation/results/sol_original15_patch_inheritance_local_20261028.json。
+
+下一动作：将该继承器接入独立版本的恢复启动器，固定来源/HEAD/CI与原有效授权/余量，再发布协调及整稿双审，最后才发送实际同稿双fresh。当前paid_launcher_ready=false；原15仍12/15，observed:4/5未测，automation PAUSED、Stage8E和产品未准入保持。
+
 ## 2026-10-28 显式重叠补丁协调本地验证完成
 
 开发树已完成候选选择、双职责issue覆盖、原生协调、原compatibility/edit、唯一application及同稿双fresh的消费与只读回放；缺选择时暂停不关闭，已保存选择不能静默替换。启动入口在CI/Key前绑定既有冲突及选择文件SHA，原已seal目录仍拒绝运行。稳定清单SHA消除了JSON对象排序引起的误拒绝，原意见字符串保留。
