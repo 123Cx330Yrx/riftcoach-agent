@@ -17,8 +17,13 @@ from tests.test_sol_original15_session import setup, router
 from tests.test_sol_session_review import author
 
 
-@pytest.mark.parametrize('reject', [None, 'patch-coordination'])
-def test_sealed_accepted_prefix_is_inherited_without_resending_or_resetting(setup, tmp_path, monkeypatch, reject):
+def make_parent(setup, tmp_path, monkeypatch, extra_plan=None, authorization_sha=None):
+    if authorization_sha is not None:
+        original_open = original.open_case
+        def open_with_grant(*args, **kwargs):
+            kwargs['authorization_sha'] = authorization_sha
+            return original_open(*args, **kwargs)
+        monkeypatch.setattr(original, 'open_case', open_with_grant)
     opened, turns, parent = setup
     previous, old_calls = None, []
     # Produce the exact old failure through the old uncoordinated assemble path.
@@ -46,6 +51,7 @@ def test_sealed_accepted_prefix_is_inherited_without_resending_or_resetting(setu
     events = g.native.event_source
     plan = dict(operator=str(parent), cwd=str(Path.cwd()), python=sys.executable,
         review_plan=g.plan, coverage=dict(cases=[dict(key=s.binding['key'])]))
+    plan.update(extra_plan or {})
     write_new_json(parent/'plan.json', plan)
     historical = original.last_budget(s)
     seal = dict(plan_sha256='1'*64,
@@ -59,6 +65,12 @@ def test_sealed_accepted_prefix_is_inherited_without_resending_or_resetting(setu
     assert before == (inventory(parent), inventory(parent.with_name(parent.name+'-authors')))
     assert spec['proof']['original_native_review_replayed']
     assert spec['proof']['historical_budget'] == historical
+    return parent, spec, events, turns, s, historical, before
+
+
+@pytest.mark.parametrize('reject', [None, 'patch-coordination'])
+def test_sealed_accepted_prefix_is_inherited_without_resending_or_resetting(setup, tmp_path, monkeypatch, reject):
+    parent, spec, events, turns, s, historical, before = make_parent(setup, tmp_path, monkeypatch)
     if reject is None:
         from scripts import prepare_original15_patch_recovery as preparation
         @contextmanager

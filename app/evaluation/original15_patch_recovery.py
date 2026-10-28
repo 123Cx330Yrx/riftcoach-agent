@@ -182,7 +182,8 @@ class InheritedNative:
 
 
 def open_session(operator, spec, events, *, before_new_model=None, guard=None, checkpoint=None,
-                 read_only=False, manual_retry=False, sink=lambda value: None, control_binding=None):
+                 read_only=False, manual_retry=False, reconcile=False,
+                 sink=lambda value: None, control_binding=None, author_root=None, evidence_root=None):
     verify_parent(spec)
     root, proof = Path(operator).absolute(), spec['proof']
     parent = Path(proof['parent_operator'])
@@ -203,9 +204,10 @@ def open_session(operator, spec, events, *, before_new_model=None, guard=None, c
         inherited_proof_sha256=spec['proof_sha256'], control_binding=control_binding),
         transport_root=root/'transport', journal_root=root/'journal', contract_module=contract,
         guard_sha=guard, checkpoint_sha=checkpoint, read_only=read_only, manual_retry=manual_retry,
+        reconcile=reconcile,
         before_new_model=before, checkpoint_sink=sink)
     workspace = HostReviewWorkspace(cwd=contract.ROOT, python=plan['python'],
-        answers=root.with_name(root.name+'-authors'), evidence_roots=[root])
+        answers=author_root or root.with_name(root.name+'-authors'), evidence_roots=[evidence_root or root])
     gate = SessionReviewGate(session, plan=plan['review_plan'], workspace=workspace, event_source=events)
     old_workspace = HostReviewWorkspace(cwd=plan['cwd'], python=plan['python'],
         answers=parent.with_name(parent.name+'-authors'), evidence_roots=[parent])

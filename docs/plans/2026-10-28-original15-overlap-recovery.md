@@ -64,3 +64,21 @@
 模拟整链成功/拒绝两项99.58秒通过；增加实际准备入口、缺send guard与父库存变化断言后成功分支87.24秒通过。真实预检preparation SHA a79630b1030424ddb8b2b76811e5ceaa04052bd47d67e9522dcf744f26a16f8f，parent proof SHA693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4；最初guard及退出checkpoint取原stdout记录，非事后重算。第一次模拟读取terminal层级错误已修正并保留说明。证据data/evaluation/results/sol_original15_patch_inheritance_local_20261028.json。
 
 下一动作：将该继承器接入独立版本的恢复启动器，固定来源/HEAD/CI与原有效授权/余量，再发布协调及整稿双审，最后才发送实际同稿双fresh。当前paid_launcher_ready=false；原15仍12/15，observed:4/5未测，automation PAUSED、Stage8E和产品未准入保持。
+
+## 2026-10-28 恢复启动器实现中
+
+scripts/original15_patch_recovery_launch.py将原seal/proof、原授权及有效续接、原余量和明确协调文件绑定到独立版本。准备与Host-only不读取Key；本地已接受前缀先回放到真正新发送边界，才验证精确HEAD公共CI与当前授权并从Windows Credential Manager惰性读取企业分组Key。每个片段最多新增一次模型调用，下一片段继续原检查点，不自动循环或重发成功项。
+
+原grant及续接字节均不改写，绑定本例原guard的authorization SHA，不为新目录新发费用或延长时间。原case3600活动秒与全批请求/token余量照旧扣除，旧43次与未知用量预留始终保留。缺原续接、过期、预算不足、未决历史intent、源码变化均在新IO前拒绝；Host-only仍可完成已经返回意见的审查。
+
+运行、task、submit、status、reconcile、只读replay及唯一seal接同一新session；旧两份native不能重交，正式新任务沿用原独立作者。正常成功和语义拒绝均需严格外层回放；明确524超时沿用原手动补测机制暂停同项，未手动触发不读取Key或发送。reconcile仅消费已完成原回执，不重发未知请求。
+
+当前先跑实际启动器与mock HTTP/native整链，覆盖正常、协调拒绝、过期、Host-only、超时及手动恢复。首轮模拟发现发送guard把正在持有的model intent误当成遗留未决请求，已按operation→capture_attempt的真实顺序修正；遗留未决请求在打开片段时仍拒绝。测试helper的递归路由替身也已改正。尚未部署真实恢复启动器或读取Key。
+
+## 2026-10-28 恢复启动器本地验证完成
+
+恢复启动器已接通原授权/续接、原账目和活动时间、精确新HEAD及真实发送边界CI。Host-only与native等待不读Key、不查CI；每片段最多一个新fresh请求。正常成功、协调拒绝、524后普通resume零发送及手动同项恢复三条模拟整链通过（3 passed / 543.03秒）；最后作者run外路径及严格回放修正后成功分支另行复核通过（1 passed / 177.58秒）。测试HTTP/native均为替身，不是模型质量证据。
+
+原真实授权续接文件已核验，截止北京时间10月29日00:25:43，未延长或清零。开发期路由替身递归与当前owned intent误拒绝已修复并留痕。当前新增Provider/Key均0、尚无真实恢复session；下一动作：提交并冻结独立执行副本，先完成零发送patch-coordination、compatibility、edit双审，再于同HEAD公共CI全绿且原授权/余量有效时发送同稿双fresh。原15仍12/15，旧失败、费用、seal、automation PAUSED和产品未准入保持。
+
+证据：data/evaluation/results/sol_original15_patch_launcher_local_20261028.json。
