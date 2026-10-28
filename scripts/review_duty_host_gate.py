@@ -92,6 +92,18 @@ class NativeGate:
             'For edit it contains report_sha256 (the actual report task binding), reviewer, source_review, '
             'facts_and_sources_correct, correct_content_preserved, identity_and_goal_preserved, true_errors_fixed. '
             'All four must be true for acceptance. Do not add provenance fields yourself.')
+        if bound['key'] == 'patch-coordination':
+            instructions += (
+                ' This is explicit overlapping-patch coordination before the normal whole-report gates. '
+                'Read every original operation and discarded candidate in patch_journal.conflict_inventory, '
+                'the exact selected operations and every duty-qualified issue_coverage explanation. '
+                'Check against full sources and BOTH original opinions that the selected original edits '
+                'actually resolve ALL affected issues while preserving correct content. Selecting a '
+                'different wording is acceptable only if all substantive requirements coexist. '
+                'Number coverage, string similarity or an operator selection is not semantic proof. '
+                'Reject missing, conflicting or wrongly repaired obligations; never rewrite candidates. '
+                'Explain each conflict component and both duty issue references in source_review. '
+                'The normal compatibility, full edit assessment and same-report fresh reviews remain required.')
         write_new_json(folder / 'independent-task.json', json.loads(review_task(bound, instructions)))
         task_pin = checkpoint.publish(folder / 'task-checkpoint.json',
             folder / 'independent-task.json', reviewer)

@@ -36,4 +36,20 @@
 
 冻结执行树和原15计划保持；开发树中的新设计不能冒充原版本结果。若进入真实恢复，必须先形成明确版本与原证据继承记录：复用本例正确初审，不重发前12，不清零累计费用；旧失败不删除。不能把旧12、新组装恢复13、剩余2直接拼成原版本全15资格。后两例当前未执行，产品仍未准入。
 
-本文件只确定修复方向与可检查的验收，不授权新付费批，也不宣称方案已实现或语义验证完成。当前下一动作是核完原执行的停止证据及只读回放，然后在开发树实现上述最小通用协调路径。
+## 2026-10-28 本地实现与实际预览
+
+开发树已实现完整的显式协调消费路径：direct patch保留全部原操作及重叠连通分量，使用稳定清单SHA绑定选择；SessionWorkflow先持久化选择，再发布独立patch-coordination任务，随后仍经过原compatibility、edit、唯一application与双fresh。没有选择时仅暂停，没有悬空intent或关闭记录；恢复从原选择继续。意见原文仍按原字节保留，JSON对象字段排序不改变同一清单的SHA。非重叠路径与原journal保持兼容。
+
+正式开发启动器支持run的--patch-coordination-file/--patch-coordination-sha。必须对应既有patch-conflicts记录，在CI、Key和发送前验证；未开始的例子不能预塞选择再购买初审。其余action不接受这两个参数。启动器仍拒绝有seal的原Operator，没有开放重开旧批。
+
+真实第13例的零付费准备位于C:/Users/33502/Documents/Agent/outputs/riftcoach-original15-overlap-preparation-20261028。已核原seal和2184件库存、两份material/submission/checkpoint及作者原件SHA，用实际journal中的原始response和原始request生成完整材料。显式提案选择completion的完整原after（op_2），因其明确写出“观摩对象ShowMaker”且完整保留四中单与8.805/1.5；facts的op_1及其完整意见保留为弃选候选，不否定该意见。预览SHA eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d，仅第21段的一句变化，其余27段逐字保持。preparation SHA 80eef3751b5c5cd7f21bfd5a10f6058b3590164be1d7ef59f72e54846addfe29。
+
+这是未批准预览，不是实际application、当前native接受或fresh结果。准备辅助脚本两次零发送断言/文本哈希错误保留说明；修后逐件核对已有四份预览文件，没有覆盖原执行或重新调用模型。当前没有建立真实恢复session，没有读取Key。
+
+## 接续接口与下一工作包
+
+本地协调路径与封存记录继承是两个独立接口。真实observed:3的前8个操作依次是model/journal/host-task/host-decision各两组；第9个才是失败outcome。后续恢复必须使用新版本与独立目录，精确继承前8步和两份已接受原件，而不是删除第9步或修改原terminal/seal。两份初审累计43742known/0unknown/0retry、原批43HTTP/773045known/195578unknown预留/3retry，以及旧活动时间2727.218秒均须保留。新请求只能是实际新稿的双fresh或已有规则允许的手动传输补测；不重新购买初审或前12例。
+
+继承器、真实native协调/整稿双审及实际双fresh仍待完成；开发启动器的参数接通不能代替该继承器。下一步复用已有sealed-parent导入模式，先在新目录做零发送的原件→实际native回放→协调任务边界核验，再冻结版本/CI并核对有效授权与剩余费用。当前原独立作者线程仍能读取，协作工具未列出可恢复的live agent；尚未向其发送新任务，也未更换作者。
+
+未来资格判断需区分原冻结版本结果与修复版的整体证据；不把开发预览拼为原版本全15通过，也不由此要求重买已成功模型输出。先验证证据在修复版中的等价消费与必要剩余项，再据既有合同判断能支持的结论。本工作不授权新付费批或改变产品准入。

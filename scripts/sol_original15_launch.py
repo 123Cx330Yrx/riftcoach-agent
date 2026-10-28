@@ -394,7 +394,15 @@ def safe_code(error):
 
 
 def execute(plan, pin, events, key, roots, *, authorization_file, authorization_sha,
-            ci_run, preflight, manual_retry=False, host_only=False):
+            ci_run, preflight, manual_retry=False, host_only=False, patch_coordination=None):
+    if patch_coordination is not None:
+        # A choice belongs to a published conflict, never to an unstarted case.
+        # Validate it before CI, credentials, or a new provider boundary.
+        from scripts.review_duty_direct_patch import coordinated_operations
+        conflict = Path(plan['operator'])/'cases'/engine.case_slug(key)/'journal/patch-conflicts.json'
+        if not conflict.is_file():
+            raise ValueError('original15_patch_conflicts_required')
+        coordinated_operations(read(conflict), patch_coordination)
     raw = Path(authorization_file).read_bytes()
     if digest(raw) != authorization_sha:
         raise ValueError('original15_original_authorization_required')
@@ -453,7 +461,8 @@ def execute(plan, pin, events, key, roots, *, authorization_file, authorization_
             def deny(*args, **kwargs):
                 raise AssertionError('original15_offline_frontier_provider_forbidden')
             try:
-                result = advance_case(session, router_for(session, 'OFFLINE_NO_SEND', deny))
+                result = advance_case(session, router_for(session, 'OFFLINE_NO_SEND', deny),
+                    patch_coordination=patch_coordination)
             except SessionPaused as error:
                 if str(error) != 'session_model_boundary' or host_only:
                     raise
@@ -463,7 +472,8 @@ def execute(plan, pin, events, key, roots, *, authorization_file, authorization_
                 session.cursor = 0
                 session.max_new_models = None
                 try:
-                    result = advance_case(session, router_for(session, api_key))
+                    result = advance_case(session, router_for(session, api_key),
+                        patch_coordination=patch_coordination)
                 finally:
                     api_key = None
             session.close(dict(result=result))
@@ -477,9 +487,9 @@ def execute(plan, pin, events, key, roots, *, authorization_file, authorization_
             error_type=type(error).__name__, publication_allowed=False)
 
 
-def advance_case(session, router):
+def advance_case(session, router, *, patch_coordination=None):
     try:
-        return engine.run_case(session, router)
+        return engine.run_case(session, router, patch_coordination=patch_coordination)
     except (Exception, SessionBlocked) as error:
         status = session.status()
         if (not status['closed'] and not status['unresolved']
@@ -487,6 +497,21 @@ def advance_case(session, router):
             session.close(dict(reason='case_execution_failed',error_type=type(error).__name__,
                 error_code=getattr(error,'code',None),stop_code=safe_code(error)))
         raise
+
+
+def load_patch_coordination(path, expected_sha):
+    if path is None and expected_sha is None:
+        return None
+    if path is None or expected_sha is None:
+        raise ValueError('original15_patch_coordination_file_and_sha_required')
+    raw = Path(path).read_bytes()
+    if digest(raw) != expected_sha:
+        raise ValueError('original15_patch_coordination_file_changed')
+    from scripts.review_duty_direct_patch import strict_json
+    value = strict_json(raw.decode('utf-8'))
+    if not isinstance(value, dict):
+        raise ValueError('original15_patch_coordination_object_required')
+    return value
 
 
 def main():
@@ -508,10 +533,16 @@ def main():
     parser.add_argument('--ci-run')
     parser.add_argument('--manual-retry', action='store_true')
     parser.add_argument('--host-only', action='store_true')
+    parser.add_argument('--patch-coordination-file', type=Path)
+    parser.add_argument('--patch-coordination-sha')
     parser.add_argument('--key')
     parser.add_argument('--primary-file', type=Path)
     parser.add_argument('--event-id')
     args = parser.parse_args()
+    if args.action != 'run' and (args.patch_coordination_file is not None
+            or args.patch_coordination_sha is not None):
+        parser.error('patch coordination is only accepted for run')
+    coordination = load_patch_coordination(args.patch_coordination_file, args.patch_coordination_sha)
     if args.action == 'prepare':
         if not args.primary or not args.independent:
             parser.error('prepare requires primary and independent')
@@ -529,7 +560,8 @@ def main():
             value = execute(plan,args.plan_sha,events,args.case,roots,
                 authorization_file=args.authorization_file,authorization_sha=args.authorization_sha,
                 ci_run=args.ci_run,preflight=read(args.preflight_proof),
-                manual_retry=args.manual_retry,host_only=args.host_only)
+                manual_retry=args.manual_retry,host_only=args.host_only,
+                patch_coordination=coordination)
         elif args.action in ('replay','seal'):
             if args.action == 'seal':
                 value=seal(plan,args.plan_sha,events,roots,args.authorization_sha,args.roots_sha)

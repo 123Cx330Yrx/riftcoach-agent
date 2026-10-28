@@ -75,6 +75,12 @@ class NaturalDutyWorkflow:
     def inputs_for(self, request):
         return build_inputs(request)
 
+    def assemble(self, inputs):
+        return direct.preview(inputs, self.proposals)
+
+    def verify_assembly(self):
+        return direct.preview(self.original, self.proposals)
+
     def evaluate(self, request):
         if self.state not in ('initial', 'fresh'):
             raise ValueError('natural_duty_invalid_state')
@@ -110,7 +116,7 @@ class NaturalDutyWorkflow:
             if (fresh_reservation and budget.tokens + budget.reserved_tokens + 2 * fresh_reservation
                     > budget.contract.descriptor()['total_tokens']):
                 return self.stop('insufficient_fresh_token_budget')
-            self.assembly = direct.preview(inputs, self.proposals)
+            self.assembly = self.assemble(inputs)
             self.expected_fresh = report_inputs(inputs, self.assembly.report)
             self.record('preview', dict(report=self.assembly.report, journal=self.assembly.journal,
                 candidate_version=self.contract_module.VERSION, structural_checks_only=True,
@@ -145,7 +151,7 @@ class NaturalDutyWorkflow:
                 raise ValueError('natural_duty_fresh_slots_lost')
             if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:
                 raise ProviderResponseError(provider='zhipu', code='timeout')
-            if direct.preview(self.original, self.proposals) != self.assembly:
+            if self.verify_assembly() != self.assembly:
                 raise ValueError('natural_duty_preview_changed')
             self.record('application', dict(version=self.contract_module.VERSION,
                 report_sha256=digest(self.assembly.report), original_report_sha256=digest(request.report),

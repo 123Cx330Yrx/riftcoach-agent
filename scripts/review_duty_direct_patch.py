@@ -6,6 +6,7 @@ receipt or publishable report. No transport, credentials, run or registration.
 from copy import deepcopy
 from dataclasses import dataclass, replace
 import re
+import json
 
 from pydantic import Field
 
@@ -102,8 +103,7 @@ def bind(inputs, name, raw):
         duty.request_sha(review_request(inputs, name)), raw)
 
 
-def preview(inputs, proposals):
-    """Unapproved deterministic preview; never manufacture an editor exchange."""
+def _patches(inputs, proposals):
     report_inputs(inputs, inputs.source.report)
     if len(proposals) != 2 or {p.duty for p in proposals} != set(duty.DUTIES):
         raise ValueError('direct_patch_pair_inventory')
@@ -138,7 +138,103 @@ def preview(inputs, proposals):
                     operations.append(dict(duty=proposal.duty, group=group,
                         issue_ids=repair.issue_ids, selector=key, block=block,
                         start=start, end=start + len(change.before), **change.model_dump(mode='json')))
-    ordered = sorted(operations, key=lambda op: op['start'])
+    return operations, opinions
+
+
+COORDINATION_VERSION = 'explicit-original-patch-coordination-v1'
+
+
+def conflict_inventory(inputs, proposals):
+    """All original operations and interval components, without choosing a fix."""
+    operations, opinions = _patches(inputs, proposals)
+    candidates = [dict(id=f'op_{i}', **op) for i, op in enumerate(operations, 1)]
+    components, current, end = [], [], -1
+    for op in sorted(candidates, key=lambda op: (op['start'], op['end'], op['id'])):
+        if current and op['start'] >= end:
+            if len(current) > 1:
+                components.append(current)
+            current, end = [], -1
+        current.append(op['id'])
+        end = max(end, op['end'])
+    if len(current) > 1:
+        components.append(current)
+    return dict(version=COORDINATION_VERSION, input_sha256=digest(inputs.data_json),
+        pack_sha256=digest(inputs.pack_json), original_report_sha256=digest(inputs.source.report),
+        opinions=opinions, operations=candidates,
+        conflicts=[dict(component=i, operation_ids=ids) for i, ids in enumerate(components, 1)])
+
+
+def inventory_sha(inventory):
+    # Session journals sort object keys. Hash meaning independent of disk key order,
+    # while the raw Provider opinion strings remain byte-for-byte unchanged.
+    return digest(json.dumps(inventory, sort_keys=True, ensure_ascii=False,
+        allow_nan=False, separators=(',', ':')))
+
+
+def coordinated_operations(inventory, coordination):
+    """Validate exact choice/issue accounting only; Host semantics remain required."""
+    def fail():
+        raise ValueError('direct_patch_coordination_invalid')
+    if (not isinstance(coordination, dict)
+            or set(coordination) != {'version', 'inventory_sha256', 'resolutions'}
+            or coordination['version'] != COORDINATION_VERSION
+            or coordination['inventory_sha256'] != inventory_sha(inventory)
+            or not isinstance(coordination['resolutions'], list)
+            or len(coordination['resolutions']) != len(inventory['conflicts'])
+            or not inventory['conflicts']):
+        fail()
+    candidates = {op['id']: op for op in inventory['operations']}
+    conflicted = {i for c in inventory['conflicts'] for i in c['operation_ids']}
+    chosen = set(candidates) - conflicted
+    for component, resolution in zip(inventory['conflicts'], coordination['resolutions']):
+        if (not isinstance(resolution, dict)
+                or set(resolution) != {'component', 'selected_operation_ids', 'issue_coverage'}
+                or type(resolution['component']) is not int
+                or resolution['component'] != component['component']):
+            fail()
+        ids, coverage = resolution['selected_operation_ids'], resolution['issue_coverage']
+        if (not isinstance(ids, list) or not ids or any(type(i) is not str for i in ids)
+                or len(set(ids)) != len(ids) or not set(ids) <= set(component['operation_ids'])
+                or not isinstance(coverage, list)):
+            fail()
+        expected = {(candidates[i]['duty'], issue)
+            for i in component['operation_ids'] for issue in candidates[i]['issue_ids']}
+        covered, referenced = [], set()
+        for row in coverage:
+            if (not isinstance(row, dict)
+                    or set(row) != {'duty', 'issue_id', 'selected_operation_ids', 'reason'}
+                    or type(row['duty']) is not str or type(row['issue_id']) is not int
+                    or not isinstance(row['reason'], str) or not row['reason'].strip()):
+                fail()
+            refs = row['selected_operation_ids']
+            if (not isinstance(refs, list) or not refs or any(type(i) is not str for i in refs)
+                    or len(set(refs)) != len(refs) or not set(refs) <= set(ids)):
+                fail()
+            covered.append((row['duty'], row['issue_id']))
+            referenced.update(refs)
+        if len(covered) != len(expected) or set(covered) != expected or referenced != set(ids):
+            fail()
+        chosen.update(ids)
+    selected = [op for op in inventory['operations'] if op['id'] in chosen]
+    ordered = sorted(selected, key=lambda op: op['start'])
+    if any(a['end'] > b['start'] for a, b in zip(ordered, ordered[1:])):
+        raise ValueError('direct_patch_coordination_still_overlaps')
+    return selected
+
+
+def preview(inputs, proposals, *, coordination=None):
+    """Unapproved deterministic preview; never manufacture an editor exchange."""
+    operations, opinions = _patches(inputs, proposals)
+    source = inputs.source
+    extra = {}
+    applied = operations
+    if coordination is not None:
+        inventory = conflict_inventory(inputs, proposals)
+        selected = coordinated_operations(inventory, coordination)
+        applied = [{k: v for k, v in op.items() if k != 'id'} for op in selected]
+        extra = dict(coordination=deepcopy(coordination), conflict_inventory=inventory,
+            selected_operations=selected, coordination_semantics_verified=False)
+    ordered = sorted(applied, key=lambda op: op['start'])
     if any(a['end'] > b['start'] for a, b in zip(ordered, ordered[1:])):
         raise ValueError('direct_patch_overlap_requires_new_joint_design')
     report = source.report
@@ -154,7 +250,7 @@ def preview(inputs, proposals):
         context=knowledge['context'], citations=tuple(KnowledgeCitation(**{
             k: v for k, v in row.items() if k != 'retrievals'}) for row in knowledge['citations'])))
     revised = report_inputs(inputs, report)
-    return EditAssembly(report, dict(version=VERSION, opinions=opinions, operations=operations,
+    return EditAssembly(report, dict(version=VERSION, opinions=opinions, operations=operations, **extra,
         input_sha256=digest(inputs.data_json), original_report_sha256=digest(source.report),
         assembled_report_sha256=digest(report), preview_only=True,
         semantic_approval=False, production_admitted=False, native_acceptance_verified=False,

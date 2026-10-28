@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成12/15；第13例正确双初审因补丁重叠在组装停止，原记录已只读核验/封存；继续零付费协调修复。"
+pause_reason: "原15完成12/15；显式补丁协调已本地实现并生成真实未批准预览，真实封存前缀继承与双审/fresh待完成。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,7 +14,17 @@ pause_reason: "原15完成12/15；第13例正确双初审因补丁重叠在组�
 
 ## 当前行动
 
-原15完成12/15；observed:3两份正确初审在冻结preview因同一句重叠补丁停止，后两例未测。原版本全部13例记录已严格只读回放，前12例仍matched；54份native审查和2184件证据库存核验通过，唯一seal已建立，无在途执行者。当前在开发树按docs/plans/2026-10-28-original15-overlap-recovery.md实现零付费显式协调；不重买初审、不改原封存结果、不将新旧版本拼成全15资格。
+原15仍完成12/15；开发树已实现显式重叠补丁协调、暂停恢复、原生审查接线与启动参数，并用真实第13例原件生成未批准预览，其余27段逐字保持。原seal/2184件库存和两份初审原件保持，新增Provider/Key均0。下一动作：按docs/plans/2026-10-28-original15-overlap-recovery.md完成封存前8步的修复版证据继承与零发送native核验，再接协调/整稿双审及同稿fresh；当前尚无真实恢复session，不直接运行旧已seal的Operator，不重买初审或已成功前12例。
+
+## 2026-10-28 显式重叠补丁协调本地验证完成
+
+开发树已完成候选选择、双职责issue覆盖、原生协调、原compatibility/edit、唯一application及同稿双fresh的消费与只读回放；缺选择时暂停不关闭，已保存选择不能静默替换。启动入口在CI/Key前绑定既有冲突及选择文件SHA，原已seal目录仍拒绝运行。稳定清单SHA消除了JSON对象排序引起的误拒绝，原意见字符串保留。
+
+最终138项本地检查通过（124项571.33秒；原session/启动器14项737.54秒），新增入口断言另1项4.06秒通过；compile、governance、diff-check通过。模拟HTTP/native只验证工程消费，不授模型语义资格。开发期参数遗漏、旧manifest、测试helper职责错误、清单SHA顺序以及两次准备脚本辅助错误均已修复并留痕，未据旧失败关闭或重买真实项。
+
+实际第13例两份原意见与完整来源、请求、material/submission/checkpoint及作者SHA核对后生成未批准预览：显式选择completion原op_2，仅第21段一句变化，其余27段逐字保持，preview SHA eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d。原seal与2184件库存不变，Provider/Key均0，无真实恢复session/application/fresh。原15仍12/15，后2例未执行；旧失败/费用、截止时间、automation PAUSED与产品未准入保持。
+
+证据：data/evaluation/results/sol_original15_patch_coordination_local_20261028.json；准备文件C:/Users/33502/Documents/Agent/outputs/riftcoach-original15-overlap-preparation-20261028/preparation.json（SHA80eef3751b5c5cd7f21bfd5a10f6058b3590164be1d7ef59f72e54846addfe29）。下一动作是新版本目录精确继承原前8步和账目/native；不删除原失败第9步或重买初审。
 
 ## 2026-10-28 第十三例组装限制确认，原记录核验完成（当前）
 

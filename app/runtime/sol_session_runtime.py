@@ -5,6 +5,7 @@ The durable session's cumulative budget is the task accounting authority.
 """
 from dataclasses import replace
 import json
+from copy import deepcopy
 
 from pydantic import TypeAdapter
 
@@ -205,9 +206,67 @@ class SessionTools(ToolRuntime):
 
 
 class SessionWorkflow(NaturalDutyWorkflow):
-    def __init__(self, *args, session, **kwargs):
+    def __init__(self, *args, session, patch_coordination=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.session = session
+        self.patch_coordination = deepcopy(patch_coordination)
+        self.selected_coordination = None
+
+    def assemble(self, inputs):
+        from scripts import review_duty_direct_patch as direct
+        inventory = direct.conflict_inventory(inputs, self.proposals)
+        if not inventory['conflicts']:
+            if self.patch_coordination is not None:
+                raise SessionBlocked('session_unexpected_patch_coordination')
+            return super().assemble(inputs)
+        gate = self.session.review_gate
+        if gate is None:
+            raise SessionBlocked('session_patch_coordination_requires_native_gate')
+        self.record('patch-conflicts', inventory)
+        # Pause before writing an intent when no operator choice is available.
+        # Once committed, the selection is replayed from the original operation.
+        next_intent = self.session.root/'operations'/f'{self.session.cursor+1:04d}-intent.json'
+        if self.patch_coordination is None and not next_intent.exists():
+            raise SessionPaused('session_awaiting_patch_coordination')
+        if self.patch_coordination is not None:
+            direct.coordinated_operations(inventory, self.patch_coordination)
+        selected, _ = self.session.operation('patch-selection',
+            dict(inventory_sha256=direct.inventory_sha(inventory)),
+            lambda: deepcopy(self.patch_coordination))
+        direct.coordinated_operations(inventory, selected)
+        if self.patch_coordination is not None and selected != self.patch_coordination:
+            raise SessionBlocked('session_patch_coordination_changed')
+        assembly = direct.preview(inputs, self.proposals, coordination=selected)
+        material = self._patch_material(inputs, assembly.report, assembly.journal)
+        gate.require('patch-coordination', 'compatibility', material, assembly.report)
+        self.selected_coordination = selected
+        self.record('patch-coordination', selected)
+        return assembly
+
+    def verify_assembly(self):
+        if self.selected_coordination is None:
+            return super().verify_assembly()
+        from scripts import review_duty_direct_patch as direct
+        self.session.review_gate.verify_prior()
+        return direct.preview(self.original, self.proposals, coordination=self.selected_coordination)
+
+    def _patch_material(self, inputs, report, journal):
+        contract = self.contract_module
+        opinions = [json.loads((self.journal_root/(duty+'-initial.json')).read_bytes())['raw']
+                    for duty in ('facts', 'completion')]
+        material = dict(complete_source=dict(data_json=inputs.data_json, pack_json=inputs.pack_json),
+            original_report=inputs.source.report, report=report, patch_journal=journal, responses=opinions)
+        requests = []
+        for path in sorted((self.session.root/'operations').glob('*-result.json')):
+            value = json.loads(path.read_bytes())['value']
+            if not isinstance(value, dict) or not value.get('ok') or 'issued_raw' not in value:
+                continue
+            issued = json.loads(value['issued_raw'])
+            context = issued['metadata'].get(contract.CONTEXT)
+            if context and context['stage'] == 'initial' and not context.get('control_case'):
+                requests.append(value['issued_raw'])
+        material['initial_requests_with_complete_policies'] = requests
+        return material
 
     def _review(self, inputs, name, stage):
         contract = self.contract_module
@@ -233,20 +292,6 @@ class SessionWorkflow(NaturalDutyWorkflow):
             return dict(recorded=True)
         self.session.operation('journal', dict(name=name, data=data), save)
         if name == 'preview' and gate is not None:
-            opinions = [json.loads((self.journal_root/(duty+'-initial.json')).read_bytes())['raw']
-                        for duty in ('facts', 'completion')]
-            material = dict(complete_source=dict(data_json=self.original.data_json,
-                pack_json=self.original.pack_json), original_report=self.original.source.report,
-                report=data['report'], patch_journal=data['journal'], responses=opinions)
-            requests = []
-            for path in sorted((self.session.root/'operations').glob('*-result.json')):
-                value = json.loads(path.read_bytes())['value']
-                if not isinstance(value, dict) or not value.get('ok') or 'issued_raw' not in value:
-                    continue
-                issued = json.loads(value['issued_raw'])
-                context = issued['metadata'].get(contract.CONTEXT)
-                if context and context['stage'] == 'initial' and not context.get('control_case'):
-                    requests.append(value['issued_raw'])
-            material['initial_requests_with_complete_policies'] = requests
+            material = self._patch_material(self.original, data['report'], data['journal'])
             gate.require('compatibility', 'compatibility', material, data['report'])
             gate.require('edit', 'edit', material, data['report'])

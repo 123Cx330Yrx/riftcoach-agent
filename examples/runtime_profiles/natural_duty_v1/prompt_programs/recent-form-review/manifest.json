@@ -277,7 +277,7 @@
     {
       "component_id": "app.evaluation.natural_duty_workflow",
       "source": "app/evaluation/natural_duty_workflow.py",
-      "sha256": "57b775b48a0ea2c88114f611bde22bb0d4b344ea87d85392cdc6e5f2be1354ea"
+      "sha256": "e1867d337b8fd852c205c78ca3028f592102ed9cc541887729fc0461dae6a076"
     },
     {
       "component_id": "app.product.natural_duty_candidate",
@@ -287,7 +287,7 @@
     {
       "component_id": "scripts.review_duty_direct_patch",
       "source": "scripts/review_duty_direct_patch.py",
-      "sha256": "89a26ff9abfe670ddd2eb439976b0d03ddff2e02d769db2ccb2a115503e99b9e"
+      "sha256": "d367d43aecf6caa37d3c47325b8cbfc52df681b623bc308a4179c3551bde00e7"
     },
     {
       "component_id": "scripts.review_duty_composition",
@@ -345,5 +345,5 @@
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "c25a52a3115fc333572ed73243f39b5f5935a545b1db5385afc7138817f1c429"
+  "program_sha256": "30f386bc6cb11d36bfc67ceef4d298dd271c79e9cbece5b64bbbcfe04f9f5970"
 }

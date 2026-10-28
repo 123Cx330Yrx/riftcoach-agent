@@ -44,8 +44,8 @@ def opinion(context, mode='repair'):
     value=dict(score=100,verdict='pass',issues=[],issue_resolutions=[],advisories=[])
     if context['stage']=='fresh': return value
     value['repairs']=[]
-    if mode=='pass' or context['duty']=='completion': return value
-    request=contract.make_request(inputs,'facts')
+    if mode=='pass' or (context['duty']=='completion' and mode!='overlap'): return value
+    request=contract.make_request(inputs,context['duty'])
     content=next(m.content for m in request.messages if (m.content or '').startswith('[UNTRUSTED DATA]\n'))
     root=json.loads(content.split('\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])['source_roots']['roots'][0][0]
     before=inputs.source.blocks[0][1][-10:]
@@ -53,6 +53,8 @@ def opinion(context, mode='repair'):
         severity='medium',category='fact_error',explanation='Synthetic test only.',
         suggested_correction='Synthetic exact change.')],repairs=[dict(issue_ids=[1],edits={
             'block_1':[dict(before=before,after=before+' OFFLINE fixture.',reason='Synthetic test only.') ]})])
+    if mode=='overlap' and context['duty']=='completion':
+        value['repairs'][0]['edits']['block_1'][0]['after'] = before+' OFFLINE alternative.'
     contract.validate_business(visible(json_value(request)),context)(json.dumps(value))
     return value
 

@@ -79,8 +79,9 @@ class BoundReport:
 
 
 class FixedReportWorkflow(SessionWorkflow):
-    def __init__(self, send, *, session, inputs):
-        super().__init__(send, session=session, journal_root=session.journal_root, contract_module=contract)
+    def __init__(self, send, *, session, inputs, patch_coordination=None):
+        super().__init__(send, session=session, journal_root=session.journal_root, contract_module=contract,
+            patch_coordination=patch_coordination)
         self.inputs = inputs
         self.source_sha = digest(canonical(dict(data_json=inputs.data_json, pack_json=inputs.pack_json)))
 
@@ -90,7 +91,7 @@ class FixedReportWorkflow(SessionWorkflow):
         return report_inputs(self.inputs, request.report)
 
 
-def run_case(session, router):
+def run_case(session, router, *, patch_coordination=None):
     """Replay/advance exactly one case; no generation, labels or terminal writes."""
     cell, inputs = case_for(session.binding['key'])
     if (session.binding['input_sha256'] != cell['input_sha256']
@@ -100,7 +101,8 @@ def run_case(session, router):
     observed = ObservedLLMProvider(delegate=router, observer=SignalRecorder(session.root/'signals'),
         request_identity=contract.request_identity)
     budget = SessionBudget(observed, session=session, coach_contract=contract.CONTRACT)
-    workflow = FixedReportWorkflow(SharedBudgetReviewSender(budget), session=session, inputs=inputs)
+    workflow = FixedReportWorkflow(SharedBudgetReviewSender(budget), session=session, inputs=inputs,
+        patch_coordination=patch_coordination)
     request = BoundReport(inputs.source.report, workflow.source_sha)
     workflow.evaluate(request)
     if workflow.state == 'revision':

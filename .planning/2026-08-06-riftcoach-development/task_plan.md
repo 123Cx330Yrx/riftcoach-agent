@@ -19,7 +19,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 目标：正确双初审对同一句提出不同措辞时，保留两份原意见且只应用一份完整正确替换，不再无条件拒绝整个组装。实际反例：observed:3；原15已完成12例，第13例仅组装失败，后2例未测。全部13例记录/54份native/2184件原件已严格回放，唯一seal已完成，无在途调用。
 
-路径与验收：按docs/plans/2026-10-28-original15-overlap-recovery.md在开发树实现带职责issue引用的显式冲突协调，验证原反例、正常非重叠和冲突/篡改边界；整稿双审、唯一application与同稿双fresh不删。原冻结版本与费用保持，先零付费实现和验证，不重买初审或拼接版本授资格。完整结果data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json。
+本地实现完成：带职责issue引用和稳定SHA的显式冲突协调、无选择时暂停、唯一选择恢复、原生协调与原compatibility/edit/application/双fresh消费均已接通；真实原件生成completion原替换的未批准预览，其余27段逐字保持。原seal/2184件库存和作者保持，未建立真实恢复session，新增Provider/Key均0。最终验证及限制见data/evaluation/results/sol_original15_patch_coordination_local_20261028.json。下一工作包是封存前8步证据继承与零发送native核验，不重买初审或已成功前12例，不改原封存结果或拼版本授资格。
 
 ## 2026-10-28 第十三例双初审接受，实际组装核验（当前）
 
@@ -323,7 +323,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-原记录已完成严格只读核验和唯一seal，无在途调用。下一动作：在开发树按docs/plans/2026-10-28-original15-overlap-recovery.md实现并零付费验证显式冲突协调，保留原12成功及第13例正确双初审，不重发或重开付费批。原15尚未全部完成，旧失败/费用、授权截止及产品未准入保持。
+显式冲突协调本地实现及实际原件预览已完成。下一动作：按docs/plans/2026-10-28-original15-overlap-recovery.md在独立修复目录精确继承第13例前8步及旧累计账目，完成零发送原件/native回放和协调任务边界核验；再核冻结版本/CI/有效费用后接双审与双fresh。当前尚无真实恢复session，不修改原已seal目录，不重买初审或前12例；旧失败/费用、原授权截止及产品未准入保持。
 
 ## History
 

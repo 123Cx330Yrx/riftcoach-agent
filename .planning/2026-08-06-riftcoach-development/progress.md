@@ -1,3 +1,13 @@
+## 2026-10-28 显式重叠补丁协调本地验证完成
+
+开发树已完成候选选择、双职责issue覆盖、原生协调、原compatibility/edit、唯一application及同稿双fresh的消费与只读回放；缺选择时暂停不关闭，已保存选择不能静默替换。启动入口在CI/Key前绑定既有冲突及选择文件SHA，原已seal目录仍拒绝运行。稳定清单SHA消除了JSON对象排序引起的误拒绝，原意见字符串保留。
+
+最终138项本地检查通过（124项571.33秒；原session/启动器14项737.54秒），新增入口断言另1项4.06秒通过；compile、governance、diff-check通过。模拟HTTP/native只验证工程消费，不授模型语义资格。开发期参数遗漏、旧manifest、测试helper职责错误、清单SHA顺序以及两次准备脚本辅助错误均已修复并留痕，未据旧失败关闭或重买真实项。
+
+实际第13例两份原意见与完整来源、请求、material/submission/checkpoint及作者SHA核对后生成未批准预览：显式选择completion原op_2，仅第21段一句变化，其余27段逐字保持，preview SHA eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d。原seal与2184件库存不变，Provider/Key均0，无真实恢复session/application/fresh。原15仍12/15，后2例未执行；旧失败/费用、截止时间、automation PAUSED与产品未准入保持。
+
+证据：data/evaluation/results/sol_original15_patch_coordination_local_20261028.json；准备文件C:/Users/33502/Documents/Agent/outputs/riftcoach-original15-overlap-preparation-20261028/preparation.json（SHA80eef3751b5c5cd7f21bfd5a10f6058b3590164be1d7ef59f72e54846addfe29）。下一动作是新版本目录精确继承原前8步和账目/native；不删除原失败第9步或重买初审。
+
 ## 2026-10-28 原始记录只读核验与封存完成
 
 原15前12例仍matched；第13例正确双初审因原preview重叠检查停止，observed:4/5未执行。严格回放13条记录/54份native，封存前2184件库存相等；唯一seal SHA7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371。全批43HTTP/40正常返回/3旧失败，773045known/195578unknown预留/3retry，HTTP未知/receiptless/not_sent均0。诊断与封存零Key/新Provider，无在途执行者。下段“进程22520运行中”为封存前记录，现已正常结束。
