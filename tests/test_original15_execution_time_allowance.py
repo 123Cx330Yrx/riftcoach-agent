@@ -148,6 +148,7 @@ def test_committed_application_replays_after_old_and_new_time_limits(tmp_path,mo
         assembly=SimpleNamespace(report=draft),original_request=request,original=SimpleNamespace(source=SimpleNamespace(report=old)),
         proposals=[],initial_result=evaluation,state='revision',contract_module=SimpleNamespace(VERSION='contract'),
         record=record,stop=forbidden)
+    workflow.verify_assembly=lambda:workflow.assembly
     monkeypatch.setattr(NaturalDutyWorkflow.revise.__globals__['direct'],'preview',lambda *args:workflow.assembly)
     patched=allowance.compile_retry(NaturalDutyWorkflow.revise,
         "if budget.clock()-budget.started >= budget.contract.descriptor()['execution_timeout_s']:",
