@@ -108,3 +108,7 @@ CI40660394101（aa9e9bc7）全部8个job成功；此前两轮真实CI失败、�
 scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接复用既有fixed-report/session/transport/native gate，不重开两份seal。入口绑定旧原批与第13修复的封存库存、作者、原stdout信任根、原授权/续接及累计45HTTP/810780known/195578unknown预留/3retry；实际历史活动28875.972秒逐例核算，第13继承时间不重复计入。新片段最多一个新请求，Key仅真实发送边界读取，超时/格式暂停同项；原则性拒绝保留最早停止与只读封存，不补写成功。
 
 使用未修改58a冻结runtime的真实零发送检查已通过：父seal/原件/作者、七份继承及修复native、授权和原请求材料可正确消费；临时计划目录已清理，未建立正式session/读取Key/发送Provider。模拟首轮暴露拒绝封存回放错误地先调用接受校验，已修复；测试夹具第二例重复使用stage作为turn id导致歧义，改为case+stage唯一模拟事件。实际执行原件未受影响。当前完成相称行为检查，随后冻结明确新入口HEAD并核公共CI；不把58a失败CI或aa9维护CI冒充新入口的公共验证。原15仍12例、修复版另1例完整证据，剩两例未发送，不授跨版本15项资格。
+
+## 2026-10-28 剩两例入口本地验收及唯一CI等待
+
+本地完整模拟4 passed/778.05秒；最终父链/批回放2 passed/1.91秒（共享1项，共5个唯一检查）。两例实际完整模拟、524同项手动恢复、拒绝停止/严格回放、seal防重跑及父原件/账目篡改拒绝均通过。正式冻结e7a7ab0b执行树完整原runtime字节与58a父source一致，真实父native核验通过；首例observed:4正式Host-only到0003 paused模型边界，原stdout guard1d7d555a、checkpoint d421602f，Provider/Key0。累计45HTTP/810780known/195578unknown预留/3retry与历史活动28875.972秒保持。新CI40673377624运行中，唯一waiter实际PID22664等待后只发首个pending请求，不自动补测或并发发送。原授权截止不延展；后续照旧逐项双审，原版12和修复1不拼版本资格。
