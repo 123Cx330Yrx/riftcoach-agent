@@ -82,3 +82,8 @@ scripts/original15_patch_recovery_launch.py将原seal/proof、原授权及有效
 原真实授权续接文件已核验，截止北京时间10月29日00:25:43，未延长或清零。开发期路由替身递归与当前owned intent误拒绝已修复并留痕。当前新增Provider/Key均0、尚无真实恢复session；下一动作：提交并冻结独立执行副本，先完成零发送patch-coordination、compatibility、edit双审，再于同HEAD公共CI全绿且原授权/余量有效时发送同稿双fresh。原15仍12/15，旧失败、费用、seal、automation PAUSED和产品未准入保持。
 
 证据：data/evaluation/results/sol_original15_patch_launcher_local_20261028.json。
+
+
+## 2026-10-28 唯一应用及测试维护CI续接
+
+第13例两份初审复用；patch-coordination、compatibility和edit四项双审已接受导入，唯一application完成，新稿eae9605e。0035 paused checkpoint SHA7a04d08b66cda6078749b387c2a5c610e9ae1931eb9fbbd566f147b8c471e57e停在facts-fresh发送边界。原15仍12/15，新增Provider/Key均0。冻结58a947ca公共CI40646310462两项失败，原因分别为旧当前库存快照未更新、application回放测试替身缺verify_assembly。修复8c05a3c4只改两测试和新增当前库存，不覆盖历史库存；28项测试与治理通过，新CI40653270119运行中。Control行政续接SHA069e37f8逐件核唯一三文件提交、冻结执行源码/业务输入不变，保留原plan/guard/0035/作者及所有原账目；10项本地边界检查通过。明确此为测试维护提交CI与冻结执行源码等价的同HEAD条件例外，不宣称原失败CI变绿。下一动作：修复提交CI全绿后续同稿双fresh及完整来源双审，再严格只读回放封存；不重新prepare或重买初审。原授权截止、763.111活动秒余量、旧费用/失败、Stage8E和产品未准入保持。
