@@ -18,7 +18,7 @@ pause_reason: "原版12例与第13例修复闭环保留；剩两例材料已核�
 
 CI40660394101（aa9e9bc7）全部8个job成功；此前两轮真实CI失败、漏查Sol当前库存、waiter失联未知原因及同HEAD测试维护例外均保留，不归因模型。原版12/15和第13原组装失败/旧seal不改写；修复版新增1例完整证据，跨版本已有13例闭环，但不称原版或修复版同版本15/15资格。原15熟悉来源非holdout；Stage8E、automation PAUSED与产品未准入保持。
 
-剩observed:4/5原稿、来源与四个初审请求已零发送逐SHA核对原plan一致，profile/contract不变，两例确未执行；原费用余量及截止北京时间10月29日00:25:43不延展。原批和单例恢复都已seal，当前单例启动器不能当作剩两例队列。续接入口本地验证已通过（完整4项778.05秒及最终父链/封存2项1.91秒），真实旧native及正式冻结入口零发送核验通过。冻结e7a7ab0b、公共CI40673377624运行中；唯一waiter PID22664仅在CI全绿且原授权有效时发送第14例首项，随后照旧双审。当前0003 paused停在首请求边界，Provider/Key仍0。不重开seal、不重买成功项、不拼版本授资格。证据data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json及sol_original15_remaining_two_preparation_20261028.json。
+剩observed:4/5原稿、来源与四个初审请求已零发送逐SHA核对原plan一致，profile/contract不变，两例确未执行；原费用余量及截止北京时间10月29日00:25:43不延展。原批和单例恢复都已seal，当前单例启动器不能当作剩两例队列。续接入口本地验证已通过（完整4项778.05秒及最终父链/封存2项1.91秒），真实旧native及正式冻结入口零发送核验通过。冻结e7a7ab0b、公共CI40673377624运行中；唯一waiter实际PID61560（launcher22664）仅在CI全绿且原授权有效时发送第14例首项，随后照旧双审。当前0003 paused停在首请求边界，Provider/Key仍0。不重开seal、不重买成功项、不拼版本授资格。证据data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json及sol_original15_remaining_two_preparation_20261028.json。
 
 ## 2026-10-28 恢复启动器本地验证完成
 

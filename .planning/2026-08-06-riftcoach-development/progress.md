@@ -10996,4 +10996,4 @@ scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接�
 
 ## 2026-10-28 剩两例入口本地验收及唯一CI等待
 
-本地完整模拟4 passed/778.05秒；最终父链/批回放2 passed/1.91秒（共享1项，共5个唯一检查）。两例实际完整模拟、524同项手动恢复、拒绝停止/严格回放、seal防重跑及父原件/账目篡改拒绝均通过。正式冻结e7a7ab0b执行树完整原runtime字节与58a父source一致，真实父native核验通过；首例observed:4正式Host-only到0003 paused模型边界，原stdout guard1d7d555a、checkpoint d421602f，Provider/Key0。累计45HTTP/810780known/195578unknown预留/3retry与历史活动28875.972秒保持。新CI40673377624运行中，唯一waiter实际PID22664等待后只发首个pending请求，不自动补测或并发发送。原授权截止不延展；后续照旧逐项双审，原版12和修复1不拼版本资格。
+本地完整模拟4 passed/778.05秒；最终父链/批回放2 passed/1.91秒（共享1项，共5个唯一检查）。两例实际完整模拟、524同项手动恢复、拒绝停止/严格回放、seal防重跑及父原件/账目篡改拒绝均通过。正式冻结e7a7ab0b执行树完整原runtime字节与58a父source一致，真实父native核验通过；首例observed:4正式Host-only到0003 paused模型边界，原stdout guard1d7d555a、checkpoint d421602f，Provider/Key0。累计45HTTP/810780known/195578unknown预留/3retry与历史活动28875.972秒保持。新CI40673377624运行中，唯一waiter实际PID61560（launcher22664）等待后只发首个pending请求，不自动补测或并发发送。原授权截止不延展；后续照旧逐项双审，原版12和修复1不拼版本资格。
