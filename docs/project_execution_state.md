@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原15完成12/15；下一例observed:3；累计41HTTP/729303known/195578unknown预留/3retry。"
+pause_reason: "用户挪电脑暂停；12/15完成；observed:3事实初审已接受，下一completion-initial；42HTTP/751962known/195578unknown/3retry。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,15 @@ pause_reason: "原15完成12/15；下一例observed:3；累计41HTTP/729303known
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+## 2026-10-28 第十三例事实初审接受，用户挪电脑暂停（当前）
+
+用户要求挪电脑就近暂停。第13例observed:3事实初审正常返回，22659known tokens，92/needs_revision；唯一block_21补丁将四场比赛及8.805/1.5统计量从阅读者归回ShowMaker，保留正确数值与观摩行动。主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等，0153已唯一导入。停在0014 boundary，SHA291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904；无在途执行进程，没有启动completion-initial，也没有application或fresh。
+
+原15仍完成12/15，第13例未闭环；累计42HTTP/751962known/195578unknown预留/3retry。成功前缀、旧失败与费用、冻结源码、原请求/token余量保持。费用截止北京时间10月29日00:25:43不延展，automation PAUSED、Stage8E及产品未准入保持。仅在用户恢复后先核进程和检查点，再用保存凭据续同例completion-initial，不重发事实初审。
+
+证据：data/evaluation/results/sol_original15_observed3_facts_initial_paused_20261028.json。
+
 
 ## 2026-10-28 observed:2完成，原15进度12/15（当前）
 

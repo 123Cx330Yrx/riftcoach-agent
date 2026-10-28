@@ -4,14 +4,14 @@
   "ci_run": "40188299016",
   "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
   "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
-  "case": "observed:2",
+  "case": "observed:3",
   "actual_edit_performed": true,
   "qualified": false,
   "publication_allowed": false,
   "production_admitted": false,
   "automation_status": "PAUSED",
   "date": "2026-10-28",
-  "stage": "case-completed",
+  "stage": "facts-initial-accepted",
   "accepted_stages": [
     {
       "stage": "facts-initial",
@@ -112,217 +112,110 @@
   ],
   "native_reviews": 6,
   "inventory_unchanged": null,
-  "status": "completed-prefix-awaiting-next-case",
+  "status": "user-paused-computer-relocation",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
   "completed_replay_evidence_sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1",
   "cases_completed": 12,
   "next_case": "observed:3",
-  "next_stage": "facts-initial",
+  "next_stage": "completion-initial",
   "retry_needed": false,
   "all_cases_matched": false,
   "current_case": {
-    "key": "observed:2",
-    "stage": "case-completed",
-    "closed": true,
-    "explicit_case_exceptions": [
-      {
-        "kind": "execution_time_allowance",
-        "manifest": {
-          "additional_active_seconds": 3600,
-          "additional_requests": 0,
-          "additional_tokens": 0,
-          "application_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\observed-2\\journal\\application.json",
-          "application_sha256": "68d86e9977b33e532d5ab5ebe421710213f61363a1d4e657b1b18ff2b42a70b5",
-          "authorization_continuation_sha256": "af5e7d9a7939ddbfa50dac4f9306b7f64e4d6030ddae2089ae5d70f82b1245c8",
-          "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
-          "baseline_active_seconds": 3443.938999999984,
-          "baseline_checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\observed-2\\session\\checkpoints\\0058.json",
-          "baseline_checkpoint_sha256": "f07faa54946306db540370878fea42af09be87b9fe3075ef2a46e8b8562a7a16",
-          "budget_chat_source_sha256": "36375ce7ae0f5d25d008bfb63f40e8ac2621a84c86291fa75559cfc886be8352",
-          "case": "observed:2",
-          "created_at": "2026-10-27T23:48:50.638366+00:00",
-          "effective_batch_active_seconds": 64800,
-          "effective_case_active_seconds": 7200,
-          "extend_authorization_expiry": false,
-          "guard_sha256": "41e41c09732d203b913940869e071363b4e3c71a176a797eef2ae22eb3e95599",
-          "original_envelope_unmodified_pass": false,
-          "original_limits": {
-            "cases": 15,
-            "logical_reviews_per_case": 4,
-            "manual_retries_per_case": 4,
-            "max_requests": 120,
-            "max_requests_per_case": 8,
-            "max_reserved_tokens": 9646080,
-            "maximum_active_seconds": 54000,
-            "per_case_active_seconds": 3600,
-            "per_request_input_tokens": 64000,
-            "per_request_output_tokens": 16384,
-            "per_request_seconds": 300
-          },
-          "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
-          "prior_allowance_manifest_sha256": "b3d92833da840e435404f78c516eaf6a14d26c1acbe44110f7eea8f5f9d8808a",
-          "prior_batch_active_seconds": 61200,
-          "publication_allowed": false,
-          "qualified": false,
-          "reason": "Repeated local full-prefix/native replay consumes the original local time allowance. Add 3600 seconds solely to observed:2 completion-fresh; preserve every request/token counter, frozen source, report and fee expiry.",
-          "remaining_stage": "completion-fresh",
-          "report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
-          "reset_accounting": false,
-          "session_root": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\observed-2\\session",
-          "stdout_evidence": {
-            "0146.exit.json": "4118f8bbc5d28097cad321a241a4190228f7784c2416afc0284985c1064b32b1",
-            "0146.stdout.txt": "dd8908f2da6f80264690f852a45f33c2da1ef9556510624d9bf63e105c918b18",
-            "0147.exit.json": "67b24536a15d2d3b52a240ed9d85f6b6afa5b19bae1ec939a8d7fbb55602121d",
-            "0147.stdout.txt": "baf39440b1af7168ef76f7e621be8960cd996530c24611cd39a2a41e832c1ecd"
-          },
-          "user_authorization_evidence": "User: \u9884\u7b97\u6539\u52a0\u5c31\u52a0\uff0c\u90fd\u8ddf\u4f60\u8bf4\u8fc7\u4e86\u95e8\u69db\u522b\u5361\u6b7b\u4e86. Latest continuation retains original request/token remainder. This separate case-bound record adds only local execution seconds, no requests/tokens, fee expiry or counter reset; scope:3 allowance remains separate.",
-          "version": "original15-additive-case-execution-time-allowance-v2"
-        },
-        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-execution-time-allowance.json",
-        "sha256": "fc4f8b4e25f12acaee178224b45c6a251ea8eda18e7bd13bcc499253fad54925"
-      }
-    ],
-    "original_envelope_pass": false,
-    "actual_edit_performed": true,
-    "application_count": 1,
-    "actual_report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
-    "native_reviews": 6,
-    "accepted_host_stages": {
-      "facts-initial": true,
-      "completion-initial": true,
-      "compatibility": true,
-      "edit": true,
-      "facts-fresh": true,
-      "completion-fresh": true
-    },
-    "strict_replay": true,
-    "replay_scope": "current_completed_case",
-    "status": {
-      "checkpoint_sha256": "97002a6b9eb2256a29b518ad3f0293a2ee5f36fdc4fd883d99d952417e032b4e",
-      "closed": true,
-      "format_waiting": false,
-      "guard_sha256": "41e41c09732d203b913940869e071363b4e3c71a176a797eef2ae22eb3e95599",
-      "operations": 23,
-      "production_admitted": false,
-      "publication_allowed": false,
-      "timeout_waiting": false,
-      "transport_waiting": false,
-      "unresolved": []
-    },
-    "operations": 23,
-    "result": {
-      "accounting": {
-        "attempts": [
-          {
-            "input_tokens": 21836,
-            "model": "gpt-6.1-sol",
-            "ordinal": 1,
-            "output_tokens": 1046,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "5a6674367ef2ad5cb24ceee6d4cdef4bfbc9354be05b6fd0596a065efd38ad3d",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-          },
-          {
-            "input_tokens": 20263,
-            "model": "gpt-6.1-sol",
-            "ordinal": 2,
-            "output_tokens": 259,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "56b22e87e68312a87b480997a300a97115572848b186b6d28a8a8f89a9454899",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-          },
-          {
-            "input_tokens": 19290,
-            "model": "gpt-6.1-sol",
-            "ordinal": 3,
-            "output_tokens": 555,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "75938b411cd5b307b0d35161a3101782d7e43f284aa464a71e8e9154d005c46a",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
-          },
-          {
-            "input_tokens": 17717,
-            "model": "gpt-6.1-sol",
-            "ordinal": 4,
-            "output_tokens": 245,
-            "phase": "native_business_review",
-            "profile": "sol-high-nonstream-v1",
-            "request_sha256": "da7f90ce167f32ed0474c3dfc52cd5a8ceaf0c8bb8c1e95a27f810d1f7bca98c",
-            "role": "review",
-            "status": "completed",
-            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+    "case": "observed:3",
+    "cases_completed": 12,
+    "current_case_completed": false,
+    "user_requested_pause": true,
+    "pause_reason": "computer_relocation",
+    "next_case": "observed:3",
+    "next_stage": "completion-initial",
+    "created_at": "2026-10-28T01:04:20.960389+00:00",
+    "stage": "facts-initial-accepted",
+    "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\observed-3\\session\\checkpoints\\0014.json",
+    "checkpoint_sha256": "291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904",
+    "guard_sha256": "4fa94ec50cf7fcd83d27ad36b572ae557a8b9bfe905b5229d9bc871397e46065",
+    "source_task_checkpoint_sha256": "e2aad098891f6a6567dd4bc0f124666af1430a5ee99edbcace10f90525a5a051",
+    "primary_sha256": "8c97ac2d2e80056ba6e5f916fb60fdbc6b7407cfa84ecd515989b3b5f748a4af",
+    "submission_sha256": "0eeb2a3312e676ef7de02d328a7ba394b1acf3e5e2829676a93f715e768285bd",
+    "native_observation_sha256": "1dd8654259f7a281dede8a50e2af63967dd723ded805e22449e22c374460e97a",
+    "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a18005-2d3d-74f2-80e6-c31e2696a67d/msg_0180e5ce39e7462a016ae149ae51348195bacf9105929ea520",
+    "author_sha256": "b024cf14bc626f77f212eb4325208bf250749aa28d483a3f1d3e9d9e35999224",
+    "native_final_sha256": "b024cf14bc626f77f212eb4325208bf250749aa28d483a3f1d3e9d9e35999224",
+    "author_text_equal": true,
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "provider_opinion": {
+      "score": 92,
+      "verdict": "needs_revision",
+      "issues": [
+        {
+          "block": 21,
+          "severity": "high",
+          "category": "fact_error",
+          "source_ids": [
+            28,
+            39,
+            38
+          ],
+          "explanation": "\u672c\u6bb5\u660e\u786e\u79f0\u8fd94\u5c40\u4e2d\u5355\u7531\u9605\u8bfb\u8005\u672c\u4eba\u6253\u51fa\uff0c\u5e76\u628a\u8865\u5200\u4e2d\u4f4d\u6570\u4e0e\u65e9\u671f\u6b7b\u4ea1\u5747\u503c\u5f52\u4e3a\u9605\u8bfb\u8005\u81ea\u5df1\u7684\u7edf\u8ba1\u3002\u7528\u6237\u660e\u786e\u8bf4\u660eShowMaker\u662f\u89c2\u6469\u5bf9\u8c61\uff0c\u4e0d\u662f\u9605\u8bfb\u8005\uff1b\u6bd4\u8d5b\u6765\u6e90\u4e5f\u5747\u4e3aShowMaker\u30028.805\u548c1.5\u672c\u8eab\u8ba1\u7b97\u6b63\u786e\uff0c\u4f46\u5c5e\u4e8eShowMaker\u6240\u90094\u5c40\u4e2d\u5355\u3002\u8be5\u8eab\u4efd\u5f52\u5c5e\u8fd8\u4e0e\u672c\u6bb5\u540e\u53e5\u53ca\u7b2c20\u6bb5\u76f8\u77db\u76fe\uff0c\u4e0d\u80fd\u7531\u5df2\u6709\u514d\u8d23\u58f0\u660e\u6d88\u9664\u3002",
+          "suggested_correction": "\u5c06\u8fd94\u5c40\u7684\u6bd4\u8d5b\u8eab\u4efd\u53ca\u4e24\u4e2a\u7edf\u8ba1\u91cf\u7684\u5f52\u5c5e\u6539\u4e3aShowMaker\u6240\u9009\u4e2d\u5355\u6837\u672c\uff0c\u4fdd\u7559\u6b63\u786e\u6570\u503c\u548c\u540e\u7eed\u89c2\u6469\u5efa\u8bae\uff0c\u4e0d\u5c06\u5176\u4f5c\u4e3a\u9605\u8bfb\u8005\u672c\u4eba\u7684\u5386\u53f2\u57fa\u7ebf\u3002"
+        }
+      ],
+      "issue_resolutions": [],
+      "advisories": [],
+      "repairs": [
+        {
+          "issue_ids": [
+            1
+          ],
+          "edits": {
+            "block_21": [
+              {
+                "before": "\u8fd9 4 \u5c40\u4e2d\u5355\u5176\u5b9e\u662f\u9605\u8bfb\u8005\u672c\u4eba\u6253\u51fa\u7684\u6bd4\u8d5b\uff0c\u9605\u8bfb\u8005\u81ea\u5df1\u7684\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+                "after": "ShowMaker \u6240\u9009 4 \u5c40\u4e2d\u5355\u7684\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+                "reason": "\u7ea0\u6b63\u6bd4\u8d5b\u53ca\u7edf\u8ba1\u91cf\u88ab\u9519\u8bef\u5f52\u4e8e\u9605\u8bfb\u8005\u7684\u8eab\u4efd\u4e8b\u5b9e\uff0c\u4fdd\u7559\u6765\u6e90\u652f\u6301\u7684\u6570\u503c\uff0c\u4f7f\u5176\u4e0e\u5168\u6587\u89c2\u6469\u5bf9\u8c61\u8eab\u4efd\u53ca\u672c\u6bb5\u540e\u53e5\u4e00\u81f4\u3002"
+              }
+            ]
           }
-        ],
-        "calls": 4,
-        "failed": false,
-        "logical": {
-          "generation": 0,
-          "review": 4
-        },
-        "reserved_tokens": 0,
-        "retries": 0,
-        "router_calls": 4,
-        "stopped": false,
-        "tokens": 81211
-      },
-      "actual_report_sha256": "b4e7e3369a021775e73f936cd2e562b4034d9af699dca939ab5a5088856ca74f",
-      "expected_outcome": "candidate_repaired_pass_unqualified",
-      "key": "observed:2",
-      "matched": true,
-      "outcome": "candidate_repaired_pass_unqualified",
-      "production_admitted": false,
-      "publication_allowed": false
-    },
-    "transport": {
-      "actual_attempts": 4,
-      "completed_calls": 4,
-      "failed_calls": 0,
-      "http_requests_known": 4,
-      "http_requests_unknown": 0,
-      "known_tokens": 81211,
-      "known_usage_calls": 4,
-      "not_sent": 0,
-      "receiptless_calls": 0,
-      "unknown_reserved_tokens": 0,
-      "unknown_usage_calls": 0
+        }
+      ]
     },
     "accounting": {
-      "calls": 4,
-      "reserved_tokens": 0,
-      "retries": 0,
-      "tokens": 81211
+      "calls": 1,
+      "known_tokens": 22659,
+      "unknown_reserved_tokens": 0,
+      "retries": 0
     },
-    "original_stdout_roots": {
-      "checkpoint_sha256": "97002a6b9eb2256a29b518ad3f0293a2ee5f36fdc4fd883d99d952417e032b4e",
-      "guard_sha256": "41e41c09732d203b913940869e071363b4e3c71a176a797eef2ae22eb3e95599"
+    "batch_accounting": {
+      "calls": 42,
+      "known_tokens": 751962,
+      "unknown_reserved_tokens": 195578,
+      "retries": 3
     },
-    "active_seconds": 4684.031999999948,
-    "next_stage": null,
-    "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-completed-accepted.json",
-    "accepted_evidence_sha256": "3961da3eea159d16bab7838de4531bde687ea7340fe7797a4427f59ef0604f74",
-    "strict_read_only_frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-2-completed-replay.json",
-    "strict_read_only_frontier_sha256": "c34d2d89bec9861a1d077817da8e3e414e3458c1de137d672c2fd81e0644919e"
+    "actual_edit_performed": false,
+    "application_count": 0,
+    "original_report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+    "last_stdout": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\segments\\0153.stdout.txt",
+    "last_stdout_sha256": "85734f85255b66cd648164f2927b6e768c0acbfd771e27f1319ac3cc48f9558f",
+    "last_exit": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\segments\\0153.exit.json",
+    "last_exit_sha256": "925331405f1b52b442e87c0df02c347ced0be114f6152470b9174015652544b6",
+    "active_seconds": 1288.6239999999816,
+    "authorization_continuation_sha256": "af5e7d9a7939ddbfa50dac4f9306b7f64e4d6030ddae2089ae5d70f82b1245c8",
+    "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
+    "automation_status": "PAUSED",
+    "execution_process_running": false,
+    "qualified": false,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "successful_calls_must_not_be_resent": true
   },
   "batch_accounting": {
-    "calls": 41,
-    "http_requests_known": 41,
-    "http_requests_unknown": 0,
-    "known_tokens": 729303,
-    "not_sent": 0,
-    "receiptless_calls": 0,
-    "retries": 3,
-    "unknown_reserved_tokens": 195578
+    "calls": 42,
+    "known_tokens": 751962,
+    "unknown_reserved_tokens": 195578,
+    "retries": 3
   },
-  "next_action": "Continue the same batch at observed:3 using saved credentials; retain all original accounting.",
+  "next_action": "User requested pause for computer relocation. On explicit resume verify process/checkpoint and continue only observed:3 completion-initial with saved credentials within the unchanged authorization window.",
   "batch_closed": false,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -3633,8 +3526,8 @@
     "publication_allowed": false
   },
   "original_stdout_roots": {
-    "checkpoint_sha256": "97002a6b9eb2256a29b518ad3f0293a2ee5f36fdc4fd883d99d952417e032b4e",
-    "guard_sha256": "41e41c09732d203b913940869e071363b4e3c71a176a797eef2ae22eb3e95599"
+    "guard_sha256": "4fa94ec50cf7fcd83d27ad36b572ae557a8b9bfe905b5229d9bc871397e46065",
+    "checkpoint_sha256": "291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904"
   },
   "transport": {
     "actual_attempts": 4,

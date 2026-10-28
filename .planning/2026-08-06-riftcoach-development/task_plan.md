@@ -15,6 +15,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-28 第十三例事实初审接受，用户挪电脑暂停（当前）
+
+用户要求挪电脑就近暂停。第13例observed:3事实初审正常返回，22659known tokens，92/needs_revision；唯一block_21补丁将四场比赛及8.805/1.5统计量从阅读者归回ShowMaker，保留正确数值与观摩行动。主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等，0153已唯一导入。停在0014 boundary，SHA291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904；无在途执行进程，没有启动completion-initial，也没有application或fresh。
+
+原15仍完成12/15，第13例未闭环；累计42HTTP/751962known/195578unknown预留/3retry。成功前缀、旧失败与费用、冻结源码、原请求/token余量保持。费用截止北京时间10月29日00:25:43不延展，automation PAUSED、Stage8E及产品未准入保持。仅在用户恢复后先核进程和检查点，再用保存凭据续同例completion-initial，不重发事实初审。
+
+证据：data/evaluation/results/sol_original15_observed3_facts_initial_paused_20261028.json。
+
+
 ## 2026-10-28 observed:2完成，原15进度12/15（当前）
 
 第十二例observed:2完成初审逐字补丁→compatibility/edit整稿双审→唯一application→同稿双fresh。唯一block_10补丁撤回无依据的未来全称预测，保留四场经济/伤害观察，其余27段逐字保持；实际新稿b4e7e336与两项fresh完全相同。facts-fresh与completion-fresh分别正常HTTP200、23.906/12.422秒、19845/17962known tokens，均100/pass且issues/issue_resolutions/advisories空。六个Host阶段均经主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。
@@ -300,7 +309,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-原15完成12/15；同批下一例observed:3，使用保存凭据入口，不重发成功项、不清零预算。授权截至北京时间10月29日00:25:43。
+用户挪电脑暂停。原15完成12/15，observed:3事实初审已双审接受并导入，0014 boundary；等待用户明确恢复后先核现有进程和checkpoint，再续completion-initial。不重发成功项；费用授权截止北京时间10月29日00:25:43，不延展。
 
 ## History
 
