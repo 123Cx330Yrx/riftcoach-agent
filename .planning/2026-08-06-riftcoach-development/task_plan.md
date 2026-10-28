@@ -15,6 +15,8 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+剩两例CI维护续接已实际安装：冻结e7a7ab0b及0003/guard/plan保持，原CI40673377624的60分钟超时和原waiter退出原件保留；维护CI40681684790绑定6a231c54，仅pytest-shards时限60→90，逐件固定7件Git差异及18件控制原件。明确同HEAD条件例外，不把原cancelled改称绿。15项零Key/零Provider边界核验通过，续接SHA82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca；versioned segment保持共享独占锁和stdout原留根。唯一v2 waiter实际PID63192（launcher16788）等待全部8项公共检查成功后仅发送observed:4首个pending请求一次，不自动补测；原授权截止北京时间10月29日00:25:43不延展，原累计45HTTP/810780known/195578unknown预留/3retry不清零。当前新增Provider/Key仍0，observed:5尚无session。后续逐项完整来源双审、唯一应用及同稿双fresh，然后严格只读回放封存；原版12、修复1和后2例不拼同版本资格，Stage8E/automation PAUSED/产品未准入保持。
+
 ## 2026-10-28 组装重叠修复（当前工作卡）
 
 目标：正确双初审对同一句提出不同措辞时，保留两份原意见且只应用一份完整正确替换，不再无条件拒绝整个组装。实际反例：observed:3；原15已完成12例，第13例仅组装失败，后2例未测。全部13例记录/54份native/2184件原件已严格回放，唯一seal已完成，无在途调用。

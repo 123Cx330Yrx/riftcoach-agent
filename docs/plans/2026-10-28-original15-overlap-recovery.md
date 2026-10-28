@@ -116,3 +116,8 @@ scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接�
 ## 2026-10-28 剩两例CI时限故障
 
 新入口e7a7ab0b的CI40673377624，web/migrations/packaging及shard0/2/3成功；shard1被GitHub明确标注超过1h0m0s取消，末次完整进度87%，此前日志无失败标记，不等于余项通过。汇总失败与缺完成库存保留。唯一waiter按失败退出，没有读取Key或发送Provider；observed:4仍0003模型边界，计划/guard/原余量不变。仅将pytest-shards job时限60改90分钟，全部用例、分片数量、完整覆盖汇总及其他mandatory gate保持。该CI维护不改冻结e7执行源码/输入/plan，沿用先前显式测试维护续接模式逐件固定Git差异；新CI全绿后才能首发，原cancelled不改称绿。证据Control/ci-timeout-diagnosis.json及原日志SHA。
+
+
+## 2026-10-28 剩两例维护CI显式续接
+
+剩两例CI维护续接已实际安装：冻结e7a7ab0b及0003/guard/plan保持，原CI40673377624的60分钟超时和原waiter退出原件保留；维护CI40681684790绑定6a231c54，仅pytest-shards时限60→90，逐件固定7件Git差异及18件控制原件。明确同HEAD条件例外，不把原cancelled改称绿。15项零Key/零Provider边界核验通过，续接SHA82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca；versioned segment保持共享独占锁和stdout原留根。唯一v2 waiter实际PID63192（launcher16788）等待全部8项公共检查成功后仅发送observed:4首个pending请求一次，不自动补测；原授权截止北京时间10月29日00:25:43不延展，原累计45HTTP/810780known/195578unknown预留/3retry不清零。当前新增Provider/Key仍0，observed:5尚无session。后续逐项完整来源双审、唯一应用及同稿双fresh，然后严格只读回放封存；原版12、修复1和后2例不拼同版本资格，Stage8E/automation PAUSED/产品未准入保持。

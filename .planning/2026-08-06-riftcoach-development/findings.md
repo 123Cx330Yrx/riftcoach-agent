@@ -1,3 +1,9 @@
+## 2026-10-28 剩两例CI维护续接已安装
+
+状态记录脚本首次把包含历史记录的“当前行动”标题误设为唯一，断言在写入前停止；已改为只定位首个活动标题，未影响执行原件或发送。第15例完整原稿及来源已供主审预读；正式意见仍以将来实际material/request/response及精确绑定为准，不预写接受结论。
+
+剩两例CI维护续接已实际安装：冻结e7a7ab0b及0003/guard/plan保持，原CI40673377624的60分钟超时和原waiter退出原件保留；维护CI40681684790绑定6a231c54，仅pytest-shards时限60→90，逐件固定7件Git差异及18件控制原件。明确同HEAD条件例外，不把原cancelled改称绿。15项零Key/零Provider边界核验通过，续接SHA82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca；versioned segment保持共享独占锁和stdout原留根。唯一v2 waiter实际PID63192（launcher16788）等待全部8项公共检查成功后仅发送observed:4首个pending请求一次，不自动补测；原授权截止北京时间10月29日00:25:43不延展，原累计45HTTP/810780known/195578unknown预留/3retry不清零。当前新增Provider/Key仍0，observed:5尚无session。后续逐项完整来源双审、唯一应用及同稿双fresh，然后严格只读回放封存；原版12、修复1和后2例不拼同版本资格，Stage8E/automation PAUSED/产品未准入保持。
+
 ## 2026-10-28 第十三例修复闭环与剩两例原材料核验完成
 
 第13例observed:3修复闭环完成：原两初审复用，协调、compatibility、edit及同稿双fresh均经主审与原独立作者完整来源双审接受，唯一application仅修正block_21身份一句，其余27段保留。facts-fresh/completion-fresh均HTTP200、100/pass、空issues/resolutions/advisories，19709/18026known tokens、22.781/17.265秒，实际同一新稿eae9605e。新增仅2HTTP/37735known/0unknown/0retry；本例含继承4HTTP/81477known，累计45HTTP/810780known/195578unknown预留/3旧retry。严格只读replay及唯一seal均通过，seal SHA3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b固定211件；原stdout退出0069 SHAfeb0ba77310c5732de6150cac1c5d8d0adc84f7608b6f598b8934ed462703bbe，活动3139.498秒。无在途进程。

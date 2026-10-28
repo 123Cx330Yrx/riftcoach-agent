@@ -69,8 +69,8 @@
   "new_native_tasks": 0,
   "prepared_materials": true,
   "paid_launcher_ready": false,
-  "blocker": "CI shard job time limit; maintenance changes only pytest-shards timeout 60 to 90, pending public verification.",
-  "next_action": "pin_test_only_ci_maintenance_then_continue_existing_observed4_boundary",
+  "blocker": "Waiting for all mandatory public CI checks on timeout-only maintenance commit.",
+  "next_action": "unique_v2_waiter_send_observed4_first_pending_once_after_all_green",
   "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
   "authorization_extended": false,
   "qualified": false,
@@ -81,7 +81,7 @@
   "historical_active_seconds": 28875.971999999718,
   "execution_cwd": "D:/riftcoach-original15-remaining-execution-20261028",
   "successor_plan_sha256": "fc1b1a392b09c7c6e9bd10dfd1dfdcff6d385e48a3cccdf593f5b109ad277e2f",
-  "public_ci_run": "40673377624",
+  "public_ci_run": "40681684790",
   "guard_sha256": "1d7d555a3e3d6bd5b6fc582bc4ab1e967c1a7dec72722f2ed9219406ac5cb077",
   "checkpoint_sha256": "d421602f2a02a70960424b53f868aedf54e572a50a19b7cb401f3cd84375eefd",
   "local_behavioral_checks": {
@@ -91,8 +91,22 @@
     "focused_seconds": 1.91
   },
   "actual_frozen_startup_verified": true,
-  "waiting_pid": null,
-  "launcher_pid": 22664,
-  "public_ci_state": "cancelled_by_60min_job_limit",
-  "ci_timeout_diagnosis": "pytest-shards (1): The job has exceeded the maximum execution time of 1h0m0s; last completed progress 87%, unfinished tests unproven."
+  "waiting_pid": 63192,
+  "launcher_pid": 16788,
+  "public_ci_state": "in_progress",
+  "ci_timeout_diagnosis": "pytest-shards (1): The job has exceeded the maximum execution time of 1h0m0s; last completed progress 87%, unfinished tests unproven.",
+  "ci_maintenance": {
+    "ci_head": "6a231c546dbe676a96774a802e5ee9a8344f9823",
+    "execution_head": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+    "original_failed_ci_run": "40673377624",
+    "same_head_condition_exception": true,
+    "continuation_sha256": "82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca",
+    "control_pins": 18,
+    "maintenance_files": 7,
+    "offline_checks_passed": 15,
+    "new_provider_requests": 0,
+    "key_reads": 0,
+    "automatic_retry": false,
+    "waiter_start": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-remaining-two-20261028-control\\waiter-v2-start.json"
+  }
 }
