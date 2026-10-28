@@ -8206,3 +8206,9 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 
 排序修复后两项针对性检查通过（30.66秒）；业务app/scripts/skills/examples与5f46413d逐文件diff为空，无需再重复67项回归。已冻结303c21b42565237a7101d3dcf2357e4940bb9bb7于D:/riftcoach-completion-diagnostic-ci-execution，新Operator outputs/riftcoach-completion-diagnostic-v2-20261024，plan5218a0d2。该副本的独立作者/check-answer/唯一原生final/导入及只读回查已通过；最终PowerShell CheckOnly通过，正常未授权入口实证在Key/claim/execution之前拒绝。准备证据control/preparation-complete.json SHA63110b5ff1345d0785a6fa74f9bef6c1c2338a56c3b47f75388ed89c3fcfc37c。
 **下一动作：** 核冻结303c21b4的CI40095068270（当前in_progress），全绿后呈交本次具体新费用授权并激活同一隐藏Key入口。新增Provider/Key0、execution不存在；旧grant不扩展，automation现场核PAUSED。新引擎语义有效性仍未实测，不授产品或同版本15资格。
+
+## 2026-10-28 剩两例显式续接入口验证中
+
+scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接复用既有fixed-report/session/transport/native gate，不重开两份seal。入口绑定旧原批与第13修复的封存库存、作者、原stdout信任根、原授权/续接及累计45HTTP/810780known/195578unknown预留/3retry；实际历史活动28875.972秒逐例核算，第13继承时间不重复计入。新片段最多一个新请求，Key仅真实发送边界读取，超时/格式暂停同项；原则性拒绝保留最早停止与只读封存，不补写成功。
+
+使用未修改58a冻结runtime的真实零发送检查已通过：父seal/原件/作者、七份继承及修复native、授权和原请求材料可正确消费；临时计划目录已清理，未建立正式session/读取Key/发送Provider。模拟首轮暴露拒绝封存回放错误地先调用接受校验，已修复；测试夹具第二例重复使用stage作为turn id导致歧义，改为case+stage唯一模拟事件。实际执行原件未受影响。当前完成相称行为检查，随后冻结明确新入口HEAD并核公共CI；不把58a失败CI或aa9维护CI冒充新入口的公共验证。原15仍12例、修复版另1例完整证据，剩两例未发送，不授跨版本15项资格。

@@ -69,10 +69,14 @@
   "new_native_tasks": 0,
   "prepared_materials": true,
   "paid_launcher_ready": false,
-  "blocker": "The original batch and single-case recovery are sealed; remaining cases need an explicit successor entry that binds both sealed histories, preserves cumulative accounting and uses the existing runtime without reopening either seal.",
-  "next_action": "implement_and_verify_remaining_case_successor_using_existing_frozen_runtime",
+  "blocker": "Successor implementation and real sealed-parent/native binding verified; final behavioral checks and exact successor-HEAD public CI remain before new requests.",
+  "next_action": "finish_successor_behavioral_checks_then_freeze_and_run_remaining_two_with_saved_credential",
   "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
   "authorization_extended": false,
   "qualified": false,
-  "publication_allowed": false
+  "publication_allowed": false,
+  "successor_implementation": "scripts/original15_remaining_launch.py",
+  "successor_local_state": "behavioral_checks_running",
+  "sealed_parent_native_zero_send_verified": true,
+  "historical_active_seconds": 28875.971999999718
 }

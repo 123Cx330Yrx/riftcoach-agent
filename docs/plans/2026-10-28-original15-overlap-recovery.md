@@ -102,3 +102,9 @@ scripts/original15_patch_recovery_launch.py将原seal/proof、原授权及有效
 CI40660394101（aa9e9bc7）全部8个job成功；此前两轮真实CI失败、漏查Sol当前库存、waiter失联未知原因及同HEAD测试维护例外均保留，不归因模型。原版12/15和第13原组装失败/旧seal不改写；修复版新增1例完整证据，跨版本已有13例闭环，但不称原版或修复版同版本15/15资格。原15熟悉来源非holdout；Stage8E、automation PAUSED与产品未准入保持。
 
 剩observed:4/5原稿、来源与四个初审请求已零发送逐SHA核对原plan一致，profile/contract不变，两例确未执行；原费用余量及截止北京时间10月29日00:25:43不延展。原批和单例恢复都已seal，当前单例启动器不能当作剩两例队列。下一动作：复用冻结runtime，实现并核验显式续接入口，绑定两份封存历史/原账目/原授权，只执行剩两例；不重开seal、不重买成功项、不拼版本授资格。证据data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json及sol_original15_remaining_two_preparation_20261028.json。
+
+## 2026-10-28 剩两例显式续接入口验证中
+
+scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接复用既有fixed-report/session/transport/native gate，不重开两份seal。入口绑定旧原批与第13修复的封存库存、作者、原stdout信任根、原授权/续接及累计45HTTP/810780known/195578unknown预留/3retry；实际历史活动28875.972秒逐例核算，第13继承时间不重复计入。新片段最多一个新请求，Key仅真实发送边界读取，超时/格式暂停同项；原则性拒绝保留最早停止与只读封存，不补写成功。
+
+使用未修改58a冻结runtime的真实零发送检查已通过：父seal/原件/作者、七份继承及修复native、授权和原请求材料可正确消费；临时计划目录已清理，未建立正式session/读取Key/发送Provider。模拟首轮暴露拒绝封存回放错误地先调用接受校验，已修复；测试夹具第二例重复使用stage作为turn id导致歧义，改为case+stage唯一模拟事件。实际执行原件未受影响。当前完成相称行为检查，随后冻结明确新入口HEAD并核公共CI；不把58a失败CI或aa9维护CI冒充新入口的公共验证。原15仍12例、修复版另1例完整证据，剩两例未发送，不授跨版本15项资格。

@@ -23,7 +23,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 CI40660394101（aa9e9bc7）全部8个job成功；此前两轮真实CI失败、漏查Sol当前库存、waiter失联未知原因及同HEAD测试维护例外均保留，不归因模型。原版12/15和第13原组装失败/旧seal不改写；修复版新增1例完整证据，跨版本已有13例闭环，但不称原版或修复版同版本15/15资格。原15熟悉来源非holdout；Stage8E、automation PAUSED与产品未准入保持。
 
-剩observed:4/5原稿、来源与四个初审请求已零发送逐SHA核对原plan一致，profile/contract不变，两例确未执行；原费用余量及截止北京时间10月29日00:25:43不延展。原批和单例恢复都已seal，当前单例启动器不能当作剩两例队列。下一动作：复用冻结runtime，实现并核验显式续接入口，绑定两份封存历史/原账目/原授权，只执行剩两例；不重开seal、不重买成功项、不拼版本授资格。证据data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json及sol_original15_remaining_two_preparation_20261028.json。
+剩observed:4/5原稿、来源与四个初审请求已零发送逐SHA核对原plan一致，profile/contract不变，两例确未执行；原费用余量及截止北京时间10月29日00:25:43不延展。原批和单例恢复都已seal，当前单例启动器不能当作剩两例队列。续接入口已实现，封存父链与真实旧native零发送核验通过，历史活动28875.972秒已核；当前完成模拟恢复/拒绝/只读封存检查，随后冻结新入口并核同HEAD公共CI，再只执行剩两例。不重开seal、不重买成功项、不拼版本授资格。证据data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json及sol_original15_remaining_two_preparation_20261028.json。
 
 ## 2026-10-28 第十三例双初审接受，实际组装核验（当前）
 
