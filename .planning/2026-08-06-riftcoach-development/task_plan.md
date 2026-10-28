@@ -15,19 +15,17 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-目标与结果：将当前双政策候选和已验证的协调机制接入自然任务的可恢复入口。本包离线交付已完成，未授产品或模型资格。
+目标：验证当前协调接线版能实际消费一项自然观摩任务，复用原Runtime/session与完整来源双审，不重跑旧15。
 
-自然任务协调消费接线及离线验证完成。当前sol_review_contract已接入通用自然启动器；Application→Runtime→SessionWorkflow接收显式协调选择，复用原session、两初审、完整来源原生双审、唯一application与实际同稿双fresh。默认无session路径仍拒绝未经协调的重叠，候选仍未注册Worker/API且拒绝发布。
+当前自然任务的零发送启动准备已完成。已创建精确1ac2388d干净副本`D:/riftcoach-natural-coordination-execution-20261028`，现场重建计划及首请求；Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-coordination-20261028`，计划SHA1e66f02d2f3726f360afc225197e24c7238b0329dfc70596acff47cea59d1e8c。复用原独立作者完成本次作者原件→check-answer→唯一真实native final→主审实读/导入→严格只读复核，行政范围通过，不算业务质量。
 
-新增Host-only只续已有guard/checkpoint，max_new_models=0；不读取Key、不查询CI，遇新模型边界暂停。纯本地操作核对原授权字节与控制，新的发送仍核有效授权、精确冻结HEAD/公共CI和native。选择文件在计划/native/Key之前核SHA，缺冲突或坏选择拒绝。拒绝按真实边界封存；524/格式故障仍保留成功前缀和旧费用，仅手动补当前项。
+保存凭据控制入口已准备并通过真实PowerShell CheckOnly：0Key/0Provider，actual cwd/Python和冻结来源一致。凭据回调的分组、双Key隔离用替身核验；真实子进程无新授权时明确拒绝，未创建execution/claim。未读取真实凭据，不要求用户重填Key。CI40710189923绑定冻结1ac2388d；最新检查点见readiness结果，不把查询成功当CI全绿。新执行目录中尚无业务session，也没有自动付费waiter。
 
-本轮60项检查通过：新增5项（含真实自然Application/Runtime/owned worker整链的成功、524同项恢复、协调拒绝及只读封存），相关回归51项、原默认GLM链4项；另核真实CLI子进程在坏SHA时退出1且未建execution。HTTP/native均为禁止联网的模拟，真实Provider/Key均0，不是新增模型语义证明。四份当前manifest与两份独立新库存已更新；新旧库存除组件/程序指纹外逐字段相同，旧快照及封存保持。首轮未刷新清单和新CLI断言拼写错误已修正，不计作模型或上游故障。
+费用提案已固定：Flash生成及修订、Sol双初审与同稿双fresh，共6逻辑调用；天机阁GPT-企业专线，10次实际请求/739840 tokens/3600活动秒，含4次手动同项补测，包络估价1.0683904元（非账单硬限）。传输/格式故障保留成功前缀及旧费用，语义拒绝不靠补测跳过。新任务未获费用授权；旧15授权不挪用，旧封存不重开。Stage8E、未发布/未准入和原产品5调用差异保持。
 
-原15仍是跨版本完整证据15例，不拼同版本资格；旧53HTTP/973380known/195578unknown预留/3retry及seal不改写。自然6逻辑调用与原产品5调用的差异、上游身份独立验证、真实DB/API/UI消费、Coach/Training、四块/journal、前端/Memory/身份运维/两树整合/学习仍保留。Stage8E、automation PAUSED、未发布/未准入不变。
+证据：`data/evaluation/results/sol_natural_coordination_live_readiness_20261028.json`；Control/authorization-proposal.json、native-verified.json、adapter-checks.json。
 
-证据：data/evaluation/results/sol_natural_coordination_binding_20261028.json；零发送首请求准备sol_natural_coordination_preparation_20261028.json；运行说明docs/runbooks/sol-natural-session.md。
-
-下一动作：为当前接线版本准备一次完整自然任务的真实消费，复用现有来源/工具/Memory/Evidence与原生审查路径，固定clean执行副本、精确提交公共CI、实际cwd/Python及真实作者预检，形成明确费用范围后再取得新授权；当前不发送、不读取Key、不重跑封存15例。原自然6调用包络单列，不能冒充原产品5调用已解决或默认产品已采用。
+下一动作：请用户批准此明确新任务的费用提案；同HEAD公共CI全部成功且新授权有效后，用保存凭据首次发送，随后逐项完整来源双审、实际唯一应用及同稿双fresh。当前不发送、不读Key、不重跑封存15例。
 
 ## 2026-10-28 组装重叠修复（本包前序记录）
 

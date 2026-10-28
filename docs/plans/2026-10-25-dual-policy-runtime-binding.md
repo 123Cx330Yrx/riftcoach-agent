@@ -1,5 +1,17 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-28 当前自然任务零发送启动准备
+
+当前自然任务的零发送启动准备已完成。已创建精确1ac2388d干净副本`D:/riftcoach-natural-coordination-execution-20261028`，现场重建计划及首请求；Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-coordination-20261028`，计划SHA1e66f02d2f3726f360afc225197e24c7238b0329dfc70596acff47cea59d1e8c。复用原独立作者完成本次作者原件→check-answer→唯一真实native final→主审实读/导入→严格只读复核，行政范围通过，不算业务质量。
+
+保存凭据控制入口已准备并通过真实PowerShell CheckOnly：0Key/0Provider，actual cwd/Python和冻结来源一致。凭据回调的分组、双Key隔离用替身核验；真实子进程无新授权时明确拒绝，未创建execution/claim。未读取真实凭据，不要求用户重填Key。CI40710189923绑定冻结1ac2388d；最新检查点见readiness结果，不把查询成功当CI全绿。新执行目录中尚无业务session，也没有自动付费waiter。
+
+费用提案已固定：Flash生成及修订、Sol双初审与同稿双fresh，共6逻辑调用；天机阁GPT-企业专线，10次实际请求/739840 tokens/3600活动秒，含4次手动同项补测，包络估价1.0683904元（非账单硬限）。传输/格式故障保留成功前缀及旧费用，语义拒绝不靠补测跳过。新任务未获费用授权；旧15授权不挪用，旧封存不重开。Stage8E、未发布/未准入和原产品5调用差异保持。
+
+证据：`data/evaluation/results/sol_natural_coordination_live_readiness_20261028.json`；Control/authorization-proposal.json、native-verified.json、adapter-checks.json。
+
+下一动作：请用户批准此明确新任务的费用提案；同HEAD公共CI全部成功且新授权有效后，用保存凭据首次发送，随后逐项完整来源双审、实际唯一应用及同稿双fresh。当前不发送、不读Key、不重跑封存15例。
+
 ## 2026-10-28 自然任务协调接线离线完成
 
 自然任务协调消费接线及离线验证完成。当前sol_review_contract已接入通用自然启动器；Application→Runtime→SessionWorkflow接收显式协调选择，复用原session、两初审、完整来源原生双审、唯一application与实际同稿双fresh。默认无session路径仍拒绝未经协调的重叠，候选仍未注册Worker/API且拒绝发布。
