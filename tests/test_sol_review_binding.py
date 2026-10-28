@@ -149,7 +149,7 @@ def test_inventory_preserves_original15_and_uses_runtime_contract():
     from scripts.audit_sol_review_qualification import audit
     from scripts import audit_natural_duty_qualification as legacy
     value, original = audit(), legacy.audit()
-    assert value == json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_20261025.json').read_text(encoding='utf-8'))
+    assert value == json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_patch_coordination_20261028.json').read_text(encoding='utf-8'))
     assert value['contract'] == candidate.CONTRACT.snapshot().model_dump(mode='json')
     assert value['label_counts'] == dict(accept=5, reject=10)
     assert value['initial_request_count'] == 30

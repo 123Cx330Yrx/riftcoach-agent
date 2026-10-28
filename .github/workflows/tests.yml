@@ -193,7 +193,7 @@ jobs:
           python -m scripts.ci_test_shards run
           --index "${{ matrix.shard }}" --count 4
           --manifest "${{ runner.temp }}/shard-${{ matrix.shard }}.json"
-          -- -vv -x --tb=short --durations=20
+          -- -q --tb=short --show-capture=no --durations=20
 
       - name: Retain collection and completion inventory
         if: always()
