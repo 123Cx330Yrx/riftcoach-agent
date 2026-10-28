@@ -24,20 +24,66 @@
   "active_seconds": 2836.889,
   "remaining_case_active_seconds": 763.111,
   "ci_failed_run": "40646310462",
-  "ci_maintenance_head": "8c05a3c4e392bf29a26ec40b5eba8a0ff719837f",
-  "ci_maintenance_run": "40653270119",
-  "ci_maintenance_continuation_sha256": "069e37f818ce0fb483b898ec834aecb9ef1aaf7fba6da2e7c77e6432a9032559",
+  "ci_maintenance_head": "aa9e9bc798dbb7e28d7a3047d37c4a1285f2d24a",
+  "ci_maintenance_run": "40660394101",
+  "ci_maintenance_continuation_sha256": "d0158de2ec15905f404de61004111a36341aa98bac1decfc036a1258bca47862",
   "ci_maintenance_preflight_checks": 10,
   "local_regression_tests_passed": 28,
   "original_failed_ci_retained": true,
   "execution_source_unchanged": true,
   "same_head_ci_exception": true,
   "ci_waiter": {
-    "pid": 7364,
-    "started_at": "2026-10-28T08:08:38.862417+00:00",
+    "pid": 50736,
+    "started_at": "2026-10-28T09:01:26.696289+00:00",
+    "original_claim": "ci-wait-resume-claim.json",
     "checkpoint_sha256": "7a04d08b66cda6078749b387c2a5c610e9ae1931eb9fbbd566f147b8c471e57e",
-    "ci_run": "40653270119"
+    "reason": "Previous CI failed and waiter exited; no segment or checkpoint advance. Wait for the corrected maintenance CI only.",
+    "ci_run": "40660394101",
+    "provider_requests": 0,
+    "key_reads": 0
   },
-  "ci_waiter_sha256": "33a100c8c9e3de67aef8c562cef0a3a77a56b55637f10b0bb498de3d0dc1febb",
-  "next_action": "one_facts_fresh_segment_after_green_ci_then_full_source_dual_review"
+  "ci_waiter_sha256": "24d891c2d88d2bf0464d17bb4606b9da7f84e36655cdc0f3e5c4dc02330a3472",
+  "next_action": "one_facts_fresh_segment_after_green_ci_then_full_source_dual_review",
+  "prior_waiter_lost": true,
+  "prior_waiter_cause": "unconfirmed",
+  "ci_history": [
+    {
+      "run": "40646310462",
+      "result": "failure",
+      "reason": "current_natural_inventory_fingerprint_and_application_test_fixture"
+    },
+    {
+      "run": "40653270119",
+      "result": "failure",
+      "reason": "missed_current_sol_inventory_fingerprint_assertion"
+    }
+  ],
+  "prior_ci_waiter": {
+    "pid": 56172,
+    "started_at": "2026-10-28T08:33:29.421541+00:00",
+    "original_claim": "ci-wait-once-claim.json",
+    "checkpoint_sha256": "7a04d08b66cda6078749b387c2a5c610e9ae1931eb9fbbd566f147b8c471e57e",
+    "reason": "Original PID absent; no exit, segment or checkpoint advance; only CI waiting resumed.",
+    "ci_run": "40653270119",
+    "provider_requests": 0,
+    "key_reads": 0
+  },
+  "prior_ci_waiter_exit": {
+    "returncode": 3,
+    "finished_at": "2026-10-28T08:44:13.123938+00:00"
+  },
+  "local_ci_tail": {
+    "collected": 166,
+    "passed": 151,
+    "skipped": 15,
+    "subtests": 10,
+    "seconds": 84.72,
+    "exit": {
+      "returncode": 0
+    },
+    "scope": "normal_ci_without_local_pg_configuration"
+  },
+  "ci_sharding_tests_passed": 11,
+  "prior_local_pg_failure_root_cause": "not_established",
+  "ci_maintenance_status": "in_progress"
 }
