@@ -5,15 +5,15 @@
   "plan_sha256": "3b98b782f8a7875ba4eb9122da4a7e7501ebb3800960a3af9a3fe4053c868f2b",
   "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028",
   "guard_sha256": "8bf741656511d62f336f97ea8a230d76e26247c9cbe66046205b90894211747d",
-  "checkpoint_sha256": "7a04d08b66cda6078749b387c2a5c610e9ae1931eb9fbbd566f147b8c471e57e",
-  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028\\execution\\session\\checkpoints\\0035.json",
-  "checkpoint_source": "segment-0008-run.stdout last emitted checkpoint",
+  "checkpoint_sha256": "feb0ba77310c5732de6150cac1c5d8d0adc84f7608b6f598b8934ed462703bbe",
+  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028\\execution\\session\\checkpoints\\0069.json",
+  "checkpoint_source": "segment-0015-run.stdout last emitted checkpoint",
   "coordination_imported": true,
   "coordination_submission_sha256": "1c0c5eafa45ef654901229981ed443cec7e3529ea33bffbeb1bc48a54bd3b2b9",
-  "current_task": "facts-fresh-model-boundary",
+  "current_task": "completed-sealed",
   "task_checkpoint_sha256": "dd9f5fdaf0246b7bd4a7f3d9247682e5d9f3c0c4326fe23a1c5d342072f47af6",
-  "new_provider_requests": 0,
-  "key_reads": 0,
+  "new_provider_requests": 2,
+  "key_reads": 2,
   "original_cases_complete": 12,
   "qualified": false,
   "publication_allowed": false,
@@ -21,8 +21,8 @@
   "edit_imported": true,
   "application_completed": true,
   "actual_report_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
-  "active_seconds": 2836.889,
-  "remaining_case_active_seconds": 763.111,
+  "active_seconds": 3139.497999999978,
+  "remaining_case_active_seconds": 460.502,
   "ci_failed_run": "40646310462",
   "ci_maintenance_head": "aa9e9bc798dbb7e28d7a3047d37c4a1285f2d24a",
   "ci_maintenance_run": "40660394101",
@@ -43,7 +43,7 @@
     "key_reads": 0
   },
   "ci_waiter_sha256": "24d891c2d88d2bf0464d17bb4606b9da7f84e36655cdc0f3e5c4dc02330a3472",
-  "next_action": "one_facts_fresh_segment_after_green_ci_then_full_source_dual_review",
+  "next_action": "prepare_remaining_two_case_continuation_with_original_balances_and_sealed_parents",
   "prior_waiter_lost": true,
   "prior_waiter_cause": "unconfirmed",
   "ci_history": [
@@ -85,5 +85,12 @@
   },
   "ci_sharding_tests_passed": 11,
   "prior_local_pg_failure_root_cause": "not_established",
-  "ci_maintenance_status": "in_progress"
+  "ci_maintenance_status": "success",
+  "strict_replay": true,
+  "seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
+  "completion_result": "data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json",
+  "ci_waiter_exit": {
+    "returncode": 0,
+    "finished_at": "2026-10-28T09:54:29.415529+00:00"
+  }
 }

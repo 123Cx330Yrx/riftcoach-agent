@@ -1,0 +1,78 @@
+{
+  "version": "original15-remaining-two-preparation-v1",
+  "cases": [
+    {
+      "key": "observed:4",
+      "input_sha256": "e6f98d76e70f172e70e26f923017ac4cfba58b486a290221c4db67d1cf04e105",
+      "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "2821713622c36ea2595f48ccd9ee241bc8e913b338ca28da05fadce91fce8162",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "4097ff28c601f020782dbd52acd2c8f3131aae332fea168535ff66a8df68fdfd",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        }
+      },
+      "prior_execution_absent": true
+    },
+    {
+      "key": "observed:5",
+      "input_sha256": "58c6a9c6348d890024d6dce56d35bfeeba3b7af8dde1233a355912d4a0c5b72c",
+      "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "4712bd5de55bcb704cca938450eb8ba9ddf0be78f6eba61c1a2cac309336ba54",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "eeb236ba33312d8c05ac55f32337ed015073a6017941800c4e1dcce8860e6995",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        }
+      },
+      "prior_execution_absent": true
+    }
+  ],
+  "execution_head": "58a947ca98cee17bc5de555c4cce7cbda892b34f",
+  "original_seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "recovery_seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
+  "historical_accounting": {
+    "calls": 45,
+    "reserved_tokens": 195578,
+    "retries": 3,
+    "tokens": 810780
+  },
+  "original_limits": {
+    "cases": 15,
+    "logical_reviews_per_case": 4,
+    "manual_retries_per_case": 4,
+    "max_requests": 120,
+    "max_requests_per_case": 8,
+    "max_reserved_tokens": 9646080,
+    "maximum_active_seconds": 54000,
+    "per_case_active_seconds": 3600,
+    "per_request_input_tokens": 64000,
+    "per_request_output_tokens": 16384,
+    "per_request_seconds": 300
+  },
+  "profile_unchanged": true,
+  "contract_unchanged": true,
+  "exact_original_inputs_and_initial_requests": true,
+  "successful_items_to_resend": [],
+  "provider_requests": 0,
+  "key_reads": 0,
+  "new_native_tasks": 0,
+  "prepared_materials": true,
+  "paid_launcher_ready": false,
+  "blocker": "The original batch and single-case recovery are sealed; remaining cases need an explicit successor entry that binds both sealed histories, preserves cumulative accounting and uses the existing runtime without reopening either seal.",
+  "next_action": "implement_and_verify_remaining_case_successor_using_existing_frozen_runtime",
+  "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
+  "authorization_extended": false,
+  "qualified": false,
+  "publication_allowed": false
+}

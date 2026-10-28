@@ -464,7 +464,7 @@
     "unknown_reserved_tokens": 195578,
     "retries": 3
   },
-  "next_action": "Implement and verify the explicit no-send overlap-coordination design in the development checkout; keep the sealed original version unchanged and retain both accepted initials.",
+  "next_action": "prepare_remaining_two_case_continuation_with_original_balances_and_sealed_parents",
   "batch_closed": true,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -3980,5 +3980,20 @@
   "observed3_assembly_stop_result": "data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json",
   "seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
   "execution_process_running": false,
-  "inventory_scope": "strict seal replay; create-only seal excluded from the before/after comparison"
+  "inventory_scope": "strict seal replay; create-only seal excluded from the before/after comparison",
+  "overlap_recovery_result": "data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json",
+  "overlap_recovery_seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
+  "cases_with_complete_evidence_across_versions": 13,
+  "original_version_cases_completed": 12,
+  "repaired_version_cases_completed": 1,
+  "recovery_cumulative_batch_accounting": {
+    "calls": 45,
+    "reserved_tokens": 195578,
+    "retries": 3,
+    "tokens": 810780
+  },
+  "remaining_unexecuted_cases": [
+    "observed:4",
+    "observed:5"
+  ]
 }
