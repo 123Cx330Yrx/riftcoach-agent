@@ -1,5 +1,16 @@
 # 双职责必要修订的同版本评估与Runtime绑定
 
+## 2026-10-28 observed:2完成，原15进度12/15（当前）
+
+第十二例observed:2完成初审逐字补丁→compatibility/edit整稿双审→唯一application→同稿双fresh。唯一block_10补丁撤回无依据的未来全称预测，保留四场经济/伤害观察，其余27段逐字保持；实际新稿b4e7e336与两项fresh完全相同。facts-fresh与completion-fresh分别正常HTTP200、23.906/12.422秒、19845/17962known tokens，均100/pass且issues/issue_resolutions/advisories空。六个Host阶段均经主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并唯一导入，无新增LF例外。
+
+本例严格只读replay匹配，前十一例由真实启动器在发送与本地结束前核验，外层保留原回放链及原1012件SHA、作者和全部库存。本例4HTTP/81211known/0unknown/0retry，Provider合计78.203秒；累计41HTTP/729303known/195578unknown预留/3retry。长等待主要是本地重复完整前缀/native回放，未归因CI或上游。原3600秒不足，已另录仅本例末项+3600秒行政追加、累计7200秒；严格链接旧两份时间记录，不增加请求/token、不清零、不延费用截止，不能称原时间包络内通过。
+
+原15完成12/15，同批下一例observed:3；使用保存凭据入口，不重发成功项、不重新应用。已修复聚合live漏同步observed:1及活动计划Next Step的陈旧指针，依据原接受结果和回放SHA保留此前全部结果，不改变执行原件。费用授权截止北京时间10月29日00:25:43不变。整批尚未seal，不授产品或全15资格；冻结执行HEAD、旧失败/费用、automation PAUSED、Stage8E及后续产品/学习依赖保持。
+
+证据：data/evaluation/results/sol_original15_observed_2_completed_20261028.json。
+
+
 ## 2026-10-28 第十二例事实复审双审接受，末项完成度复审续接中（当前）
 
 observed:2唯一补丁已实际应用，新稿b4e7e336与整稿双审预览逐字相同，其余27段及正确观察保持。facts-fresh正常HTTP200、23.906秒、19845known tokens，100/pass且issues/issue_resolutions/advisories均空；主审与原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等并0148唯一导入，无新增LF例外。
