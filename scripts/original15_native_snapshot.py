@@ -1,8 +1,10 @@
-"""Share one live native read within one gate validation, never across reviews.
+"""Share identical live reads within an explicitly bounded validation scope.
 
 The provenance validator and byte validator inspect the same current response.
 All their existing checks still execute. Nothing is cached between validation
-calls, and collaboration files are still read by the pinned original reader.
+calls by default. An optional read-only case replay shares its live RPC pages
+across the unchanged checks of that case, then discards them. Collaboration
+files are always read by the pinned original reader.
 """
 from copy import deepcopy
 from functools import wraps
@@ -37,12 +39,38 @@ class ValidationReadSnapshot:
         return getattr(self.client, name)
 
 
+class CaseReplayReadSnapshot(ValidationReadSnapshot):
+    """One live view for one read-only case replay; never a stored proof."""
+
+
+def wrap_case_replay(previous, verify_controls):
+    @wraps(previous)
+    def replay(plan, pin, events, *args, **kwargs):
+        verify_controls()
+        client = events.client
+        if isinstance(client, ValidationReadSnapshot):
+            raise ValueError('original15_native_snapshot_nested_replay')
+        snapshot = CaseReplayReadSnapshot(client)
+        events.client = snapshot
+        try:
+            result = previous(plan, pin, events, *args, **kwargs)
+            verify_controls()
+            return result
+        finally:
+            events.client = client
+            snapshot.responses.clear()
+    return replay
+
+
 def wrap_validation(previous, verify_controls):
     @wraps(previous)
     def validate(self, handle, submission):
         verify_controls()
         source = self.event_source
         client = source.client
+        if isinstance(client, CaseReplayReadSnapshot):
+            STATS['validations'] += 1
+            return previous(self, handle, submission)
         if isinstance(client, ValidationReadSnapshot):
             raise ValueError('original15_native_snapshot_nested_validation')
         snapshot = ValidationReadSnapshot(client)
@@ -89,3 +117,39 @@ def install(control, config):
     validate = wrap_validation(previous, verify)
     validate._native_validation_snapshot = dict(selected)
     batch.ExactNativeGate._validate = validate
+
+
+def install_case_replay(control, config):
+    selected = config.get('native_case_replay_snapshot')
+    if selected is None:
+        return
+    control = Path(control).resolve()
+    module = control/'original15_native_snapshot.py'
+    manifest = control/selected['file']
+
+    def verify():
+        if (manifest.parent != control
+                or hashlib.sha256(module.read_bytes()).hexdigest() != selected['module_sha256']
+                or hashlib.sha256(manifest.read_bytes()).hexdigest() != selected['sha256']):
+            raise ValueError('original15_case_snapshot_controls_changed')
+        value = json.loads(manifest.read_bytes())
+        if (value.get('version') != 'original15-one-case-replay-read-snapshot-v1'
+                or value.get('plan_sha256') != config['plan_sha256']
+                or value.get('scope') != 'one_read_only_case_replay'
+                or value.get('cross_case_cache') is not False
+                or value.get('cross_boundary_cache') is not False
+                or value.get('existing_validators_unchanged') is not True
+                or value.get('collaboration_file_reader_unchanged') is not True):
+            raise ValueError('original15_case_snapshot_plan_binding')
+
+    verify()
+    from scripts import sol_original15_launch as launch
+    previous = launch.replay_case
+    installed = getattr(previous, '_native_case_replay_snapshot', None)
+    if installed is not None:
+        if installed != selected:
+            raise ValueError('original15_case_snapshot_install_changed')
+        return
+    replay = wrap_case_replay(previous, verify)
+    replay._native_case_replay_snapshot = dict(selected)
+    launch.replay_case = replay

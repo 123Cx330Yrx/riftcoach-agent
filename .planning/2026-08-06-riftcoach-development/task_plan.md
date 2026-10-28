@@ -15,6 +15,20 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+## 2026-10-28 组装重叠修复（当前工作卡）
+
+目标：正确双初审对同一句提出不同措辞时，保留两份原意见且只应用一份完整正确替换，不再无条件拒绝整个组装。实际反例：observed:3；原15已完成12例，第13例仅组装失败，后2例未测。全部13例记录/54份native/2184件原件已严格回放，唯一seal已完成，无在途调用。
+
+路径与验收：按docs/plans/2026-10-28-original15-overlap-recovery.md在开发树实现带职责issue引用的显式冲突协调，验证原反例、正常非重叠和冲突/篡改边界；整稿双审、唯一application与同稿双fresh不删。原冻结版本与费用保持，先零付费实现和验证，不重买初审或拼接版本授资格。完整结果data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json。
+
+## 2026-10-28 第十三例双初审接受，实际组装核验（当前）
+
+目标：保留原12例完整成功和第13例两份正确意见，判清同一句重叠补丁在冻结程序的实际处理；不以模型语义正确代替程序闭环。observed:3两个初审均已完整来源双审接受并唯一导入，累计43HTTP/773045known/195578unknown预留/3retry，尚无preview/application/fresh。
+
+当前路径：仅接续0156/session41759 HostOnly进程，等待原程序实际结果，不重发初审或修改冻结重叠处理。如真实拒绝，记录为组装设计问题，保留成功前缀与原始意见，先准备零付费联合补丁方案，不重开付费批或暗改原15标准。
+
+本地重复读取优化已通过30项检查及两例实际只读回放；110次原校验不删，6次实时RPC、510次重复读取在单case内共享，跨case/发送边界不缓存。安装顺序及SHA绑定两次零发送错误均保留并已修复。费用截止与原余量保持。证据：data/evaluation/results/sol_original15_observed3_initials_accepted_20261028.json。
+
 ## 2026-10-28 第十三例事实初审接受，用户挪电脑暂停（当前）
 
 用户要求挪电脑就近暂停。第13例observed:3事实初审正常返回，22659known tokens，92/needs_revision；唯一block_21补丁将四场比赛及8.805/1.5统计量从阅读者归回ShowMaker，保留正确数值与观摩行动。主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等，0153已唯一导入。停在0014 boundary，SHA291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904；无在途执行进程，没有启动completion-initial，也没有application或fresh。
@@ -309,7 +323,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-用户挪电脑暂停。原15完成12/15，observed:3事实初审已双审接受并导入，0014 boundary；等待用户明确恢复后先核现有进程和checkpoint，再续completion-initial。不重发成功项；费用授权截止北京时间10月29日00:25:43，不延展。
+原记录已完成严格只读核验和唯一seal，无在途调用。下一动作：在开发树按docs/plans/2026-10-28-original15-overlap-recovery.md实现并零付费验证显式冲突协调，保留原12成功及第13例正确双初审，不重发或重开付费批。原15尚未全部完成，旧失败/费用、授权截止及产品未准入保持。
 
 ## History
 

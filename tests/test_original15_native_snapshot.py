@@ -5,7 +5,10 @@ import pytest
 import hashlib
 import json
 
-from scripts.original15_native_snapshot import ValidationReadSnapshot, wrap_validation, install
+from scripts.original15_native_snapshot import (
+    ValidationReadSnapshot, wrap_validation, wrap_case_replay,
+    install, install_case_replay,
+)
 
 
 class Client:
@@ -93,6 +96,93 @@ def test_control_failure_prevents_reads_and_validation():
     with pytest.raises(ValueError, match='controls_changed'):
         validate(gate, {}, {})
     assert client.calls == [] and gate.event_source.client is client
+
+
+def test_case_replay_runs_every_check_but_reads_identical_pages_once():
+    client = Client()
+    events = SimpleNamespace(client=client)
+    gate = SimpleNamespace(event_source=events)
+    checks = []
+    def previous_validation(self, handle, expected):
+        for kind in ('provenance', 'native_bytes', 'dispatch'):
+            checks.append((handle, kind))
+            value = self.event_source.client.request('thread/turns/list', {'threadId': 'child'})
+            assert value == expected
+        assert self.event_source.client.read_collaboration_dispatch() == 'original-reader'
+        return True
+    validate = wrap_validation(previous_validation, lambda: None)
+    def original_replay(plan, pin, source, key):
+        assert source is events
+        return [validate(gate, handle, client.value) for handle in ('a', 'b', 'c')]
+    replay = wrap_case_replay(original_replay, lambda: None)
+    assert replay({}, 'pin', events, 'case1') == [True] * 3
+    assert len(client.calls) == 1 and len(checks) == 9
+    assert events.client is client
+    client.value = {'data': [{'id': 'real-native-final', 'text': 'changed'}]}
+    assert replay({}, 'pin', events, 'case2') == [True] * 3
+    assert len(client.calls) == 2 and len(checks) == 18
+
+
+@pytest.mark.parametrize('failure', ['read', 'validator', 'post_controls'])
+def test_case_replay_failure_restores_client_and_does_not_cache_next_case(failure):
+    client = Client()
+    events = SimpleNamespace(client=client)
+    checked = []
+    def verify():
+        checked.append(True)
+        if failure == 'post_controls' and len(checked) == 2:
+            raise ValueError('changed_controls')
+    def original_replay(plan, pin, source, key):
+        source.client.request('thread/read', {'threadId': 'child'})
+        if failure == 'validator':
+            raise ValueError('changed_author_bytes')
+        return True
+    replay = wrap_case_replay(original_replay, verify)
+    client.failure = failure == 'read'
+    with pytest.raises(ValueError):
+        replay({}, 'pin', events, 'case1')
+    assert events.client is client
+    client.failure = False
+    value = wrap_case_replay(lambda p, n, e, k: e.client.request('thread/read', {'threadId': 'child'}), lambda: None)
+    assert value({}, 'pin', events, 'case2') == client.value
+    assert len(client.calls) == 2
+
+
+def test_case_replay_cannot_bypass_controls_or_nest_a_validation_snapshot():
+    events = SimpleNamespace(client=Client())
+    def deny():
+        raise ValueError('changed_controls')
+    replay = wrap_case_replay(lambda *a: pytest.fail('must not replay'), deny)
+    with pytest.raises(ValueError, match='changed_controls'):
+        replay({}, 'pin', events, 'case')
+    assert events.client.calls == []
+    events.client = ValidationReadSnapshot(events.client)
+    replay = wrap_case_replay(lambda *a: pytest.fail('must not replay'), lambda: None)
+    with pytest.raises(ValueError, match='nested_replay'):
+        replay({}, 'pin', events, 'case')
+
+
+@pytest.mark.parametrize('changed', ['module', 'manifest'])
+def test_case_snapshot_installed_controls_rechecked(tmp_path, monkeypatch, changed):
+    from scripts import sol_original15_launch as launch
+    module = tmp_path/'original15_native_snapshot.py'
+    module.write_bytes(b'fixed module')
+    manifest = tmp_path/'case-manifest.json'
+    manifest.write_text(json.dumps(dict(version='original15-one-case-replay-read-snapshot-v1',
+        plan_sha256='plan', scope='one_read_only_case_replay', cross_case_cache=False,
+        cross_boundary_cache=False, existing_validators_unchanged=True,
+        collaboration_file_reader_unchanged=True)), encoding='utf-8')
+    config = dict(plan_sha256='plan', native_case_replay_snapshot=dict(file=manifest.name,
+        sha256=hashlib.sha256(manifest.read_bytes()).hexdigest(),
+        module_sha256=hashlib.sha256(module.read_bytes()).hexdigest()))
+    monkeypatch.setattr(launch, 'replay_case', lambda *args: True)
+    install_case_replay(tmp_path, config)
+    events = SimpleNamespace(client=Client())
+    assert launch.replay_case({}, 'pin', events, 'case') is True
+    target = module if changed == 'module' else manifest
+    target.write_bytes(target.read_bytes() + b' ')
+    with pytest.raises(ValueError, match='controls_changed'):
+        launch.replay_case({}, 'pin', events, 'case')
 
 
 @pytest.mark.parametrize('changed', ['module', 'manifest'])

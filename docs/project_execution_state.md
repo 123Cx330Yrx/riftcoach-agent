@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "用户挪电脑暂停；12/15完成；observed:3事实初审已接受，下一completion-initial；42HTTP/751962known/195578unknown/3retry。"
+pause_reason: "原15完成12/15；第13例正确双初审因补丁重叠在组装停止，原记录已只读核验/封存；继续零付费协调修复。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,24 @@ pause_reason: "用户挪电脑暂停；12/15完成；observed:3事实初审已�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+原15完成12/15；observed:3两份正确初审在冻结preview因同一句重叠补丁停止，后两例未测。原版本全部13例记录已严格只读回放，前12例仍matched；54份native审查和2184件证据库存核验通过，唯一seal已建立，无在途执行者。当前在开发树按docs/plans/2026-10-28-original15-overlap-recovery.md实现零付费显式协调；不重买初审、不改原封存结果、不将新旧版本拼成全15资格。
+
+## 2026-10-28 第十三例组装限制确认，原记录核验完成（当前）
+
+0156真实执行停止在preview区间检查，尚无compatibility/edit任务、application或fresh；0033 closed checkpoint SHA8306e2c33990a40d2cccf180303069dab37dfdb3a204a12e6ae1c93520001a9e。冻结原函数用真实原稿及两份原意见零发送重现direct_patch_overlap_requires_new_joint_design，判定为组装设计限制，不是本例模型语义或传输失败。原12成功与两初审保持，observed:4/5未执行。
+
+外层严格只读回放核验13条记录、54份native及全部2184件封存前库存；原12结果均matched，第13例首次停止一致。唯一seal SHA7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371。累计43HTTP，其中40正常返回、3旧失败；773045known/195578unknown预留/3retry，HTTP计数全已知、无receiptless或not_sent。诊断/关闭零Key、零新Provider。原版本未完成全15、未授产品资格；封存是固定原始结果，不丢弃成功证据，也不取消后续修复。
+
+证据：data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json。下一步在开发树实现显式冲突协调，优先选择能覆盖双职责问题的既有替换并保留原意见，仍须整稿双审和同稿fresh；先做零付费验证，不重开付费批。Stage8E、automation PAUSED、旧费用/失败及所有下游依赖保持。
+
+## 2026-10-28 第十三例双初审接受，核验补丁组装（当前）
+
+completion-initial正常HTTP200、21083known tokens，90/needs_revision；同facts-initial均只纠正block_21身份归属，保留8.805/1.5及正确观摩行动。两阶段主审与原独立作者均接受，作者原件和唯一真实native逐字相等、唯一导入。最后0028 boundary SHA dc1b07815a68f19182205e24b73381dfae3ec5cc55298261126898f4709b2074。本例2HTTP/43742known/0unknown/0retry，累计43HTTP/773045known/195578unknown预留/3retry；第13例尚未闭环。
+
+等待主要来自本地重复前缀/native回放，不能归因CI或上游。新增单次只读case回放内共享相同实时RPC页，原校验器、协作原件/库存检查照常执行，case及发送边界销毁视图；30项针对检查及两例真实只读预检通过，110次校验对应6次实时RPC、510次重复读取共享。首轮预检安装顺序NameError及入口旧SHA绑定拒绝均保留，零Key/零Provider；修后两例结果与原terminal精确相等，原件库存保持。旧预检及安装后绑定元数据分开留证，不覆盖旧哈希。
+
+证据：data/evaluation/results/sol_original15_observed3_initials_accepted_20261028.json；Control/native-case-replay-snapshot-preflight.json及native-case-replay-snapshot-installation.json。冻结源码、原12成功、旧失败/费用、授权截止北京时间10月29日00:25:43、automation PAUSED及Stage8E/产品未准入保持。
 
 ## 2026-10-28 第十三例事实初审接受，用户挪电脑暂停（当前）
 

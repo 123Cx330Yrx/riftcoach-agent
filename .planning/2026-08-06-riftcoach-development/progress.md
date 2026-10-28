@@ -1,3 +1,17 @@
+## 2026-10-28 原始记录只读核验与封存完成
+
+原15前12例仍matched；第13例正确双初审因原preview重叠检查停止，observed:4/5未执行。严格回放13条记录/54份native，封存前2184件库存相等；唯一seal SHA7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371。全批43HTTP/40正常返回/3旧失败，773045known/195578unknown预留/3retry，HTTP未知/receiptless/not_sent均0。诊断与封存零Key/新Provider，无在途执行者。下段“进程22520运行中”为封存前记录，现已正常结束。
+
+结果data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json；下一动作按docs/plans/2026-10-28-original15-overlap-recovery.md在开发树实现零付费显式协调。保留原12成功和第13例双初审，不重买，不修改原封存结果，不拼版本授全15资格。Stage8E、automation PAUSED与下游依赖保持。
+
+## 2026-10-28 双初审接受，原程序补丁组装重叠停止
+
+第13例observed:3两初审均完整来源双审接受并唯一导入，2HTTP/43742known/0unknown/0retry；全批43HTTP/773045known/195578unknown预留/3retry。0156真实执行在preview阶段抛ValueError，0033 closed checkpoint SHA8306e2c33990a40d2cccf180303069dab37dfdb3a204a12e6ae1c93520001a9e；未生成compatibility/edit、application或fresh。冻结原preview用同一来源/原公开意见只读重现direct_patch_overlap_requires_new_joint_design，原件与作者库存不变。两条before相同、after不同但语义均正确；这是组装设计限制，不是本例模型语义或传输失败。原12成功保留，剩余2未执行。
+
+本地历史读取共享优化通过30项聚焦检查及两例真实只读预检：110次校验保持，6次实时RPC、510次重复读取共享；安装顺序NameError与旧operator SHA绑定拒绝均零Key/Provider并保留。修后预检及安装绑定元数据分别留证，不覆盖旧SHA。汇总live已纠正陈旧指针和把上一完成例edit/fresh字段冒放当前第13例的问题，旧投影保存在单独历史字段。
+
+外层只读核验/唯一seal进程22520运行中；没有付费执行者。初审证据data/evaluation/results/sol_original15_observed3_initials_accepted_20261028.json；精确异常Control/observed-3-exact-overlap-diagnosis.json；恢复设计docs/plans/2026-10-28-original15-overlap-recovery.md。原冻结源码、既有成功/失败/费用、Stage8E/产品未准入和automation PAUSED保持。
+
 ## 2026-10-28 第十三例事实初审接受，用户挪电脑暂停（当前）
 
 用户要求挪电脑就近暂停。第13例observed:3事实初审正常返回，22659known tokens，92/needs_revision；唯一block_21补丁将四场比赛及8.805/1.5统计量从阅读者归回ShowMaker，保留正确数值与观摩行动。主审和原独立作者完整来源双审接受，作者原件与唯一真实native逐字相等，0153已唯一导入。停在0014 boundary，SHA291f2febb14a75669edcba83eea7c7d3fa3b723d8f75f8b51c859f851534d904；无在途执行进程，没有启动completion-initial，也没有application或fresh。
