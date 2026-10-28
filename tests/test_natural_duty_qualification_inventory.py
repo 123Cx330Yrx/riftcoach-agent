@@ -18,7 +18,7 @@ def offline(monkeypatch):
 
 def test_current_inventory_rebuilds_without_changing_historical_qualification():
     value = inventory.audit()
-    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_patch_coordination_20261028.json'
+    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_natural_coordination_20261028.json'
     assert value == json.loads(path.read_bytes())
     previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_timeout_recovery_20261022.json').read_bytes())
     assert {k:v for k,v in value.items() if k not in ('component_fingerprints','program_sha256')} == {

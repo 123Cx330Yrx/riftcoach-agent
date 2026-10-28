@@ -46,6 +46,9 @@ def collect(business,**kwargs):
     scripted=Responses(reviewer=True,mode=MODE)
     result=scripted.chat(request)
     value=response(dict(result.tool_calls[0].arguments))
+    if MODE == 'overlap':
+        from tests.test_sol_original15_session import opinion
+        value = response(opinion(context, 'overlap'))
     if MODE == 'non_tool':
         value['output'] = [dict(type='message', status='completed',
             content=[dict(type='output_text', text='OFFLINE_TEXT_ONLY', annotations=[])])]

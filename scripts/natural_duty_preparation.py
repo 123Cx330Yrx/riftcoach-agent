@@ -77,7 +77,8 @@ class PreparedApplication:
             memory_context_binding=self.memory, publication_context=self.context)
 
 
-def build_application(*, provider_factory, output_root, run_id, candidate=None, execution_session=None):
+def build_application(*, provider_factory, output_root, run_id, candidate=None, execution_session=None,
+                      patch_coordination=None):
     if normalize_run_id(run_id) != run_id:
         raise ValueError('natural_run_id')
     summary, bundle = load_sources()
@@ -104,7 +105,7 @@ def build_application(*, provider_factory, output_root, run_id, candidate=None, 
         publication_sources=EvidencePublicationSources(now=datetime.fromisoformat(SOURCE_NOW),
             data_dragon=bundle.data_dragon, official_patch=bundle.official_patch, meta_evidence=bundle.meta_evidence),
         publication_writer=FileEvidencePublicationStore(output_root/'reports'), candidate=candidate,
-        execution_session=execution_session)
+        execution_session=execution_session, patch_coordination=patch_coordination)
     return PreparedApplication(app, ConversationRecentReviewRequest(count=5, queue=420, focus='overall'), memory, context)
 
 

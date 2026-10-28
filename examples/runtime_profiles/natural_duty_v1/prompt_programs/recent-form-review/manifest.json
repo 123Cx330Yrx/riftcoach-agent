@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "99abe65a890d0c69c89e4d88367edbb1eaccd97e4f8ac13c936d36d0723e8b25"
+      "sha256": "41d86a96fd400eb41ab08be15fae3d5363913e03d706791746f3a668ef250b9d"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -345,5 +345,5 @@
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "30f386bc6cb11d36bfc67ceef4d298dd271c79e9cbece5b64bbbcfe04f9f5970"
+  "program_sha256": "a7de7a231b7d7d81b558929bbf55ced74b82d61b3f3b0c33ccecce869382eaa9"
 }

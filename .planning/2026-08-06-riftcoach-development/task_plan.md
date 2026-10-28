@@ -15,23 +15,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-目标：把已在固定报告中验证的双职责修订机制接入自然教练任务，避免评估入口与自然Runtime消费分离。
+目标与结果：将当前双政策候选和已验证的协调机制接入自然任务的可恢复入口。本包离线交付已完成，未授产品或模型资格。
 
-原15固定案例的跨版本完整证据已收齐并封存：原版12例、第13例组装恢复1例、剩两例2例分别记录。observed:4/5六阶段均经主审及原独立作者完整来源双审接受、真实native与作者原件逐字匹配；每例只实际应用一次，双fresh核验同一实际新稿，均100/pass且issues/resolutions/advisories为空。
+自然任务协调消费接线及离线验证完成。当前sol_review_contract已接入通用自然启动器；Application→Runtime→SessionWorkflow接收显式协调选择，复用原session、两初审、完整来源原生双审、唯一application与实际同稿双fresh。默认无session路径仍拒绝未经协调的重叠，候选仍未注册Worker/API且拒绝发布。
 
-第14例仅修block_27官方发布日期，其余27段保持；第15例仅将block_4标题中“已证明防抓能力优秀”改为“所选样本的结果观察”，其余27段保持。新稿分别c40b79db、8bb66e45，两例各4HTTP、81319/81281known tokens；合计8HTTP/162600known、Provider 219.174秒，无新增unknown或retry。Host-only正常关闭均matched=true，严格只读replay通过，唯一outer seal SHA3b8c3ae148b683d8fd23617b149bc9def2d7c79f4d2724d393263398d81e164c。
+新增Host-only只续已有guard/checkpoint，max_new_models=0；不读取Key、不查询CI，遇新模型边界暂停。纯本地操作核对原授权字节与控制，新的发送仍核有效授权、精确冻结HEAD/公共CI和native。选择文件在计划/native/Key之前核SHA，缺冲突或坏选择拒绝。拒绝按真实边界封存；524/格式故障仍保留成功前缀和旧费用，仅手动补当前项。
 
-累计53HTTP/973380known/195578unknown预留/3旧retry，旧失败、费用及原seal保持。冻结e7a7ab0b clean、原stdout guard/退出checkpoint保持；维护CI40681684790全部8项成功，原CI40673377624超时与同HEAD维护条件例外保留。原授权截止北京时间10月29日00:25:43未延展；本包无剩余付费动作。不能拼称同版本15/15、holdout通过或产品准入；上游身份未独立验证。Stage8E、automation PAUSED及未发布保持。
+本轮60项检查通过：新增5项（含真实自然Application/Runtime/owned worker整链的成功、524同项恢复、协调拒绝及只读封存），相关回归51项、原默认GLM链4项；另核真实CLI子进程在坏SHA时退出1且未建execution。HTTP/native均为禁止联网的模拟，真实Provider/Key均0，不是新增模型语义证明。四份当前manifest与两份独立新库存已更新；新旧库存除组件/程序指纹外逐字段相同，旧快照及封存保持。首轮未刷新清单和新CLI断言拼写错误已修正，不计作模型或上游故障。
 
-证据：data/evaluation/results/sol_original15_remaining_two_completed_20261028.json。
+原15仍是跨版本完整证据15例，不拼同版本资格；旧53HTTP/973380known/195578unknown预留/3retry及seal不改写。自然6逻辑调用与原产品5调用的差异、上游身份独立验证、真实DB/API/UI消费、Coach/Training、四块/journal、前端/Memory/身份运维/两树整合/学习仍保留。Stage8E、automation PAUSED、未发布/未准入不变。
 
-零付费实际factory/assembly核查已完成：同一observed:3已接受重叠意见在普通NaturalDutyWorkflow仍报direct_patch_overlap_requires_new_joint_design；session版准确暂停session_awaiting_patch_coordination，但build_natural_duty_candidate没有接收协调选择的参数。固定报告入口已向同一SessionWorkflow传入选择，自然入口尚未接通。另实调用仓库通用sol_natural_launch.candidate_for时，当前sol_review_contract被launch_unknown_candidate拒绝；这不否定外置专用入口的历史执行结果。核查仅覆盖factory与组装分支，没有重新运行完整自然任务或提交模拟审批，Provider/Key均0；首次探针漏开fixture session已本地纠正，未改执行原件。
+证据：data/evaluation/results/sol_natural_coordination_binding_20261028.json；零发送首请求准备sol_natural_coordination_preparation_20261028.json；运行说明docs/runbooks/sol-natural-session.md。
 
-下一工作：复用既有Application→Runtime→SessionWorkflow/session/native gate，将当前候选和显式协调选择接入自然任务的可恢复入口；先用离线真实调用链验证重叠停点→选择/双审→唯一应用→同稿双fresh、拒绝/恢复及只读回放。成功前缀不重买，旧run不改写，不新开付费批。自然任务6逻辑调用与原产品5调用的差异、同版本资格和真实DB/API/UI消费仍单列待解决。
-
-核查证据：data/evaluation/results/sol_natural_consumption_gap_audit_20261028.json。
-
-结束条件：已有自然入口能显式选择当前候选和协调方案；完整离线自然链验证保留两份意见、全部修订义务、一次应用、同稿双复审及失败恢复。仅离线接线不授模型/产品资格，不绕过原产品调用数决策和后续真实消费证据。
+下一动作：为当前接线版本准备一次完整自然任务的真实消费，复用现有来源/工具/Memory/Evidence与原生审查路径，固定clean执行副本、精确提交公共CI、实际cwd/Python及真实作者预检，形成明确费用范围后再取得新授权；当前不发送、不读取Key、不重跑封存15例。原自然6调用包络单列，不能冒充原产品5调用已解决或默认产品已采用。
 
 ## 2026-10-28 组装重叠修复（本包前序记录）
 
@@ -345,7 +341,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-接通已实证的自然任务消费缺口：在既有候选factory/自然session入口传递当前合同与显式协调选择，完成离线完整链及相关恢复回归。不重跑已封存15例、不新开付费批；当前证据与依赖以Active Work Package及canonical为准。
+下一动作：为当前接线版本准备一次完整自然任务的真实消费，复用现有来源/工具/Memory/Evidence与原生审查路径，固定clean执行副本、精确提交公共CI、实际cwd/Python及真实作者预检，形成明确费用范围后再取得新授权；当前不发送、不读取Key、不重跑封存15例。原自然6调用包络单列，不能冒充原产品5调用已解决或默认产品已采用。
 
 ## History
 

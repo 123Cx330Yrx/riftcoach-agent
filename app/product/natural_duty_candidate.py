@@ -4,6 +4,7 @@ No key loading, paid CLI or Worker/API registration. Model-pass outcomes are
 retained for evaluation but never published by this unqualified adapter.
 """
 from pathlib import Path
+from copy import deepcopy
 
 from app.evaluation.natural_duty_contract import CONTRACT, NaturalDutyProvider, ROOT
 from app.evaluation.natural_duty_workflow import NaturalDutyWorkflow
@@ -25,7 +26,11 @@ ASSETS = ROOT/'examples/runtime_profiles/natural_duty_v1'
 
 def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge_provider,
         runs_root, memory_repository=None, memory_manifest_store=None,
-        publication_sources=None, publication_writer=None, candidate=None, execution_session=None):
+        publication_sources=None, publication_writer=None, candidate=None, execution_session=None,
+        patch_coordination=None):
+    if patch_coordination is not None and execution_session is None:
+        raise ValueError('natural_patch_coordination_requires_session')
+    patch_coordination = deepcopy(patch_coordination)
     if candidate is None:
         from app.evaluation import natural_duty_contract as candidate
         provider_type, assets = NaturalDutyProvider, ASSETS
@@ -75,7 +80,8 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         if execution_session is not None:
             from app.runtime.sol_session_runtime import SessionWorkflow
             return SessionWorkflow(SharedBudgetReviewSender(budget), session=execution_session,
-                journal_root=execution_session.journal_root, contract_module=candidate)
+                journal_root=execution_session.journal_root, contract_module=candidate,
+                patch_coordination=patch_coordination)
         return workflow_type(SharedBudgetReviewSender(budget),
             journal_root=Path(runs_root)/run_id/'natural-duty-journal', contract_module=candidate)
 

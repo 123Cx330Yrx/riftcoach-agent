@@ -50,11 +50,12 @@ def source():
 
 def candidate_for(plan):
     from app.runtime.sol_natural_provider import selected_contract
-    from app.evaluation import sol_necessity_contract
+    from app.evaluation import sol_necessity_contract, sol_review_contract
     version = plan.get('candidate_contract', contract.VERSION)
-    if version not in (contract.VERSION, sol_necessity_contract.VERSION):
+    candidates = {module.VERSION: module for module in (contract, sol_necessity_contract, sol_review_contract)}
+    if version not in candidates:
         raise ValueError('launch_unknown_candidate')
-    return selected_contract(sol_necessity_contract if version == sol_necessity_contract.VERSION else contract)
+    return selected_contract(candidates[version])
 
 
 def limits(candidate=contract):
@@ -91,11 +92,11 @@ def prepare(operator, run_id, primary, independent, *, parent_operator=None, par
     if candidate is contract:
         first, offline = capture(run_id)
     else:
-        from app.evaluation import sol_necessity_contract
+        from app.evaluation import sol_necessity_contract, sol_review_contract
         from scripts.prepare_sol_necessity_natural import capture as necessity_capture
-        if candidate is not sol_necessity_contract or parent_operator is not None:
+        if candidate not in (sol_necessity_contract, sol_review_contract) or parent_operator is not None:
             raise ValueError('launch_candidate_continuation_unsupported')
-        first, offline = necessity_capture(run_id)
+        first, offline = necessity_capture(run_id, candidate=candidate)
     # SessionBudget normalizes ONLY the remaining timeout before local replay.
     review_plan = freeze_v2_identity(dict(host_review_submission_mode=MODE_V2,
         host_review_evidence_policy=FINAL_POLICY), root_thread_id=primary,
@@ -180,7 +181,7 @@ def host(plan):
 
 def session_for(plan, plan_sha, event_source, *, preflight=False, guard=None, checkpoint=None,
                 read_only=False, before=None, sink=emit, authorization_sha=None, manual_retry=False,
-                reconcile=False):
+                reconcile=False, max_new_models=None):
     operator = require_paths(plan)
     run_id = plan['run_id']
     folder = operator/('native-preflight' if preflight else 'execution')
@@ -200,7 +201,7 @@ def session_for(plan, plan_sha, event_source, *, preflight=False, guard=None, ch
         transport_root=folder/'transport'/run_id, journal_root=folder/'journal',
         guard_sha=guard, checkpoint_sha=checkpoint, read_only=read_only,
         checkpoint_sink=sink, before_new_model=before, contract_module=candidate,
-        manual_retry=manual_retry, reconcile=reconcile, **extra)
+        manual_retry=manual_retry, reconcile=reconcile, max_new_models=max_new_models, **extra)
     workspace = HostReviewWorkspace(cwd=ROOT, python=sys.executable,
         answers=operator.with_name(operator.name+'-authors'), evidence_roots=[operator])
     gate = SessionReviewGate(session, plan=plan['review_plan'], workspace=workspace, event_source=event_source)
@@ -352,17 +353,30 @@ def verify_derived(plan, session):
 
 
 def execute(plan, plan_sha, event_source, *, authorization_file, authorization_sha,
-            ci_run, preflight_proof, guard=None, checkpoint=None, zhipu_env_file=None, manual_retry=False):
+            ci_run, preflight_proof, guard=None, checkpoint=None, zhipu_env_file=None, manual_retry=False,
+            patch_coordination=None, host_only=False):
+    if host_only and (not guard or not checkpoint or manual_retry):
+        raise ValueError('launch_host_only_requires_existing_roots_no_retry')
+    if patch_coordination is not None:
+        from scripts import review_duty_direct_patch as direct
+        conflicts = Path(plan['operator'])/'execution/journal/patch-conflicts.json'
+        if not conflicts.is_file():
+            raise ValueError('launch_patch_conflicts_required')
+        direct.coordinated_operations(json.loads(conflicts.read_bytes()), patch_coordination)
     raw = Path(authorization_file).read_bytes()
     if digest(raw) != authorization_sha:
         raise ValueError('launch_original_authorization_sha_required')
     grant = json.loads(raw)
-    validate_grant(grant, plan, plan_sha)
+    if not host_only:
+        validate_grant(grant, plan, plan_sha)
     config_path = str(Path(zhipu_env_file).resolve()) if zhipu_env_file is not None else None
     if grant.get('zhipu_env_file') != config_path:
         raise ValueError('launch_authorized_zhipu_config_required')
     load(plan['operator'], plan_sha, frozen=True)
-    ci = verify_ci(ci_run, plan['head'])
+    if host_only:
+        ci = json.loads((Path(plan['operator'])/'execution/session/launch.json').read_bytes())['ci']
+    else:
+        ci = verify_ci(ci_run, plan['head'])
     verify_native_principals(event_source.client, plan['review_plan'])
     verify_preflight(plan, plan_sha, event_source, preflight_proof)
 
@@ -375,7 +389,8 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
         verify_native_principals(event_source.client, plan['review_plan'])
 
     session, gate = session_for(plan, plan_sha, event_source, guard=guard, checkpoint=checkpoint,
-        before=before, authorization_sha=authorization_sha, manual_retry=manual_retry)
+        before=before, authorization_sha=authorization_sha, manual_retry=manual_retry,
+        max_new_models=0 if host_only else None)
     try:
         with session:
             launch_record = dict(ci=ci, authorization_sha256=authorization_sha,
@@ -403,14 +418,20 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
                 raise SessionPaused('session_awaiting_native_review')
             gate.verify_prior()
             # Ownership, frozen source, grant and live native checks precede prompts.
-            with session.waiting_for_credentials():
-                if plan.get('continuation'):
-                    generator, key = continuation_credentials()
-                elif 'candidate_contract' in plan:
-                    generator, key = credentials(zhipu_env_file, reviewer_group=plan['review_profile']['group'])
-                else:
-                    generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
-            before()
+            if host_only:
+                from app.providers.config import ZhipuSettings
+                generator = ZhipuSettings(api_key='OFFLINE_HOST_ONLY_NO_SEND',
+                    base_url='https://open.bigmodel.cn/api/paas/v4', model='glm-5.3-flash')
+                key = 'OFFLINE_HOST_ONLY_NO_SEND'
+            else:
+                with session.waiting_for_credentials():
+                    if plan.get('continuation'):
+                        generator, key = continuation_credentials()
+                    elif 'candidate_contract' in plan:
+                        generator, key = credentials(zhipu_env_file, reviewer_group=plan['review_profile']['group'])
+                    else:
+                        generator, key = credentials(zhipu_env_file) if zhipu_env_file is not None else credentials()
+                before()
             from app.runtime.sol_natural_provider import SolNaturalProviderFactory
             candidate = candidate_for(plan)
             factory = SolNaturalProviderFactory(generator_settings=generator, api_key=key,
@@ -420,7 +441,8 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
             segment = derived/f'{len(list(derived.iterdir()))+1:04d}'
             segment.mkdir(exist_ok=False)
             prepared = base.build_application(provider_factory=factory, output_root=segment,
-                run_id=plan['run_id'], candidate=candidate, execution_session=session)
+                run_id=plan['run_id'], candidate=candidate, execution_session=session,
+                patch_coordination=patch_coordination)
             try:
                 result = prepared.run()
             finally:
@@ -531,8 +553,11 @@ def main():
     parser.add_argument('--run-id')
     parser.add_argument('--primary')
     parser.add_argument('--independent')
-    parser.add_argument('--candidate', choices=('baseline', 'necessity'), default='baseline')
+    parser.add_argument('--candidate', choices=('baseline', 'necessity', 'dual-necessity'), default='baseline')
     parser.add_argument('--manual-retry', action='store_true')
+    parser.add_argument('--host-only', action='store_true')
+    parser.add_argument('--patch-coordination-file', type=Path)
+    parser.add_argument('--patch-coordination-sha')
     parser.add_argument('--parent-operator', type=Path)
     parser.add_argument('--parent-seal-sha')
     parser.add_argument('--preflight', action='store_true')
@@ -548,15 +573,23 @@ def main():
     parser.add_argument('--primary-file', type=Path)
     parser.add_argument('--event-id')
     args = parser.parse_args()
+    if (args.patch_coordination_file is not None or args.patch_coordination_sha is not None) and args.action != 'run':
+        parser.error('patch coordination is only accepted by run; replay consumes the saved selection')
+    if args.host_only and args.action != 'run':
+        parser.error('host-only is only accepted by run')
+    from scripts.sol_original15_launch import load_patch_coordination
+    coordination = load_patch_coordination(args.patch_coordination_file, args.patch_coordination_sha)
     if args.action == 'prepare':
         if not all((args.run_id, args.primary, args.independent)):
             parser.error('prepare requires run-id, primary and independent')
         if bool(args.parent_operator) != bool(args.parent_seal_sha):
             parser.error('continuation requires parent-operator and parent-seal-sha')
-        from app.evaluation import sol_necessity_contract
+        from app.evaluation import sol_necessity_contract, sol_review_contract
+        selected = {'baseline': contract, 'necessity': sol_necessity_contract,
+                    'dual-necessity': sol_review_contract}[args.candidate]
         emit(prepare(args.operator, args.run_id, args.primary, args.independent,
             parent_operator=args.parent_operator, parent_seal_sha=args.parent_seal_sha,
-            candidate=sol_necessity_contract if args.candidate == 'necessity' else contract))
+            candidate=selected))
         return
     plan = load(args.operator, args.plan_sha, frozen=args.action in ('native-task', 'run', 'reconcile', 'replay', 'seal'))
     with host(plan) as event_source:
@@ -600,7 +633,8 @@ def main():
                 preflight_proof=dict(guard_sha256=args.preflight_guard_sha,
                     checkpoint_sha256=args.preflight_checkpoint_sha),
                 guard=args.guard_sha, checkpoint=args.checkpoint_sha,
-                zhipu_env_file=args.zhipu_env_file, manual_retry=args.manual_retry))
+                zhipu_env_file=args.zhipu_env_file, manual_retry=args.manual_retry,
+                patch_coordination=coordination, host_only=args.host_only))
 
 
 if __name__ == '__main__':
@@ -610,6 +644,6 @@ if __name__ == '__main__':
         # Only allow local fixed validation codes; never provider/OS text.
         message = str(error)
         code = message if type(error) in (ValueError, SessionBlocked, SessionPaused) and re.fullmatch(
-            r'(launch|session|natural|boundary_v2|codex_review_host)_[a-z0-9_]+', message) else 'execution_error'
+            r'(launch|session|natural|boundary_v2|codex_review_host|original15_patch_coordination)_[a-z0-9_]+', message) else 'execution_error'
         emit(dict(ok=False, code=code, error_type=type(error).__name__, publication_allowed=False))
         raise SystemExit(1) from None
