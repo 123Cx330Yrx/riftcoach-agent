@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "原版12例与第13修复闭环保留；剩两例续接已安装，唯一v2进程等待时限维护CI全绿。"
+pause_reason: "原15跨版本证据已完整封存；自然任务消费差异零付费核查完成，待接通。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,22 @@ pause_reason: "原版12例与第13修复闭环保留；剩两例续接已安装�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+原15固定案例的跨版本完整证据已收齐并封存：原版12例、第13例组装恢复1例、剩两例2例分别记录。observed:4/5六阶段均经主审及原独立作者完整来源双审接受、真实native与作者原件逐字匹配；每例只实际应用一次，双fresh核验同一实际新稿，均100/pass且issues/resolutions/advisories为空。
+
+第14例仅修block_27官方发布日期，其余27段保持；第15例仅将block_4标题中“已证明防抓能力优秀”改为“所选样本的结果观察”，其余27段保持。新稿分别c40b79db、8bb66e45，两例各4HTTP、81319/81281known tokens；合计8HTTP/162600known、Provider 219.174秒，无新增unknown或retry。Host-only正常关闭均matched=true，严格只读replay通过，唯一outer seal SHA3b8c3ae148b683d8fd23617b149bc9def2d7c79f4d2724d393263398d81e164c。
+
+累计53HTTP/973380known/195578unknown预留/3旧retry，旧失败、费用及原seal保持。冻结e7a7ab0b clean、原stdout guard/退出checkpoint保持；维护CI40681684790全部8项成功，原CI40673377624超时与同HEAD维护条件例外保留。原授权截止北京时间10月29日00:25:43未延展；本包无剩余付费动作。不能拼称同版本15/15、holdout通过或产品准入；上游身份未独立验证。Stage8E、automation PAUSED及未发布保持。
+
+证据：data/evaluation/results/sol_original15_remaining_two_completed_20261028.json。
+
+零付费实际factory/assembly核查已完成：同一observed:3已接受重叠意见在普通NaturalDutyWorkflow仍报direct_patch_overlap_requires_new_joint_design；session版准确暂停session_awaiting_patch_coordination，但build_natural_duty_candidate没有接收协调选择的参数。固定报告入口已向同一SessionWorkflow传入选择，自然入口尚未接通。另实调用仓库通用sol_natural_launch.candidate_for时，当前sol_review_contract被launch_unknown_candidate拒绝；这不否定外置专用入口的历史执行结果。核查仅覆盖factory与组装分支，没有重新运行完整自然任务或提交模拟审批，Provider/Key均0；首次探针漏开fixture session已本地纠正，未改执行原件。
+
+下一工作：复用既有Application→Runtime→SessionWorkflow/session/native gate，将当前候选和显式协调选择接入自然任务的可恢复入口；先用离线真实调用链验证重叠停点→选择/双审→唯一应用→同稿双fresh、拒绝/恢复及只读回放。成功前缀不重买，旧run不改写，不新开付费批。自然任务6逻辑调用与原产品5调用的差异、同版本资格和真实DB/API/UI消费仍单列待解决。
+
+核查证据：data/evaluation/results/sol_natural_consumption_gap_audit_20261028.json。
+
+## 2026-10-28 CI等待与第13例完成时的历史检查点
 
 剩两例CI维护续接已实际安装：冻结e7a7ab0b及0003/guard/plan保持，原CI40673377624的60分钟超时和原waiter退出原件保留；维护CI40681684790绑定6a231c54，仅pytest-shards时限60→90，逐件固定7件Git差异及18件控制原件。明确同HEAD条件例外，不把原cancelled改称绿。15项零Key/零Provider边界核验通过，续接SHA82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca；versioned segment保持共享独占锁和stdout原留根。唯一v2 waiter实际PID63192（launcher16788）等待全部8项公共检查成功后仅发送observed:4首个pending请求一次，不自动补测；原授权截止北京时间10月29日00:25:43不延展，原累计45HTTP/810780known/195578unknown预留/3retry不清零。当前新增Provider/Key仍0，observed:5尚无session。后续逐项完整来源双审、唯一应用及同稿双fresh，然后严格只读回放封存；原版12、修复1和后2例不拼同版本资格，Stage8E/automation PAUSED/产品未准入保持。
 

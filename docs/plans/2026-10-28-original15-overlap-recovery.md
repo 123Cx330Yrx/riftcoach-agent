@@ -1,5 +1,26 @@
 # 双初审重叠补丁：诊断与恢复方案
 
+## 2026-10-28 原15跨版本证据封存及自然消费差异核查完成
+
+原15固定案例的跨版本完整证据已收齐并封存：原版12例、第13例组装恢复1例、剩两例2例分别记录。observed:4/5六阶段均经主审及原独立作者完整来源双审接受、真实native与作者原件逐字匹配；每例只实际应用一次，双fresh核验同一实际新稿，均100/pass且issues/resolutions/advisories为空。
+
+第14例仅修block_27官方发布日期，其余27段保持；第15例仅将block_4标题中“已证明防抓能力优秀”改为“所选样本的结果观察”，其余27段保持。新稿分别c40b79db、8bb66e45，两例各4HTTP、81319/81281known tokens；合计8HTTP/162600known、Provider 219.174秒，无新增unknown或retry。Host-only正常关闭均matched=true，严格只读replay通过，唯一outer seal SHA3b8c3ae148b683d8fd23617b149bc9def2d7c79f4d2724d393263398d81e164c。
+
+累计53HTTP/973380known/195578unknown预留/3旧retry，旧失败、费用及原seal保持。冻结e7a7ab0b clean、原stdout guard/退出checkpoint保持；维护CI40681684790全部8项成功，原CI40673377624超时与同HEAD维护条件例外保留。原授权截止北京时间10月29日00:25:43未延展；本包无剩余付费动作。不能拼称同版本15/15、holdout通过或产品准入；上游身份未独立验证。Stage8E、automation PAUSED及未发布保持。
+
+证据：data/evaluation/results/sol_original15_remaining_two_completed_20261028.json。
+
+零付费实际factory/assembly核查已完成：同一observed:3已接受重叠意见在普通NaturalDutyWorkflow仍报direct_patch_overlap_requires_new_joint_design；session版准确暂停session_awaiting_patch_coordination，但build_natural_duty_candidate没有接收协调选择的参数。固定报告入口已向同一SessionWorkflow传入选择，自然入口尚未接通。另实调用仓库通用sol_natural_launch.candidate_for时，当前sol_review_contract被launch_unknown_candidate拒绝；这不否定外置专用入口的历史执行结果。核查仅覆盖factory与组装分支，没有重新运行完整自然任务或提交模拟审批，Provider/Key均0；首次探针漏开fixture session已本地纠正，未改执行原件。
+
+下一工作：复用既有Application→Runtime→SessionWorkflow/session/native gate，将当前候选和显式协调选择接入自然任务的可恢复入口；先用离线真实调用链验证重叠停点→选择/双审→唯一应用→同稿双fresh、拒绝/恢复及只读回放。成功前缀不重买，旧run不改写，不新开付费批。自然任务6逻辑调用与原产品5调用的差异、同版本资格和真实DB/API/UI消费仍单列待解决。
+
+核查证据：data/evaluation/results/sol_natural_consumption_gap_audit_20261028.json。
+
+
+## 历史推进记录
+
+以下“当前”“下一动作”均指记录当时；最新行动见上方及canonical。
+
 目标：两位审查者正确指出同一处错误时，保留两份原意见，生成一份能覆盖两项意见的新稿；不靠重复购买初审碰运气。
 
 ## 已确认的事实
