@@ -1,3 +1,13 @@
+## 2026-10-29 自然任务实测停止、已有补丁覆盖和本地标题反例
+
+524和语义漏检是两项独立结果：前者已按授权手动恢复，后者是正常HTTP200响应的职责质量缺陷。事实职责已提出同一用途修法，故“某职责漏检”不能直接推出“联合补丁无覆盖”；本次正式链仍按原标准拒绝并保留反证，未来职责标准若改变须先明确方案，不能追认本次通过。
+
+零付费实际机械替换发现另一独立的本地失败：COACH_REPORT_HEADINGS、validate_revised_report及source_patch_editor._section_order固定训练标题；事实补丁把该节改为观摩练习计划，strict preview真实拒绝。coach_grounded_development与source_bound_report也有同类标题消费者，不能只改一个校验器或悄悄改模型after。Control/local-preview保留原补丁机械文本和ReportValidationError，18段字节保持，无正式application/fresh。
+
+同任务恢复接口误用是主线程操作失误：followup_task会产生NEW_TASK，消息正文写MESSAGE不会改变外层类型。以后活跃任务只用send_message；仅凭RPC transient interrupted不足以再派发。当前2 NEW_TASK/1 MESSAGE和普通读取器拒绝全部保留，单事件拒绝专用适配只能导入已有accepted=false，原件/作者及唯一final不变，零新Provider，普通门未追认通过。
+
+证据：data/evaluation/results/sol_natural_coordination_live_stop_20261029.json。
+
 ## 2026-10-28 当前自然任务启动准备与真实作者预检完成
 
 当前自然任务的零发送启动准备已完成。已创建精确1ac2388d干净副本`D:/riftcoach-natural-coordination-execution-20261028`，现场重建计划及首请求；Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-coordination-20261028`，计划SHA1e66f02d2f3726f360afc225197e24c7238b0329dfc70596acff47cea59d1e8c。复用原独立作者完成本次作者原件→check-answer→唯一真实native final→主审实读/导入→严格只读复核，行政范围通过，不算业务质量。

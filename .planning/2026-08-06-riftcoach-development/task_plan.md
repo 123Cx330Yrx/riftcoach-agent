@@ -15,17 +15,21 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-目标：验证当前协调接线版能实际消费一项自然观摩任务，复用原Runtime/session与完整来源双审，不重跑旧15。
+目标：在保留已有真实结果与费用的前提下，判清观摩任务的职责漏检、联合补丁覆盖与实际报告组装契约，消除已复现的本地章节误拒绝。
 
-当前自然任务的零发送启动准备已完成。已创建精确1ac2388d干净副本`D:/riftcoach-natural-coordination-execution-20261028`，现场重建计划及首请求；Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-coordination-20261028`，计划SHA1e66f02d2f3726f360afc225197e24c7238b0329dfc70596acff47cea59d1e8c。复用原独立作者完成本次作者原件→check-answer→唯一真实native final→主审实读/导入→严格只读复核，行政范围通过，不算业务质量。
+本次自然任务已经得到可核验的反证，未完成正式修订闭环。精确1ac2388d及公共CI40710189923全部8项成功后，按新授权90223faa启动；两次Flash工具选择/检索与成稿成功。facts-initial首发HTTP524（129.047秒，网关120秒窗口）只暂停同项，第一次手动补测成功，72/needs_revision、6项真实问题及10条原替换均经主审与原独立作者完整来源双审接受。成功生成、失败回执和未知费用全部保留。
 
-保存凭据控制入口已准备并通过真实PowerShell CheckOnly：0Key/0Provider，actual cwd/Python和冻结来源一致。凭据回调的分组、双Key隔离用替身核验；真实子进程无新授权时明确拒绝，未创建execution/claim。未读取真实凭据，不要求用户重填Key。CI40710189923绑定冻结1ac2388d；最新检查点见readiness结果，不把查询成功当CI全绿。新执行目录中尚无业务session，也没有自动付费waiter。
+completion-initial正常HTTP200、100/pass、空issues/repairs、仅21/22/24可选advisories；主审和独立作者均确认它漏掉第19—24段将仅观摩任务转为个人英雄池、训练前后指标及本人历史基线的用途冲突。两审均实读第2/4段的观摩限定，并非凭“练”字或未重复对象报错；不把事实职责的数值错误混入本项。此意见按原质量标准拒绝，未执行compatibility/edit/application或双fresh，不靠再买一次覆盖语义失败。
 
-费用提案已固定：Flash生成及修订、Sol双初审与同稿双fresh，共6逻辑调用；天机阁GPT-企业专线，10次实际请求/739840 tokens/3600活动秒，含4次手动同项补测，包络估价1.0683904元（非账单硬限）。传输/格式故障保留成功前缀及旧费用，语义拒绝不靠补测跳过。新任务未获费用授权；旧15授权不挪用，旧封存不重开。Stage8E、未发布/未准入和原产品5调用差异保持。
+后续还有独立的操作失误：主线程误用followup_task恢复同一作者，生成第二NEW_TASK，普通原生读取器因此拒绝正式导入。保留2 NEW_TASK和1 MESSAGE及原拒绝，沿用同作者自写原件和唯一真实final，完成仅能导入accepted=false的单事件固定恢复；加密输入等价性仍未验证，不宣称普通单派发门通过。实际只读native两次复核、改manifest拒绝与20项恢复检查通过，未改冻结源码、作者或响应。唯一seal e723a554d852a776cf2eaf30492def52d36a4514bf762931d033199fc8e6c646固定180件，严格只读回放保持原件；该回放明确包含上述拒绝专用行政例外。
 
-证据：`data/evaluation/results/sol_natural_coordination_live_readiness_20261028.json`；Control/authorization-proposal.json、native-verified.json、adapter-checks.json。
+累计5 HTTP、67065 known tokens、73756 unknown预留、1次手动retry，342.267活动秒；HTTP数全已知，无receiptless/not_sent。费用截止北京时间10月30日00:15:47，不延展。授权原文误写“Flash修订”已另留clarification：两次Flash实际是工具选择/检索和成稿，修订是程序逐字应用Sol原补丁，共6逻辑调用；不改原grant。
 
-下一动作：请用户批准此明确新任务的费用提案；同HEAD公共CI全部成功且新授权有效后，用保存凭据首次发送，随后逐项完整来源双审、实际唯一应用及同稿双fresh。当前不发送、不读Key、不重跑封存15例。
+用户询问漏检如何处理后，零付费检查已有两份意见的联合补丁：事实意见5/6其实已覆盖同一用途问题，10条原替换可在无重叠锚点上生成观摩文本，18段逐字不变；主审全文内容复核未见剩余明确实错。不能据完成度单职责漏检认定全部结果无效或联合修复必败。但现有strict preview又真实暴露本地章节契约：它只认“## 6. 训练计划”，拒绝语义适合任务的“## 6. 观摩练习计划”。仅在Control/local-preview保留机械替换文本及失败，不绕过验证，不写入run，不伪称实际application、独立整稿审查或fresh通过。
+
+证据：data/evaluation/results/sol_natural_coordination_live_stop_20261029.json；Operator/seal.json；Control/rejected-native-recovery-preflight.json、closure-verification.json及local-preview/evidence.json、assessment.json。旧15和所有旧失败/费用/版本资格保持。Stage8E、未发布/未准入、熟悉来源非holdout及自然6调用与原产品5调用差异均未解决；automation保持PAUSED。
+
+下一动作：先零付费修复并核对“观摩任务章节标题”从补丁预览到最终报告消费者的契约，同时区分单职责漏检率和联合补丁覆盖率，依据实际消费链裁定下一次验证范围；不重测整批、不改写本次pass，不在已seal原run补应用或续发fresh。
 
 ## 2026-10-28 组装重叠修复（本包前序记录）
 
@@ -339,7 +343,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-下一动作：为当前接线版本准备一次完整自然任务的真实消费，复用现有来源/工具/Memory/Evidence与原生审查路径，固定clean执行副本、精确提交公共CI、实际cwd/Python及真实作者预检，形成明确费用范围后再取得新授权；当前不发送、不读取Key、不重跑封存15例。原自然6调用包络单列，不能冒充原产品5调用已解决或默认产品已采用。
+零付费修复并核对观摩章节标题从补丁预览到最终报告消费者的契约；分别记录本次完成度漏检和已有事实补丁的联合覆盖。先完成相关离线检查，再据证据确定验证范围，不重开本次seal或重买整批。后续产品/学习依赖保持。
 
 ## History
 
