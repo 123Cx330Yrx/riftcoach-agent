@@ -84,6 +84,46 @@ def test_exact_consumption_and_full_fresh_have_no_paraphrase_step(sample):
         'native_acceptance_verified', 'semantic_compatibility_verified'))
 
 
+@pytest.mark.parametrize('title', ['## 6. 训练计划', '## 6. 观摩练习计划'])
+def test_task_section_title_survives_exact_preview_and_both_fresh_inputs(sample, title):
+    from app.report_validation import COACH_REPORT_HEADINGS
+    inputs, value = sample
+    raw = repaired(value)
+    old = COACH_REPORT_HEADINGS[6]
+    if title != old:
+        block = next(i for i, (_, text) in enumerate(inputs.source.blocks, 1) if old in text)
+        raw['repairs'][0]['edits'][f'block_{block}'] = [dict(before=old, after=title,
+            reason='OFFLINE task title witness; no semantic approval.')]
+    result = direct.preview(inputs, pair(inputs, raw))
+    assert result.report == inputs.source.report.replace(BEFORE, AFTER).replace(old, title)
+    revised = report_inputs(inputs, result.report)
+    for name in duty.DUTIES:
+        request = direct.review_request(revised, name, 'fresh')
+        assert title in request.messages[1].content
+        assert result.journal['fresh_request_sha256'][name] == duty.request_sha(request)
+    assert not result.journal['semantic_approval']
+
+
+@pytest.mark.parametrize('replacement', [
+    '', 'inline ## 6. 观摩练习计划', '```\n## 6. 观摩练习计划\n```',
+    '~~~\n## 6. 观摩练习计划\n~~~', '## 6. 观摩练习计划伪造',
+    '### 6. 观摩练习计划', '## 6. 观摩练习计划\n\n## 6. 训练计划',
+    '## 6. 观摩练习计划\n\n## 6. 观摩练习计划',
+])
+def test_title_alias_does_not_allow_missing_disguised_or_duplicate_sections(sample, replacement):
+    from app.report_validation import COACH_REPORT_HEADINGS
+    inputs, value = sample
+    old = COACH_REPORT_HEADINGS[6]
+    block = next(i for i, (_, text) in enumerate(inputs.source.blocks, 1) if old in text)
+    raw = repaired(value)
+    raw['repairs'][0]['edits'][f'block_{block}'] = [dict(before=old, after=replacement,
+        reason='OFFLINE invalid structure witness.')]
+    original = inputs.source.report
+    with pytest.raises(ValueError):
+        direct.preview(inputs, pair(inputs, raw))
+    assert inputs.source.report == original
+
+
 @pytest.mark.parametrize('fault', ['missing', 'duplicate', 'unknown', 'string', 'bool',
     'pass', 'fail', 'extra', 'source', 'resolution'])
 def test_issue_mapping_does_not_lose_obligations(sample, fault):

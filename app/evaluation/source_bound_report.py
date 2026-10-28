@@ -16,7 +16,7 @@ from app.evaluation.golden_role_review import RoleReviewWorkflow
 from app.harness.knowledge import citation_retrieval_fields, knowledge_projection
 from app.harness.steps import CoachDraft, DraftPreparationResult, KnowledgeEvidence
 from app.evaluation.golden_review_experiment import compact
-from app.report_validation import COACH_REPORT_HEADINGS
+from app.report_validation import COACH_REPORT_HEADINGS, report_headings
 
 
 VERSION = "source-bound-report-offline-v1"
@@ -95,14 +95,11 @@ def _prefix(report: str, suffix: str) -> str:
     prefix = tail[:-len(suffix)]
     if "riftcoach:knowledge-sources" in prefix:
         raise ValueError("source_ledger_duplicate_or_misplaced")
-    headings = [line for line in prefix.splitlines() if line.startswith(("# ", "## "))]
-    def heading_identity(line):
-        return next((heading for heading in COACH_REPORT_HEADINGS if line == heading
-            or any(line.startswith(heading + separator) for separator in ("：", ":", " "))), None)
+    headings = [heading for heading in report_headings(prefix) if heading.level <= 2]
     # Descriptive heading suffixes and existing intermediate subheadings are
     # valid report content (including assertions the reviewer must check).
-    identities = tuple(filter(None, (heading_identity(line) for line in headings)))
-    if identities != COACH_REPORT_HEADINGS or heading_identity(headings[-1]) != COACH_REPORT_HEADINGS[-1]:
+    identities = tuple(heading.identity for heading in headings if heading.identity is not None)
+    if identities != COACH_REPORT_HEADINGS or headings[-1].identity != COACH_REPORT_HEADINGS[-1]:
         raise ValueError("source_ledger_section_required")
     # A slot inside a fenced block is not a report section attachment.
     if any(line.lstrip().startswith(("```", "~~~")) for line in prefix.splitlines()):

@@ -15,21 +15,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-目标：在保留已有真实结果与费用的前提下，判清观摩任务的职责漏检、联合补丁覆盖与实际报告组装契约，消除已复现的本地章节误拒绝。
+目标：保留真实结果与费用，消除观摩标题的本地误拒绝，并区分完成度单职责漏检与联合补丁覆盖；不把一次预览当完整修订成功。
 
-本次自然任务已经得到可核验的反证，未完成正式修订闭环。精确1ac2388d及公共CI40710189923全部8项成功后，按新授权90223faa启动；两次Flash工具选择/检索与成稿成功。facts-initial首发HTTP524（129.047秒，网关120秒窗口）只暂停同项，第一次手动补测成功，72/needs_revision、6项真实问题及10条原替换均经主审与原独立作者完整来源双审接受。成功生成、失败回执和未知费用全部保留。
+实现与证据：共享章节识别支持明确观摩标题，接入原预览/编辑、来源插槽原型和Memory消费者；原结构/来源保护保留，旧政策不改。真实原稿与10条原补丁已通过strict preview，新稿7fb7e784与原机械文本一致，18段及来源章节保持，实际合同双fresh输入已构建、未发送。原Operator/Control/作者全部库存及冻结1ac2388d保持；来源插槽是独立原型，非自然任务实际链。详见data/evaluation/results/observation_heading_recovery_20261029.json及docs/runbooks/sol-natural-session.md。
 
-completion-initial正常HTTP200、100/pass、空issues/repairs、仅21/22/24可选advisories；主审和独立作者均确认它漏掉第19—24段将仅观摩任务转为个人英雄池、训练前后指标及本人历史基线的用途冲突。两审均实读第2/4段的观摩限定，并非凭“练”字或未重复对象报错；不把事实职责的数值错误混入本项。此意见按原质量标准拒绝，未执行compatibility/edit/application或双fresh，不靠再买一次覆盖语义失败。
+本轮分组累计255项检查及4个子检查通过；编译、治理与diff-check通过。旧库存绑定的源码摘要差异以两份独立新库存解决，旧快照不覆盖，除组件摘要/派生program摘要外内容完全相同。
 
-后续还有独立的操作失误：主线程误用followup_task恢复同一作者，生成第二NEW_TASK，普通原生读取器因此拒绝正式导入。保留2 NEW_TASK和1 MESSAGE及原拒绝，沿用同作者自写原件和唯一真实final，完成仅能导入accepted=false的单事件固定恢复；加密输入等价性仍未验证，不宣称普通单派发门通过。实际只读native两次复核、改manifest拒绝与20项恢复检查通过，未改冻结源码、作者或响应。唯一seal e723a554d852a776cf2eaf30492def52d36a4514bf762931d033199fc8e6c646固定180件，严格只读回放保持原件；该回放明确包含上述拒绝专用行政例外。
+失败裁决：原completion 100/pass漏检及双审拒绝不改写；facts原意见5/6覆盖同一用途问题，不能因此全盘丢弃成功证据。原524/恢复、误派第二NEW_TASK/普通native拒绝/拒绝专用恢复、seal及5HTTP账目全部保留，见sol_natural_coordination_live_stop_20261029.json。当前无正式compatibility/edit/application/独立整稿或fresh；新增Provider/Key均0。
 
-累计5 HTTP、67065 known tokens、73756 unknown预留、1次手动retry，342.267活动秒；HTTP数全已知，无receiptless/not_sent。费用截止北京时间10月30日00:15:47，不延展。授权原文误写“Flash修订”已另留clarification：两次Flash实际是工具选择/检索和成稿，修订是程序逐字应用Sol原补丁，共6逻辑调用；不改原grant。
-
-用户询问漏检如何处理后，零付费检查已有两份意见的联合补丁：事实意见5/6其实已覆盖同一用途问题，10条原替换可在无重叠锚点上生成观摩文本，18段逐字不变；主审全文内容复核未见剩余明确实错。不能据完成度单职责漏检认定全部结果无效或联合修复必败。但现有strict preview又真实暴露本地章节契约：它只认“## 6. 训练计划”，拒绝语义适合任务的“## 6. 观摩练习计划”。仅在Control/local-preview保留机械替换文本及失败，不绕过验证，不写入run，不伪称实际application、独立整稿审查或fresh通过。
-
-证据：data/evaluation/results/sol_natural_coordination_live_stop_20261029.json；Operator/seal.json；Control/rejected-native-recovery-preflight.json、closure-verification.json及local-preview/evidence.json、assessment.json。旧15和所有旧失败/费用/版本资格保持。Stage8E、未发布/未准入、熟悉来源非holdout及自然6调用与原产品5调用差异均未解决；automation保持PAUSED。
-
-下一动作：先零付费修复并核对“观摩任务章节标题”从补丁预览到最终报告消费者的契约，同时区分单职责漏检率和联合补丁覆盖率，依据实际消费链裁定下一次验证范围；不重测整批、不改写本次pass，不在已seal原run补应用或续发fresh。
+下一动作：针对既有完整来源和同一新稿准备零付费独立整稿内容核验，分开记录单职责表现与联合修复，再裁定是否需要仅双fresh诊断。不得重买生成/初审、重开seal或自动用旧授权启动新批。Stage8E/未准入、旧15版本边界、自然6与原产品5调用及其他后续产品/学习依赖保持；automation PAUSED。
 
 ## 2026-10-28 组装重叠修复（本包前序记录）
 

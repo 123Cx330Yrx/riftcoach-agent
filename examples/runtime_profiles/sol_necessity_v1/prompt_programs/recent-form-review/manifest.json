@@ -322,7 +322,7 @@
     {
       "component_id": "app.evaluation.source_patch_editor",
       "source": "app/evaluation/source_patch_editor.py",
-      "sha256": "2d1795029bb4e4473acd6695368523fa01cb7516ac91d0d8675487a4e0366f92"
+      "sha256": "1da291ec374844b9bb6736b6abf3cd19695d45a8d2e10e317afe379381b23805"
     },
     {
       "component_id": "app.runtime.dispatch_runtime",
@@ -410,5 +410,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "38e6482b14fd7b9ad99740cc133447d4ce12df5668c2b443315be3e6a65b66f6"
+  "program_sha256": "5500ffa460f3c5f0a0d7a930460879df42ac9dfa4fb17e4fb57f4677f314fd0d"
 }

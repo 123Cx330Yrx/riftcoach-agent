@@ -30,6 +30,7 @@ from app.evaluation.domain_e2e import (
 from app.harness.runtime import _SAFE_FAILURE_CODES
 from app.memory.context_models import MemoryContextBinding, MemoryContextRecord, MemoryContextRecordKind, MemoryContextSnapshot
 from app.players.models import RelationshipRole
+from app.report_validation import COACH_REPORT_HEADINGS, report_section_body
 from app.product.recent_review import RecentReviewProductRequest, RecentReviewRuntimeRequestCompiler
 from app.providers.errors import ProviderError
 from app.rag.coaching_query import RetrievalAttemptDiagnostics, Topic, _attempt, _topic
@@ -374,7 +375,7 @@ def run_observation(project_root: Path, *, provider, plan: DevelopmentPlan, real
             # Acknowledgement is deliberately narrower than proof that every
             # suggested activity fits the budget. Never persist report text.
             report = (result.output.report if result.output else None) or ""
-            training = report.partition("## 6. 训练计划")[2].partition("## 7.")[0]
+            training = report_section_body(report, COACH_REPORT_HEADINGS[6])
             preference = bool(re.search(r"(?<![\d.])(?:15|十五)\s*(?:分钟|分鐘|minutes?\b|mins?\b)", training, re.I))
         passed, failures = _assess(plan, observation, real=real_evidence is not None, memory_preference_acknowledged=preference)
         receipt = DevelopmentReceipt(

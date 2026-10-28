@@ -4,7 +4,6 @@ Exact anchors and valid references prove identity, not semantic correctness.
 No live entry, reviewer verdict, automatic date repair or publication authority.
 """
 from dataclasses import dataclass, replace
-import re
 
 from pydantic import Field
 
@@ -19,7 +18,7 @@ from app.evaluation.golden_inference_coverage import MAX_REPORT_CHARS, report_bl
 from app.harness.runtime import ReviewHarness
 from app.harness.steps import KnowledgeCitation, KnowledgeEvidence
 from app.providers.models import ToolSpec, ToolChoiceMode
-from app.report_validation import COACH_REPORT_HEADINGS
+from app.report_validation import COACH_REPORT_HEADINGS, report_headings
 
 VERSION = "source-check-explicit-edit-offline-v1"
 SUBMIT_TOOL = "submit_source_edits"
@@ -84,24 +83,8 @@ def _block_spans(source):
 
 
 def _section_order(report):
-    identities, fence = [], None
-    for line in report.splitlines():
-        marker = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
-        if fence is not None:
-            if marker and marker[1][0] == fence[0] and len(marker[1]) >= len(fence) and not line[marker.end():].strip():
-                fence = None
-            continue
-        if marker:
-            fence = marker[1]
-            continue
-        heading = re.match(r"^ {0,3}(#{1,6})[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*$", line)
-        if heading:
-            text = heading[1] + " " + heading[2]
-            identity = next((h for h in COACH_REPORT_HEADINGS if text == h or any(
-                text.startswith(h + separator) for separator in ("：", ":", " "))), None)
-            if identity:
-                identities.append(identity)
-    if tuple(identities) != COACH_REPORT_HEADINGS:
+    identities = tuple(heading.identity for heading in report_headings(report) if heading.identity is not None)
+    if identities != COACH_REPORT_HEADINGS:
         raise ValueError("source_edit_section_order")
 
 

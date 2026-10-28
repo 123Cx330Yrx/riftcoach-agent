@@ -44,6 +44,24 @@ def test_memory_checks_both_preference_and_injection(leak, acknowledge, passed):
     assert MEMORY_MARKER not in receipt.model_dump_json()
 
 
+@pytest.mark.parametrize('in_section', [True, False])
+def test_memory_preference_uses_actual_observation_section_not_a_title_literal(in_section):
+    class Observation(Remembering):
+        def chat(self, request):
+            response = super().chat(request)
+            if response.content and not request.response_contract:
+                content = response.content.replace('## 6. 训练计划', '## 6. 观摩练习计划')
+                if not in_section:
+                    content = content.replace('每天按你的15分钟练习时间安排。', '')
+                    content = content.replace('## 7. 数据边界与知识来源',
+                        '## 7. 数据边界与知识来源\n每天按你的15分钟练习时间安排。')
+                response = replace(response, content=content)
+            return response
+    receipt = run_observation(ROOT, provider=Observation(), plan=prepare_observation(ROOT, scenario='memory'))
+    assert receipt.memory_preference_acknowledged is in_section
+    assert receipt.passed is in_section
+
+
 def test_memory_is_not_added_to_other_cases_and_is_deterministic():
     suite = prepare_suite(ROOT, suite_id=SUITE)
     assert suite.sha256 == prepare_suite(ROOT, suite_id=SUITE).sha256

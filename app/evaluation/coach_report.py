@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_vali
 
 from app.providers.models import StructuredResponseContract
 from app.providers.structured import contract_for_model
-from app.report_validation import COACH_REPORT_HEADINGS, ReportValidationError
+from app.report_validation import COACH_REPORT_HEADINGS, ReportValidationError, report_headings
 
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
@@ -304,7 +304,8 @@ def build_revision_prompt(report: str, evaluation: dict) -> str:
 
 
 def validate_revised_report(report: str, original_report: str) -> None:
-    missing = [heading for heading in COACH_REPORT_HEADINGS if heading not in report]
+    identities = {heading.identity for heading in report_headings(report)}
+    missing = [heading for heading in COACH_REPORT_HEADINGS if heading not in identities]
     if missing:
         raise ReportValidationError(
             "report_missing_headings", f"Revised report is missing headings: {missing}"

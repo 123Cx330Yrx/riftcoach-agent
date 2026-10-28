@@ -1,5 +1,6 @@
 """Responsibility/byte-binding witnesses, never model quality observations."""
 from dataclasses import replace
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -101,6 +102,16 @@ def test_editor_must_preserve_exact_ledger_and_cannot_hide_body_deletion(knowled
         record=lambda _: None) == original
 
 
+def test_observation_title_keeps_exact_source_ledger_in_draft_and_revision(knowledge):
+    raw = template()
+    original = assemble_report(raw, knowledge, phase='draft', record=lambda _: None)
+    observed = original.replace(COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划')
+    assert assemble_report(observed, knowledge, phase='revision', original=original,
+        record=lambda _: None) == observed
+    assert assemble_report(raw.replace(COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划'),
+        knowledge, phase='draft', record=lambda _: None) == observed
+
+
 def test_historical_without_metadata_remains_unknown(knowledge):
     old = replace(knowledge, retrievals=())
     ledger = knowledge_ledger(old)
@@ -133,12 +144,13 @@ def test_appended_directory_cannot_satisfy_body_citation_floor(knowledge):
             report=report, knowledge=knowledge)))
 
 
-def test_harness_revision_and_publication_use_same_bytes(tmp_path):
+@pytest.mark.parametrize('title', [COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划'])
+def test_harness_revision_and_publication_use_same_bytes(tmp_path, title):
     _, req = prepare_claim_scope(4)
     records = []
     raw = req.report + "\n\n" + SLOT + "\n"
     original = assemble_report(raw, req.knowledge, phase="draft", record=lambda _: None)
-    revised = original.replace(COACH_REPORT_HEADINGS[-1],
+    revised = original.replace(COACH_REPORT_HEADINGS[6], title).replace(COACH_REPORT_HEADINGS[-1],
         COACH_REPORT_HEADINGS[-1] + "\n\n离线编辑见证，非模型质量结果。[K1]")
     provider = exchange_provider([tool_response(valid_review(issue=True)), revised, tool_response(valid_review())])
     flow = SourceBoundRoleWorkflow(BudgetedReviewSender(provider, clock=lambda: 1000), record_assembly=records.append)
@@ -195,6 +207,13 @@ def test_original_failure_and_all_frozen_inputs_remain_counterexamples_without_i
     assert all(row["full_original_preserved"] and not row["model_observed"]
         for row in result["frozen_15_preservation"])
     saved = json.loads(Path("data/evaluation/results/golden_source_responsibility_audit_v1.json").read_text(encoding="utf-8"))
+    # Preserve the historical audit and its original implementation fingerprint.
+    # Current code must reproduce every old report, rejection and counterexample;
+    # its own fingerprint is recorded separately, not written into old evidence.
+    implementation = 'app/evaluation/source_bound_report.py'
+    current_hash = result['input_file_sha256'].pop(implementation)
+    assert current_hash == hashlib.sha256(Path(implementation).read_bytes()).hexdigest()
+    assert saved['input_file_sha256'].pop(implementation) == '7df535e13383527810819248195d3759548e6e4a860d270c008dd5c9fe06cef9'
     assert result == saved
 
 

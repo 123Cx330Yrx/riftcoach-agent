@@ -59,6 +59,18 @@ def test_keep_does_not_hide_known_error_or_create_a_pass(case):
     assert failure["host_review"]["report_quote"] in result.report
 
 
+def test_observation_title_is_an_exact_edit_not_a_report_rewrite(case):
+    from app.report_validation import COACH_REPORT_HEADINGS
+    req, inputs, _, _ = case
+    before, after = COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划'
+    block = next(n for n, (_, text) in enumerate(inputs.source.blocks, 1) if before in text)
+    edit = dict(block=block, before=before, after=after, source_ids=[25], reason='OFFLINE title witness.')
+    result = editor.apply_edits(compact({'edits': [edit]}), inputs)
+    assert result.report == req.report.replace(before, after)
+    assert editor.report_inputs(inputs, result.report).source.report == result.report
+    assert not result.journal['semantic_approval']
+
+
 @pytest.mark.parametrize("fault", ["overlap", "unknown_source", "unknown_block", "missing_anchor", "noop", "citation", "empty_before"])
 def test_invalid_operation_never_yields_partially_applied_report(case, fault):
     _, inputs, _, _ = case
