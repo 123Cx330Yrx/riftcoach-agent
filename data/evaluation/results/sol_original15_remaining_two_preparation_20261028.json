@@ -69,8 +69,8 @@
   "new_native_tasks": 0,
   "prepared_materials": true,
   "paid_launcher_ready": false,
-  "blocker": "Exact successor-HEAD public CI running; unique waiter will send only the first pending observed:4 request after success and valid original authorization.",
-  "next_action": "wait_exact_head_ci_then_review_first_observed4_response",
+  "blocker": "CI shard job time limit; maintenance changes only pytest-shards timeout 60 to 90, pending public verification.",
+  "next_action": "pin_test_only_ci_maintenance_then_continue_existing_observed4_boundary",
   "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
   "authorization_extended": false,
   "qualified": false,
@@ -91,6 +91,8 @@
     "focused_seconds": 1.91
   },
   "actual_frozen_startup_verified": true,
-  "waiting_pid": 61560,
-  "launcher_pid": 22664
+  "waiting_pid": null,
+  "launcher_pid": 22664,
+  "public_ci_state": "cancelled_by_60min_job_limit",
+  "ci_timeout_diagnosis": "pytest-shards (1): The job has exceeded the maximum execution time of 1h0m0s; last completed progress 87%, unfinished tests unproven."
 }

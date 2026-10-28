@@ -8212,3 +8212,7 @@ Docker再启动遇到同类AF_UNIX残留，官方停止后备份并重建两运�
 scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接复用既有fixed-report/session/transport/native gate，不重开两份seal。入口绑定旧原批与第13修复的封存库存、作者、原stdout信任根、原授权/续接及累计45HTTP/810780known/195578unknown预留/3retry；实际历史活动28875.972秒逐例核算，第13继承时间不重复计入。新片段最多一个新请求，Key仅真实发送边界读取，超时/格式暂停同项；原则性拒绝保留最早停止与只读封存，不补写成功。
 
 使用未修改58a冻结runtime的真实零发送检查已通过：父seal/原件/作者、七份继承及修复native、授权和原请求材料可正确消费；临时计划目录已清理，未建立正式session/读取Key/发送Provider。模拟首轮暴露拒绝封存回放错误地先调用接受校验，已修复；测试夹具第二例重复使用stage作为turn id导致歧义，改为case+stage唯一模拟事件。实际执行原件未受影响。当前完成相称行为检查，随后冻结明确新入口HEAD并核公共CI；不把58a失败CI或aa9维护CI冒充新入口的公共验证。原15仍12例、修复版另1例完整证据，剩两例未发送，不授跨版本15项资格。
+
+## 2026-10-28 剩两例CI时限故障
+
+新入口e7a7ab0b的CI40673377624，web/migrations/packaging及shard0/2/3成功；shard1被GitHub明确标注超过1h0m0s取消，末次完整进度87%，此前日志无失败标记，不等于余项通过。汇总失败与缺完成库存保留。唯一waiter按失败退出，没有读取Key或发送Provider；observed:4仍0003模型边界，计划/guard/原余量不变。仅将pytest-shards job时限60改90分钟，全部用例、分片数量、完整覆盖汇总及其他mandatory gate保持。该CI维护不改冻结e7执行源码/输入/plan，沿用先前显式测试维护续接模式逐件固定Git差异；新CI全绿后才能首发，原cancelled不改称绿。证据Control/ci-timeout-diagnosis.json及原日志SHA。
