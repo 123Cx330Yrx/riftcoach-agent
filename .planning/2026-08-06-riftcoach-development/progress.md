@@ -1,3 +1,17 @@
+## 2026-10-29 自然尾段语义停止与审查门反思
+
+2026-10-29：维护CI40837445639八项全绿，唯一waiter仅首发一次；冻结5cb629b5保持clean。新增completion-initial正常HTTP200、36.719秒、21046known tokens，但100/pass遗漏观摩用途与个人训练前后/本人历史比较的局部冲突。主审与原独立作者均拒绝，唯一原生final与作者原件逐字一致并正式导入；终局semantic_rejected，严格只读replay及唯一seal d738c54d完成，91件Operator原件、2件作者原件及首stdout guard/终checkpoint均核验。未生成application或新稿，未发facts-fresh/completion-fresh，automation已PAUSED，不再新启付费批。
+
+主审另报OP.GG行动连接不足，独立审查明确认为已有条件性调查动作；这不是双审共识，两份原意见保持。用户随后质疑是否卡得过死：本次应改的局部用途冲突，不等于整稿不可用或已造成严重后果；“单职责漏检”与“联合补丁能否正确修稿”必须分别评价。事实初审已有同用途修法，现有逐职责门仍会停止整链，这项设计的必要性尚待离线审查，不以当前终局追认或放松既定资格。
+
+新增1HTTP/21046known/0unknown/0retry/0receiptless；本案含继承6HTTP/88111known/73756unknown预留/1retry。另案同稿双fresh2HTTP/38271known单列，相关合计8HTTP/126382known/73756unknown预留/1retry；不清零父链、旧漏检及失败。原15跨版本12+1+2=15已完成，同版本资格仍未证。Stage8E、真实产品/学习及原后续依赖不变。证据data/evaluation/results/natural_completion_continuation_stopped_20261029.json。
+
+下一动作：只用现有原稿、两职责意见及已验证修后稿，离线区分可选措辞、必要局部修订与必须阻断的实质错误，审查“职责质量门”与“联合修订/发布门”是否需要分开；先形成可审查方案，不新增付费请求，不事后改写本次标准或原意见。
+
+## 2026-10-29 CI仅测试维护映射就绪
+
+2026-10-29北京时间15:49续：维护提交f1b26b14/CI40837445639已逐件绑定七件仅测试清单/记录差异，Control/ci-maintenance-binding.json SHA20ec055d固定证据；实际仍为clean5cb629b5，plan1919fc94、授权a6cf5aeb及原截止/余量不变。新唯一waiter-v2实际PID40324（launcher65928）等待维护CI全部mandatory checks通过后只首发一次，旧waiter失败和CI40829906402原样保留。原失败测试及实际入口2项19.25秒通过，六项CI边界和真实冻结Runtime当前清单匹配通过。wrapper原件已保留，只经maintenance_entry核已审查的差异并映射CI；未建业务execution、未读业务Key、Provider0。automation已更新本映射并ACTIVE，不重复原waiter/首发；无需重填Key。
+
 ## 2026-10-29 续接CI清单快照遗漏修复
 
 2026-10-29北京时间15:43：shard3真实失败已查明：1903通过、1失败，唯一失败是当前清单仍引用新增续接组件前的旧快照，与本机挪动无关。旧快照原样保留，另建当前清单，只有component_fingerprints/program_sha256两字段不同，其他28项及全部15例业务请求/政策/标签/预算一致；原失败断言和真实入口零发送两项19.25秒通过。唯一旧waiter已因CI失败停止，未创建首发claim或业务execution，Provider/Key0。下一步逐件绑定仅测试资料/记录的维护CI，仍执行冻结5cb629b5，plan/授权/原截止均不变；新CI全绿前不发送，不追认旧失败。证据natural_completion_continuation_ci_repair_20261029.json。
