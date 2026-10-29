@@ -15,6 +15,12 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-29授权续接：用户已明确授权同稿两项fresh，grant SHA0bafbf57，原限额不变，有效期UTC 2026-10-29T02:45:34.240633至2026-10-30T02:45:34.240633（北京时间10月30日10:45截止）。尚无业务execution、新Provider/Key均0。唯一waiter实际PID25844在已知CI失败后停止，未创建发送claim。
+
+原CI40803681477的三个已完成pytest分片均在历史fixture setup报coach_report哈希不符，第四分片仍待结论；不是模型调用失败。根因是历史快照档案遗漏三份后来修改的标题消费者，测试退回读取当前源码。已从档案固定的51923f4b提交补齐三份LF原件，逐件匹配两份旧manifest，未改旧seal/清单摘要或运行源码；两组17项测试135.84秒全通过。下一步以明确测试/记录差异清单绑定维护CI，保留冻结7de9ca58、原plan/grant、原失败与截止；维护全绿前不发送。不要求重新填Key或扩大费用。证据retained_report_fresh_ci_repair_20261029.json。
+
+## 双fresh准备（前序）
+
 目标：仅对同一保留修订稿做事实与完成度复审，判断修后表现，保留原职责漏检与成功证据。
 
 2026-10-29续：同一保留修订稿的两项fresh入口已完成准备。代码提交7de9ca58已推送，冻结执行树D:/riftcoach-retained-fresh-execution-20261029为同HEAD干净副本；复用现有session/provider/transport/native审查，不重跑生成与初审。9项入口测试通过（73.75秒），seal加强后综合分支另1项通过（34.19秒）。真实独立作者行政预检已完成作者原件→check-answer→唯一native final→导入→只读复核；新任务派发前固定native-final-attestation-v1，不证明加密输入原文等价，也不追认旧失败任务。952份源码配置及原件/材料库存已核验。
@@ -349,7 +355,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-确认已准备的同稿双fresh费用范围；精确7de9ca58公共CI全绿且新授权有效后，使用保存凭据逐项发送、完整来源双审，再只读回放和唯一封存。两项fresh仅补终稿模型表现，不重发成功项、不重开旧seal、不抹初审漏检。当前新Provider/Key均0。
+费用已授权至北京时间10月30日10:45，原CI历史fixture失败已修复。绑定仅测试资料与记录变化的维护CI，保持冻结7de9ca58运行源码及原plan/grant；全绿后使用保存凭据逐项双fresh和全文双审，再只读回放封存。已停失败CI的waiter，当前Provider/Key0，不重买成功项。
 
 ## History
 

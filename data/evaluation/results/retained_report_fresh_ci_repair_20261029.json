@@ -1,0 +1,40 @@
+{
+  "version": "retained-fresh-authorization-ci-repair-v1",
+  "recorded_at": "2026-10-29T02:53:21.064384+00:00",
+  "authorization_sha256": "0bafbf57a80b0d011d48b26bc90091773c546aea29adc24974c554967adeb08b",
+  "issued_at": "2026-10-29T02:45:34.240633+00:00",
+  "expires_at": "2026-10-30T02:45:34.240633+00:00",
+  "plan_sha256": "670d8f83e7c161fefe090de4b194a094e27d79cbbbef2b29f73791ba506900d9",
+  "execution_head": "7de9ca5893c770e1f88869b158c314cfd33252b2",
+  "original_ci_run": "40803681477",
+  "confirmed_failed_shards": [
+    0,
+    1,
+    2
+  ],
+  "remaining_ci_unconfirmed": [
+    3
+  ],
+  "cause": "Historical prior fixtures fell back to changed current heading consumers; three historical source snapshots were absent.",
+  "repair_file": "tests/fixtures/document_closed_program_sources.json",
+  "historical_source_commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4",
+  "added_paths": [
+    "app/evaluation/coach_report.py",
+    "app/evaluation/source_patch_editor.py",
+    "app/report_validation.py"
+  ],
+  "existing_manifest_and_seal_hashes_changed": false,
+  "runtime_code_changed": false,
+  "verification": {
+    "both_manifests_exact": true,
+    "tests_passed": 17,
+    "test_seconds": 135.84
+  },
+  "waiter_stopped": true,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "execution_exists": false,
+  "next_action": "Bind test-only maintenance CI to unchanged frozen execution sources before sending; preserve original CI failure and original authorization deadline.",
+  "qualified": false,
+  "publication_allowed": false
+}

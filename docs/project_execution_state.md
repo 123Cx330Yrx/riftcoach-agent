@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "同稿双fresh入口及真实行政预检已准备，待具体费用授权与冻结HEAD公共CI；原初审漏检不改写，尚无新请求或产品准入。"
+pause_reason: "同稿双fresh已授权；原CI历史fixture失败已修复，待仅测试资料维护CI验证，冻结执行源码与原费用截止不变。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,12 @@ pause_reason: "同稿双fresh入口及真实行政预检已准备，待具体费
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-29授权续接：用户已明确授权同稿两项fresh，grant SHA0bafbf57，原限额不变，有效期UTC 2026-10-29T02:45:34.240633至2026-10-30T02:45:34.240633（北京时间10月30日10:45截止）。尚无业务execution、新Provider/Key均0。唯一waiter实际PID25844在已知CI失败后停止，未创建发送claim。
+
+原CI40803681477的三个已完成pytest分片均在历史fixture setup报coach_report哈希不符，第四分片仍待结论；不是模型调用失败。根因是历史快照档案遗漏三份后来修改的标题消费者，测试退回读取当前源码。已从档案固定的51923f4b提交补齐三份LF原件，逐件匹配两份旧manifest，未改旧seal/清单摘要或运行源码；两组17项测试135.84秒全通过。下一步以明确测试/记录差异清单绑定维护CI，保留冻结7de9ca58、原plan/grant、原失败与截止；维护全绿前不发送。不要求重新填Key或扩大费用。证据retained_report_fresh_ci_repair_20261029.json。
+
+## 启动准备（前序）
 
 2026-10-29续：同一保留修订稿的两项fresh入口已完成准备。代码提交7de9ca58已推送，冻结执行树D:/riftcoach-retained-fresh-execution-20261029为同HEAD干净副本；复用现有session/provider/transport/native审查，不重跑生成与初审。9项入口测试通过（73.75秒），seal加强后综合分支另1项通过（34.19秒）。真实独立作者行政预检已完成作者原件→check-answer→唯一native final→导入→只读复核；新任务派发前固定native-final-attestation-v1，不证明加密输入原文等价，也不追认旧失败任务。952份源码配置及原件/材料库存已核验。
 
