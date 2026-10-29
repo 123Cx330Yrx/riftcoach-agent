@@ -367,7 +367,7 @@
     {
       "component_id": "app.evaluation.sol_session_review",
       "source": "app/evaluation/sol_session_review.py",
-      "sha256": "14b816ca944f223b1fa1218b0b502d60a4dd19a0108f331de5800783b24ea426"
+      "sha256": "d92dd4039787c4bd871492d16fd07d3c693ef77e4c47908235daefcc26f2a15f"
     },
     {
       "component_id": "scripts.sol_natural_continuation",
@@ -400,5 +400,5 @@
       "sha256": "f10ee42c6ff53184b6847cc8f1cc4634f190d5aaa39591217eeef4ab5c2c593e"
     }
   ],
-  "program_sha256": "349387f33032b3ebd9d8af4d6efd30f3f089e65b56b99d65936d3eeabd5f42ff"
+  "program_sha256": "82cdd2ae37f82718f95f6894d5152055e1d55a20b6c5498b4b928e2a03543e70"
 }

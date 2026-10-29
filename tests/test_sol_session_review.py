@@ -16,9 +16,11 @@ from tests.test_sol_natural_session import app_for
 from tests.test_natural_duty_candidate import run
 
 
-def controls(tmp_path):
+def controls(tmp_path, *, rejection_policy=None):
     plan = freeze_v2_identity({'host_review_submission_mode': 'independent-drafts-v2'},
         root_thread_id='synthetic-root', primary_id='synthetic-root', independent_id='synthetic-child')
+    if rejection_policy is not None:
+        plan[SessionReviewGate.REJECTION_POLICY] = rejection_policy
     turns = []
     def read(method, params):
         if method == 'thread/read':
@@ -40,7 +42,7 @@ def controls(tmp_path):
     return open_session, turns, workspace
 
 
-def author(handle, turns, workspace, *, accepted=True):
+def author(handle, turns, workspace, *, accepted=True, defect_kind='wrong_correction'):
     folder = Path(handle['folder'])
     key, bound = handle['binding']['key'], handle['binding']
     def decision(reviewer):
@@ -49,7 +51,7 @@ def author(handle, turns, workspace, *, accepted=True):
             correct_content_preserved=True, identity_and_goal_preserved=True, true_errors_fixed=True)
         return dict(kind=handle['kind'], reviewer=reviewer, material_sha256=handle['material_sha256'],
             source_review='Synthetic fixture only, not a business review', accepted=accepted,
-            defects=[] if accepted else [dict(kind='wrong_correction', detail='Synthetic rejection')],
+            defects=[] if accepted else [dict(kind=defect_kind, detail='Synthetic rejection')],
             compatibility='clear' if handle['kind']=='compatibility' else None,
             actual_report_checked=True, report_assessment=assessment if handle['kind']=='edit' else None)
     value = dict(binding=bound, review=dict(binding=bound, decision=decision('synthetic-child')))

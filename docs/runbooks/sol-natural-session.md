@@ -26,6 +26,18 @@
 
 费用授权、冻结提交公共CI全绿及真实作者预检均满足后才可发送；准备和Host-only不读取Key。发送使用现有Windows Credential Manager企业凭据，不需要再次填写，不读取生成模型Key。524/可恢复格式故障只暂停同项；普通resume不发补测，手动补测保留所有成功项和未知费用。
 
+## 初审漏检的待修暂停（本地接线，尚未完成恢复批准入口）
+
+新计划可在prepare时显式固定`--initial-review-rejection-policy pause-initial-review-v1`。
+默认仍为旧stop行为，旧冻结计划不改。该选项进入review_plan及plan/guard摘要，run不能覆盖。
+仅facts-initial/completion-initial的opinion、且两份Host意见中所有缺陷均为missed_error时，
+导入真实拒绝后保留原submission及作者/native，记录review_repair_pending，不直接写terminal。
+恢复回放返回session_review_repair_required，仍阻止新模型请求、重复提交和绕过未解决问题。
+fresh、其他缺陷及来源/native完整性错误沿用原拒绝行为。本阶段没有“继续”或跳过门的开关。
+
+下一步接入绑定同稿/原意见/补丁的独立联合覆盖审查，确认修法可靠后才允许原工作流继续。
+因此本阶段只证明可保留待修前缀，不证明已恢复正式application，也不授权重开已封存批。
+
 ## 重叠意见
 
 1. 两项初审分别返回并完成完整来源双审，原意见逐字保留。

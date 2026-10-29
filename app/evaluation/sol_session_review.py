@@ -12,7 +12,12 @@ from scripts.review_independence_contract import required_binding
 
 
 class SessionReviewGate:
+    REJECTION_POLICY = 'initial_review_rejection_policy'
+    PAUSE_INITIAL = 'pause-initial-review-v1'
+
     def __init__(self, session, *, plan, workspace, event_source):
+        if plan.get(self.REJECTION_POLICY, 'stop') not in ('stop', self.PAUSE_INITIAL):
+            raise ValueError('session_unknown_review_rejection_policy')
         if session.binding.get('review_plan_sha256') != digest(canonical(plan)):
             raise ValueError('session_review_plan_binding')
         self.session, self.plan = session, plan
@@ -21,6 +26,18 @@ class SessionReviewGate:
         if not any(self.folder.is_relative_to(p.resolve()) for p in workspace.evidence_roots):
             raise ValueError('session_review_workspace_binding')
         session.review_gate = self
+
+    def _repair_pending(self, handle):
+        # Only a new, explicitly pinned plan may retain an initial review for
+        # repair. This never accepts the rejected opinion or permits sending.
+        if (self.plan.get(self.REJECTION_POLICY) != self.PAUSE_INITIAL
+                or handle['kind'] != 'opinion'
+                or handle['binding']['key'] not in ('facts-initial', 'completion-initial')):
+            return False
+        submission = json.loads((Path(handle['folder'])/'submission.json').read_bytes())
+        defects = [defect for role in ('primary', 'independent')
+                   for defect in submission[role]['decision']['defects']]
+        return bool(defects) and all(d['kind'] == 'missed_error' for d in defects)
 
     def require(self, key, kind, material, report):
         session = self.session
@@ -64,6 +81,8 @@ class SessionReviewGate:
         for handle in self.handles():
             if (Path(handle['folder'])/'submission.json').exists():
                 if not self.native.replay(handle):
+                    if self._repair_pending(handle):
+                        raise SessionPaused('session_review_repair_required')
                     raise SessionBlocked('session_semantic_rejected')
 
     def submit(self, key, primary_decision, event_id):
@@ -81,6 +100,9 @@ class SessionReviewGate:
         # accepts a locally authored replacement for the independent answer.
         session._checkpoint('native_review_imported')
         if not accepted:
+            if self._repair_pending(handles[-1]):
+                session._checkpoint('review_repair_pending')
+                return False
             from app.evaluation.golden_journal import write_new_json
             write_new_json(session.root/'terminal.json', dict(reason='semantic_rejected', key=key,
                 publication_allowed=False, production_admitted=False))

@@ -32,6 +32,19 @@ and accepted ADRs.
   treat a feasible prototype as the selected fix. Scale this check to the change,
   reuse existing records, and fix obvious defects without a new ceremony.
 
+- Prefer local repair and continuation over terminating the whole workflow.
+  Preserve successful steps, original failures and costs; pause only the
+  affected step while a reliable correction is verified. A missed issue in one
+  reviewer is quality evidence, not by itself proof that combined repairs fail.
+  Block release until material errors are corrected; do not confuse that with
+  forbidding repair work. Before stopping, identify the actual obstacle and
+  check existing patches, compatible local fixes and authorized recovery.
+  Stop affected downstream actions when correctness, evidence integrity or the
+  actual authorization boundary cannot be satisfied. Do not reopen sealed
+  records, erase rejected opinions or repeat paid work merely to obtain pass.
+  A changed commit or an interrupted run alone does not invalidate completed
+  cases or require rerunning the full suite; assess the actual changed behavior.
+
 ## Context recovery by task
 
 First establish the checkout and branch with `git status` / `git worktree list`.

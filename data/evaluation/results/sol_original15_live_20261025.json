@@ -134,7 +134,7 @@
   ],
   "native_reviews": 2,
   "inventory_unchanged": true,
-  "status": "sealed-with-overlap-design-limitation",
+  "status": "sealed-cross-version-original15-complete",
   "completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\observed-1-completed-replay.json",
   "completed_replay_evidence_sha256": "21770a016203976eabb921c4c8368399543f099f2ff91457d7d2de88251bc7b1",
   "cases_completed": 12,
@@ -464,7 +464,7 @@
     "unknown_reserved_tokens": 195578,
     "retries": 3
   },
-  "next_action": "prepare_remaining_two_case_continuation_with_original_balances_and_sealed_parents",
+  "next_action": "Original15 complete. Continue the separate natural-task repair workflow; assess changed behavior before any additional qualification run.",
   "batch_closed": true,
   "qualification_failure_due_to_model": false,
   "local_recovery_verification": {
@@ -3983,7 +3983,7 @@
   "inventory_scope": "strict seal replay; create-only seal excluded from the before/after comparison",
   "overlap_recovery_result": "data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json",
   "overlap_recovery_seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
-  "cases_with_complete_evidence_across_versions": 13,
+  "cases_with_complete_evidence_across_versions": 15,
   "original_version_cases_completed": 12,
   "repaired_version_cases_completed": 1,
   "recovery_cumulative_batch_accounting": {
@@ -3992,8 +3992,21 @@
     "retries": 3,
     "tokens": 810780
   },
-  "remaining_unexecuted_cases": [
-    "observed:4",
-    "observed:5"
-  ]
+  "remaining_unexecuted_cases": [],
+  "rollup_before_final_remaining_two": {
+    "status": "sealed-with-overlap-design-limitation",
+    "next_action": "prepare_remaining_two_case_continuation_with_original_balances_and_sealed_parents",
+    "next_case": null,
+    "next_stage": null,
+    "remaining_unexecuted_cases": [
+      "observed:4",
+      "observed:5"
+    ],
+    "cases_with_complete_evidence_across_versions": 13
+  },
+  "remaining_version_cases_completed": 2,
+  "final_completion_evidence": "data/evaluation/results/sol_original15_remaining_two_completed_20261028.json",
+  "final_completion_evidence_sha256": "f6c497646fccc86140d1712dc7e2a5047919609412f6ddbfd2c1c33e3da28046",
+  "execution_version_distribution_is_not_completion_discount": true,
+  "automatic_full15_rerun_required": false
 }

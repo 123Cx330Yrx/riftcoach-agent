@@ -86,7 +86,10 @@ def require_paths(plan):
 
 
 def prepare(operator, run_id, primary, independent, *, parent_operator=None, parent_seal_sha=None,
-            candidate=contract, completion_proof=None, completion_proof_sha=None):
+            candidate=contract, completion_proof=None, completion_proof_sha=None,
+            initial_review_rejection_policy='stop'):
+    if initial_review_rejection_policy not in ('stop', SessionReviewGate.PAUSE_INITIAL):
+        raise ValueError('launch_unknown_review_rejection_policy')
     if bool(completion_proof) != bool(completion_proof_sha) or (completion_proof and parent_operator):
         raise ValueError('launch_completion_proof_pair_required')
     head = current_head()
@@ -103,6 +106,8 @@ def prepare(operator, run_id, primary, independent, *, parent_operator=None, par
     review_plan = freeze_v2_identity(dict(host_review_submission_mode=MODE_V2,
         host_review_evidence_policy=FINAL_POLICY), root_thread_id=primary,
         primary_id=primary, independent_id=independent)
+    if initial_review_rejection_policy != 'stop':
+        review_plan[SessionReviewGate.REJECTION_POLICY] = initial_review_rejection_policy
     plan = dict(version=VERSION, run_id=run_id, operator=str(operator), head=head,
         cwd=str(ROOT.resolve()), python=str(Path(sys.executable).resolve()), codex=str(CODEX.resolve()),
         source=source(), offline=offline, first_request_sha256=first_pin(first),
@@ -592,6 +597,8 @@ def main():
     parser.add_argument('--primary')
     parser.add_argument('--independent')
     parser.add_argument('--candidate', choices=('baseline', 'necessity', 'dual-necessity'), default='baseline')
+    parser.add_argument('--initial-review-rejection-policy',
+        choices=('stop', SessionReviewGate.PAUSE_INITIAL), default='stop')
     parser.add_argument('--manual-retry', action='store_true')
     parser.add_argument('--host-only', action='store_true')
     parser.add_argument('--patch-coordination-file', type=Path)
@@ -613,6 +620,8 @@ def main():
     parser.add_argument('--primary-file', type=Path)
     parser.add_argument('--event-id')
     args = parser.parse_args()
+    if args.initial_review_rejection_policy != 'stop' and args.action != 'prepare':
+        parser.error('review rejection policy must be frozen by prepare')
     if (args.patch_coordination_file is not None or args.patch_coordination_sha is not None) and args.action != 'run':
         parser.error('patch coordination is only accepted by run; replay consumes the saved selection')
     if args.host_only and args.action != 'run':
@@ -630,7 +639,8 @@ def main():
         emit(prepare(args.operator, args.run_id, args.primary, args.independent,
             parent_operator=args.parent_operator, parent_seal_sha=args.parent_seal_sha,
             candidate=selected, completion_proof=args.completion_proof,
-            completion_proof_sha=args.completion_proof_sha))
+            completion_proof_sha=args.completion_proof_sha,
+            initial_review_rejection_policy=args.initial_review_rejection_policy))
         return
     plan = load(args.operator, args.plan_sha, frozen=args.action in ('native-task', 'run', 'reconcile', 'replay', 'seal'))
     with host(plan) as event_source:
