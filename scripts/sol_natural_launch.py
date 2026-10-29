@@ -279,6 +279,21 @@ def submit(plan, plan_sha, event_source, key, primary_file, event_id, **kwargs):
     return dict(accepted=accepted, provider_requests=0, key_read=False)
 
 
+def repair_task(plan, plan_sha, event_source, key, *, coordination=None, **kwargs):
+    session, gate = session_for(plan, plan_sha, event_source, **kwargs)
+    with session:
+        handle = gate.prepare_repair(key, coordination=coordination)
+    return (Path(handle['folder'])/'dispatch.txt').read_text(encoding='utf-8')
+
+
+def repair_submit(plan, plan_sha, event_source, key, primary_file, event_id, **kwargs):
+    session, gate = session_for(plan, plan_sha, event_source, **kwargs)
+    with session:
+        accepted = gate.submit_repair(key, json.loads(Path(primary_file).read_bytes()), event_id)
+    return dict(repair_accepted=accepted, original_review_accepted=False,
+                provider_requests=0, key_read=False)
+
+
 def verify_preflight(plan, plan_sha, event_source, proof):
     session, gate = session_for(plan, plan_sha, event_source, preflight=True, read_only=True,
         guard=proof['guard_sha256'], checkpoint=proof['checkpoint_sha256'])
@@ -451,7 +466,7 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
             handles = list(gate.handles())
             if handles and not (Path(handles[-1]['folder'])/'submission.json').exists():
                 raise SessionPaused('session_awaiting_native_review')
-            gate.verify_prior()
+            gate.verify_prior()  # Unresolved repair pauses before credential loading.
             # Ownership, frozen source, grant and live native checks precede prompts.
             if host_only:
                 from app.providers.config import ZhipuSettings
@@ -539,8 +554,7 @@ def replay(plan, plan_sha, event_source, *, guard, checkpoint, authorization_sha
             result = dict(phase='closed', reason='semantic_rejected', strict_replay=True,
                 publication_allowed=False, production_admitted=False)
         else:
-            if not all(decisions):
-                raise ValueError('launch_replay_rejection_ignored')
+            gate.verify_prior()  # Includes original rejection plus native repair coverage.
             factory = SolNaturalProviderFactory(generator_settings=ZhipuSettings(
                 api_key='OFFLINE_REPLAY_NO_SEND', base_url='https://open.bigmodel.cn/api/paas/v4',
                 model='glm-5.3-flash'), api_key='OFFLINE_REPLAY_NO_SEND',
@@ -565,6 +579,12 @@ def replay(plan, plan_sha, event_source, *, guard, checkpoint, authorization_sha
         budget = budgets[-1] if budgets else dict(calls=0, tokens=0, reserved_tokens=0, retries=0)
         result['accounting'] = {k: budget[k] for k in ('calls', 'tokens', 'reserved_tokens', 'retries')}
         result['native_reviews'] = len(decisions)
+        if gate.plan.get(gate.REJECTION_POLICY) == gate.PAUSE_INITIAL:
+            result['rejected_initial_reviews_retained'] = sum(
+                not accepted and h['binding']['key'] in ('facts-initial', 'completion-initial')
+                for h, accepted in zip(gate.handles(), decisions))
+            result['native_repair_reviews'] = sum(
+                gate._repair_resolved(h) for h in gate.handles() if gate._repair_pending(h))
         if plan.get('continuation'):
             parent = plan['continuation']
             result['continuation'] = dict(parent_seal_sha256=parent['seal_sha256'],
@@ -590,7 +610,8 @@ def seal(plan, plan_sha, event_source, **roots):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('prepare', 'native-task', 'task', 'submit', 'run', 'status', 'reconcile', 'replay', 'seal'))
+    parser.add_argument('action', choices=('prepare', 'native-task', 'task', 'submit', 'repair-task',
+        'repair-submit', 'run', 'status', 'reconcile', 'replay', 'seal'))
     parser.add_argument('--operator', required=True, type=Path)
     parser.add_argument('--plan-sha')
     parser.add_argument('--run-id')
@@ -622,8 +643,8 @@ def main():
     args = parser.parse_args()
     if args.initial_review_rejection_policy != 'stop' and args.action != 'prepare':
         parser.error('review rejection policy must be frozen by prepare')
-    if (args.patch_coordination_file is not None or args.patch_coordination_sha is not None) and args.action != 'run':
-        parser.error('patch coordination is only accepted by run; replay consumes the saved selection')
+    if (args.patch_coordination_file is not None or args.patch_coordination_sha is not None) and args.action not in ('run', 'repair-task'):
+        parser.error('patch coordination is only accepted by run/repair-task; replay consumes the saved selection')
     if args.host_only and args.action != 'run':
         parser.error('host-only is only accepted by run')
     from scripts.sol_original15_launch import load_patch_coordination
@@ -646,12 +667,22 @@ def main():
     with host(plan) as event_source:
         common = dict(preflight=args.preflight, guard=args.guard_sha,
             checkpoint=args.checkpoint_sha, authorization_sha=args.authorization_sha)
-        if args.action in ('task', 'submit', 'status', 'reconcile', 'replay', 'seal') and not all((args.guard_sha, args.checkpoint_sha)):
+        if args.action in ('task', 'submit', 'repair-task', 'repair-submit', 'status', 'reconcile', 'replay', 'seal') and not all((args.guard_sha, args.checkpoint_sha)):
             parser.error('existing session requires original guard and latest checkpoint')
         if args.action == 'native-task':
             emit(native_task(plan, args.plan_sha, event_source))
         elif args.action == 'task':
             print(inspect_task(plan, args.plan_sha, event_source, **common), end='')
+        elif args.action == 'repair-task':
+            if not args.key:
+                parser.error('repair-task requires key')
+            print(repair_task(plan, args.plan_sha, event_source, args.key,
+                coordination=coordination, **common), end='')
+        elif args.action == 'repair-submit':
+            if not all((args.key, args.primary_file, args.event_id)):
+                parser.error('repair-submit requires key, primary-file and event-id')
+            emit(repair_submit(plan, args.plan_sha, event_source, args.key,
+                args.primary_file, args.event_id, **common))
         elif args.action == 'submit':
             if not all((args.key, args.primary_file, args.event_id)):
                 parser.error('submit requires key, primary-file and event-id')

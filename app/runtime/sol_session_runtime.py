@@ -292,6 +292,7 @@ class SessionWorkflow(NaturalDutyWorkflow):
             return dict(recorded=True)
         self.session.operation('journal', dict(name=name, data=data), save)
         if name == 'preview' and gate is not None:
+            gate.verify_repair_report(data['report'])
             material = self._patch_material(self.original, data['report'], data['journal'])
             gate.require('compatibility', 'compatibility', material, data['report'])
             gate.require('edit', 'edit', material, data['report'])

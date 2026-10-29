@@ -1,3 +1,11 @@
+## 2026-10-29 联合覆盖批准后的局部续接离线完成
+
+2026-10-29续：联合覆盖批准后的局部续接已完成离线接线。新计划固定pause-initial-review-v1；completion-initial因missed_error拒绝、且facts-initial已接受时，repair-task只用两份原响应/补丁和完整来源生成预览，主审与原独立作者另作全文覆盖审查。可选措辞争议可解释，不强行改稿；真实错误必须修好。原拒绝、作者/native与费用始终保留，未解决时普通run零Key/零发送暂停。批准后仍走compatibility/edit、唯一application及同稿双fresh，不重买成功生成/初审。
+
+17项相称离线检查通过：应用层批准/拒绝两分支2项（204.54秒），启动器execute→repair-task/submit→完整只读replay→唯一seal 1项（343.27秒），旧暂停/原native与默认应用/库存11项（168.09秒），默认协调拒绝封存及CLI/零Key边界3项（32.92秒）。HTTP/native均为禁网模拟，不是新真实语义结果；本轮真实Provider/Key0。三份当前manifest和新repair_coverage库存已更新，与第一层库存相比只有component_fingerprints/program_sha256不同，其余28项及15业务例保持。编译、治理、diff-check通过。证据natural_review_repair_coverage_local_20261029.json。
+
+当前恢复只支持完整初审pair的completion漏检；facts较早拒绝保持待修，不能为凑pair发新请求。旧封存任务/冻结源码未改，新入口不能直接重开旧seal。下一动作：用已有真实原件准备绑定成功前缀、原拒绝和全部旧账的受控继承方案；先完成零付费准备，不套用旧sealed grant或重跑15例。原15例最终完成、Stage8E及产品/学习未准入、automation PAUSED保持。
+
 ## 2026-10-29 自然尾段语义停止与审查门反思
 
 2026-10-29：维护CI40837445639八项全绿，唯一waiter仅首发一次；冻结5cb629b5保持clean。新增completion-initial正常HTTP200、36.719秒、21046known tokens，但100/pass遗漏观摩用途与个人训练前后/本人历史比较的局部冲突。主审与原独立作者均拒绝，唯一原生final与作者原件逐字一致并正式导入；终局semantic_rejected，严格只读replay及唯一seal d738c54d完成，91件Operator原件、2件作者原件及首stdout guard/终checkpoint均核验。未生成application或新稿，未发facts-fresh/completion-fresh，automation已PAUSED，不再新启付费批。

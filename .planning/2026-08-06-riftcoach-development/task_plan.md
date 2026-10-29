@@ -13,13 +13,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-10-29 17:25工作窗口：已完成初审漏检待修暂停的第一层本地接线。新prepare可固定pause-initial-review-v1，仅初审opinion且缺陷全为missed_error时保留原拒绝、作者/native及成功前缀，不立即封存；重启、重复提交和新模型发送仍在未解决缺陷处暂停。默认旧计划、fresh、其他拒绝和证据完整性校验保持。尚无联合覆盖审查批准后的恢复入口，不能称正式尾段已闭环。本轮Provider/Key0。
+2026-10-29续：联合覆盖批准后的局部续接已完成离线接线。新计划固定pause-initial-review-v1；completion-initial因missed_error拒绝、且facts-initial已接受时，repair-task只用两份原响应/补丁和完整来源生成预览，主审与原独立作者另作全文覆盖审查。可选措辞争议可解释，不强行改稿；真实错误必须修好。原拒绝、作者/native与费用始终保留，未解决时普通run零Key/零发送暂停。批准后仍走compatibility/edit、唯一application及同稿双fresh，不重买成功生成/初审。
 
-更新三份当前Runtime manifest，并新建repair_pause清单；新旧15例库存只有component_fingerprints/program_sha256两字段不同，业务请求、政策、标签、预算未变。旧封存原件和冻结执行树未动。首次回归曾因指纹不匹配失败，更新当前清单后9项相关检查通过，追加CLI/库存边界7项通过（其中5项重复，共11项不同检查）；治理、编译与diff-check通过。结果natural_review_repair_pause_local_20261029.json。
+17项相称离线检查通过：应用层批准/拒绝两分支2项（204.54秒），启动器execute→repair-task/submit→完整只读replay→唯一seal 1项（343.27秒），旧暂停/原native与默认应用/库存11项（168.09秒），默认协调拒绝封存及CLI/零Key边界3项（32.92秒）。HTTP/native均为禁网模拟，不是新真实语义结果；本轮真实Provider/Key0。三份当前manifest和新repair_coverage库存已更新，与第一层库存相比只有component_fingerprints/program_sha256不同，其余28项及15业务例保持。编译、治理、diff-check通过。证据natural_review_repair_coverage_local_20261029.json。
+
+当前恢复只支持完整初审pair的completion漏检；facts较早拒绝保持待修，不能为凑pair发新请求。旧封存任务/冻结源码未改，新入口不能直接重开旧seal。下一动作：用已有真实原件准备绑定成功前缀、原拒绝和全部旧账的受控继承方案；先完成零付费准备，不套用旧sealed grant或重跑15例。原15例最终完成、Stage8E及产品/学习未准入、automation PAUSED保持。
 
 2026-10-29用户进一步明确：可局部修复时不要轻易终止整链，保留成功步骤并验证后续接；单职责漏检、联合修订可用性和最终发布分开。原15例最终已全部完成，第13例修复成功，12+1+2仅为版本分布，不因暂停或commit变化自动作废或重跑。最新两例封存记录已核实，旧live汇总的剩余两例指针现已纠正，原批12例字段与旧投影另行保留。项目AGENTS、执行方法和需求账本已同步。
 
-此前自动gate在原生拒绝时一律写终局；当前新模式已完成初审漏检待修暂停，联合覆盖批准后的恢复仍待接线。已封存的自然任务保持原样，不追认旧意见，另案修后稿双fresh成功也不冒充正式application。用户已确认修复优先的方向，不再把是否分开两种门作为悬而未决的原则问题。
+此前自动gate在原生拒绝时一律写终局；当前新模式已完成待修暂停及原补丁覆盖批准后的局部续接离线验证。已封存的自然任务保持原样，不追认旧意见，另案修后稿双fresh成功也不冒充正式application。用户已确认修复优先的方向，不再把是否分开两种门作为悬而未决的原则问题。
 
 **本包终局：** 自然修订尾段诊断已执行并在completion-initial语义拒绝，未闭环；原成功前缀保留。
 
@@ -33,7 +35,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 **完成证据：** wrapper execution-0001首发、0002派发、0003导入、0004只读replay、0005唯一seal均exit0，无新增Provider重试。seal严格回放及完整库存、原作者/native相等、冻结HEAD clean均通过。
 
-**下一动作：基于现有事实正确补丁和修后稿双fresh证据，调整显式诊断的可修复拒绝处理：保留原审查缺陷，暂停受影响一步，验证联合覆盖和修后全文再续接。先完成本地接线与有区分力的离线检查；不重买生成/成功初审、不自动再跑15例，不以简单取消拒绝分支代替正确恢复。**
+**下一动作：局部续接离线接线已完成；用真实封存原件准备绑定成功前缀、原拒绝、作者/native与完整旧账的受控继承方案。先完成零付费准备，不重开旧seal、不重买已完成请求、不自动再跑15例。**
 
 ## 同稿双fresh前序记录
 

@@ -26,17 +26,35 @@
 
 费用授权、冻结提交公共CI全绿及真实作者预检均满足后才可发送；准备和Host-only不读取Key。发送使用现有Windows Credential Manager企业凭据，不需要再次填写，不读取生成模型Key。524/可恢复格式故障只暂停同项；普通resume不发补测，手动补测保留所有成功项和未知费用。
 
-## 初审漏检的待修暂停（本地接线，尚未完成恢复批准入口）
+## 初审漏检的待修暂停与联合覆盖续接
 
 新计划可在prepare时显式固定`--initial-review-rejection-policy pause-initial-review-v1`。
 默认仍为旧stop行为，旧冻结计划不改。该选项进入review_plan及plan/guard摘要，run不能覆盖。
 仅facts-initial/completion-initial的opinion、且两份Host意见中所有缺陷均为missed_error时，
 导入真实拒绝后保留原submission及作者/native，记录review_repair_pending，不直接写terminal。
 恢复回放返回session_review_repair_required，仍阻止新模型请求、重复提交和绕过未解决问题。
-fresh、其他缺陷及来源/native完整性错误沿用原拒绝行为。本阶段没有“继续”或跳过门的开关。
+fresh、其他缺陷及来源/native完整性错误沿用原拒绝行为。
 
-下一步接入绑定同稿/原意见/补丁的独立联合覆盖审查，确认修法可靠后才允许原工作流继续。
-因此本阶段只证明可保留待修前缀，不证明已恢复正式application，也不授权重开已封存批。
+当前恢复入口只支持completion-initial漏检、且facts-initial已经原生双审接受的完整初审pair。
+facts-initial较早拒绝仍保留在待修状态，不会为凑pair而直接发下一请求。
+
+1. 使用同一plan、原guard和最新checkpoint，执行`repair-task --key completion-initial`。
+   程序重新读取两份完整请求/policy、source、原Provider意见和Host原拒绝，用原补丁生成预览；
+   无实际修改、不完整pair、不同来源/原稿/响应均不能发布恢复任务。若补丁重叠，需先形成原补丁协调选择，
+   通过`--patch-coordination-file/--patch-coordination-sha`固定；不能自行加入新文本。
+2. 转发保存的完整dispatch给原独立作者。恢复任务是新的完整edit审查，原争议属于需核查的证据；
+   主审先独立写notes，不能泄露本轮主审判断。两人须逐项核实真实错误已修、正确内容保留、身份/目标和来源正确。
+   可选措辞争议可据完整来源解释，不必为了符合旧主审意见强改。四项ReportAssessment必须全部true。
+3. 作者遵循原件→check-answer→唯一native final，用`repair-submit --key completion-initial`
+   及主审文件、真实event ID导入。任务create-only；重复调用返回同一任务，不得换选择/重派final反复凑pass。
+   覆盖审查拒绝仍待修，普通run零Key/零发送暂停；原submission始终false，不追认原漏检意见。
+4. 覆盖审查接受后沿用普通`run --host-only`。仍须经过原compatibility/edit及唯一application；
+   实际预览必须逐字匹配覆盖审查所绑report SHA，随后在有效费用授权内发同稿facts-fresh/completion-fresh。
+   已接受的生成/初审不重发，后续原意见及作者/native每次都重新核验。
+5. 关闭后只读`replay`与唯一`seal`会同时保留原拒绝数量和native恢复审查数量，核原件库存及实际应用。
+
+当前证据是禁网mock HTTP/native的应用层和启动器回归，不是新的真实业务审查或模型语义通过。
+该入口不能直接重开已封存诊断；历史成功前缀如需受控继承，必须另备绑定完整原件/旧账的新冻结计划。
 
 ## 重叠意见
 
