@@ -56,6 +56,29 @@ facts-initial较早拒绝仍保留在待修状态，不会为凑pair而直接发
 当前证据是禁网mock HTTP/native的应用层和启动器回归，不是新的真实业务审查或模型语义通过。
 该入口不能直接重开已封存诊断；历史成功前缀如需受控继承，必须另备绑定完整原件/旧账的新冻结计划。
 
+## 从已封存初审pair受控继承
+
+`python -m scripts.prepare_natural_review_repair --parent-operator <PARENT> --parent-seal-sha <SHA> --output <PROOF>`
+在旧冻结目录使用原Python和原reader只读回放，核两份初审及其原作者/native、全部原件库存、唯一seal和累计预算。
+proof必须位于旧Operator外；不修改旧终局、不重发旧completion。当前实现只接受facts已接受、completion漏检拒绝的完整pair，
+且现有原补丁可直接生成确有修改的预览。重叠选择及更早facts拒绝不在这个继承入口内。
+
+在新干净冻结checkout运行`sol_natural_launch prepare`，使用`--candidate dual-necessity`
+及`--initial-review-rejection-policy pause-initial-review-v1 --repair-proof <PROOF> --repair-proof-sha <SHA>`。
+固定原run-id及原两位审查者，所有业务binding字段必须相同；只有新plan加入待修策略。
+旧host-task仍引用原folder/原binding，不改写或复制成新的审查意见；独立事件按各自原计划读取。
+
+新session逐字导入已提交operation意图/结果及两份原journal，累计budget不清零、不减少logical review数，
+保留未知费用预留和原重试。首个run会在原拒绝处暂停，尚不读取Key；之后走本节上方的repair-task/submit和普通尾段。
+新模型操作仅允许facts-fresh/completion-fresh；每run最多一个新请求。原生成和两项初审均不得重发。
+新授权必须另行绑定这个plan、父seal、剩余请求/token、`new_logical_reviews=2`及`initial_reviews_reused_without_revote=true`。
+旧sealed grant不能自动变成新plan的授权。
+
+2026-10-29真实父链proof：14步、6HTTP/88111known/73756unknown预留/1retry保持；原补丁预览仍为7fb7e784。
+剩余最多4次请求/321536 tokens，其中正常2次fresh、另2次仅作用户手动触发的同项恢复；父链总3600活动秒保持。
+企业专线0.25×、gpt-6.1-sol/high，按保守整包输入/输出包络估计上限0.29184元（非账单硬限）。
+该准备不是新模型结果，也不追认原completion意见或授予同版本15例/产品资格。
+
 ## 重叠意见
 
 1. 两项初审分别返回并完成完整来源双审，原意见逐字保留。

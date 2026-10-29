@@ -13,6 +13,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+受控继承接线与相称离线验证已完成：新计划逐字继承已封存初审pair的14步意图/结果，原host-task仍指向各自原folder，分别读取父/祖父计划的原作者与native。原facts接受、completion漏检拒绝保持，不重发生成或初审；另作全文覆盖审查，批准后仍经compatibility/edit、唯一application和同稿双fresh。未解决的局部问题只暂停受影响步骤。
+
+真实只读proof 4bfd825c已核：6HTTP/88111known/73756unknown预留/1retry、402.33活动秒和原预览7fb7e784保持。16项相关回归通过，最终库存检查再通过；新增完整继承测试含524及显式手动恢复，624.53秒通过，旧未知预留/重试原样进入严格seal，新增恰好2次模拟HTTP。首版无524测试另通过585.79秒。三份当前manifest及独立ready库存更新，只有component_fingerprints/program_sha256变更，其余28项及15业务例保持。证据natural_review_repair_inheritance_local_20261029.json；本轮真实Provider/Key0，尚无新的真实application/fresh。
+
+下一动作：在本次提交的干净副本冻结新计划，完成原独立作者的真实行政原件→check-answer→唯一native→导入→readback预检；提交后现场以C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-review-repair-continuation-20261029-control/readiness.json为准，缺失时先补齐。正常仅2项fresh，最多4新请求/321536tokens（含2次仅用户手动触发的同项恢复），父链总3600活动秒、企业0.25×/gpt-6.1-sol/high不变，保守整包估计0.29184元非账单硬限。旧grant绑定旧sealed计划，不能套给新plan；准备具体完成后再确认新费用授权，不自动发送或启用automation。原15已全部完成，不重跑；Stage8E/产品/学习未准入保持。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-29续：联合覆盖批准后的局部续接已完成离线接线。新计划固定pause-initial-review-v1；completion-initial因missed_error拒绝、且facts-initial已接受时，repair-task只用两份原响应/补丁和完整来源生成预览，主审与原独立作者另作全文覆盖审查。可选措辞争议可解释，不强行改稿；真实错误必须修好。原拒绝、作者/native与费用始终保留，未解决时普通run零Key/零发送暂停。批准后仍走compatibility/edit、唯一application及同稿双fresh，不重买成功生成/初审。
 
 17项相称离线检查通过：应用层批准/拒绝两分支2项（204.54秒），启动器execute→repair-task/submit→完整只读replay→唯一seal 1项（343.27秒），旧暂停/原native与默认应用/库存11项（168.09秒），默认协调拒绝封存及CLI/零Key边界3项（32.92秒）。HTTP/native均为禁网模拟，不是新真实语义结果；本轮真实Provider/Key0。三份当前manifest和新repair_coverage库存已更新，与第一层库存相比只有component_fingerprints/program_sha256不同，其余28项及15业务例保持。编译、治理、diff-check通过。证据natural_review_repair_coverage_local_20261029.json。
@@ -383,7 +391,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-依Active Work Package复用唯一waiter-v2等维护CI40837445639全绿后首发；按新24小时授权逐项双审并完成正式尾段，超时只暂停同项并等待手动补测。冻结入口及真实作者预检已齐，不重买生成/facts、不重跑原15；旧漏检/封存和Stage8E未准入边界保持。
+依Active Work Package完成新冻结计划和原作者行政预检，以新Control/readiness.json为现场指针；未获新plan绑定授权前零付费，不恢复旧waiter、不重发生成/初审、不重跑原15。
 
 ## History
 

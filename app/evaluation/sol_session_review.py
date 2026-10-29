@@ -172,6 +172,9 @@ class SessionReviewGate:
             stage='final' if key.endswith('-fresh') else 'revision' if kind != 'opinion' else 'initial',
             report_sha256=digest(report.encode('utf-8')), request_sha256=request_sha,
             response_sha256=digest(canonical(material.get('responses', material)))))
+        inherited = getattr(self.native, 'inherited_binding', None)
+        if inherited is not None:
+            bound = inherited(bound)
         bound_material = dict(material, session_guard_sha256=session.guard_sha,
                               source_checkpoint_sha256=session.checkpoint_sha)
         # The source checkpoint changes after task publication; replay binds

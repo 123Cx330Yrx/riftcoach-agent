@@ -151,6 +151,7 @@ def component_fingerprints(skill):
                  'app/runtime/sol_session_receipts.py',
                  'app/evaluation/sol_session_review.py',
                  'scripts/sol_natural_continuation.py',
+                 'scripts/natural_review_repair_continuation.py',
                  'scripts/reviewer_responses_process.py', 'scripts/reviewer_responses_nonstream.py',
                  'scripts/reviewer_responses_transport.py', 'scripts/stream_observation.py'):
         key = path.replace('/', '.').replace('.py', '')

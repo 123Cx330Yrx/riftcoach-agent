@@ -149,7 +149,7 @@ def test_inventory_preserves_original15_and_uses_runtime_contract():
     from scripts.audit_sol_review_qualification import audit
     from scripts import audit_natural_duty_qualification as legacy
     value, original = audit(), legacy.audit()
-    assert value == json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_repair_coverage_20261029.json').read_text(encoding='utf-8'))
+    assert value == json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_repair_inheritance_ready_20261029.json').read_text(encoding='utf-8'))
     previous = json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_natural_coordination_20261028.json').read_bytes())
     assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
         k: v for k, v in previous.items() if k not in ('component_fingerprints', 'program_sha256')}

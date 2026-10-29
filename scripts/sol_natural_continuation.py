@@ -180,6 +180,9 @@ def parent_state(operator, seal_sha, *, limits_override=None):
 
 
 def verify_parent(spec):
+    if spec.get('version') == 'natural-rejected-initial-repair-continuation-v1':
+        from scripts.natural_review_repair_continuation import verify_parent as repair_parent
+        return repair_parent(spec)
     if spec.get('version') == 'natural-accepted-facts-continuation-v1':
         from scripts.natural_completion_continuation import verify_parent as completion_parent
         return completion_parent(spec)
@@ -201,6 +204,9 @@ def verify_source(spec, current):
 def import_prefix(session):
     """Create explicitly derived imports; original parent files never change."""
     spec = session.continuation
+    if spec.get('version') == 'natural-rejected-initial-repair-continuation-v1':
+        from scripts.natural_review_repair_continuation import import_prefix as repair_prefix
+        return repair_prefix(session)
     if spec.get('version') == 'natural-accepted-facts-continuation-v1':
         from scripts.natural_completion_continuation import import_prefix as completion_prefix
         return completion_prefix(session)
@@ -229,6 +235,9 @@ def import_prefix(session):
 
 
 def verify_frontier(session, kind, request):
+    if session.continuation.get('version') == 'natural-rejected-initial-repair-continuation-v1':
+        from scripts.natural_review_repair_continuation import verify_frontier as repair_frontier
+        return repair_frontier(session, kind, request)
     if session.continuation.get('version') == 'natural-accepted-facts-continuation-v1':
         from scripts.natural_completion_continuation import verify_frontier as completion_frontier
         return completion_frontier(session, kind, request)

@@ -87,11 +87,14 @@ def require_paths(plan):
 
 def prepare(operator, run_id, primary, independent, *, parent_operator=None, parent_seal_sha=None,
             candidate=contract, completion_proof=None, completion_proof_sha=None,
-            initial_review_rejection_policy='stop'):
+            initial_review_rejection_policy='stop', repair_proof=None, repair_proof_sha=None):
     if initial_review_rejection_policy not in ('stop', SessionReviewGate.PAUSE_INITIAL):
         raise ValueError('launch_unknown_review_rejection_policy')
     if bool(completion_proof) != bool(completion_proof_sha) or (completion_proof and parent_operator):
         raise ValueError('launch_completion_proof_pair_required')
+    if (bool(repair_proof) != bool(repair_proof_sha)
+            or (repair_proof and (completion_proof or parent_operator))):
+        raise ValueError('launch_repair_proof_pair_required')
     head = current_head()
     operator = Path(operator).absolute()
     if candidate is contract:
@@ -150,6 +153,26 @@ def prepare(operator, run_id, primary, independent, *, parent_operator=None, par
         plan['semantic_retry_not_quality_repair'] = True
         plan['estimated_uncached_cny'] = parent['estimated_additional_cny']
         plan['offline']['estimated_uncached_cny'] = parent['estimated_additional_cny']
+    if repair_proof is not None:
+        from app.evaluation import sol_review_contract
+        from scripts import natural_review_repair_continuation as repair
+        if candidate is not sol_review_contract or initial_review_rejection_policy != SessionReviewGate.PAUSE_INITIAL:
+            raise ValueError('launch_repair_dual_pause_plan_required')
+        parent = repair.bind(repair_proof, repair_proof_sha)
+        original = json.loads((Path(parent['operator'])/'plan.json').read_bytes())
+        expected = dict(original['review_plan'], initial_review_rejection_policy=SessionReviewGate.PAUSE_INITIAL)
+        if (run_id != parent['run_id'] or review_plan != expected
+                or plan['first_request_sha256'] != original['first_request_sha256']
+                or operator.is_relative_to(Path(parent['operator']))
+                or Path(parent['operator']).is_relative_to(operator)):
+            raise ValueError('launch_repair_original_task_required')
+        plan['continuation'] = parent
+        plan['sequence'] = ['repair-coverage', 'compatibility', 'edit', 'unique-application',
+                            'facts-fresh', 'completion-fresh']
+        plan['new_logical_reviews'] = 2
+        plan['initial_reviews_reused_without_revote'] = True
+        plan['estimated_uncached_cny'] = parent['estimated_additional_cny']
+        plan['offline']['estimated_uncached_cny'] = parent['estimated_additional_cny']
     require_paths(plan)
     if operator.exists():
         raise ValueError('launch_operator_already_exists')
@@ -201,6 +224,10 @@ def validate_grant(grant, plan, plan_sha, *, now=None):
                 grant.get('new_logical_reviews') != 3
                 or grant.get('semantic_retry_not_quality_repair') is not True):
             raise ValueError('launch_completion_diagnostic_specific_authorization_required')
+        if plan['continuation'].get('version') == 'natural-rejected-initial-repair-continuation-v1' and (
+                grant.get('new_logical_reviews') != 2
+                or grant.get('initial_reviews_reused_without_revote') is not True):
+            raise ValueError('launch_repair_specific_authorization_required')
 
 
 @contextmanager
@@ -238,6 +265,10 @@ def session_for(plan, plan_sha, event_source, *, preflight=False, guard=None, ch
     if (not preflight and plan.get('continuation', {}).get('version')
             == 'natural-accepted-facts-continuation-v1'):
         from scripts.natural_completion_continuation import attach_native
+        attach_native(gate, plan['continuation'], event_source)
+    if (not preflight and plan.get('continuation', {}).get('version')
+            == 'natural-rejected-initial-repair-continuation-v1'):
+        from scripts.natural_review_repair_continuation import attach_native
         attach_native(gate, plan['continuation'], event_source)
     return session, gate
 
@@ -431,6 +462,9 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
 
     def before():
         validate_grant(grant, plan, plan_sha)
+        if plan.get('continuation', {}).get('version') == 'natural-rejected-initial-repair-continuation-v1':
+            from scripts.natural_review_repair_continuation import verify_parent
+            verify_parent(plan['continuation'])
         if Path(authorization_file).read_bytes() != raw:
             raise SessionBlocked('launch_authorization_changed')
         load(plan['operator'], plan_sha, frozen=True)
@@ -440,7 +474,7 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
     session, gate = session_for(plan, plan_sha, event_source, guard=guard, checkpoint=checkpoint,
         before=before, authorization_sha=authorization_sha, manual_retry=manual_retry,
         max_new_models=0 if host_only else (1 if plan.get('continuation', {}).get('version')
-            == 'natural-accepted-facts-continuation-v1' else None))
+            in ('natural-accepted-facts-continuation-v1', 'natural-rejected-initial-repair-continuation-v1') else None))
     try:
         with session:
             launch_record = dict(ci=ci, authorization_sha256=authorization_sha,
@@ -476,7 +510,8 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
             else:
                 with session.waiting_for_credentials():
                     if plan.get('continuation'):
-                        if plan['continuation'].get('version') == 'natural-accepted-facts-continuation-v1':
+                        if plan['continuation'].get('version') in (
+                                'natural-accepted-facts-continuation-v1', 'natural-rejected-initial-repair-continuation-v1'):
                             from types import SimpleNamespace
                             from scripts import windows_reviewer_credentials as stored
                             selected = SimpleNamespace()
@@ -591,6 +626,9 @@ def replay(plan, plan_sha, event_source, *, guard, checkpoint, authorization_sha
                 historical_failure_retained=True, imported_generation_calls=2,
                 new_calls=budget['calls']-parent['historical_budget']['calls'],
                 new_known_tokens=budget['tokens']-parent['historical_budget']['tokens'])
+    if plan.get('continuation', {}).get('version') == 'natural-rejected-initial-repair-continuation-v1':
+        from scripts.natural_review_repair_continuation import verify_parent
+        verify_parent(plan['continuation'])
     if inventory(operator) != before:
         raise ValueError('launch_replay_mutated_originals')
     return result
@@ -628,6 +666,8 @@ def main():
     parser.add_argument('--parent-seal-sha')
     parser.add_argument('--completion-proof', type=Path)
     parser.add_argument('--completion-proof-sha')
+    parser.add_argument('--repair-proof', type=Path)
+    parser.add_argument('--repair-proof-sha')
     parser.add_argument('--preflight', action='store_true')
     parser.add_argument('--guard-sha')
     parser.add_argument('--checkpoint-sha')
@@ -661,6 +701,7 @@ def main():
             parent_operator=args.parent_operator, parent_seal_sha=args.parent_seal_sha,
             candidate=selected, completion_proof=args.completion_proof,
             completion_proof_sha=args.completion_proof_sha,
+            repair_proof=args.repair_proof, repair_proof_sha=args.repair_proof_sha,
             initial_review_rejection_policy=args.initial_review_rejection_policy))
         return
     plan = load(args.operator, args.plan_sha, frozen=args.action in ('native-task', 'run', 'reconcile', 'replay', 'seal'))
