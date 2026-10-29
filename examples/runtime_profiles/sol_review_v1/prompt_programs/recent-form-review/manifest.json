@@ -372,7 +372,7 @@
     {
       "component_id": "scripts.sol_natural_continuation",
       "source": "scripts/sol_natural_continuation.py",
-      "sha256": "5c14c841ada2e0218f83f7a4f4d72ac3a51c0ff365190bc1f20595d0c9e0ef5a"
+      "sha256": "f75d901a1d07f5101055a72801560ad94f440bcd1fb9bc56926317d0022b8d96"
     },
     {
       "component_id": "scripts.reviewer_responses_process",
@@ -407,7 +407,7 @@
     {
       "component_id": "app.evaluation.sol_review_contract",
       "source": "app/evaluation/sol_review_contract.py",
-      "sha256": "6ccb2f289c0b148bcefe0fec0f1f8e78aa020882eff6d98e854037a2aa7b94dd"
+      "sha256": "f222b79015d812a55cf6f02b4e8d8da1cdf14866882ff11c96baddf8f8b1fbe3"
     },
     {
       "component_id": "scripts.review_completion_necessity_candidate",
@@ -415,10 +415,15 @@
       "sha256": "d4dcfe030d0c2559090468a185bd662f11567694d2a3a1867cf77a94758cf131"
     },
     {
+      "component_id": "scripts.natural_completion_continuation",
+      "source": "scripts/natural_completion_continuation.py",
+      "sha256": "c70d37c494e3f199848beac0f78dd4e29938dcca8219a53ffc37900f3fbfd247"
+    },
+    {
       "component_id": "coach_execution_contract",
       "source": "app.evaluation.sol_review_contract:v1.6.6",
       "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
     }
   ],
-  "program_sha256": "a1caf2dbfc9050d23613f34e5a6a96f76f0bb252d5d19b4163f39747e16be6b2"
+  "program_sha256": "d1ecb476ead1db8f53c52224c855961ee5959b06fd1c8e2cd0dfb4c64b70193e"
 }

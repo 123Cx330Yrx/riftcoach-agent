@@ -4,21 +4,29 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "同稿双fresh诊断完成并封存；原漏检与同版本/产品资格缺口保留，无新付费队列。"
+pause_reason: "成功前缀续接已离线验证；冻结启动预检与专门新授权前不发送，旧漏检保留。"
 ---
 
 # RiftCoach 当前执行状态
 
-2026-10-28。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+2026-10-29。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
 
-2026-10-29同一保留修订稿双fresh诊断已完成：facts/completion均HTTP200、100/pass且空issues/resolutions/advisories，主审与原独立作者完整来源双审均接受并唯一导入。新增仅2HTTP/38271known/0unknown/0retry；只读replay、唯一seal及原件/作者库存核验通过，无在途模型请求。seal 4dd3bbd1，最终原stdout checkpoint 5cb67bca；automation已PAUSED。原5HTTP/67065known/73756unknown预留/1retry保持，合计7HTTP/105336known/73756unknown预留/1retry。
+2026-10-29保留成功前缀的自然修订续接已完成本地实现和整链验证。原任务只因completion-initial漏检而封存，不重新购买生成或facts初审；原11步成功前缀、作者/native、5HTTP/67065known/73756unknown/1retry均保留。原冻结Runtime与当前Runtime均零发送回放到完全相同的completion请求；发现并修复旧scratch辅助程序把后续账目误写到先前524响应的问题，仅给最后成功facts响应携带费用，原文件不改。
 
-事实意见首次导入因作者文件末尾单LF与native相差一字节被拒；外部Control按精确task/event/两SHA复用已有换行恢复，保留两份原件、失败和冻结源码，16项检查与真实导入通过，未重调模型。两份新意见支持修后观摩稿可接受，原completion初审漏检、旧seal及原正式application缺口保持；不授职责稳定性、同版本15或产品资格。加密派发正文等价性仍未证。
+复用原Application/SessionBudget/SessionWorkflow新增显式诊断模式：已接受facts→新completion-initial→必要时Host补丁协调→compatibility/edit双审→唯一application→同稿双fresh。模拟成功、524人工恢复与语义拒绝三分支验证通过；成功仅新增3个模拟请求，全部继承费用和成功项保留。Windows企业凭据存在，发送前不读取Key；普通resume不补发，每次run最多一个新请求，旧语义拒绝不能用普通manual-retry越过。
 
-下一动作：停止围绕该熟悉稿追加实测，离线核对既有剩余原15覆盖、当前合同与实际Runtime消费之间的版本/证据缺口，形成具体续接范围；本片段完成且无新付费授权。Stage8E及Coach/Training/四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖保持。证据data/evaluation/results/retained_report_fresh_completed_20261029.json。
+方案取舍：零调用把旧fresh拼成正式应用会掩盖被拒初审；重跑全部六项会重买成功前缀。本包只准备3个新逻辑请求的正式尾段诊断，最多5个新实际请求/401920 tokens（2次人工恢复预留），企业0.25×、gpt-6.1-sol/high、每次300秒/16384输出，估价包络0.36480元，非账单硬限；父链总3600活动秒含原约342秒。若新完成度仍语义拒绝，停止这项诊断，不循环到pass。若通过，只说明新诊断实际应用/复审链能闭环，不说明旧漏检已修好或职责稳定。
+
+已完成的独立同稿双fresh及2HTTP/38271known继续单独保留，全部相关旧账7HTTP/105336known/73756unknown/1retry不清零；新诊断不得冒充它们已属于原application。原15跨版本完整证据已为12+1+2=15，不是尚剩两例；同版本资格与真实DB/UI/Worker消费者仍未证。本包不重跑整套15、不改政策或采用标准；Stage8E及后续产品/学习依赖保持。
+
+下一动作：以外部readiness现场记录为准；冻结副本或原作者行政原件→check-answer→native导入预检未齐时先补齐，已齐则等待明确新范围授权与冻结HEAD公共CI全绿，两者齐备才能发送。启动计划、作者预检与CI的现场依据统一在C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-completion-continuation-20261029-control/readiness.json；未获得授权前不创建业务execution或启动waiter，automation保持PAUSED。证据data/evaluation/results/natural_completion_continuation_preparation_20261029.json。
+
+## 同稿双fresh完成（前序）
+
+两项真实fresh均100/pass且逐项双审接受并封存，seal 4dd3bbd1；原completion漏检及原正式application缺口未撤销。新增2HTTP/38271known、无重试或未知费用。详细结果与原作者/观察记录见data/evaluation/results/retained_report_fresh_completed_20261029.json。
 
 ## 同稿双fresh前序记录
 

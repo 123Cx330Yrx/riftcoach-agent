@@ -86,7 +86,9 @@ def require_paths(plan):
 
 
 def prepare(operator, run_id, primary, independent, *, parent_operator=None, parent_seal_sha=None,
-            candidate=contract):
+            candidate=contract, completion_proof=None, completion_proof_sha=None):
+    if bool(completion_proof) != bool(completion_proof_sha) or (completion_proof and parent_operator):
+        raise ValueError('launch_completion_proof_pair_required')
     head = current_head()
     operator = Path(operator).absolute()
     if candidate is contract:
@@ -124,6 +126,25 @@ def prepare(operator, run_id, primary, independent, *, parent_operator=None, par
         plan['estimated_uncached_cny'] = parent['estimated_additional_cny']
         plan['offline']['estimated_uncached_cny'] = parent['estimated_additional_cny']
         plan['offline']['continuation_frontier'] = preview_continuation(plan)
+    if completion_proof is not None:
+        from app.evaluation import sol_review_contract
+        from scripts import natural_completion_continuation as completion
+        if candidate is not sol_review_contract:
+            raise ValueError('launch_completion_dual_candidate_required')
+        parent = completion.bind(completion_proof, completion_proof_sha)
+        original = json.loads((Path(parent['operator'])/'plan.json').read_bytes())
+        if (run_id != parent['run_id'] or review_plan != original['review_plan']
+                or plan['first_request_sha256'] != original['first_request_sha256']
+                or operator.is_relative_to(Path(parent['operator']))
+                or Path(parent['operator']).is_relative_to(operator)):
+            raise ValueError('launch_completion_original_task_required')
+        plan['continuation'] = parent
+        plan['sequence'] = ['completion-initial', 'compatibility', 'edit', 'unique-application',
+                            'facts-fresh', 'completion-fresh']
+        plan['new_logical_reviews'] = 3
+        plan['semantic_retry_not_quality_repair'] = True
+        plan['estimated_uncached_cny'] = parent['estimated_additional_cny']
+        plan['offline']['estimated_uncached_cny'] = parent['estimated_additional_cny']
     require_paths(plan)
     if operator.exists():
         raise ValueError('launch_operator_already_exists')
@@ -171,6 +192,10 @@ def validate_grant(grant, plan, plan_sha, *, now=None):
             max_new_tokens=plan['continuation']['max_new_tokens'], generation_requests=0)
         if grant.get('continuation') != expected:
             raise ValueError('launch_continuation_specific_authorization_required')
+        if plan['continuation'].get('version') == 'natural-accepted-facts-continuation-v1' and (
+                grant.get('new_logical_reviews') != 3
+                or grant.get('semantic_retry_not_quality_repair') is not True):
+            raise ValueError('launch_completion_diagnostic_specific_authorization_required')
 
 
 @contextmanager
@@ -205,6 +230,10 @@ def session_for(plan, plan_sha, event_source, *, preflight=False, guard=None, ch
     workspace = HostReviewWorkspace(cwd=ROOT, python=sys.executable,
         answers=operator.with_name(operator.name+'-authors'), evidence_roots=[operator])
     gate = SessionReviewGate(session, plan=plan['review_plan'], workspace=workspace, event_source=event_source)
+    if (not preflight and plan.get('continuation', {}).get('version')
+            == 'natural-accepted-facts-continuation-v1'):
+        from scripts.natural_completion_continuation import attach_native
+        attach_native(gate, plan['continuation'], event_source)
     return session, gate
 
 
@@ -390,7 +419,8 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
 
     session, gate = session_for(plan, plan_sha, event_source, guard=guard, checkpoint=checkpoint,
         before=before, authorization_sha=authorization_sha, manual_retry=manual_retry,
-        max_new_models=0 if host_only else None)
+        max_new_models=0 if host_only else (1 if plan.get('continuation', {}).get('version')
+            == 'natural-accepted-facts-continuation-v1' else None))
     try:
         with session:
             launch_record = dict(ci=ci, authorization_sha256=authorization_sha,
@@ -426,7 +456,15 @@ def execute(plan, plan_sha, event_source, *, authorization_file, authorization_s
             else:
                 with session.waiting_for_credentials():
                     if plan.get('continuation'):
-                        generator, key = continuation_credentials()
+                        if plan['continuation'].get('version') == 'natural-accepted-facts-continuation-v1':
+                            from types import SimpleNamespace
+                            from scripts import windows_reviewer_credentials as stored
+                            selected = SimpleNamespace()
+                            stored.install(selected, group=plan['review_profile']['group'], base_url=stored.BASE_URL)
+                            generator, key = selected.continuation_credentials(
+                                reviewer_group=plan['review_profile']['group'])
+                        else:
+                            generator, key = continuation_credentials()
                     elif 'candidate_contract' in plan:
                         generator, key = credentials(zhipu_env_file, reviewer_group=plan['review_profile']['group'])
                     else:
@@ -560,6 +598,8 @@ def main():
     parser.add_argument('--patch-coordination-sha')
     parser.add_argument('--parent-operator', type=Path)
     parser.add_argument('--parent-seal-sha')
+    parser.add_argument('--completion-proof', type=Path)
+    parser.add_argument('--completion-proof-sha')
     parser.add_argument('--preflight', action='store_true')
     parser.add_argument('--guard-sha')
     parser.add_argument('--checkpoint-sha')
@@ -589,7 +629,8 @@ def main():
                     'dual-necessity': sol_review_contract}[args.candidate]
         emit(prepare(args.operator, args.run_id, args.primary, args.independent,
             parent_operator=args.parent_operator, parent_seal_sha=args.parent_seal_sha,
-            candidate=selected))
+            candidate=selected, completion_proof=args.completion_proof,
+            completion_proof_sha=args.completion_proof_sha))
         return
     plan = load(args.operator, args.plan_sha, frozen=args.action in ('native-task', 'run', 'reconcile', 'replay', 'seal'))
     with host(plan) as event_source:
@@ -640,7 +681,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (Exception, KeyboardInterrupt) as error:
+    except (Exception, KeyboardInterrupt, SessionBlocked, SessionPaused) as error:
         # Only allow local fixed validation codes; never provider/OS text.
         message = str(error)
         code = message if type(error) in (ValueError, SessionBlocked, SessionPaused) and re.fullmatch(

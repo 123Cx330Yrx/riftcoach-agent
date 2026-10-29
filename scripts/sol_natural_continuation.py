@@ -180,6 +180,9 @@ def parent_state(operator, seal_sha, *, limits_override=None):
 
 
 def verify_parent(spec):
+    if spec.get('version') == 'natural-accepted-facts-continuation-v1':
+        from scripts.natural_completion_continuation import verify_parent as completion_parent
+        return completion_parent(spec)
     if parent_state(spec['operator'], spec['seal_sha256'], limits_override=spec.get('execution_limits')) != spec:
         raise SessionBlocked('launch_parent_binding_changed')
 
@@ -198,6 +201,9 @@ def verify_source(spec, current):
 def import_prefix(session):
     """Create explicitly derived imports; original parent files never change."""
     spec = session.continuation
+    if spec.get('version') == 'natural-accepted-facts-continuation-v1':
+        from scripts.natural_completion_continuation import import_prefix as completion_prefix
+        return completion_prefix(session)
     parent = Path(spec['operator'])/'execution/session/operations'
     for n in range(1, spec['prefix_operations']+1):
         for suffix in ('intent', 'result'):
@@ -223,6 +229,9 @@ def import_prefix(session):
 
 
 def verify_frontier(session, kind, request):
+    if session.continuation.get('version') == 'natural-accepted-facts-continuation-v1':
+        from scripts.natural_completion_continuation import verify_frontier as completion_frontier
+        return completion_frontier(session, kind, request)
     if session.cursor == session.continuation['prefix_operations'] and (kind != 'model' or digest(canonical(request)) !=
                                session.continuation['frontier_request_sha256']):
         raise SessionBlocked('launch_continuation_frontier_changed')

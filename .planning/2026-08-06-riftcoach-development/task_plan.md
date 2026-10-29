@@ -11,15 +11,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-2026-10-25：诊断续接的三对照、原稿双初审、compatibility/edit双审、唯一应用及同稿双fresh均完成，严格只读replay和唯一outer seal通过。本切片修订成功；累计11HTTP/188635known/68468unknown预留/1retry，未发布、未授产品或15项资格，automation PAUSED。旧封存/失败与费用保持。
+2026-10-29：原15跨版本15例证据及同稿双fresh已完成；当前为保留成功前缀的自然修订续接准备，未启动新收费轮次，未授产品或同版本15资格。
 
 ## Active Work Package
 
-2026-10-29同一保留修订稿双fresh诊断已完成：facts/completion均HTTP200、100/pass且空issues/resolutions/advisories，主审与原独立作者完整来源双审均接受并唯一导入。新增仅2HTTP/38271known/0unknown/0retry；只读replay、唯一seal及原件/作者库存核验通过，无在途模型请求。seal 4dd3bbd1，最终原stdout checkpoint 5cb67bca；automation已PAUSED。原5HTTP/67065known/73756unknown预留/1retry保持，合计7HTTP/105336known/73756unknown预留/1retry。
+**目标与依据：** 用户要求复用成功证据接回自然修订流程。当前主缺口是completion初审被拒后的正式尾段，不是缺少另一条模型管线；旧漏检保留。
 
-事实意见首次导入因作者文件末尾单LF与native相差一字节被拒；外部Control按精确task/event/两SHA复用已有换行恢复，保留两份原件、失败和冻结源码，16项检查与真实导入通过，未重调模型。两份新意见支持修后观摩稿可接受，原completion初审漏检、旧seal及原正式application缺口保持；不授职责稳定性、同版本15或产品资格。加密派发正文等价性仍未证。
+**实现：** 原/当前Runtime已零发送到相同completion入口；11步成功前缀和原作者/native保持。修复scratch辅助器错误更新先前524账目的问题。复用Application/SessionBudget/SessionWorkflow增加显式新计划，继承全部旧费用，仅新completion→Host协调/compatibility/edit→唯一application→同稿双fresh。正常、524手动恢复、语义拒绝三个模拟分支及同稿约束通过。保存企业凭据可用，准备和Host-only不读Key。
 
-下一动作：停止围绕该熟悉稿追加实测，离线核对既有剩余原15覆盖、当前合同与实际Runtime消费之间的版本/证据缺口，形成具体续接范围；本片段完成且无新付费授权。Stage8E及Coach/Training/四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖保持。证据data/evaluation/results/retained_report_fresh_completed_20261029.json。
+**方案选择与失败决策：** 拼旧fresh不能补原初审接受，重跑六项会重买成功前缀。选择最多3逻辑/5新实际请求的有界正式尾段诊断，旧漏检不是同policy重审的已修复问题。新意见再次语义拒绝即停止，不循环直到pass；524仅暂停同项，保留成功及未知费用，人工补测。
+
+**证据与依赖：** 结果natural_completion_continuation_preparation_20261029.json、runbook sol-natural-session.md；现场冻结plan/预检/CI见Control/readiness.json。父链5HTTP/67065known/73756unknown/1retry与独立fresh2HTTP/38271known分别保留，总旧账7HTTP/105336known/73756unknown/1retry。原15跨版本12+1+2=15已完成，不重跑整套；同版本资格/实际DB/UI消费者及Stage8E后续产品学习依赖仍在。
+
+**范围与完成判据：** 企业0.25×、gpt-6.1-sol/high；新增最多5HTTP/401920tokens，2次人工恢复预留，每次300秒/16384输出；父链3600活动秒含继承约342秒，估价包络0.36480元而非账单硬限。新增整链9项及旧入口32项均已通过；冻结/作者预检若未齐则先补齐（以外部readiness为准），齐备后才提交这份新范围；原grant不覆盖，公共CI全绿及新专门授权前不发送、不启动waiter，automation PAUSED。不授稳定性、原初审追认或产品资格。
 
 ## 同稿双fresh前序记录
 
@@ -367,7 +371,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-下一动作：停止围绕该熟悉稿追加实测，离线核对既有剩余原15覆盖、当前合同与实际Runtime消费之间的版本/证据缺口，形成具体续接范围；本片段完成且无新付费授权。Stage8E及Coach/Training/四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖保持。证据data/evaluation/results/retained_report_fresh_completed_20261029.json。
+依Active Work Package完成冻结入口与真实作者预检；只将3个新逻辑请求/最多5实际请求的明确诊断范围提交费用决定，不重买生成/facts、不重跑原15。新授权及同HEAD公共CI全绿前不发送，旧漏检/封存和Stage8E未准入边界保持。
 
 ## History
 

@@ -372,7 +372,7 @@
     {
       "component_id": "scripts.sol_natural_continuation",
       "source": "scripts/sol_natural_continuation.py",
-      "sha256": "5c14c841ada2e0218f83f7a4f4d72ac3a51c0ff365190bc1f20595d0c9e0ef5a"
+      "sha256": "f75d901a1d07f5101055a72801560ad94f440bcd1fb9bc56926317d0022b8d96"
     },
     {
       "component_id": "scripts.reviewer_responses_process",
@@ -410,5 +410,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "5500ffa460f3c5f0a0d7a930460879df42ac9dfa4fb17e4fb57f4677f314fd0d"
+  "program_sha256": "2d4df0f7110a54993ccb48c6f086ddab211609bb141c192c1a78c7bb12b19df4"
 }

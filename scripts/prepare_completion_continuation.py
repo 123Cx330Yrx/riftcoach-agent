@@ -150,7 +150,13 @@ def preview_prefix(operator, spec, candidate, workspace, event_source, builder=N
                         # The facts response remains exact. Only its disposable
                         # budget snapshot carries the later failed completion.
                         if suffix == 'result' and row['value'].get('budget') is not None:
-                            if row['value']['budget']['logical'] == {'generation': 2, 'review': 1}:
+                            # Carry later cost only at the final ACCEPTED facts
+                            # result. A prior failed facts attempt also has
+                            # logical.review == 1; changing that snapshot breaks
+                            # its committed manual-retry request on replay.
+                            if (n == spec['prefix_operations']-3
+                                    and row['value'].get('ok') is True
+                                    and row['value']['budget']['logical'] == {'generation': 2, 'review': 1}):
                                 row['value']['budget'] = spec['derived_budget']
                                 row['imported_from_sha256'] = digest(raw)
                                 raw = canonical(row)

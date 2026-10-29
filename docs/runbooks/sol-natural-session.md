@@ -12,7 +12,19 @@
 
 第6节支持`## 6. 训练计划`及`## 6. 观摩练习计划`，按同一结构身份消费，不改写模型原补丁或报告字节。实际Markdown标题、必需章节、顺序/重复、围栏/行内伪装、来源与保留校验仍有效。来源插槽原型与Memory探针复用章节识别；实际自然任务不经过该插槽原型。
 
-该兼容只解决本地标题误拒绝，不能裁定用户用途、个人训练基线或语义质量。2026-10-29真实原补丁strict preview通过、18段及来源节保持、同稿双fresh完整请求构建成功，但均未发送；原完成度漏检、拒绝和seal保留，不能续写为已application/fresh。证据`data/evaluation/results/observation_heading_recovery_20261029.json`。不为这一兼容重测旧15或重买生成/初审。
+该兼容只解决本地标题误拒绝，不能裁定用户用途、个人训练基线或语义质量。2026-10-29真实原补丁strict preview通过，18段及来源节保持；后续单独的同稿双fresh已完成、双审接受并封存，见`data/evaluation/results/retained_report_fresh_completed_20261029.json`。原完成度漏检、拒绝及原正式application缺口仍保留；单独fresh不是原任务的正式应用。不为标题兼容重测旧15或重买生成/事实初审。
+
+## 保留事实初审的显式诊断续接
+
+新增的是独立计划模式，不是重开旧seal或普通`--manual-retry`。先运行零发送的`python -m scripts.prepare_natural_completion_frontier`，提供原Operator、seal SHA及已保存的拒绝结果。它用原冻结Runtime和当前Runtime回放，重新读取原事实作者/native，停在完全相同的completion请求前；只在scratch里给最后成功的事实响应携带全部后续费用，不改变早先524与手动恢复的账目。
+
+新计划使用现有`python -m scripts.sol_natural_launch prepare --candidate dual-necessity`，增加`--completion-proof <frozen-prefix-proof.json> --completion-proof-sha <SHA>`；run-id和双审主体必须与原任务相同，Operator必须独立且新建。实际plan/guard/checkpoint、绝对cwd/Python和封存库存仍是唯一运行依据；本机最终引用见`C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-completion-continuation-20261029-control/readiness.json`。
+
+后半段仍走原Application、SessionBudget和SessionWorkflow：复用生成/工具/已接受facts → 新completion-initial → 必要时原补丁协调 → compatibility/edit双审 → 唯一application → 同稿双fresh。不会导入被拒completion意见；原事实handle只允许原作者/native回放，禁止重提交。新初审被语义拒绝即停止，不自动再建一轮直到通过。这是验证正式修订尾段的有界诊断，不是修好模型漏检的证明。
+
+正常路径只需3个新逻辑请求，既有合同可留2次手动恢复：新增最多5次实际请求、401920 tokens，父链累计3600活动秒（继承约342秒），企业专线0.25×、gpt-6.1-sol/high，每次300秒/16384输出；保守包络估价0.36480元，非账单硬限。专门新授权还必须固定`new_logical_reviews=3`和`semantic_retry_not_quality_repair=true`；旧授权不覆盖新计划。已完成的独立同稿双fresh及其2HTTP/38271known另行保留，不能从总账中消失或冒充新application后的复审。
+
+费用授权、冻结提交公共CI全绿及真实作者预检均满足后才可发送；准备和Host-only不读取Key。发送使用现有Windows Credential Manager企业凭据，不需要再次填写，不读取生成模型Key。524/可恢复格式故障只暂停同项；普通resume不发补测，手动补测保留所有成功项和未知费用。
 
 ## 重叠意见
 

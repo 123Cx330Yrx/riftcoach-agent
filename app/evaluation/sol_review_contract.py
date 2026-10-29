@@ -111,7 +111,8 @@ CONTRACT = DualNecessityContract(version='1.6.6')
 def component_fingerprints(skill):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     rows = {r.component_id: r for r in parent.component_fingerprints(skill)}
-    for path in ('app/evaluation/sol_review_contract.py', 'scripts/review_completion_necessity_candidate.py'):
+    for path in ('app/evaluation/sol_review_contract.py', 'scripts/review_completion_necessity_candidate.py',
+                 'scripts/natural_completion_continuation.py'):
         key = path.replace('/', '.').replace('.py', '')
         rows[key] = ComponentFingerprint(component_id=key, source=path,
             sha256=hashlib.sha256((ROOT/path).read_text(encoding='utf-8').encode()).hexdigest())

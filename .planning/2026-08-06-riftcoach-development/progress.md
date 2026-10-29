@@ -1,3 +1,19 @@
+## 2026-10-29 自然完成度续接准备收尾
+
+新增整链9项及旧启动/续接/协调32项回归全部通过（分别453.18秒、1173.31秒）。真实plan、冻结副本、作者行政预检及CI以外部Control/readiness.json的提交后现场记录为准；缺失时先补齐。新增Provider/Key0，未授新费用。
+
+## 2026-10-29 保留成功前缀的自然修订续接准备
+
+2026-10-29保留成功前缀的自然修订续接已完成本地实现和整链验证。原任务只因completion-initial漏检而封存，不重新购买生成或facts初审；原11步成功前缀、作者/native、5HTTP/67065known/73756unknown/1retry均保留。原冻结Runtime与当前Runtime均零发送回放到完全相同的completion请求；发现并修复旧scratch辅助程序把后续账目误写到先前524响应的问题，仅给最后成功facts响应携带费用，原文件不改。
+
+复用原Application/SessionBudget/SessionWorkflow新增显式诊断模式：已接受facts→新completion-initial→必要时Host补丁协调→compatibility/edit双审→唯一application→同稿双fresh。模拟成功、524人工恢复与语义拒绝三分支验证通过；成功仅新增3个模拟请求，全部继承费用和成功项保留。Windows企业凭据存在，发送前不读取Key；普通resume不补发，每次run最多一个新请求，旧语义拒绝不能用普通manual-retry越过。
+
+方案取舍：零调用把旧fresh拼成正式应用会掩盖被拒初审；重跑全部六项会重买成功前缀。本包只准备3个新逻辑请求的正式尾段诊断，最多5个新实际请求/401920 tokens（2次人工恢复预留），企业0.25×、gpt-6.1-sol/high、每次300秒/16384输出，估价包络0.36480元，非账单硬限；父链总3600活动秒含原约342秒。若新完成度仍语义拒绝，停止这项诊断，不循环到pass。若通过，只说明新诊断实际应用/复审链能闭环，不说明旧漏检已修好或职责稳定。
+
+已完成的独立同稿双fresh及2HTTP/38271known继续单独保留，全部相关旧账7HTTP/105336known/73756unknown/1retry不清零；新诊断不得冒充它们已属于原application。原15跨版本完整证据已为12+1+2=15，不是尚剩两例；同版本资格与真实DB/UI/Worker消费者仍未证。本包不重跑整套15、不改政策或采用标准；Stage8E及后续产品/学习依赖保持。
+
+下一动作：冻结干净启动副本并完成现有独立作者的行政原件→check-answer→native导入预检，再依据明确的新范围决定是否实测；只有新专门授权及冻结HEAD公共CI全绿才能发送。启动计划、作者预检与CI的现场依据统一在C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-completion-continuation-20261029-control/readiness.json；未获得授权前不创建业务execution或启动waiter，automation保持PAUSED。证据data/evaluation/results/natural_completion_continuation_preparation_20261029.json。
+
 ## 2026-10-29 同稿双fresh完成并封存
 
 2026-10-29同一保留修订稿双fresh诊断已完成：facts/completion均HTTP200、100/pass且空issues/resolutions/advisories，主审与原独立作者完整来源双审均接受并唯一导入。新增仅2HTTP/38271known/0unknown/0retry；只读replay、唯一seal及原件/作者库存核验通过，无在途模型请求。seal 4dd3bbd1，最终原stdout checkpoint 5cb67bca；automation已PAUSED。原5HTTP/67065known/73756unknown预留/1retry保持，合计7HTTP/105336known/73756unknown预留/1retry。

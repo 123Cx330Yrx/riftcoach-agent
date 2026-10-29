@@ -1,3 +1,9 @@
+## 2026-10-29 恢复账目只能落在最后成功响应
+
+旧scratch续接辅助器按logical.review==1选择账目携带点，会同时改写早先失败facts响应；原manual-retry请求绑定旧失败budget，从而发生session_replay_request_changed。仅在已接受facts的成功result更新派生累计账目，保留之前失败与manual-retry原字节，真实冻结/当前Runtime均可回放到相同completion入口。
+
+不能把传输恢复模式默默扩大成语义拒绝恢复；新增独立计划固定已接受前缀、原作者/native及全部费用，只允许单次新诊断，旧拒绝不撤销。三种模拟尾段分支已验证；同policy重审并不是模型质量修复，已通过的独立fresh不能倒算正式application。原15跨版本证据实际已15，已纠正活动指针。
+
 ## 2026-10-29 换行恢复与修后稿双fresh结论
 
 2026-10-29同一保留修订稿双fresh诊断已完成：facts/completion均HTTP200、100/pass且空issues/resolutions/advisories，主审与原独立作者完整来源双审均接受并唯一导入。新增仅2HTTP/38271known/0unknown/0retry；只读replay、唯一seal及原件/作者库存核验通过，无在途模型请求。seal 4dd3bbd1，最终原stdout checkpoint 5cb67bca；automation已PAUSED。原5HTTP/67065known/73756unknown预留/1retry保持，合计7HTTP/105336known/73756unknown预留/1retry。
