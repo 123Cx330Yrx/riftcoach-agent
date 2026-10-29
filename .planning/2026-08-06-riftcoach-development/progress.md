@@ -1,3 +1,11 @@
+## 2026-10-29 同稿双fresh启动准备完成
+
+2026-10-29续：同一保留修订稿的两项fresh入口已完成准备。代码提交7de9ca58已推送，冻结执行树D:/riftcoach-retained-fresh-execution-20261029为同HEAD干净副本；复用现有session/provider/transport/native审查，不重跑生成与初审。9项入口测试通过（73.75秒），seal加强后综合分支另1项通过（34.19秒）。真实独立作者行政预检已完成作者原件→check-answer→唯一native final→导入→只读复核；新任务派发前固定native-final-attestation-v1，不证明加密输入原文等价，也不追认旧失败任务。952份源码配置及原件/材料库存已核验。
+
+计划SHA670d8f83绑定修订稿7fb7e784、2逻辑复审、最多6实际请求/482304 tokens/3600活动秒及4次手动同项恢复，企业分组0.25×；初始两项估价0.14592元，含恢复预留约0.43776元，均非账单硬限。保存凭据入口已备妥，无需重新填Key。当前无有效新授权、无业务execution、Provider/Key均0；CI40803681477绑定7de9ca58仍在运行，打包/数据库/前端成功，四个pytest分片待完成，不称全绿。下一动作：确认这份具体费用提案，同HEAD公共CI全绿后逐项执行和完整来源双审；超时仅暂停失败项、手动恢复，不重发成功项。
+
+原completion初审漏检、5HTTP/67065known/73756unknown预留/1retry和旧seal保持。两项fresh只验证修后稿，不证明职责稳定性、原正式application、同版本15或产品准入。Stage8E、下游产品/学习依赖及automation PAUSED保持。证据：data/evaluation/results/retained_report_fresh_preparation_20261029.json；操作说明：docs/runbooks/retained-report-fresh-diagnostic.md。
+
 ## 2026-10-29 原补丁整稿内容双审与凭证限制
 
 主审先独立写入意见，独立作者后返回完整多行native final；两份判断均接受同一7fb7e784新稿四项ReportAssessment。10条原补丁覆盖原问题，18段/来源保持，原始精度Decimal另算正确。作者run外原件28b098dc与真实completed final全文相同，父线程/作者/绑定已读。

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "观摩标题已修复，原补丁修订稿获两份内容接受判断；派发输入加密使普通native导入未通过，原完成度漏检与正式闭环仍保持未完成。"
+pause_reason: "同稿双fresh入口及真实行政预检已准备，待具体费用授权与冻结HEAD公共CI；原初审漏检不改写，尚无新请求或产品准入。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,14 @@ pause_reason: "观摩标题已修复，原补丁修订稿获两份内容接受�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-29续：同一保留修订稿的两项fresh入口已完成准备。代码提交7de9ca58已推送，冻结执行树D:/riftcoach-retained-fresh-execution-20261029为同HEAD干净副本；复用现有session/provider/transport/native审查，不重跑生成与初审。9项入口测试通过（73.75秒），seal加强后综合分支另1项通过（34.19秒）。真实独立作者行政预检已完成作者原件→check-answer→唯一native final→导入→只读复核；新任务派发前固定native-final-attestation-v1，不证明加密输入原文等价，也不追认旧失败任务。952份源码配置及原件/材料库存已核验。
+
+计划SHA670d8f83绑定修订稿7fb7e784、2逻辑复审、最多6实际请求/482304 tokens/3600活动秒及4次手动同项恢复，企业分组0.25×；初始两项估价0.14592元，含恢复预留约0.43776元，均非账单硬限。保存凭据入口已备妥，无需重新填Key。当前无有效新授权、无业务execution、Provider/Key均0；CI40803681477绑定7de9ca58仍在运行，打包/数据库/前端成功，四个pytest分片待完成，不称全绿。下一动作：确认这份具体费用提案，同HEAD公共CI全绿后逐项执行和完整来源双审；超时仅暂停失败项、手动恢复，不重发成功项。
+
+原completion初审漏检、5HTTP/67065known/73756unknown预留/1retry和旧seal保持。两项fresh只验证修后稿，不证明职责稳定性、原正式application、同版本15或产品准入。Stage8E、下游产品/学习依赖及automation PAUSED保持。证据：data/evaluation/results/retained_report_fresh_preparation_20261029.json；操作说明：docs/runbooks/retained-report-fresh-diagnostic.md。
+
+## 前序内容核验（历史）
 
 2026-10-29续：零Provider整稿内容核验已返回。主审先独立写入意见，再实读独立作者完整原生final；两人均接受新稿7fb7e784的四项ReportAssessment。10条原补丁修正了中单比较/舍入及观摩用途，18段与来源章节保持。数值另按Decimal原精度复算。此结果支持“已有联合补丁能修好这份稿子”，不追认原completion-initial的漏检，也不说明该职责灵敏度或整体可靠性已解决。
 

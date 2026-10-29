@@ -15,6 +15,16 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+目标：仅对同一保留修订稿做事实与完成度复审，判断修后表现，保留原职责漏检与成功证据。
+
+2026-10-29续：同一保留修订稿的两项fresh入口已完成准备。代码提交7de9ca58已推送，冻结执行树D:/riftcoach-retained-fresh-execution-20261029为同HEAD干净副本；复用现有session/provider/transport/native审查，不重跑生成与初审。9项入口测试通过（73.75秒），seal加强后综合分支另1项通过（34.19秒）。真实独立作者行政预检已完成作者原件→check-answer→唯一native final→导入→只读复核；新任务派发前固定native-final-attestation-v1，不证明加密输入原文等价，也不追认旧失败任务。952份源码配置及原件/材料库存已核验。
+
+计划SHA670d8f83绑定修订稿7fb7e784、2逻辑复审、最多6实际请求/482304 tokens/3600活动秒及4次手动同项恢复，企业分组0.25×；初始两项估价0.14592元，含恢复预留约0.43776元，均非账单硬限。保存凭据入口已备妥，无需重新填Key。当前无有效新授权、无业务execution、Provider/Key均0；CI40803681477绑定7de9ca58仍在运行，打包/数据库/前端成功，四个pytest分片待完成，不称全绿。下一动作：确认这份具体费用提案，同HEAD公共CI全绿后逐项执行和完整来源双审；超时仅暂停失败项、手动恢复，不重发成功项。
+
+原completion初审漏检、5HTTP/67065known/73756unknown预留/1retry和旧seal保持。两项fresh只验证修后稿，不证明职责稳定性、原正式application、同版本15或产品准入。Stage8E、下游产品/学习依赖及automation PAUSED保持。证据：data/evaluation/results/retained_report_fresh_preparation_20261029.json；操作说明：docs/runbooks/retained-report-fresh-diagnostic.md。
+
+## 观摩标题与内容核验（前序）
+
 目标：保留真实结果与费用，消除观摩标题的本地误拒绝，并区分完成度单职责漏检与联合补丁覆盖；不把一次预览当完整修订成功。
 
 实现与证据：共享章节识别支持明确观摩标题，接入原预览/编辑、来源插槽原型和Memory消费者；原结构/来源保护保留，旧政策不改。真实原稿与10条原补丁已通过strict preview，新稿7fb7e784与原机械文本一致，18段及来源章节保持，实际合同双fresh输入已构建、未发送。原Operator/Control/作者全部库存及冻结1ac2388d保持；来源插槽是独立原型，非自然任务实际链。详见data/evaluation/results/observation_heading_recovery_20261029.json及docs/runbooks/sol-natural-session.md。
@@ -339,7 +349,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-零付费修复并核对观摩章节标题从补丁预览到最终报告消费者的契约；分别记录本次完成度漏检和已有事实补丁的联合覆盖。先完成相关离线检查，再据证据确定验证范围，不重开本次seal或重买整批。后续产品/学习依赖保持。
+确认已准备的同稿双fresh费用范围；精确7de9ca58公共CI全绿且新授权有效后，使用保存凭据逐项发送、完整来源双审，再只读回放和唯一封存。两项fresh仅补终稿模型表现，不重发成功项、不重开旧seal、不抹初审漏检。当前新Provider/Key均0。
 
 ## History
 
