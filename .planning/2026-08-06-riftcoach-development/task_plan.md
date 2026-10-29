@@ -11,9 +11,13 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 当前精确checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-2026-10-29：原15跨版本15例证据及同稿双fresh已完成；当前为保留成功前缀的自然修订续接准备，未启动新收费轮次，未授产品或同版本15资格。
+2026-10-29：原15跨版本15例证据及同稿双fresh已完成；自然修订尾段新诊断已获24小时范围授权，冻结5cb629b5、plan1919fc94与作者预检就绪，原CI的清单快照断言已本地修复，旧waiter停止，待仅测试/记录维护CI绑定后首发；冻结计划和授权不变。未授产品或同版本15资格。
 
 ## Active Work Package
+
+**CI维护当前动作：** 2026-10-29北京时间15:43：shard3真实失败已查明：1903通过、1失败，唯一失败是当前清单仍引用新增续接组件前的旧快照，与本机挪动无关。旧快照原样保留，另建当前清单，只有component_fingerprints/program_sha256两字段不同，其他28项及全部15例业务请求/政策/标签/预算一致；原失败断言和真实入口零发送两项19.25秒通过。唯一旧waiter已因CI失败停止，未创建首发claim或业务execution，Provider/Key0。下一步逐件绑定仅测试资料/记录的维护CI，仍执行冻结5cb629b5，plan/授权/原截止均不变；新CI全绿前不发送，不追认旧失败。证据natural_completion_continuation_ci_repair_20261029.json。
+
+**当前执行：** 2026-10-29北京时间14:44续：用户已授权准备完成的自然尾段新诊断，授权SHA a6cf5aeb、plan1919fc94，冻结5cb629b5与原作者行政原件/check-answer/native导入及只读复核均通过；实际冻结入口已零发送回放11步成功前缀到completion-initial。范围3逻辑/最多5新HTTP及401920 tokens、2次手动恢复、企业0.25×，授权至北京时间10月30日14:42:44，不清零旧账。CI40829906402的数据库/打包/前端已成功，四个测试分片运行中；唯一waiter实际PID55216（launcher35244）等待全绿后只执行首个段。riftcoach heartbeat已更新为本计划并ACTIVE，每5分钟检查；不变等待安静，首响应后接完整来源双审。当前新增Provider/Key0、未建业务execution；不重复waiter或首次run。原漏检/旧seal、Stage8E及后续依赖保持。现场以Control/authorization-activated.json、waiter-start/ci-wait及execution原stdout为准。
 
 **目标与依据：** 用户要求复用成功证据接回自然修订流程。当前主缺口是completion初审被拒后的正式尾段，不是缺少另一条模型管线；旧漏检保留。
 
@@ -23,7 +27,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 **证据与依赖：** 结果natural_completion_continuation_preparation_20261029.json、runbook sol-natural-session.md；现场冻结plan/预检/CI见Control/readiness.json。父链5HTTP/67065known/73756unknown/1retry与独立fresh2HTTP/38271known分别保留，总旧账7HTTP/105336known/73756unknown/1retry。原15跨版本12+1+2=15已完成，不重跑整套；同版本资格/实际DB/UI消费者及Stage8E后续产品学习依赖仍在。
 
-**范围与完成判据：** 企业0.25×、gpt-6.1-sol/high；新增最多5HTTP/401920tokens，2次人工恢复预留，每次300秒/16384输出；父链3600活动秒含继承约342秒，估价包络0.36480元而非账单硬限。新增整链9项及旧入口32项均已通过；冻结/作者预检若未齐则先补齐（以外部readiness为准），齐备后才提交这份新范围；原grant不覆盖，公共CI全绿及新专门授权前不发送、不启动waiter，automation PAUSED。不授稳定性、原初审追认或产品资格。
+**范围与完成判据：** 企业0.25×、gpt-6.1-sol/high；新增最多5HTTP/401920tokens，2次人工恢复预留，每次300秒/16384输出；父链3600活动秒含继承约342秒，估价包络0.36480元而非账单硬限。新增整链9项及旧入口32项均已通过；冻结/作者预检若未齐则先补齐（以外部readiness为准），齐备后才提交这份新范围；旧grant不覆盖；本范围新专门授权已生效，唯一waiter等公共CI全绿后首发，automation ACTIVE。不授稳定性、原初审追认或产品资格。
 
 ## 同稿双fresh前序记录
 
@@ -371,7 +375,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-依Active Work Package完成冻结入口与真实作者预检；只将3个新逻辑请求/最多5实际请求的明确诊断范围提交费用决定，不重买生成/facts、不重跑原15。新授权及同HEAD公共CI全绿前不发送，旧漏检/封存和Stage8E未准入边界保持。
+依Active Work Package复用唯一waiter等CI40829906402全绿后首发；按新24小时授权逐项双审并完成正式尾段，超时只暂停同项并等待手动补测。冻结入口及真实作者预检已齐，不重买生成/facts、不重跑原15；旧漏检/封存和Stage8E未准入边界保持。
 
 ## History
 

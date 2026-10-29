@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "成功前缀续接已离线验证；冻结启动预检与专门新授权前不发送，旧漏检保留。"
+pause_reason: "原CI清单快照断言失败已本地修复，等待仅测试维护CI；冻结计划和授权不变。"
 ---
 
 # RiftCoach 当前执行状态
@@ -14,6 +14,10 @@ pause_reason: "成功前缀续接已离线验证；冻结启动预检与专门�
 
 ## 当前行动
 
+2026-10-29北京时间15:43：shard3真实失败已查明：1903通过、1失败，唯一失败是当前清单仍引用新增续接组件前的旧快照，与本机挪动无关。旧快照原样保留，另建当前清单，只有component_fingerprints/program_sha256两字段不同，其他28项及全部15例业务请求/政策/标签/预算一致；原失败断言和真实入口零发送两项19.25秒通过。唯一旧waiter已因CI失败停止，未创建首发claim或业务execution，Provider/Key0。下一步逐件绑定仅测试资料/记录的维护CI，仍执行冻结5cb629b5，plan/授权/原截止均不变；新CI全绿前不发送，不追认旧失败。证据natural_completion_continuation_ci_repair_20261029.json。
+
+2026-10-29北京时间14:44续：用户已授权准备完成的自然尾段新诊断，授权SHA a6cf5aeb、plan1919fc94，冻结5cb629b5与原作者行政原件/check-answer/native导入及只读复核均通过；实际冻结入口已零发送回放11步成功前缀到completion-initial。范围3逻辑/最多5新HTTP及401920 tokens、2次手动恢复、企业0.25×，授权至北京时间10月30日14:42:44，不清零旧账。CI40829906402的数据库/打包/前端已成功，四个测试分片运行中；唯一waiter实际PID55216（launcher35244）等待全绿后只执行首个段。riftcoach heartbeat已更新为本计划并ACTIVE，每5分钟检查；不变等待安静，首响应后接完整来源双审。当前新增Provider/Key0、未建业务execution；不重复waiter或首次run。原漏检/旧seal、Stage8E及后续依赖保持。现场以Control/authorization-activated.json、waiter-start/ci-wait及execution原stdout为准。
+
 2026-10-29保留成功前缀的自然修订续接已完成本地实现和整链验证。原任务只因completion-initial漏检而封存，不重新购买生成或facts初审；原11步成功前缀、作者/native、5HTTP/67065known/73756unknown/1retry均保留。原冻结Runtime与当前Runtime均零发送回放到完全相同的completion请求；发现并修复旧scratch辅助程序把后续账目误写到先前524响应的问题，仅给最后成功facts响应携带费用，原文件不改。
 
 复用原Application/SessionBudget/SessionWorkflow新增显式诊断模式：已接受facts→新completion-initial→必要时Host补丁协调→compatibility/edit双审→唯一application→同稿双fresh。模拟成功、524人工恢复与语义拒绝三分支验证通过；成功仅新增3个模拟请求，全部继承费用和成功项保留。Windows企业凭据存在，发送前不读取Key；普通resume不补发，每次run最多一个新请求，旧语义拒绝不能用普通manual-retry越过。
@@ -22,7 +26,7 @@ pause_reason: "成功前缀续接已离线验证；冻结启动预检与专门�
 
 已完成的独立同稿双fresh及2HTTP/38271known继续单独保留，全部相关旧账7HTTP/105336known/73756unknown/1retry不清零；新诊断不得冒充它们已属于原application。原15跨版本完整证据已为12+1+2=15，不是尚剩两例；同版本资格与真实DB/UI/Worker消费者仍未证。本包不重跑整套15、不改政策或采用标准；Stage8E及后续产品/学习依赖保持。
 
-下一动作：以外部readiness现场记录为准；冻结副本或原作者行政原件→check-answer→native导入预检未齐时先补齐，已齐则等待明确新范围授权与冻结HEAD公共CI全绿，两者齐备才能发送。启动计划、作者预检与CI的现场依据统一在C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-completion-continuation-20261029-control/readiness.json；未获得授权前不创建业务execution或启动waiter，automation保持PAUSED。证据data/evaluation/results/natural_completion_continuation_preparation_20261029.json。
+下一动作：复用唯一waiter等冻结HEAD公共CI全绿，首项返回后完整来源双审，接受后接Host协调/compatibility/edit和同稿双fresh；不重复首发。授权/进程以同Control的authorization-activated.json、waiter-start/ci-wait和execution原stdout为准，readiness.json保留授权前准备快照；当前automation ACTIVE。证据data/evaluation/results/natural_completion_continuation_preparation_20261029.json。
 
 ## 同稿双fresh完成（前序）
 

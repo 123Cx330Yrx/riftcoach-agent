@@ -1,3 +1,11 @@
+## 2026-10-29 续接CI清单快照遗漏修复
+
+2026-10-29北京时间15:43：shard3真实失败已查明：1903通过、1失败，唯一失败是当前清单仍引用新增续接组件前的旧快照，与本机挪动无关。旧快照原样保留，另建当前清单，只有component_fingerprints/program_sha256两字段不同，其他28项及全部15例业务请求/政策/标签/预算一致；原失败断言和真实入口零发送两项19.25秒通过。唯一旧waiter已因CI失败停止，未创建首发claim或业务execution，Provider/Key0。下一步逐件绑定仅测试资料/记录的维护CI，仍执行冻结5cb629b5，plan/授权/原截止均不变；新CI全绿前不发送，不追认旧失败。证据natural_completion_continuation_ci_repair_20261029.json。
+
+## 2026-10-29 自然修订尾段新授权与唯一CI等待
+
+2026-10-29北京时间14:44续：用户已授权准备完成的自然尾段新诊断，授权SHA a6cf5aeb、plan1919fc94，冻结5cb629b5与原作者行政原件/check-answer/native导入及只读复核均通过；实际冻结入口已零发送回放11步成功前缀到completion-initial。范围3逻辑/最多5新HTTP及401920 tokens、2次手动恢复、企业0.25×，授权至北京时间10月30日14:42:44，不清零旧账。CI40829906402的数据库/打包/前端已成功，四个测试分片运行中；唯一waiter实际PID55216（launcher35244）等待全绿后只执行首个段。riftcoach heartbeat已更新为本计划并ACTIVE，每5分钟检查；不变等待安静，首响应后接完整来源双审。当前新增Provider/Key0、未建业务execution；不重复waiter或首次run。原漏检/旧seal、Stage8E及后续依赖保持。现场以Control/authorization-activated.json、waiter-start/ci-wait及execution原stdout为准。
+
 ## 2026-10-29 自然完成度续接准备收尾
 
 新增整链9项及旧启动/续接/协调32项回归全部通过（分别453.18秒、1173.31秒）。真实plan、冻结副本、作者行政预检及CI以外部Control/readiness.json的提交后现场记录为准；缺失时先补齐。新增Provider/Key0，未授新费用。

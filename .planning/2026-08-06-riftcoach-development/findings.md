@@ -1,3 +1,7 @@
+## 2026-10-29 续接CI清单快照遗漏修复
+
+2026-10-29北京时间15:43：shard3真实失败已查明：1903通过、1失败，唯一失败是当前清单仍引用新增续接组件前的旧快照，与本机挪动无关。旧快照原样保留，另建当前清单，只有component_fingerprints/program_sha256两字段不同，其他28项及全部15例业务请求/政策/标签/预算一致；原失败断言和真实入口零发送两项19.25秒通过。唯一旧waiter已因CI失败停止，未创建首发claim或业务execution，Provider/Key0。下一步逐件绑定仅测试资料/记录的维护CI，仍执行冻结5cb629b5，plan/授权/原截止均不变；新CI全绿前不发送，不追认旧失败。证据natural_completion_continuation_ci_repair_20261029.json。
+
 ## 2026-10-29 恢复账目只能落在最后成功响应
 
 旧scratch续接辅助器按logical.review==1选择账目携带点，会同时改写早先失败facts响应；原manual-retry请求绑定旧失败budget，从而发生session_replay_request_changed。仅在已接受facts的成功result更新派生累计账目，保留之前失败与manual-retry原字节，真实冻结/当前Runtime均可回放到相同completion入口。
