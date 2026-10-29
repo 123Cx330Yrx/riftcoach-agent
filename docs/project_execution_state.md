@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "观摩标题本地误拒绝已修复并以真实原补丁验证；完成度漏检和正式修订闭环仍未解决。"
+pause_reason: "观摩标题已修复，原补丁修订稿获两份内容接受判断；派发输入加密使普通native导入未通过，原完成度漏检与正式闭环仍保持未完成。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,12 @@ pause_reason: "观摩标题本地误拒绝已修复并以真实原补丁验证�
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-29续：零Provider整稿内容核验已返回。主审先独立写入意见，再实读独立作者完整原生final；两人均接受新稿7fb7e784的四项ReportAssessment。10条原补丁修正了中单比较/舍入及观摩用途，18段与来源章节保持。数值另按Decimal原精度复算。此结果支持“已有联合补丁能修好这份稿子”，不追认原completion-initial的漏检，也不说明该职责灵敏度或整体可靠性已解决。
+
+凭证限制单独保留：作者run外原件SHA28b098dc与真实completed final全文相同，作者/父线程及绑定已读；但本次NEW_TASK正文被宿主加密，原dispatch-and-final-v1门真实报codex_review_host_rollout_dispatch_encrypted，未生成submission。没有重派、追改政策、伪造导入或把该故障归因模型；严格输入等价性与普通gate replay仍未证。两份内容判断是受此限制的诊断证据，不是原run的正式edit/application/fresh。
+
+原Operator/Control/作者181/64/3件逐SHA库存、seal及冻结clean HEAD再次保持；本轮Provider/Key0。两份实际sol_review_contract同稿fresh请求及validation context已单独保存，精确匹配先前请求摘要；禁止网络的离线重建通过，无生成/初审意见或Host答案混入模型输入。材料不是新执行授权或已就绪启动器。下一动作是为仅同稿双fresh明确有限诊断片段，先核前瞻native证据政策及启动条件，再提交费用审批；不能用旧封存grant默默续跑。新证据：data/evaluation/results/retained_report_content_audit_20261029.json。Stage8E/未准入及下述后续依赖保持。
 
 2026-10-29：观摩标题本地误拒绝已修复。共享 Markdown 章节识别明确支持“训练计划”与“观摩练习计划”；预览/编辑、来源插槽原型及 Memory 探针使用同一识别。保留必需章节、顺序/重复、围栏/行内伪装、原文保留和来源校验；标题识别不授语义资格，未改生成/审查政策。四份当前候选 manifest 仅刷新组装源码指纹与派生摘要，冻结目录未改。
 
@@ -24,7 +30,7 @@ pause_reason: "观摩标题本地误拒绝已修复并以真实原补丁验证�
 
 证据：data/evaluation/results/observation_heading_recovery_20261029.json；原失败详情 sol_natural_coordination_live_stop_20261029.json；单独输出 C:/Users/33502/Documents/Agent/outputs/riftcoach-observation-heading-recovery-20261029。历史审计快照未覆盖，源码指纹差异单独核验。
 
-下一动作：针对已保留完整来源和实际新稿，准备零付费独立整稿内容核验，分别记录联合补丁覆盖与完成度单职责反例，再决定是否有必要仅诊断同稿双fresh；不重跑生成/初审、不重开seal或自动新增付费。Stage8E、跨版本旧15不拼同版本资格、自然6与原产品5调用差异、后续Coach/Training/四块/journal/前端/Memory/身份运维/两树/独立评估/学习及未准入均保持；automation PAUSED。
+前序动作已产出上述两份内容判断，普通native导入限制另记，不能称完整门通过。后续仅考虑同稿双fresh有限诊断，不重跑生成/初审、不重开seal或自动新增付费。Stage8E、跨版本旧15不拼同版本资格、自然6与原产品5调用差异、后续Coach/Training/四块/journal/前端/Memory/身份运维/两树/独立评估/学习及未准入均保持；automation PAUSED。
 
 ## 2026-10-28 CI等待与第13例完成时的历史检查点
 

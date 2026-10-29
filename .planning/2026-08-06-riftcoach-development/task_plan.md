@@ -21,9 +21,11 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 本轮分组累计255项检查及4个子检查通过；编译、治理与diff-check通过。旧库存绑定的源码摘要差异以两份独立新库存解决，旧快照不覆盖，除组件摘要/派生program摘要外内容完全相同。
 
-失败裁决：原completion 100/pass漏检及双审拒绝不改写；facts原意见5/6覆盖同一用途问题，不能因此全盘丢弃成功证据。原524/恢复、误派第二NEW_TASK/普通native拒绝/拒绝专用恢复、seal及5HTTP账目全部保留，见sol_natural_coordination_live_stop_20261029.json。当前无正式compatibility/edit/application/独立整稿或fresh；新增Provider/Key均0。
+内容核验已完成：主审先写意见，独立作者再返回完整原生final，两人均接受7fb7e784整稿四项ReportAssessment；原10补丁与18段正确保留、Decimal重算及来源消费核验成立。独立作者原件与真实final全文相同。但本次派发正文加密，原dispatch-and-final门真实拒绝，未生成submission，输入等价性及普通gate replay未证；不追改计划或重派。这是有凭证限制的内容诊断，不是原run正式edit/application/fresh。证据retained_report_content_audit_20261029.json。
 
-下一动作：针对既有完整来源和同一新稿准备零付费独立整稿内容核验，分开记录单职责表现与联合修复，再裁定是否需要仅双fresh诊断。不得重买生成/初审、重开seal或自动用旧授权启动新批。Stage8E/未准入、旧15版本边界、自然6与原产品5调用及其他后续产品/学习依赖保持；automation PAUSED。
+失败裁决：原completion 100/pass漏检及双审拒绝不改写；facts原意见5/6覆盖同一用途问题，不能因此全盘丢弃成功证据，也不能据联合修复追认单职责质量。原524/恢复、误派第二NEW_TASK/普通native拒绝/拒绝专用恢复、seal及5HTTP账目全部保留，见sol_natural_coordination_live_stop_20261029.json。当前无正式compatibility/edit/application或fresh；新增Provider/Key均0。
+
+下一动作：同稿双fresh两份真实合同请求/context已离线保存并精确匹配旧摘要；准备仅这两项的有限诊断片段，先验证前瞻native政策及实际启动条件，再提交明确费用范围。它只能补终稿模型表现，不能抹掉初审漏检或证明稳定性；不因此再改提示词或换模型。材料尚非启动授权/就绪入口，不得重买生成/初审、重开seal或自动用旧grant开新批。Stage8E/未准入、旧15版本边界、自然6与原产品5调用及其他后续产品/学习依赖保持；automation PAUSED。
 
 ## 2026-10-28 组装重叠修复（本包前序记录）
 

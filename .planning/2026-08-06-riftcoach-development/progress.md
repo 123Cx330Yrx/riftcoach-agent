@@ -1,3 +1,11 @@
+## 2026-10-29 原补丁整稿内容双审与凭证限制
+
+主审先独立写入意见，独立作者后返回完整多行native final；两份判断均接受同一7fb7e784新稿四项ReportAssessment。10条原补丁覆盖原问题，18段/来源保持，原始精度Decimal另算正确。作者run外原件28b098dc与真实completed final全文相同，父线程/作者/绑定已读。
+
+普通dispatch-and-final门真实拒绝：codex_review_host_rollout_dispatch_encrypted。本次派发正文不可读，输入等价性未证；没有生成submission、重派、追改政策或伪造gate replay。保留受限内容证据，不称正式stage。原completion漏检、旧seal及所有失败/费用不改写。原Operator/Control/作者181/64/3件库存及冻结clean HEAD再次保持，本轮Provider/Key0。
+
+同稿两份实际fresh请求/context在禁止网络下重建并精确匹配旧摘要，输出在独立fresh-materials目录；不含Host答案或旧审查意见，尚非付费启动器。后续仅准备有限fresh诊断的native/启动边界，不重买生成/初审。证据data/evaluation/results/retained_report_content_audit_20261029.json；本轮只新增证据和状态，不改产品代码或重复255项回归。
+
 ## 2026-10-29 观摩标题严格消费修复
 
 本轮分组累计255项检查及4个子检查通过；编译、治理与diff-check通过。旧库存绑定的源码摘要差异以两份独立新库存解决，旧快照不覆盖，除组件摘要/派生program摘要外内容完全相同。
