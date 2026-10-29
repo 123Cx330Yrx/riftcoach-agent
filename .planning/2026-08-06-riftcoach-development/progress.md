@@ -1,3 +1,31 @@
+## 2026-10-29 保留前缀的正式修订尾段闭环封存
+
+2026-10-29：已封存初审pair的受控继承正式尾段已闭环，终态 `candidate_repaired_pass_unqualified`，runtime completed。保留原14步成功前缀和completion-initial漏检拒绝；覆盖审查、compatibility、edit及两项fresh均经主审/原独立作者完整来源审查接受并正式导入。唯一application实际新稿SHA `7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51`，facts-fresh与completion-fresh均对同一实际新稿100/pass；facts仅有block4非阻断建议。原稿e30e37a3与原拒绝不改，原OP.GG分歧不称双审共识，可选措辞与正常舍入不升格阻断。
+
+严格只读replay与唯一create-only seal已通过：seal `8c2fcb76932a4bd72b5439f89b94c578f41d61b27fb2609466e56bbb2be6bd50`，257件封存Operator库存、父92件/作者2件、936份冻结源码及全部作者/native/readback库存一致。首真实stdout guard3f1c2b35保持，终stdout checkpoint0067/34e08491，父链累计活动1383.717/3600秒；冻结执行HEAD227a8373保持clean。同HEAD CI40864229481八项全绿；唯一waiter只首启一次，本轮没有重复生成、初审或手动恢复，无在途业务请求。automation `riftcoach`已PAUSED。
+
+新增恰好2HTTP/33923known/0unknown/0retry/0receiptless；本案含继承8HTTP/122034known/73756unknown预留/1retry/0receiptless。另案双fresh2HTTP/38271known仍单列，相关总账10HTTP/160305known/73756unknown预留/1retry；未知预留不是账单，不清零。execution-0003本地Decision外层格式误传/exit1和原件保留，0004正式导入成功，未增加模型请求。
+
+方案结论：本例已有联合补丁能够修好实际错误，保留成功前缀并覆盖核验后可完成正常尾段；不再围绕熟悉稿重复初审或另开付费变体。原15例已全部完成，12+1+2仅为版本分布，不撤销、不重跑。本轮不证明旧职责漏检已修、稳定性或同版本资格，不授Stage8E/产品/学习准入；静态host_semantics_verified/publication/production标志保留false。native-final-attestation-v1不证明加密派发原文等价，也不追认旧失败。
+
+完成证据：`data/evaluation/results/natural_review_repair_completed_20261029.json`。授权时等待快照`natural_review_repair_authorized_20261029.json`保留其历史事实，不能当成当前等待状态。
+
+下一动作：只读对照已完成原15的版本证据、当前合同及实际Runtime/产品消费者，列出具体绑定/质量缺口和可独立推进的产品工作；沿既有依赖继续，不自动重跑15、不启动新付费批。
+
+## 2026-10-29 覆盖与正式兼容性/编辑双审接受
+
+同HEAD CI40864229481八项全绿，唯一waiter已首启一次并exit0，原14步逐字继承。completion-initial覆盖、compatibility、edit均经主审先独立notes及原独立作者全文审查接受，原件/native逐字节一致并经wrapper正式导入；原completion拒绝仍false。实际10条原补丁重放等于新稿7fb7e784，18段正确内容保留。首真实stdout guard3f1c2b35保持，edit导入后checkpoint0026/6b4447c2；当前唯一Host-only正在执行正式application，新增业务HTTP/Key仍0，不重复run。
+
+下一动作：唯一application后核其实际新稿与全部已接受原件/native，再逐项发送facts-fresh与completion-fresh；两项必须同一实际新稿SHA，每run最多1新请求。524/可恢复格式故障仅暂停同项等待用户手动补测，不自动重发。终局只读replay、唯一seal，更新结果与治理记录后一次提交推送；原15已完成，不重跑。
+
+## 2026-10-29 受控继承新授权激活与唯一CI等待
+
+2026-10-29用户已明确“授权继续”新受控继承计划85cf605a，冻结执行树D:/riftcoach-natural-review-repair-execution-20261029为clean227a8373；真实原作者行政原件/check-answer/唯一native/导入/readback已通过，作者/native逐字节相同。新grant SHA6e3653a6有效至北京时间2026-10-30 14:42:44，正常2项fresh，最多4新请求/321536tokens，其中2次仅用户手动触发同项恢复；保留父链6HTTP/88111known/73756unknown预留/1retry、402.33活动秒和原3600秒总预算。原14步和旧拒绝不改，不重发生成/初审，不重跑已完成原15。
+
+当前唯一waiter-v2实际PID63852（launcher19776）等待同HEAD CI40864229481全绿后只首启一次现有wrapper；已核无业务execution、无首发claim、Provider/Key0。已成功的打包/数据库/前端与尚运行pytest分片分开，查询失败不当CI失败。先读新Control的ci-wait-v2、waiter-v2-start/exit/failure、first-launch-claim及execution原stdout/exit，活动执行者存在时不重复run。现有heartbeat已按新plan/grant更新并ACTIVE，每5分钟安静检查，完成或需手动补测时暂停；当前任务及唯一waiter继续；现场以authorization-activated.json及新Control文件为准，不再使用准备阶段的未授权状态。
+
+下一动作：维护CI全绿后继承原pair并在待修处暂停，再经repair-task、原双审全文覆盖、compatibility/edit、唯一application及同一实际修稿的双fresh逐项续接。未解决的修订只暂停受影响一步；实际来源/原件或授权边界仍须满足。524/可恢复格式故障不自动补测；原费用和未知预留保留。终局后只读replay/唯一seal，更新记录并一次提交推送，不因本轮接线重跑无关全套检查。
+
 ## 2026-10-29 已封存初审pair受控继承验证完成
 
 受控继承接线与相称离线验证已完成：新计划逐字继承已封存初审pair的14步意图/结果，原host-task仍指向各自原folder，分别读取父/祖父计划的原作者与native。原facts接受、completion漏检拒绝保持，不重发生成或初审；另作全文覆盖审查，批准后仍经compatibility/edit、唯一application和同稿双fresh。未解决的局部问题只暂停受影响步骤。
@@ -11176,3 +11204,10 @@ scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接�
 ## 2026-10-28 剩两例CI时限故障
 
 新入口e7a7ab0b的CI40673377624，web/migrations/packaging及shard0/2/3成功；shard1被GitHub明确标注超过1h0m0s取消，末次完整进度87%，此前日志无失败标记，不等于余项通过。汇总失败与缺完成库存保留。唯一waiter按失败退出，没有读取Key或发送Provider；observed:4仍0003模型边界，计划/guard/原余量不变。仅将pytest-shards job时限60改90分钟，全部用例、分片数量、完整覆盖汇总及其他mandatory gate保持。该CI维护不改冻结e7执行源码/输入/plan，沿用先前显式测试维护续接模式逐件固定Git差异；新CI全绿后才能首发，原cancelled不改称绿。证据Control/ci-timeout-diagnosis.json及原日志SHA。
+
+
+## 2026-10-29 受控继承首启与覆盖审查
+
+CI40864229481八项success。唯一waiter-v2首启一次后exit0，execution-0001原stdout固定guard3f1c2b35，继承14步并按预期session_review_repair_required暂停，新增Provider/Key0。execution-0002发布修稿7fb7e784的completion-initial-repair任务，checkpoint ef8acfdf；原独立作者唯一NEW_TASK已派，主审先独立create-only写repair-completion-initial-primary.json，十项操作复现新稿、Decimal/HALF_UP及原用途/OP.GG争议逐项核验。目前尚未提交覆盖判断、没有application或fresh，heartbeat ACTIVE。
+
+覆盖阶段已双审接受，原件/native bytes一致SHA656714d7，execution-0004正式导入。0003主审提交包装多一层导致ValidationError，未写submission；原失败与原主审notes保留，0004仅使用相同decision正确外层，无重派/重写作者final。Host-only 0005核库存并推进到compatibility，0006只读取dispatch；checkpoint dbd025fc唯一NEW_TASK，主审独立写compatibility-primary-decision.json后等待原独立作者。当前新增Provider/Key0，尚无application/fresh。
