@@ -34,7 +34,49 @@
   "provider_requests": 0,
   "key_reads": 0,
   "execution_exists": false,
-  "next_action": "Bind test-only maintenance CI to unchanged frozen execution sources before sending; preserve original CI failure and original authorization deadline.",
+  "next_action": "Maintenance CI all green and the authorized retained-report fresh diagnostic is completed and sealed; see retained_report_fresh_completed_20261029.json. No active waiter or paid queue.",
   "qualified": false,
-  "publication_allowed": false
+  "publication_allowed": false,
+  "maintenance_installation": {
+    "recorded_at": "2026-10-29T02:55:17.492098+00:00",
+    "original_ci_run": "40803681477",
+    "maintenance_ci_run": "40809036331",
+    "execution_head": "7de9ca5893c770e1f88869b158c314cfd33252b2",
+    "maintenance_head": "5362cc972b3e1a121d288142406d00197d45c96e",
+    "maintenance_files_sha256": {
+      ".planning/2026-08-06-riftcoach-development/findings.md": "b1cdaa4890ec43a31cc3399067070d7e2fd30151f93e7281eecaf30f543deebd",
+      ".planning/2026-08-06-riftcoach-development/progress.md": "8fee8521d7c40d903cc8f7ac88de585e608f2e768555be566950a6f4dba4e966",
+      ".planning/2026-08-06-riftcoach-development/task_plan.md": "3e48485df7422f00603c035442e81144f494e562783c6485adb3b66f904a0dd5",
+      "data/evaluation/results/retained_report_fresh_ci_repair_20261029.json": "edaceb9096b8cd5c617bad21daf1e82d580d399cff90cc65fccec8f2db945897",
+      "data/evaluation/results/retained_report_fresh_preparation_20261029.json": "8ad4dcdf0563f7401eb844db37d4487ecdfc7f248bd8ec3db086d0e183f9da01",
+      "docs/project_execution_state.md": "4396363f3783ac00872cd82acde45ef5b35642fca38520aebdd5ab095864f010",
+      "tests/fixtures/document_closed_program_sources.json": "d5fcd3374175cfd289aa9d663dd10b5f0d2cf2fe44b566a6e1006ac9fd5adc9d"
+    },
+    "authorization_sha256": "0bafbf57a80b0d011d48b26bc90091773c546aea29adc24974c554967adeb08b",
+    "plan_sha256": "670d8f83e7c161fefe090de4b194a094e27d79cbbbef2b29f73791ba506900d9",
+    "authorization_limits_and_deadline_unchanged": true,
+    "provider_requests": 0,
+    "key_reads": 0,
+    "verification": {
+      "actual_git_diff_checked": true,
+      "original_historical_snapshots_verified": true,
+      "ci_boundary_checks": 6,
+      "waiter_checks": 3
+    },
+    "files_sha256": {
+      "maintenance_entry.py": "b7144f06a1ec733cf318eadff32955f2baabf1cf93493a3a4c9ec55dce0fa225",
+      "run_segment.py": "d77770b48661428a4a106b0759405cd406f9d1ec00dd90661e5ebae0cd778828",
+      "run_segment.before-maintenance.py": "20687d68e3148370f72dcc54b67a9f02c8415c58f013e5627b5f2c51be432711",
+      "wait_for_ci_v2.py": "fe57b1a07f37627e8408cb6fb2441b74c65936d723cbd7221cb1004a9a88d6c8"
+    }
+  },
+  "active_waiter": {
+    "pid": 57700,
+    "started_at": "2026-10-29T02:55:48.319835+00:00",
+    "plan_sha256": "670d8f83e7c161fefe090de4b194a094e27d79cbbbef2b29f73791ba506900d9",
+    "authorization_sha256": "0bafbf57a80b0d011d48b26bc90091773c546aea29adc24974c554967adeb08b",
+    "ci_run": "40809036331"
+  },
+  "maintenance_binding_sha256": "cbb32af997136d761528470093afbca42fbed93997cade56500bd07a3211932f",
+  "completion_record": "data/evaluation/results/retained_report_fresh_completed_20261029.json"
 }

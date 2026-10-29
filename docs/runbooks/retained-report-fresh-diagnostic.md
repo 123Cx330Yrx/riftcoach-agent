@@ -26,3 +26,8 @@
 ## 验证
 
 `tests/test_retained_report_fresh_launch.py`用真实owned worker、SDK解析与本地MockTransport检验：成功分段续接、Host等待无Key/CI、前项保留、524手动同项恢复、过期禁止新发送而允许Host-only、语义拒绝阻止后项、严格只读回放和唯一seal。模拟native/HTTP均不当真实模型质量证据。实际Operator的作者原件→check-answer→native final→导入预检另行留证。
+
+
+## 本轮精确换行恢复记录
+
+2026-10-29 facts-fresh作者原件末尾多一个LF，真实native final缺该LF；其余5128字节逐字相同。首次导入真实拒绝，未发送新模型请求，未改作者文件、原生回复或冻结源码。外部Control复用已有`original15_native_newline_recovery`，固定本次checkpoint、binding、event-id、raw-event及两份原件SHA，只认可该一字节差异；其他差异继续拒绝。16项既有回归通过，真实重导入成功。后续replay/seal沿用同一精确恢复。该格式例外不证明加密输入原文等价，不改变语义裁决或模型质量。证据随本轮结果保存。

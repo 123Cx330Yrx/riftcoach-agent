@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "同稿双fresh已授权；原CI历史fixture失败已修复，待仅测试资料维护CI验证，冻结执行源码与原费用截止不变。"
+pause_reason: "同稿双fresh诊断完成并封存；原漏检与同版本/产品资格缺口保留，无新付费队列。"
 ---
 
 # RiftCoach 当前执行状态
@@ -13,6 +13,20 @@ pause_reason: "同稿双fresh已授权；原CI历史fixture失败已修复，待
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-10-29同一保留修订稿双fresh诊断已完成：facts/completion均HTTP200、100/pass且空issues/resolutions/advisories，主审与原独立作者完整来源双审均接受并唯一导入。新增仅2HTTP/38271known/0unknown/0retry；只读replay、唯一seal及原件/作者库存核验通过，无在途模型请求。seal 4dd3bbd1，最终原stdout checkpoint 5cb67bca；automation已PAUSED。原5HTTP/67065known/73756unknown预留/1retry保持，合计7HTTP/105336known/73756unknown预留/1retry。
+
+事实意见首次导入因作者文件末尾单LF与native相差一字节被拒；外部Control按精确task/event/两SHA复用已有换行恢复，保留两份原件、失败和冻结源码，16项检查与真实导入通过，未重调模型。两份新意见支持修后观摩稿可接受，原completion初审漏检、旧seal及原正式application缺口保持；不授职责稳定性、同版本15或产品资格。加密派发正文等价性仍未证。
+
+下一动作：停止围绕该熟悉稿追加实测，离线核对既有剩余原15覆盖、当前合同与实际Runtime消费之间的版本/证据缺口，形成具体续接范围；本片段完成且无新付费授权。Stage8E及Coach/Training/四块/journal、前端/头像、Memory、身份运维、两树整合、独立评估和学习依赖保持。证据data/evaluation/results/retained_report_fresh_completed_20261029.json。
+
+## 同稿双fresh前序记录
+
+2026-10-29北京时间11:53：维护CI40809036331全部8项检查成功；唯一waiter已create-only记录首发送claim，并启动execution-0001原段，正在执行启动核验/首项facts-fresh。尚未观察到模型结果，不重复run、不新建waiter；返回后读取真实stdout根和完整material继续双审。原CI失败、冻结7de9ca58、原plan/grant及费用截止保持。Control/ci-green-first-segment-started.json固定全绿及claim证据。
+
+2026-10-29用户要求CI完成后自动接续：原riftcoach heartbeat已更新为本次同稿双fresh并ACTIVE，每5分钟检查；等待不变安静。它复用现有waiter，首响应后接续全文双审/后项及封存，不重复首次发送。原授权截止/费用不变，完成或需用户补测决定时暂停。旧段落中的automation PAUSED为历史状态。Control/automation-resumed.json已记录现场配置。
+
+维护差异已逐件核验并绑定：CI40809036331/提交5362cc97仅七件测试资料与记录变化，实际执行仍为干净7de9ca58，原plan/grant不变。Control/ci-maintenance-binding.json保存逐件SHA及入口原件；6项CI边界和3项waiter检查通过。原waiter已停，新唯一实际PID57700（launcher38964）只等待维护CI，全绿且原授权有效后调用一次现有入口；不自动重试。现场仍无execution、Provider/Key0。
 
 2026-10-29授权续接：用户已明确授权同稿两项fresh，grant SHA0bafbf57，原限额不变，有效期UTC 2026-10-29T02:45:34.240633至2026-10-30T02:45:34.240633（北京时间10月30日10:45截止）。尚无业务execution、新Provider/Key均0。唯一waiter实际PID25844在已知CI失败后停止，未创建发送claim。
 
