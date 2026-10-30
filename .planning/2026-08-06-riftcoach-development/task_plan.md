@@ -13,6 +13,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-30续：0add355f的新CI41003259222中，web/packaging/Postgres/shard2已通过；shard3为1911通过、1失败、55跳过。失败是旧GLM自然双审离线库存测试仍对照10月29日快照，漏更新的来源为coach_contract、coach_budget、models及natural_duty_candidate；不是新增模型语义失败。原件日志保留。
+
+已新增独立10月30日当前快照并调整测试引用，旧快照逐字节保持；仅component_fingerprints与program_sha256改变，其余20字段、15例材料和30份请求保持。原15完成结论不变、未重跑；本轮不改产品源码。CI早期检查扩展为6项GLM库存检查、1项当前Sol库存检查和2项API精确集合，补上上轮只验证Runtime清单而未覆盖评测快照的遗漏。这9项禁网检查全部通过（36.30秒），远端修复提交仍待新CI结果。
+
+下一动作仍是确认修复HEAD的远端CI及零付费浏览器/来源预检；未授权新付费调用，不切默认、不改产品库。Stage8E in_progress、automation PAUSED，其余产品后续保持。证据`data/evaluation/results/natural_inventory_ci_snapshot_repair_20261030.json`，当前工作卡仍为`docs/plans/2026-10-30-sol-product-preflight.md`。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-30续：用户指出最近三个CI失败后，已定位两类维护遗漏：新增continuation/resume接口未加入两份OpenAPI精确清单；独立产品合同修改共享Runtime源码后，四个仍执行的角色profile清单指纹未更新。保留原失败日志，只更新当前清单的组件/程序SHA，其余字段与政策不变；旧封存原件不改。新增默认入口及10个profile的零Provider启动检查，并把续接/产品合同/普通入口真库检查加入CI，数据库job调度上限随覆盖增加至20分钟。
 
 零付费产品预检继续补齐两个接缝：服务端显式`RIFTCOACH_TASK_PUBLICATION_MODE=evidence_bound_v1`贯通普通两条Review入口；Evidence首次实际投影随session保存，修复恢复时当前时间改变bundle摘要、继而改变模型输入的问题。观摩会话经真实临时Postgres/Memory/Worker暂停续接后能读取报告、Evidence、累计用量和唯一会话回复，身份保持observed，不写本人训练进度。默认legacy未切换，模型/Riot均为替身。

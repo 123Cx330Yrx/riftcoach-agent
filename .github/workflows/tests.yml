@@ -43,6 +43,15 @@ jobs:
       - name: Verify current Runtime profile manifests before expensive checks
         run: python -m scripts.check_runtime_profile_manifests
 
+      - name: Verify current inventory snapshots and exact API paths early
+        run: >-
+          python -m pytest
+          tests/test_natural_duty_qualification_inventory.py
+          tests/test_sol_review_binding.py::test_inventory_preserves_original15_and_uses_runtime_contract
+          tests/test_async_task_api.py::test_openapi_versions_the_async_contract_and_exact_paths
+          tests/test_fastapi_adapter.py::test_app_factory_and_openapi_do_not_read_keys_or_open_io
+          -q --tb=short --show-capture=no
+
       - name: Install isolated Pi spike dependencies without lifecycle scripts
         working-directory: experiments/pi_runtime
         run: npm ci --ignore-scripts
