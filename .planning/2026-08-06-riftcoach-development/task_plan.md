@@ -13,6 +13,32 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-30 23:52北京时间：受控恢复版本8eb86b5d的CI41025514215已8项全绿。实际同一任务复用了原3次生成，首个facts-initial及用户明确触发的同项补测均HTTP524，分别130.391/128.875秒；请求与wire SHA完全相同，均closed/reaped，未取得任何Sol语义意见。当前为recovery_required/session_timeout_awaiting_manual_retry，不记为审查拒绝或全链作废。
+
+累计5HTTP/29323 known/146764 unknown预留/1retry，receiptless0、未确认intent0，6—8次未发送；活动418.672/900秒。原143份失败/来源原件与29份生成操作原件逐字核验通过；原SQL失败事件保留。最新checkpoint 5eed2b7f7ba46de8ed8fca3163055c976ec7e79167cb0664577f8598d0079b63，数据库在Control/attempt-6/terminal-db.dump，SHA见execution-result；append-only snapshot在Control/attempt-6-snapshot.json，未封闭可恢复session。
+
+真实浏览器1440/320已核用量、未知预留和补测次数，刷新不POST恢复，无未审查正文，无横向溢出。真库任务1/暂停1，发布/assistant/Training/Evidence snapshot均0。启动脚本旧幂等键冲突和浏览器检查器按JSON键顺序比较的错误均保留并修正，产品源码未改、没有因此重复付费。执行者已退出、临时容器已移除，automation实际PAUSED。
+
+下一动作：保持同一首次审查暂停，不自动使用最后一次手动补测。用户若再次明确触发，沿该最新检查点/数据库恢复，保留两次未知费用；原8次/401920tokens/900秒及10月31日15:45北京时间截止不延长，最多剩3次实际请求/225833tokens包络/1次手动补测。不重买生成，不另开批。原15/默认/产品库/Stage8E保持；最终教练稿与Evidence发布消费、口吻排版仍未完成。证据sol_product_review_timeout_20261030.json。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-30 23:48北京时间续：8eb86b5d的CI41025514215已8项全绿。旧waiter进程已不存在；当前系统开机晚于其启动，attempt-4最初未创建，未新增模型请求。直接续接首次在发送前因旧authorized-segment-1幂等键与新checkpoint冲突被409拒绝；attempt-4原失败保留，数据库证明零新模型。启动脚本v2只改新操作键/记录路径，冻结源码不改。
+
+attempt-5已成功复用原3次生成并发送首个Sol facts-initial；真实HTTP524，130.391秒，原件/closed/reaped完整，无审查意见。累计4HTTP/29323 known/73382 unknown预留/0retry；checkpoint d3ac1fe…；数据库任务1/暂停1/发布0/assistant0/Training0，原失败事件保留。真实浏览器1440/320用量可读，刷新不重发，未审查正文不可读。
+
+用户已明确回答“补测当前步骤一次”。该单次手动触发固定在Control/manual-retry-1/manual-authorization.json，正在attempt-6同项恢复；只首段manual_retry=true，之后只允许普通session_model_boundary续接，第二次524/格式故障仍须再次明确触发。现执行进程活跃，不得另起run或waiter。总8次/401920tokens/900活动秒与10月31日15:45北京时间截止不变，当前最多剩4次请求；原件/未知预留保留。先查attempt-6/segment、receipt、execution-result/exit及进程。automation PAUSED，原15/默认/产品库/Stage8E保持。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-30续：受控恢复提交8eb86b5d5bafc4de6b12b51d385b4ffc0226369e已推送；新CI41025514215进行中。执行目录D:/riftcoach-sol-product-recovery-execution-20261030已冻结干净同HEAD，旧2715ae40保持。Control/local-recovery-binding.json SHA0d74f1c974ec2240c0de893df62e9ba6e52a2bb91c8cfb6e3299cfb66cfa9ff8固定17文件差异；业务源码仅store临时文件名、受控恢复服务与SQL恢复方法，模型/政策/提示/来源不变。
+
+唯一local-recovery waiter已启动，launcher PID55184、实际PID77264，以Control/local-recovery-waiter-start.json和当前进程为准。仅在同HEAD CI全部通过且原授权有效时，调用一次run_recovered_task.py恢复同一任务；不得重复启动。先读local-recovery-ci-events、waiter-exit/failure及attempt-4检查点/进程；CI查询失败不作CI失败。新增paid仍0，原3次/29323 known保留，普通继续不重发生成或补测；原截止与预算不变。达到终态后继续原定真实稿/Evidence/用量浏览器与完整来源核验。等待记录未另推送，避免重复CI；automation仍PAUSED。
+
+自动审批拒绝了启动等待器与清理临时副本的组合命令，未提供具体原因；改为仅启动已成功。未采用的D:/rc-recovery-20261030/runs副本暂留，不参与执行；真实运行根是verified-runs。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-30续：受控本地失败恢复已实现并通过实际原件零发送重放。同一task/run在新隔离目录逐字继承13个已提交操作、3次生成响应与29323 known/0 unknown/0retry；原143份封存证据保持，原SQL failed/worker_execution_failed事件和Runtime harness_execution_failed回执均保留。新目录另有完整失败原件压缩归档，不覆盖旧失败查询文件，不修改原冻结2715ae40。
 
 实际browser-db恢复后，经受检恢复服务转入recovery_required，再由普通owner API和Worker重放，已到首次Sol审查发送前session_model_boundary。checkpoint a80096ba…、首审输入bd8fe407…与恢复数据库已固定；累计151.859活动秒，新增请求/真实凭据读取均0。6项新真库检查通过，覆盖原失败保留、双审完成、原件变化拒绝、旧pin/错误owner拒绝和取消。另17项既有真库链路与30项相关本地检查/12子检查通过，11个Runtime入口库存通过。

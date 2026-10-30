@@ -59,3 +59,14 @@ SDK自动重试0。524/可恢复格式故障暂停当前项并保留未知费用
 下一动作：绑定新干净修复提交及其CI，沿已固定首审输入继续同一任务。旧2715ae40/原授权plan不改，修复差异单列绑定；原8次/401920tokens/900活动秒与2026-10-31 07:45 UTC截止保持，已用3次、最多余5次，不重发生成、不自动补测。默认/产品库/原15/Stage8E与automation PAUSED不变。证据sol_product_local_failure_recovered_20261030.json；玩家最终稿和浏览器消费仍待审查完成。
 
 恢复入口为app.product.local_failure_recovery.prepare_local_failure_recovery与PostgresTaskContinuations.recover_local_failure，属于显式行政操作，不开放通用failed重试API。只接受完整成功生成前缀、无待确认请求、无审查/terminal/seal且有真实失败回执的原任务；源/输入/预算逐字保持，失败原件以ZIP归入新run私有删除边界，避免Windows路径再嵌套超限。之后沿普通resume继续，原失败事件不删除，恢复操作以proof SHA幂等。
+
+
+## 实际首审与单次明确补测结果
+
+2026-10-30 23:52北京时间：受控恢复版本8eb86b5d的CI41025514215已8项全绿。实际同一任务复用了原3次生成，首个facts-initial及用户明确触发的同项补测均HTTP524，分别130.391/128.875秒；请求与wire SHA完全相同，均closed/reaped，未取得任何Sol语义意见。当前为recovery_required/session_timeout_awaiting_manual_retry，不记为审查拒绝或全链作废。
+
+累计5HTTP/29323 known/146764 unknown预留/1retry，receiptless0、未确认intent0，6—8次未发送；活动418.672/900秒。原143份失败/来源原件与29份生成操作原件逐字核验通过；原SQL失败事件保留。最新checkpoint 5eed2b7f7ba46de8ed8fca3163055c976ec7e79167cb0664577f8598d0079b63，数据库在Control/attempt-6/terminal-db.dump，SHA见execution-result；append-only snapshot在Control/attempt-6-snapshot.json，未封闭可恢复session。
+
+真实浏览器1440/320已核用量、未知预留和补测次数，刷新不POST恢复，无未审查正文，无横向溢出。真库任务1/暂停1，发布/assistant/Training/Evidence snapshot均0。启动脚本旧幂等键冲突和浏览器检查器按JSON键顺序比较的错误均保留并修正，产品源码未改、没有因此重复付费。执行者已退出、临时容器已移除，automation实际PAUSED。
+
+下一动作：保持同一首次审查暂停，不自动使用最后一次手动补测。用户若再次明确触发，沿该最新检查点/数据库恢复，保留两次未知费用；原8次/401920tokens/900秒及10月31日15:45北京时间截止不延长，最多剩3次实际请求/225833tokens包络/1次手动补测。不重买生成，不另开批。原15/默认/产品库/Stage8E保持；最终教练稿与Evidence发布消费、口吻排版仍未完成。证据sol_product_review_timeout_20261030.json。
