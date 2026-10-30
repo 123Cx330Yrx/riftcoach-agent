@@ -14,6 +14,14 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-10-30续：受控本地失败恢复已实现并通过实际原件零发送重放。同一task/run在新隔离目录逐字继承13个已提交操作、3次生成响应与29323 known/0 unknown/0retry；原143份封存证据保持，原SQL failed/worker_execution_failed事件和Runtime harness_execution_failed回执均保留。新目录另有完整失败原件压缩归档，不覆盖旧失败查询文件，不修改原冻结2715ae40。
+
+实际browser-db恢复后，经受检恢复服务转入recovery_required，再由普通owner API和Worker重放，已到首次Sol审查发送前session_model_boundary。checkpoint a80096ba…、首审输入bd8fe407…与恢复数据库已固定；累计151.859活动秒，新增请求/真实凭据读取均0。6项新真库检查通过，覆盖原失败保留、双审完成、原件变化拒绝、旧pin/错误owner拒绝和取消。另17项既有真库链路与30项相关本地检查/12子检查通过，11个Runtime入口库存通过。
+
+下一动作：绑定新干净修复提交及其CI，沿已固定首审输入继续同一任务。旧2715ae40/原授权plan不改，修复差异单列绑定；原8次/401920tokens/900活动秒与2026-10-31 07:45 UTC截止保持，已用3次、最多余5次，不重发生成、不自动补测。默认/产品库/原15/Stage8E与automation PAUSED不变。证据sol_product_local_failure_recovered_20261030.json；玩家最终稿和浏览器消费仍待审查完成。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-30实测：授权清单下完成3次Flash生成侧真实请求，累计29323 known/0 unknown/0retry；6次knowledge.search，生成最终正文返回，尚未进入Sol双审。任务终态failed/harness_execution_failed，没有发布报告。浏览器真实页面已核实累计用量29323、失败正文不可读，原响应/来源/检查点/数据库与失败均保留，执行者已退出、临时容器已删除。
 
 定位为本机长路径原子写入：knowledge/retrieval_evidence.json目标247字符可用，但NamedTemporaryFile复制完整文件名作prefix后增至261字符，FileNotFoundError。相同247字符路径复现原失败，缩短prefix写入成功；原生成稿标题合同亦通过。开发树仅将临时文件prefix限为4字符；新回归先失败后通过，9项存储测试/12子检查、11入口及10项库存/API检查通过。冻结2715ae40未改，没有把这次执行层故障记成Sol语义失败。

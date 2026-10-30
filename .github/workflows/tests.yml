@@ -351,6 +351,7 @@ jobs:
             tests/test_natural_duty_worker_postgres.py \
             tests/test_sol_worker_continuation_postgres.py \
             tests/test_sol_product_worker_postgres.py \
+            tests/test_sol_local_failure_recovery_postgres.py \
             tests/test_sol_product_entry_postgres.py \
             tests/test_async_task_api_postgres.py \
             tests/test_evidence_snapshot_repository_postgres.py \

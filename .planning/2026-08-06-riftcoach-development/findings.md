@@ -1,3 +1,7 @@
+## 2026-10-30 失败恢复需区分控制平面与Runtime回执
+
+SQL终态原因实际是worker_execution_failed，Runtime回执是harness_execution_failed；两者同时核验，不能把摘要中的单一名称当数据库事实。会话guard绑定绝对transport/journal根，直接拷目录不能恢复；新guard只重定位，原13项intent/result及transport逐字继承，费用和活动时间不归零。原失败目录保留，完整ZIP归档避免再次因深路径复制失败；新恢复只开启普通resume，不发送请求。实际原DB回放已验证首审边界，未新增HTTP。
+
 ## 2026-10-30 原子临时文件名与终态恢复缺口
 
 短pytest临时目录未覆盖实际外部输出根的深路径；目标路径本身合法，临时文件名膨胀仍能触发Windows路径限制。相同路径长度重现比把harness_execution_failed归因模型更有区分力。当前通用异常被提升为failed且保留失败原件；修复文件写入不等于普通resume已能接回，需要独立验证失败任务的受控恢复，不能手改SQL抹掉历史。

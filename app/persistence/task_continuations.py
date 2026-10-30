@@ -139,3 +139,57 @@ class PostgresTaskContinuations:
                 reason="manual_retry" if command.manual_retry else "continue_checkpoint")
             return dict(task_id=str(task_id), run_id=record.run_id,
                         status=record.status, replayed=False)
+
+    def recover_local_failure(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
+        """Administrative, receipt-checked transition; never a generic failed retry.
+
+        The new directory must be prepared before this transaction. The old
+        failed event is append-only and its terminal fields are retained here.
+        Recovery only enables ordinary owner resume; it dispatches no request.
+        """
+        from app.product.local_failure_recovery import verify_local_failure_recovery
+        from app.evaluation.sol_natural_session import SessionBlocked
+        if not isinstance(task_id, UUID) or not re.fullmatch(r"[0-9a-f]{64}", proof_sha256):
+            raise ContinuationError("continuation_conflict")
+        with self.repository._session_factory() as session, session.begin():
+            record = self._row(session, task_id, owner_id, lock=True)
+            value = deepcopy(record.continuation_reference)
+            if value is None:
+                raise ContinuationError("continuation_conflict")
+            previous = value.get("local_failure_recovery")
+            if previous is not None:
+                if previous["proof_sha256"] != proof_sha256 or previous["runs_root"] != str(runs_root):
+                    raise ContinuationError("continuation_conflict")
+                return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=True)
+            if (record.status != TaskStatus.FAILED.value or record.terminal_reason != "worker_execution_failed"
+                    or record.cancel_requested_at is not None or record.report_available
+                    or record.publication_reference is not None or record.publication_status is not None):
+                raise ContinuationError("continuation_conflict")
+            try:
+                proof = verify_local_failure_recovery(proof_path, proof_sha256, runs_root=runs_root)
+            except (OSError, ValueError, KeyError, SessionBlocked):
+                raise ContinuationError("local_failure_recovery_invalid") from None
+            parent = proof["parent_reference"]
+            if (proof["binding"] != value["binding"] or proof["binding"]["task_id"] != str(task_id)
+                    or proof["binding"]["owner_id"] != owner_id
+                    or proof["binding"]["run_id"] != record.run_id
+                    or any(parent[key] != value[key] for key in
+                           ("guard_sha256", "checkpoint_sha256", "profile", "accounting"))):
+                raise ContinuationError("continuation_conflict")
+            value["local_failure_recovery"] = dict(proof_sha256=proof_sha256,
+                runs_root=str(runs_root), parent_checkpoint_sha256=value["checkpoint_sha256"],
+                failed_at=record.finished_at.isoformat(), terminal_reason=record.terminal_reason,
+                runtime_terminal_reason="harness_execution_failed",
+                lease_generation=record.lease_generation)
+            value.update(proof["child_checkpoint"])
+            value["manual_retry"] = False
+            record.continuation_reference = value
+            record.status = TaskStatus.RECOVERY_REQUIRED.value
+            record.finished_at = record.terminal_reason = None
+            record.recovery_reason = "local_artifact_failure_recovered"
+            record.updated_at = record.recovery_required_at = max(record.updated_at, datetime.now(timezone.utc))
+            self.repository._append_event(session, record=record,
+                event_kind=TaskLifecycleEventKind.RECOVERY_REQUIRED,
+                operation_identity="local-recovery-" + proof_sha256,
+                occurred_at=record.updated_at, reason=record.recovery_reason)
+            return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=False)
