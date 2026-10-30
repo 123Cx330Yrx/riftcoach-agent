@@ -1,3 +1,15 @@
+## 2026-10-30 证据复用与当前Sol数据库消费
+
+2026-10-30：用户复盘后明确开始产品接线工作。已完成原15版本复用审计：禁网运行当前Runtime库存，与最终准备库存逐字段相同；相对原库存/协调库存仅组件和程序指纹两项不同，其余28字段、15例来源/标签及30份初审请求摘要保持。三份完成seal摘要核验通过；原15仍完整完成，不因版本变化重跑，不制造同版本新资格。
+
+已补最新Sol双审合同的真实临时Postgres→Worker→Trace/receipt→API消费检查。当前Sol7项、旧GLM7项共14项通过（162.39秒），覆盖直接通过、唯一修订/同稿双fresh、四个取消边界及非owner取消。模型和Riot是替身，真实新Provider/Key0；用量、权限、未发布状态和终态不重领均保持，测试容器已删除。该证据补足当前候选的数据库消费者覆盖，不代表默认Worker注册、浏览器整链或产品发布准入。
+
+实际剩余接缝已固定：普通Worker尚未选择最新混合候选；持久session的暂停/同项恢复未投影到普通任务生命周期；候选发布策略仍always-reject。最新合同已禁止自动重试，旧Sol合同的自动恢复不能误算到当前版本。正常修订最短6调用，诊断硬限实际10次/739840tokens/3600秒，不能直接替代旧产品预算。开发Host验收不作为线上每份报告的Codex依赖。
+
+方案与证据：`docs/plans/2026-10-30-sol-product-entry.md`、`data/evaluation/results/sol_product_evidence_reuse_20261030.json`、`data/evaluation/results/sol_product_worker_consumption_20261030.json`。原自然正式尾段完成、旧费用与失败、Stage8E in_progress、automation PAUSED、主树前端保持。Codex已按用户切回official调整legacy作者provider兼容配置，未改变产品Sol路由，未发送新独立审查。
+
+下一动作：沿已有recovery_required、租约和checkpoint机制实现普通Worker的最新候选路由及持久暂停/同项恢复投影，先离线验证不重发成功项、取消与用量保留；正式产品采用/预算/发布另作明确合同，不自动重跑15或启动新付费批。
+
 ## 2026-10-29 单职责缺陷与局部修复闭环可以分开核验
 
 本例原completion初审100/pass漏检观摩用途冲突，但事实初审已有修法。受控继承保留原14步、原拒绝和所有旧账，经全文覆盖及compatibility/edit双审，10条原补丁产生唯一正式新稿7fb7e784，18段正确内容/来源保持；同一实际新稿的facts/completion fresh均100/pass并获双审接受，严格replay及唯一seal完成。因此原单职责漏检不能直接推断联合修订不可用，也无需重买成功前缀。

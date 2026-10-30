@@ -13,6 +13,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-30：用户复盘后明确开始产品接线工作。已完成原15版本复用审计：禁网运行当前Runtime库存，与最终准备库存逐字段相同；相对原库存/协调库存仅组件和程序指纹两项不同，其余28字段、15例来源/标签及30份初审请求摘要保持。三份完成seal摘要核验通过；原15仍完整完成，不因版本变化重跑，不制造同版本新资格。
+
+已补最新Sol双审合同的真实临时Postgres→Worker→Trace/receipt→API消费检查。当前Sol7项、旧GLM7项共14项通过（162.39秒），覆盖直接通过、唯一修订/同稿双fresh、四个取消边界及非owner取消。模型和Riot是替身，真实新Provider/Key0；用量、权限、未发布状态和终态不重领均保持，测试容器已删除。该证据补足当前候选的数据库消费者覆盖，不代表默认Worker注册、浏览器整链或产品发布准入。
+
+实际剩余接缝已固定：普通Worker尚未选择最新混合候选；持久session的暂停/同项恢复未投影到普通任务生命周期；候选发布策略仍always-reject。最新合同已禁止自动重试，旧Sol合同的自动恢复不能误算到当前版本。正常修订最短6调用，诊断硬限实际10次/739840tokens/3600秒，不能直接替代旧产品预算。开发Host验收不作为线上每份报告的Codex依赖。
+
+方案与证据：`docs/plans/2026-10-30-sol-product-entry.md`、`data/evaluation/results/sol_product_evidence_reuse_20261030.json`、`data/evaluation/results/sol_product_worker_consumption_20261030.json`。原自然正式尾段完成、旧费用与失败、Stage8E in_progress、automation PAUSED、主树前端保持。Codex已按用户切回official调整legacy作者provider兼容配置，未改变产品Sol路由，未发送新独立审查。
+
+下一动作：沿已有recovery_required、租约和checkpoint机制实现普通Worker的最新候选路由及持久暂停/同项恢复投影，先离线验证不重发成功项、取消与用量保留；正式产品采用/预算/发布另作明确合同，不自动重跑15或启动新付费批。
+
+以下为历史记录（不作为当前执行队列）。
+
+
 2026-10-29：已封存初审pair的受控继承正式尾段已闭环，终态 `candidate_repaired_pass_unqualified`，runtime completed。保留原14步成功前缀和completion-initial漏检拒绝；覆盖审查、compatibility、edit及两项fresh均经主审/原独立作者完整来源审查接受并正式导入。唯一application实际新稿SHA `7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51`，facts-fresh与completion-fresh均对同一实际新稿100/pass；facts仅有block4非阻断建议。原稿e30e37a3与原拒绝不改，原OP.GG分歧不称双审共识，可选措辞与正常舍入不升格阻断。
 
 严格只读replay与唯一create-only seal已通过：seal `8c2fcb76932a4bd72b5439f89b94c578f41d61b27fb2609466e56bbb2be6bd50`，257件封存Operator库存、父92件/作者2件、936份冻结源码及全部作者/native/readback库存一致。首真实stdout guard3f1c2b35保持，终stdout checkpoint0067/34e08491，父链累计活动1383.717/3600秒；冻结执行HEAD227a8373保持clean。同HEAD CI40864229481八项全绿；唯一waiter只首启一次，本轮没有重复生成、初审或手动恢复，无在途业务请求。automation `riftcoach`已PAUSED。
@@ -397,7 +410,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-下一动作：只读对照已完成原15的版本证据、当前合同及实际Runtime/产品消费者，列出具体绑定/质量缺口和可独立推进的产品工作；沿既有依赖继续，不自动重跑15、不启动新付费批。
+证据复用与当前Sol数据库消费者检查已完成。沿已有recovery_required、租约和checkpoint实现普通Worker的最新候选路由及持久暂停/同项恢复投影；先离线验证成功项不重发、取消与用量保留。范围见`docs/plans/2026-10-30-sol-product-entry.md`，不自动重跑15或启动新付费批，正式产品采用/预算/发布另作明确合同。
 
 ## History
 

@@ -5,6 +5,7 @@ qualification. The imported fixture requires an operator-provided disposable
 PostgreSQL database and recreates its schema; this module starts no services.
 """
 
+import hashlib
 import json
 from pathlib import Path
 import socket
@@ -12,7 +13,7 @@ from uuid import UUID
 
 import pytest
 
-from app.evaluation.natural_duty_contract import CONTRACT, MODEL
+from app.evaluation import natural_duty_contract, sol_review_contract
 from app.product.natural_duty_candidate import build_natural_duty_candidate
 from app.product.run_receipts import FileRunReceiptStore
 from app.rag.hybrid import LocalHybridKnowledgeProvider
@@ -25,6 +26,7 @@ from scripts import review_duty_composition as duty
 from tests.test_evidence_product_api_postgres import migrated_product_api
 from tests.test_native_editor_product_budget import SummaryBuilder
 from tests.test_natural_duty_candidate import Factory
+from tests.test_sol_natural_candidate import application as sol_application
 
 
 @pytest.fixture(autouse=True)
@@ -56,6 +58,7 @@ def no_external_services(monkeypatch):
     monkeypatch.setattr(socket, "create_connection", local_create_connection)
 
 
+@pytest.mark.parametrize('route', ['glm', 'sol-dual'])
 @pytest.mark.parametrize(
     "mode,cancel_after,foreign",
     [
@@ -69,7 +72,7 @@ def no_external_services(monkeypatch):
     ],
 )
 def test_natural_duty_worker_keeps_usage_but_never_publishes(
-    tmp_path, migrated_product_api, mode, cancel_after, foreign,
+    tmp_path, migrated_product_api, monkeypatch, route, mode, cancel_after, foreign,
 ):
     owner, other, repository, _ = migrated_product_api
     created = owner.post(
@@ -83,36 +86,47 @@ def test_natural_duty_worker_keeps_usage_but_never_publishes(
     assert created.status_code == 202
     task_id, run_id = created.json()["task_id"], created.json()["run_id"]
     cancellations = []
+    review_requests = []
+    contract = sol_review_contract if route == 'sol-dual' else natural_duty_contract
 
-    class CancellingFactory(Factory):
-        def __call__(self, trusted_run_id):
-            assert trusted_run_id == run_id
-            provider = super().__call__(trusted_run_id)
-            delegate = provider.chat
+    if route == 'sol-dual':
+        application, factory, _, _ = sol_application(
+            tmp_path, mode=mode, candidate=contract, runs_root=tmp_path,
+        )
+    else:
+        factory = Factory(mode=mode)
+        application = build_natural_duty_candidate(
+            summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
+            provider_factory=factory,
+            knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs")),
+            runs_root=tmp_path,
+        )
 
-            def chat(request):
-                response = delegate(request)
-                if len(provider.attempts) == cancel_after:
-                    # The response and its usage exist, but have not yet
-                    # returned to Runtime. Cancellation uses a real SQL API
-                    # transaction, not a synthetic DispatchStopped exception.
-                    client = other if foreign else owner
-                    cancellations.append(client.post(
-                        f"/tasks/{task_id}/cancel",
-                        headers={"Idempotency-Key": "natural-duty-cancel-pg"},
-                    ))
-                return response
+    original_factory_call = type(factory).__call__
 
-            provider.chat = chat
-            return provider
+    def factory_call(self, trusted_run_id):
+        assert trusted_run_id == run_id
+        provider = original_factory_call(self, trusted_run_id)
+        delegate = provider.chat
 
-    factory = CancellingFactory(mode=mode)
-    application = build_natural_duty_candidate(
-        summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
-        provider_factory=factory,
-        knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs")),
-        runs_root=tmp_path,
-    )
+        def chat(request):
+            response = delegate(request)
+            if contract.role_for_request(request) == 'review':
+                review_requests.append(request)
+            if len(provider.attempts) == cancel_after:
+                # Response usage exists; cancel through SQL before it returns
+                # to Runtime, including cancellation after the last response.
+                client = other if foreign else owner
+                cancellations.append(client.post(
+                    f"/tasks/{task_id}/cancel",
+                    headers={"Idempotency-Key": "natural-duty-cancel-pg"},
+                ))
+            return response
+
+        provider.chat = chat
+        return provider
+
+    monkeypatch.setattr(type(factory), '__call__', factory_call)
     # This candidate already constructs DispatchAwareRuntime. The older
     # with_dispatch_trace adapter deliberately refuses that Runtime subclass.
     worker = ReviewWorker(
@@ -139,7 +153,7 @@ def test_natural_duty_worker_keeps_usage_but_never_publishes(
     assert all(attempt["status"] == "completed" for attempt in provider.attempts)
     assert [
         (request.metadata[duty.MARKER]["duty"], request.metadata[duty.MARKER]["stage"])
-        for request in provider.reviewer.requests
+        for request in review_requests
     ] == [
         ("facts", "initial"), ("completion", "initial"),
         ("facts", "fresh"), ("completion", "fresh"),
@@ -171,8 +185,18 @@ def test_natural_duty_worker_keeps_usage_but_never_publishes(
     receipt = FileRunReceiptStore(tmp_path).read_receipt(run_id)
     assert receipt.trace_reference is not None and not receipt.report_available
     trace = RuntimeTraceStore(tmp_path, run_id).read_trace(receipt.trace_reference)
-    assert trace.identity.coach_contract == CONTRACT.snapshot()
-    assert trace.identity.provider_model == MODEL
+    assert trace.identity.coach_contract == contract.CONTRACT.snapshot()
+    assert trace.identity.provider_model == contract.MODEL
+    if route == 'sol-dual':
+        assert {request.metadata[contract.CONTEXT]['version'] for request in review_requests} <= {contract.VERSION}
+        assert all(contract.request_identity(request) == (contract.REVIEW_PROVIDER, contract.REVIEW_MODEL)
+                   for request in review_requests)
+        if expected_calls == 6:
+            fresh = [request.metadata[contract.CONTEXT] for request in review_requests
+                     if request.metadata[contract.CONTEXT]['stage'] == 'fresh']
+            applied = json.loads((tmp_path / run_id / 'natural-duty-journal' / 'application.json').read_bytes())
+            assert len(fresh) == 2 and fresh[0]['report'] == fresh[1]['report']
+            assert hashlib.sha256(fresh[0]['report'].encode('utf-8')).hexdigest() == applied['report_sha256']
     starts = [event.signal for event in trace.events if event.signal.kind == "provider_call_started"]
     completes = [event.signal for event in trace.events if event.signal.kind == "provider_call_completed"]
     assert len(starts) == len(completes) == expected_calls
@@ -180,11 +204,12 @@ def test_natural_duty_worker_keeps_usage_but_never_publishes(
     assert [signal.ordinal for signal in completes] == list(range(1, expected_calls + 1))
     assert trace.usage.provider_calls_attempted == expected_calls
     assert trace.usage.provider_responses_observed == expected_calls
-    # All responses returned with known 10/10 usage. A pre-next-send stop must
+    # Flash/GLM return 10/10; the Sol HTTP fixture returns 12/8. A pre-next-send stop must
     # neither invent an attempted call nor erase usage as unknown/zero.
     assert trace.usage.token_observation.value == "complete"
-    assert trace.usage.observed_input_tokens == trace.usage.input_tokens == 10 * expected_calls
-    assert trace.usage.observed_output_tokens == trace.usage.output_tokens == 10 * expected_calls
+    sol_reviews = max(0, expected_calls - 2) if route == 'sol-dual' else 0
+    assert trace.usage.observed_input_tokens == trace.usage.input_tokens == 10 * expected_calls + 2 * sol_reviews
+    assert trace.usage.observed_output_tokens == trace.usage.output_tokens == 10 * expected_calls - 2 * sol_reviews
     usage = owner.get(f"/runs/{run_id}/usage")
     assert usage.status_code == 200
     assert usage.json()["run_id"] == run_id

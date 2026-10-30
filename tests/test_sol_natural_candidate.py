@@ -82,7 +82,7 @@ def offline(monkeypatch):
     monkeypatch.setattr(socket, 'create_connection', deny)
 
 
-def application(tmp_path, *, mode='repair', statuses=(), candidate=contract):
+def application(tmp_path, *, mode='repair', statuses=(), candidate=contract, runs_root=None):
     attempts = []
 
     def sender(business, **kwargs):
@@ -109,7 +109,7 @@ def application(tmp_path, *, mode='repair', statuses=(), candidate=contract):
     factory = Factory()
     app = build_natural_duty_candidate(summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory, knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
-        runs_root=tmp_path/'reports', candidate=candidate)
+        runs_root=tmp_path/'reports' if runs_root is None else runs_root, candidate=candidate)
     flows=[]
     original=app._runtime._execution_factory._review_workflow_factory
     def capture(runtime,budget):
