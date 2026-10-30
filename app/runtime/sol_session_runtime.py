@@ -1,4 +1,4 @@
-"""Candidate-only local replay above provider observation and its shared budget.
+"""Durable local replay above provider observation and its shared budget.
 
 Derived Runtime traces contain only new provider IO, not replayed completions.
 The durable session's cumulative budget is the task accounting authority.
@@ -38,7 +38,7 @@ class SessionBudget(CoachBudgetedProvider):
         if provider._delegate.reviewer.task_directory.resolve() != session.transport_root:
             raise ValueError('session_transport_root_binding')
         if (session.binding.get('fixture_only') is not True and session.review_gate is None
-                and not session.worker_development):
+                and not session.worker_managed):
             raise ValueError('session_native_review_gate_required')
         super().__init__(provider, coach_contract=coach_contract)
         self.session, self.router = session, provider._delegate
@@ -97,7 +97,7 @@ class SessionBudget(CoachBudgetedProvider):
             try:
                 response = super(SessionBudget, self).chat(request)
             except DispatchStopped as error:
-                if not self.session.worker_development:
+                if not self.session.worker_managed:
                     raise
                 # The trusted Provider-start fence released this envelope in
                 # CoachBudget. Commit that fact without manufacturing an HTTP.
@@ -235,7 +235,7 @@ class SessionWorkflow(NaturalDutyWorkflow):
             return super().assemble(inputs)
         gate = self.session.review_gate
         if gate is None:
-            if self.session.worker_development:
+            if self.session.worker_managed:
                 raise SessionPaused('session_awaiting_patch_coordination')
             raise SessionBlocked('session_patch_coordination_requires_native_gate')
         self.record('patch-conflicts', inventory)

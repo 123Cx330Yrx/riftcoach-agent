@@ -67,7 +67,7 @@ from app.tasks.reconciliation import (
 )
 from app.workers.polling import PollingPolicy
 from app.workers.review_worker import ReviewWorker
-from app.tasks.continuation import WORKER_SOL_PROFILE
+from app.tasks.continuation import WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, contract_for_worker_profile
 
 
 WorkerCompositionErrorCode: TypeAlias = Literal[
@@ -173,10 +173,10 @@ def load_worker_composition_settings(
         )
         registry = load_provider_registry_settings(environment)
         execution_profile = environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE", "legacy").strip()
-        if execution_profile not in {"legacy", WORKER_SOL_PROFILE}:
+        if execution_profile not in {"legacy", WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
             raise ValueError("unknown worker execution profile")
-        if execution_profile == WORKER_SOL_PROFILE and raw_zhipu.model != ZHIPU_GLM53_FLASH_MODEL:
-            raise ValueError("Sol development route requires Flash generation")
+        if execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE} and raw_zhipu.model != ZHIPU_GLM53_FLASH_MODEL:
+            raise ValueError("Sol routes require Flash generation")
         if registry.default_provider_id != "zhipu":
             raise ValueError("only the current product baseline may be selected")
         runtime_profile = resolve_model_runtime_profile(
@@ -474,20 +474,20 @@ def compose_continuation_executor(settings, *, repository, legacy, summary_build
     from app.workers.sol_continuation import ContinuationRoutingExecutor, SolContinuationExecutor
     store = PostgresTaskContinuations(repository)
     candidate = None
-    if settings.execution_profile == WORKER_SOL_PROFILE:
-        from app.evaluation import sol_review_contract
+    if settings.execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+        contract = contract_for_worker_profile(settings.execution_profile)
         from app.runtime.sol_natural_provider import SolNaturalProviderFactory
         generator = ZhipuSettings(api_key=_read_secret_value(settings.secret_source,
             name=settings.llm_secret_name), base_url=settings.zhipu.base_url,
             model=settings.zhipu.model, default_timeout_s=settings.zhipu.default_timeout_s)
         reviewer_key = _read_secret_value(settings.secret_source, name="sol-review-api")
-        candidate = SolContinuationExecutor(store=store, runs_root=settings.runs_root,
+        candidate = SolContinuationExecutor(store=store, runs_root=settings.runs_root, contract_module=contract,
             summary_builder=summary_builder, knowledge_provider=knowledge,
             memory_repository=memory_repository,
             publication_sources=_publication_sources(settings.runs_root),
             provider_factory_builder=lambda root: SolNaturalProviderFactory(
                 generator_settings=generator, api_key=reviewer_key, transport_root=root,
-                contract_module=sol_review_contract))
+                contract_module=contract))
     elif settings.execution_profile != "legacy":
         raise WorkerCompositionError("worker_configuration_invalid")
     return ContinuationRoutingExecutor(store, legacy, candidate)
@@ -532,7 +532,7 @@ def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecret
             version="environment",
             value=_required_secret(environment, "LLM_API_KEY"),
         )
-        if environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE") == WORKER_SOL_PROFILE:
+        if environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE") in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
             source.put(name="sol-review-api", version="environment",
                        value=_required_secret(environment, "RIFTCOACH_SOL_REVIEW_API_KEY"))
     except ValueError:

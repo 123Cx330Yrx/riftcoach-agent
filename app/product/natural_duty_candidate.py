@@ -1,7 +1,7 @@
-"""Explicit dependency-injected candidate on the actual product Runtime.
+"""Explicit dependency-injected natural workflows on the product Runtime.
 
-No key loading, paid CLI or Worker/API registration. Model-pass outcomes are
-retained for evaluation but never published by this unqualified adapter.
+Construction loads no keys and changes no default. Diagnostic contracts retain
+their unpublished outcomes; the separate product contract uses ProductWorkflow.
 """
 from pathlib import Path
 from copy import deepcopy
@@ -36,21 +36,25 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         provider_type, assets = NaturalDutyProvider, ASSETS
     else:
         from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
+        from app.product import sol_contract
         from app.runtime.sol_natural_provider import SolNaturalProvider
-        if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract):
+        if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract):
             raise ValueError("unsupported_natural_candidate")
         provider_type, assets = SolNaturalProvider, ROOT/"examples/runtime_profiles/sol_natural_v1"
         if candidate is sol_necessity_contract:
             assets = ROOT/'examples/runtime_profiles/sol_necessity_v1'
-        elif candidate is sol_review_contract:
-            assets = sol_review_contract.ASSETS
+        elif candidate in (sol_review_contract, sol_contract):
+            assets = candidate.ASSETS
+        if candidate is sol_contract and execution_session is None:
+            raise ValueError("product_requires_durable_session")
     contract = candidate.CONTRACT
     if getattr(provider_factory.descriptor, 'contract_module', candidate) is not candidate:
         raise ValueError('natural_candidate_provider_contract')
     if execution_session is not None:
         from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
+        from app.product import sol_contract
         from app.evaluation.sol_natural_session import CandidateSession
-        if (candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract)
+        if (candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract)
                 or type(execution_session) is not CandidateSession
                 or execution_session.contract_module is not candidate):
             raise ValueError('session_requires_sol_candidate')
@@ -79,7 +83,10 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         workflow_type = NaturalDutyWorkflow
         if execution_session is not None:
             from app.runtime.sol_session_runtime import SessionWorkflow
-            return SessionWorkflow(SharedBudgetReviewSender(budget), session=execution_session,
+            from app.product import sol_contract
+            from app.product.sol_workflow import ProductWorkflow
+            selected_workflow = ProductWorkflow if candidate is sol_contract else SessionWorkflow
+            return selected_workflow(SharedBudgetReviewSender(budget), session=execution_session,
                 journal_root=execution_session.journal_root, contract_module=candidate,
                 patch_coordination=patch_coordination)
         return workflow_type(SharedBudgetReviewSender(budget),
@@ -88,8 +95,11 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
     session_factories = {}
     if execution_session is not None:
         from app.runtime.sol_session_runtime import SessionBudget, SessionTools
+        from app.product import sol_contract
+        from app.product.sol_workflow import ProductBudget
+        selected_budget = ProductBudget if candidate is sol_contract else SessionBudget
         session_factories = dict(
-            budget_factory=lambda provider, **kwargs: SessionBudget(provider, session=execution_session, **kwargs),
+            budget_factory=lambda provider, **kwargs: selected_budget(provider, session=execution_session, **kwargs),
             knowledge_runtime_factory=lambda registry: SessionTools(registry, session=execution_session))
     factory = RuntimeExecutionFactory(knowledge_provider=CoachingQueryKnowledgeProvider(knowledge_provider),
         coach_contract=contract, review_workflow_factory=workflow, **session_factories)

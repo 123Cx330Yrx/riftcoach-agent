@@ -103,7 +103,8 @@ class CoachBudgetedProvider:
             from app.evaluation.sol_necessity_contract import CONTRACT as necessity_contract
             from app.evaluation.sol_completion_contract import CONTRACT as completion_contract
             from app.evaluation.sol_review_contract import CONTRACT as dual_contract
-            if self.contract in (sol_contract, necessity_contract, completion_contract, dual_contract):
+            from app.product.sol_contract import CONTRACT as product_contract
+            if self.contract in (sol_contract, necessity_contract, completion_contract, dual_contract, product_contract):
                 delegate = provider._delegate if isinstance(provider, ObservedLLMProvider) else provider
                 known = delegate.failure_usage(error, request)
                 if known is not None:

@@ -25,6 +25,9 @@ def inventory(directory):
 
 def selected_contract(value=None):
     from app.evaluation import sol_necessity_contract, sol_completion_contract, sol_review_contract
+    from app.product import sol_contract
+    if value is sol_contract:
+        return value
     if value is None or value is contract:
         return contract
     if value in (sol_necessity_contract, sol_completion_contract, sol_review_contract):
@@ -339,7 +342,7 @@ class SolNaturalProvider(RoleRoutedProvider):
         context = request.metadata.get(self.contract_module.CONTEXT, {})
         logical_role = 'control' if context.get('control_case') is not None else role
         limit = (self.contract_module.CONTRACT.descriptor().get('control_logical_calls', 0)
-                 if logical_role == 'control' else 2 if role == 'generation' else 4)
+                 if logical_role == 'control' else self.contract_module.CONTRACT.descriptor()[role + '_logical_calls'])
         if self._retry_request is None:
             self._logical[logical_role] += 1
         else:

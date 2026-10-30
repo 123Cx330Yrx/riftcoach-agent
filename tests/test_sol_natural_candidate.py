@@ -46,9 +46,9 @@ def collect(business,**kwargs):
     scripted=Responses(reviewer=True,mode=MODE)
     result=scripted.chat(request)
     value=response(dict(result.tool_calls[0].arguments))
-    if MODE == 'overlap':
+    if MODE in ('overlap', 'identical'):
         from tests.test_sol_original15_session import opinion
-        value = response(opinion(context, 'overlap'))
+        value = response(opinion(context if MODE == 'overlap' else dict(context, duty='facts'), 'overlap' if MODE == 'overlap' else 'repair'))
     if MODE == 'non_tool':
         value['output'] = [dict(type='message', status='completed',
             content=[dict(type='output_text', text='OFFLINE_TEXT_ONLY', annotations=[])])]
@@ -82,7 +82,7 @@ def offline(monkeypatch):
     monkeypatch.setattr(socket, 'create_connection', deny)
 
 
-def application(tmp_path, *, mode='repair', statuses=(), candidate=contract, runs_root=None):
+def application(tmp_path, *, mode='repair', statuses=(), candidate=contract, runs_root=None, factory_only=False):
     attempts = []
 
     def sender(business, **kwargs):
@@ -107,6 +107,8 @@ def application(tmp_path, *, mode='repair', statuses=(), candidate=contract, run
             return self.providers[run_id]
 
     factory = Factory()
+    if factory_only:
+        return factory, attempts
     app = build_natural_duty_candidate(summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory, knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
         runs_root=tmp_path/'reports' if runs_root is None else runs_root, candidate=candidate)

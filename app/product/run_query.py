@@ -362,7 +362,8 @@ class RunQueryService:
         self._receipts = receipt_store or FileRunReceiptStore(self._runs_root)
 
     def get_session_accounting(self, run_id, reference):
-        from app.evaluation import sol_review_contract
+        from app.tasks.continuation import contract_for_worker_profile, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE
+        contract = contract_for_worker_profile(reference["profile"])
         from app.evaluation.sol_natural_session import CandidateSession
         from app.product.session_usage import session_accounting
         from app.tasks.continuation import SessionAccounting
@@ -375,7 +376,8 @@ class RunQueryService:
         with CandidateSession(root / "session", binding=reference["binding"],
                 transport_root=root / "transport" / run_id, journal_root=root / "journal",
                 guard_sha=reference["guard_sha256"], checkpoint_sha=reference["checkpoint_sha256"],
-                contract_module=sol_review_contract, read_only=True, worker_development=True) as session:
+                contract_module=contract, read_only=True, worker_development=reference["profile"] == WORKER_SOL_PROFILE,
+                worker_product=reference["profile"] == WORKER_SOL_PRODUCT_PROFILE) as session:
             value = session_accounting(session)
             if value != reference["accounting"]:
                 raise RunQueryError("run_integrity_failed")

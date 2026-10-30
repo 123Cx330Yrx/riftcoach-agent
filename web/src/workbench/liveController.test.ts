@@ -178,7 +178,7 @@ describe("generation-guarded live controller", () => {
     })
   })
 
-  it("loads the verified Timeline with terminal published content", async () => {
+  it.each([false, true])("loads published Timeline and cumulative session usage (mismatch=%s)", async (mismatch) => {
     const api = new FakeApi()
     api.taskValue = task("succeeded")
     api.productValue = product("published")
@@ -210,6 +210,11 @@ describe("generation-guarded live controller", () => {
         events: [{ event_kind: "objective", at_seconds: 1200, phase: "mid", label: "Dragon secured", item_id: null }] }],
     }
     api.reportValue = "## Verified brief"
+    const accounting = { scope: "cumulative_session" as const, requests_reserved: 7,
+      requests_observed: 7, known_tokens: 120, unknown_token_reservation: 80384,
+      retries: 1, unresolved_intents: 0 }
+    api.getUsage = async () => ({ schema_version: "1.0", run_id: RUN_ID,
+      task_status: mismatch ? "cancelled" : "succeeded", usage: null, session_accounting: accounting })
     api.evidenceValue = {
       schema_version: "1.0", snapshot_id: "97000000-0000-4000-8000-000000000001", task_id: TASK_ID,
       run_id: RUN_ID, revision: 1, bundle_digest: "a".repeat(64), snapshot_digest: "b".repeat(64),
@@ -225,7 +230,12 @@ describe("generation-guarded live controller", () => {
     const controller = new LiveWorkbenchController({ api, streamFactory: streamHarness().factory })
     await controller.start()
 
-    expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.timeline?.matches[0]?.events[0]?.phase).toBe("mid")
+    if (mismatch) {
+      expect(controller.snapshot.state.client).toBe("error")
+    } else {
+      expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.timeline?.matches[0]?.events[0]?.phase).toBe("mid")
+      expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.sessionAccounting).toEqual(accounting)
+    }
   })
   it("loads profiles, active control state and opens at most one stream", async () => {
     const api = new FakeApi()

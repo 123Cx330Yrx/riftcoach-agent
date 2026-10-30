@@ -31,13 +31,14 @@ def continued_api(migrated_product_api):
             session.execute(sa.text("DELETE FROM review_task_events WHERE event_kind = 'continuation_resumed'"))
 
 
-def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=()):
+def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=(),
+                 contract=sol_review_contract, profile=WORKER_SOL_PROFILE):
     env = valid_environment(tmp_path)
     env.update(LLM_MODEL=ZHIPU_GLM53_FLASH_MODEL, LLM_BASE_URL=ZHIPU_STANDARD_BASE_URL,
-        RIFTCOACH_RUNS_ROOT=str(tmp_path), RIFTCOACH_WORKER_EXECUTION_PROFILE=WORKER_SOL_PROFILE,
+        RIFTCOACH_RUNS_ROOT=str(tmp_path), RIFTCOACH_WORKER_EXECUTION_PROFILE=profile,
         RIFTCOACH_SOL_REVIEW_API_KEY="OFFLINE_SENTINEL")
     settings = load_worker_composition_settings(env)
-    _, probe, _, _ = application(tmp_path / "probe", mode=mode, candidate=sol_review_contract)
+    probe, _ = application(tmp_path / "probe", mode=mode, candidate=contract, factory_only=True)
 
     class Summary(SummaryBuilder):
         reads = 0
@@ -49,11 +50,11 @@ def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=())
     factories, requests = [], []
 
     def factory(**kwargs):
-        assert kwargs["contract_module"] is sol_review_contract
+        assert kwargs["contract_module"] is contract
         # Every reconstruction is a fresh provider instance; transport receipts
         # and CandidateSession alone carry successful state across leases.
-        _, value, _, calls = application(Path(kwargs["transport_root"]).parent,
-            mode=mode, statuses=statuses if not factories else (), candidate=sol_review_contract)
+        value, calls = application(Path(kwargs["transport_root"]).parent,
+            mode=mode, statuses=statuses if not factories else (), candidate=contract, factory_only=True)
         factories.append(value)
         requests.append(calls)
         return value

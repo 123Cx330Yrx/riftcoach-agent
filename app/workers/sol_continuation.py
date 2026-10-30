@@ -7,13 +7,13 @@ The final segment is copied byte-for-byte to the existing query boundary.
 import json
 from pathlib import Path
 
-from app.evaluation import sol_review_contract as contract
+from app.evaluation import sol_review_contract as default_contract
 from app.evaluation.sol_natural_session import CandidateSession, SessionBlocked, SessionPaused
 from app.product.session_usage import session_accounting
 from app.product.natural_duty_candidate import build_natural_duty_candidate
 from app.runtime.dispatch_control import require_dispatch_allowed
 from app.tasks.continuation import (ContinuationError,
-                                    TaskExecutionPause, WORKER_SOL_PROFILE)
+                                    TaskExecutionPause, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, contract_for_worker_profile)
 from app.tasks.recent_review_executor import RecentReviewTaskExecutor
 from app.tasks.reconciliation import RecentReviewTerminalEvidenceVerifier
 
@@ -84,16 +84,21 @@ def promote_segment(source, target):
 class SolContinuationExecutor:
     def __init__(self, *, store, runs_root, summary_builder, provider_factory_builder,
                  knowledge_provider, memory_repository=None, publication_sources=None,
-                 max_new_models=None):
+                 max_new_models=None, contract_module=default_contract):
         self.store, self.root = store, Path(runs_root).resolve()
         self.summary_builder, self.factories = summary_builder, provider_factory_builder
         self.knowledge = knowledge_provider
         self.memory = memory_repository
         self.publication_sources = publication_sources
         self.max_new_models = max_new_models
+        self.contract = contract_module
+        self.profile = (WORKER_SOL_PROFILE if contract_module is default_contract else WORKER_SOL_PRODUCT_PROFILE)
+        if contract_for_worker_profile(self.profile) is not contract_module:
+            raise ValueError("worker_contract_binding")
 
     def execute(self, task):
-        binding = dict(worker_profile=WORKER_SOL_PROFILE, adapter_version=1,
+        contract = self.contract
+        binding = dict(worker_profile=self.profile, adapter_version=1,
             candidate_contract=contract.VERSION, task_id=str(task.task_id),
             run_id=task.run_id, owner_id=task.owner_id,
             request_fingerprint=task.request_fingerprint,
@@ -112,7 +117,8 @@ class SolContinuationExecutor:
         session = CandidateSession(private / "session", binding=binding,
             transport_root=transport / task.run_id, journal_root=private / "journal",
             guard_sha=saved["guard_sha256"], checkpoint_sha=saved["checkpoint_sha256"],
-            contract_module=contract, worker_development=True,
+            contract_module=contract, worker_development=self.profile == WORKER_SOL_PROFILE,
+            worker_product=self.profile == WORKER_SOL_PRODUCT_PROFILE,
             manual_retry=saved["manual_retry"], before_new_model=require_dispatch_allowed,
             max_new_models=self.max_new_models,
             checkpoint_sink=lambda value: self.store.pin(task,

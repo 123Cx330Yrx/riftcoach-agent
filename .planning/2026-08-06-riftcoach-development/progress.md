@@ -1,3 +1,11 @@
+## 2026-10-30 独立产品合同实现与消费验证
+
+2026-10-30续：用户授权采用ADR0119后，独立Flash/Sol产品合同1.7.0已实现。显式`sol-dual-product-v1`执行8次/401920tokens/900累计活动秒、最多2次明确同项恢复；完整双初审、必要时唯一application、同稿双fresh达到原85分/pass后进入既有发布层。相同补丁去重保留双职责问题覆盖；冲突、坏锚点和fresh拒绝暂停局部，成功前缀/原拒绝/未知用量保持。旧开发合同继续拒发布，新旧profile不能改挂已有任务，默认legacy未切换。
+
+17项新合同检查、57项相关旧Runtime/session/Worker回归、7项真实临时Postgres检查、26项前端检查和typecheck通过。真库覆盖发布、重启续接、超时明确补测、取消、Evidence原子提交、owner查询及双向profile隔离；模型和Riot为替身，不是新增真实质量证据。修复新profile凭据分支遗漏与发布后累计用量漏读。旧15库存仅组件/程序指纹改变，其余28字段及30份初审请求保持，原15不重跑。
+
+证据：`data/evaluation/results/sol_product_contract_implemented_20261030.json`；实施卡：`docs/plans/2026-10-30-sol-product-contract.md`。下一项是按`docs/plans/2026-10-30-sol-product-live-consumption-proposal.md`完成零付费预检、冻结一条代表性产品通路的可审查清单，再取得具体付费授权；不复用过期批次、不切默认或迁移产品库。Stage8E仍in_progress，automation PAUSED。完整前端优化、README/Demo、Training/四块联动、知识Memory、身份运维、两树整合与独立评估/教学保留。
+
 ## 2026-10-30 暂停恢复页面与产品合同提案
 
 2026-10-30续：工作台已接入普通Worker的暂停恢复API。暂停时显示已保留步骤与累计用量；普通继续、同项明确补测一次和取消均使用当前身份/CSRF，恢复绑定checkpoint，网络回执不确定时同操作复用幂等键。未确认intent不提供重发；取消后未知用量保留。刷新与重连不自动补测。已修暂停仍显示运行中，以及旧heartbeat回放反复重载暂停面板的问题。

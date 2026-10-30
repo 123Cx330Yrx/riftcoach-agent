@@ -1,5 +1,9 @@
 # RiftCoach 路线 v1.3 局部校准
 
+2026-10-30更新：ADR0119已获用户授权并完成独立Flash/Sol产品合同实施（8次/401920tokens/900累计活动秒，显式profile）。业务请求与原15证据复用，完成定向离线/临时真库消费验证；默认路由、真实付费消费与公开部署未激活，Stage8E仍在进行。当前状态以[canonical](project_execution_state.md)为准；采用范围见[ADR0119](adr/0119-proposed-sol-product-adoption.md)，实现证据见[工作卡](plans/2026-10-30-sol-product-contract.md)。完整前端优化、README/Demo和原后续路线保留，阶段顺序不变。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-15 大复盘后恢复：8E顺序不变；本批修复来源索引、纠正可变性、无损请求和修订标准一致性。真实语义与准入未完成；后续四块交互和整体前端升级保留。当前以canonical及ADR-0102 Recovery节为准。
 
 以下为历史记录，当前以最新canonical为准。

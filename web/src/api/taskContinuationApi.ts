@@ -18,7 +18,7 @@ function object(value: unknown, keys: readonly string[]): Record<string, unknown
 export function decodeContinuation(value: unknown, taskId: string, runId: string): TaskContinuation {
   const row = object(value, ["task_id", "run_id", "status", "profile", "checkpoint_sha256", "reason", "session_accounting", "publication_allowed"])
   if (row.task_id !== taskId || row.run_id !== runId || row.status !== "recovery_required"
-    || row.profile !== "sol-dual-development-v1" || row.publication_allowed !== false
+    || !["sol-dual-development-v1", "sol-dual-product-v1"].includes(String(row.profile)) || row.publication_allowed !== false
     || typeof row.checkpoint_sha256 !== "string" || !/^[0-9a-f]{64}$/.test(row.checkpoint_sha256)
     || !(row.reason === null || typeof row.reason === "string" && /^[a-z0-9_]{1,128}$/.test(row.reason))) {
     throw new Error("continuation_invalid")

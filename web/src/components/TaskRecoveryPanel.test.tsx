@@ -20,10 +20,10 @@ function show(api: TaskContinuationApi, onChanged = vi.fn()) {
 }
 
 describe("explicit task recovery", () => {
-  it("does not retry on load; preserves the key and checkpoint after a lost response", async () => {
+  it.each(["sol-dual-development-v1", "sol-dual-product-v1"])("does not retry on load; preserves key/checkpoint for %s", async (profile) => {
     const calls: RequestInit[] = []
     const api = new TaskContinuationApi(new ApiClient({ fetcher: async (_url, init) => {
-      if (init?.method !== "POST") return json(wire())
+      if (init?.method !== "POST") return json({ ...wire(), profile })
       calls.push(init)
       if (calls.length === 1) throw new TypeError("offline")
       return json({ task_id: TASK, run_id: RUN, status: "queued", replayed: true })

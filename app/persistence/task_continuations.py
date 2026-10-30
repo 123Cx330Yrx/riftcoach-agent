@@ -7,7 +7,7 @@ import re
 import sqlalchemy as sa
 
 from app.persistence.task_record import ReviewTaskRecord
-from app.tasks.continuation import ContinuationError, ResumeContinuation, WORKER_SOL_PROFILE
+from app.tasks.continuation import ContinuationError, ResumeContinuation
 from app.tasks.models import TaskStatus
 from app.tasks.reliable_runtime import TaskLifecycleEventKind
 
@@ -48,11 +48,13 @@ class PostgresTaskContinuations:
             self._live(record, task)
             value = deepcopy(record.continuation_reference)
             if value is None:
-                value = dict(profile=WORKER_SOL_PROFILE, binding=binding,
+                from app.tasks.continuation import contract_for_worker_profile
+                contract_for_worker_profile(binding["worker_profile"])
+                value = dict(profile=binding["worker_profile"], binding=binding,
                              guard_sha256=None, checkpoint_sha256=None,
                              checkpoint=None, phase="prepared", manual_retry=False,
                              resumes={}, accounting=None)
-            if value["profile"] != WORKER_SOL_PROFILE or value["binding"] != binding:
+            if value["profile"] != binding["worker_profile"] or value["binding"] != binding:
                 raise ContinuationError("continuation_binding_changed")
             result = deepcopy(value)
             # A grant belongs to one claim. An interrupted uncommitted attempt

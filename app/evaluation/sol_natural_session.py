@@ -82,10 +82,18 @@ class CandidateSession:
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
                  max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None,
-                 contract_module=None, manual_retry=False, worker_development=False):
+                 contract_module=None, manual_retry=False, worker_development=False, worker_product=False):
         from app.runtime.sol_natural_provider import selected_contract
         self.contract_module = selected_contract(contract_module)
         self.worker_development = worker_development
+        self.worker_product = worker_product
+        self.worker_managed = worker_development or worker_product
+        if worker_product:
+            from app.product import sol_contract
+            if (worker_development or self.contract_module is not sol_contract
+                    or binding.get("worker_profile") != sol_contract.WORKER_PROFILE
+                    or not binding.get("task_id") or continuation is not None):
+                raise ValueError("session_worker_product_binding")
         if worker_development:
             from app.evaluation import sol_review_contract
             from app.tasks.continuation import WORKER_SOL_PROFILE
@@ -123,6 +131,13 @@ class CandidateSession:
         self._open = False
         self._waiting_since = None
 
+    def guard_value(self):
+        policy = (dict(publication_policy=self.contract_module.CONTRACT.descriptor()["publication_policy"],
+                       requires_terminal_verdict=True, deployment_admitted=False) if self.worker_product
+                  else dict(production_admitted=False, publication_allowed=False))
+        return dict(version=self.VERSION, binding=self.binding, transport_root=str(self.transport_root),
+                    journal_root=str(self.journal_root), **policy)
+
     def __enter__(self):
         if self.continuation is not None:
             from scripts.sol_natural_continuation import verify_parent
@@ -141,9 +156,7 @@ class CandidateSession:
                 self.root.mkdir()
                 (self.root/'operations').mkdir()
                 (self.root/'checkpoints').mkdir()
-                write_new_json(self.root/'guard.json', dict(version=self.VERSION, binding=self.binding,
-                    transport_root=str(self.transport_root), journal_root=str(self.journal_root),
-                    production_admitted=False, publication_allowed=False))
+                write_new_json(self.root/'guard.json', self.guard_value())
                 self.guard_sha = digest((self.root/'guard.json').read_bytes())
                 self.active_before = 0.0
                 self.segment_started = self.clock()
@@ -208,9 +221,7 @@ class CandidateSession:
         if digest((self.root/'guard.json').read_bytes()) != self.guard_sha:
             raise ValueError('session_guard_changed')
         guard = json.loads((self.root/'guard.json').read_bytes())
-        if guard != dict(version=self.VERSION, binding=self.binding,
-                         transport_root=str(self.transport_root), journal_root=str(self.journal_root),
-                         production_admitted=False, publication_allowed=False):
+        if guard != self.guard_value():
             raise ValueError('session_identity_changed')
         previous = self.guard_sha
         paths = sorted((self.root/'checkpoints').glob('*.json'))

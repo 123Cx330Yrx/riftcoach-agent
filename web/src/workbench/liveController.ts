@@ -329,10 +329,16 @@ export class LiveWorkbenchController {
     if (productState.state === "published" && evidence === undefined) {
       throw new Error("published evidence is unavailable")
     }
+    const observed = run.usage === null ? await this.api.getUsage(binding.runId, signal) : undefined
+    if (!this.owns(binding)) return view
+    if (observed && (observed.run_id !== binding.runId || observed.task_status !== view.task?.status)) {
+      throw new Error("usage task binding mismatch")
+    }
     return {
       ...view,
       run: adaptRun(run) satisfies WorkbenchRun,
-      usage: run.usage,
+      usage: observed?.usage ?? run.usage,
+      sessionAccounting: observed?.session_accounting,
       summary: adaptRecentSummary(summary) satisfies WorkbenchRecentSummary,
       timeline: adaptTimeline(timeline) satisfies WorkbenchTimeline,
       report: { markdown: report } satisfies WorkbenchCoachReport,

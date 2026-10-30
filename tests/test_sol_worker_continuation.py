@@ -9,7 +9,7 @@ from app.agent.memory_context import MemoryAwareContextBuilder
 from app.agent.context import ContextBuilderV1
 from app.memory.context_manifest_store import FileMemoryContextManifestStore
 from app.memory.context_models import MemoryContextSnapshot, MemoryContextRecordKind
-from app.tasks.continuation import WORKER_SOL_PROFILE
+from app.tasks.continuation import WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE
 from app.workers.sol_continuation import FrozenMemoryRepository, FrozenMemoryManifestStore
 from app.workers.composition import load_worker_composition_settings, WorkerCompositionError
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_MODEL, ZHIPU_STANDARD_BASE_URL
@@ -51,14 +51,18 @@ def test_worker_development_cannot_bypass_diagnostic_gate_without_binding(tmp_pa
             contract_module=sol_review_contract, worker_development=True)
 
 
-def test_candidate_route_is_explicit_and_requires_separate_credential(tmp_path):
+@pytest.mark.parametrize('profile', [WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE])
+def test_candidate_route_is_explicit_and_requires_separate_credential(tmp_path, profile):
     env = valid_environment(tmp_path)
     assert load_worker_composition_settings(env).execution_profile == "legacy"
-    env["RIFTCOACH_WORKER_EXECUTION_PROFILE"] = WORKER_SOL_PROFILE
+    env["RIFTCOACH_WORKER_EXECUTION_PROFILE"] = profile
     with pytest.raises(WorkerCompositionError):
         load_worker_composition_settings(env)
     env.update(LLM_MODEL=ZHIPU_GLM53_FLASH_MODEL, LLM_BASE_URL=ZHIPU_STANDARD_BASE_URL)
     with pytest.raises(WorkerCompositionError):
         load_worker_composition_settings(env)
     env["RIFTCOACH_SOL_REVIEW_API_KEY"] = "OFFLINE_SENTINEL"
-    assert load_worker_composition_settings(env).execution_profile == WORKER_SOL_PROFILE
+    settings = load_worker_composition_settings(env)
+    assert settings.execution_profile == profile
+    from app.workers.composition import _read_secret_value
+    assert _read_secret_value(settings.secret_source, name='sol-review-api') == 'OFFLINE_SENTINEL'

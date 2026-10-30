@@ -1,4 +1,4 @@
-"""Body-free contract for an explicitly selected, unpublished Worker candidate.
+"""Body-free continuation contract for an explicitly selected Worker profile.
 
 Session checkpoints are separate from lease checkpoints: execution_started is
 never reclassified as safe_to_replay. No credential or model body enters SQL.
@@ -10,6 +10,17 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 WORKER_SOL_PROFILE = "sol-dual-development-v1"
+WORKER_SOL_PRODUCT_PROFILE = "sol-dual-product-v1"
+
+
+def contract_for_worker_profile(profile):
+    from app.evaluation import sol_review_contract
+    from app.product import sol_contract
+    if profile == WORKER_SOL_PROFILE:
+        return sol_review_contract
+    if profile == WORKER_SOL_PRODUCT_PROFILE:
+        return sol_contract
+    raise ContinuationError("continuation_profile_unavailable")
 
 
 class ContinuationError(RuntimeError):

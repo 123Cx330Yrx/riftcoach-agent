@@ -589,7 +589,7 @@ class RuntimeTrace(RuntimeContractModel):
         role_descriptor = None
         snapshot = self.identity.coach_contract
         if snapshot is not None and (
-            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1", "natural-flash-sol-development-v1", "natural-flash-sol-necessity-development-v1", "natural-flash-sol-dual-necessity-development-v1"}
+            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1", "natural-flash-sol-development-v1", "natural-flash-sol-necessity-development-v1", "natural-flash-sol-dual-necessity-development-v1", "natural-flash-sol-product-v1"}
             or snapshot.version in {"1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5"}
         ):
             # Only this exact opt-in contract permits per-request model roles.
@@ -610,6 +610,9 @@ class RuntimeTrace(RuntimeContractModel):
             if snapshot.contract_id == 'natural-flash-sol-dual-necessity-development-v1':
                 from app.evaluation.sol_review_contract import CONTRACT as dual_necessity
                 candidates += (dual_necessity,)
+            if snapshot.contract_id == 'natural-flash-sol-product-v1':
+                from app.product.sol_contract import CONTRACT as product
+                candidates += (product,)
             role_contract = next((contract for contract in
                 candidates
                 if snapshot == contract.snapshot()), None)
