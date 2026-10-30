@@ -20,6 +20,18 @@ const show = (value: RuntimeUsageWire | null) => render(
 )
 
 describe("terminal task usage", () => {
+  it("shows cumulative session cost without treating unknown reservations as bills", () => {
+    const value = decodeRunUsage({ schema_version: "1.0", run_id: "resumed", task_status: "succeeded", usage: null,
+      session_accounting: { scope: "cumulative_session", requests_reserved: 5, requests_observed: 5,
+        known_tokens: 80, unknown_token_reservation: 72000, retries: 1, unresolved_intents: 0 } }, "resumed")
+    render(<ProductLocaleProvider store={{ read: () => "zh-CN", write: () => undefined }}>
+      <RunUsagePanel usage={value.usage} sessionAccounting={value.session_accounting} />
+    </ProductLocaleProvider>)
+    expect(screen.getByText("80")).toBeInTheDocument()
+    expect(screen.getByText("72,000")).toBeInTheDocument()
+    expect(screen.getByText(/包含原尝试和续跑/)).toBeInTheDocument()
+    expect(screen.queryByText(/暂无可信用量记录/)).not.toBeInTheDocument()
+  })
   it("keeps missing records unknown instead of free", () => {
     show(null)
     expect(screen.getByText("暂无可信用量记录，不代表没有消耗。")).toBeInTheDocument()

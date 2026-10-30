@@ -42,6 +42,16 @@
 
 ## 产品实现方向
 
+### 当前实现卡：普通Worker持久续接（已完成）
+
+目标：显式选择 `sol-dual-development-v1` 后，普通任务可以暂停、由owner对准确checkpoint发起恢复，并从同一成功前缀续跑。默认路由与未准入发布策略保持。
+
+路径：独立SQL continuation字段保存首次guard和逐次checkpoint；活跃租约CAS保存暂停，owner恢复事件再排队；每段保留自己的真实Trace，session累计账单单独投影到用量API。来源快照与工具结果随session重放；原始诊断的native gate仍保留，Worker开发入口明确不声称具备人工语义验收。
+
+验证：真实临时Postgres＋确定响应，覆盖超时暂停、普通恢复不补测、显式单次补测、进程重建、成功步骤/来源不重取、用量累计、owner/旧checkpoint拒绝、取消与租约围栏；再跑受影响旧Worker/任务事件与session检查。
+
+失败决策：未知intent、输入/原件变化和互斥修法只暂停该任务，不覆盖原件或重买前缀。普通恢复不授新预算；诊断预算不转成默认产品合同。证据完整性无法满足时保留暂停原因，其他任务继续。
+
 复用 Recent Review：API创建任务 → Worker领取 → Application构建来源与Memory → Flash生成 → Sol双初审 → 必要时程序唯一应用 → 同稿双fresh → 已有Evidence/报告/用量消费者。
 
 正常路径按两份意见的联合修订结果推进；某个审查职责漏检作为质量证据保留，不自动推导整条修订链无效。可选措辞、正常舍入不阻断。真实错误、互斥修法、来源/身份冲突或超时则保留进度，只暂停受影响步骤；不偷偷选一个语义冲突补丁、不自动购买重试、不把暂停伪装成已发布。
@@ -52,6 +62,23 @@
 
 本包不顺便重做前端或README；它们在复盘的16组后续与62主题映射中单独保留。
 
+## 普通Worker续接实现与运行说明
+
+新增显式 `RIFTCOACH_WORKER_EXECUTION_PROFILE=sol-dual-development-v1`。默认值仍是 `legacy`；候选要求Flash生成配置和独立的 `sol-review-api` SecretSource记录（环境入口名 `RIFTCOACH_SOL_REVIEW_API_KEY`）。这是产品候选的原Sol路由，Codex开发环境切回official不自动替换它。本轮未加载真实凭据、启动队列Worker或调用真实模型。
+
+`compose_continuation_executor`由正常Worker启动构造调用，继续复用原Application、Runtime、数据库任务与取消围栏。迁移 `0015_task_continuation`只新增nullable continuation记录及恢复事件；既有checkpoint和事件哈希格式保持。已经有恢复事件的数据库不能通过降级删去这段历史。本轮只在可丢弃测试库升级，现有产品数据库未迁移。
+
+- `GET /tasks/{task_id}/continuation`：owner读取暂停原因、当前checkpoint SHA和累计用量，不返回原始来源、凭据或本机路径。
+- `POST /tasks/{task_id}/resume`：携带新的 `Idempotency-Key` 和JSON `{"checkpoint_sha256":"<当前SHA>","manual_retry":false}`。普通恢复只重放成功结果；遇到原524或可恢复格式错误仍暂停。
+- 仅在用户明确补测当前项时设 `manual_retry=true`；授权只供一个claim消费，同一POST重放不会再排队，旧SHA和其他owner被拒绝。不扩展原合同预算、不自动循环。
+- 每次checkpoint产生后立即在当前租约下固定到SQL；取消、过期租约及旧Worker不能提交新进度。暂停可直接取消；取消与暂停提交竞争时取消优先。
+- 来源、检索、Memory及其manifest复用首次原件；生成、初审与已成功fresh不重发。真实Trace按执行段单独保留，终段原文件create-only投影到旧查询入口。累计session用量由原预算/回执重读核验，API与现有用量面板显示已知tokens、未知预留和显式补测次数；不会把最后一段当全部成本，也不会把被发送围栏拦住的预留当HTTP/未知费用。
+- 全部session/source/Memory/transport/segment文件位于 `<runs_root>/<run_id>/.continuation`，归入既有任务删除范围；旧封存目录不变。
+
+代码入口：`app/workers/sol_continuation.py`、`app/persistence/task_continuations.py`、`app/tasks/continuation.py`、`app/product/session_usage.py`。API和Worker通过依赖注入使用同一continuation存储，业务服务不自行创建SQL连接。
+
+边界：当前是未发布的开发候选入口，旧诊断仍要求原native gate。Worker不会伪造人工审查结论；互斥补丁暂停为 `session_awaiting_patch_coordination`，本包没有新增自动语义协调器。硬中断留下的未确认intent/未提交checkpoint、原件变化都不自动重发，仍需原回执核验或局部处理；本包不宣称所有硬中断都可自动恢复。恢复按钮的浏览器旅程、当前组合的真实模型产品消费、正式预算/发布采用合同仍待后续完成。
+
 ## 验证记录
 
 - 当前15例/30初审请求禁网库存核对通过；三份完成seal摘要核对通过。
@@ -61,3 +88,7 @@
 ## Codex开发环境
 
 用户本日明确从中转切回official。主线程已使用openai；原独立作者线程仍记录custom provider，因此仅将该legacy provider定义改为官方认证兼容，保留模型、历史作者和已封存事件。当前子线程未加载，平台拒绝脱离父会话单独resume；没有派发新任务，也未宣称原作者复用已通过。下次确需独立审查时先核实际父子会话/路由，不改旧事件、不冒用旧身份。配置备份与零模型调用记录保存在本机输出目录；这不是RiftCoach产品Sol路由或凭据的变更。
+
+### 续接包验证结论
+
+30项不同的临时真库检查通过，含8项新增续接边界及22项原任务/迁移检查；依赖注入调整后7项续接复核，终段原件冲突与未发取消2项最终复核。相关Runtime/session/Worker/合同89项、API组合/用量/查询50项、前端27项及typecheck通过。均使用确定模型/Riot替身；本包无真实模型调用、无产品库迁移、无浏览器端到端。新库存相对10月29日只组件/程序指纹不同，其余28字段和30份初审请求不变，旧快照和15例不改。结果见 `data/evaluation/results/sol_product_worker_continuation_20261030.json`。

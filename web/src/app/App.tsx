@@ -371,7 +371,7 @@ function ReadyWorkbench({
             <div className="context-rail__header"><span>{t("context.channel")}</span><small>{t("context.safe_projection")}</small></div>
             <TrainingPanel profile={selectedProfile} training={view.training} />
             <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
-            {view.usage !== undefined && <RunUsagePanel usage={view.usage} />}
+            {view.usage !== undefined && <RunUsagePanel usage={view.usage} sessionAccounting={view.sessionAccounting} />}
             <section className="source-summary panel" aria-labelledby="source-summary-title">
               <p className="eyebrow">{t("common.source_posture")}</p>
               <h3 id="source-summary-title">{t("source.claim_title")}</h3>

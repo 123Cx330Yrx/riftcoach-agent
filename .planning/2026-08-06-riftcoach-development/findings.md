@@ -1,3 +1,11 @@
+## 2026-10-30 普通Worker持久续接实现
+
+普通Worker续接必须分别处理任务租约checkpoint与模型session checkpoint，不能把已发送的任务标成safe_to_replay。当前实现保留原guard/逐次SHA，以活跃租约CAS写入；owner恢复只排同一任务，已成功来源/工具/模型/Memory不重取。
+
+两个实际接缝已修：旧legacy任务不能被新增Evidence context要求误判配置失败；发送前围栏取消后，持久session必须记录not-sent结果，否则残留attempt预留会被错计未知费用。终段原件投影只做一次create-only写入；有冲突时保留closed session并暂停，不能让finally二次投影异常冲掉局部暂停。临时真库覆盖这些分支，模型是替身。
+
+恢复输出的Trace属于当前执行段，累计费用必须另核原session；不能拿最后一段的数字当整条任务。当前用量API和面板已分开消费。未确认intent与未提交checkpoint仍需核原回执；互斥修法不由Worker擅自选取。证据见sol_product_worker_continuation_20261030.json。
+
 ## 2026-10-30 证据复用与当前Sol数据库消费
 
 2026-10-30：用户复盘后明确开始产品接线工作。已完成原15版本复用审计：禁网运行当前Runtime库存，与最终准备库存逐字段相同；相对原库存/协调库存仅组件和程序指纹两项不同，其余28字段、15例来源/标签及30份初审请求摘要保持。三份完成seal摘要核验通过；原15仍完整完成，不因版本变化重跑，不制造同版本新资格。

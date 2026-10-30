@@ -1,8 +1,19 @@
-import type { RuntimeUsageWire } from "../api/wire"
+import type { RuntimeUsageWire, SessionAccountingWire } from "../api/wire"
 import { useI18n } from "../i18n/ProductLocaleProvider"
 
-export function RunUsagePanel({ usage }: { readonly usage: RuntimeUsageWire | null }) {
+export function RunUsagePanel({ usage, sessionAccounting }: { readonly usage: RuntimeUsageWire | null; readonly sessionAccounting?: SessionAccountingWire | undefined }) {
   const { t, formatNumber } = useI18n()
+  if (sessionAccounting !== undefined) return (
+    <section className="source-summary panel" aria-labelledby="run-usage-title">
+      <h3 id="run-usage-title">{t("usage.title")}</h3>
+      <dl className="run-summary">
+        <div><dt>{t("usage.sessionKnown")}</dt><dd>{formatNumber(sessionAccounting.known_tokens)}</dd></div>
+        <div><dt>{t("usage.sessionUnknown")}</dt><dd>{formatNumber(sessionAccounting.unknown_token_reservation)}</dd></div>
+        <div><dt>{t("usage.sessionRetries")}</dt><dd>{formatNumber(sessionAccounting.retries)}</dd></div>
+      </dl>
+      <p>{t("usage.sessionBoundary")}</p>
+    </section>
+  )
   const totalsKnown = usage?.token_observation === "complete" || usage?.token_observation === "not_applicable"
   const tokens = totalsKnown && usage !== null
     && usage.input_tokens !== null && usage.output_tokens !== null

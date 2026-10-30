@@ -77,6 +77,7 @@ class ReviewTaskService:
         task_id_factory: TaskIdFactory = uuid4,
         run_id_factory: RunIdFactory | None = None,
         clock: Clock | None = None,
+        continuation_store=None,
     ) -> None:
         for method_name in ("create_or_replay", "get_by_task_id", "get_by_run_id"):
             if not callable(getattr(repository, method_name, None)):
@@ -89,6 +90,7 @@ class ReviewTaskService:
             raise TypeError("clock must be callable")
 
         self._repository = repository
+        self._continuations = continuation_store
         self._capacity = capacity or TaskCapacityPolicy()
         self._task_id_factory = task_id_factory
         self._run_id_factory = run_id_factory or _default_run_id
@@ -237,6 +239,18 @@ class ReviewTaskService:
         except Exception:
             raise TaskServiceError("task_persistence_failed") from None
         return self._project_lookup(task)
+
+    def get_continuation(self, *, owner_id: str, task_id: UUID):
+        if self._continuations is None:
+            return None
+        return self._continuations.load(owner_id=owner_id, task_id=task_id)
+
+    def resume_continuation(self, *, owner_id, task_id, request_id, command):
+        from app.tasks.continuation import ContinuationError
+        if self._continuations is None:
+            raise ContinuationError("continuation_unavailable")
+        return self._continuations.resume(owner_id=owner_id,
+            task_id=task_id, request_id=request_id, command=command)
 
     def get_task_by_run_id(self, *, owner_id: str, run_id: str) -> ReviewTaskView:
         _validate_owner_scope(owner_id)

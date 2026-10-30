@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 from app.runtime.models import RuntimeUsage
 from app.tasks.models import TaskStatus
+from app.tasks.continuation import SessionAccounting
 
 
 class RunUsageResponse(BaseModel):
@@ -15,3 +16,9 @@ class RunUsageResponse(BaseModel):
     task_status: Literal[TaskStatus.SUCCEEDED, TaskStatus.FAILED, TaskStatus.CANCELLED]
     # Missing trusted observations are not a zero-cost result.
     usage: RuntimeUsage | None = None
+
+
+class SessionRunUsageResponse(RunUsageResponse):
+    # Do not present the last derived Trace as whole-task cost.
+    usage: None = None
+    session_accounting: SessionAccounting

@@ -300,7 +300,7 @@ export class LiveWorkbenchController {
       if (observed.run_id !== binding.runId || observed.task_status !== view.task?.status) {
         throw new Error("usage task binding mismatch")
       }
-      return { ...view, usage: observed.usage }
+      return { ...view, usage: observed.usage, sessionAccounting: observed.session_accounting }
     }
     const runPromise = this.api.getRun(binding.runId, signal)
     const summaryPromise = this.api.getSummary(binding.runId, signal)

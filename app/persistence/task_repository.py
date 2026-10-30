@@ -485,7 +485,7 @@ class PostgresTaskRepository:
                             disposition=TaskCancelDisposition.ALREADY_TERMINAL,
                             status=current,
                         )
-                    if current is TaskStatus.RECOVERY_REQUIRED:
+                    if current is TaskStatus.RECOVERY_REQUIRED and record.continuation_reference is None:
                         return TaskCancelResult(
                             task_id=task_id,
                             disposition=TaskCancelDisposition.RECOVERY_REQUIRED,
@@ -503,9 +503,10 @@ class PostgresTaskRepository:
                     record.cancel_requested_at = request_time
                     record.cancel_reason = normalized_reason
                     record.updated_at = max(record.updated_at, request_time)
-                    if current is TaskStatus.QUEUED:
+                    if current in {TaskStatus.QUEUED, TaskStatus.RECOVERY_REQUIRED}:
                         record.status = TaskStatus.CANCELLED.value
                         record.finished_at = request_time
+                        record.recovery_required_at = record.recovery_reason = None
                         record.terminal_reason = normalized_reason
                         event_kind = TaskLifecycleEventKind.CANCELLED
                         disposition = TaskCancelDisposition.CANCELLED

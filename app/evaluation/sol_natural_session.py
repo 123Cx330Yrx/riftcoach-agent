@@ -82,9 +82,17 @@ class CandidateSession:
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
                  max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None,
-                 contract_module=None, manual_retry=False):
+                 contract_module=None, manual_retry=False, worker_development=False):
         from app.runtime.sol_natural_provider import selected_contract
         self.contract_module = selected_contract(contract_module)
+        self.worker_development = worker_development
+        if worker_development:
+            from app.evaluation import sol_review_contract
+            from app.tasks.continuation import WORKER_SOL_PROFILE
+            if (self.contract_module is not sol_review_contract
+                    or binding.get('worker_profile') != WORKER_SOL_PROFILE
+                    or not binding.get('task_id') or continuation is not None):
+                raise ValueError('session_worker_development_binding')
         if manual_retry and (read_only or reconcile or self.contract_module.CONTRACT.descriptor().get(
                 'transport_retry_mode') != 'manual-reaped-timeout-v1'):
             raise ValueError('session_manual_retry_mode')

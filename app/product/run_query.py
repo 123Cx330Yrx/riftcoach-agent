@@ -361,6 +361,26 @@ class RunQueryService:
         self._runs_root = Path(runs_root).resolve()
         self._receipts = receipt_store or FileRunReceiptStore(self._runs_root)
 
+    def get_session_accounting(self, run_id, reference):
+        from app.evaluation import sol_review_contract
+        from app.evaluation.sol_natural_session import CandidateSession
+        from app.product.session_usage import session_accounting
+        from app.tasks.continuation import SessionAccounting
+        run_id = normalize_run_id(run_id)
+        if reference["binding"]["run_id"] != run_id:
+            raise RunQueryError("run_integrity_failed")
+        root = self._runs_root / run_id / ".continuation"
+        if root.resolve() != root:
+            raise RunQueryError("run_integrity_failed")
+        with CandidateSession(root / "session", binding=reference["binding"],
+                transport_root=root / "transport" / run_id, journal_root=root / "journal",
+                guard_sha=reference["guard_sha256"], checkpoint_sha=reference["checkpoint_sha256"],
+                contract_module=sol_review_contract, read_only=True, worker_development=True) as session:
+            value = session_accounting(session)
+            if value != reference["accounting"]:
+                raise RunQueryError("run_integrity_failed")
+            return SessionAccounting.model_validate(value)
+
     def read_training_measurement_source(self, run_id: str) -> tuple[dict, str, str]:
         """Internal server source; no HTTP/MCP route exposes the full Summary."""
         verified = self._load_safely(run_id)
@@ -399,7 +419,8 @@ class RunQueryService:
                 trace.completed_at_utc if trace is not None else None
             ),
             elapsed_ms=trace.elapsed_ms if trace is not None else None,
-            usage=trace.usage if trace is not None else None,
+            usage=(trace.usage if trace is not None and not
+                   (self._runs_root / run_id / ".continuation").exists() else None),
             report_available=verified.receipt.report_available,
         )
 

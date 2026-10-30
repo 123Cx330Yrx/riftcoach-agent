@@ -86,6 +86,7 @@ class WorkerIterationStatus(StrEnum):
     FAILED = "failed"
     CANCELLED = "cancelled"
     OWNERSHIP_LOST = "ownership_lost"
+    PAUSED = "paused"
 
 
 @dataclass(frozen=True, slots=True)
@@ -224,6 +225,7 @@ class ReviewWorker:
         terminal_turn_writer: TerminalTurnWriter | None = None,
         lease_policy: TaskLeasePolicy | None = None,
         recovery: ExpiredTaskRecovery | None = None,
+        continuation_store=None,
     ) -> None:
         for method_name in (
             "claim_next",
@@ -277,6 +279,7 @@ class ReviewWorker:
         self._observability = observability
         self._lease_policy = lease_policy or TaskLeasePolicy()
         self._recovery = recovery
+        self._continuations = continuation_store
         if terminal_turn_writer is not None and not callable(
             getattr(terminal_turn_writer, "write", None)
         ):
@@ -394,6 +397,13 @@ class ReviewWorker:
                 "worker.execution_failed",
                 {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
             )
+        except BaseException:
+            # Interpreter interruption is not a failed model result; still stop
+            # the heartbeat thread so expired-lease recovery can take ownership.
+            try:
+                maintainer.finish()
+            finally:
+                raise
         try:
             lease_disposition = maintainer.finish()
         except Exception:
@@ -411,6 +421,23 @@ class ReviewWorker:
             return self._commit_cancel(claimed)
         if execution_failed:
             return self._commit_failure(claimed)
+        from app.tasks.continuation import TaskExecutionPause
+        if isinstance(terminal, TaskExecutionPause) and terminal.run_id == claimed.run_id:
+            try:
+                if self._continuations is None:
+                    raise ReviewWorkerError("task_lease_update_failed")
+                self._continuations.pause(claimed, terminal.reason)
+            except Exception as error:
+                # The terminal CAS may have raced cancellation or lease expiry.
+                # Do not turn the resumable execution into a failed terminal.
+                from app.tasks.continuation import ContinuationError
+                if isinstance(error, ContinuationError) and error.code == "continuation_cancel_requested":
+                    return self._commit_cancel(claimed)
+                if not isinstance(error, ContinuationError):
+                    raise ReviewWorkerError("task_lease_update_failed") from None
+                return WorkerIterationResult(status=WorkerIterationStatus.OWNERSHIP_LOST,
+                                             task_id=claimed.task_id)
+            return WorkerIterationResult(status=WorkerIterationStatus.PAUSED, task_id=claimed.task_id)
         if (
             not isinstance(terminal, TaskTerminal)
             or terminal.run_id != claimed.run_id

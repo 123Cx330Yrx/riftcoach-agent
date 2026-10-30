@@ -23,7 +23,7 @@ from app.tasks.reliable_runtime import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0014_message_projection_status"
+HEAD = "0015_task_continuation"
 
 
 def alembic_config() -> Config:
@@ -43,6 +43,7 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.c.checkpoint_reference.type.__class__ is JSONB
     assert event.c.checkpoint_reference.type.none_as_null is True
     assert task.c.checkpoint_reference.type.none_as_null is True
+    assert task.c.continuation_reference.type.__class__ is JSONB
     lifecycle = next(
         constraint
         for constraint in task.constraints

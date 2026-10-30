@@ -403,7 +403,7 @@ export function decodeTaskEvent(value: unknown, expected: ExpectedTaskRunBinding
     task_id: taskId,
     run_id: runId,
     task_sequence: number(row.task_sequence, `${path}.task_sequence`, { integer: true, min: 1 }),
-    event_kind: enumeration(row.event_kind, ["created", "claimed", "execution_started", "heartbeat", "cancel_requested", "checkpoint_saved", "recovery_required", "requeued", "succeeded", "failed", "cancelled"] as const, `${path}.event_kind`) as TaskEventKindWire,
+    event_kind: enumeration(row.event_kind, ["created", "claimed", "execution_started", "heartbeat", "cancel_requested", "checkpoint_saved", "recovery_required", "requeued", "continuation_resumed", "succeeded", "failed", "cancelled"] as const, `${path}.event_kind`) as TaskEventKindWire,
     status_after: taskStatus(row.status_after, `${path}.status_after`),
     lease_generation: number(row.lease_generation, `${path}.lease_generation`, { integer: true, min: 0 }),
     reason: nullable(row.reason, (item) => safeCode(item, `${path}.reason`)),
@@ -481,7 +481,7 @@ function decodeUsage(value: unknown): RuntimeUsageWire {
 
 export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageWire {
   const row = record(value, "run_usage")
-  exact(row, ["schema_version", "run_id", "task_status", "usage"], "run_usage")
+  exact(row, ["schema_version", "run_id", "task_status", "usage", ...("session_accounting" in row ? ["session_accounting"] : [])], "run_usage")
   const runId = safeId(row.run_id, "run_usage.run_id")
   if (runId !== safeId(expectedRunId, "expected run")) throw new Error("usage run binding mismatch")
   return {
@@ -489,6 +489,22 @@ export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageW
     run_id: runId,
     task_status: enumeration(row.task_status, ["succeeded", "failed", "cancelled"] as const, "run_usage.task_status"),
     usage: nullable(row.usage, decodeUsage),
+    ...("session_accounting" in row ? { session_accounting: decodeSessionAccounting(row.session_accounting) } : {}),
+  }
+}
+
+function decodeSessionAccounting(value: unknown) {
+  const row = record(value, "session_accounting")
+  const keys = ["requests_reserved", "requests_observed", "known_tokens", "unknown_token_reservation", "retries", "unresolved_intents"] as const
+  exact(row, ["scope", ...keys], "session_accounting")
+  for (const key of keys) {
+    if (typeof row[key] !== "number" || !Number.isSafeInteger(row[key]) || (row[key] as number) < 0) throw new Error("invalid session accounting")
+  }
+  return {
+    scope: literal(row.scope, "cumulative_session", "session_accounting.scope"),
+    requests_reserved: row.requests_reserved as number, requests_observed: row.requests_observed as number,
+    known_tokens: row.known_tokens as number, unknown_token_reservation: row.unknown_token_reservation as number,
+    retries: row.retries as number, unresolved_intents: row.unresolved_intents as number,
   }
 }
 

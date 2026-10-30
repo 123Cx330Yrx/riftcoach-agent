@@ -352,12 +352,12 @@
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "dd3c2506f97080d9935fe8826c8fcbf84d4c945b8643f0917f6949ea23bd2285"
+      "sha256": "f2a00ce56119b9cffda2117df067bbb86b3573a81915899c353094459d47987a"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "bdcb73422df03e34397f603736d91a4be62b7e6ca8026f7f9098ab7695102d84"
+      "sha256": "daf15d97de398c2da1c8eca15316ac82495ff3c7c36525a0a1bbbf9d72f7d86b"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -430,5 +430,5 @@
       "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
     }
   ],
-  "program_sha256": "b3dcb7edf252057d1228722dd061dc88d2a56b67a3b108df33360e06f1f855e1"
+  "program_sha256": "23fb810de4877b1a9551454661f42d53a95a595293a62fe0bf02d4c11ff6d868"
 }

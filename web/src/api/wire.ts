@@ -150,6 +150,7 @@ export type TaskEventKindWire =
   | "checkpoint_saved"
   | "recovery_required"
   | "requeued"
+  | "continuation_resumed"
   | "succeeded"
   | "failed"
   | "cancelled"
@@ -233,6 +234,17 @@ export interface RunUsageWire {
   readonly run_id: string
   readonly task_status: "succeeded" | "failed" | "cancelled"
   readonly usage: RuntimeUsageWire | null
+  readonly session_accounting?: SessionAccountingWire
+}
+
+export interface SessionAccountingWire {
+  readonly scope: "cumulative_session"
+  readonly requests_reserved: number
+  readonly requests_observed: number
+  readonly known_tokens: number
+  readonly unknown_token_reservation: number
+  readonly retries: number
+  readonly unresolved_intents: number
 }
 
 export interface RecentMetricRowWire {

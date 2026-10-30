@@ -99,7 +99,8 @@ from app.api.lifecycle_models import (
     OwnerDataExportResponse,
 )
 from app.api.evidence_models import EvidenceSnapshotResponse, ProductStateResponse
-from app.api.run_usage_models import RunUsageResponse
+from app.api.run_usage_models import RunUsageResponse, SessionRunUsageResponse
+from app.tasks.continuation import ContinuationError, ResumeContinuation
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -2004,6 +2005,51 @@ def create_app(
         except Exception:
             return _error_response("service_unavailable", status_code=503)
 
+    @app.get("/tasks/{task_id}/continuation")
+    def get_task_continuation(task_id: str, actor: ActorContext = Depends(trusted_actor)):
+        try:
+            parsed = UUID(task_id)
+        except ValueError:
+            return _error_response("task_not_found", status_code=404)
+        try:
+            task = task_service.get_task(owner_id=actor.owner_id, task_id=parsed)
+            reference = task_service.get_continuation(owner_id=actor.owner_id, task_id=parsed)
+            if reference is None:
+                return JSONResponse(status_code=404, content={"code": "continuation_not_found"})
+            if task.status in {TaskStatus.RUNNING, TaskStatus.QUEUED}:
+                return JSONResponse(status_code=409, content={"code": "continuation_not_paused"})
+            accounting = query_service.get_session_accounting(task.run_id, reference)
+            return dict(task_id=task_id, run_id=task.run_id, status=task.status,
+                profile=reference["profile"], checkpoint_sha256=reference["checkpoint_sha256"],
+                reason=reference["pause_reason"], session_accounting=accounting,
+                publication_allowed=False)
+        except (TaskServiceError, ContinuationError) as exc:
+            return _error_response("task_not_found" if exc.code == "task_not_found" else "service_unavailable",
+                                   status_code=404 if exc.code == "task_not_found" else 503)
+        except BaseException as exc:
+            from app.evaluation.sol_natural_session import SessionBlocked, SessionPaused
+            if not isinstance(exc, (Exception, SessionBlocked, SessionPaused)):
+                raise
+            return _error_response("run_integrity_failed", status_code=500)
+
+    @app.post("/tasks/{task_id}/resume")
+    def resume_task(task_id: str, command: ResumeContinuation,
+                    idempotency_key: str = Header(alias="Idempotency-Key", min_length=1,
+                        max_length=128, pattern=_IDEMPOTENCY_PATTERN),
+                    actor: ActorContext = Depends(trusted_actor)):
+        try:
+            parsed = UUID(task_id)
+        except ValueError:
+            return _error_response("task_not_found", status_code=404)
+        try:
+            return task_service.resume_continuation(owner_id=actor.owner_id, task_id=parsed,
+                request_id=idempotency_key, command=command)
+        except ContinuationError as exc:
+            return JSONResponse(status_code=404 if exc.code == "task_not_found" else 409,
+                                content={"code": exc.code})
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
     @app.post(
         "/tasks/{task_id}/cancel",
         response_model=CancelTaskResponse,
@@ -2413,7 +2459,7 @@ def create_app(
 
     @app.get(
         "/runs/{run_id}/usage",
-        response_model=RunUsageResponse,
+        response_model=SessionRunUsageResponse | RunUsageResponse,
         responses={404: {"model": ErrorResponse}, 409: {"model": ErrorResponse},
                    500: {"model": ErrorResponse}, 503: {"model": ErrorResponse}},
     )
@@ -2424,6 +2470,13 @@ def create_app(
         if not task.status.is_terminal:
             return _error_response("run_not_ready", status_code=409, run_id=task.run_id)
         try:
+            read_continuation = getattr(task_service, "get_continuation", None)
+            reference = (read_continuation(owner_id=actor.owner_id, task_id=task.task_id)
+                         if callable(read_continuation) else None)
+            if reference is not None:
+                accounting = query_service.get_session_accounting(task.run_id, reference)
+                return SessionRunUsageResponse(run_id=task.run_id, task_status=task.status,
+                                               session_accounting=accounting)
             result = query_service.get_run(task.run_id)
             if not isinstance(result, RunView) or result.run_id != task.run_id:
                 raise ValueError("usage query returned an invalid identity")
@@ -2434,7 +2487,10 @@ def create_app(
             if exc.code == "run_not_found" and task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
                 return RunUsageResponse(run_id=task.run_id, task_status=task.status)
             return _error_response("run_integrity_failed", status_code=500, run_id=task.run_id)
-        except Exception:
+        except BaseException as exc:
+            from app.evaluation.sol_natural_session import SessionBlocked, SessionPaused
+            if not isinstance(exc, (Exception, SessionBlocked, SessionPaused)):
+                raise
             return _error_response("run_integrity_failed", status_code=500, run_id=task.run_id)
 
     @app.get(

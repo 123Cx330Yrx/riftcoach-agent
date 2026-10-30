@@ -319,6 +319,12 @@ class _FixedReadinessProbe:
 
 
 class _TaskServiceProxy:
+    def get_continuation(self, **kwargs):
+        return self._service().get_continuation(**kwargs)
+
+    def resume_continuation(self, **kwargs):
+        return self._service().resume_continuation(**kwargs)
+
     def __init__(self) -> None:
         self._target: TaskServicePort | None = None
 
@@ -452,6 +458,9 @@ class _TaskEventStreamServiceProxy:
 
 
 class _RunQueryProxy:
+    def get_session_accounting(self, run_id, reference):
+        return self._query().get_session_accounting(run_id, reference)
+
     def __init__(self) -> None:
         self._target: RunQueryPort | None = None
 
@@ -834,10 +843,12 @@ def create_composed_app(
             owner_data_lifecycle_repository = PostgresOwnerDataLifecycleRepository(
                 session_factory
             )
+            from app.persistence.task_continuations import PostgresTaskContinuations
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
                     capacity=api_settings.task_capacity,
+                    continuation_store=PostgresTaskContinuations(repository),
                 )
             )
             evidence_product_proxy.bind(

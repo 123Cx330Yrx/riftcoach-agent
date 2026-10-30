@@ -16,6 +16,7 @@ export const eventMessageKeys: Readonly<Record<TaskEventKindWire, MessageKey>> =
   checkpoint_saved: "event.checkpoint_saved",
   recovery_required: "event.recovery_required",
   requeued: "event.requeued",
+  continuation_resumed: "event.continuation_resumed",
   succeeded: "event.succeeded",
   failed: "event.failed",
   cancelled: "event.cancelled",

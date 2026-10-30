@@ -19,6 +19,7 @@ from app.providers.errors import ProviderError, ProviderResponseError
 from app.runtime.coach_budget import CoachBudgetedProvider
 from app.runtime.observed_provider import ObservedLLMProvider
 from app.runtime.sol_natural_provider import SolNaturalProvider
+from app.runtime.dispatch_control import DispatchStopped
 from app.tools.models import ToolResult
 from app.tools.runtime import ToolRuntime
 
@@ -36,7 +37,8 @@ class SessionBudget(CoachBudgetedProvider):
             raise ValueError('session_router_contract')
         if provider._delegate.reviewer.task_directory.resolve() != session.transport_root:
             raise ValueError('session_transport_root_binding')
-        if session.binding.get('fixture_only') is not True and session.review_gate is None:
+        if (session.binding.get('fixture_only') is not True and session.review_gate is None
+                and not session.worker_development):
             raise ValueError('session_native_review_gate_required')
         super().__init__(provider, coach_contract=coach_contract)
         self.session, self.router = session, provider._delegate
@@ -88,11 +90,19 @@ class SessionBudget(CoachBudgetedProvider):
         if not 0 < request.timeout_s <= contract.CONTRACT.descriptor()['execution_timeout_s']:
             raise SessionBlocked('session_request_timeout')
         normalized = json.loads(REQUEST.dump_json(replace(request, timeout_s=300.0)))
+        unsent_stop = []
 
         def send():
             self.started = self.clock() - self.session.active_seconds
             try:
                 response = super(SessionBudget, self).chat(request)
+            except DispatchStopped as error:
+                if not self.session.worker_development:
+                    raise
+                # The trusted Provider-start fence released this envelope in
+                # CoachBudget. Commit that fact without manufacturing an HTTP.
+                unsent_stop.append(error)
+                return dict(ok=False, not_sent_ordinal=self.calls+1, budget=self.snapshot())
             except ProviderError as error:
                 value = dict(ok=False, error_provider=error.provider, error_code=error.code,
                              budget=self.snapshot())
@@ -122,6 +132,10 @@ class SessionBudget(CoachBudgetedProvider):
             value, replayed = self.session.operation('model', normalized, send)
             if replayed:
                 self.restore(value['budget'])
+            if value.get('not_sent_ordinal') is not None:
+                if unsent_stop:
+                    raise unsent_stop[0]
+                raise SessionBlocked('session_unsent_dispatch_stop')
             if value.get('recoverable_format') is not None:
                 self._manual_retry(value, format_repair=True)
                 continue
@@ -221,6 +235,8 @@ class SessionWorkflow(NaturalDutyWorkflow):
             return super().assemble(inputs)
         gate = self.session.review_gate
         if gate is None:
+            if self.session.worker_development:
+                raise SessionPaused('session_awaiting_patch_coordination')
             raise SessionBlocked('session_patch_coordination_requires_native_gate')
         self.record('patch-conflicts', inventory)
         # Pause before writing an intent when no operator choice is available.

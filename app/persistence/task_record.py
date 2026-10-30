@@ -100,6 +100,7 @@ class ReviewTaskRecord(Base):
         sa.DateTime(timezone=True)
     )
     recovery_reason: Mapped[str | None] = mapped_column(sa.String(64))
+    continuation_reference: Mapped[dict[str, Any] | None] = mapped_column(JSONB(none_as_null=True))
 
     terminal_reason: Mapped[str | None] = mapped_column(sa.String(64))
     publication_status: Mapped[str | None] = mapped_column(sa.String(16))
