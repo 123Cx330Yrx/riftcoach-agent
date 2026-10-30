@@ -56,3 +56,12 @@ CI41003259222的web、packaging、Postgres和shard2已通过；shard3为1911通�
 本次9项禁网检查全部通过（36.30秒）；不重跑已通过且输入未变的数据库/前端检查。新提交CI仍须读真实结果。
 
 关联浏览器回归12项通过（13.6秒）：本机默认4173监听EACCES，临时改用5183；历史导航测试改为严格比较配置origin根路径，恢复mock测试在销毁页面前等待HTTP路由处理结束。临时配置已删除，CI默认端口保持。原失败与本地环境日志均保留，未把这些启动失败计为模型失败。
+
+
+## 真实来源准备（浏览器包之后）
+
+2026-10-30续（真实来源准备）：浏览器实现已提交推送2715ae40，对应新CI41011784904仍在运行；早期Runtime/库存/API检查、web job（含新真库浏览器检查）及打包已通过，Postgres与4个pytest分片仍在运行，完整结果待核。已用现有Riot凭据实际解析DK ShowMaker#KR1，并取得最近5场queue420及5份时间线；12次Riot与5次DataDragon请求全部200、无自动重试，真实模型请求0。现有Summary构建器分析5场、失败0、未回退队列。比赛版本16.20，静态名称库16.21.1，后者不作为旧比赛机制已使用新版本的证据。原来源和摘要已保留，summary SHA2b8861ae…；真实来源材料不同于前面的替身浏览器验证。
+
+独立执行目录D:/riftcoach-sol-product-execution-20261030已固定干净2715ae40，指定Python与产品合同导入验证通过；没有启动Worker或付费请求。来源准备初次在本地字节核对暂停：记录器写入CRLF前按LF文本计算SHA，零额外请求；已保留原件并另记实际文件摘要，未重查账号。证据data/evaluation/results/sol_product_real_source_preparation_20261030.json；原件在outputs/riftcoach-product-browser-preflight-20261030/source-preflight。
+
+下一动作：确认同HEAD CI，完成普通任务、来源与实际输入绑定的可运行单项清单，再按具体截止取得付费授权。尚无新有效付费授权；旧15不重跑，默认/产品库/Stage8E/automation状态保持。此次来源准备记录待下一收尾批统一提交，避免仅追记CI状态触发另一整套运行。

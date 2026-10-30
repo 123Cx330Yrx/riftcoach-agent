@@ -13,6 +13,36 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-30实测：授权清单下完成3次Flash生成侧真实请求，累计29323 known/0 unknown/0retry；6次knowledge.search，生成最终正文返回，尚未进入Sol双审。任务终态failed/harness_execution_failed，没有发布报告。浏览器真实页面已核实累计用量29323、失败正文不可读，原响应/来源/检查点/数据库与失败均保留，执行者已退出、临时容器已删除。
+
+定位为本机长路径原子写入：knowledge/retrieval_evidence.json目标247字符可用，但NamedTemporaryFile复制完整文件名作prefix后增至261字符，FileNotFoundError。相同247字符路径复现原失败，缩短prefix写入成功；原生成稿标题合同亦通过。开发树仅将临时文件prefix限为4字符；新回归先失败后通过，9项存储测试/12子检查、11入口及10项库存/API检查通过。冻结2715ae40未改，没有把这次执行层故障记成Sol语义失败。
+
+下一动作：离线准备failed任务的受控恢复，保留原失败事件、三次成功模型响应、费用和检查点。现resume只接受recovery_required，直接改SQL或覆盖已提升的失败原件都不可接受；不重买生成前缀，不自动补测或另开付费试验。原授权截止2026-10-31 07:45 UTC不延长，剩余调用先不发送。证据data/evaluation/results/sol_product_live_storage_failure_20261030.json。玩家口吻要求保留，实际可见生成正文已存在但尚未完成审查，不作为已验收玩家成稿。原15、默认、产品库、Stage8E与automation PAUSED保持。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-30用户明确“授权”后，单项产品实测授权已激活，清单SHA ce9e6e49d90415317f6381182f50a8ae9f08fad8baf91ec99f7ce20256a21fca，截止2026-10-31 07:45 UTC（北京时间15:45）。实际执行保持干净2715ae40，任务941d238c-972b-4b5a-bedc-302af12d1504。Control为outputs/riftcoach-product-browser-preflight-20261030/product-live-control，当前执行attempt-3；唯一执行进程运行中，不得重复启动。前两次启动分别在长路径原件备份、数据库恢复处停止，均未到模型发送；原日志保留。当前已沿原检查点完成两次生成调用，累计16200 known/0 unknown/0retry，后续审查执行中，以segment记录和实际回执为准。每段最多1个新请求，仅session_model_boundary普通续接；524/格式/语义暂停均停止自动推进。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-30续：冻结2715ae40的CI41011784904已8项全部通过。普通cookie/CSRF API已创建一项真实观摩身份绑定任务，经临时Postgres、Memory和实际产品Worker，在session_model_boundary首次模型发送前暂停。采用已实取的5场/5时间线来源，source读取1次；请求/known/unknown/retry均0。首次实际待发模型输入、完整来源、检查点和数据库快照已固定；另一新临时库恢复校验通过，任务1/暂停1/assistant0/Training0，临时容器均已删除。
+
+准备脚本前两次未启动API lifespan，服务未绑定而返回503；没有创建复盘任务或模型发送。修正准备脚本后通过，没有修改冻结产品源码。首次请求文件是待发输入，不冒称真实HTTP发送回执。
+
+下一动作：按task-preparation-v3/execution-plan.json取得一项具体付费授权后，恢复同一任务并执行。范围为DK ShowMaker#KR1最近5场queue420观摩，Flash/high生成＋现有企业渠道Sol/high双审；最多8实际请求/401920tokens/900累计活动秒，每请求300秒，最多2次需用户明确触发的同项恢复。拟截止2026-10-31 07:45 UTC（北京时间15:45），尚未授权或发送。清单和证据见data/evaluation/results/sol_product_task_prepared_20261030.json；不沿用旧授权。默认/产品库/原15/Stage8E/automation保持；玩家口吻与排版在实际成稿消费中检查，审后不额外自由改写。
+
+以下为历史记录（不作为当前执行队列）。
+
+用户补充的玩家表达要求已登记requirements_change_log：最终审查覆盖玩家实际阅读的自然教练正文，前端保持语义与证据的排版；当前整块纯文本显示是已确认的呈现缺口。先沿当前真实产品通路取得成稿再针对性调整，不改冻结提示词、不增加润色调用或重跑原15。
+
+2026-10-30续（真实来源准备）：浏览器实现已提交推送2715ae40，对应新CI41011784904仍在运行；早期Runtime/库存/API检查、web job（含新真库浏览器检查）及打包已通过，Postgres检查也已通过，4个pytest分片仍在运行，完整结果待核。已用现有Riot凭据实际解析DK ShowMaker#KR1，并取得最近5场queue420及5份时间线；12次Riot与5次DataDragon请求全部200、无自动重试，真实模型请求0。现有Summary构建器分析5场、失败0、未回退队列。比赛版本16.20，静态名称库16.21.1，后者不作为旧比赛机制已使用新版本的证据。原来源和摘要已保留，summary SHA2b8861ae…；真实来源材料不同于前面的替身浏览器验证。
+
+独立执行目录D:/riftcoach-sol-product-execution-20261030已固定干净2715ae40，指定Python与产品合同导入验证通过；没有启动Worker或付费请求。来源准备初次在本地字节核对暂停：记录器写入CRLF前按LF文本计算SHA，零额外请求；已保留原件并另记实际文件摘要，未重查账号。证据data/evaluation/results/sol_product_real_source_preparation_20261030.json；原件在outputs/riftcoach-product-browser-preflight-20261030/source-preflight。
+
+下一动作：确认同HEAD CI，完成普通任务、来源与实际输入绑定的可运行单项清单，再按具体截止取得付费授权。尚无新有效付费授权；旧15不重跑，默认/产品库/Stage8E/automation状态保持。此次来源准备记录待下一收尾批统一提交，避免仅追记CI状态触发另一整套运行。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-30续：浏览器最小产品通路的零付费预检完成。选中玩家可发起最近5场单双排复盘，页面创建身份绑定会话并沿普通API入队，任务经真实临时Postgres/Memory/Worker运行；页面可恢复暂停并读取报告、Evidence与累计用量。发起请求键随本标签页保留，回执不确定时明确重试不另建任务。
 
 真实浏览器发现并修复两个接缝：前端checkpoint_saved与后端checkpointed不符会关闭SSE，现精确覆盖全部14类后端事件并增加跨语言合同检查；StrictMode重复session签发可能造成Cookie/CSRF竞争，现共享同一客户端在途签发并忽略已取消订阅。普通续接、524手动补测和取消三个真库浏览器场景通过（81.71秒），成功前缀和未知用量保持、每例任务唯一、成功例回复唯一、观摩Training写入0。桌面/手机正文与Evidence抽屉另补验1项通过；12项既有mock浏览器回归及类型/定向单元检查通过。

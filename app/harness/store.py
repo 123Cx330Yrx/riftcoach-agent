@@ -142,7 +142,9 @@ class FileRunStore:
             with tempfile.NamedTemporaryFile(
                 mode="wb",
                 dir=target.parent,
-                prefix=prefix,
+                # A full artifact name plus tempfile's random suffix can exceed
+                # Windows' path limit even when the final artifact fits.
+                prefix=prefix[:4],
                 suffix=".tmp",
                 delete=False,
             ) as temporary_file:
