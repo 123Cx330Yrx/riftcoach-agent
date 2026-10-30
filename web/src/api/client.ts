@@ -32,6 +32,7 @@ const ALLOWED_ERROR_CODES = new Set([
   "continuation_not_paused",
   "continuation_conflict",
   "continuation_manual_retry_not_allowed",
+  "conversation_not_found",
 ])
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>

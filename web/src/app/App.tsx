@@ -24,6 +24,7 @@ import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
 import { RunUsagePanel } from "../components/RunUsagePanel"
 import { TaskRecoveryPanel } from "../components/TaskRecoveryPanel"
+import { RecentReviewStart } from "../components/RecentReviewStart"
 import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
@@ -351,6 +352,10 @@ function ReadyWorkbench({
         onSelect={onSelect}
       />
       <h2 className="profile-name-heading" translate="no">{selectedProfile.riotId}</h2>
+      {mode === "live" && recovery && (!view.task || ["succeeded", "failed", "cancelled"].includes(view.task.status)) &&
+        <RecentReviewStart key={`${selectedProfile.playerProfileId}:${view.task?.taskId ?? "empty"}`}
+          profileId={selectedProfile.playerProfileId} role={selectedProfile.relationshipRole}
+          previousTask={view.task?.taskId} {...recovery} />}
       {view.productState === undefined ? (
         <EmptyProfileView profile={selectedProfile} view={view} fixtureMode={mode === "fixture"} />
       ) : (

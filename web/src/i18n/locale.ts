@@ -13,6 +13,16 @@ export interface LocaleStore {
 }
 
 export const enCatalog = {
+  "event.snapshot_imported": "earlier progress loaded",
+  "event.reconciled": "task status verified",
+  "reviewStart.title": "Review recent matches",
+  "reviewStart.observed": "Study this player's last 5 ranked solo matches. This will not update your personal training.",
+  "reviewStart.self": "Review your last 5 ranked solo matches, including laning, survival, economy and vision.",
+  "reviewStart.start": "Start review",
+  "reviewStart.busy": "Submitting review",
+  "reviewStart.retry": "Retry this request",
+  "reviewStart.uncertain": "Submission could not be confirmed. Retrying reuses the same request; it does not create another review.",
+  "reviewStart.accepted": "Review queued. Loading its progress.",
   "product.cancelled_title": "Review cancelled",
   "product.cancelled_body": "The task was cancelled. No report is published; earlier usage may still have been recorded.",
   "product.failed_title": "Review stopped",
@@ -420,6 +430,16 @@ export const enCatalog = {
 export type MessageKey = keyof typeof enCatalog
 
 export const zhCnCatalog = {
+  "event.snapshot_imported": "已读取原有进度",
+  "event.reconciled": "已核对任务状态",
+  "reviewStart.title": "复盘近期对局",
+  "reviewStart.observed": "观摩该玩家最近 5 场单双排，分析对线、生存、经济和视野；不写入你的个人训练。",
+  "reviewStart.self": "复盘你的最近 5 场单双排，分析对线、生存、经济和视野。",
+  "reviewStart.start": "发起复盘",
+  "reviewStart.busy": "正在提交复盘",
+  "reviewStart.retry": "重试这次提交",
+  "reviewStart.uncertain": "暂时无法确认提交结果。再次点击会续用同一次请求，不会另开一份复盘。",
+  "reviewStart.accepted": "复盘已排队，正在读取进度。",
   "product.cancelled_title": "复盘已取消",
   "product.cancelled_body": "任务已取消，报告不再发布；取消前可能已产生用量。",
   "product.failed_title": "复盘已中断",

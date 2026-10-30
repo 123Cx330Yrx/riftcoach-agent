@@ -4,7 +4,25 @@
 
 ## 目标与当前结果
 
-修复CI实际失败，继续查普通观摩入口到持久Worker/Evidence的真实接缝。工程修复及API/真库预检完成；远端新HEAD全套结果和浏览器预检尚待完成。
+### 浏览器工作包（已完成本地零付费验证）
+
+修复HEAD 0be87dbf的CI41008692552中，web、packaging和Postgres已通过，四分片仍运行。并行推进真正Chromium→本地cookie/CSRF API→独立临时Postgres→现有Worker/候选的零付费预检，只替换外部Riot/模型IO。默认浏览器mock套件不承担这一证据。
+
+代码核查发现工作台原本仅读取最近复盘与恢复已有任务，缺少创建入口。补充选中玩家的最近5场单双排入口，先创建身份绑定会话，再沿普通会话Review API提交；不让页面指定身份角色或发布模式。请求键在本标签页保存，回执丢失后明确重试复用同一操作，刷新不自动POST。确认普通续接、524明确补测、取消和报告/Evidence/用量读取；未通过时按真实接缝修复，不改模型合同或归零原15。
+
+完成判据：三个浏览器/真库场景、身份保持、成功前缀不重发、唯一回复、无本人Training写入，以及相称前端/治理检查。实际账号/来源和付费冻结清单随后准备；本包不发真实模型请求、不读真实凭据、不迁移产品库。
+
+2026-10-30续：已补齐页面创建会话/Recent Review入口，既有14类后端事件与浏览器精确对齐。真实SSE中的`checkpointed`原被前端误写为`checkpoint_saved`，导致进度流关闭；另补齐snapshot_imported/recovery_requeued/reconciled，保留原未知事件拒绝。新增跨语言事件合同检查及14类消费检查。浏览器还暴露StrictMode两次session POST的Cookie/CSRF竞争；现在共享同一客户端在途签发，取消的订阅不更新UI，也不再产生两组竞争Cookie。
+
+三个真实Chromium→普通cookie/CSRF API→独立Postgres→实际Worker/Memory/session场景通过（81.71秒）：普通续接4请求/80已知tokens，524手动恢复5请求/80已知tokens并保留原未知预留，取消3请求/60已知tokens且无报告。这里的请求全部是脚本模型响应，不是外部模型消耗。每例来源读取1次、任务1个，成功例唯一assistant回复，观摩Training写入0。刷新不发resume；1440/320宽度无横向溢出。随后普通续接单例补验手机/桌面正文与真实Evidence抽屉，1项通过（49.38秒），截图已实读。长页面整页截图出现空白，实际滚动到正文和抽屉后的视口均可读；不据整页截图断言内容缺失。
+
+前端类型与定向检查通过；浏览器SQL检查以独立显式配置进入CI web job，原mock浏览器套件和完整pytest分片保留。原15未重跑，模型合同和默认路由不改。
+
+本地原件目录：`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-browser-preflight-20261030`，3例结果在attempt-135256，视口/抽屉补验在attempt-135711。保留早期失败：夹具漏成功关联记录、开发依赖junction导致字体读取被Vite拒绝、真实SSE事件名不符和session竞争。当前checkout已按原lock安装独立web依赖，未改冻结backend依赖。Docker启动两类旧socket故障采用停止本次启动进程并原路径旁保留零字节socket目录恢复；没有删除数据或重置Docker，属于本机绕过办法，不宣称根因永久修复。所有测试容器已删除。
+
+复现：准备专用可清空Postgres库和已安装Chromium，设置`RIFTCOACH_TEST_DATABASE_URL`、`RIFTCOACH_PRODUCT_BROWSER_CHECK=1`，运行`python -m pytest tests/test_sol_product_browser_postgres.py -q --tb=short --show-capture=no`。该显式用例重建专用测试schema；默认pytest只收集并跳过它，CI专用数据库job之外不会误连产品库。
+
+修复CI实际失败，继续查普通观摩入口到持久Worker/Evidence的真实接缝。工程修复、API/真库及浏览器预检完成；新增提交远端CI仍待实际结果。
 
 40996162649现已结束：shard1/2分别在两份OpenAPI精确路径集合漏登记continuation、resume，其余实际jobs通过；汇总job随失败分片失败。40998305806已见同一shard2错误，其他分片在最近查询仍运行。41000871576的Postgres为249通过6失败：correction-scope构造在模型发送前发现4个共享源码指纹漂移；它的分片最近查询仍运行。不是三个全套都停止不动，也不是本机挪动造成。
 
@@ -36,3 +54,5 @@ CI41003259222的web、packaging、Postgres和shard2已通过；shard3为1911通�
 新增natural_duty_qualification_inventory_product_contract_20261030.json，旧快照不改；仅组件/程序摘要变化，20个其他字段、15例、30份原始请求保持。源码差异来自已实现产品合同涉及的4个共享文件。本轮仅维护当前快照/引用和CI早期检查，不再改产品实现。6项GLM库存、当前Sol库存、两份API路径集合统一提前执行，完整分片仍保留。
 
 本次9项禁网检查全部通过（36.30秒）；不重跑已通过且输入未变的数据库/前端检查。新提交CI仍须读真实结果。
+
+关联浏览器回归12项通过（13.6秒）：本机默认4173监听EACCES，临时改用5183；历史导航测试改为严格比较配置origin根路径，恢复mock测试在销毁页面前等待HTTP路由处理结束。临时配置已删除，CI默认端口保持。原失败与本地环境日志均保留，未把这些启动失败计为模型失败。

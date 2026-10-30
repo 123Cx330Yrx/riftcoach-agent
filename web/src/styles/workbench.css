@@ -115,6 +115,7 @@
 @media (prefers-reduced-motion: reduce) { .timeline-match:hover, .timeline-match:focus-visible { transform: none; }.timeline-marker > span { transition: none; } }
 /* Paused task actions use the existing workbench controls and wrap on mobile. */
 .task-recovery-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1rem; }
+.review-start { margin-bottom: 1.25rem; }
 .task-recovery-actions button { min-height: 44px; padding: .6rem 1rem; border: 1px solid var(--panel-border); background: rgba(82,230,219,.08); color: var(--hex-cyan-300); cursor: pointer; }
 .task-recovery-actions button:hover:not(:disabled) { background: rgba(82,230,219,.16); }
 .task-recovery-actions button:focus-visible { outline: 2px solid var(--hex-cyan-300); outline-offset: 3px; }

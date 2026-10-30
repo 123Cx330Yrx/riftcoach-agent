@@ -1,3 +1,13 @@
+## 2026-10-30 浏览器普通入口与真实SQL/Worker预检
+
+2026-10-30续：浏览器最小产品通路的零付费预检完成。选中玩家可发起最近5场单双排复盘，页面创建身份绑定会话并沿普通API入队，任务经真实临时Postgres/Memory/Worker运行；页面可恢复暂停并读取报告、Evidence与累计用量。发起请求键随本标签页保留，回执不确定时明确重试不另建任务。
+
+真实浏览器发现并修复两个接缝：前端checkpoint_saved与后端checkpointed不符会关闭SSE，现精确覆盖全部14类后端事件并增加跨语言合同检查；StrictMode重复session签发可能造成Cookie/CSRF竞争，现共享同一客户端在途签发并忽略已取消订阅。普通续接、524手动补测和取消三个真库浏览器场景通过（81.71秒），成功前缀和未知用量保持、每例任务唯一、成功例回复唯一、观摩Training写入0。桌面/手机正文与Evidence抽屉另补验1项通过；12项既有mock浏览器回归及类型/定向单元检查通过。
+
+外部Riot/模型都是替身，真实模型请求与真实凭据读取0；临时容器已删除，默认模型/发布入口和产品库不改，原15不重跑。修复基线0be87dbf的CI41008692552已有web/packaging/Postgres及原失败shard3通过，剩余3分片尚未结束；新增实现须绑定自己的新HEAD CI，不冒称全绿。证据data/evaluation/results/sol_product_browser_preflight_20261030.json，工作卡docs/plans/2026-10-30-sol-product-preflight.md。
+
+下一动作：准备实际观摩账号与近期来源，结合干净执行HEAD和远端CI形成一项可审核的产品实测清单，再取得具体付费授权。此包不复用旧授权、不启动付费批。Stage8E in_progress、automation PAUSED；Coach/Training四块联动、完整前端优化、README/Demo、知识Memory、身份运维、两树整合及独立评估/教学继续保留。
+
 ## 2026-10-30 当前GLM评测快照遗漏修复
 
 2026-10-30续：0add355f的新CI41003259222中，web/packaging/Postgres/shard2已通过；shard3为1911通过、1失败、55跳过。失败是旧GLM自然双审离线库存测试仍对照10月29日快照，漏更新的来源为coach_contract、coach_budget、models及natural_duty_candidate；不是新增模型语义失败。原件日志保留。

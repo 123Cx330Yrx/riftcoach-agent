@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.0",
+  "kind": "sol_product_browser_preflight",
+  "date": "2026-10-30",
+  "baseline_head": "0be87dbf97c5a2fbb5297327b6b0073c03cf61d4",
+  "status": "passed_local",
+  "actual_browser": true,
+  "actual_api_cookie_csrf": true,
+  "actual_postgres": true,
+  "actual_worker": true,
+  "external_models": "scripted",
+  "external_riot": "scripted",
+  "real_model_requests": 0,
+  "real_credentials_read": false,
+  "product_database_touched": false,
+  "default_route_changed": false,
+  "original15_rerun": false,
+  "stage8e_completed": false,
+  "paid_authorization_prepared": false,
+  "cases": [
+    {
+      "action": "resume",
+      "task": {
+        "schema_version": "2.0",
+        "disposition": "created",
+        "conversation_id": "e8a1bff4-f7ec-498b-864e-d4b60b35888c",
+        "task_id": "3cd10b36-2810-4674-8189-e50e782f5966",
+        "run_id": "review_9737767eca0e4a278f2bbd4f1b667194",
+        "status": "queued",
+        "links": {
+          "task": "/tasks/3cd10b36-2810-4674-8189-e50e782f5966",
+          "run": "/runs/review_9737767eca0e4a278f2bbd4f1b667194",
+          "report": "/runs/review_9737767eca0e4a278f2bbd4f1b667194/report"
+        }
+      },
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 4,
+        "requests_observed": 4,
+        "known_tokens": 80,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "resume",
+        "outcomes": [
+          "paused",
+          "succeeded"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            200
+          ],
+          [
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 1
+      },
+      "browser_proof_sha256": "6330d7ef4108a3d3e9119d396339eec0ddb5dbbc49cf5a633b9e4092e4cc91eb",
+      "worker_proof_sha256": "5b1a0b61107934f22397acfe5dc23f627c0a79f33dde5cc970247d369ee31886"
+    },
+    {
+      "action": "retry",
+      "task": {
+        "schema_version": "2.0",
+        "disposition": "created",
+        "conversation_id": "ea366601-cb92-494d-81fe-370783909543",
+        "task_id": "a562ad41-ed5d-46d4-821d-cdfc7940f3d6",
+        "run_id": "review_542849c41f484c4e999bbdb6ac3ad574",
+        "status": "queued",
+        "links": {
+          "task": "/tasks/a562ad41-ed5d-46d4-821d-cdfc7940f3d6",
+          "run": "/runs/review_542849c41f484c4e999bbdb6ac3ad574",
+          "report": "/runs/review_542849c41f484c4e999bbdb6ac3ad574/report"
+        }
+      },
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 5,
+        "requests_observed": 5,
+        "known_tokens": 80,
+        "unknown_token_reservation": 73724,
+        "retries": 1,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "retry",
+        "outcomes": [
+          "paused",
+          "succeeded"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            524
+          ],
+          [
+            200,
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 1
+      },
+      "browser_proof_sha256": "9eb117d3615af63db8744249bb77079977b3a2583d426f2edec3af0ee1ddc5b4",
+      "worker_proof_sha256": "239df53232eb9761e08595daf9b3259611a65a39252fe79b568151d2953ae4ec"
+    },
+    {
+      "action": "cancel",
+      "task": {
+        "schema_version": "2.0",
+        "disposition": "created",
+        "conversation_id": "30b9a4c6-1ec1-4467-9b24-62752d747a5b",
+        "task_id": "53775bfd-2197-4205-931c-c797cd21607c",
+        "run_id": "review_79b687a4830b47c2bfa79f7e170cd45f",
+        "status": "queued",
+        "links": {
+          "task": "/tasks/53775bfd-2197-4205-931c-c797cd21607c",
+          "run": "/runs/review_79b687a4830b47c2bfa79f7e170cd45f",
+          "report": "/runs/review_79b687a4830b47c2bfa79f7e170cd45f/report"
+        }
+      },
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 3,
+        "requests_observed": 3,
+        "known_tokens": 60,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "cancel",
+        "outcomes": [
+          "paused"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 0
+      },
+      "browser_proof_sha256": "15190c3d97273c60603f26e73adfb9c6581eb4a687ba415f9e3ce395ddf797cb",
+      "worker_proof_sha256": "6df7288ddeba66815e9a787222b0b3982b41bd772c15a0f5e403f226a3e815d2"
+    }
+  ],
+  "browser_sql_test_count": 3,
+  "browser_sql_seconds": 81.71,
+  "viewport_followup": {
+    "action": "resume",
+    "test_count": 1,
+    "seconds": 49.38,
+    "output": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\attempt-135711"
+  },
+  "related_mock_browser_tests": 12,
+  "related_mock_browser_seconds": 13.6,
+  "fixes": [
+    "normal_selected_profile_review_creation",
+    "persistent_operation_keys_on_explicit_retry",
+    "all_14_backend_event_kinds_in_browser",
+    "single_inflight_session_cookie_csrf_issuance"
+  ],
+  "offline_checks": [
+    "frontend typecheck",
+    "targeted frontend unit groups passed",
+    "backend/browser event-enum equality passed"
+  ],
+  "artifacts_root": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030",
+  "containers_removed": true,
+  "ci": {
+    "run_id": 41008692552,
+    "head": "0be87dbf97c5a2fbb5297327b6b0073c03cf61d4",
+    "status": "in_progress",
+    "completed_success": [
+      "web-checks",
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest-shards (3)"
+    ],
+    "remaining": [
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)"
+    ]
+  },
+  "next_action": "Prepare actual account/source preflight and a clean-head single-task execution manifest; no paid sends yet",
+  "final_checks": {
+    "governance": "passed",
+    "typecheck": "passed",
+    "production_build": "passed",
+    "diff_check": "passed",
+    "default_pytest_browser_optin": "3 skipped as intended",
+    "event_contract": "1 passed"
+  },
+  "docker_restored_stopped": true,
+  "limitations": [
+    "Scripted external model and Riot responses; not new live semantic evidence",
+    "Actual account/source preparation and paid execution manifest remain pending",
+    "Remote CI for the new implementation head must be checked separately"
+  ]
+}

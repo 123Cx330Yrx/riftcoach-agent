@@ -13,6 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     # Preserve all non-pytest gates while isolated shards run the complete suite.
     timeout-minutes: 60
+    services:
+      product-browser-postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: riftcoach_browser_test
+          POSTGRES_USER: riftcoach
+          POSTGRES_PASSWORD: ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U riftcoach -d riftcoach_browser_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 15
 
     steps:
       - name: Check out repository
@@ -50,6 +64,7 @@ jobs:
           tests/test_sol_review_binding.py::test_inventory_preserves_original15_and_uses_runtime_contract
           tests/test_async_task_api.py::test_openapi_versions_the_async_contract_and_exact_paths
           tests/test_fastapi_adapter.py::test_app_factory_and_openapi_do_not_read_keys_or_open_io
+          tests/test_web_task_event_contract.py
           -q --tb=short --show-capture=no
 
       - name: Install isolated Pi spike dependencies without lifecycle scripts
@@ -75,6 +90,25 @@ jobs:
           npm run test:unit
           npm run build
           npm run test:e2e
+
+      - name: Verify browser to real SQL and product Worker with scripted external IO
+        env:
+          DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_browser_test
+          RIFTCOACH_TEST_DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_browser_test
+          RIFTCOACH_PRODUCT_BROWSER_CHECK: "1"
+          RIFTCOACH_BROWSER_OUTPUT: ${{ runner.temp }}/product-browser
+        run: python -m pytest tests/test_sol_product_browser_postgres.py -q --tb=short --show-capture=no
+
+      - name: Preserve product browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: product-browser
+          path: |
+            ${{ runner.temp }}/product-browser/**/*.png
+            ${{ runner.temp }}/product-browser/**/*proof.json
+            ${{ runner.temp }}/product-browser/**/playwright.stdout.txt
+          if-no-files-found: ignore
 
       - name: Verify cinematic audit toolchain and planned ledger
         run: |

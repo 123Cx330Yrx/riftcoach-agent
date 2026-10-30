@@ -141,19 +141,12 @@ export interface TaskWire {
   readonly report_available: boolean
 }
 
-export type TaskEventKindWire =
-  | "created"
-  | "claimed"
-  | "execution_started"
-  | "heartbeat"
-  | "cancel_requested"
-  | "checkpoint_saved"
-  | "recovery_required"
-  | "requeued"
-  | "continuation_resumed"
-  | "succeeded"
-  | "failed"
-  | "cancelled"
+export const TASK_EVENT_KINDS = [
+  "snapshot_imported", "created", "claimed", "heartbeat", "checkpointed",
+  "execution_started", "cancel_requested", "recovery_requeued", "continuation_resumed",
+  "recovery_required", "succeeded", "failed", "cancelled", "reconciled",
+] as const
+export type TaskEventKindWire = typeof TASK_EVENT_KINDS[number]
 
 export interface TaskEventWire {
   readonly event_schema_version: "1.0"

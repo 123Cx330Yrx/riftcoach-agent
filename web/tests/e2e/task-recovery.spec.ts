@@ -1,5 +1,8 @@
 import { expect, test, type Page } from "@playwright/test"
 
+// Drain fixture HTTP handlers before Playwright disposes their response bodies.
+test.afterEach(async ({ page }) => { await page.unrouteAll({ behavior: "wait" }) })
+
 const TASK = "96000000-0000-4000-8000-000000000001"
 const RUN = "review_live_workbench_1"
 const SELF = "95000000-0000-4000-8000-000000000001"

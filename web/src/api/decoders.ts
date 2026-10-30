@@ -1,3 +1,4 @@
+import { TASK_EVENT_KINDS } from "./wire"
 import type {
   EvidenceClaimWire,
   EvidenceConfidenceWire,
@@ -403,7 +404,7 @@ export function decodeTaskEvent(value: unknown, expected: ExpectedTaskRunBinding
     task_id: taskId,
     run_id: runId,
     task_sequence: number(row.task_sequence, `${path}.task_sequence`, { integer: true, min: 1 }),
-    event_kind: enumeration(row.event_kind, ["created", "claimed", "execution_started", "heartbeat", "cancel_requested", "checkpoint_saved", "recovery_required", "requeued", "continuation_resumed", "succeeded", "failed", "cancelled"] as const, `${path}.event_kind`) as TaskEventKindWire,
+    event_kind: enumeration(row.event_kind, TASK_EVENT_KINDS, `${path}.event_kind`) as TaskEventKindWire,
     status_after: taskStatus(row.status_after, `${path}.status_after`),
     lease_generation: number(row.lease_generation, `${path}.lease_generation`, { integer: true, min: 0 }),
     reason: nullable(row.reason, (item) => safeCode(item, `${path}.reason`)),

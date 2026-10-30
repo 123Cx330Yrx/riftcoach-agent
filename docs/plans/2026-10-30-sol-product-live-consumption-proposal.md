@@ -2,7 +2,7 @@
 
 2026-10-30。状态：准备范围，未授权付费/未执行。承接已批准并实现的ADR0119；不继承10月29日已封存批次或延长其授权。
 
-零付费预检已补普通HTTP入口：API显式配置`RIFTCOACH_TASK_PUBLICATION_MODE=evidence_bound_v1`，Worker显式选择`RIFTCOACH_WORKER_EXECUTION_PROFILE=sol-dual-product-v1`。前者使两条Review创建入口固定Evidence模式，不由客户端请求体选择；默认仍legacy。观摩会话经真实临时Postgres、Memory、Worker暂停续接、Evidence/报告/用量API与唯一会话回复已验证，外部IO为替身。首次Evidence投影连同原时间随任务保存，恢复不重新计算bundle摘要。浏览器与真实账号/近期来源预检尚未完成，见`2026-10-30-sol-product-preflight.md`，此文仍不是冻结付费清单。
+零付费预检已补普通HTTP入口：API显式配置`RIFTCOACH_TASK_PUBLICATION_MODE=evidence_bound_v1`，Worker显式选择`RIFTCOACH_WORKER_EXECUTION_PROFILE=sol-dual-product-v1`。前者使两条Review创建入口固定Evidence模式，不由客户端请求体选择；默认仍legacy。实际浏览器已能发起观摩会话，经过真实临时Postgres、Memory、Worker暂停续接，读取Evidence/报告/累计用量与唯一会话回复；普通恢复、524手动补测、取消三例通过，外部IO为替身。首次Evidence投影连同原时间随任务保存，恢复不重新计算bundle摘要。真实账号/近期来源预检、干净执行版本与新CI仍待准备/确认，见`2026-10-30-sol-product-preflight.md`，此文仍不是冻结付费清单。
 
 ## 具体目标
 

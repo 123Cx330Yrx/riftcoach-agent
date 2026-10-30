@@ -140,7 +140,7 @@ test.describe("Portal to Account to Workbench journey", () => {
     expect(finalLedger.requests.some((path) => path.includes("training-progress"))).toBe(false)
   })
 
-  test("keeps exactly one product layer across reload, back and forward navigation", async ({ page }) => {
+  test("keeps exactly one product layer across reload, back and forward navigation", async ({ page, baseURL }) => {
     const testId = uniqueTestId("history")
     await useScenario(page, "history-open-stream", testId)
     await page.goto("/")
@@ -166,7 +166,7 @@ test.describe("Portal to Account to Workbench journey", () => {
     await expectAccountOnly(page)
 
     await page.goBack()
-    await expect(page).toHaveURL(/127\.0\.0\.1:4173\/$/)
+    await expect(page).toHaveURL(new URL("/", baseURL).toString())
     await expectPortalOnly(page)
 
     await page.goForward()
