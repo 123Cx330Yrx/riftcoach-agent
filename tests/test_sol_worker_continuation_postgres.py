@@ -32,7 +32,8 @@ def continued_api(migrated_product_api):
 
 
 def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=(),
-                 contract=sol_review_contract, profile=WORKER_SOL_PROFILE):
+                 contract=sol_review_contract, profile=WORKER_SOL_PROFILE,
+                 memory_repository=None, terminal_turn_writer=None):
     env = valid_environment(tmp_path)
     env.update(LLM_MODEL=ZHIPU_GLM53_FLASH_MODEL, LLM_BASE_URL=ZHIPU_STANDARD_BASE_URL,
         RIFTCOACH_RUNS_ROOT=str(tmp_path), RIFTCOACH_WORKER_EXECUTION_PROFILE=profile,
@@ -45,6 +46,10 @@ def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=(),
         def build(self, **kwargs):
             self.reads += 1
             return super().build(**kwargs)
+
+        def build_by_puuid(self, **kwargs):
+            self.reads += 1
+            return super().build_by_puuid(**kwargs)
 
     summary = Summary(probe.descriptor.generator.req.player_summary)
     factories, requests = [], []
@@ -68,8 +73,10 @@ def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=(),
     def worker():
         executor = compose_continuation_executor(settings, repository=repository,
             legacy=Legacy(), summary_builder=summary,
+            memory_repository=memory_repository,
             knowledge=LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs")))
         return ReviewWorker(repository=repository, executor=executor, worker_id="sol-continuation-worker",
+            terminal_turn_writer=terminal_turn_writer,
             continuation_store=executor.store,
             lease_policy=TaskLeasePolicy(lease_seconds=360, heartbeat_seconds=60)), executor
 

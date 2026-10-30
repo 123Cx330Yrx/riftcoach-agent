@@ -1,3 +1,13 @@
+## 2026-10-30 三次CI修复与普通观摩入口预检
+
+2026-10-30续：用户指出最近三个CI失败后，已定位两类维护遗漏：新增continuation/resume接口未加入两份OpenAPI精确清单；独立产品合同修改共享Runtime源码后，四个仍执行的角色profile清单指纹未更新。保留原失败日志，只更新当前清单的组件/程序SHA，其余字段与政策不变；旧封存原件不改。新增默认入口及10个profile的零Provider启动检查，并把续接/产品合同/普通入口真库检查加入CI，数据库job调度上限随覆盖增加至20分钟。
+
+零付费产品预检继续补齐两个接缝：服务端显式`RIFTCOACH_TASK_PUBLICATION_MODE=evidence_bound_v1`贯通普通两条Review入口；Evidence首次实际投影随session保存，修复恢复时当前时间改变bundle摘要、继而改变模型输入的问题。观摩会话经真实临时Postgres/Memory/Worker暂停续接后能读取报告、Evidence、累计用量和唯一会话回复，身份保持observed，不写本人训练进度。默认legacy未切换，模型/Riot均为替身。
+
+验证：11个启动检查、36项Runtime/原API检查、61项API/组合检查（与前组重叠1项）；21项原取消围栏/续接/产品真库检查与2项新普通入口真库检查通过，投影修复后另复核原Evidence项1次。临时容器已删除，Docker恢复停止；无新增真实模型请求/真实凭据读取/产品库迁移。远端新HEAD CI待实际结果，不能用本地通过替代。证据`data/evaluation/results/sol_product_preflight_ci_repair_20261030.json`；工作卡`docs/plans/2026-10-30-sol-product-preflight.md`。
+
+下一动作：跟进修复HEAD的CI，继续浏览器零付费预检与实际账号/来源准备，形成一条代表性产品通路的冻结清单后再按具体边界取得付费授权。原15完成、Stage8E in_progress、automation PAUSED、主树前端不变；完整前端优化、README/Demo、Training/四块联动、知识Memory、身份运维、两树整合及独立评估/教学仍保留。
+
 ## 2026-10-30 独立产品合同实现与消费验证
 
 2026-10-30续：用户授权采用ADR0119后，独立Flash/Sol产品合同1.7.0已实现。显式`sol-dual-product-v1`执行8次/401920tokens/900累计活动秒、最多2次明确同项恢复；完整双初审、必要时唯一application、同稿双fresh达到原85分/pass后进入既有发布层。相同补丁去重保留双职责问题覆盖；冲突、坏锚点和fresh拒绝暂停局部，成功前缀/原拒绝/未知用量保持。旧开发合同继续拒发布，新旧profile不能改挂已有任务，默认legacy未切换。

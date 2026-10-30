@@ -201,6 +201,8 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
             "/player-links/{link_task_id}",
             "/tasks/{task_id}",
             "/tasks/{task_id}/cancel",
+            "/tasks/{task_id}/continuation",
+            "/tasks/{task_id}/resume",
             "/tasks/{task_id}/events",
             "/tasks/{task_id}/events/stream",
             "/runs/{run_id}",

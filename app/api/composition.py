@@ -109,6 +109,7 @@ from app.product.run_query import (
 from app.tasks.models import (
     CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
+    TaskPublicationMode,
     ReviewTaskView,
     TaskCapacityPolicy,
     TaskCreateResult,
@@ -135,6 +136,7 @@ class ApiCompositionSettings:
     profile: ActorProfile
     runs_root: Path
     local_owner_id: str | None = field(repr=False)
+    task_publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     cors_origins: tuple[str, ...] = ()
     cors_allow_credentials: bool = False
     task_capacity: TaskCapacityPolicy = field(
@@ -158,6 +160,13 @@ def load_api_composition_settings(
     profile = raw_profile.strip().lower()
     if profile not in {"local", "test", "production"}:
         raise ValueError("RIFTCOACH_API_PROFILE must be local, test or production")
+
+    try:
+        task_publication_mode = TaskPublicationMode(
+            environment.get("RIFTCOACH_TASK_PUBLICATION_MODE", "legacy")
+        )
+    except (TypeError, ValueError):
+        raise ValueError("RIFTCOACH_TASK_PUBLICATION_MODE must be legacy or evidence_bound_v1") from None
 
     raw_runs_root = environment.get("RIFTCOACH_RUNS_ROOT", "data/runs")
     if not isinstance(raw_runs_root, str) or not raw_runs_root.strip():
@@ -250,6 +259,7 @@ def load_api_composition_settings(
         profile=profile,  # type: ignore[arg-type]
         runs_root=runs_root,
         local_owner_id=local_owner_id,
+        task_publication_mode=task_publication_mode,
         cors_origins=cors_origins,
         cors_allow_credentials=cors_allow_credentials,
         task_capacity=task_capacity,
@@ -964,6 +974,7 @@ def create_composed_app(
             app.state.database_engine = None
 
     app = create_app(
+        task_publication_mode=api_settings.task_publication_mode,
         task_service=task_proxy,
         player_link_service=player_link_proxy,
         query_service=query_proxy,

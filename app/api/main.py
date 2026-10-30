@@ -165,6 +165,7 @@ from app.tasks.models import (
     TaskCreateResult,
     TaskDeleteDisposition,
     TaskDeletionResult,
+    TaskPublicationMode,
     TaskStatus,
 )
 from app.tasks.service import TaskServiceError
@@ -542,8 +543,12 @@ def create_app(
     auth_cookie_policy: CookiePolicy | None = None,
     request_budget: RequestBudget | None = None,
     rate_limiter: InMemoryRateLimiter | None = None,
+    task_publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
+
+    if not isinstance(task_publication_mode, TaskPublicationMode):
+        raise TypeError("task_publication_mode must be a TaskPublicationMode")
 
     for method_name in ("create", "get_task", "get_task_by_run_id"):
         if not callable(getattr(task_service, method_name, None)):
@@ -1808,6 +1813,7 @@ def create_app(
                     idempotency_key=idempotency_key,
                     conversation_id=parsed_conversation_id,
                     request=product_request,
+                    publication_mode=task_publication_mode,
                 )
             )
             if (
@@ -1870,6 +1876,7 @@ def create_app(
                 owner_id=actor.owner_id,
                 idempotency_key=idempotency_key,
                 request=product_request,
+                publication_mode=task_publication_mode,
             )
             result = task_service.create(command)
             if not isinstance(result, TaskCreateResult):

@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "05c071845a9a1ea643c274cf7f2e47ba766735cdd36a81f110d0e8203e310b38"
+      "sha256": "69963d59eaff723edb6cbff4eb85eea39da723dd81982e8dab5b68ee5b53a11a"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "dad3a44a3e50589d678839cbaaebc6c21466d01dbb78e928858ae6812d32b83a"
+      "sha256": "b0ae4c065c081d2bf58b6832285fe7832dce65a74f503a539901851893d2ade1"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -262,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "6a1e7915c2cf235e0fbfd26a587b1e50ea9736d4c31f56639ed3a644f56a8f1b"
+      "sha256": "8f3617b8d552e686306173645869ef35bdae1b3c084e16bd29873b9c18aedcfb"
     },
     {
       "component_id": "app.model_runtime",
@@ -292,7 +292,7 @@
     {
       "component_id": "app.prompt_program.resolver",
       "source": "app/prompt_program/resolver.py",
-      "sha256": "b1c092357592667e8437c8491fc890c884f70b08743e5b19d0451e298dbb4b1f"
+      "sha256": "607cafb2dd3c63622c2ae5d0575f2203669384155733b2fdc121092542581aa8"
     },
     {
       "component_id": "app.prompt_program.models",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "8670e5c825ecd5140ebbd7ff985354b10057b2eebec5a1552d15ac6b484687c2"
+  "program_sha256": "9e8290cced0b9153f4dd6786d76e0ee940ba23a222f3d5127c09961691d7c9c9"
 }

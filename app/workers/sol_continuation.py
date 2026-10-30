@@ -1,4 +1,4 @@
-"""Explicit unpublished Flash/Sol execution through the ordinary Worker.
+"""Explicit Flash/Sol execution through the ordinary Worker.
 
 Each lease gets a new derived Runtime directory. Successful source, tool and
 model operations replay from the original session; its budget is cumulative.
@@ -58,6 +58,31 @@ class FrozenMemoryManifestStore:
         return self.delegate.write(MemoryContextManifest.model_validate_json(json.dumps(value)))
 
 
+def frozen_publication_sources(delegate, session):
+    """Retain the actual first Evidence projection across leases.
+
+    Re-projecting at a new wall-clock time changes the bundle digest embedded
+    in the model input, even when every materialized source is unchanged.
+    A resumed task consumes the original projection and its original times.
+    """
+    from pydantic import TypeAdapter
+    from app.evidence.publication import EvidencePublicationSources, canonical_bytes, sha256_bytes
+    from app.evidence.summary_bridge import SummaryEvidenceProjection
+
+    projection_type = TypeAdapter(SummaryEvidenceProjection)
+
+    class FrozenSources(EvidencePublicationSources):
+        def project(self, summary, *, routing_region):
+            value, _ = session.operation("publication-source", {
+                "summary_sha256": sha256_bytes(canonical_bytes(summary)),
+                "routing_region": routing_region,
+            }, lambda: projection_type.dump_python(
+                delegate.project(summary, routing_region=routing_region), mode="json"))
+            return projection_type.validate_json(json.dumps(value))
+
+    return FrozenSources(now=delegate.now)
+
+
 def promote_segment(source, target):
     """Create-only publication of real files, never synthetic replay events."""
     source, target = Path(source), Path(target)
@@ -98,7 +123,8 @@ class SolContinuationExecutor:
 
     def execute(self, task):
         contract = self.contract
-        binding = dict(worker_profile=self.profile, adapter_version=1,
+        binding = dict(worker_profile=self.profile,
+            adapter_version=2 if task.publication_mode.value == "evidence_bound_v1" else 1,
             candidate_contract=contract.VERSION, task_id=str(task.task_id),
             run_id=task.run_id, owner_id=task.owner_id,
             request_fingerprint=task.request_fingerprint,
@@ -136,6 +162,8 @@ class SolContinuationExecutor:
                 from app.tasks.models import TaskPublicationMode
                 sources = (self.publication_sources if task.publication_mode is
                            TaskPublicationMode.EVIDENCE_BOUND_V1 else None)
+                if sources is not None:
+                    sources = frozen_publication_sources(sources, session)
                 app = build_natural_duty_candidate(
                     summary_builder=FrozenSummaryBuilder(self.summary_builder, session),
                     provider_factory=self.factories(transport), knowledge_provider=self.knowledge,
