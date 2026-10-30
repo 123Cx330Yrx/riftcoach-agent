@@ -45,7 +45,10 @@ export function ProductStateBanner({ state }: { readonly state: WorkbenchProduct
     ? { ...stateContent.rejected, title: "product.cancelled_title" as const, description: "product.cancelled_body" as const }
     : state.taskStatus === "failed"
       ? { ...stateContent.rejected, title: "product.failed_title" as const, description: "product.failed_body" as const }
-      : stateContent[state.state]
+      : state.taskStatus === "recovery_required"
+        ? { ...stateContent.not_ready, label: "status.recovery_required" as const,
+          title: "recovery.waiting" as const, description: "recovery.preserved" as const }
+        : stateContent[state.state]
 
   return (
     <section className={`product-state product-state--${state.state}`} aria-labelledby="product-state-title">

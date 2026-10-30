@@ -23,6 +23,7 @@ import { AccountAccess } from "../components/AccountAccess"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
 import { RunUsagePanel } from "../components/RunUsagePanel"
+import { TaskRecoveryPanel } from "../components/TaskRecoveryPanel"
 import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
@@ -325,11 +326,13 @@ function ReadyWorkbench({
   mode,
   liveUpdates,
   onSelect,
+  recovery,
 }: {
   readonly view: LiveWorkbenchView
   readonly mode: "fixture" | "live"
   readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
   readonly onSelect: (profileId: string) => void
+  readonly recovery?: { csrfToken: string; onChanged: () => void; onAuthFailure: (code: string) => void }
 }) {
   const { formatNumber, t } = useI18n()
   const selectedProfile = view.profiles.find((profile) => profile.playerProfileId === view.selectedProfileId)
@@ -355,9 +358,11 @@ function ReadyWorkbench({
           <div className="command-layout__primary">
             <ProductStateBanner state={view.productState} />
             <EventStrip events={view.events} liveUpdates={liveUpdates} />
+            {view.task?.status === "recovery_required" && recovery && <TaskRecoveryPanel
+              key={`${view.task.taskId}:${view.task.updatedAt}`} taskId={view.task.taskId} runId={view.task.runId} {...recovery} />}
             {view.summary !== undefined ? <RecentFormPanel summary={view.summary} /> : null}
             {view.timeline !== undefined ? <TimelinePanel timeline={view.timeline} /> : null}
-            {view.summary === undefined && view.productState.state === "not_ready" ? (
+            {view.summary === undefined && view.productState.state === "not_ready" && view.task?.status !== "recovery_required" ? (
               <section className="analysis-pending panel" aria-labelledby="analysis-pending-title">
                 <span className="analysis-pending__route" aria-hidden="true" />
                 <p className="eyebrow">{t("analysis.running_kicker")}</p>
@@ -417,11 +422,13 @@ function LiveWorkbench({
   initialProfileId,
   onAuthFailure,
   onSelectProfile,
+  csrfToken,
 }: {
   readonly createController: (initialProfileId: string) => LiveWorkbenchControllerLike
   readonly initialProfileId: string
   readonly onAuthFailure: (code: string) => void
   readonly onSelectProfile: (profileId: string) => void
+  readonly csrfToken: string
 }) {
   const [controller] = useState(() => createController(initialProfileId))
   const started = useRef(false)
@@ -459,6 +466,7 @@ function LiveWorkbench({
       mode="live"
       liveUpdates={snapshot.liveUpdates}
       onSelect={onSelectProfile}
+      recovery={{ csrfToken, onAuthFailure, onChanged: () => { void controller.selectProfile(snapshot.state.client === "ready" ? snapshot.state.data.selectedProfileId : initialProfileId) } }}
     />
   )
 }
@@ -538,6 +546,7 @@ function AuthenticatedProduct({
             key={journey.profileId}
             createController={createController}
             initialProfileId={journey.profileId}
+            csrfToken={session.csrf_token}
             onAuthFailure={onAuthFailure}
             onSelectProfile={(profileId) => onNavigate(journey.region === undefined ? { stage: "workbench", profileId } : { stage: "workbench", profileId, region: journey.region })}
           />

@@ -355,6 +355,12 @@ export class LiveWorkbenchController {
             data: { ...state.data, events: [...state.data.events, adaptTaskEvent(event)] },
           },
         })
+        // A pause is actionable before a terminal event. Re-read the owner-scoped
+        // task instead of leaving its earlier running status on screen.
+        if (event.status_after !== state.data.task?.status
+          && (event.event_kind === "recovery_required" || event.event_kind === "continuation_resumed")) {
+          void this.selectProfile(binding.profileId)
+        }
       },
       onState: (state) => {
         if (this.owns(binding)) this.updateLive(state)

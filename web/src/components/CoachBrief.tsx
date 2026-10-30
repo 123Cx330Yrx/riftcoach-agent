@@ -30,7 +30,7 @@ export function CoachBrief({ productState, report }: CoachBriefProps) {
         <span className="coach-brief__sigil"><Glyph name="pending" /></span>
         <div>
           <p className="eyebrow">{t("coach.channel")}</p>
-          <h3 id="pending-brief-title">{t("coach.pending_title")}</h3>
+          <h3 id="pending-brief-title">{t(productState.taskStatus === "recovery_required" ? "recovery.brief" : "coach.pending_title")}</h3>
           <p>{t("coach.pending_body")}</p>
         </div>
       </section>

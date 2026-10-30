@@ -493,7 +493,7 @@ export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageW
   }
 }
 
-function decodeSessionAccounting(value: unknown) {
+export function decodeSessionAccounting(value: unknown) {
   const row = record(value, "session_accounting")
   const keys = ["requests_reserved", "requests_observed", "known_tokens", "unknown_token_reservation", "retries", "unresolved_intents"] as const
   exact(row, ["scope", ...keys], "session_accounting")

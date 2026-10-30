@@ -28,6 +28,10 @@ const ALLOWED_ERROR_CODES = new Set([
   "request_body_too_large",
   "request_headers_too_large",
   "rate_limited",
+  "continuation_not_found",
+  "continuation_not_paused",
+  "continuation_conflict",
+  "continuation_manual_retry_not_allowed",
 ])
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
@@ -206,11 +210,13 @@ export class ApiClient {
     return decode(value)
   }
 
-  async postEmpty<T>(endpoint: string, decode: (value: unknown) => T, csrfToken: string, signal?: AbortSignal): Promise<T> {
+  async postEmpty<T>(endpoint: string, decode: (value: unknown) => T, csrfToken: string, signal?: AbortSignal, idempotencyKey?: string): Promise<T> {
     if (!csrfToken || csrfToken.length > 256 || /[\r\n]/.test(csrfToken)) throw new Error("api_mutation_headers_invalid")
+    if (idempotencyKey !== undefined && !/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(idempotencyKey)) throw new Error("api_mutation_headers_invalid")
     const response = await this.fetcher(apiPath(endpoint), {
       method: "POST", credentials: "same-origin",
-      headers: { Accept: "application/json", "X-CSRF-Token": csrfToken },
+      headers: { Accept: "application/json", "X-CSRF-Token": csrfToken,
+        ...(idempotencyKey === undefined ? {} : { "Idempotency-Key": idempotencyKey }) },
       ...(signal === undefined ? {} : { signal }),
     })
     if (!response.ok) throw await errorFrom(response)

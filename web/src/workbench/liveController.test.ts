@@ -141,6 +141,27 @@ function streamHarness() {
 }
 
 describe("generation-guarded live controller", () => {
+  it("refreshes a paused task on its event without requesting unpublished content", async () => {
+    const api = new FakeApi()
+    const stream = streamHarness()
+    const controller = new LiveWorkbenchController({ api, streamFactory: stream.factory })
+    await controller.start()
+    api.taskValue = task("recovery_required")
+    stream.handles[0]!.callbacks.onEvent({ event_schema_version: "1.0", event_cursor: 1,
+      event_identity: "b".repeat(64), task_id: TASK_ID, run_id: RUN_ID, task_sequence: 1,
+      event_kind: "recovery_required", status_after: "recovery_required", lease_generation: 1,
+      reason: "session_timeout_awaiting_manual_retry", occurred_at: NOW })
+    await vi.waitFor(() => expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.task?.status).toBe("recovery_required"))
+    const loads = api.calls.filter(call => call === "task").length
+    stream.handles.at(-1)!.callbacks.onEvent({ event_schema_version: "1.0", event_cursor: 2,
+      event_identity: "c".repeat(64), task_id: TASK_ID, run_id: RUN_ID, task_sequence: 2,
+      event_kind: "heartbeat", status_after: "running", lease_generation: 1,
+      reason: null, occurred_at: NOW })
+    expect(api.calls.filter(call => call === "task")).toHaveLength(loads)
+    expect(api.calls).not.toContain("report")
+    expect(api.calls).not.toContain("usage")
+    controller.dispose()
+  })
   it("uses finite client message codes instead of English display strings", async () => {
     const controller = new LiveWorkbenchController({
       api: new FakeApi(),
