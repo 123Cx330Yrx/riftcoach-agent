@@ -68,7 +68,9 @@ def component_fingerprints(skill):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     rows = {r.component_id: r for r in parent.component_fingerprints(skill)}
     for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
-                 'app/product/manual_retry_grant.py', 'scripts/reviewer_responses_stream.py'):
+                 'app/product/manual_retry_grant.py', 'scripts/reviewer_responses_stream.py',
+                 'app/product/stream_migration.py', 'app/workers/sol_continuation.py',
+                 'app/persistence/task_continuations.py'):
         key = path.replace('/', '.').removesuffix('.py')
         rows[key] = ComponentFingerprint(component_id=key, source=path,
             sha256=hashlib.sha256((ROOT / path).read_text(encoding='utf-8').encode()).hexdigest())

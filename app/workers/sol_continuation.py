@@ -130,6 +130,8 @@ class SolContinuationExecutor:
             run_id=task.run_id, owner_id=task.owner_id,
             request_fingerprint=task.request_fingerprint,
             publication_mode=task.publication_mode.value)
+        if self.profile == WORKER_SOL_PRODUCT_PROFILE:
+            binding['execution_contract'] = contract.CONTRACT.snapshot().model_dump(mode='json')
         try:
             saved = self.store.begin(task, binding)
         except ContinuationError as exc:

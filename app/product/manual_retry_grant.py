@@ -33,7 +33,10 @@ def validate(grant, *, session, failed_sha, retries, replay=False):
             raise ValueError('retry_grant_digest')
     if grant['failed_result_sha256'] != failed_sha:
         raise ValueError('retry_grant_failure')
-    pins = session.checkpoint_pins.values() if replay else (session.checkpoint_sha,)
+    pins = set(session.checkpoint_pins.values()) if replay else {session.checkpoint_sha}
+    if replay:
+        from app.product.stream_migration import replay_checkpoint_pins
+        pins.update(replay_checkpoint_pins(session))
     if grant['checkpoint_sha256'] not in pins:
         raise ValueError('retry_grant_checkpoint')
     expiry = datetime.fromisoformat(grant['expires_at_utc'])
