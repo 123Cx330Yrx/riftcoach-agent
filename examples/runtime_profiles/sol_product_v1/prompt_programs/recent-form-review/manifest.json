@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "b0ae4c065c081d2bf58b6832285fe7832dce65a74f503a539901851893d2ade1"
+      "sha256": "b9d462b334f49992f1eb9be7b037182397ba5c9f30551d80cb84d9fe84a183bb"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -347,7 +347,7 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "204d89b5e09728ea9e098c75109d1af1d99a5bf60ea7636b2773cf39a1130300"
+      "sha256": "d43a6ee973dc0391f9f637fb7ecda4a9949e706c63fef53748ca1b617a1fe0a8"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
@@ -357,7 +357,7 @@
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "40a8415909796865e633ac69759000ac673ba4b7669b8c6eed1c64c92d653a15"
+      "sha256": "394942e4b59291eaf68725a00a59867dc09d4c2cb1978e494819f4b2f8dce610"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -427,12 +427,12 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "c9ab543a5c74fa2a7106478ff84446079dc3377cb76579b83cc3ff915cfd9b12"
+      "sha256": "9405210dd58ca26c99aae0b832ca11c30645b40ccefae6c09515cec7c9fc967e"
     },
     {
       "component_id": "app.product.sol_workflow",
       "source": "app/product/sol_workflow.py",
-      "sha256": "f99fe3297cc4b577986a023e4d88c60342fdee1d95dac6cef3aa1e68f0922fd8"
+      "sha256": "8d3c92653f9e3039fbaf209f80b5f0ec0966a48bb63131171d8286cc758b90c7"
     },
     {
       "component_id": "app.product.manual_retry_grant",
@@ -450,9 +450,14 @@
       "sha256": "8f24740b6d0885bf57e5a02d7ae977a68b9f6e535d26799c1c03ac4454ec5ecb"
     },
     {
+      "component_id": "app.product.budget_supplement",
+      "source": "app/product/budget_supplement.py",
+      "sha256": "f8bf176b9b2ca7422bf3ba18430213e83e79b4cc82b69169780516d5fa815702"
+    },
+    {
       "component_id": "app.workers.sol_continuation",
       "source": "app/workers/sol_continuation.py",
-      "sha256": "2732c88ec9f52097e32ff5878acee4d1d9de936121f9d5d6c2cfc8fefb9c87bd"
+      "sha256": "6a8055c8848ef823961a331da0b81281609484f113e99a606fe22f2120e08ca9"
     },
     {
       "component_id": "app.persistence.task_continuations",
@@ -465,5 +470,5 @@
       "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
     }
   ],
-  "program_sha256": "d17fd9b6ef0d07f0b07443a5cd485ad1b2bb181920863d294bcb587b9802c9b7"
+  "program_sha256": "47aab50dcd9ca9a0b18688a17bc1e3d2177c3586f13370747222a97b80a117aa"
 }

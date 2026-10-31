@@ -34,6 +34,9 @@ class CoachBudgetedProvider:
         """Default composition uses its contract-validated single provider."""
         return self.provider
 
+    def execution_limits(self):
+        return self.contract.descriptor()
+
     def _settle_usage(self, response, *, reservation, expected_identity):
         if (not isinstance(response, ChatResponse)
                 or (response.provider, response.model) != expected_identity):
@@ -64,7 +67,7 @@ class CoachBudgetedProvider:
 
     def _chat_once(self, request):
         from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
-        limits = self.contract.descriptor()
+        limits = self.execution_limits()
         remaining = limits["execution_timeout_s"] - (self.clock() - self.started)
         if self.stopped or self.calls >= limits["max_calls"]:
             self._fail("external_call_budget_exhausted")

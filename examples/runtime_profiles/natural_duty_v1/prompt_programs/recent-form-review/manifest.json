@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "b0ae4c065c081d2bf58b6832285fe7832dce65a74f503a539901851893d2ade1"
+      "sha256": "b9d462b334f49992f1eb9be7b037182397ba5c9f30551d80cb84d9fe84a183bb"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -345,5 +345,5 @@
       "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
     }
   ],
-  "program_sha256": "87efc6b42755ce4e510fa96b574d17b5f986f869603658fd2d66816bf029de3a"
+  "program_sha256": "4eb00a03cb79d8c34d60717a559cd881c7ad141128f603f929076040fa2d770b"
 }

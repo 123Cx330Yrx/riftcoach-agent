@@ -181,7 +181,7 @@ class SessionBudget(CoachBudgetedProvider):
             if session.read_only or not session.manual_retry:
                 raise SessionPaused('session_format_awaiting_manual_retry' if format_repair
                                     else 'session_timeout_awaiting_manual_retry')
-            limits = self.contract_module.CONTRACT.descriptor()
+            limits = self.execution_limits()
             if router._retries >= limits['transport_retries'] and session.manual_retry_grant is not None:
                 from app.product.manual_retry_grant import validate
                 bound['retry_grant'] = validate(session.manual_retry_grant, session=session,

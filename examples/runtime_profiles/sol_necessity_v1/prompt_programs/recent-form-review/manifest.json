@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "b0ae4c065c081d2bf58b6832285fe7832dce65a74f503a539901851893d2ade1"
+      "sha256": "b9d462b334f49992f1eb9be7b037182397ba5c9f30551d80cb84d9fe84a183bb"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -347,7 +347,7 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "204d89b5e09728ea9e098c75109d1af1d99a5bf60ea7636b2773cf39a1130300"
+      "sha256": "d43a6ee973dc0391f9f637fb7ecda4a9949e706c63fef53748ca1b617a1fe0a8"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
@@ -357,7 +357,7 @@
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "40a8415909796865e633ac69759000ac673ba4b7669b8c6eed1c64c92d653a15"
+      "sha256": "394942e4b59291eaf68725a00a59867dc09d4c2cb1978e494819f4b2f8dce610"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -415,5 +415,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "3116b2cec220d49824e7623add72a6a47e902f209d30a0ba119dd28b8c835f29"
+  "program_sha256": "4bf4c545d9332e314f571c46a113ebe0ab2b2093fe9d2c6f3b7173f8641c1c43"
 }

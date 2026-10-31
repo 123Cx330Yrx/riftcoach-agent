@@ -13,10 +13,20 @@ from scripts import review_duty_direct_patch as direct, review_duty_composition 
 
 
 class ProductBudget(SessionBudget):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.router.reviewer.execution_limits = self.execution_limits
+
+    def execution_limits(self):
+        from .budget_supplement import execution_limits
+        return execution_limits(self.session)
+
     def _provider_for_request(self, request):
+        if (self.session.root/'budget-supplement.json').exists() and self.contract_module.role_for_request(request) == 'generation':
+            raise SessionPaused('product_supplement_generation_forbidden')
         # Leave the two initial duties and possible two fresh duties intact.
         if (self.contract_module.role_for_request(request) == 'generation'
-                and self.calls + 1 + 4 > self.contract.descriptor()['max_calls']):
+                and self.calls + 1 + 4 > self.execution_limits()['max_calls']):
             raise ProviderResponseError(provider=self.provider_name, code='product_review_slots_reserved')
         return super()._provider_for_request(request)
 
@@ -63,7 +73,7 @@ class ProductWorkflow(SessionWorkflow):
 
     def _fresh_room(self):
         budget = self.send.provider
-        limits = budget.contract.descriptor()
+        limits = budget.execution_limits()
         if (budget.calls + 2 > limits['max_calls']
                 or budget.tokens + budget.reserved_tokens + 2 * self.contract_module.FRESH_REVIEW_RESERVATION > limits['total_tokens']
                 or self.session.active_seconds >= limits['execution_timeout_s']):

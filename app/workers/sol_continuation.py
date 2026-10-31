@@ -109,7 +109,8 @@ def promote_segment(source, target):
 class SolContinuationExecutor:
     def __init__(self, *, store, runs_root, summary_builder, provider_factory_builder,
                  knowledge_provider, memory_repository=None, publication_sources=None,
-                 max_new_models=None, contract_module=default_contract, manual_retry_grant=None):
+                 max_new_models=None, contract_module=default_contract, manual_retry_grant=None,
+                 budget_supplement=None):
         self.store, self.root = store, Path(runs_root).resolve()
         self.summary_builder, self.factories = summary_builder, provider_factory_builder
         self.knowledge = knowledge_provider
@@ -117,6 +118,7 @@ class SolContinuationExecutor:
         self.publication_sources = publication_sources
         self.max_new_models = max_new_models
         self.manual_retry_grant = manual_retry_grant
+        self.budget_supplement = budget_supplement
         self.contract = contract_module
         self.profile = (WORKER_SOL_PROFILE if contract_module is default_contract else WORKER_SOL_PRODUCT_PROFILE)
         if contract_for_worker_profile(self.profile) is not contract_module:
@@ -155,6 +157,9 @@ class SolContinuationExecutor:
                 {**value, "checkpoint": Path(value["checkpoint"]).name}, session_accounting(session)))
         try:
             with session:
+                if self.profile == WORKER_SOL_PRODUCT_PROFILE:
+                    from app.product.budget_supplement import activate
+                    activate(session, self.budget_supplement)
                 closed = session.root / "terminal.json"
                 if closed.exists():
                     original = json.loads(closed.read_bytes())["value"]

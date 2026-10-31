@@ -89,11 +89,17 @@ class SolReviewProvider:
         """Validate original completed evidence without creating or sending anything."""
         return self._consume(request, ordinal=ordinal, role=role, read_only=True)
 
+    def execution_limits(self):
+        return self.contract_module.CONTRACT.descriptor()
+
     def _consume(self, request, *, ordinal, role, read_only):
         contract = self.contract_module
         self.last_exchange = self.last_failure = None
         raw = contract.request_bytes(request, transport_id=self.transport_id)
-        if role != 'review' or type(ordinal) is not int or not 1 <= ordinal <= contract.CONTRACT.descriptor()['max_calls']:
+        # Read-only receipt verification may include an authorized historical
+        # task supplement. It cannot create a reservation or send a request.
+        if (role != 'review' or type(ordinal) is not int or ordinal < 1
+                or not read_only and ordinal > self.execution_limits()['max_calls']):
             raise ValueError('sol_ordinal')
         if not read_only:
             self.task_directory.mkdir(parents=True, exist_ok=True)

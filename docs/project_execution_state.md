@@ -14,6 +14,18 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-11-01 01:18北京时间，用户明确“确认”同任务追加预算，已写create-only授权authorization.json，SHA 3203ae789cb82ba88d0ab66bcd51a6037f681a3278061ce08a31435f3fb7136f。累计上限12实际请求/723456tokens含历史unknown预留/2100活动秒；每请求300秒/16384输出、截止北京时间11月1日15:50:40保持。只复用当前3次成功生成，从同一facts-initial继续，必要时走双初审→唯一application→同稿双fresh；不导入诊断意见、不清零历史失败/费用，不增加自动重试。
+
+追加预算作为该任务session内单独原件固定，不改全局8请求/401920tokens/900秒。新请求实时检查该任务额度/期限；历史许可按原合同回放，新手动补测绑定最新pin。追加许可禁止新生成，HTTP恢复入口不能提交额度。直接回读历史高ordinal回执不派发网络请求；实际新发送仍受逐请求预算和任务版本绑定约束。
+
+真实临时Postgres/API/Worker零发送预检通过。仍为8HTTP/29323known/366910unknown预留/4retry、3次成功生成和5次524；累计活动827.172秒。原目录和旧DB保持。当前runs_root D:/rc-stream-20261101/verified-runs，task941d238c-972b-4b5a-bedc-302af12d1504/run review_1a568160d5aa44b5a2acd2f72fb679f8；最新checkpoint fc0d48305548f26c2abbc47fb566fb9d95822b3de5e8ad2e1d6a24781153de06，最新DB outputs/riftcoach-product-stream-authorized-20261101/migrated-db.dump SHA f3a5f822fe3b6bb487f3e65e32bad28fb7031287d4c23f870bd1d975178130f7。后续不能退回上轮迁移DB或attempt-9 DB。
+
+相称验证78项通过：追加额度/产品链/旧手动许可40，真实SQL续接1，CI相同前置检查10，既有角色预算失败27；11个Runtime清单、compile/governance/diff检查通过。新清单只随相关源码指纹更新，旧清单、业务请求、15例标签及原15完成不改。SQL与模型替身验证不冒充真实流式上游验收。本轮准备阶段新付费0。
+
+下一行动：一次提交推送后，固定干净执行cwd D:/riftcoach-sol-product-stream-budget-execution-20261101及同HEAD CI，核外置run_stream_continuation.py和唯一wait_stream_ci.py发送前guard。只有CI八项全绿且授权有效时，启动一次原任务流式续接，每segment最多1新请求，总新增最多4；普通成功边界可续下一职责，524/格式/语义暂停不自动补测。外置Control outputs/riftcoach-product-stream-authorized-20261101，binding.json固定HEAD/CI/授权/最新DB与驱动；attempt-10是唯一执行输出，先核waiter/进程/claim，禁止重复首启。执行返回后核真实费用与原件，使用inspect_current_browser_v2.cjs attempt-10只读验收并完成快照/清理；监控无变化不通知，终局删除。Stage8E、默认发布准入不变。结果data/evaluation/results/sol_product_stream_budget_authorized_20261101.json。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-11-01 00:55北京时间，完成同一产品任务从1.7.0非流式到1.7.1流式的受控迁移准备。Worker绑定明确记录execution_contract；旧绑定不能隐式升级。迁移仅接受尚未取得初审意见的成功生成与真实524回执，SQL按同owner/task/run及旧checkpoint采用证明，仍保持当前首审暂停。迁移不是重开任务，不授予预算或自动补测权限。
 
 实际旧数据库在临时Postgres恢复后，原3次成功生成、5次524、8HTTP/29323known/366910unknown预留/4retry完整继承；198份父运行原件及原DB均保持，39个父检查点归档。旧已提交补充许可只允许按归档原pin回放，新许可仍必须绑定最新pin。普通resume实走API/SQL/Worker但新模型请求0、来源请求0、真实模型凭据读取0；未审查报告409，assistant消息0，临时迁移容器已清理。累计活动时间由824.281增加至825.968秒（本地恢复耗时），没有清零。
