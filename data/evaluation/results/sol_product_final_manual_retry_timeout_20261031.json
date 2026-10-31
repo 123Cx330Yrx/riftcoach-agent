@@ -1,0 +1,94 @@
+{
+  "accounting": {
+    "known_tokens": 29323,
+    "requests_observed": 6,
+    "requests_reserved": 6,
+    "retries": 2,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 220146,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 553.5939999999682,
+  "authorization_expires_utc": "2026-10-31T07:45:00+00:00",
+  "automation": "PAUSED",
+  "browser": {
+    "actual_http_sql": true,
+    "no_horizontal_overflow": true,
+    "refresh_no_resume": true,
+    "unreviewed_report_not_visible": true,
+    "usage_visible": true,
+    "widths": [
+      1440,
+      320
+    ]
+  },
+  "checkpoint_sha256": "33acb349827fe1bd4b093cae6317d597f6f205ee56bd189c61f908b216069612",
+  "closed": false,
+  "database_audit": {
+    "assistant_messages": 0,
+    "evidence_snapshots": 0,
+    "paused": 1,
+    "report_available": 0,
+    "tasks": 1,
+    "training_plans": 0,
+    "training_progress": 0
+  },
+  "database_dump": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\attempt-7\\terminal-db.dump",
+  "database_dump_sha256": "7a64be40737a17a05d8aec6f833d90b80c54debf38a67cce5cab87ce0686be9e",
+  "date": "2026-10-31",
+  "docker_runtime_recovery": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\manual-retry-2\\docker-runtime-recovery.json",
+  "failure_classification": "transport_http_524_no_semantic_opinion",
+  "frozen_head": "8eb86b5d5bafc4de6b12b51d385b4ffc0226369e",
+  "kind": "paused_append_only_evidence_snapshot",
+  "known_plus_unknown_reservation": 249469,
+  "manual_retries_authorized": 2,
+  "manual_retries_used": 2,
+  "model_attempts_7_to_8": "not_sent",
+  "new_actual_requests": 1,
+  "next_action": "retain same task and evidence; no further retry allowed under existing grant; resolve transport before preparing any new paid execution",
+  "original15_rerun": false,
+  "original_prefix_files_verified": 29,
+  "parent_original_files_verified": 143,
+  "prior_snapshot_files_verified": 131,
+  "product_source_changes_this_turn": false,
+  "receiptless": 0,
+  "receipts": [
+    {
+      "elapsed_s": 130.391,
+      "http_status": 524,
+      "ordinal": 4,
+      "receipt_sha256": "59507b3a8179f689a8be60b3e23be60829ce0754be5ce7d61473218b14be0e97",
+      "request_sha256": "c3cef9b58dc99dbe82611b11e50c8e047e7b6dfb66bff9fb98ea03934daa719b",
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005"
+    },
+    {
+      "elapsed_s": 128.875,
+      "http_status": 524,
+      "ordinal": 5,
+      "receipt_sha256": "5d818f9efe16cbd902bf286c82cf074f7ab00394591cc3d60df8bb683b047df2",
+      "request_sha256": "c3cef9b58dc99dbe82611b11e50c8e047e7b6dfb66bff9fb98ea03934daa719b",
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005"
+    },
+    {
+      "elapsed_s": 130.047,
+      "http_status": 524,
+      "ordinal": 6,
+      "receipt_sha256": "698a8992c23b0ea09c840f88a10e2140524cc88dfd7aebd1963db893a965c51c",
+      "request_sha256": "c3cef9b58dc99dbe82611b11e50c8e047e7b6dfb66bff9fb98ea03934daa719b",
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005"
+    }
+  ],
+  "remaining_manual_retry_slots": 0,
+  "remaining_request_slots": 2,
+  "remaining_token_envelope": 152451,
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "schema": "sol-product-real-review-timeout-v1",
+  "semantic_reviews_received": 0,
+  "snapshot": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\attempt-7-snapshot.json",
+  "snapshot_sha256": "843cf6755178cec33441723967f70c75c91d9c0c461e2a26f5cb54e6df9b10dc",
+  "status": "paused_first_facts_review_manual_retries_exhausted",
+  "successful_generation_requests_inherited": 3,
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "temporary_container_removed": true,
+  "transport_unchanged": true
+}

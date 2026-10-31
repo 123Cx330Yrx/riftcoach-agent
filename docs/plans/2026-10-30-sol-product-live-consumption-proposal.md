@@ -1,5 +1,17 @@
 # Flash/Sol 最小真实产品消费检查草案
 
+## 最新执行结果（2026-10-31）
+
+2026-10-31 08:33北京时间：用户明确选择“沿原非流式，同一步再补测一次”，最后一次手动补测已实际执行。完整复用原3次生成，call-006在130.047秒再次HTTP524；三次首审请求/wire摘要一致，均已closed/reaped，仍无Sol语义意见。未发送第7—8次，不发布未审查正文。
+
+累计6HTTP/29323 known/220146 unknown预留/2retry，receiptless0、未确认intent0；活动553.594/900秒。两次手动额度已用尽，剩余2个总请求槽不构成继续补测权限，原10月31日15:45北京时间截止不变。原父143份、上一快照131份及生成前缀逐字保留。最新checkpoint 33acb349827fe1bd4b093cae6317d597f6f205ee56bd189c61f908b216069612，数据库Control/attempt-7/terminal-db.dump，SHA 7a64be40737a17a05d8aec6f833d90b80c54debf38a67cce5cab87ce0686be9e；append-only快照attempt-7-snapshot.json，不关闭可恢复session。
+
+实际浏览器1440/320已核费用、未知预留、2次补测、刷新不重发及正文不可读；真库任务1/暂停1，报告/assistant/Training/Evidence snapshot均0。启动前Docker旧AF_UNIX socket复发，停止进程后备份重建两个运行通信目录，原数据卷不改；临时执行容器已移除。冻结8eb86b5d与原CI全绿保持，产品源码无改动，automation保持PAUSED。
+
+下一动作：保留同一任务，先解决传输路径再准备后续执行，不原样继续重试或延长授权。离线已核旧stream的输出上限、工具选择、附带说明接收与超时分类不兼容，不能直接切换；服务商流式支持仍未证。原15/默认/产品库/Stage8E保持，玩家稿/Evidence发布消费与口吻排版仍待完成。证据data/evaluation/results/sol_product_final_manual_retry_timeout_20261031.json。
+
+以下为原草案及历史执行记录；原等待授权说明不代表当前状态。
+
 2026-10-30。状态：单项任务和待发输入已准备，等待具体付费授权。承接已批准并实现的ADR0119；不继承10月29日已封存批次或延长其授权。
 
 零付费预检已补普通HTTP入口：API显式配置`RIFTCOACH_TASK_PUBLICATION_MODE=evidence_bound_v1`，Worker显式选择`RIFTCOACH_WORKER_EXECUTION_PROFILE=sol-dual-product-v1`。前者使两条Review创建入口固定Evidence模式，不由客户端请求体选择；默认仍legacy。实际浏览器已能发起观摩会话，经过真实临时Postgres、Memory、Worker暂停续接，读取Evidence/报告/累计用量与唯一会话回复；普通恢复、524手动补测、取消三例通过，外部IO为替身。首次Evidence投影连同原时间随任务保存，恢复不重新计算bundle摘要。真实账号/近期来源预检和干净2715ae40执行目录已准备，普通任务输入绑定与新CI结果仍待完成/确认，见`2026-10-30-sol-product-preflight.md`，此文仍不是冻结付费清单。

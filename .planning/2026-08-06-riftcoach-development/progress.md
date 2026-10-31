@@ -1,3 +1,13 @@
+## 2026-10-31 最后一次同项补测仍524
+
+2026-10-31 08:33北京时间：用户明确选择“沿原非流式，同一步再补测一次”，最后一次手动补测已实际执行。完整复用原3次生成，call-006在130.047秒再次HTTP524；三次首审请求/wire摘要一致，均已closed/reaped，仍无Sol语义意见。未发送第7—8次，不发布未审查正文。
+
+累计6HTTP/29323 known/220146 unknown预留/2retry，receiptless0、未确认intent0；活动553.594/900秒。两次手动额度已用尽，剩余2个总请求槽不构成继续补测权限，原10月31日15:45北京时间截止不变。原父143份、上一快照131份及生成前缀逐字保留。最新checkpoint 33acb349827fe1bd4b093cae6317d597f6f205ee56bd189c61f908b216069612，数据库Control/attempt-7/terminal-db.dump，SHA 7a64be40737a17a05d8aec6f833d90b80c54debf38a67cce5cab87ce0686be9e；append-only快照attempt-7-snapshot.json，不关闭可恢复session。
+
+实际浏览器1440/320已核费用、未知预留、2次补测、刷新不重发及正文不可读；真库任务1/暂停1，报告/assistant/Training/Evidence snapshot均0。启动前Docker旧AF_UNIX socket复发，停止进程后备份重建两个运行通信目录，原数据卷不改；临时执行容器已移除。冻结8eb86b5d与原CI全绿保持，产品源码无改动，automation保持PAUSED。
+
+下一动作：保留同一任务，先解决传输路径再准备后续执行，不原样继续重试或延长授权。离线已核旧stream的输出上限、工具选择、附带说明接收与超时分类不兼容，不能直接切换；服务商流式支持仍未证。原15/默认/产品库/Stage8E保持，玩家稿/Evidence发布消费与口吻排版仍待完成。证据data/evaluation/results/sol_product_final_manual_retry_timeout_20261031.json。
+
 ## 2026-10-30 首审与明确补测均524，原任务保留
 
 2026-10-30 23:52北京时间：受控恢复版本8eb86b5d的CI41025514215已8项全绿。实际同一任务复用了原3次生成，首个facts-initial及用户明确触发的同项补测均HTTP524，分别130.391/128.875秒；请求与wire SHA完全相同，均closed/reaped，未取得任何Sol语义意见。当前为recovery_required/session_timeout_awaiting_manual_retry，不记为审查拒绝或全链作废。
