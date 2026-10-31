@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "69963d59eaff723edb6cbff4eb85eea39da723dd81982e8dab5b68ee5b53a11a"
+      "sha256": "0b952c71a93206d20be037883aa4dde59d58860d3de201c7264ea15f351900c4"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -347,7 +347,7 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "2be9725edb1d070f8babaa3484d09a7c9a65e8236abcf12fc208a995cb4b8ac9"
+      "sha256": "204d89b5e09728ea9e098c75109d1af1d99a5bf60ea7636b2773cf39a1130300"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
@@ -382,7 +382,7 @@
     {
       "component_id": "scripts.reviewer_responses_process",
       "source": "scripts/reviewer_responses_process.py",
-      "sha256": "833e46f2e8f8f807f85cfe956d01498294c18775470e227291d0fb6599c1edf2"
+      "sha256": "a7964b8de8583705d3b7add309435c0840bbfd3d240c540a5c82a4b2e1d72ce7"
     },
     {
       "component_id": "scripts.reviewer_responses_nonstream",
@@ -430,5 +430,5 @@
       "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
     }
   ],
-  "program_sha256": "a3fb63a833b471177a2f091dd6bf55816dd74abff0e3b2734313fb769f2468ec"
+  "program_sha256": "b54980f385b9508aaa4a70bb8a18ebc4648c0ad0e5d81e09264995f599f6eabb"
 }

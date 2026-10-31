@@ -166,7 +166,7 @@ class PromptProgramResolver:
         if grounded and self.coach_contract.version in ('1.6.3', '1.6.4'):
             from app.evaluation.sol_necessity_contract import component_fingerprints
             current = component_fingerprints(skill)
-        if grounded and self.coach_contract.version == '1.7.0':
+        if grounded and self.coach_contract.version == '1.7.1':
             from app.product.sol_contract import component_fingerprints
             current = component_fingerprints(skill)
         if grounded and self.coach_contract.version == '1.6.6':

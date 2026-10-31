@@ -1,7 +1,7 @@
 """ADR0119 opt-in product contract; original diagnostic requests are reused.
 
-The execution snapshot is new. Review messages, schema, transport and policy
-remain byte-identical to the dual-necessity candidate; no default is switched.
+Review messages, schema and policy are reused. The explicit product profile
+uses the bounded streaming transport; historical nonstream contracts are unchanged.
 """
 import hashlib
 import json
@@ -13,13 +13,27 @@ VERSION = 'natural-flash-sol-product-v1'
 WORKER_PROFILE = 'sol-dual-product-v1'
 ROOT, legacy = parent.ROOT, parent.legacy
 ASSETS = ROOT / 'examples/runtime_profiles/sol_product_v1'
-CONTEXT, RESPONSE_MODE, REVIEW_TRANSPORT = parent.CONTEXT, parent.RESPONSE_MODE, parent.REVIEW_TRANSPORT
+CONTEXT = parent.CONTEXT
+RESPONSE_MODE = 'natural-sol-product-stream-v1'
+REVIEW_TRANSPORT = 'natural-sol-product-stream-v1'
+REVIEW_THINKING_PROFILE = 'sol-high-stream-v1'
 PROVIDER, MODEL, PROFILE = parent.PROVIDER, parent.MODEL, parent.PROFILE
 REVIEW_PROVIDER, REVIEW_MODEL, REVIEW_PROFILE = parent.REVIEW_PROVIDER, parent.REVIEW_MODEL, parent.REVIEW_PROFILE
 FRESH_REVIEW_RESERVATION = parent.FRESH_REVIEW_RESERVATION
 make_request, restore_context, validate_business = parent.make_request, parent.restore_context, parent.validate_business
 role_for_request, request_identity = parent.role_for_request, parent.request_identity
-request_bytes, request_sha = parent.request_bytes, parent.request_sha
+
+
+def request_bytes(request, *, transport_id=None):
+    if role_for_request(request) == 'generation':
+        return parent.request_bytes(request, transport_id=transport_id)
+    if transport_id not in (None, REVIEW_TRANSPORT):
+        raise ValueError('product_stream_transport_binding')
+    return parent.request_bytes(request, transport_id=parent.REVIEW_TRANSPORT)
+
+
+def request_sha(request):
+    return hashlib.sha256(request_bytes(request)).hexdigest()
 
 
 class ProductContract(parent.DualNecessityContract):
@@ -31,6 +45,8 @@ class ProductContract(parent.DualNecessityContract):
             time_basis='cumulative-active-seconds', workflow_scope='opt-in-product',
             qualification_only=False, publication_policy='dual-review-exact-application-v1',
             reused_business_contract=parent.VERSION)
+        value['roles']['review'].update(transport_id=REVIEW_TRANSPORT,
+            thinking_profile_id=REVIEW_THINKING_PROFILE)
         return value
 
     def snapshot(self):
@@ -45,14 +61,14 @@ class ProductContract(parent.DualNecessityContract):
             raise ValueError('sol_product_provider_contract')
 
 
-CONTRACT = ProductContract(version='1.7.0')
+CONTRACT = ProductContract(version='1.7.1')
 
 
 def component_fingerprints(skill):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     rows = {r.component_id: r for r in parent.component_fingerprints(skill)}
     for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
-                 'app/product/manual_retry_grant.py'):
+                 'app/product/manual_retry_grant.py', 'scripts/reviewer_responses_stream.py'):
         key = path.replace('/', '.').removesuffix('.py')
         rows[key] = ComponentFingerprint(component_id=key, source=path,
             sha256=hashlib.sha256((ROOT / path).read_text(encoding='utf-8').encode()).hexdigest())

@@ -21,6 +21,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def response_contract(mode):
+    if mode == 'natural-sol-product-stream-v1':
+        from scripts import reviewer_responses_stream as product_stream
+        return product_stream.build_wire, product_stream.collect
     if mode == 'stream':
         return build_wire, collect
     if mode in ('nonstream-tool-v1', 'natural-sol-v1', 'necessity-candidate-v1', 'natural-sol-necessity-v1'):
@@ -77,7 +80,7 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     if response_mode == 'natural-sol-v1':
         from app.evaluation.sol_natural_contract import validate_business
         validate_business(business, validation_context)
-    elif response_mode == 'natural-sol-dual-necessity-v1':
+    elif response_mode in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
         from app.evaluation.sol_review_contract import validate_business, REVIEW_PROFILE
         if profile != REVIEW_PROFILE:
             raise ValueError('dual_necessity_profile_binding')
@@ -259,7 +262,7 @@ def worker():
         if payload.get('response_mode') == 'natural-sol-v1':
             from app.evaluation.sol_natural_contract import validate_business
             validate = validate_business(payload['business'], payload['validation_context'])
-        elif payload.get('response_mode') == 'natural-sol-dual-necessity-v1':
+        elif payload.get('response_mode') in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
             from app.evaluation.sol_review_contract import validate_business, REVIEW_PROFILE
             if Profile(**payload['profile']) != REVIEW_PROFILE:
                 raise ValueError('dual_necessity_profile_binding')

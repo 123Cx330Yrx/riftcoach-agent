@@ -13,8 +13,7 @@ from app.providers.zhipu import ZhipuProvider
 from app.runtime.reviewer_roles import RoleRoutedProvider
 from app.runtime.receipted_provider_factory import RoleReceiptedStreamProvider
 from scripts.prepare_reviewer_profile_screen import visible, json_value
-from scripts.reviewer_responses_process import run_once, read_json, write_json, valid_saved_usage
-from scripts.reviewer_responses_nonstream import build_wire
+from scripts.reviewer_responses_process import run_once, read_json, write_json, valid_saved_usage, response_contract
 from scripts.reviewer_responses_transport import Profile, digest
 
 
@@ -77,6 +76,7 @@ class SolReviewProvider:
         self.contract_module = selected_contract(contract_module)
         self.transport_id = self.contract_module.REVIEW_TRANSPORT
         self.response_mode = getattr(self.contract_module, 'RESPONSE_MODE', 'natural-sol-v1')
+        self.thinking_profile_id = getattr(self.contract_module, 'REVIEW_THINKING_PROFILE', 'sol-high-nonstream-v1')
         self._key, self.directory, self.task_directory = api_key, Path(directory), Path(task_directory)
         self.sender = sender
         self.profile = getattr(self.contract_module, 'REVIEW_PROFILE', Profile(group='GPT-pro', route='proxy-12000'))
@@ -117,7 +117,7 @@ class SolReviewProvider:
         saved = read_json(directory / 'receipt.json')
         observation = read_json(directory / 'observation/observation.json')
         bound = (saved == receipt and receipt.get('request_sha256') == digest(business)
-            and receipt.get('wire_sha256') == digest(build_wire(business))
+            and receipt.get('wire_sha256') == digest(response_contract(self.response_mode)[0](business))
             and receipt.get('validation_context_sha256') == digest(context)
             and receipt.get('profile') == asdict(self.profile)
             and receipt.get('response_mode') == self.response_mode
@@ -272,7 +272,7 @@ class SolReviewProvider:
         if (self.contract_module.CONTRACT.descriptor().get('output_recovery_mode')
                 != 'manual-reaped-format-v1' or self.response_mode not in (
                     'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1',
-                    'natural-sol-dual-necessity-v1')
+                    'natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1')
                 or self.failure_usage(error, request) is None):
             return False
         failure = self.last_failure
@@ -290,7 +290,10 @@ class SolReviewProvider:
             and observation.get('closed') is True and observation.get('exception_type') is None
             and response.get('terminal_status') == 'completed'
             and response.get('reasoning_echo') not in ('conflict', 'malformed')
-            and (response.get('decode') or {}).get('identity_fields_equal') is True
+            and ((response.get('decode') or {}).get('identity_fields_equal') is True
+                 or self.response_mode == 'natural-sol-product-stream-v1'
+                 and (worker.get('stream_protocol') or {}).get('errors') == [code]
+                 and observation.get('eof') is True)
             and counts.get('other') == 0
             and ((code == 'single_tool_required' and counts.get('function_call') == 0)
                  or (code == 'tool_schema_invalid' and counts.get('function_call') == 1)))
@@ -330,7 +333,7 @@ class SolNaturalProvider(RoleRoutedProvider):
             contract.legacy.NaturalDutyProvider.require_selected_provider(self, provider, role)
         elif ((provider.provider_name, provider.model_name, provider.thinking_profile_id, provider.sdk_max_retries,
                provider.runtime_profile, provider.transport_id) != (contract.REVIEW_PROVIDER, contract.REVIEW_MODEL,
-               'sol-high-nonstream-v1', 0, None, contract.REVIEW_TRANSPORT)):
+               getattr(contract, 'REVIEW_THINKING_PROFILE', 'sol-high-nonstream-v1'), 0, None, contract.REVIEW_TRANSPORT)):
             raise ValueError('sol_child_identity')
 
     def transport_for_role(self, role):

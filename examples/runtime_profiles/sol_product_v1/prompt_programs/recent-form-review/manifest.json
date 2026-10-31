@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "69963d59eaff723edb6cbff4eb85eea39da723dd81982e8dab5b68ee5b53a11a"
+      "sha256": "0b952c71a93206d20be037883aa4dde59d58860d3de201c7264ea15f351900c4"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -347,7 +347,7 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "2be9725edb1d070f8babaa3484d09a7c9a65e8236abcf12fc208a995cb4b8ac9"
+      "sha256": "204d89b5e09728ea9e098c75109d1af1d99a5bf60ea7636b2773cf39a1130300"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
@@ -382,7 +382,7 @@
     {
       "component_id": "scripts.reviewer_responses_process",
       "source": "scripts/reviewer_responses_process.py",
-      "sha256": "833e46f2e8f8f807f85cfe956d01498294c18775470e227291d0fb6599c1edf2"
+      "sha256": "a7964b8de8583705d3b7add309435c0840bbfd3d240c540a5c82a4b2e1d72ce7"
     },
     {
       "component_id": "scripts.reviewer_responses_nonstream",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "6113f5b213e0045b33a3fe88f6502c93fed485b4b12b7f5b43657996901889b1"
+      "sha256": "b2b1cf4e041cdc08c9e4c4415331b3c67e5e7f9a3176e350652814f6030d4e6a"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -440,10 +440,15 @@
       "sha256": "24b4b4d754ba701493913552959e8952d3f85abfc80244ec85d6d227fbf00ca9"
     },
     {
+      "component_id": "scripts.reviewer_responses_stream",
+      "source": "scripts/reviewer_responses_stream.py",
+      "sha256": "3606600b3771686a98b540c49ab06486c2aef346a5564d3ee2556576f6e697c9"
+    },
+    {
       "component_id": "coach_execution_contract",
-      "source": "app.product.sol_contract:v1.7.0",
-      "sha256": "745668406bfc57b4654b82820c1f536580760af61cc6349d06d25b2634e2909e"
+      "source": "app.product.sol_contract:v1.7.1",
+      "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
     }
   ],
-  "program_sha256": "6b87bd3a865839937acfc7489f34e109268b4f7c0384d6e9f120c888d2a76218"
+  "program_sha256": "f4a2d4b454c88f84bb012e8b974d71e9e0dc1bbe3f9028bcee45bdc9531d8ebb"
 }

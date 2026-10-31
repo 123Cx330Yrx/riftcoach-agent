@@ -25,6 +25,9 @@ from scripts import reviewer_responses_nonstream as codec, reviewer_responses_pr
 from app.evaluation import natural_duty_contract as legacy
 from importlib import import_module
 contract=import_module(CONTRACT_MODULE)
+is_product_stream = getattr(contract, 'RESPONSE_MODE', None) == 'natural-sol-product-stream-v1'
+if is_product_stream:
+    from scripts import reviewer_responses_stream as codec
 from tests.test_natural_duty_candidate import Responses
 from tests.test_reviewer_responses_nonstream import response
 def deny(*args,**kwargs): raise AssertionError('network forbidden')
@@ -66,6 +69,11 @@ def collect(business,**kwargs):
     elif MODE == 'sdk_decode_conflict':
         value['reasoning'] = dict(effort='high')
     status=STATUS
+    if is_product_stream:
+        from tests.product_stream_fixtures import events_for_response, Bytes
+        return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
+            stream=Bytes(events_for_response(value, preamble=True)) if status==200 else httpx.ByteStream(b'{}'),
+            headers={'content-type':'text/event-stream' if status==200 else 'application/json'})))
     return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
         stream=httpx.ByteStream(json.dumps(value if status==200 else {'error':'timeout'}).encode()),
         headers={'content-type':'application/json'})))

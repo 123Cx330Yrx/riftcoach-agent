@@ -1,3 +1,15 @@
+## 2026-11-01 产品流式接收离线贯通
+
+2026-11-01 00:36北京时间，按用户“继续吧那就”完成现有opt-in产品审查的流式接收适配。产品合同1.7.1、transport natural-sol-product-stream-v1；完整业务messages/tools、high、强制submit_report_review及16384输出保持，仅wire.stream=true。默认legacy入口不切换，旧非流式合同与封存原件不改。
+
+接收器允许输出前最多一次空created前导替换、该边界序号重置及单调序号间隙；done.name缺失时只从已绑定item取得名称。增量、done、item_done和terminal工具参数仍逐字一致，输出后身份切换/明确字段冲突/终态缺失/EOF失败均拒收。保存有界白名单事件字段与哈希，不保存私有reasoning；拒收、取消和关闭故障仍保留known usage。普通resume不自动重试格式故障。
+
+验证共235项通过：SDK接收/旧协议/进程监管197，产品完整链17，产品流式格式/取消6，真实临时Postgres与浏览器10，原15库存及旧候选回归5。修正诊断工具wire指纹后，相关25项再次通过（不重复计数）。外部模型与来源使用替身，真实SQL/API/Worker/Chromium按现有产品路径运行；临时容器已清理。本轮新付费请求0。11个当前Runtime入口一致，原15离线新库存仅component_fingerprints/program_sha256变化，其余字段和15例业务请求/政策/标签/预算完整保持；原15完成不撤销。
+
+上次真实流式拒收仍是拒收：未捕获原逐事件字段，不能把本轮合成SSE兼容测试说成该次真实回放通过。新接收器尚未经新的真实上游流式验收。旧产品累计8HTTP/29323known/366910unknown预留/4retry及3次成功生成保持，未迁移旧DB/checkpoint、未发布新报告；Stage8E和默认准入不变。
+
+下一行动：准备同一旧任务从1.7.0到1.7.1的受控继承与零发送预检，明确保留成功生成、失败回执和累计费用的映射，并形成具体追加token/活动时间方案后再续真实首审；原包只余5687tokens/75.719活动秒，不足本次审查。用户放开手动重试次数不等于清零或扩大旧预算。当前不启动付费请求或waiter。工作卡docs/plans/2026-11-01-product-stream-receiver.md，结果data/evaluation/results/sol_product_stream_receiver_20261101.json。
+
 ## 2026-11-01 完整流式返回，接收适配待完成
 
 2026-11-01 00:10北京时间，用户继续原计划剩余一次完整流式对照。实际HTTP请求体核对只有stream从false变true；完整messages/tools、强制submit_report_review、high、16384输出保持。1次HTTP200，发送后1.516秒收到响应头/首字节，147.344秒收到completed并完整EOF/closed，进程reaped，无本轮524或重试。完整生成耗时超过原非流式约125秒窗口，本次流式提前传输且完成支持流式缓解方向，但非同时随机对照，不能排除上游随时间变化。
