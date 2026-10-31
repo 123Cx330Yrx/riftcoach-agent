@@ -437,7 +437,7 @@
     {
       "component_id": "app.product.manual_retry_grant",
       "source": "app/product/manual_retry_grant.py",
-      "sha256": "9b7af995078bd2d6cecb8eacfe802648aa38a9801a8e9d8068f17affd12c0eb9"
+      "sha256": "24b4b4d754ba701493913552959e8952d3f85abfc80244ec85d6d227fbf00ca9"
     },
     {
       "component_id": "coach_execution_contract",
@@ -445,5 +445,5 @@
       "sha256": "745668406bfc57b4654b82820c1f536580760af61cc6349d06d25b2634e2909e"
     }
   ],
-  "program_sha256": "06fd974f3a2b21b89c45e04c941d4cffbcc9e252940aa381741266ba2c5d6887"
+  "program_sha256": "6b87bd3a865839937acfc7489f34e109268b4f7c0384d6e9f120c888d2a76218"
 }

@@ -20,7 +20,7 @@ def validate(grant, *, session, failed_sha, retries, replay=False):
         raise ValueError('retry_grant_invalid')
     limits = sol_contract.CONTRACT.descriptor()
     if (type(grant['prior_retries']) is not int or grant['prior_retries'] != retries
-            or retries != limits['transport_retries']
+            or retries < limits['transport_retries']
             or type(grant['additional_retries']) is not int or grant['additional_retries'] != 1
             or grant['limits'] != {k: limits[k] for k in
                                  ('max_calls', 'total_tokens', 'execution_timeout_s')}):

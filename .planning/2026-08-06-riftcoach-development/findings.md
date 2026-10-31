@@ -1,5 +1,16 @@
 ## 2026-10-31 续授权补测仍524，保留整链
 
+## 2026-10-31 逐次补测授权接续
+
+2026-10-31 用户要求准备后再测，并明确放开同任务手动重试次数。当前按新授权落实一次同项补测，保留原非流式、完整请求、成功生成和4次524；不把用户对上游稳定的判断写成已验证。现有代码只接受第3次重试的补充许可，改为可逐次接受绑定当前task/run/owner/checkpoint/失败结果的新许可，默认2次不变，旧许可不能复用；每次许可仍只消费一次，不自动循环。
+
+真实临时SQL/Worker零发送恢复已通过，原attempt-8快照全部保持；最新checkpoint 8143eafa4cf87f6ddf33b4a97f187556000b86e1e7718ac5682e79d48c2d7236，数据库successive-retry-ready-20261031/zero-send-preflight/terminal-db.dump SHA a50932a8da4937f740869e4a6194516c95cfb1ab69b324374cb3de817589cdb0。累计7HTTP/29323known/293528unknown预留/3retry，活动691.406秒，未发第8次。旧attempt-8数据库及原件不改。
+
+当前补测只用旧包剩余1请求槽，401920tokens/900活动秒/单请求300秒和11月1日15:50:40北京时间截止保持；放开次数不清零或自动扩大token/时间预算。请求预留73382tokens，若再次用量未知则累计396233tokens（known加unknown），仍在旧总额内。新许可及用户原话保存在Control/successive-retry-ready-20261031；待相关回归、冻结新执行HEAD及同HEAD CI通过后，唯一启动器仅执行Control/run_successive_retry.py一次。无需再次询问本次补测授权；有执行者不重复启动。即使首审成功，后续双审也不能保证在旧剩余额度内完成，先保留结果再确定接续范围。原15完成、阶段及发布边界不变。
+
+验证：28项补充许可与产品合同回归通过（334.73秒），11个Runtime入口、原15离线清单保持检查、实际检查点新许可校验及治理通过；真实SQL零发送预检容器已清理。仅产品许可校验一处判断及对应当前manifest改变，模型输入/角色/政策不改。
+
+
 2026-10-31 16:13同HEAD CI41178505872八项全绿后，唯一执行器完成已授权补测；call-007真实HTTP524，130.407秒，request/wire SHA与前三次完全一致，closed/reaped。新增观测cf-ray a5313371ac6bc5bf-NRT，发送后约126.563秒才同时收到响应头和首字节；本地配置300秒，没有本地读取超时异常。仍无Sol语义意见，不能宣称该路由上游已经恢复，也不能仅凭524确定源站内部根因。
 
 本轮新增1HTTP，累计7HTTP/29323 known/293528 unknown预留/3retry，receiptless0、unresolved0，第8次未发；活动690.172/900秒。额外一次补测已消费，不再自动重试。原142份运行库存、上轮154份快照及原成功生成逐字保持。最新checkpoint 1006173c2969d9eb981fccddb1febb975290a17e15e58bcba488341eb205a7c1，最新数据库Control/attempt-8/terminal-db.dump SHA d03bae291a606529f003a469401ee589ecaf6a85afdd8537cba0bdac0f066b51；attempt-8-snapshot.json追加保留，session未封闭，可按新决定恢复，不退回旧DB。

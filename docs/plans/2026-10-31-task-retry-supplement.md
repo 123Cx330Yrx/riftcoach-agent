@@ -39,3 +39,13 @@ CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-che
 真实浏览器1440/320已核用量和3次补测、刷新不POST恢复、无横向溢出，未审查正文不可读；当前paused时usage独立端点409，页面从continuation显示真实用量。真库任务1/暂停1，assistant/Training/Evidence snapshot均0。inspection-complete后执行器与waiter均已退出，exit原件确认临时容器已移除；riftcoach监控已实际删除。结果data/evaluation/results/sol_product_extra_retry_timeout_20261031.json、Control/attempt-8/audit-proof.json保留完整证据。
 
 下一动作：本次补测与监控收尾，删除automation；暂停受影响的首审步骤，保留整链，等待用户对传输方案及后续验证范围的新决定，不重复同一付费请求。原总预算仅余1请求槽，不能把它当作额外补测授权或保证可完成双初审。原15完成、Stage8E和产品准入保持，玩家稿发布/Evidence实际消费尚未完成。旧失败/到期/续授权原件不改。
+
+## 新授权的逐次接续
+
+2026-10-31 用户要求准备后再测，并明确放开同任务手动重试次数。当前按新授权落实一次同项补测，保留原非流式、完整请求、成功生成和4次524；不把用户对上游稳定的判断写成已验证。现有代码只接受第3次重试的补充许可，改为可逐次接受绑定当前task/run/owner/checkpoint/失败结果的新许可，默认2次不变，旧许可不能复用；每次许可仍只消费一次，不自动循环。
+
+真实临时SQL/Worker零发送恢复已通过，原attempt-8快照全部保持；最新checkpoint 8143eafa4cf87f6ddf33b4a97f187556000b86e1e7718ac5682e79d48c2d7236，数据库successive-retry-ready-20261031/zero-send-preflight/terminal-db.dump SHA a50932a8da4937f740869e4a6194516c95cfb1ab69b324374cb3de817589cdb0。累计7HTTP/29323known/293528unknown预留/3retry，活动691.406秒，未发第8次。旧attempt-8数据库及原件不改。
+
+当前补测只用旧包剩余1请求槽，401920tokens/900活动秒/单请求300秒和11月1日15:50:40北京时间截止保持；放开次数不清零或自动扩大token/时间预算。请求预留73382tokens，若再次用量未知则累计396233tokens（known加unknown），仍在旧总额内。新许可及用户原话保存在Control/successive-retry-ready-20261031；待相关回归、冻结新执行HEAD及同HEAD CI通过后，唯一启动器仅执行Control/run_successive_retry.py一次。无需再次询问本次补测授权；有执行者不重复启动。即使首审成功，后续双审也不能保证在旧剩余额度内完成，先保留结果再确定接续范围。原15完成、阶段及发布边界不变。
+
+验证：28项补充许可与产品合同回归通过（334.73秒），11个Runtime入口、原15离线清单保持检查、实际检查点新许可校验及治理通过；真实SQL零发送预检容器已清理。仅产品许可校验一处判断及对应当前manifest改变，模型输入/角色/政策不改。

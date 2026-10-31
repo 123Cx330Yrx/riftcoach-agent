@@ -98,3 +98,31 @@ def test_supplement_cannot_be_reused_after_another_timeout(tmp_path):
         with pytest.raises(ValueError, match='retry_grant_limits'):
             budget.chat(request)
         assert attempts == []
+
+
+def test_new_checkpoint_bound_supplement_after_timeout_sends_once_and_replays(tmp_path):
+    request, grant = prepare(tmp_path)
+    with opened(tmp_path, manual=True, grant=grant) as session:
+        budget, attempts = isolated_budget(tmp_path, session, statuses=(524,))
+        with pytest.raises(SessionPaused, match='session_timeout_awaiting_manual_retry'):
+            budget.chat(request)
+        unknown = budget.reserved_tokens
+        assert attempts == [524] and budget.router._retries == 3
+    originals = {p: p.read_bytes() for p in (tmp_path/'session/operations').glob('*')}
+    failed = sorted((tmp_path/'session/operations').glob('*-result.json'))[-1]
+    current = dict(grant, prior_retries=3,
+        checkpoint_sha256=current_pins(tmp_path)['checkpoint_sha256'],
+        failed_result_sha256=digest(failed.read_bytes()))
+    with opened(tmp_path, manual=True, grant=current) as session:
+        budget, attempts = isolated_budget(tmp_path, session)
+        response = budget.chat(request)
+        assert response and len(attempts) == 1
+        assert budget.calls == 5 and budget.router._retries == 4
+        assert budget.reserved_tokens == unknown and session.manual_retry_grant is None
+    assert all(p.read_bytes() == raw for p, raw in originals.items())
+    with opened(tmp_path) as session:
+        budget, attempts = isolated_budget(tmp_path, session)
+        assert budget.chat(request) == response
+        assert attempts == [] and budget.calls == 5 and budget.router._retries == 4
+        assert budget.reserved_tokens == unknown
+    assert product.CONTRACT.descriptor()['transport_retries'] == 2
