@@ -392,12 +392,12 @@
     {
       "component_id": "scripts.reviewer_responses_transport",
       "source": "scripts/reviewer_responses_transport.py",
-      "sha256": "3cfaef5b5b41cc068480903146eb4415448a1116dc758e9c84c9d2faf1ac7c4b"
+      "sha256": "30e8797e9df7f16591b5220019039d2572432c9ad2a108246b9168f94e579ac8"
     },
     {
       "component_id": "scripts.stream_observation",
       "source": "scripts/stream_observation.py",
-      "sha256": "cfec5c489583924db5b7ff3903f3bfd6acdabbdc7c99a5dfb0d4957b1c30b567"
+      "sha256": "ec984a8f4e8e833dcbe5b6030af85b7c4350c395668bf3df3a3cd13d60613a3a"
     },
     {
       "component_id": "coach_execution_contract",
@@ -405,5 +405,5 @@
       "sha256": "f10ee42c6ff53184b6847cc8f1cc4634f190d5aaa39591217eeef4ab5c2c593e"
     }
   ],
-  "program_sha256": "cb658ff3fff5f25fee21e8cb68eb32f0bb2676a0e0422be04035e40eaff8d3cf"
+  "program_sha256": "bdfe484a6cd3a875cbaba6c8afca9496d5df5829159ef6b3ed90013e1a7e0f28"
 }

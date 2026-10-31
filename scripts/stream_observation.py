@@ -34,6 +34,8 @@ class StreamObservation:
         self.failure = None
         self.values = dict(schema_version='stream-observation-v1', body_free=True,
             http_requests=0, response_status=None, response_request_id=None,
+            response_cf_ray=None, request_started_ms=None, response_headers_ms=None,
+            first_bytes_ms=None,
             read_calls=0, raw_chunks=0, raw_bytes=0, last_bytes_ms=None,
             pending_read_since_ms=None, eof=False, closed=False,
             phase='before_request', exception_type=None, timeout=None)
@@ -67,14 +69,19 @@ class StreamObservation:
             if isinstance(value := timeout.get(key), (int, float))
             and math.isfinite(value) and 0 <= value <= 86400}
         with self.lock:
-            self.values.update(phase='awaiting_response_headers', timeout=bounded)
+            self.values.update(phase='awaiting_response_headers', timeout=bounded,
+                               request_started_ms=self.ms())
             self.values['http_requests'] += 1
 
     def on_response(self, response):
         request_id = response.headers.get('x-request-id')
         if request_id is not None and not re.fullmatch(r'[A-Za-z0-9._-]{1,160}', request_id):
             request_id = None
+        ray = response.headers.get('cf-ray')
+        if ray is not None and not re.fullmatch(r'[0-9a-fA-F]{16}(?:-[A-Z]{3})?', ray):
+            ray = None
         self.update(response_status=response.status_code, response_request_id=request_id,
+                    response_cf_ray=ray, response_headers_ms=self.ms(),
                     phase='response_headers_received')
         response.stream = ObservedStream(response.stream, self)
 
@@ -143,6 +150,8 @@ class ObservedStream(httpx.SyncByteStream):
                                      pending_read_since_ms=None)
                 raise
             with self.observer.lock:
+                if chunk and self.observer.values['first_bytes_ms'] is None:
+                    self.observer.values['first_bytes_ms'] = self.observer.ms()
                 self.observer.values['raw_chunks'] += 1
                 self.observer.values['raw_bytes'] += len(chunk)
                 self.observer.values.update(last_bytes_ms=self.observer.ms(),

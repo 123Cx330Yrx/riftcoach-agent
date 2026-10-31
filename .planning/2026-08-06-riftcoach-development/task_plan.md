@@ -13,6 +13,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-10-31 本地实现诊断完成：可比成功facts请求54547字节/104.015秒，当前SDK实际53773字节；6项禁网SDK核对确认完整wire、正确URL、单发送，有效200可接收，三次524并非本地解析伪造。消息/补丁schema未异常膨胀。不能由此排除请求内容处理耗时与非流式设计的影响，远端根因仍未证。
+
+已修两个我方诊断缺陷：SDK包装不能再掩盖具体HTTPX读取/代理错误；新增有界cf-ray和请求/响应头/首字节时间，保持不存正文/私有reasoning。传输回归192通过，2项清单漂移同步后连同10项库存/入口检查通过；11个Runtime入口及治理通过。4份当前Sol清单和新离线库存仅更新两个源码摘要，旧库存/冻结8eb86b5d/原15不动。实际任务仍保留上轮6HTTP/29323 known/220146 unknown预留/2retry，手动额度0，本轮新增付费0。
+
+下一动作：按工作卡docs/plans/2026-10-31-product-timeout-diagnosis.md做保持现有业务合同的独立流式适配与旧前缀恢复验证，不直接切旧stream，不重复原样补测；服务商实际转发能力仍未证。automation保持PAUSED，Stage8E保持；当前真实任务最新checkpoint/database仍为上轮attempt-7，不能把诊断修复当作524已解决或恢复授权。结果sol_product_timeout_implementation_diagnosis_20261031.json。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-31 08:33北京时间：用户明确选择“沿原非流式，同一步再补测一次”，最后一次手动补测已实际执行。完整复用原3次生成，call-006在130.047秒再次HTTP524；三次首审请求/wire摘要一致，均已closed/reaped，仍无Sol语义意见。未发送第7—8次，不发布未审查正文。
 
 累计6HTTP/29323 known/220146 unknown预留/2retry，receiptless0、未确认intent0；活动553.594/900秒。两次手动额度已用尽，剩余2个总请求槽不构成继续补测权限，原10月31日15:45北京时间截止不变。原父143份、上一快照131份及生成前缀逐字保留。最新checkpoint 33acb349827fe1bd4b093cae6317d597f6f205ee56bd189c61f908b216069612，数据库Control/attempt-7/terminal-db.dump，SHA 7a64be40737a17a05d8aec6f833d90b80c54debf38a67cce5cab87ce0686be9e；append-only快照attempt-7-snapshot.json，不关闭可恢复session。

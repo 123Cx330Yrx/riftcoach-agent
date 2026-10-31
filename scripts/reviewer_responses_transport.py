@@ -44,7 +44,7 @@ class Profile:
 
 def classify_exception(error):
     """Map SDK/network failures to a small, non-sensitive public vocabulary."""
-    current, seen = error, set()
+    current, seen, fallback = error, set(), None
     while current is not None and id(current) not in seen:
         seen.add(id(current))
         if isinstance(current, httpx.ProxyError):
@@ -64,14 +64,14 @@ def classify_exception(error):
         if isinstance(current, httpx.PoolTimeout):
             return 'pool_timeout'
         name = type(current).__name__
-        if name == 'APITimeoutError':
-            return 'connect_timeout'
-        if name == 'APIConnectionError':
-            return 'connect_error'
-        if name == 'APIStatusError':
-            return 'protocol_error'
+        # SDK wrappers cover several IO phases. Prefer an available HTTPX
+        # cause; a generic wrapper must not hide a read or proxy failure.
+        if fallback is None:
+            fallback = {'APITimeoutError': 'connect_timeout',
+                        'APIConnectionError': 'connect_error',
+                        'APIStatusError': 'protocol_error'}.get(name)
         current = getattr(current, '__cause__', None) or getattr(current, '__context__', None)
-    return 'sdk_error'
+    return fallback or 'sdk_error'
 
 
 def digest(value):
