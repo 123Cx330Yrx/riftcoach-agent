@@ -1,3 +1,15 @@
+## 2026-11-01 流式已返回，协议拒绝终局核验
+
+2026-11-01 05:50北京时间，2ebaa4a6对应CI41238725398八项全绿，唯一waiter已自动完成attempt-11；实际新增1次流式HTTP，状态200、约2秒收到首字节、130.063秒结束，完整EOF与response.completed已观测。新增21472 known tokens，无新增unknown或524。此前session.lock局部修复与同任务恢复已越过真实发送边界；128份准备原件逐字保持，3次生成与5次旧524均未重发或抹去。
+
+本次不是产品成功：流接收器拒绝event_sequence/response_not_created/unexpected_event，Worker虽succeeded，业务终态evaluation_failed、publication_allowed=false、报告409。已收到单工具诊断意见但未通过协议验收，不导入、不应用、不当作正式首审；completion/fresh均未发送。记录中2个额外body事件被归并为other_body_event，具体类型与位置未留存，不能断言ping/keepalive或某一上游事件就是根因，也不能据终态completed直接放行。本地协议兼容/观测不足和可能上游序列异常尚不能区分；不继续盲目重测。
+
+累计9HTTP/50795known/366910unknown预留/5retry、活动973.047秒；尚余3请求槽、305751 tokens含预留空间、1126.953活动秒，原北京时间15:50:40截止不延长。若下一次仍需双初审及双fresh，4请求会超过剩余3槽，不能默增预算。最新checkpoint0011 SHA3856284d916cf836f432cde784b0676291bb8969f9b8b6a2183ed3f92222bf3d；最新DB outputs/riftcoach-product-stream-guard-recovery-20261101/attempt-11/terminal-db.dump SHA890d221477640d0ffa79235ad5f69f00d714021b88b6f86f735d1dcc8aeccb71。不能退回ready DB；本次有真实发送，不符合zero_send_recovery。
+
+真实浏览器/SQL只读1440与320通过，用量一致、未发布稿不可见、无resume/新任务POST。外置v2脚本的旧乱码selector先导致等待超时，原失败日志保留；v3按当前locale更正Unicode selector后通过，无产品代码修改。完整快照8185ff91…与terminal-snapshot.json已存，inspection-complete已写；临时容器清理，driver/waiter正常退出。
+
+下一行动：此轮执行与核验已终局，禁止自动付费补测。下一次执行前需要补仅含事件类型/序号/结构的观测，明确同task/run保留此次真实返回与终态的恢复方案，再对格式故障追加执行取得明确决定；不能直接把未验证诊断意见转正。当前没有待观察执行者，收尾后结束本monitor。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_stream_protocol_rejected_20261101.json。
+
 ## 2026-11-01 同任务追加额度已授权
 
 2026-11-01 04:21北京时间，已完成本地零发送拒绝的窄范围恢复与实际数据库预检。新增zero_send_recovery只允许固定父checkpoint之后恰好多一条manual-retry、transport与审查journal零新增、未发布且没有evaluation意见的本地拒绝；归档完整父terminal/原件，逐字继承23项操作与全部回执，不删除原terminal或回退DB。旧手动许可从归档检查点回放，当前额度仅重新绑定新guard，authorization/累计上限/截止保持。
