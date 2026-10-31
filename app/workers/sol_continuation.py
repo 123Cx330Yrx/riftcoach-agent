@@ -109,13 +109,14 @@ def promote_segment(source, target):
 class SolContinuationExecutor:
     def __init__(self, *, store, runs_root, summary_builder, provider_factory_builder,
                  knowledge_provider, memory_repository=None, publication_sources=None,
-                 max_new_models=None, contract_module=default_contract):
+                 max_new_models=None, contract_module=default_contract, manual_retry_grant=None):
         self.store, self.root = store, Path(runs_root).resolve()
         self.summary_builder, self.factories = summary_builder, provider_factory_builder
         self.knowledge = knowledge_provider
         self.memory = memory_repository
         self.publication_sources = publication_sources
         self.max_new_models = max_new_models
+        self.manual_retry_grant = manual_retry_grant
         self.contract = contract_module
         self.profile = (WORKER_SOL_PROFILE if contract_module is default_contract else WORKER_SOL_PRODUCT_PROFILE)
         if contract_for_worker_profile(self.profile) is not contract_module:
@@ -146,6 +147,7 @@ class SolContinuationExecutor:
             contract_module=contract, worker_development=self.profile == WORKER_SOL_PROFILE,
             worker_product=self.profile == WORKER_SOL_PRODUCT_PROFILE,
             manual_retry=saved["manual_retry"], before_new_model=require_dispatch_allowed,
+            manual_retry_grant=self.manual_retry_grant,
             max_new_models=self.max_new_models,
             checkpoint_sink=lambda value: self.store.pin(task,
                 {**value, "checkpoint": Path(value["checkpoint"]).name}, session_accounting(session)))

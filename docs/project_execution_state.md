@@ -14,6 +14,16 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-10-31 用户报告上游恢复并要求准备重试：同一任务的一次补充manual retry已实现，保持原非流式；产品默认2次不变，仅该task/run/owner、最新checkpoint和失败结果SHA可使用一次补充许可。草案authorized=false，尚无新增付费请求；上游恢复仅为用户报告，未独立验证。
+
+真实数据库零发送预检已通过，原154份上一快照原件保持；当前142份运行库存核验通过。预检生成最新checkpoint a8ec5dc9bdf5ad697b6d67a977d10b0ec5bb2cc8ecff8f4ffcc817f255f2054a，后续须用Control/manual-retry-extension-ready-20261031/recovered-db.dump（SHA f22b154d55056bccd3eee5c61309c8c49e7a2228cfee34999160026b6bb6c3f6），不能退回attempt-7数据库。累计仍6HTTP/29323 known/220146 unknown预留/2retry，活动554.500/900秒，未发布。
+
+验证：补充许可及既有产品合同27项通过；过期许可的已提交操作只读回放补测1项通过；库存/Worker等11项通过，11个Runtime入口匹配。4份当前Sol清单和新库存仅更新实现摘要，旧清单/原15/历史冻结不改。工作卡docs/plans/2026-10-31-task-retry-supplement.md；机器记录sol_product_retry_supplement_prepared_20261031.json。
+
+下一动作：一次提交推送、冻结新执行树并绑定同HEAD CI；Control/binding与ci-success为执行依据，旧56cd86b2的CI41151387633全绿不能代替新CI。准备完成后取得明确的一次补充许可再执行，automation保持PAUSED。原8总请求/401920tokens/900活动秒和10月31日15:45北京时间截止不延长；仅余2总请求槽，初审需修订而双fresh放不下时保存结果暂停。Stage8E/默认产品入口/玩家稿与Evidence消费目标保持。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-31 本地实现诊断完成：可比成功facts请求54547字节/104.015秒，当前SDK实际53773字节；6项禁网SDK核对确认完整wire、正确URL、单发送，有效200可接收，三次524并非本地解析伪造。消息/补丁schema未异常膨胀。不能由此排除请求内容处理耗时与非流式设计的影响，远端根因仍未证。
 
 已修两个我方诊断缺陷：SDK包装不能再掩盖具体HTTPX读取/代理错误；新增有界cf-ray和请求/响应头/首字节时间，保持不存正文/私有reasoning。传输回归192通过，2项清单漂移同步后连同10项库存/入口检查通过；11个Runtime入口及治理通过。4份当前Sol清单和新离线库存仅更新两个源码摘要，旧库存/冻结8eb86b5d/原15不动。实际任务仍保留上轮6HTTP/29323 known/220146 unknown预留/2retry，手动额度0，本轮新增付费0。

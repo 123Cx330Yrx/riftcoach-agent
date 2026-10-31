@@ -82,7 +82,8 @@ class CandidateSession:
                  guard_sha=None, checkpoint_sha=None, read_only=False,
                  checkpoint_sink=lambda value: None, before_new_model=None,
                  max_new_models=None, clock=time.monotonic, reconcile=False, continuation=None,
-                 contract_module=None, manual_retry=False, worker_development=False, worker_product=False):
+                 contract_module=None, manual_retry=False, worker_development=False, worker_product=False,
+                 manual_retry_grant=None):
         from app.runtime.sol_natural_provider import selected_contract
         self.contract_module = selected_contract(contract_module)
         self.worker_development = worker_development
@@ -105,6 +106,7 @@ class CandidateSession:
                 'transport_retry_mode') != 'manual-reaped-timeout-v1'):
             raise ValueError('session_manual_retry_mode')
         self.manual_retry = manual_retry
+        self.manual_retry_grant = json.loads(canonical(manual_retry_grant))
         if ((self.contract_module.VERSION != 'natural-flash-sol-development-v1'
                 or 'candidate_contract' in binding)
                 and binding.get('candidate_contract') != self.contract_module.VERSION):

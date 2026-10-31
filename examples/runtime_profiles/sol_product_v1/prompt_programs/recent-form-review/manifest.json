@@ -352,12 +352,12 @@
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "fa6835758e3255ff5db446dc99047aa582f1a95763768af073881c9abffc1926"
+      "sha256": "9063660f1778a1da2e563a6011eb26b0826f2ce406c5f0c29edaa0dfcd412430"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "fd75d1187e7d1433855d31d7337343f8568f955b70d26919a07ace3eaab7e82e"
+      "sha256": "40a8415909796865e633ac69759000ac673ba4b7669b8c6eed1c64c92d653a15"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "429966b124e5d43c19420a5dd1f9ec6df7cefaf196182131b69a1d3d3f361b79"
+      "sha256": "6113f5b213e0045b33a3fe88f6502c93fed485b4b12b7f5b43657996901889b1"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -435,10 +435,15 @@
       "sha256": "f99fe3297cc4b577986a023e4d88c60342fdee1d95dac6cef3aa1e68f0922fd8"
     },
     {
+      "component_id": "app.product.manual_retry_grant",
+      "source": "app/product/manual_retry_grant.py",
+      "sha256": "9b7af995078bd2d6cecb8eacfe802648aa38a9801a8e9d8068f17affd12c0eb9"
+    },
+    {
       "component_id": "coach_execution_contract",
       "source": "app.product.sol_contract:v1.7.0",
       "sha256": "745668406bfc57b4654b82820c1f536580760af61cc6349d06d25b2634e2909e"
     }
   ],
-  "program_sha256": "b2fe216be13338d918651a8eda66786d8dd65ffff761395b2a9f7a17addb375d"
+  "program_sha256": "06fd974f3a2b21b89c45e04c941d4cffbcc9e252940aa381741266ba2c5d6887"
 }

@@ -51,7 +51,8 @@ CONTRACT = ProductContract(version='1.7.0')
 def component_fingerprints(skill):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     rows = {r.component_id: r for r in parent.component_fingerprints(skill)}
-    for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py'):
+    for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
+                 'app/product/manual_retry_grant.py'):
         key = path.replace('/', '.').removesuffix('.py')
         rows[key] = ComponentFingerprint(component_id=key, source=path,
             sha256=hashlib.sha256((ROOT / path).read_text(encoding='utf-8').encode()).hexdigest())

@@ -170,16 +170,28 @@ class SessionBudget(CoachBudgetedProvider):
             **{'format' if format_repair else 'timeout': failed[failure_key]}, budget=failed['budget'])
         attempt = failed[failure_key]
         next_path = session.root/'operations'/f'{session.cursor+1:04d}-intent.json'
+        extra_retry = False
+        if next_path.exists():
+            prior_grant = json.loads(next_path.read_bytes())['request'].get('retry_grant')
+            if prior_grant is not None:
+                from app.product.manual_retry_grant import validate
+                bound['retry_grant'] = validate(prior_grant, session=session,
+                    failed_sha=bound['failed_result_sha256'], retries=router._retries, replay=True)
         if not next_path.exists():
             if session.read_only or not session.manual_retry:
                 raise SessionPaused('session_format_awaiting_manual_retry' if format_repair
                                     else 'session_timeout_awaiting_manual_retry')
             limits = self.contract_module.CONTRACT.descriptor()
+            if router._retries >= limits['transport_retries'] and session.manual_retry_grant is not None:
+                from app.product.manual_retry_grant import validate
+                bound['retry_grant'] = validate(session.manual_retry_grant, session=session,
+                    failed_sha=bound['failed_result_sha256'], retries=router._retries)
+                extra_retry = True
             from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
             from app.runtime.sol_session_receipts import request_from_raw
             request = request_from_raw(attempt['issued_raw'])
             reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
-            if (self.calls >= limits['max_calls'] or router._retries >= limits['transport_retries']
+            if (self.calls >= limits['max_calls'] or (router._retries >= limits['transport_retries'] and not extra_retry)
                     or self.tokens+self.reserved_tokens+reservation > limits['total_tokens']
                     or session.active_seconds >= limits['execution_timeout_s']):
                 raise SessionPaused('session_retry_budget_extension_required')
@@ -188,6 +200,7 @@ class SessionBudget(CoachBudgetedProvider):
             from app.runtime.sol_session_receipts import request_from_raw
             # Consume the manual flag once, even if this attempt times out too.
             session.manual_retry = False
+            session.manual_retry_grant = None
             router._retry_request = request_from_raw(attempt['issued_raw'])
             router._retries += 1
             router._failed = self.stopped = False
