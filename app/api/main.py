@@ -2030,6 +2030,9 @@ def create_app(
                 profile=reference["profile"], checkpoint_sha256=reference["checkpoint_sha256"],
                 reason=reference["pause_reason"], session_accounting=accounting,
                 publication_allowed=False)
+        except RunQueryError as exc:
+            return _error_response("service_unavailable" if exc.code == "run_not_ready" else "run_integrity_failed",
+                                   status_code=503 if exc.code == "run_not_ready" else 500)
         except (TaskServiceError, ContinuationError) as exc:
             return _error_response("task_not_found" if exc.code == "task_not_found" else "service_unavailable",
                                    status_code=404 if exc.code == "task_not_found" else 503)
@@ -2491,6 +2494,8 @@ def create_app(
         except RunQueryError as exc:
             # A cancelled queued task may never have started a Runtime. A missing
             # receipt on a successful task, or any corrupt Trace, is not normal.
+            if exc.code == "run_not_ready":
+                return _error_response("service_unavailable", status_code=503, run_id=task.run_id)
             if exc.code == "run_not_found" and task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
                 return RunUsageResponse(run_id=task.run_id, task_status=task.status)
             return _error_response("run_integrity_failed", status_code=500, run_id=task.run_id)

@@ -1,3 +1,13 @@
+## 2026-10-31 浏览器恢复读锁缺陷与补充许可
+
+2026-10-31 14:47北京时间，用户“继续呗”明确触发上一答复列明的一次同项补充重试。Control/manual-retry-extension-ready-20261031/supplemental-authorization.json已激活（SHA 26a6d33c49653157b06525eee606eea99b0a70f06645dcad1765067c2e64e1e1），原8请求/401920tokens/900活动秒和15:45截止不变。尚无attempt-8或新增付费。
+
+CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-checks的真库浏览器resume场景等待“检查并继续”90秒超时；retry/cancel通过，汇总pytest仅继承web失败。截图显示恢复详情加载失败；原CI未保留trace/失败HTTP，不能把根因直接追认为已证。
+
+已独立稳定复现同类本地缺陷：恢复详情与用量同时只读核验会争用CandidateSession非阻塞独占锁，第二请求抛session_executor_active，被API当作完整性错误。修复只在只读入口有界等待锁5秒，仍核原checkpoint/全部证据；耗尽返回503，真正损坏仍500，不发送模型或重试业务。新增争用/有界等待/损坏不重试及双API分类回归，28项通过；11个Runtime清单与治理通过。CI增加fixture trace、attempt-state和错误上下文保留。
+
+真实Chromium→API→临时Postgres→Worker的resume/retry/cancel三场景均通过（116.61秒，模型/来源替身，零外部模型请求），保留前缀、费用与发布边界；结果sol_product_session_read_lock_repair_20261031.json。下一动作：一次提交推送、冻结新版本及CI绑定；已授权的同项补测仅在新CI通过且未过15:45时执行。当前仍原checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry、554.500活动秒；历史成功/失败不重写，Stage8E和automation PAUSED保持。工作卡docs/plans/2026-10-31-task-retry-supplement.md。
+
 ## 2026-10-31 同任务补充重试准备，未激活
 
 2026-10-31 用户报告上游恢复并要求准备重试：同一任务的一次补充manual retry已实现，保持原非流式；产品默认2次不变，仅该task/run/owner、最新checkpoint和失败结果SHA可使用一次补充许可。草案authorized=false，尚无新增付费请求；上游恢复仅为用户报告，未独立验证。
@@ -6,7 +16,7 @@
 
 验证：补充许可及既有产品合同27项通过；过期许可的已提交操作只读回放补测1项通过；库存/Worker等11项通过，11个Runtime入口匹配。4份当前Sol清单和新库存仅更新实现摘要，旧清单/原15/历史冻结不改。工作卡docs/plans/2026-10-31-task-retry-supplement.md；机器记录sol_product_retry_supplement_prepared_20261031.json。
 
-下一动作：一次提交推送、冻结新执行树并绑定同HEAD CI；Control/binding与ci-success为执行依据，旧56cd86b2的CI41151387633全绿不能代替新CI。准备完成后取得明确的一次补充许可再执行，automation保持PAUSED。原8总请求/401920tokens/900活动秒和10月31日15:45北京时间截止不延长；仅余2总请求槽，初审需修订而双fresh放不下时保存结果暂停。Stage8E/默认产品入口/玩家稿与Evidence消费目标保持。
+已提交推送02d081b5b621cac57f69c3ee4f7a7435ef9311c6；D:/riftcoach-sol-product-extra-retry-execution-20261031已冻结干净，11个Runtime入口再核一致。新CI41166396355运行中；Control/manual-retry-extension-ready-20261031/binding.json（SHA 10bad90f803d477b18a23138f0547d50e4d4ff783aaf6494916ecece1954bec8）固定原2715至新HEAD全部40文件差异与启动器，preparation-proof.json记录本地准备完成。下一动作：等待该CI成功后，再取得一次补充许可；没有新waiter或attempt-8，旧56cd86b2全绿不能代替新CI。准备完成后取得明确的一次补充许可再执行，automation保持PAUSED。原8总请求/401920tokens/900活动秒和10月31日15:45北京时间截止不延长；仅余2总请求槽，初审需修订而双fresh放不下时保存结果暂停。Stage8E/默认产品入口/玩家稿与Evidence消费目标保持。
 
 ## 2026-10-31 我方实现诊断及观测修复
 

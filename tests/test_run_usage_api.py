@@ -6,6 +6,7 @@ from app.runtime.models import RuntimeStatus, RuntimeUsage
 from app.tasks.models import TaskStatus
 from app.tasks.service import TaskServiceError
 from tests.test_live_workbench_api import client, QueryService, TaskService, task, RUN_ID
+from tests.test_live_workbench_api import TASK_ID
 
 
 class UsageQuery(QueryService):
@@ -75,3 +76,18 @@ def test_foreign_or_missing_task_does_not_read_disk():
         query_service=query).get(f"/runs/{RUN_ID}/usage")
     assert response.status_code == 404
     assert not query.calls
+
+
+@pytest.mark.parametrize('endpoint', [f'/tasks/{TASK_ID}/continuation', f'/runs/{RUN_ID}/usage'])
+@pytest.mark.parametrize('code,status', [('run_not_ready', 503), ('run_integrity_failed', 500)])
+def test_contended_read_is_unavailable_but_corruption_remains_integrity_error(endpoint, code, status):
+    class PausedReference(TaskService):
+        def get_continuation(self, **kwargs):
+            return {'checkpoint_sha256': 'a' * 64}
+    class BusyQuery(UsageQuery):
+        def get_session_accounting(self, run_id, reference):
+            raise RunQueryError(code)
+    api = client(task_service=PausedReference(task(TaskStatus.CANCELLED)), query_service=BusyQuery())
+    response = api.get(endpoint)
+    assert response.status_code == status
+    assert response.json()['code'] == ('service_unavailable' if status == 503 else 'run_integrity_failed')

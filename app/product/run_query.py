@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 import math
 import re
+import time
+from contextlib import ExitStack
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import datetime
@@ -44,6 +46,7 @@ def _reject_non_finite_json(value: str) -> Any:
 
 RunQueryErrorCode = Literal[
     "run_not_found",
+    "run_not_ready",
     "report_not_available",
     "run_integrity_failed",
 ]
@@ -373,11 +376,25 @@ class RunQueryService:
         root = self._runs_root / run_id / ".continuation"
         if root.resolve() != root:
             raise RunQueryError("run_integrity_failed")
-        with CandidateSession(root / "session", binding=reference["binding"],
+        candidate = CandidateSession(root / "session", binding=reference["binding"],
                 transport_root=root / "transport" / run_id, journal_root=root / "journal",
                 guard_sha=reference["guard_sha256"], checkpoint_sha=reference["checkpoint_sha256"],
                 contract_module=contract, read_only=True, worker_development=reference["profile"] == WORKER_SOL_PROFILE,
-                worker_product=reference["profile"] == WORKER_SOL_PRODUCT_PROFILE) as session:
+                worker_product=reference["profile"] == WORKER_SOL_PRODUCT_PROFILE)
+        # Usage and recovery details can arrive together (including after reload).
+        # Keep the kernel lock and all pin checks; wait only for lock acquisition.
+        deadline = time.monotonic() + 5.0
+        with ExitStack() as stack:
+            while True:
+                try:
+                    session = stack.enter_context(candidate)
+                    break
+                except ValueError as exc:
+                    if str(exc) != "session_executor_active":
+                        raise
+                    if time.monotonic() >= deadline:
+                        raise RunQueryError("run_not_ready") from exc
+                    time.sleep(0.02)
             value = session_accounting(session)
             if value != reference["accounting"]:
                 raise RunQueryError("run_integrity_failed")

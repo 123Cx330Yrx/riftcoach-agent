@@ -108,6 +108,9 @@ jobs:
             ${{ runner.temp }}/product-browser/**/*.png
             ${{ runner.temp }}/product-browser/**/*proof.json
             ${{ runner.temp }}/product-browser/**/playwright.stdout.txt
+            ${{ runner.temp }}/product-browser/**/attempt-state.json
+            ${{ runner.temp }}/product-browser/**/trace.zip
+            ${{ runner.temp }}/product-browser/**/error-context.md
           if-no-files-found: ignore
 
       - name: Verify cinematic audit toolchain and planned ledger
