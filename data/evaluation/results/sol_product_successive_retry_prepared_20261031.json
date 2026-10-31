@@ -9,17 +9,24 @@
     "unresolved_intents": 0
   },
   "active_seconds": 691.405999999959,
+  "automation_id": "riftcoach",
+  "binding_sha256": "a2d26c2c978af0bbe3a1402d9bca16699139b632d8c3fd75fb3337f1f2e2ed3e",
   "checkpoint_sha256": "8143eafa4cf87f6ddf33b4a97f187556000b86e1e7718ac5682e79d48c2d7236",
+  "ci_id": 41192280556,
   "database_dump_sha256": "a50932a8da4937f740869e4a6194516c95cfb1ab69b324374cb3de817589cdb0",
   "default_retry_limit": 2,
+  "driver_readonly_preflight_passed": true,
+  "execution_cwd": "D:/riftcoach-sol-product-successive-retry-execution-20261031",
+  "execution_head": "db47d0d50f683bbe05b4378be09a334c24723446",
   "expiry": "2026-11-01T07:50:40.024669+00:00",
+  "launcher_pid": 16892,
   "new_model_requests": 0,
   "original_token_time_limits_preserved": true,
   "per_grant_additional_retries": 1,
   "ready_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\successive-retry-ready-20261031\\ready.json",
   "ready_sha256": "9d5f2dd70c6c76ed3f1311994c121836ae4c189f7ce083d7a4336cb48311d144",
   "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
-  "status": "authorized_preparing_frozen_ci",
+  "status": "authorized_waiting_exact_head_ci",
   "supplement_sha256": "d2d5191f8adfab949d1c470fbb97ab0b6f27239818c772bc64a19438bc2c63c0",
   "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
   "upstream_recovery_independently_verified": false,
@@ -32,5 +39,7 @@
     "original15_inventory_unchanged": true,
     "related_pytest_passed": 28,
     "zero_send_database_restore_passed": true
-  }
+  },
+  "waiter_pid": 72880,
+  "waiter_readonly_preflight_passed": true
 }

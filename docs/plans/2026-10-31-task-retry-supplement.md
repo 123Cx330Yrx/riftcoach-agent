@@ -49,3 +49,15 @@ CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-che
 当前补测只用旧包剩余1请求槽，401920tokens/900活动秒/单请求300秒和11月1日15:50:40北京时间截止保持；放开次数不清零或自动扩大token/时间预算。请求预留73382tokens，若再次用量未知则累计396233tokens（known加unknown），仍在旧总额内。新许可及用户原话保存在Control/successive-retry-ready-20261031；待相关回归、冻结新执行HEAD及同HEAD CI通过后，唯一启动器仅执行Control/run_successive_retry.py一次。无需再次询问本次补测授权；有执行者不重复启动。即使首审成功，后续双审也不能保证在旧剩余额度内完成，先保留结果再确定接续范围。原15完成、阶段及发布边界不变。
 
 验证：28项补充许可与产品合同回归通过（334.73秒），11个Runtime入口、原15离线清单保持检查、实际检查点新许可校验及治理通过；真实SQL零发送预检容器已清理。仅产品许可校验一处判断及对应当前manifest改变，模型输入/角色/政策不改。
+
+2026-10-31 18:20北京时间，修复db47d0d50f683bbe05b4378be09a334c24723446已提交推送，冻结执行cwd D:/riftcoach-sol-product-successive-retry-execution-20261031保持干净；对应CI41192280556运行中。Control/run_successive_retry.py和wait_successive_retry_ci.py实际发送前只读guard均通过，零凭据/零发送。Ready/binding.json SHA a2d26c2c978af0bbe3a1402d9bca16699139b632d8c3fd75fb3337f1f2e2ed3e。唯一waiter-v4实际PID72880、launcher16892已启动，以Ready/waiter-v4-start.json及当前进程为准，只在同HEAD CI八项全绿后调用一次run_successive_retry.py；不存在attempt-9时不得另起执行者。riftcoach监控已重新创建为本次补测的监控，等待无变化不通知。终局核验后删除。当前本次新HTTP仍0，不声称重测已执行。
+
+## 本次接续补测结果
+
+2026-10-31 19:29北京时间，冻结db47d0d5对应CI41192280556八项全绿后，唯一执行器已完成本次补测。call-008仍真实HTTP524，耗时128.782秒，request/wire SHA与前4次一致；本轮实际HTTP1、无审查意见，不声称上游恢复或语义拒绝。新观测cf-ray a53252ebee68c8d8-NRT，发送后125.547秒收到响应头及首字节；本地timeout为按剩余活动预算收紧的206.032秒，未发生本地读取超时异常。5次同请求约129—130秒524支持持续路由超时的推断，不能直接确定源站内部根因。
+
+累计8HTTP/29323known/366910unknown预留/4retry，receiptless0、unresolved0，第9次未发；活动824.281/900秒。已知加未知预留共396233/401920tokens，只余5687tokens和75.719活动秒，低于同项请求73382tokens预留。用户已放开重试次数，但原token/时间预算不足再发；不清零旧费用或无限重试，不另开批。暂停仅限当前首审，保留整个任务。
+
+真实浏览器1440/320核验通过：累计用量与API一致，无横向溢出，刷新没有resume/review POST，未审查正文不可读；paused用量独立端点409，页面从continuation取得真实账目。真库原始状态recovery_required任务1，assistant消息/Training/Evidence snapshot均0。原174份准备库存及前快照183份原件校验通过。最新checkpoint 60f635066d2debd253994fb77647f6e63e6198b9bb57e48a548af56c52d6a980，最新DB Control/attempt-9/terminal-db.dump SHA 8263f05c1d3dc7e391292cf28f367b531aadbae659d8186966023f2dbcb955cc；attempt-9-snapshot.json追加且closed=false，后续不得退回旧数据库。执行器/waiter已退出，临时容器已清理，riftcoach监控已实际删除。
+
+下一行动：根据这5次同请求超时的证据，先确定传输方案和追加token/活动时间范围，再接续同一首审；本次无限重试次数授权保留，不把计数当新审批门槛。当前不启动新付费请求。原15完成、Stage8E与默认发布准入不变；本次没有新报告发布。证据data/evaluation/results/sol_product_successive_retry_timeout_20261031.json。

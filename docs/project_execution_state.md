@@ -14,6 +14,18 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-10-31 19:29北京时间，冻结db47d0d5对应CI41192280556八项全绿后，唯一执行器已完成本次补测。call-008仍真实HTTP524，耗时128.782秒，request/wire SHA与前4次一致；本轮实际HTTP1、无审查意见，不声称上游恢复或语义拒绝。新观测cf-ray a53252ebee68c8d8-NRT，发送后125.547秒收到响应头及首字节；本地timeout为按剩余活动预算收紧的206.032秒，未发生本地读取超时异常。5次同请求约129—130秒524支持持续路由超时的推断，不能直接确定源站内部根因。
+
+累计8HTTP/29323known/366910unknown预留/4retry，receiptless0、unresolved0，第9次未发；活动824.281/900秒。已知加未知预留共396233/401920tokens，只余5687tokens和75.719活动秒，低于同项请求73382tokens预留。用户已放开重试次数，但原token/时间预算不足再发；不清零旧费用或无限重试，不另开批。暂停仅限当前首审，保留整个任务。
+
+真实浏览器1440/320核验通过：累计用量与API一致，无横向溢出，刷新没有resume/review POST，未审查正文不可读；paused用量独立端点409，页面从continuation取得真实账目。真库原始状态recovery_required任务1，assistant消息/Training/Evidence snapshot均0。原174份准备库存及前快照183份原件校验通过。最新checkpoint 60f635066d2debd253994fb77647f6e63e6198b9bb57e48a548af56c52d6a980，最新DB Control/attempt-9/terminal-db.dump SHA 8263f05c1d3dc7e391292cf28f367b531aadbae659d8186966023f2dbcb955cc；attempt-9-snapshot.json追加且closed=false，后续不得退回旧数据库。执行器/waiter已退出，临时容器已清理，riftcoach监控已实际删除。
+
+下一行动：根据这5次同请求超时的证据，先确定传输方案和追加token/活动时间范围，再接续同一首审；本次无限重试次数授权保留，不把计数当新审批门槛。当前不启动新付费请求。原15完成、Stage8E与默认发布准入不变；本次没有新报告发布。证据data/evaluation/results/sol_product_successive_retry_timeout_20261031.json。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-31 18:20北京时间，修复db47d0d50f683bbe05b4378be09a334c24723446已提交推送，冻结执行cwd D:/riftcoach-sol-product-successive-retry-execution-20261031保持干净；对应CI41192280556运行中。Control/run_successive_retry.py和wait_successive_retry_ci.py实际发送前只读guard均通过，零凭据/零发送。Ready/binding.json SHA a2d26c2c978af0bbe3a1402d9bca16699139b632d8c3fd75fb3337f1f2e2ed3e。唯一waiter-v4实际PID72880、launcher16892已启动，以Ready/waiter-v4-start.json及当前进程为准，只在同HEAD CI八项全绿后调用一次run_successive_retry.py；不存在attempt-9时不得另起执行者。riftcoach监控已重新创建为本次补测的监控，等待无变化不通知。终局核验后删除。当前本次新HTTP仍0，不声称重测已执行。
+
 2026-10-31 用户要求准备后再测，并明确放开同任务手动重试次数。当前按新授权落实一次同项补测，保留原非流式、完整请求、成功生成和4次524；不把用户对上游稳定的判断写成已验证。现有代码只接受第3次重试的补充许可，改为可逐次接受绑定当前task/run/owner/checkpoint/失败结果的新许可，默认2次不变，旧许可不能复用；每次许可仍只消费一次，不自动循环。
 
 真实临时SQL/Worker零发送恢复已通过，原attempt-8快照全部保持；最新checkpoint 8143eafa4cf87f6ddf33b4a97f187556000b86e1e7718ac5682e79d48c2d7236，数据库successive-retry-ready-20261031/zero-send-preflight/terminal-db.dump SHA a50932a8da4937f740869e4a6194516c95cfb1ab69b324374cb3de817589cdb0。累计7HTTP/29323known/293528unknown预留/3retry，活动691.406秒，未发第8次。旧attempt-8数据库及原件不改。
