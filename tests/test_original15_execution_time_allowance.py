@@ -18,6 +18,26 @@ from app.providers.errors import ProviderResponseError
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 
 
+
+@pytest.fixture
+def original15_methods():
+    # This adapter verifies and patches frozen source text. The current product
+    # uses execution_limits() and is covered by test_product_budget_supplement.
+    folder = Path(__file__).parent / 'fixtures' / 'original15_time_allowance'
+    provenance = json.loads((folder / 'provenance.json').read_bytes())
+    originals = {'chat': CoachBudgetedProvider._chat_once,
+                 'retry': SessionBudget._manual_retry}
+    methods = {}
+    for key, pin in provenance['methods'].items():
+        path = folder / pin['file']
+        source = path.read_bytes()
+        assert hashlib.sha256(source).hexdigest() == pin['sha256']
+        namespace = dict(originals[key].__globals__)
+        exec(compile(source, str(path), 'exec'), namespace)
+        methods[key] = namespace[pin['method']]
+    return methods
+
+
 def fixture():
     report = 'unchanged actual report'
     manifest = dict(version=allowance.VERSION, plan_sha256='plan', authorization_sha256='auth',
@@ -70,7 +90,7 @@ def test_changed_report_or_control_rejected():
         allowance.adjusted_limits(budget,request,manifest,changed)
 
 
-def test_real_shared_budget_uses_new_limit_without_resetting_counters():
+def test_real_shared_budget_uses_new_limit_without_resetting_counters(original15_methods):
     manifest,stub,request,_ = fixture()
     budget = CoachBudgetedProvider.__new__(CoachBudgetedProvider)
     budget.__dict__.update(stub.__dict__)
@@ -84,7 +104,7 @@ def test_real_shared_budget_uses_new_limit_without_resetting_counters():
             sent.append(issued)
             raise ProviderResponseError(provider='test',code='expected_test_stop')
     budget.provider=Provider();budget._provider_for_request=lambda issued:budget.provider
-    patched=allowance.compile_chat(CoachBudgetedProvider._chat_once,
+    patched=allowance.compile_chat(original15_methods['chat'],
         lambda owner,issued:allowance.adjusted_limits(owner,issued,manifest,lambda:None))
     with pytest.raises(ProviderResponseError,match='expected_test_stop'):
         patched(budget,request)
@@ -97,8 +117,8 @@ def test_real_shared_budget_uses_new_limit_without_resetting_counters():
     assert len(sent)==1 and budget.calls==6
 
 
-def test_retry_patch_preserves_real_source_and_closure():
-    fn=allowance.compile_retry(SessionBudget._manual_retry,
+def test_retry_patch_preserves_real_source_and_closure(original15_methods):
+    fn=allowance.compile_retry(original15_methods['retry'],
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, failed)',lambda owner,failed:{})
     assert callable(fn) and inspect.getsourcefile(fn)=='<original15-recorded-time-allowance>'
@@ -115,6 +135,16 @@ def test_retry_patch_preserves_real_source_and_closure():
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, request)',lambda owner,request:7200)
     assert fn(Child(),None)==('parent','closure stays',7200)
+
+
+def test_archived_adapter_rejects_current_product_limit_hook():
+    # A legacy time-only patch must not silently replace current task budgets.
+    with pytest.raises(ValueError, match='allowance_source_shape'):
+        allowance.compile_chat(CoachBudgetedProvider._chat_once, lambda *args: {})
+    with pytest.raises(ValueError, match='allowance_retry_shape'):
+        allowance.compile_retry(SessionBudget._manual_retry,
+            'limits = self.contract_module.CONTRACT.descriptor()',
+            'limits = _original15_retry_limits(self, failed)', lambda *args: {})
 
 
 def test_committed_application_replays_after_old_and_new_time_limits(tmp_path,monkeypatch):

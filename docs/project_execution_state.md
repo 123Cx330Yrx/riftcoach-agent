@@ -14,6 +14,14 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-11-01 02:32北京时间，CI41223907574以failure结束，唯一等待器正常退出，新增模型请求0。web-checks通过；pytest分片1和2各失败1项，均为原15时间追加适配器测试仍给当前产品函数匹配旧预算读取语句，触发source_shape/retry_shape；不是上游524。原日志保存在outputs/riftcoach-product-stream-authorized-20261101/ci-failure-41223907574。
+
+已将这两个历史回归绑定原15最后两例冻结e7a7ab0b的真实方法，逐字提取并固定来源和SHA；旧适配器与产品源码均不改。另验证旧适配器继续拒绝当前execution_limits接口，避免绕过现产品任务预算。23项针对性检查、来源逐字校验、governance与diff检查通过。原15完成保留，当前任务仍8HTTP/29323known/366910unknown预留/4retry，最新checkpoint fc0d4830…与DB f3a5f822…未变。
+
+下一行动：仅测试/记录维护提交后建立独立干净执行目录D:/riftcoach-sol-product-stream-ci-recovery-execution-20261101及同HEAD新CI，外置Control outputs/riftcoach-product-stream-ci-recovery-20261101固定逐文件差异与原准备材料。保留原cfcbb6d1冻结源码、失败CI、绑定和退出原件；核业务源码零差异及实际driver/waiter发送前guard后，仅启动一个新waiter。授权3203ae78…、12/723456/2100总预算及北京时间11月1日15:50:40截止保持，最多4新审查、每segment1次、不自动重试故障。待新CI全绿才续接原任务；Stage8E/默认准入不改。结果data/evaluation/results/sol_product_stream_ci_recovery_20261101.json。
+
+以下为上一轮准备记录（不作为当前排队项）。
+
 2026-11-01 01:18北京时间，用户明确“确认”同任务追加预算，已写create-only授权authorization.json，SHA 3203ae789cb82ba88d0ab66bcd51a6037f681a3278061ce08a31435f3fb7136f。累计上限12实际请求/723456tokens含历史unknown预留/2100活动秒；每请求300秒/16384输出、截止北京时间11月1日15:50:40保持。只复用当前3次成功生成，从同一facts-initial继续，必要时走双初审→唯一application→同稿双fresh；不导入诊断意见、不清零历史失败/费用，不增加自动重试。
 
 追加预算作为该任务session内单独原件固定，不改全局8请求/401920tokens/900秒。新请求实时检查该任务额度/期限；历史许可按原合同回放，新手动补测绑定最新pin。追加许可禁止新生成，HTTP恢复入口不能提交额度。直接回读历史高ordinal回执不派发网络请求；实际新发送仍受逐请求预算和任务版本绑定约束。
