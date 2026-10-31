@@ -14,13 +14,39 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-10-31 16:13同HEAD CI41178505872八项全绿后，唯一执行器完成已授权补测；call-007真实HTTP524，130.407秒，request/wire SHA与前三次完全一致，closed/reaped。新增观测cf-ray a5313371ac6bc5bf-NRT，发送后约126.563秒才同时收到响应头和首字节；本地配置300秒，没有本地读取超时异常。仍无Sol语义意见，不能宣称该路由上游已经恢复，也不能仅凭524确定源站内部根因。
+
+本轮新增1HTTP，累计7HTTP/29323 known/293528 unknown预留/3retry，receiptless0、unresolved0，第8次未发；活动690.172/900秒。额外一次补测已消费，不再自动重试。原142份运行库存、上轮154份快照及原成功生成逐字保持。最新checkpoint 1006173c2969d9eb981fccddb1febb975290a17e15e58bcba488341eb205a7c1，最新数据库Control/attempt-8/terminal-db.dump SHA d03bae291a606529f003a469401ee589ecaf6a85afdd8537cba0bdac0f066b51；attempt-8-snapshot.json追加保留，session未封闭，可按新决定恢复，不退回旧DB。
+
+真实浏览器1440/320已核用量和3次补测、刷新不POST恢复、无横向溢出，未审查正文不可读；当前paused时usage独立端点409，页面从continuation显示真实用量。真库任务1/暂停1，assistant/Training/Evidence snapshot均0。inspection-complete后执行器与waiter均已退出，exit原件确认临时容器已移除；riftcoach监控已实际删除。结果data/evaluation/results/sol_product_extra_retry_timeout_20261031.json、Control/attempt-8/audit-proof.json保留完整证据。
+
+下一动作：本次补测与监控收尾，删除automation；暂停受影响的首审步骤，保留整链，等待用户对传输方案及后续验证范围的新决定，不重复同一付费请求。原总预算仅余1请求槽，不能把它当作额外补测授权或保证可完成双初审。原15完成、Stage8E和产品准入保持，玩家稿发布/Evidence实际消费尚未完成。旧失败/到期/续授权原件不改。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-31 16:13北京时间，CI41178505872同HEAD八项全部success，Ready/ci-success-v3.json已保存。唯一waiter-v3已仅启动一次Control/run_manual_retry_supplement_v3.py，launcher子PID91724（实际进程以waiter-v3-child和系统为准）。attempt-8已创建，数据库恢复成功，resume-01已接受，new-model-01记录已写，当前补测执行中；尚无execution-result，不将发送标记当成功回执或已知费用。保留原成功生成和历史费用，不启动第二执行者；继续读attempt-8的segment/execution-result/failure/inspection-ready/exit及真实transport后核账。续授权与11月1日15:50:40截止保持。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-31 用户明确“补授权”，原未使用的一次同项manual retry续期24小时至2026-11-01T07:50:40.024669+00:00（北京时间11月1日15:50:40）。仅续有效期，累计8请求/401920tokens/900活动秒/单次300秒及额外一次补测保持，原成功生成与6HTTP/29323known/220146unknown预留/2retry不清零。旧授权/到期退出原件不改；Ready/renewal-authorization.json SHA3b1594fa599e564bc9433da454f6ac8b7fb48018771d731a7f13e0b0583f854f，supplemental-authorization-renewed.json SHAaf94f201878303b487daa957abb9d91ee56cb1b117314c310acfe6a7e5741d20。
+
+冻结HEAD480804941eaaddf6bd9c37c4a657ca667ffcff8d、执行cwd D:/riftcoach-sol-product-query-recovery-execution-20261031和CI41178505872不变，CI仍运行。旧waiter-v2已到期退出；新唯一waiter-v3实际PID37880、launcher33404，以Ready/waiter-v3-start/child/exit/failure及当前进程为准。Ready/binding-v3.json SHA674d3b7ec9ffc41e47fcff7f506f75afc01048a537929e804533cc273ae671f9；仅在同HEAD CI八项全绿且新期限内调用一次Control/run_manual_retry_supplement_v3.py。先查ci-wait-v3、execution-v3 stdout/stderr、attempt-8/检查点，存在执行者不重复启动。监控每5分钟继续，未变不通知，CI查询失败不是CI失败。
+
+续期核对发现尚未执行的v2外部启动器路径含反斜线转义缺陷；v3已改正斜线，并实际执行凭证/库存/路径的完整发送前只读检查，未创建attempt-8、未读真实凭据、零发送。waiter新增校验启动器AST真实ROOT与绑定cwd相同，不能只核绑定文件中的路径。此为Host启动器修正，冻结源码、模型请求和原件不改。当前checkpoint仍a8ec5dc9…、DB仍Ready/recovered-db.dump。后续出现524/格式故障不得自动补测，修订后双fresh超总预算则保留结果暂停；原15、Stage8E保持。
+
+以下为历史记录（不作为当前执行队列）。
+
+2026-10-31 15:45北京时间补充授权已到期。唯一waiter已以authorization_expired_no_launch退出，两个进程已消失，attempt-8不存在；新增模型请求0。原142份运行库存与最新数据库SHA复核一致，checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry及成功前缀完整保持。CI41178505872仍运行，web-checks（含原失败浏览器场景）、分片1、打包和迁移已通过，其他三个分片待完成。此后仅Host-only/只读，不自行延长或启动补测；监控继续关注尚未结束的CI，到期仅通知一次。CI终局后核验并收尾监控；续跑须用户给出新的有效授权。结果sol_product_retry_expired_without_launch_20261031.json。
+
+以下为历史记录（不作为当前执行队列）。
+
 2026-10-31 14:47北京时间，用户“继续呗”明确触发上一答复列明的一次同项补充重试。Control/manual-retry-extension-ready-20261031/supplemental-authorization.json已激活（SHA 26a6d33c49653157b06525eee606eea99b0a70f06645dcad1765067c2e64e1e1），原8请求/401920tokens/900活动秒和15:45截止不变。尚无attempt-8或新增付费。
 
 CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-checks的真库浏览器resume场景等待“检查并继续”90秒超时；retry/cancel通过，汇总pytest仅继承web失败。截图显示恢复详情加载失败；原CI未保留trace/失败HTTP，不能把根因直接追认为已证。
 
 已独立稳定复现同类本地缺陷：恢复详情与用量同时只读核验会争用CandidateSession非阻塞独占锁，第二请求抛session_executor_active，被API当作完整性错误。修复只在只读入口有界等待锁5秒，仍核原checkpoint/全部证据；耗尽返回503，真正损坏仍500，不发送模型或重试业务。新增争用/有界等待/损坏不重试及双API分类回归，28项通过；11个Runtime清单与治理通过。CI增加fixture trace、attempt-state和错误上下文保留。
 
-真实Chromium→API→临时Postgres→Worker的resume/retry/cancel三场景均通过（116.61秒，模型/来源替身，零外部模型请求），保留前缀、费用与发布边界；结果sol_product_session_read_lock_repair_20261031.json。下一动作：一次提交推送、冻结新版本及CI绑定；已授权的同项补测仅在新CI通过且未过15:45时执行。当前仍原checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry、554.500活动秒；历史成功/失败不重写，Stage8E和automation PAUSED保持。工作卡docs/plans/2026-10-31-task-retry-supplement.md。
+真实Chromium→API→临时Postgres→Worker的resume/retry/cancel三场景均通过（116.61秒，模型/来源替身，零外部模型请求），保留前缀、费用与发布边界；结果sol_product_session_read_lock_repair_20261031.json。修复提交480804941eaaddf6bd9c37c4a657ca667ffcff8d已推送，D:/riftcoach-sol-product-query-recovery-execution-20261031干净冻结；同HEAD CI41178505872进行中，11个Runtime入口复核通过。binding-v2.json SHA90a148a59d8c3a2bccfae97c930eb4c0cd8640895e41cb994088f4a04aa7716c逐件固定原2715至当前45文件差异；相对02d业务源码仅API和只读query，模型/提示/政策/预算不变。唯一waiter-v2已启动，实际PID87700、launcher72608，以Control/manual-retry-extension-ready-20261031/waiter-v2-start.json和进程为准；仅在本CI八项成功且15:45前调用一次run_manual_retry_supplement_v2.py，CI查询失败不当CI失败。先查ci-wait-v2、waiter-v2-child/exit/failure、attempt-8与实际进程，不再启动第二waiter或首次run。授权已经激活，无须重复询问；过期只做Host-only/只读，不能延长。当前仍原checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry、554.500活动秒；历史成功/失败不重写，Stage8E保持。用户随后要求开启监控，现automation riftcoach为ACTIVE、每5分钟核查；状态不变不通知，不另启执行者，15:45截止不变。工作卡docs/plans/2026-10-31-task-retry-supplement.md。
 
 以下为历史记录（不作为当前执行队列）。
 

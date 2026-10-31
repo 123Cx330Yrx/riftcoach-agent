@@ -29,3 +29,13 @@ CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-che
 已独立稳定复现同类本地缺陷：恢复详情与用量同时只读核验会争用CandidateSession非阻塞独占锁，第二请求抛session_executor_active，被API当作完整性错误。修复只在只读入口有界等待锁5秒，仍核原checkpoint/全部证据；耗尽返回503，真正损坏仍500，不发送模型或重试业务。新增争用/有界等待/损坏不重试及双API分类回归，28项通过；11个Runtime清单与治理通过。CI增加fixture trace、attempt-state和错误上下文保留。
 
 真实Chromium→API→临时Postgres→Worker的resume/retry/cancel三场景均通过（116.61秒，模型/来源替身，零外部模型请求），保留前缀、费用与发布边界；结果sol_product_session_read_lock_repair_20261031.json。下一动作：一次提交推送、冻结新版本及CI绑定；已授权的同项补测仅在新CI通过且未过15:45时执行。当前仍原checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry、554.500活动秒；历史成功/失败不重写，Stage8E和automation PAUSED保持。工作卡docs/plans/2026-10-31-task-retry-supplement.md。
+
+## 本次执行结果
+
+2026-10-31 16:13同HEAD CI41178505872八项全绿后，唯一执行器完成已授权补测；call-007真实HTTP524，130.407秒，request/wire SHA与前三次完全一致，closed/reaped。新增观测cf-ray a5313371ac6bc5bf-NRT，发送后约126.563秒才同时收到响应头和首字节；本地配置300秒，没有本地读取超时异常。仍无Sol语义意见，不能宣称该路由上游已经恢复，也不能仅凭524确定源站内部根因。
+
+本轮新增1HTTP，累计7HTTP/29323 known/293528 unknown预留/3retry，receiptless0、unresolved0，第8次未发；活动690.172/900秒。额外一次补测已消费，不再自动重试。原142份运行库存、上轮154份快照及原成功生成逐字保持。最新checkpoint 1006173c2969d9eb981fccddb1febb975290a17e15e58bcba488341eb205a7c1，最新数据库Control/attempt-8/terminal-db.dump SHA d03bae291a606529f003a469401ee589ecaf6a85afdd8537cba0bdac0f066b51；attempt-8-snapshot.json追加保留，session未封闭，可按新决定恢复，不退回旧DB。
+
+真实浏览器1440/320已核用量和3次补测、刷新不POST恢复、无横向溢出，未审查正文不可读；当前paused时usage独立端点409，页面从continuation显示真实用量。真库任务1/暂停1，assistant/Training/Evidence snapshot均0。inspection-complete后执行器与waiter均已退出，exit原件确认临时容器已移除；riftcoach监控已实际删除。结果data/evaluation/results/sol_product_extra_retry_timeout_20261031.json、Control/attempt-8/audit-proof.json保留完整证据。
+
+下一动作：本次补测与监控收尾，删除automation；暂停受影响的首审步骤，保留整链，等待用户对传输方案及后续验证范围的新决定，不重复同一付费请求。原总预算仅余1请求槽，不能把它当作额外补测授权或保证可完成双初审。原15完成、Stage8E和产品准入保持，玩家稿发布/Evidence实际消费尚未完成。旧失败/到期/续授权原件不改。
