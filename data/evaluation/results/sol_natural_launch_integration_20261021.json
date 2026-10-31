@@ -1,0 +1,370 @@
+{
+  "version": "sol-natural-launch-integration-20261021-v1",
+  "base_head": "19f76f047a01e26ac0855a535facbb54c7893855",
+  "provider_requests": 0,
+  "key_read": true,
+  "paid_launcher_ready": true,
+  "execution_authorized": true,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "checks": [
+    {
+      "scope": "session/native-review/current-inventory plus initial launcher",
+      "passed": 32,
+      "seconds": 241.02
+    },
+    {
+      "scope": "final launcher including replay/seal/derived retention and old development entry",
+      "passed": 36,
+      "seconds": 100.69
+    }
+  ],
+  "test_limit": "Synthetic providers/native events; overlapping test sets are not summed. No real semantic review.",
+  "native_lineage": {
+    "root": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "independent": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "verified_parent_link": true,
+    "host_status": "completed_native_preflight",
+    "author_preflight_completed": true
+  },
+  "prior_ci": {
+    "run_id": "39532199974",
+    "head": "19f76f047a01e26ac0855a535facbb54c7893855",
+    "status": "in_progress",
+    "observed_at": "2026-10-21T02:41:00Z",
+    "successful_jobs": [
+      "web-checks",
+      "postgres-migrations",
+      "packaging-smoke"
+    ],
+    "pending_jobs": [
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)"
+    ]
+  },
+  "remaining": [
+    "offline diagnosis of response reasoning echo rejection; no automatic paid follow-up"
+  ],
+  "limitations": [
+    "Abrupt exit leaving uncommitted derived files is blocked for evidence reconciliation, not automatically retried.",
+    "Third-party upstream identity remains unverified."
+  ],
+  "cleanup": {
+    "status": "previous platform deletion rejection retained",
+    "targets": [
+      "tmp/stack-debug",
+      "tmp/sol-natural-preflight-20261021.json"
+    ],
+    "bypassed": false
+  },
+  "native_preflight": {
+    "guard_sha256": "5f13c7e1a5af19ce7c8b1f624cb758cb2094fe0553fa32c2e212ca73bd55b2f9",
+    "checkpoint_sha256": "85604fc7460a6bc86ccaa9540346123b1c43423f2010ba44e6ad6809891aa646",
+    "plan_sha256": "641f4cac2a98be481e08752866eddc6814f53c066eeb7323f3d67a27edc785a3",
+    "native_preflight_verified": true,
+    "strict_readback": true,
+    "originals_unchanged": true,
+    "provider_requests": 0,
+    "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a15eb6-bc70-7781-9f4f-a2e6714c8384/msg_0a36aebb81a71052016ad8c2822aec8191af4fbca8db8c9627",
+    "business_review": false
+  },
+  "execution_checkout": {
+    "cwd": "D:\\riftcoach-sol-natural-stored-key-execution",
+    "head": "084c415cbcfac173f1a075983260aa9d694b430c",
+    "clean": true,
+    "ci_run": "39610700918",
+    "ci_status": "completed",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021",
+    "ci_conclusion": "success"
+  },
+  "verified_ci": {
+    "run_id": "39610700918",
+    "head_sha": "084c415cbcfac173f1a075983260aa9d694b430c",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest",
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)",
+      "web-checks"
+    ]
+  },
+  "pricing_confirmation": {
+    "observed_at": "2026-10-21T13:32:39.729125+00:00",
+    "access": "public HTTP; no login or API credentials",
+    "sol": {
+      "url": "https://yujianwudi.top/api/pricing",
+      "http_status": 200,
+      "response_sha256": "d1b5e14c8a6672ee63e59d2030c27d72d4d1f9f41b3c2e6c1848ec918ed5a32c",
+      "model_entry": {
+        "model_name": "gpt-6.1-sol",
+        "description": "GPT-6 \u7cfb\u5217\uff0cSOL\u6a21\u578b\uff0c\u591a\u6a21\u6001\uff0c\u652f\u6301\u6587\u672c\u4e0e\u56fe\u50cf\u8f93\u5165\uff0c1M \u4e0a\u4e0b\u6587\u4e0e 128K \u6700\u5927\u8f93\u51fa",
+        "tags": "1M",
+        "vendor_id": 3,
+        "quota_type": 0,
+        "model_ratio": 37.5,
+        "model_price": 0,
+        "owner_by": "",
+        "completion_ratio": 2,
+        "enable_groups": [
+          "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+          "GPT-pro",
+          "GPT-plus"
+        ],
+        "supported_endpoint_types": [
+          "openai",
+          "openai-response",
+          "openai-response-compact",
+          "anthropic",
+          "gemini",
+          "openai-alpha-search"
+        ],
+        "billing_mode": "tiered_expr",
+        "billing_expr": "tier(\"\u6807\u51c6\", p * 2 + c * 10 + cr * 0.1 + cc * 2.5)",
+        "pricing_version": "5a90f2b86c08bd983a9a2e6d66c255f4eaef9c4bc934386d2b6ae84ef0ff1f1f"
+      },
+      "group": "GPT-pro",
+      "group_ratio": 0.2,
+      "input_per_million_cny": 0.4,
+      "output_per_million_cny": 2,
+      "interpretation": "billing_expr input/output multiplied by group ratio; currency basis matches earlier explicit user price confirmation"
+    },
+    "flash": {
+      "page": "https://open.bigmodel.cn/pricing",
+      "asset_url": "https://static.bigmodel.cn/wd-paas-front/js/app.d001091a.js",
+      "http_status": 200,
+      "response_sha256": "eeabcd7e964e750c179acce4abff10a452fb24ce8d21c717884e10bc23bb8042",
+      "price_entry": "{name:\"GLM-5.3-Flash\",rowspan:1,intro:\"5\u6298\u9650\u65f6\u4e24\u5468\u81f309-09\",introType:\"new\",upDownText:[\"1M\"],inPrice:[\"0.4\u5143\",\"0.8\u5143\"],outPrice:[\"1.4\u5143\",\"2.8\u5143\"],storage:\"\u9650\u65f6\u514d\u8d39\",hit:[\"0.115\u5143\",\"0.23\u5143\"],input_model1:\"\u56fe\u7247\u3001\u89c6\u9891\",input_model2:\"\u6587\u4ef6\u3001\u6587\u672c\",decode:\"\"}",
+      "input_per_million_cny": 0.8,
+      "output_per_million_cny": 2.8,
+      "interpretation": "Regular listed rates; expired promotional values 0.4/1.4 ending 09-09 are not used. Public asset still contains that promotion."
+    },
+    "estimated_uncached_cny": 0.6170624,
+    "billing_hard_cap": false,
+    "provider_requests": 0,
+    "key_read": false
+  },
+  "pricing_confirmation_sha256": "a6401ddb27df15110cf30c88ea04f6bb6dd078a2bb3d210cc44222a80a26ba8c",
+  "readiness_scope": "Authorized run finished and sealed with response-contract rejection on first Sol review; actual report generation succeeded, no business review or revision proof.",
+  "first_launch_entry": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-first.ps1",
+    "sha256": "5149904426665f351698e65f0c83ba25784bd6ca71197d534e8eac453f9a4389",
+    "authorized_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-authorized.ps1",
+    "powershell_parse": "passed",
+    "invoked": false,
+    "stdout": "create-only first-launch.stdout.txt outside Operator",
+    "authorized_entry_sha256": "e97ed0a60ffe89eb2803e9de2247e1b1098aaaedae8c349ad201aa267d62b989"
+  },
+  "authorization": {
+    "authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\authorization.json",
+    "authorization_sha256": "2ef562edb1ca15fcad8646063307bcb441b02faf0a877edc76903d209155decd",
+    "issued_at": "2026-10-21T13:36:53.631926+00:00",
+    "expires_at": "2026-10-22T13:36:53.631926+00:00",
+    "previous_authorization_sha256": "5bdaf21567db6fccbebc7c1b930be9cc4677f8cb3f50f545eb2726be84f8d5ce",
+    "plan_sha256": "641f4cac2a98be481e08752866eddc6814f53c066eeb7323f3d67a27edc785a3",
+    "execution_checkout": "D:\\riftcoach-sol-natural-stored-key-execution",
+    "head": "084c415cbcfac173f1a075983260aa9d694b430c",
+    "zhipu_env_file": "D:\\riftcoach-agent\\.env",
+    "native_preflight": {
+      "guard_sha256": "5f13c7e1a5af19ce7c8b1f624cb758cb2094fe0553fa32c2e212ca73bd55b2f9",
+      "checkpoint_sha256": "85604fc7460a6bc86ccaa9540346123b1c43423f2010ba44e6ad6809891aa646"
+    },
+    "ci_run": "39610700918",
+    "ci_status": "in_progress",
+    "paid_requests": 0,
+    "execution_exists": false,
+    "old_operator_execution_exists": false
+  },
+  "third_party_key_read": false,
+  "stored_zhipu_fix": {
+    "explicit_configuration": "D:/riftcoach-agent/.env",
+    "local_configuration_available": true,
+    "standard_endpoint": true,
+    "credentials_displayed": false,
+    "provider_requests": 0,
+    "original_entry_withdrawn": true,
+    "tests": {
+      "passed": 15,
+      "seconds": 103.76
+    },
+    "scope": "Reuse existing load_role_settings only when explicit path matches authorization; prompt only Tianjige key. No ambient key discovery or silent fallback.",
+    "old_authorization_deadline_preserved": "2026-10-22T13:36:53.631926+00:00",
+    "native_preflight_verified": true
+  },
+  "superseded_before_execution": {
+    "execution_checkout": {
+      "cwd": "D:/riftcoach-sol-natural-launch-execution",
+      "head": "e1de08913606267db0c97f2ead95ffa723f9ed17",
+      "clean": true,
+      "ci_run": "39534539078",
+      "ci_status": "completed",
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021",
+      "ci_conclusion": "success"
+    },
+    "authorization": {
+      "authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\authorization.json",
+      "authorization_sha256": "5bdaf21567db6fccbebc7c1b930be9cc4677f8cb3f50f545eb2726be84f8d5ce",
+      "issued_at": "2026-10-21T13:36:53.631926+00:00",
+      "expires_at": "2026-10-22T13:36:53.631926+00:00",
+      "entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-authorized.ps1",
+      "entry_sha256": "0bec5011e632428efdc351b90f23d08cd51cef2578e31533ef8772fea6177945",
+      "plan_sha256": "76c1e683590542f5443a85abeeeb67101e40e7385a1fc73c668862e36033f84d",
+      "execution_started": false,
+      "provider_requests": 0,
+      "key_read": false,
+      "grant_validation": "passed",
+      "frozen_source_validation": "passed"
+    },
+    "native_preflight": {
+      "native_preflight_verified": true,
+      "strict_readback": true,
+      "originals_unchanged": true,
+      "plan_sha256": "76c1e683590542f5443a85abeeeb67101e40e7385a1fc73c668862e36033f84d",
+      "guard_sha256": "2d3cdd79091c3b4cd4d50938ee80195d7bb30c7fd7d9cdbed74a857d45a79d36",
+      "checkpoint_sha256": "fac91b1c08d87a10466aa4198281b168999a97c3005d6d2133f48a882aab2cbf",
+      "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a15c58-c6b2-7b00-b893-673f1b105cf9/msg_0a36aebb81a71052016ad8276b58388191b4de880828ccf7e4",
+      "provider_requests": 0,
+      "key_read": false,
+      "business_review": false,
+      "execution_authorized": false
+    },
+    "first_launch_entry": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-first.ps1",
+      "sha256": "c56a00f753fcb165064c4b6b63a2d19ff1de827288b8c74845c0acb55e1f73a0",
+      "powershell_parse": "passed",
+      "invoked": false,
+      "authorization_created": false,
+      "stdout": "create-only first-launch.stdout.txt outside Operator",
+      "authorized_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-launch-20261021-control\\start-authorized.ps1"
+    },
+    "reason": "Credential prompt regression corrected; no model execution occurred."
+  },
+  "foreground_ci_wait_entry": {
+    "checks": [
+      "pending waits",
+      "all-success accepted",
+      "wrong head rejected",
+      "failure rejected",
+      "missing jobs rejected",
+      "failed job rejected",
+      "actual grant valid"
+    ],
+    "provider_requests": 0,
+    "third_party_key_read": false,
+    "entry_sha256": "e97ed0a60ffe89eb2803e9de2247e1b1098aaaedae8c349ad201aa267d62b989",
+    "waiter_sha256": "d94915cc4799615bae29ac75b8d9a53226fc317dd51fd19b42bea567a65eeb1e",
+    "foreground": true,
+    "started": false,
+    "max_wait_seconds": 3600,
+    "query_failure_is_ci_failure": false,
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\start-authorized.ps1",
+    "waiter": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\wait_public_ci.py"
+  },
+  "execution_key_input_cancelled": {
+    "reason": "KeyboardInterrupt during hidden reviewer key input",
+    "original_stdout_sha256": "b2fcf8e375706e70170b34eec30f608b3e59efa80de62a0edee276434fdc267f",
+    "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+    "checkpoint_sha256": "b758cdb87f70d5c66c8a4a11ae70b2f6c89114c12ef623b182ce162dea10306e",
+    "status": {
+      "operations": 0,
+      "unresolved": [],
+      "closed": false,
+      "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+      "checkpoint_sha256": "b758cdb87f70d5c66c8a4a11ae70b2f6c89114c12ef623b182ce162dea10306e",
+      "publication_allowed": false,
+      "production_admitted": false
+    },
+    "ci": {
+      "run_id": "39610700918",
+      "head_sha": "084c415cbcfac173f1a075983260aa9d694b430c",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        "packaging-smoke",
+        "postgres-migrations",
+        "pytest",
+        "pytest-shards (0)",
+        "pytest-shards (1)",
+        "pytest-shards (2)",
+        "pytest-shards (3)",
+        "web-checks"
+      ]
+    },
+    "authorization_sha256": "2ef562edb1ca15fcad8646063307bcb441b02faf0a877edc76903d209155decd",
+    "provider_requests": 0,
+    "resume_allowed": true
+  },
+  "resume_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021-control\\resume-authorized.ps1",
+  "paid_execution_result": {
+    "version": "sol-natural-observed-20261021-result-v1",
+    "observed_at": "2026-10-21T14:42:08.920639+00:00",
+    "execution_head": "084c415cbcfac173f1a075983260aa9d694b430c",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021",
+    "run_id": "sol-natural-observed-20261021",
+    "outcome": "candidate_execution_failed",
+    "earliest_failed_stage": "first Sol initial review, response reasoning identity validation before tool schema/business review",
+    "worker_code": "reasoning_identity",
+    "runtime_status": "completed",
+    "publication_status": "rejected",
+    "publication_allowed": false,
+    "production_admitted": false,
+    "qualified": false,
+    "calls": 3,
+    "generation_calls_completed": 2,
+    "review_calls_failed": 1,
+    "known_tokens": 52067,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "active_seconds": 190.09399999999732,
+    "http_requests": 3,
+    "review_http_status": 200,
+    "review_eof": true,
+    "review_closed": true,
+    "review_usage": {
+      "input_tokens": 21758,
+      "output_tokens": 8659,
+      "total_tokens": 30417,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 8135
+    },
+    "response_observation": {
+      "response_received": true,
+      "terminal_status": "completed",
+      "reported_completed": true,
+      "output_items": 17,
+      "function_calls": 1,
+      "output_type_counts": {
+        "function_call": 1,
+        "reasoning": 16,
+        "message": 0,
+        "other": 0
+      },
+      "model_matches": true
+    },
+    "native_business_reviews": 0,
+    "application_count": 0,
+    "fresh_reviews": 0,
+    "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+    "checkpoint_sha256": "0b5672b137d9b3a215871d59d10912306172051d93abf3d2e8cab5a6ab03ef98",
+    "original_stdout_sha256": "10df42137f8b54c55a3fc925d2dba2c9339f43736719ae1dbc1273a82e557bdf",
+    "seal_sha256": "b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55",
+    "strict_replay": true,
+    "originals_unchanged_before_seal": true,
+    "diagnosis": {
+      "request_effort": "high",
+      "actual_effort": "unknown; old sanitized receipt cannot distinguish missing/null field from explicit non-high effort",
+      "first_tool_count": 1,
+      "tool_schema_and_semantics": "not reached; response body not retained after rejection",
+      "not_a_timeout": true,
+      "upstream_identity_verified": false,
+      "model_quality_conclusion": null
+    },
+    "next_action": "Improve body-free parameter observation and decide missing-vs-conflicting response echo semantics offline; do not reopen this run or send a new paid request."
+  }
+}

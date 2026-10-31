@@ -1,0 +1,177 @@
+{
+  "version": "primary-material-review-v1",
+  "author_role": "current-primary-also-material-author",
+  "independent": false,
+  "disposition": "proposed_usable_pending_independent_review",
+  "full_source_material_sha256": "8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6",
+  "report_sha256": "29afa400060bdab6022127493b05bb5e0364723c0f4073d7ab7413bcc5e55f67",
+  "blocks": [
+    {
+      "block": 1,
+      "text_sha256": "4f7f8972a8c179cae974aa3e7e4e2208c6adf067a1d739a83318d23fa84128c1",
+      "basis": "报告类型标题，无额外玩家事实。"
+    },
+    {
+      "block": 2,
+      "text_sha256": "51970130c6256c7498ad3641b134bccb6470b459a5f6db3df6329f07be9fbea4",
+      "basis": "章节组织，无额外事实。"
+    },
+    {
+      "block": 3,
+      "text_sha256": "5e9d7b8c79c545b90b56e0edd11b7cf480aaef3bd3f37b57efba9dc37a44022b",
+      "basis": "request/utterance明确player为观摩对象；facts:scope.player为DK ShowMaker#KR1。"
+    },
+    {
+      "block": 4,
+      "text_sha256": "5fa8b6f04b88a5170fe309847f00aa6c15b61fc75c3bd6f371d8fb2568af6331",
+      "basis": "facts:scope、recent_aggregate、sample_boundaries及五条recent_match确认5局/2胜/3负/40%、四中单一辅助、所有queue_id=420、无排除失败。"
+    },
+    {
+      "block": 5,
+      "text_sha256": "a233bd5777fdea79b85256ccf5181f20b165ae6a43593342bb065af7f0539a4e",
+      "basis": "recent_aggregate的6.45/8.8为原汇总；中单四行独立均值为9.01/8.805。K2不允许混位阈值；未从分组反转推出因果。"
+    },
+    {
+      "block": 6,
+      "text_sha256": "5a45959f9249841a15b405e93e0db9477aa54625a066631ce906b9e3f827ee23",
+      "basis": "亮点标题下仅陈述有据结果，不断言稳定能力或无基准的好坏评级。"
+    },
+    {
+      "block": 7,
+      "text_sha256": "de9ac467cb1e29d7a4579b43af807e7c46741c3be63a824f6ed2bcd1f08638b5",
+      "basis": "recent_match:00与04分别8/5/23、14/5/10且均win=true；保留样本边界。"
+    },
+    {
+      "block": 8,
+      "text_sha256": "727688dc835d261462e1f4aea983cb734b34ff2f3b92de6b67829f7098dfc4c0",
+      "basis": "recent_match:02 win=false且deaths_before_15=0；K1限制能力推断，没有因果零效应断言。"
+    },
+    {
+      "block": 9,
+      "text_sha256": "efe8d04c937009294ef1dbec890883f1f9c299780bd716ac74ddbb00e98743b1",
+      "basis": "按来源顺序筛中单为3,0,1,2，合计6/4=1.5；辅助7，13/5=2.6。没有将正确数字变成水平评价。"
+    },
+    {
+      "block": 10,
+      "text_sha256": "2ecdb5401c35272d384eba128accac08e9eb8f9bb77d6bca7ed2540b80bfb9b9",
+      "basis": "风险标题定位核查对象，不自动声明已证原因。"
+    },
+    {
+      "block": 11,
+      "text_sha256": "75304e5a5afb631bafca50b180cc9cb495b589712774cccc52291f6d28d00ec1",
+      "basis": "recent_match:01 deaths=13、early=7；K1/K4支持定位风险时间并待录像，不外推稳定。"
+    },
+    {
+      "block": 12,
+      "text_sha256": "bb45ff5d411bdfaa3762effac32e75e601cd9d3702de5251f4e26e6370ff3ad0",
+      "basis": "中单败伤害(629.54+605.5)/2=617.52，胜(1143.4+1430.11)/2=1286.755；败经济(435.77+429.86)/2=432.815，胜(482.76+527.82)/2=505.29。K5只支持共同变化。"
+    },
+    {
+      "block": 13,
+      "text_sha256": "280da999235b94f89831cb8e67a01365b0ed5b85bf73c3e2dfe13d662b66abaf",
+      "basis": "全样本胜2败3且位置混合；K2和request/utterance支持不制定本人阈值。"
+    },
+    {
+      "block": 14,
+      "text_sha256": "3c62d9aee063ae4e9fffa90fc711719b9a38ad0e36d9ff42b16d19395ea4863a",
+      "basis": "标题下有全样本/中单显式分组，不将两组混同。"
+    },
+    {
+      "block": 15,
+      "text_sha256": "7775dc5d74e7267f53b5b680d22317760543030041d8e58f0ae7f772937b213c",
+      "basis": "前三行对recent_aggregate与中单行均值；中单视野胜(40+27)/2=33.5、败(43+25)/2=34；早死败(7+0+1)/3约2.67。"
+    },
+    {
+      "block": 16,
+      "text_sha256": "0692cce92b6be566a71d0caddb5a6b1ee72196e99c278f997e08707d13f897d7",
+      "basis": "中单败均值9.01>8.805；8.38<8.95且8.38<8.66否定两两全称，非均值否定。"
+    },
+    {
+      "block": 17,
+      "text_sha256": "4f0af834b62f3def5ab4656acb045d737f40fe343a0454ff5acebb503d6bed85",
+      "basis": "2.67-2.5约0.17，K1明确小差不作主要分界，K4支持核事件不猜原因。"
+    },
+    {
+      "block": 18,
+      "text_sha256": "76cc967281a96ecbc5444934f77a9818ab1514987768becd4dfe812209f927ed",
+      "basis": "章节提供观察行动，无新增强制个人任务。"
+    },
+    {
+      "block": 19,
+      "text_sha256": "370e477d103126c5430f0a2ca0182b1f9068917b7321ba262fe09c3262aa26e8",
+      "basis": "四中单来源与K4：时间线支持先后，录像用于原因；三栏为实施方法，不是虚构来源事实。"
+    },
+    {
+      "block": 20,
+      "text_sha256": "dcc55f06950846b88a5ab69efa3e769f89f96793dc49e948dd3231569bf8aed6",
+      "basis": "卡蜜尔早死7与K1/K4；只提出核对，不编阶段或死因。"
+    },
+    {
+      "block": 21,
+      "text_sha256": "bea21d849e8df252c7a12317fdecf016b6a626764409594268b931d96895b144",
+      "basis": "external:opgg:00:01中单辛德拉Tier2/rank12/win_rate .49、检索2026-09-10T12:15:25.846153；后续同口径比较为条件行动，未把历史当当前。满足completion既有消费义务，时效/同段位局限明确。"
+    },
+    {
+      "block": 22,
+      "text_sha256": "1e917ec9fc4c5bbb262800f27b0b326ae4bdb0fdcf4fb4f436414f3b58ab6f99",
+      "basis": "训练计划是既有章节名；正文明确只做观摩，不能仅凭标题判个人训练越界。"
+    },
+    {
+      "block": 23,
+      "text_sha256": "4d640e09a7b56e46eef49b5528d766390adc878de52f6ea99f17b47ed32cfe5f",
+      "basis": "request/utterance禁止本人基线；未给个人目标，正文不强迫选择。"
+    },
+    {
+      "block": 24,
+      "text_sha256": "8a57fda1e639847c03d180845a9cc48bceff6a402acddb30250939475a8077f2",
+      "basis": "K3周期/可观察目标/复盘方式与K4证据分层在观摩任务内使用，无本人指标。"
+    },
+    {
+      "block": 25,
+      "text_sha256": "7a316e37dfb8bd839bb1359f38e032a4b479f93bbeb3ce06b29553a61fa1c68f",
+      "basis": "行动产物是观察记录；另做个人训练需新的本人任务/数据，不把后续选项变成本任务缺口。"
+    },
+    {
+      "block": 26,
+      "text_sha256": "b81d4ccccf8b304c88ad88eb65d9ee2d79eb83fc6fe0f0068deb07d5bb658ba9",
+      "basis": "来源边界标题。"
+    },
+    {
+      "block": 27,
+      "text_sha256": "0c818f5a5fa6ba9f1f4ef05380471c034b445a945fd9f109b57824172ecb5e01",
+      "basis": "完整deterministic_source_facts和evidence_bundle含Riot、官方patch16.17元数据、DataDragon16.17.1；无补丁改动正文，不推强度。"
+    },
+    {
+      "block": 28,
+      "text_sha256": "7fa401e3951668bb617a8d7002d008f8225c03d24eb7b7bff3eb5edc0f46aa95",
+      "basis": "OP.GG position=mid，upstream_patch=null，provenance=partial；不声称同区域同段位基准。"
+    },
+    {
+      "block": 29,
+      "text_sha256": "4e8a8ce359ae7a2f1ee0d8353ae2105037c93a0dcdb308e31c5bdd1b3b5ae558",
+      "basis": "五项知识title/content逐项相符，正文K1-K5均真实使用；K3通用训练建议受观摩身份约束。"
+    },
+    {
+      "block": 30,
+      "text_sha256": "a08e22f749735ea222092bed4a90b3771bf8affd111b0f16e0b54c64878bd70b",
+      "basis": "K4说明统计/时间线/录像证据分层，未知不填。"
+    }
+  ],
+  "contrasts_review": [
+    {
+      "id": "s02",
+      "block": 16,
+      "basis": "原文的每一局败局都高于每一局胜局是两两关系，不是均值关系。中单洛克败局8.38低于薇古丝胜局8.95，且低于辛德拉胜局8.66，足以反驳全称；败局均值9.01高于胜局8.805仍正确。应撤销全称，保留正确均值与适当样本限制。"
+    },
+    {
+      "id": "s03",
+      "block": 21,
+      "basis": "已有完成度政策要求把至少一项适用OP.GG的tier/rank/rate连接到条件建议或待验行动。全文仅在本段列辛德拉中单快照数字、末节说明边界，其他行动只消费比赛/知识，没有使用这些快照指标。应补一项以该快照为起点的观摩查证行动，不能要求个人训练或用历史快照声称今天强度。"
+    }
+  ],
+  "uncertainties": [
+    "Familiar source and shared baseline: six reviews are not six independent samples.",
+    "Primary authored both reports and gold; independent label-blind material review has not occurred.",
+    "No natural generation, fresh review, upstream identity, model reliability or product approval."
+  ]
+}

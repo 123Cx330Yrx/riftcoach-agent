@@ -9,15 +9,31 @@ permissions:
   contents: read
 
 jobs:
-  pytest:
+  web-checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Preserve all non-pytest gates while isolated shards run the complete suite.
+    timeout-minutes: 60
+    services:
+      product-browser-postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: riftcoach_browser_test
+          POSTGRES_USER: riftcoach
+          POSTGRES_PASSWORD: ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U riftcoach -d riftcoach_browser_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 15
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -37,6 +53,19 @@ jobs:
 
       - name: Install project and test dependencies
         run: python -m pip install -e ".[dev]"
+
+      - name: Verify current Runtime profile manifests before expensive checks
+        run: python -m scripts.check_runtime_profile_manifests
+
+      - name: Verify current inventory snapshots and exact API paths early
+        run: >-
+          python -m pytest
+          tests/test_natural_duty_qualification_inventory.py
+          tests/test_sol_review_binding.py::test_inventory_preserves_original15_and_uses_runtime_contract
+          tests/test_async_task_api.py::test_openapi_versions_the_async_contract_and_exact_paths
+          tests/test_fastapi_adapter.py::test_app_factory_and_openapi_do_not_read_keys_or_open_io
+          tests/test_web_task_event_contract.py
+          -q --tb=short --show-capture=no
 
       - name: Install isolated Pi spike dependencies without lifecycle scripts
         working-directory: experiments/pi_runtime
@@ -62,6 +91,28 @@ jobs:
           npm run build
           npm run test:e2e
 
+      - name: Verify browser to real SQL and product Worker with scripted external IO
+        env:
+          DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_browser_test
+          RIFTCOACH_TEST_DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_browser_test
+          RIFTCOACH_PRODUCT_BROWSER_CHECK: "1"
+          RIFTCOACH_BROWSER_OUTPUT: ${{ runner.temp }}/product-browser
+        run: python -m pytest tests/test_sol_product_browser_postgres.py -q --tb=short --show-capture=no
+
+      - name: Preserve product browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: product-browser
+          path: |
+            ${{ runner.temp }}/product-browser/**/*.png
+            ${{ runner.temp }}/product-browser/**/*proof.json
+            ${{ runner.temp }}/product-browser/**/playwright.stdout.txt
+            ${{ runner.temp }}/product-browser/**/attempt-state.json
+            ${{ runner.temp }}/product-browser/**/trace.zip
+            ${{ runner.temp }}/product-browser/**/error-context.md
+          if-no-files-found: ignore
+
       - name: Verify cinematic audit toolchain and planned ledger
         run: |
           sudo apt-get update -qq
@@ -75,9 +126,6 @@ jobs:
 
       - name: Check project governance continuity
         run: python scripts/check_project_governance.py
-
-      - name: Run tests
-        run: python -m pytest -q
 
       - name: Enforce RAG v1 retrieval quality gate
         run: |
@@ -134,9 +182,118 @@ jobs:
             --run-id ci_harness_v1 \
             --dry-run
 
+  pytest-shards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up Node for isolated evaluation dependencies
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            experiments/pi_runtime/package-lock.json
+            experiments/mcp_interop/package-lock.json
+            web/package-lock.json
+
+      - name: Install project and test dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Install isolated Pi spike dependencies without lifecycle scripts
+        working-directory: experiments/pi_runtime
+        run: npm ci --ignore-scripts
+
+      - name: Install isolated MCP interoperability dependencies without lifecycle scripts
+        working-directory: experiments/mcp_interop
+        run: npm ci --ignore-scripts
+
+      - name: Install fixture web dependencies without lifecycle scripts
+        working-directory: web
+        run: npm ci --ignore-scripts
+
+      - name: Install the isolated Chromium verification browser
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: Install media toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+
+      - name: Run an isolated slice of the complete collected suite
+        run: >-
+          python -m scripts.ci_test_shards run
+          --index "${{ matrix.shard }}" --count 4
+          --manifest "${{ runner.temp }}/shard-${{ matrix.shard }}.json"
+          -- -q --tb=short --show-capture=no --durations=20
+
+      - name: Retain collection and completion inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  pytest:
+    runs-on: ubuntu-latest
+    needs: [web-checks, pytest-shards]
+    if: always()
+    timeout-minutes: 10
+    steps:
+      - name: Require all unchanged gates and every shard to succeed
+        env:
+          WEB_RESULT: ${{ needs.web-checks.result }}
+          SHARD_RESULT: ${{ needs.pytest-shards.result }}
+        run: test "$WEB_RESULT" = success && test "$SHARD_RESULT" = success
+
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install inventory verifier dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Download every shard inventory
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pytest-shard-*
+          path: ${{ runner.temp }}/pytest-inventory
+          merge-multiple: true
+
+      - name: Verify exact full-suite coverage and completed tests
+        run: >-
+          python -m scripts.ci_test_shards verify
+          --directory "${{ runner.temp }}/pytest-inventory" --count 4
+
   postgres-migrations:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Include continuation and product-entry SQL checks in this job as well.
+    timeout-minutes: 20
     env:
       DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_test
       RIFTCOACH_TEST_DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_test
@@ -161,6 +318,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -192,6 +350,12 @@ jobs:
             tests/test_task_reconciliation_postgres.py \
             tests/test_reliable_task_recovery_postgres.py \
             tests/test_task_product_vertical_postgres.py \
+            tests/test_worker_dispatch_postgres.py \
+            tests/test_natural_duty_worker_postgres.py \
+            tests/test_sol_worker_continuation_postgres.py \
+            tests/test_sol_product_worker_postgres.py \
+            tests/test_sol_local_failure_recovery_postgres.py \
+            tests/test_sol_product_entry_postgres.py \
             tests/test_async_task_api_postgres.py \
             tests/test_evidence_snapshot_repository_postgres.py \
             tests/test_evidence_product_api_postgres.py \
@@ -213,16 +377,18 @@ jobs:
             tests/test_typed_memory_records.py \
             tests/test_typed_memory_migrations_postgres.py \
             tests/test_typed_memory_repository_postgres.py \
+            tests/test_user_observation_note_postgres.py \
             tests/test_training_records.py \
             tests/test_training_migrations_postgres.py \
             tests/test_training_repository_postgres.py \
             tests/test_memory_context_repository_postgres.py \
             tests/test_terminal_turn_migrations_postgres.py \
             tests/test_terminal_turn_writer_postgres.py \
+            tests/test_training_progress_producer_postgres.py \
             tests/test_owner_data_lifecycle_records.py \
             tests/test_owner_data_lifecycle_migrations_postgres.py \
             tests/test_owner_data_lifecycle_repository_postgres.py \
-            -q -s
+            -q --tb=short --show-capture=no
 
       - name: Verify metadata matches the migration head
         run: |
@@ -241,6 +407,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Validate the Compose model
         run: docker compose --profile smoke config --quiet

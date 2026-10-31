@@ -1,0 +1,537 @@
+{
+  "version": "natural-review-repair-completed-v1",
+  "recorded_at": "2026-10-29T13:25:00.842212+00:00",
+  "outcome": "candidate_repaired_pass_unqualified",
+  "formal_tail_completed": true,
+  "earliest_historical_stop_stage": "completion-initial",
+  "earliest_current_stop_stage": null,
+  "runtime_status": "completed",
+  "execution_head": "227a8373c8730c01fd61b73b0fac9dd05e09bd4c",
+  "execution_clean": true,
+  "ci_run": "40864229481",
+  "ci_all_eight_jobs_success": true,
+  "plan": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\plan.json",
+    "sha256": "85cf605a9f700bc666da5a0ba85b9d8f21c119c1c3ce0ae16a7d45b291b4354b"
+  },
+  "authorization": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\authorization.json",
+    "sha256": "6e3653a666126451d0b4978db821ef13e57109218a0ccbecb16cc3f1a28ba1bd"
+  },
+  "authorization_expires_at": "2026-10-30T06:42:44.447472+00:00",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control",
+  "authors": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors",
+  "parent_proof": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-ready-20261029\\parent-proof.json",
+    "sha256": "4bfd825c65d11a8b077121aea1094a9e1c33687027803c96a04885c3adcd8a46"
+  },
+  "parent_seal": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-completion-continuation-20261029\\seal.json",
+    "sha256": "d738c54d0b23d4f198525e78b5de2ca608988b65fec6949366e308a519d9cddf"
+  },
+  "sequence": [
+    "repair-coverage",
+    "compatibility",
+    "edit",
+    "unique-application",
+    "facts-fresh",
+    "completion-fresh"
+  ],
+  "inherited_prefix_operations": 14,
+  "original_completion_rejection_retained": true,
+  "original_opgg_disagreement_not_consensus": true,
+  "application": {
+    "deterministic_application": true,
+    "host_semantics_verified": false,
+    "original_report_sha256": "e30e37a3c715557734331f6c0c1ee9f8a3cde9556526862a8d2f2becc38f769e",
+    "production_admitted": false,
+    "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+    "version": "natural-flash-sol-dual-necessity-development-v1"
+  },
+  "fresh_bindings": {
+    "facts-fresh": {
+      "key": "facts-fresh",
+      "plan_sha256": "108c46b227b4fa28189ed3e82cd647618039aa7c2d171f59b6bf8673a2d0a07c",
+      "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+      "request_sha256": "b61a2048316741c431ac6cb78f28ba6dcdc797297b229235e440680ae4a12cd5",
+      "response_sha256": "fd8bc7a0f59f58b2e7fef93b19ef69fa710aab085e34c0672d1cfbc763412077",
+      "stage": "final"
+    },
+    "completion-fresh": {
+      "key": "completion-fresh",
+      "plan_sha256": "108c46b227b4fa28189ed3e82cd647618039aa7c2d171f59b6bf8673a2d0a07c",
+      "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+      "request_sha256": "da9e96048dbd70bb412fac05ca68540f6f8d8b3620e3361ea187ebbd7d3218ec",
+      "response_sha256": "32c5707628a1e72a8e6eaf76fa60491418e47c0cd9cb52074bde4686cad771f3",
+      "stage": "final"
+    }
+  },
+  "new_receipts": [
+    {
+      "call": 7,
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-007\\receipt.json",
+        "sha256": "3deefd0df1720e0cb50f9160ba13d93abba2c5d0dc6bbfa6b5f2c772cc57cb8e"
+      },
+      "request_sha256": "77104c0d7d2c5dfe0624875037c91d869c12e0dfea51c6af3ae0de6a236e3045",
+      "wire_sha256": "887e0080ad5cd47ec4e3b3c287b7f22970ba39a7ba4ac5cedf5de31f94a27a7b",
+      "http_requests": 1,
+      "ok": true,
+      "code": "ok",
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 19447,
+        "output_tokens": 655,
+        "total_tokens": 20102,
+        "cached_input_tokens": 0
+      },
+      "usage_basis": "channel_reported_unverified_upstream",
+      "elapsed_seconds": 32.141
+    },
+    {
+      "call": 8,
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-008\\receipt.json",
+        "sha256": "338bce31daf7bdfa9e74d880b74bca71ac8ec38d4790fc4c68740b6ee884e39d"
+      },
+      "request_sha256": "a62312f755f87641a86e0a6a9964b91b199e1bcc6612989f2d3cdaf1f5c39e5b",
+      "wire_sha256": "036d21c6ce78909a03fa13804be74bc3a12aab9553a3efd9248aebcfe10d8b34",
+      "http_requests": 1,
+      "ok": true,
+      "code": "ok",
+      "usage_state": "known",
+      "usage": {
+        "input_tokens": 13666,
+        "output_tokens": 155,
+        "total_tokens": 13821,
+        "cached_input_tokens": 0
+      },
+      "usage_basis": "channel_reported_unverified_upstream",
+      "elapsed_seconds": 13.25
+    }
+  ],
+  "chain_transport_records": [
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029",
+      "call": 7,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-007\\receipt.json",
+        "sha256": "3deefd0df1720e0cb50f9160ba13d93abba2c5d0dc6bbfa6b5f2c772cc57cb8e"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "code": "ok",
+      "known_tokens": 20102
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029",
+      "call": 8,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-008\\receipt.json",
+        "sha256": "338bce31daf7bdfa9e74d880b74bca71ac8ec38d4790fc4c68740b6ee884e39d"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "code": "ok",
+      "known_tokens": 13821
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-completion-continuation-20261029",
+      "call": 6,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-completion-continuation-20261029\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-006\\receipt.json",
+        "sha256": "e5d3bc1763cae67ac4f5032a89a7a8f4647e6dbeb0b08311bdef27c56dbba658"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "code": "ok",
+      "known_tokens": 21046
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+      "call": 1,
+      "role": "generation",
+      "response": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\generation\\response-001.json",
+        "sha256": "b65476e5dbbd126679a125eb2c90e65b61b5a0c2bc50242d80c13da1389e1fab"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "known_tokens": 7920
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+      "call": 2,
+      "role": "generation",
+      "response": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\generation\\response-002.json",
+        "sha256": "2f840116828245b3154340d3a4e7a2fd8e79474f7e0b6d1ccdb4862efab0d2f2"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "known_tokens": 11573
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+      "call": 3,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-003\\receipt.json",
+        "sha256": "3007643372f901e278839afcc09327a143c035cd91afa7b8983f47fe5cc39740"
+      },
+      "http_requests": 1,
+      "usage_state": "unknown",
+      "code": "worker_rejected",
+      "known_tokens": 0
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+      "call": 4,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-004\\receipt.json",
+        "sha256": "dc8fa5fc9745ef3101d1347e25bc6853bcef05b0e547e9e22bab7e6740e4efdd"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "code": "ok",
+      "known_tokens": 26436
+    },
+    {
+      "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+      "call": 5,
+      "role": "review",
+      "receipt": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028\\execution\\transport\\dual-necessity-natural-coordination-live-20261028\\review\\call-005\\receipt.json",
+        "sha256": "840538852072285169e83309a6485a4fdf85129cebe3927773ede62bfe98c318"
+      },
+      "http_requests": 1,
+      "usage_state": "known",
+      "code": "ok",
+      "known_tokens": 21136
+    }
+  ],
+  "native_reviews": [
+    {
+      "stage": "repair-completion-initial",
+      "readback": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\repair-completion-initial-native-readback.json",
+        "sha256": "5e08d415501bb8a2f04e353bb585477538fb18cb3f9a282ce679d15854390bbe"
+      },
+      "primary": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\repair-completion-initial-primary-decision.json",
+        "sha256": "4509cd73fee710ffa1fc53008cb814801c73f78e1349d2a0486d48f92c9035bf"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a1879f-4403-7dc1-991f-ce5b7d405dc8/msg_09f2472dcecb541c016ae33c355e50819ca6e4d51e0f828842",
+      "author_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors\\ef8acfdf363fc0dda7ff0a150d339aa322be34f0c841a4f016f0b1f738763cde.json",
+      "author_sha256": "656714d7ef4c2530cb2e37805dc707c50226a87d5b51098638eebdb0bbbab55a",
+      "native_final_sha256": "656714d7ef4c2530cb2e37805dc707c50226a87d5b51098638eebdb0bbbab55a",
+      "author_native_bytes_equal": true,
+      "accepted": true,
+      "report_assessment": {
+        "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+        "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "source_review": "\u4e3b\u5ba1\u6309\u7cbe\u786echeckpoint ef8acfdf\u8bfb\u53d6\u5e76\u6838\u9a8c\u5f53\u524dmaterial 0344bfdf\u3001\u5168\u90e8\u6765\u6e90data_json/pack_json\u3001\u5b8c\u657428\u6bb5\u539f\u7a3f\u53ca\u5b9e\u9645\u7ec4\u88c5\u65b0\u7a3f7fb7e784\u3001\u4e24\u4efd\u5b8c\u6574\u521d\u5ba1\u653f\u7b56/\u8bf7\u6c42schema\u4e0e\u516c\u5f00\u54cd\u5e94\u3001\u5341\u9879\u5b9e\u9645before/after/reason\u548coriginal_reviews\u4e2d\u7684\u65e2\u5f80\u4e89\u8bae\u3002\u4e24\u4efd\u8bf7\u6c42\u5171\u4eab\u5b8c\u6574\u6765\u6e90\u548c\u539f\u7a3f\u6d88\u606f\uff0cmetadata\u539f\u4ef6\u9010\u503c\u76f8\u7b49\uff0cpack\u7b49\u4e8e\u5b8c\u6574facts_and_provenance\u3002\u5341\u9879\u64cd\u4f5c\u6309\u539f\u59cb\u4f4d\u7f6e\u53cd\u5e8f\u673a\u68b0\u5e94\u7528\uff0c\u7ed3\u679c\u4e0e\u5b9e\u9645\u65b0\u7a3f\u9010\u5b57\u76f8\u540c\uff1b\u672c\u5224\u65ad\u5728\u8bfb\u53d6\u672c\u8f6e\u72ec\u7acb\u4f5c\u8005\u8f93\u51fa\u4e4b\u524d\u72ec\u7acb\u5199\u5165\u3002\n\n\u539fcompletion\u6f0f\u68c0\u7528\u9014\u51b2\u7a81\u662f\u771f\u5b9e\u5f85\u4fee\u9879\u3002\u65b019\u53ca20\u201424\u6bb5\u5df2\u628a\u9605\u8bfb\u8005\u7ec3\u4f4d\u7f6e\u3001\u56fa\u5b9a\u4e2a\u4eba\u82f1\u96c4\u6c60\u3001\u8bad\u7ec3\u524d\u540e\u6e38\u620f\u6307\u6807\u548c\u672c\u4eba\u5386\u53f2\u6bd4\u8f83\uff0c\u6539\u4e3a\u9009\u62e9\u89c2\u6469\u4f4d\u7f6e\u3001\u91c7\u96c6\u540c\u4e00\u5bf9\u8c61\u76845\u201410\u5c40\u3001\u6807\u8bb0\u5176\u6b7b\u4ea1\u65f6\u95f4\u548c\u6bd4\u8f83\u8be5\u5bf9\u8c61\u540c\u4f4d\u7f6e\u5386\u53f2\u3002\u65b0\u7a3f\u4e0d\u628a\u9605\u8bfb\u8005\u4e0eShowMaker\u6df7\u540c\uff0c\u6ca1\u6709\u66ff\u7528\u6237\u9009\u4e2a\u4eba\u8bad\u7ec3\u76ee\u6807\u3001\u9608\u503c\u6216\u65e5\u7a0b\u30022\u20143\u82f1\u96c4/5\u201410\u5c40\u53ea\u662f\u539f\u65b9\u6cd5\u7684\u6761\u4ef6\u6027\u89c2\u5bdf\u5468\u671f\uff0c\u4e0d\u58f0\u79f0\u5df2\u7ecf\u91c7\u5230\u8fd9\u4e9b\u989d\u5916\u6bd4\u8d5b\u3002\u6807\u9898\u672c\u8eab\u4e0d\u662f\u5fc5\u8981\u9519\u8bef\uff0c\u4f46\u4e0e\u5b9e\u9645\u7528\u9014\u4e00\u8d77\u6539\u6210\u89c2\u6469\u7ec3\u4e60\u8ba1\u5212\u5408\u9002\uff1b\u5f00\u5934\u6b63\u786e\u7684\u975e\u672c\u4eba/\u975e\u4e2a\u4eba\u57fa\u7ebf\u9650\u5b9a\u53ca\u8f85\u52a9\u5355\u5c40\u4e0d\u8db3\u4fdd\u6301\u3002\n\n\u9010\u9879\u6838\u539ffacts\u7684\u516d\u7ec4\u771f\u5b9e\u95ee\u9898\uff1a11\u6bb5\u73b0\u5199\u4e2d\u5355\u8d25\u5c408.38\u4e0e9.64\u3001605.50\u2014629.54\uff0c\u4fdd\u7559\u80dc\u5c408.66/8.95\u53ca1143.40\u20141430.11\uff0c\u64a4\u56de\u8d25\u5c40\u8865\u5200\u4e00\u6982\u66f4\u4f4e\uff1b13\u6bb5\u5220\u6389\u5168\u6837\u672c\u4e0e\u4e2d\u5355\u6574\u4f53\u540c\u5411\uff0c\u4fdd\u7559\u4e24\u80dc\u4e24\u8d1f\u8303\u56f4\uff1b14\u6bb5\u80dc/\u8d25\u8865\u52008.81/9.01\u3001\u4f24\u5bb31286.76/617.52\u3001\u7ecf\u6d4e505.29/432.82\u3001\u65e9\u6b7b2.50/0.50\u5747\u7ecf\u539f\u59cb\u5355\u5c40Decimal/HALF_UP\u72ec\u7acb\u8ba1\u7b97\uff1b8.805\u663e\u793a8.81\u662f\u6b63\u5e38\u820d\u5165\uff0c\u4e0d\u80fd\u8bef\u62a5\u300215\u6bb5\u65e9\u6b7b\u80dc\u591a2\u3001\u89c6\u91ce\u8d2534/\u80dc33.5\u51c6\u786e\uff0c\u7528K3\u4fdd\u7559\u975e\u56e0\u679c\u9650\u5236\uff0c\u64a4\u56de\u4f9d\u8d56\u6df7\u4f4d0.17\u7684\u8bba\u8bc1\u300219\u4e0e20\u201424\u7684\u5bf9\u8c61\u7528\u9014\u4fee\u590d\u5982\u4e0a\u3002\u5341\u9879\u8865\u4e01\u6070\u597d\u843d\u5b9e\u516d\u7ec4\u95ee\u9898\uff0c\u6ca1\u6709\u6539\u539f\u6a21\u578b\u610f\u89c1\u4ee5\u5236\u9020pass\u3002\n\n\u539f\u4e3b\u5ba1\u53e6\u79f0OP.GG\u7f3a\u5c11\u884c\u52a8\u8fde\u63a5\uff0c\u72ec\u7acb\u4f5c\u8005\u660e\u786e\u4e0d\u540c\u610f\uff0c\u4e0d\u80fd\u79f0\u53cc\u5ba1\u5171\u8bc6\u3002\u672c\u8f6e\u6309\u5b9e\u9645\u4e49\u52a1\u800c\u975e\u65e7\u6807\u7b7e\u5224\u65ad\uff1a\u539f19\u5df2\u6709\u5339\u914d\u4e2d\u5355/\u8587\u53e4\u4e1d\u7684\u5177\u4f53\u6761\u4ef6\u6027\u82f1\u96c4\u6c60\u8c03\u67e5\uff0c\u4e0d\u80fd\u79f0\u5b8c\u5168\u672a\u6d88\u8d39\u8d44\u6599\uff1b\u65b019\u8fdb\u4e00\u6b65\u660e\u786e\u636e\u8be5\u5feb\u7167\u7ee7\u7eed\u89c2\u6469\u8be5\u5bf9\u8c61\u4f7f\u7528\u8587\u53e4\u4e1d\u7684\u8868\u73b0\uff0c22\u6bb5\u7ed9\u540c\u5bf9\u8c61\u91c7\u6837\u548c\u89c2\u5bdf\u6307\u6807\uff0c17/18\u7ed9\u6b7b\u4ea1\u4e0etimeline\u6838\u67e5\uff0c\u5168\u6587\u5f62\u6210\u53ef\u6267\u884c\u7684\u6761\u4ef6\u6027\u89c2\u6469\u8fde\u63a5\u3002\u653f\u7b56\u8981\u6c42\u628a\u4e00\u9879tier/rank/rate\u63a5\u5230\u6761\u4ef6\u5efa\u8bae\u6216\u5f85\u9a8c\u884c\u52a8\uff0c\u4e0d\u8981\u6c42\u989d\u5916\u6307\u5b9a\u5f55\u50cf\u8def\u7ebf\u3001\u53c2\u56e2\u6216\u8d44\u6e90\u6307\u6807\u7684\u56fa\u5b9a\u6a21\u677f\u3002Tier2/\u6392\u540d14/52%/3%\u3001mid\u3001\u68c0\u7d22\u65f6\u95f4\u3001\u5f53\u524d\u5feb\u7167\u53ca\u672a\u5bf9\u9f50\u6bb5\u4f4d\u7248\u672c\u7684\u8fb9\u754c\u5747\u4fdd\u7559\uff1b\u5916\u90e8\u80dc\u7387\u660e\u786e\u4e0d\u4f5c\u5bf9\u8c61\u6216\u8bfb\u8005\u4e2a\u4eba\u80dc\u7387\u3002\u4e0d\u4e3a\u8fd9\u9879\u6709\u4e89\u8bae\u7684\u63aa\u8f9e\u518d\u5236\u9020\u5fc5\u8981\u8865\u4e01\u3002\n\n\u5168\u7a3f\u5176\u4f59\u65ad\u8a00\u4e0e\u6765\u6e90\u9010\u9879\u6838\u5bf9\uff1a\u4e94\u5c40\u4e24\u80dc\u4e09\u8d1f40%\u3001\u56db\u4e2d\u5355\u4e24\u80dc/\u4e00\u8f85\u52a9\u8d1f\u30018.9075\u7ea68.91\u3001469.0525\u7ea6469.05\u3001\u65e9\u6b7b1.5\u51c6\u786e\u3002\u5361\u871c\u5c141/13/11\u30017\u6b21\u65e9\u6b7b\u53ca1.34/302.59\uff0c\u8f9b\u5fb7\u62c9/\u8587\u53e4\u4e1d\u548c\u827e\u5c3c\u7ef4\u4e9a/\u6d1b\u514b\u5355\u5c40\u6307\u6807\u53caKDA\u5747\u6709\u539f\u59cb\u884c\u4e0e\u6b7b\u4ea1\u65f6\u95f4\u652f\u6301\u3002\u4e2d\u5355\u4f4d\u5185\u76f8\u5bf9\u7a33\u5b9a\u5728\u672c\u6b21\u6837\u672c\u548c\u8f85\u52a9\u5bf9\u7167\u7684\u4e0a\u4e0b\u6587\u4e2d\uff0c\u4e0d\u8865\u9020\u6210\u957f\u671f\u80fd\u529b\u5168\u79f0\u3002\u827e\u5c3c\u7ef4\u4e9a0\u65e9\u6b7b\u4e0d\u63a8\u9632\u6293\u80fd\u529b\uff0c\u5361\u871c\u5c14\u539f\u56e0\u672a\u77e5\u3001timeline\u4e0e\u5f55\u50cf\u5f85\u67e5\u3001\u5c0f\u6837\u672c\u4e0d\u53ef\u56e0\u679c/\u5916\u63a8\u7684\u9650\u5236\u5747\u4fdd\u6301\u3002\u6765\u6e90\u786e\u6709\u6d1b\u514b/Locke\uff0c\u4e0d\u51ed\u5916\u90e8\u5e38\u8bc6\u6539\u82f1\u96c4\u540d\u3002K1\u652f\u6301\u65e9\u6b7b\u89e3\u91ca\u9650\u5236\uff0cK3\u652f\u6301\u7edf\u8ba1/\u8fc7\u7a0b\u8bc1\u636e\u5206\u5c42\uff0cK4\u652f\u6301\u91c7\u6837\u548c\u6b7b\u4ea1\u6807\u8bb0\uff0cK2\u652f\u6301\u65e0\u4efb\u610f\u9608\u503c\u5e76\u4e0e\u540c\u4e00\u5bf9\u8c61\u5386\u53f2\u6bd4\u8f83\uff1b\u4e0d\u5b58\u5728\u968f\u673a\u6302\u5f15\u6587\u3002\u5b98\u65b916.17/2026-08-25\u4ec5\u7248\u672c\u65e5\u671f\uff0cData Dragon\u9759\u6001\u6620\u5c04\uff0c\u4e0d\u7f16\u9020\u8865\u4e01\u6539\u52a8\u6216\u5386\u53f2\u8d25\u56e0\u3002\n\n18\u4e2a\u672a\u6539\u6bb5\u843d\u3001\u6b63\u786e\u6765\u6e90\u7ae0\u8282\u3001\u6570\u5b57\u4e0e\u9650\u5236\u5747\u4fdd\u7559\u3002\u56db\u9879ReportAssessment\u5168\u90e8\u6210\u7acb\uff0cdefects\u4e3a\u7a7a\uff0c\u63a5\u53d7\u8fd9\u6b21\u6574\u7a3f\u8986\u76d6\u3002\u539fcompletion\u62d2\u7edd\u4ecdfalse\uff0c\u539f\u6f0f\u68c0\u4e0d\u88ab\u8ffd\u8ba4\uff1b\u8fd9\u53ea\u662f\u6b63\u5e38compatibility/edit\u3001\u552f\u4e00application\u53ca\u53ccfresh\u4e4b\u524d\u7684\u4fee\u590d\u8986\u76d6\u5224\u65ad\uff0c\u4e0d\u80fd\u4ee3\u66ff\u540e\u7eed\u5ba1\u67e5\u3001\u53d1\u5e03\u6216\u4ea7\u54c1\u8d44\u683c\u3002",
+        "facts_and_sources_correct": true,
+        "correct_content_preserved": true,
+        "identity_and_goal_preserved": true,
+        "true_errors_fixed": true
+      }
+    },
+    {
+      "stage": "compatibility",
+      "readback": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\compatibility-native-readback.json",
+        "sha256": "99ce66a6bc860453339e31939bb1576a95c5744e95864e08d7478393937c0c65"
+      },
+      "primary": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\compatibility-primary-decision.json",
+        "sha256": "efdc8319454272f9434b55566d227ea3d8633123530ed2b4a38d415c97cab18a"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a187a8-2c9d-72b0-a500-788975095127/msg_0fc3f8db56cc210b016ae33ec2eb4481929c13ffeeb1c1f308",
+      "author_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors\\dbd025fcc8825f4a44f4b9ededc5cac91bcfe50be5e5e97c854f6f6d22c21464.json",
+      "author_sha256": "1bcc054589c8a19c431e1e50e53c6f8ca3f0a0879e9985140c24b00b02687a84",
+      "native_final_sha256": "1bcc054589c8a19c431e1e50e53c6f8ca3f0a0879e9985140c24b00b02687a84",
+      "author_native_bytes_equal": true,
+      "accepted": true,
+      "report_assessment": null
+    },
+    {
+      "stage": "edit",
+      "readback": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\edit-native-readback.json",
+        "sha256": "35f0783fce623673c03d699906faeb30b0868bbee0cb92fdde9ebefe914826e6"
+      },
+      "primary": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\edit-primary-decision.json",
+        "sha256": "c88d6e2a520d0a1fdbdca942055f70c2ac8aa432d2d73ce0ab1ac87515cbca69"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a187b1-e552-7ab2-9be3-c4711020e745/msg_0fc3f8db56cc210b016ae340e9d9e88192b27cd0c56893348a",
+      "author_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors\\94c8dc5fe73453394962123b70ec2ab1818078808b35ff2072b3953205617ccc.json",
+      "author_sha256": "01ecc13bbc2958a4b750b3f64f2ccf13beebddca6ad34f6ad6c19ee110d0ae4f",
+      "native_final_sha256": "01ecc13bbc2958a4b750b3f64f2ccf13beebddca6ad34f6ad6c19ee110d0ae4f",
+      "author_native_bytes_equal": true,
+      "accepted": true,
+      "report_assessment": {
+        "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+        "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "source_review": "\u4e3b\u5ba1\u72ec\u7acb\u6838\u9a8cedit checkpoint 94c8dc5f\u53ca\u6750\u659980710c24\uff0c\u5728\u8bfb\u53d6\u672c\u8f6e\u72ec\u7acb\u4f5c\u8005\u610f\u89c1\u524d\u5148\u843d\u6b64notes\u3002\u5b9e\u9645\u5168\u6587\u3001\u539f\u7a3f\u3001\u5168\u90e8\u5341\u9879\u64cd\u4f5c\u548creason\u3001\u539fProvider\u4e24\u4efd\u54cd\u5e94\u3001\u4e24\u9879\u5b8c\u6574\u653f\u7b56/schema\u53ca\u6765\u6e90\u5df2\u6838\u3002\u6750\u6599\u4e2d\u5b8c\u6574\u6765\u6e90\u3001\u539f\u59cb\u8bf7\u6c42\u3001\u539f\u7a3f\u3001\u65b0\u7a3f\u3001\u539f\u54cd\u5e94\u4e0e\u5df2\u5168\u6587\u8bfb\u53d6\u7684compatibility\u4efb\u52a1\u9010\u503c\u4e00\u81f4\uff1b\u65b0\u7684source_checkpoint\u6307\u5411\u771f\u5b9e0020\u63d0\u4ea4\u8fb9\u754c\u3002\u4e24\u539f\u8bf7\u6c42metadata\u7684\u5b8c\u6574report/data_json/pack_json\u9010\u5b57\u7b49\u4e8e\u6750\u6599\uff0c\u4e14\u5171\u4eab\u975esystem\u6d88\u606f\u76f8\u540c\u3002\n\n\u91cd\u653e\u5341\u9879\u552f\u4e00\u539f\u6587\u8303\u56f4\u7684\u8865\u4e01\u540e\u9010\u5b57\u7b49\u4e8e\u65b0\u7a3f7fb7e784\uff1b\u672a\u4fee\u6539\u768418\u6bb5\u53ca\u6765\u6e90\u7ae0\u8282\u4fdd\u7559\u3002\u6309\u4e2d\u5355\u56db\u5c40\u539f\u7cbe\u5ea6Decimal/HALF_UP\u590d\u7b97\uff1a\u8d62/\u8f93CS8.81/9.01\u3001\u4f24\u5bb31286.76/617.52\u3001\u7ecf\u6d4e505.29/432.82\u3001\u65e9\u6b7b2.50/0.50\u3001\u89c6\u91ce33.5/34\uff1b\u8d25\u5c40CS8.38\u4e0e9.64\u5e76\u975e\u5747\u4f4e\u4e8e\u80dc\u5c408.66\u548c8.95\uff0c\u4f24\u5bb3605.50\u81f3629.54\u786e\u4f4e\u4e8e\u80dc\u5c401143.40\u81f31430.11\u3002\u65b0\u7a3f\u64a4\u56de\u6df7\u4f4d\u540c\u5411\u548c0.17\u8bba\u8bc1\uff0c\u4fdd\u7559\u771f\u5b9e\u4f24\u5bb3\u5dee\u8ddd\u3001\u5355\u5c40\u9650\u5b9a\u53ca\u975e\u56e0\u679c\u8bf4\u660e\uff0c\u6ca1\u6709\u4ece\u8f83\u5c11\u6b7b\u4ea1\u5916\u63a8\u51fa\u96f6\u6548\u5e94\u30028.805\u6b63\u5e38\u820d\u51658.81\uff0c\u4e0d\u4f5c\u4e3a\u9519\u8bef\u3002\n\n\u7528\u6237\u53ea\u8981DK ShowMaker#KR1\u89c2\u6469\u62a5\u544a\uff1b\u4fee\u540e19\u81f324\u5b9e\u9645\u52a8\u4f5c\u5747\u4e3a\u89c2\u6469\u540c\u4e00\u5bf9\u8c61\u3001\u9009\u62e9\u89c2\u5bdf\u4f4d\u7f6e\u3001\u91c7\u96c6\u5176\u82f1\u96c4\u6837\u672c\u3001\u6807\u8bb0\u5176\u6b7b\u4ea1\u5e76\u6bd4\u8f83\u5176\u540c\u4f4d\u7f6e\u5386\u53f2\uff0c\u4e0d\u8981\u6c42\u9605\u8bfb\u8005\u4e2a\u4eba\u8bad\u7ec3\u6216\u628a\u4ed6\u4eba\u7684\u6bd4\u8d5b\u5f53\u4e2a\u4eba\u57fa\u7ebf\u3002\u76ee\u6807\u672a\u77e5\u4fdd\u7559\uff0c\u4e2d\u5355/\u8f85\u52a9\u4ecd\u6761\u4ef6\u9009\u9879\u30025\u81f310\u5c40\u30012\u81f33\u82f1\u96c4\u662f\u53ef\u9009\u91c7\u6837\u529e\u6cd5\uff0c\u4e0d\u662f\u80fd\u529b\u9608\u503c\u6216\u66ff\u8bfb\u8005\u9009\u8bad\u7ec3\u76ee\u6807\u3002K1\u652f\u6301\u827e\u5c3c\u7ef4\u4e9a\u5355\u5c40\u751f\u5b58\u8fb9\u754c\uff0cK3\u652f\u6301\u5f55\u50cf\u4e0e\u7edf\u8ba1\u5206\u5c42\uff0cK4\u652f\u6301\u91c7\u6837\u8bb0\u5f55\uff0cK2\u652f\u6301\u540c\u4f4d\u7f6e\u5386\u53f2\u6bd4\u8f83\uff0c\u6765\u6e90\u771f\u5b9e\u4e14\u5728\u6b63\u6587\u5e94\u7528\u3002\n\nOP.GG\u4e2d\u5355\u8587\u53e4\u4e1dTier2/\u6392\u540d14/52%/3%\u3001\u68c0\u7d22\u65f6\u95f4\u3001\u5f53\u524d\u5feb\u7167\u548c\u4e0d\u542b\u6bb5\u4f4d/\u7248\u672c\u5bf9\u9f50\u9650\u5236\u5747\u4fdd\u7559\uff0c\u5b9e\u9645\u63a5\u5230\u7ee7\u7eed\u89c2\u6469\u8be5\u5bf9\u8c61\u4f7f\u7528\u8587\u53e4\u4e1d\u7684\u8c03\u67e5\u4e0e\u540e\u7eed\u6837\u672c\u8bb0\u5f55\u3002\u65e0\u9700\u989d\u5916\u5f3a\u5236\u5f55\u50cf/\u8def\u7ebf\u6a21\u677f\uff1b\u539fOP.GG\u610f\u89c1\u5206\u6b67\u4e0d\u662f\u53cc\u5ba1\u5171\u8bc6\u3002\u5b98\u65b916.17\u53ca2026-08-25\u4ec5\u652f\u6301\u7248\u672c\u8eab\u4efd\u65e5\u671f\uff0cDataDragon\u4ec5\u9759\u6001\u6620\u5c04\uff0c\u6ca1\u6709\u5192\u5145\u52a0\u5f3a/\u8d25\u56e0\uff1b\u539f\u59cb\u6765\u6e90\u786e\u6709\u6d1b\u514b/Locke\uff0c\u672a\u501f\u5916\u90e8\u5e38\u8bc6\u6539\u540d\u3002\u6b63\u786e\u6837\u672c\u6570\u3001\u89d2\u8272\u3001KDA\u3001\u5355\u5c40\u89c2\u5bdf\u3001\u6765\u6e90\u65f6\u6548\u4e0e\u65e0\u6cd5\u5916\u63a8\u957f\u671f\u80fd\u529b\u7684\u9650\u5236\u5747\u4fdd\u6301\u3002\n\n\u56e0\u6b64\u56db\u9879\u6574\u7a3fAssessment\u5747true\uff0c\u63a5\u53d7\u672c\u6b21\u5b9e\u9645\u7f16\u8f91\u7ed3\u679c\uff1b\u6ca1\u6709\u672a\u4fee\u771f\u5b9e\u9519\u8bef\u3001\u9519\u8bef\u4fee\u6cd5\u3001\u65e0\u636e\u6765\u6e90\u3001\u6b63\u786e\u5185\u5bb9\u635f\u5931\u6216\u8eab\u4efd\u7528\u9014\u53d8\u5316\u3002\u539fcompletion\u7684100/pass\u6f0f\u68c0\u53ca\u65e7\u62d2\u7edd\u4ecd\u4fdd\u7559\uff1b\u6b64edit\u4e0d\u8ffd\u8ba4\u65e7\u610f\u89c1\uff0c\u4e5f\u4e0d\u4ee3\u66ff\u552f\u4e00application\u548c\u65b0\u7a3f\u4e24\u9879fresh\u3002",
+        "facts_and_sources_correct": true,
+        "correct_content_preserved": true,
+        "identity_and_goal_preserved": true,
+        "true_errors_fixed": true
+      }
+    },
+    {
+      "stage": "facts-fresh",
+      "readback": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\facts-fresh-native-readback.json",
+        "sha256": "7d83c1b02cdaa10337f0d3168d2c02874c0f26d43ceed834ba28c584051343dd"
+      },
+      "primary": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\facts-fresh-primary-decision.json",
+        "sha256": "653d7dcc827f166fd122bfc53ab4a394319186904479008a48e9aba261b18406"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a187bc-fead-7962-9444-dda61d8cb4fe/msg_0fc3f8db56cc210b016ae343bb5bb8819283352a18f6ba3444",
+      "author_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors\\67744d4158654f106a7d8f73796c0f475ba144d4c12aadea4191f74c0831a78e.json",
+      "author_sha256": "526e305dcde53337f0143f5226d66ba935c651583a0eec72741ff80d8b6e49cf",
+      "native_final_sha256": "526e305dcde53337f0143f5226d66ba935c651583a0eec72741ff80d8b6e49cf",
+      "author_native_bytes_equal": true,
+      "accepted": true,
+      "report_assessment": null
+    },
+    {
+      "stage": "completion-fresh",
+      "readback": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\completion-fresh-native-readback.json",
+        "sha256": "f1417e759652fee270fa9160c38438856d75c0f182e5ae815d1d1f6ae4372c19"
+      },
+      "primary": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\completion-fresh-primary-decision.json",
+        "sha256": "4c4bef6e5ef8020b44ee55744f8605f2967547a61e81fe1d2c8de31832ffb580"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a187c6-8315-76d3-aa2f-653a5c3b7fbc/msg_0fc3f8db56cc210b016ae3460a3e308192aaa9d6b4ad2f62c4",
+      "author_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-authors\\f2a1e41c605cd5dcc2b64afed69513437f9d47caf21398c9d1235340eb478f4f.json",
+      "author_sha256": "6e2c86bdf668a51f4f3f736e8e4ccf32e04f2c471af1e54d95211de0d2ce91d5",
+      "native_final_sha256": "6e2c86bdf668a51f4f3f736e8e4ccf32e04f2c471af1e54d95211de0d2ce91d5",
+      "author_native_bytes_equal": true,
+      "accepted": true,
+      "report_assessment": null
+    }
+  ],
+  "new_accounting": {
+    "http_requests": 2,
+    "known_tokens": 33923,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "receiptless": 0
+  },
+  "inherited_accounting": {
+    "http_requests": 6,
+    "known_tokens": 88111,
+    "unknown_reserved_tokens": 73756,
+    "retries": 1
+  },
+  "this_chain_accounting": {
+    "http_requests": 8,
+    "known_tokens": 122034,
+    "unknown_reserved_tokens": 73756,
+    "retries": 1,
+    "receiptless": 0
+  },
+  "separate_previous_fresh": {
+    "http_requests": 2,
+    "known_tokens": 38271,
+    "not_this_application": true
+  },
+  "related_total": {
+    "http_requests": 10,
+    "known_tokens": 160305,
+    "unknown_reserved_tokens": 73756,
+    "retries": 1
+  },
+  "never_sent": [
+    "generation-repeat",
+    "initial-review-repeat",
+    "manual-retry-1",
+    "manual-retry-2"
+  ],
+  "all_expected_fresh_sent": true,
+  "active_seconds": 1383.716999999997,
+  "max_active_seconds": 3600,
+  "raw_stdout_guard": "3f1c2b35d3586a9218a4c0a28f431782fccdc69ae33c4fd3892ee59c712ea4cc",
+  "final_checkpoint_from_original_stdout": {
+    "guard_sha256": "3f1c2b35d3586a9218a4c0a28f431782fccdc69ae33c4fd3892ee59c712ea4cc",
+    "checkpoint_sha256": "34e08491dbcfd86079ff4e101aa855c9470d00677dbf94dadee689eea8e92d98",
+    "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\execution\\session\\checkpoints\\0067.json",
+    "phase": "boundary"
+  },
+  "closure_stdout": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0018.stdout.jsonl",
+    "sha256": "dfc0e541fda1a5a824952532e01b411726722b4a1bf94c25a862a360205b8a06"
+  },
+  "replay_stdout": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0019.stdout.jsonl",
+    "sha256": "4223ce45e69442f8424341b18bd748f6b6219ed8562a6d2e3ab1d429208501ae"
+  },
+  "strict_replay": {
+    "phase": "closed",
+    "strict_replay": true,
+    "candidate_outcome": {
+      "calls": 8,
+      "host_semantics_verified": false,
+      "known_tokens": 122034,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false,
+      "unknown_reserved_tokens": 73756,
+      "version": "natural-flash-sol-dual-necessity-development-v1"
+    },
+    "publication_allowed": false,
+    "production_admitted": false,
+    "accounting": {
+      "calls": 8,
+      "tokens": 122034,
+      "reserved_tokens": 73756,
+      "retries": 1
+    },
+    "native_reviews": 6,
+    "rejected_initial_reviews_retained": 1,
+    "native_repair_reviews": 1,
+    "continuation": {
+      "parent_seal_sha256": "d738c54d0b23d4f198525e78b5de2ca608988b65fec6949366e308a519d9cddf",
+      "historical_failure_retained": true,
+      "imported_generation_calls": 2,
+      "new_calls": 2,
+      "new_known_tokens": 33923
+    }
+  },
+  "seal": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\seal.json",
+    "sha256": "8c2fcb76932a4bd72b5439f89b94c578f41d61b27fb2609466e56bbb2be6bd50"
+  },
+  "seal_stdout": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0020.stdout.jsonl",
+    "sha256": "38fc9cd6b665767c4567f397bab19508a298fee9b34c34e485a9bff72e08aa3f"
+  },
+  "originals_audit": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\closeout-originals-audit.json",
+    "sha256": "3cfc3c0c6d24d556af52858171570bed994eee2b5de4892005842fe72ed9dcc4"
+  },
+  "inventory_counts": {
+    "sealed_operator": 257,
+    "parent": 92,
+    "parent_authors": 2,
+    "frozen_source": 936
+  },
+  "execution_exits": {
+    "0001": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0001.exit.json",
+      "sha256": "cee01cea4340407c54f6e698c65ea4446b5b4b1692c2b13b743c2032c0ff3b09"
+    },
+    "0002": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0002.exit.json",
+      "sha256": "a7a16d0738e7a230ce7fe2d2d64f9b1f98b4b03d1cca591f241d455d26be2ff8"
+    },
+    "0003": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0003.exit.json",
+      "sha256": "dcfa7c15b3649a6851d01dafb112e67364746722313d65c555994ac2dc3da771"
+    },
+    "0004": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0004.exit.json",
+      "sha256": "6c6aeb3b16619da9e44c2c15852abaa2f51381f7dcd442e56004fcf15b0ae63a"
+    },
+    "0005": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0005.exit.json",
+      "sha256": "4bf4b01d965f49f845035c10bef23b757a3127f3c557bdc93e8b8437b1ead9db"
+    },
+    "0006": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0006.exit.json",
+      "sha256": "da3669ac4baeba85a20b6dde498f21a0dcde1c68e796a67880e4d8916b4412d9"
+    },
+    "0007": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0007.exit.json",
+      "sha256": "67cdf99d6fdb76e932cb8b99701f2877eb4011f8235f6292dec8b043511a0bcf"
+    },
+    "0008": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0008.exit.json",
+      "sha256": "c716243b73a1694e1546f64fe221279277d4d93b618414e293c42d3391fd211f"
+    },
+    "0009": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0009.exit.json",
+      "sha256": "c3e1c5e1bded881a74032c3d885945ece2bf85734b08b7f02e3c76233500b333"
+    },
+    "0010": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0010.exit.json",
+      "sha256": "0166837493097017385b759b4a1c18d3e4402ba86a5eaf3741d18e2aedf9f60e"
+    },
+    "0011": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0011.exit.json",
+      "sha256": "9b3b59a70fba7dcdc8aad5c6c6dcc0a5bfcddd5f58abfb26de940adce1c281fb"
+    },
+    "0012": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0012.exit.json",
+      "sha256": "7a1d268734b4bced52a18bf084bec5b257171ae364fa8d3af7adae5d49565100"
+    },
+    "0013": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0013.exit.json",
+      "sha256": "445d87a047800cf3e8d03cd40a30eee3586198faea8138ba2623ef8f58d0bcc8"
+    },
+    "0014": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0014.exit.json",
+      "sha256": "2ee27af78b13d63ff96db5d3ea7971a7ec8f39e5accba52d32c5efed38f03b35"
+    },
+    "0015": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0015.exit.json",
+      "sha256": "b4dc89f12813acf74b1c1783462317cd9052d615c8884fb8c018853695225fb4"
+    },
+    "0016": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0016.exit.json",
+      "sha256": "096242a2cd61b09fd7e51e02cd6066f9ec22f4ebd20bfb5bef9919cf4ff1414a"
+    },
+    "0017": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0017.exit.json",
+      "sha256": "2bdcd9b830bc0f53f18699d6f1203a2009df17b893df6d6bbd63ed52b08bcc68"
+    },
+    "0018": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0018.exit.json",
+      "sha256": "6a31925379fed01099ab034c875dfbac1716706e04f0e4457b9cc56ccf689273"
+    },
+    "0019": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0019.exit.json",
+      "sha256": "2d13f14cc1bf3560081caf65d291235e4415fa983029d3d1c05eaec5468e5931"
+    },
+    "0020": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\execution-0020.exit.json",
+      "sha256": "6d5faffb7da86c8056c5879f84f96b3f35fc36aa4989deabe04883db610287fa"
+    }
+  },
+  "local_submission_error": {
+    "execution": "0003",
+    "exit_code": 1,
+    "new_http_requests": 0,
+    "reason": "Decision-only entry received binding/decision envelope; original failure retained, Decision submitted in 0004"
+  },
+  "automation_status": "PAUSED",
+  "decision": "Preserving the accepted prefix and independently checking existing combined repairs can close this formal tail; no repeat initial review or new variant is needed.",
+  "semantic_notes": [
+    "10 original patches produced the actual report; 18 unchanged blocks and sources retained.",
+    "Observation actions remain about the observed subject; no reader personal training baseline.",
+    "8.805 rounds HALF_UP to 8.81; optional wording and the block4 advisory do not block.",
+    "Original completion miss and OP.GG disagreement remain historical quality evidence."
+  ],
+  "original_fifteen_completed": true,
+  "original_fifteen_rerun": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "limitations": [
+    "One formal tail closure does not prove original completion miss fixed, reviewer stability, same-version qualification, Stage8E completion, product or learning admission.",
+    "native-final-attestation-v1 accepts encrypted input but does not establish plaintext equivalence or retroactively accept old failed tasks.",
+    "Known tokens are channel-reported; historical unknown reservation remains, not a verified bill."
+  ],
+  "next_action": "Read-only map existing fifteen-case evidence to current contracts and actual Runtime/product consumers; identify concrete gaps and independent product work without new paid batches or rerunning completed cases."
+}

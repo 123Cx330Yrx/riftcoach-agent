@@ -1,0 +1,260 @@
+{
+  "evidence_kind": "rejected_terminal_buffered_tool_output",
+  "plan": {
+    "ci_run": "35714036543",
+    "experiment_id": "golden-native-buffered-block-review-v1",
+    "first_input_ceiling": 41998,
+    "head_sha": "da06b5a58774dbef218012dbaa62fc85553b0535",
+    "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+    "labels_sent_to_model": false,
+    "live_block_reason": "",
+    "live_status": "bounded_development_after_exact_ci",
+    "manifest_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+    "manual_between_cases": true,
+    "max_calls_per_report": 5,
+    "max_output_per_call": 32768,
+    "max_revisions_per_report": 1,
+    "max_seconds_per_call": 300,
+    "max_seconds_per_report": 900,
+    "max_tokens_per_report": 401920,
+    "production_admitted": false,
+    "provider_route": "direct",
+    "reasoning_effort": "high",
+    "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+    "sdk_retries": 0,
+    "selected_cases": [
+      "attribution_original"
+    ],
+    "semantic_approval": false,
+    "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+    "stop_before_unadjudicated_revision": true,
+    "stream_tool_arguments": false,
+    "suite": "attribution"
+  },
+  "original_receipt": {
+    "cases": [
+      {
+        "attempted_calls": 1,
+        "completed_calls": 0,
+        "error_code": "stream_child_failed",
+        "error_type": "ProviderResponseError",
+        "id": "attribution_original",
+        "input_tokens": 0,
+        "interrupted": true,
+        "matched": false,
+        "output_tokens": 0,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "stop_reason": "protocol_or_execution_failure",
+        "unknown_usage_calls": 1,
+        "valid": false
+      }
+    ],
+    "ci_run": "35714036543",
+    "completed_calls": 0,
+    "experiment_id": "golden-native-buffered-block-review-v1",
+    "first_input_ceiling": 41998,
+    "head_sha": "da06b5a58774dbef218012dbaa62fc85553b0535",
+    "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+    "input_tokens": 0,
+    "labels_sent_to_model": false,
+    "live_block_reason": "",
+    "live_status": "bounded_development_after_exact_ci",
+    "manifest_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+    "manual_between_cases": true,
+    "manual_semantic_acceptance": false,
+    "max_calls_per_report": 5,
+    "max_output_per_call": 32768,
+    "max_revisions_per_report": 1,
+    "max_seconds_per_call": 300,
+    "max_seconds_per_report": 900,
+    "max_tokens_per_report": 401920,
+    "output_tokens": 0,
+    "production_admitted": false,
+    "provider_route": "direct",
+    "reasoning_effort": "high",
+    "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+    "reserved_calls": 1,
+    "sdk_retries": 0,
+    "selected_cases": [
+      "attribution_original"
+    ],
+    "semantic_approval": false,
+    "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+    "stop_before_unadjudicated_revision": true,
+    "stream_tool_arguments": false,
+    "suite": "attribution",
+    "unknown_usage_calls": 1
+  },
+  "original_result": {
+    "attempted_calls": 1,
+    "completed_calls": 0,
+    "error_code": "stream_child_failed",
+    "error_type": "ProviderResponseError",
+    "id": "attribution_original",
+    "input_tokens": 0,
+    "interrupted": true,
+    "matched": false,
+    "output_tokens": 0,
+    "reserved_calls": 1,
+    "revision_attempted": false,
+    "stop_reason": "protocol_or_execution_failure",
+    "unknown_usage_calls": 1,
+    "valid": false
+  },
+  "original_report": {
+    "report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置均值受辅助局强烈拉低，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀与伤害差距主要来自辅助局拉低，不应解读为某一位置的能力差距。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+    "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195"
+  },
+  "transport": {
+    "reservation": {
+      "ordinal": 1,
+      "request_metrics": {
+        "input_token_ceiling": 41998,
+        "message_count": 3,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 2291,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 22196,
+            "count": 2,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 39926
+      },
+      "request_sha256": "7155523eb8ef19a5506a5b4044b0ce53ccc41539803aeedc5e87049bc8fdaa8d",
+      "state": "reserved_before_io",
+      "stream_tool_arguments": false,
+      "transport_id": "golden-process-stream-high-32768-v1"
+    },
+    "result": {
+      "body_free": true,
+      "elapsed_ms": 162078,
+      "state": "failed",
+      "transport_id": "golden-process-stream-high-32768-v1"
+    },
+    "progress": {
+      "schema_version": "1.3",
+      "state": "failed",
+      "first_event_ms": 8031,
+      "first_reasoning_ms": 8031,
+      "first_visible_content_ms": null,
+      "terminal_ms": 161812,
+      "eof_ms": 161812,
+      "close_ms": 161828,
+      "elapsed_ms": 161828,
+      "events": 4754,
+      "content_chars": 0,
+      "reasoning_chars": 13918,
+      "input_tokens": 11640,
+      "output_tokens": 5845,
+      "finish_reason": "tool_calls",
+      "http_requests": 1,
+      "last_http_event": "http11.receive_response_body.failed",
+      "close_state": "closed",
+      "error": "provider_error",
+      "observed_elapsed_ms": 161828,
+      "last_event_ms": 161812,
+      "last_reasoning_ms": 140250,
+      "last_content_ms": null,
+      "first_tool_ms": 161796,
+      "last_tool_ms": 161796,
+      "tool_delta_count": 1,
+      "tool_argument_chars": 2299,
+      "max_inter_event_gap_ms": 21546,
+      "open_duration_ms": 6360,
+      "advance_duration_ms": 153360,
+      "max_advance_duration_ms": 21546,
+      "processing_duration_ms": 389,
+      "close_duration_ms": 0,
+      "progress_write_duration_ms": 313,
+      "progress_writes": 95
+    },
+    "failure": {
+      "assembly_code": "tool_call_arguments",
+      "category": "assembly_rejected",
+      "provider_code": null
+    }
+  },
+  "rejected_output": {
+    "evidence_kind": "rejected_terminal_tool_arguments",
+    "finish_reason": "tool_calls",
+    "publishable": false,
+    "tools": [
+      {
+        "argument_parts": [
+          "{\"reviews\":[{\"advisories\": [], \"block\": 1, \"issues\": []}, {\"advisories\": [], \"block\": 2, \"issues\": []}, {\"advisories\": [], \"block\": 3, \"issues\": []}, {\"advisories\": [{\"explanation\": \"\\\"混合位置均值受辅助局强烈拉低\\\"作为笼统表述，在方向上对视野分不成立（辅助局视野分 90 拉高了全样本均值），对伤害/分钟影响也较小（败局均值 591.34 对保留中单后的 617.52）；强烈拉低主要见于补刀/分钟（6.45 对 9.01）和经济/分钟。完整上下文可确定其指补刀与经济方向，但按指标分别说明可避免脱离上下文的误读。\", \"suggested_correction\": \"改为\\\"混合位置均值受辅助局影响明显，其中补刀与经济均值被明显拉低、视野分被拉高，应按位置分开解读\\\"。\"}], \"block\": 4, \"issues\": []}, {\"advisories\": [], \"block\": 5, \"issues\": []}, {\"advisories\": [{\"explanation\": \"\\\"说明这 5 局内发育节奏未随胜负明显波动\\\"中的\\\"5 局\\\"字面上包含辅助局（补刀/分钟 1.34），而前文依据是 4 局中单均值（8.805 对 9.01）。完整上下文可确定结论仅针对中单，但范围表述与依据口径不一致。\", \"suggested_correction\": \"改为\\\"说明这 4 局中单对局内发育节奏未随胜负明显波动\\\"。\"}], \"block\": 6, \"issues\": []}, {\"advisories\": [], \"block\": 7, \"issues\": []}, {\"advisories\": [], \"block\": 8, \"issues\": []}, {\"advisories\": [], \"block\": 9, \"issues\": []}, {\"advisories\": [], \"block\": 10, \"issues\": []}, {\"advisories\": [], \"block\": 11, \"issues\": []}, {\"advisories\": [], \"block\": 12, \"issues\": []}, {\"advisories\": [], \"block\": 13, \"issues\": []}, {\"advisories\": [], \"block\": 14, \"issues\": [{\"category\": \"fact_error\", \"explanation\": \"\\\"全样本补刀与伤害差距主要来自辅助局拉低\\\"对伤害不成立：全样本伤害差距 695.42（1286.76−591.34），仅保留中单后差距为 1286.76−617.52=669.24，辅助局只解释约 26（不足 4%）；主要落差存在于中单胜败局自身（与第 3 节\\\"同位置差约 669\\\"内部矛盾）。补刀差距确实主要由辅助局拉低（保留中单后角色差距为 -0.205），但两指标不能在同一归因句中并列。\", \"severity\": \"medium\", \"source_ids\": [9, 10, 13, 14, 17, 18], \"suggested_correction\": \"拆开表述：\\\"全样本补刀差距主要来自辅助局拉低（保留中单后胜败均值基本持平）；伤害差距主要由中单胜败局自身差异构成（约 669），辅助局仅贡献约 26 的差距。\\\"\"}], \"block\": 15, \"issues\": []}, {\"advisories\": [], \"block\": 16, \"issues\": []}, {\"advisories\": [{\"explanation\": \"该建议的核心内容（标记 15 分钟前死亡、比较死亡前后活动路线）直接对应 [K4] 可执行性；[K2] 只支持\\\"列为假设而非结论\\\"的部分。引用 [K2] 不算错误，但补充 [K4] 可使引用与建议内容更准确对应。\", \"suggested_correction\": \"在本条同时引用 [K4]（标记死亡时间、比较活动路线）并保留 [K2]（仅作假设、不凭统计定因）。\", \"source_ids\": [27, 29]}], \"block\": 17, \"issues\": []}, {\"advisories\": [], \"block\": 18, \"issues\": []}, {\"advisories\": [], \"block\": 19, \"issues\": []}, {\"advisories\": [], \"block\": 20, \"issues\": []}, {\"advisories\": [], \"block\": 21, \"issues\": []}, {\"advisories\": [], \"block\": 22, \"issues\": []}, {\"advisories\": [], \"block\": 23, \"issues\": []}, {\"advisories\": [], \"block\": 24, \"issues\": []}, {\"advisories\": [], \"block\": 25, \"issues\": []}],\"score\":85,\"verdict\":\"needs_revision\"}"
+        ],
+        "id": "call_cb7445acec6b4c52877133de",
+        "index": 0,
+        "name": "submit_report_review"
+      }
+    ],
+    "usage": {
+      "input_tokens": 11640,
+      "output_tokens": 5845
+    }
+  },
+  "raw_arguments": "{\"reviews\":[{\"advisories\": [], \"block\": 1, \"issues\": []}, {\"advisories\": [], \"block\": 2, \"issues\": []}, {\"advisories\": [], \"block\": 3, \"issues\": []}, {\"advisories\": [{\"explanation\": \"\\\"混合位置均值受辅助局强烈拉低\\\"作为笼统表述，在方向上对视野分不成立（辅助局视野分 90 拉高了全样本均值），对伤害/分钟影响也较小（败局均值 591.34 对保留中单后的 617.52）；强烈拉低主要见于补刀/分钟（6.45 对 9.01）和经济/分钟。完整上下文可确定其指补刀与经济方向，但按指标分别说明可避免脱离上下文的误读。\", \"suggested_correction\": \"改为\\\"混合位置均值受辅助局影响明显，其中补刀与经济均值被明显拉低、视野分被拉高，应按位置分开解读\\\"。\"}], \"block\": 4, \"issues\": []}, {\"advisories\": [], \"block\": 5, \"issues\": []}, {\"advisories\": [{\"explanation\": \"\\\"说明这 5 局内发育节奏未随胜负明显波动\\\"中的\\\"5 局\\\"字面上包含辅助局（补刀/分钟 1.34），而前文依据是 4 局中单均值（8.805 对 9.01）。完整上下文可确定结论仅针对中单，但范围表述与依据口径不一致。\", \"suggested_correction\": \"改为\\\"说明这 4 局中单对局内发育节奏未随胜负明显波动\\\"。\"}], \"block\": 6, \"issues\": []}, {\"advisories\": [], \"block\": 7, \"issues\": []}, {\"advisories\": [], \"block\": 8, \"issues\": []}, {\"advisories\": [], \"block\": 9, \"issues\": []}, {\"advisories\": [], \"block\": 10, \"issues\": []}, {\"advisories\": [], \"block\": 11, \"issues\": []}, {\"advisories\": [], \"block\": 12, \"issues\": []}, {\"advisories\": [], \"block\": 13, \"issues\": []}, {\"advisories\": [], \"block\": 14, \"issues\": [{\"category\": \"fact_error\", \"explanation\": \"\\\"全样本补刀与伤害差距主要来自辅助局拉低\\\"对伤害不成立：全样本伤害差距 695.42（1286.76−591.34），仅保留中单后差距为 1286.76−617.52=669.24，辅助局只解释约 26（不足 4%）；主要落差存在于中单胜败局自身（与第 3 节\\\"同位置差约 669\\\"内部矛盾）。补刀差距确实主要由辅助局拉低（保留中单后角色差距为 -0.205），但两指标不能在同一归因句中并列。\", \"severity\": \"medium\", \"source_ids\": [9, 10, 13, 14, 17, 18], \"suggested_correction\": \"拆开表述：\\\"全样本补刀差距主要来自辅助局拉低（保留中单后胜败均值基本持平）；伤害差距主要由中单胜败局自身差异构成（约 669），辅助局仅贡献约 26 的差距。\\\"\"}], \"block\": 15, \"issues\": []}, {\"advisories\": [], \"block\": 16, \"issues\": []}, {\"advisories\": [{\"explanation\": \"该建议的核心内容（标记 15 分钟前死亡、比较死亡前后活动路线）直接对应 [K4] 可执行性；[K2] 只支持\\\"列为假设而非结论\\\"的部分。引用 [K2] 不算错误，但补充 [K4] 可使引用与建议内容更准确对应。\", \"suggested_correction\": \"在本条同时引用 [K4]（标记死亡时间、比较活动路线）并保留 [K2]（仅作假设、不凭统计定因）。\", \"source_ids\": [27, 29]}], \"block\": 17, \"issues\": []}, {\"advisories\": [], \"block\": 18, \"issues\": []}, {\"advisories\": [], \"block\": 19, \"issues\": []}, {\"advisories\": [], \"block\": 20, \"issues\": []}, {\"advisories\": [], \"block\": 21, \"issues\": []}, {\"advisories\": [], \"block\": 22, \"issues\": []}, {\"advisories\": [], \"block\": 23, \"issues\": []}, {\"advisories\": [], \"block\": 24, \"issues\": []}, {\"advisories\": [], \"block\": 25, \"issues\": []}],\"score\":85,\"verdict\":\"needs_revision\"}",
+  "duplicates": [
+    {
+      "path": "$.reviews[13]",
+      "key": "block",
+      "occurrences": 2
+    },
+    {
+      "path": "$.reviews[13]",
+      "key": "issues",
+      "occurrences": 2
+    }
+  ],
+  "offline_replay_error": "tool_call_arguments",
+  "accounting_correction": {
+    "reserved_calls": 1,
+    "completed_chat_responses": 0,
+    "input_tokens": 11640,
+    "output_tokens": 5845,
+    "unknown_usage_calls": 0,
+    "reason": "Observed stream usage exists despite assembly rejection. Original runner receipt retained unchanged."
+  },
+  "adjudication": {
+    "judgment": "Raw block14 finding correctly identifies damage attribution and generic block4/6 remain advisories, but output is unusable.",
+    "other_schema_faults": "Block4/6 advisory source_ids missing; not accepted or silently supplied.",
+    "decision": "Buffering tool arguments is not sufficient to avoid conflicting duplicate keys. Stop this tool variant; do not attribute to local concatenation or timeout.",
+    "next": "Assess explicit JSON content channel with same compact phase-specific review; no new semantic rules, no output budget increase."
+  },
+  "production_admitted": false,
+  "file_sha256": {
+    "plan.json": "00ec8db8382b4f7dcc06451ba3ea9481df44e582c0d5cd86781e8c391e9cb20c",
+    "receipt.json": "eb33bafd7864eff2994a455d2bd3987618ba6d452ff3be2e22b687b931b4d2f5",
+    "attribution_original/input.json": "38dee406ea619fd87f113bb1731c8a4fed8a5776abb5d28d809de7e8a895ce6c",
+    "attribution_original/result.json": "5b6e4112837647e5f11b62844b2dedc1cf1fa1a2a85045d6a6296e65a31e8ad6",
+    "attribution_original/streams/stream-001/failure.json": "d362efd6cf0ed3507b107ba770952314bcdb2a354af4396adc08a2cb6b79248f",
+    "attribution_original/streams/stream-001/progress.json": "d2a71390dd2e761ca9c3fcbf3066b038da8e826f1abb643aed39d884972c36cc",
+    "attribution_original/streams/stream-001/rejected-tool-output.json": "d7d8bc7c90ea3c6fc250bb8a5ce2af3f3d2080fa5d5370b4edf0ba8c8cd39f4d",
+    "attribution_original/streams/stream-001/reservation.json": "8192bb38c9856793bb9d8b96519b48c637383c6c3f2df383998192482013744a",
+    "attribution_original/streams/stream-001/result.json": "e1bd065fda22a53aaa52003d056f7e4895e49f86355134f16de88f9db8b5c3db"
+  }
+}

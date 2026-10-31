@@ -1,0 +1,113 @@
+{
+  "binding": {
+    "key": "natural-duty-observed-20261015/full-source-postrun",
+    "plan_sha256": "5849dac91ff0b4df6bdaa8ff9b874042547b383f974d2734644fbbf73ee8aaac",
+    "report_sha256": "3d9032b4bdbf9e8954a6e3855408689bd98abfd8662ffe10c0f62cc350c3e87c",
+    "request_sha256": "830a9b8a09024ba81d4f652971dab5392df4f66b3a553ea0f5e40ff8fe9f10a8",
+    "response_sha256": "2dc72b778f4971a19492d6e74bb8fbf61ffac56e3f31637abe9e238f78f01ac5",
+    "stage": "final"
+  },
+  "review": {
+    "binding": {
+      "key": "natural-duty-observed-20261015/full-source-postrun",
+      "plan_sha256": "5849dac91ff0b4df6bdaa8ff9b874042547b383f974d2734644fbbf73ee8aaac",
+      "report_sha256": "3d9032b4bdbf9e8954a6e3855408689bd98abfd8662ffe10c0f62cc350c3e87c",
+      "request_sha256": "830a9b8a09024ba81d4f652971dab5392df4f66b3a553ea0f5e40ff8fe9f10a8",
+      "response_sha256": "2dc72b778f4971a19492d6e74bb8fbf61ffac56e3f31637abe9e238f78f01ac5",
+      "stage": "final"
+    },
+    "reviewer": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "source_review": "已按指定 checkpoint 98ed52bac2f6502b98cc28eeb096a61e74392cddabdb9963bce19efbf99f6904 路由，核验 material.json 的 SHA256 为 8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6，并分块完整阅读两份 source_files 与 43 项 artifacts 的公开内容。重复来源、确定性报告及请求共享消息以完整内容相等检查确认。45 项来源及运行原件的字节摘要全部匹配；以材料给定的 guard/closure 摘要执行只读 replay，结果与材料完全一致。已读取生成政策、用户原话、工具 schema、四次实际请求、四次公开响应、四次 knowledge.search 返回、K1–K5 全文、初稿、两职责初审、全部 journal、Trace/API 和传输回执。未读取主审意见、旧标签或其他 Host 判断，未展示或依赖私有 reasoning。来源是 DK ShowMaker#KR1 的五局公开历史观摩样本，四局中单、一局辅助，二胜三负；完整逐局数据、装备购买、死亡时间和资源事件均已阅读。外部来源按固定投影时点 2026-09-10T12:15:28.980990+00:00 判断，不能用本次执行日期认定当时快照过期。用户明确要求练习仅限观摩，所给对象不是阅读者本人，且没有阅读者数据或既定训练目标。",
+    "stage_assessments": [
+      {
+        "stage": "source_preparation_and_request",
+        "accepted": true,
+        "basis": "首请求摘要与任务绑定一致；观摩身份、空 memory、未知训练目标、七节结构、知识引用及外部来源边界均进入实际请求。Riot/Data Dragon/官方补丁/OP.GG 的来源职责和时间被区分，未把缺失的精确段位、地区、上游版本或平衡改动正文补成事实。",
+        "defects": []
+      },
+      {
+        "stage": "knowledge_retrieval",
+        "accepted": true,
+        "basis": "第 1 次 Flash 调用提出四个中文教练概念查询，实际本地检索依次返回 1、1、2、1 个片段，无 fallback 或空结果伪造。第 2 次请求完整携带四个工具返回。K1 早期死亡、K2 补刀经济、K3 可执行性、K4 证据分层、K5 伤害解释均有实际来源，未把账号当检索关键词。",
+        "defects": []
+      },
+      {
+        "stage": "generation",
+        "accepted": false,
+        "basis": "第 2 次 Flash 调用产出的完整七节初稿与归档稿相同。样本数量、均值、差值、英雄映射和所引用 OP.GG 数值可追溯；全文保留观摩对象和未知目标，并把因果解释保留为假设。但第 6 节的实际目标越出了观摩练习边界，声明并未消除动作本身的矛盾。",
+        "defects": [
+          {
+            "kind": "observation_task_boundary_and_unsupported_action",
+            "detail": "HOST_BLOCK 24 写道：若选择训练中单，目标例如“5 局观察周期内输局补刀/分钟不低于 8”，并要求“记录训练后的指标变化”。这把对局结果达标和训练成效作为阅读者的练习目标；单纯观摩不能使被观摩对局的补刀达到该阈值。若这些指标属于阅读者，则没有本人比赛或目标作为依据；若属于 ShowMaker，则是观察别人的结果，不能当成阅读者训练后的成效。HOST_BLOCK 23 的“以下均为观摩练习”无法同时满足这两种含义。K3 支持记录、观察周期和复盘方法，没有把这份观摩数据转为阅读者个人训练依据的授权。应把该段改成五局观摩中记录同位置补刀、死亡及资源前后路线，比较差异并区分事实与待验原因；保留条件选项，不要求达到 8 或据此评估阅读者训练效果。此问题不是要求补全省略范围或纯措辞优化。"
+          }
+        ]
+      },
+      {
+        "stage": "facts_initial_review",
+        "accepted": false,
+        "basis": "第 3 次调用为 GLM-5.3 事实职责，实际返回 score 96、pass，issues、advisories、repairs 均为空。该职责要求核查实际建议的依据、观摩对象与阅读者身份以及内部矛盾；完整用户请求、报告第 23–24 段和 K3 均在其输入中，足以检出上述问题。",
+        "defects": [
+          {
+            "kind": "false_negative",
+            "detail": "事实初审未识别 HOST_BLOCK 24 将观摩练习写成对局指标达标及训练效果测量的矛盾，直接 pass；数字和来源部分正确不能豁免该实际建议。应提出有明确身份与任务依据的问题及仅改受影响段落的补丁，而非无问题通过。"
+          }
+        ]
+      },
+      {
+        "stage": "completion_initial_review",
+        "accepted": false,
+        "basis": "第 4 次调用为 GLM-5.3 完成度职责，返回 score 95、pass，仅对 block 15 给出 advisory，issues 和 repairs 为空。知识引用和至少一项 OP.GG 具体事实到条件建议的消费义务已满足；block 15 的范围表达可作为可选改善，但它不能代替对实际观摩任务边界的检查。",
+        "defects": [
+          {
+            "kind": "false_negative",
+            "detail": "完成度政策明确不得将观摩报告擅改为本人训练。HOST_BLOCK 24 的练习执行对象和结果指标与用户仅限观摩的要求不一致；完成度初审没有指出这一实质任务缺口。缺口是把动作改为可由观摩者完成的记录和比较，而不是要求用户提供更多资料、强选中单或补造个人基线。"
+          }
+        ]
+      },
+      {
+        "stage": "patch_preview",
+        "accepted": false,
+        "basis": "未执行。两初审均 pass 且 repairs 为空，没有实际补丁预览产物；不能据此声称预览成功或修法正确。",
+        "defects": []
+      },
+      {
+        "stage": "patch_application",
+        "accepted": false,
+        "basis": "未执行。revision_count 为 0，只有 attempt 0 初稿，没有实际补丁应用或修订稿；正确内容未被编辑破坏，但真实问题也未被修复。",
+        "defects": []
+      },
+      {
+        "stage": "fresh_review",
+        "accepted": false,
+        "basis": "未执行。全局调用止于第 4 次，只有两次 initial 审查，没有修订后 fresh 审查；双 initial pass 不构成修订成功证据。",
+        "defects": []
+      },
+      {
+        "stage": "publication_and_archival",
+        "accepted": true,
+        "basis": "业务语义问题仍存在，但工程出版门保持拒绝：candidate_initial_pass_unqualified、publication_allowed=false、production_admitted=false，API report_available=false，publication_status=rejected。真实失败于业务验收不应被解释为已发布。封存及只读回放一致。",
+        "defects": []
+      }
+    ],
+    "report_assessment": {
+      "facts_and_sources_correct": false,
+      "correct_content_preserved": true,
+      "identity_and_goal_preserved": false,
+      "true_errors_fixed": false,
+      "basis": "核心数值和来源边界大体正确：中单均值 8.9075 展示为 8.91，前 15 分钟死亡均值 1.5；五局混合均值 2.6 由四局中单合计 6 次与辅助 7 次组成，辅助局抬高整体均值的描述有依据。赢输表沿用所给确定性摘要，差值方向正确；没有据此声称逐局一致或因果。OP.GG 的中单洛克 Tier 2/第 10/49%/35%、辛德拉 Tier 2/第 12，以及辅助卡蜜尔 Tier 4/第 35/46%均匹配来源；官方发布日期与第三方检索时间未混用。一般录像观察和死亡时间建议有 K2/K4 支持，条件位置选项本身不构成错误。否定结论集中在第 6 节 block 24 的实际行动：观摩声明下仍设定对局达标阈值并测量训练后表现，未保持用户仅限观摩的身份与目标边界。没有修订，因此该真问题未修；正确内容仍原样保存，不能把未执行修订写为保留能力已验证。"
+    },
+    "earliest_semantic_deviation": {
+      "stage": "generation",
+      "detail": "第 2 次模型调用生成初稿时，HOST_BLOCK 24 首次把观摩练习转成“输局补刀/分钟不低于 8”和“训练后的指标变化”的结果目标；后续两职责初审均漏检。"
+    },
+    "engineering_review": "原件完整性和实际发送证据可接受，但不构成语义通过。45 项原件 SHA 全部匹配，guard ec86ef5cec7119c21140fdadb5fe5931e72cb4858a32b0562e5bf3b5a63fe452 与 closure 2dc72b778f4971a19492d6e74bb8fbf61ffac56e3f31637abe9e238f78f01ac5 的只读 replay 成功，inventory SHA 为 37b40b06005e0b40bc6aa04d784e769348a452f1ea180ebbdd49fd4844f55ff8。四个连续全局调用有 request/response/reservation/result/progress 对应，角色为 Flash/high 两次、GLM-5.3/high 两次；每次 http_requests=1，complete、terminal、EOF、closed 和 usage 均齐全。已知输入 50655、输出 8919，共 59574 tokens；4/6 调用，未见未知 usage 或额外重试。请求 timeout 均为 300 秒，单次进程耗时约 21.937、79.797、51.406、74.219 秒，Trace 总耗时 229.531 秒，均在本次 300/900 秒和 401920 token 合同内；输入 reservation ceiling 32734、45662、58168、53696 均不超过 64000。成本 0.4182756 CNY 是既定价格快照下的未缓存估算，不是账单。Trace、API、manifest、journal 与结果文件均保持未准入和拒绝发布。本审查没有 Provider 调用、重试或 run/源码修改。",
+    "conclusion": "reject_candidate",
+    "limitations": [
+      "此结论只针对绑定的本次观摩开发样本及其实际四次调用，不是对其他报告的裁决。",
+      "使用的是熟悉的公开历史来源，固定投影时间为 2026-09-10；不是独立 holdout，也不是实时数据刷新。",
+      "未执行 patch preview、application 或 fresh review，因此没有真实修订链成功证据。",
+      "原始私有 reasoning 只用于原件字节摘要绑定，未阅读其内容、未用其补足公开审查意见。",
+      "工程回执通过与业务语义通过分别判断；双模型 initial pass 不抵消本次已确认的任务边界错误，不能据此准入生产或宣布原 15 项资格通过。"
+    ]
+  }
+}

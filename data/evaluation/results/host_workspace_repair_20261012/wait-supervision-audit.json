@@ -1,0 +1,29 @@
+{
+  "kind": "host-workspace-wait-supervision-verification-v1",
+  "at": "2026-10-12T12:24:49.681107+00:00",
+  "native_normal_path_revision": "8686d19adc0ace7345171ec3062a6e76fdb1973b",
+  "native_audit_sha256": "cd71c137a53f0aa9648c85bf11d5bea34564555134492f27354d2fb76e3d1f58",
+  "native_run_repeated": false,
+  "native_dispatches_added": 0,
+  "actual_project_provider_calls": 0,
+  "actual_project_http_requests": 0,
+  "actual_project_tokens": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "final_workspace_tests_passed": 14,
+  "unchanged_old_entrypoint_tests_passed": 19,
+  "total_related_tests": 33,
+  "new_coverage": [
+    "Observer with its default wait notices an unsubmitted extra file and stops.",
+    "Native failure in a separate submit caller publishes abort; observer exits without another request.",
+    "Atomic publication deliberately delayed beyond poll interval is protected by the shared lock; full three-cell fixture run and seal pass."
+  ],
+  "final_source_sha256": {
+    "scripts/host_review_workspace.py": "4e3a345f0c2fc0e83a73dfc766b1003028acee1300c763501764397701d5bcb5",
+    "tests/test_host_review_workspace.py": "6e8bfd40a372a947fff70b6d997126709fec02a39cea6e6c088a16e244b1b92e"
+  },
+  "native_evidence_scope": "The real native normal-path evidence is pinned to the preceding revision. Subsequent wait/abort/lock behavior is offline verified, not represented as another real native run.",
+  "exported_original_bytes_preserved": true,
+  "automation_status": "PAUSED",
+  "paid_entrypoint_enabled": false
+}

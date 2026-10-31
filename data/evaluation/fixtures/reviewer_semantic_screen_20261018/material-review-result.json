@@ -1,0 +1,45 @@
+{
+  "version": "reviewer-semantic-material-reconciliation-v1",
+  "primary_before_independent": true,
+  "initial_manifest_sha256": "e82638e0ca2ef0caa0de642592010c93d42d1a16a78046d2bd24414266343daf",
+  "primary_sha256": "2826499eaff8d68ad5d55cc324bc617c84d3ceb669285710cddc5bc8248c9b2e",
+  "independent_author_file_sha256": "9b54522af6dc017ad9a63b8d81bf4d6ce582d6be99a861d10b3d4d32bd4f1534",
+  "checkpoint_sha256": "0aaae705ff5db042d7329dfed84392dc3f0c1db00f9bca7155b06121fea69d3a",
+  "agent_task_name": "/root/semantic_material_review",
+  "actual_collaboration_final_received": true,
+  "native_business_certification": false,
+  "author_file_archived_without_changes": true,
+  "verdicts_agree": true,
+  "material_disposition": "usable_for_limited_development_screen",
+  "notes": [
+    "Independent review resolved mixed display precision as nonblocking; no new precision requirement added.",
+    "Historical OP.GG data supports historical conditional inquiry only, not current strength or recommendation.",
+    "Independent alternative repairs are supported and consumed by existing preview; exact primary wording is not a gate."
+  ],
+  "alternative_repair_previews": [
+    {
+      "id": "s02",
+      "operations": 1,
+      "assembled_report_sha256": "d67756de8d476a4c6263c9f027c5acd26d9e599ba8d0fe40ce8314bbf5b7ebbd",
+      "equals_primary_reference": false,
+      "ordinary_independent_material_repair": true,
+      "wire_wrapper_and_scores_synthetic": true,
+      "semantic_approval": false,
+      "provider_calls": 0
+    },
+    {
+      "id": "s03",
+      "operations": 1,
+      "assembled_report_sha256": "77b0f918e680eed99d1e240e63f85448eae9fb8e7df115833bb4913c5bb8d8ad",
+      "equals_primary_reference": false,
+      "ordinary_independent_material_repair": true,
+      "wire_wrapper_and_scores_synthetic": true,
+      "semantic_approval": false,
+      "provider_calls": 0
+    }
+  ],
+  "material_changed_after_independent_dispatch": false,
+  "model_results": null,
+  "qualified": false,
+  "publication_allowed": false
+}

@@ -1,0 +1,118 @@
+{
+  "experiment": "golden-bounded-correction-offline-v1",
+  "provider_calls": 0,
+  "prototype_implemented": true,
+  "runtime_implemented": false,
+  "candidate_adopted": false,
+  "semantic_quality": "not_evaluated",
+  "historical_bytes_unchanged": true,
+  "first_requests": [
+    {
+      "case_id": "stable_unbounded",
+      "source_digest": "697d470f37ac3eb0af8588832872211c15b46966deef5ea00872ff395a075928",
+      "input_ceiling": 51598,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "stable_defined_before",
+      "source_digest": "f0c0bd2974e7bd06912fac6168d619657f2a51268e4bfb88906d3cdce1d297ed",
+      "input_ceiling": 51758,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "heading_unbounded",
+      "source_digest": "58524a8d73b5890331db7165eec206cadc5a8a50ebd3582c623657a0f2988801",
+      "input_ceiling": 51626,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "heading_defined_after",
+      "source_digest": "9d52b97141ba4a87e32b23a36bbe7092b89c56e6221cf9501c794d1ade30138b",
+      "input_ceiling": 51690,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "causal_asserted",
+      "source_digest": "ebe5301b3300332cad8b32a405936885a923b2958c6bf5371c25ed0651497e12",
+      "input_ceiling": 51622,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "causal_quoted_and_rejected",
+      "source_digest": "c090d02d148fd8e33bd7f1acc85de5ffb6a9f79a68faf42394f9872a23aabf0e",
+      "input_ceiling": 51772,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "future_unqualified",
+      "source_digest": "85ea17966d571ba73e72c5594539a7cd0a8076baaae7492bd9fd85567f9de711",
+      "input_ceiling": 51604,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "future_with_disclaimer",
+      "source_digest": "be230178edf9f71285a230e8649ea1b97272879ee061c97be8a6632f0334f777",
+      "input_ceiling": 51668,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "local_observation_only",
+      "source_digest": "d4c3124a0793d8c52cfc6d0ba6d27605fe514fc6ea4fb6c9c7cba198e5c05a01",
+      "input_ceiling": 51602,
+      "full_source_round_trip": true
+    },
+    {
+      "case_id": "local_observation_with_later_conflict",
+      "source_digest": "513186ba971835d3d242927e845d3e3b404c74acb6875a6e067a4bd190f32bf7",
+      "input_ceiling": 51698,
+      "full_source_round_trip": true
+    }
+  ],
+  "historical_state_requests": [
+    {
+      "case_id": "stable_unbounded",
+      "historical_response": "response-001.json",
+      "historical_sha256": "bcdea2e6e2dd55f52ac4e3733c80f4d5a6e1d80b1f6419c64e4ffbd6b51e80da",
+      "state_id": "2f126f882a9f143a1c555b95c325cbf558f610ea30bfa0b32fd519b4270a6064",
+      "mutable_claims": 10,
+      "required_reviews": 19,
+      "input_ceiling": 64790,
+      "unusable_without_state_input_ceiling": 56650,
+      "preparation_passed": false,
+      "preparation_error": "bounded_correction_request_budget_exceeded"
+    },
+    {
+      "case_id": "stable_defined_before",
+      "historical_response": "response-003.json",
+      "historical_sha256": "87cd8760e30a5284b49f7bc26312e529f03165fa9304ccd41e331b567b47fa32",
+      "state_id": "f4487c0ae5ca21fe4d96585beb2b55df48c350a2455318d7073b527d71a8f869",
+      "mutable_claims": 5,
+      "required_reviews": 14,
+      "input_ceiling": 61726,
+      "unusable_without_state_input_ceiling": 56808,
+      "preparation_passed": true,
+      "preparation_error": null
+    }
+  ],
+  "revision_historical_shape_input_ceiling": 53584,
+  "measured_five_call_envelope": 450548,
+  "report_token_limit": 401920,
+  "unusable_no_state_five_call_envelope": 434584,
+  "measured_shapes_fit": false,
+  "per_request_preparation_limit": 63936,
+  "per_request_input_limit": 64000,
+  "output_profile": "high",
+  "per_call_output_limit": 32768,
+  "max_calls": 5,
+  "max_revisions": 1,
+  "per_call_time_limit_s": 300,
+  "report_time_limit_s": 900,
+  "decision": "offline_only_no_paid_readiness",
+  "limitations": [
+    "Two saved first-review states, not future-state or revised-report maxima.",
+    "Envelope uses full output reservations; it is not actual usage. Actual usage settlement may permit runs with these shapes.",
+    "Five 300-second calls do not establish completion within 900 seconds.",
+    "Exact reconstruction is a data property, not proof the model understands the compact view.",
+    "Source references and scripted merge tests do not establish semantic entailment or control accuracy."
+  ]
+}

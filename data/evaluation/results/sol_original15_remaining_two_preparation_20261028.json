@@ -1,0 +1,112 @@
+{
+  "version": "original15-remaining-two-preparation-v1",
+  "cases": [
+    {
+      "key": "observed:4",
+      "input_sha256": "e6f98d76e70f172e70e26f923017ac4cfba58b486a290221c4db67d1cf04e105",
+      "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "2821713622c36ea2595f48ccd9ee241bc8e913b338ca28da05fadce91fce8162",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "4097ff28c601f020782dbd52acd2c8f3131aae332fea168535ff66a8df68fdfd",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        }
+      },
+      "prior_execution_absent": true
+    },
+    {
+      "key": "observed:5",
+      "input_sha256": "58c6a9c6348d890024d6dce56d35bfeeba3b7af8dde1233a355912d4a0c5b72c",
+      "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "4712bd5de55bcb704cca938450eb8ba9ddf0be78f6eba61c1a2cac309336ba54",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "eeb236ba33312d8c05ac55f32337ed015073a6017941800c4e1dcce8860e6995",
+          "timeout_s": 300,
+          "max_tokens": 16384
+        }
+      },
+      "prior_execution_absent": true
+    }
+  ],
+  "execution_head": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+  "original_seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "recovery_seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
+  "historical_accounting": {
+    "calls": 45,
+    "reserved_tokens": 195578,
+    "retries": 3,
+    "tokens": 810780
+  },
+  "original_limits": {
+    "cases": 15,
+    "logical_reviews_per_case": 4,
+    "manual_retries_per_case": 4,
+    "max_requests": 120,
+    "max_requests_per_case": 8,
+    "max_reserved_tokens": 9646080,
+    "maximum_active_seconds": 54000,
+    "per_case_active_seconds": 3600,
+    "per_request_input_tokens": 64000,
+    "per_request_output_tokens": 16384,
+    "per_request_seconds": 300
+  },
+  "profile_unchanged": true,
+  "contract_unchanged": true,
+  "exact_original_inputs_and_initial_requests": true,
+  "successful_items_to_resend": [],
+  "provider_requests": 0,
+  "key_reads": 0,
+  "new_native_tasks": 0,
+  "prepared_materials": true,
+  "paid_launcher_ready": false,
+  "blocker": "Waiting for all mandatory public CI checks on timeout-only maintenance commit.",
+  "next_action": "unique_v2_waiter_send_observed4_first_pending_once_after_all_green",
+  "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
+  "authorization_extended": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "successor_implementation": "scripts/original15_remaining_launch.py",
+  "successor_local_state": "passed",
+  "sealed_parent_native_zero_send_verified": true,
+  "historical_active_seconds": 28875.971999999718,
+  "execution_cwd": "D:/riftcoach-original15-remaining-execution-20261028",
+  "successor_plan_sha256": "fc1b1a392b09c7c6e9bd10dfd1dfdcff6d385e48a3cccdf593f5b109ad277e2f",
+  "public_ci_run": "40681684790",
+  "guard_sha256": "1d7d555a3e3d6bd5b6fc582bc4ab1e967c1a7dec72722f2ed9219406ac5cb077",
+  "checkpoint_sha256": "d421602f2a02a70960424b53f868aedf54e572a50a19b7cb401f3cd84375eefd",
+  "local_behavioral_checks": {
+    "passed": 4,
+    "seconds": 778.05,
+    "focused_parent_and_batch_checks": 2,
+    "focused_seconds": 1.91
+  },
+  "actual_frozen_startup_verified": true,
+  "waiting_pid": 63192,
+  "launcher_pid": 16788,
+  "public_ci_state": "in_progress",
+  "ci_timeout_diagnosis": "pytest-shards (1): The job has exceeded the maximum execution time of 1h0m0s; last completed progress 87%, unfinished tests unproven.",
+  "ci_maintenance": {
+    "ci_head": "6a231c546dbe676a96774a802e5ee9a8344f9823",
+    "execution_head": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+    "original_failed_ci_run": "40673377624",
+    "same_head_condition_exception": true,
+    "continuation_sha256": "82f05e5ee9bf125778bc35e26e3cf71421cf13dd5ef9a8ad34690bd1f10957ca",
+    "control_pins": 18,
+    "maintenance_files": 7,
+    "offline_checks_passed": 15,
+    "new_provider_requests": 0,
+    "key_reads": 0,
+    "automatic_retry": false,
+    "waiter_start": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-remaining-two-20261028-control\\waiter-v2-start.json"
+  }
+}

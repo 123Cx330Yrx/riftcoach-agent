@@ -1,0 +1,59 @@
+{
+  "kind": "author_controlled_development_contrasts_not_holdout",
+  "source_operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-reasoning-single-20261022",
+  "original_context_sha256": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
+  "original_report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+  "original_worker_result_sha256": "b29a4edf68cb9150440276fd124fb74eef00167e43a37ebb2c64064702b8a1c0",
+  "original_public_arguments_sha256": "32578633da7d0ea99fb878ab3d312ec1053205e20313073ef6e2541c452e2cf4",
+  "independent_original_review_checkpoint_sha256": "1355e97a6817236a07557ce541b84b5d6f0c367fd15aed20c78ac1ae13bed6fd",
+  "labels": {
+    "a": {
+      "expected": "needs_revision",
+      "necessary_blocks": [
+        21
+      ],
+      "false_positive_blocks": [
+        10
+      ],
+      "rationale": "Source-supported tentative hypotheses are not established causes; the arbitrary 7.5 mid target still lacks support."
+    },
+    "b": {
+      "expected": "pass",
+      "necessary_blocks": [],
+      "false_positive_blocks": [
+        10
+      ],
+      "rationale": "Only the independently accepted threshold correction is used. The tentative paragraph remains byte-identical."
+    },
+    "c": {
+      "expected": "needs_revision",
+      "necessary_blocks": [
+        10
+      ],
+      "rationale": "The final sentence now asserts established causes; an earlier caveat cannot cancel this explicit unsupported claim."
+    }
+  },
+  "contrasts": {
+    "b": {
+      "parent": "a",
+      "before": "\u2460\u4e0b\u6279\u8f93\u5c40\u8865\u5200/\u5206\u949f\u4e0d\u4f4e\u4e8e 7.5\uff1b",
+      "after": "\u2460\u8bb0\u5f55\u4e0b\u6279\u5404\u5c40\u8865\u5200/\u5206\u949f\uff0c\u4e0d\u9884\u8bbe 7.5 \u7684\u8f93\u5c40\u8fbe\u6807\u7ebf\uff08\u672c\u6837\u672c\u4e2d\u8def\u8d62\u5c40\u5747\u503c 8.81\u3001\u8f93\u5c40\u5747\u503c 9.01\uff09\uff1b"
+    },
+    "c": {
+      "parent": "b",
+      "before": "\u6d1b\u514b\u8d1f\u5c40\uff08\u4f24\u5bb3/\u5206\u949f 605.5\u3001\u53c2\u56e2\u7387 36.4%\uff09\u4e0e\u8be5\u5047\u8bbe\u65b9\u5411\u4e00\u81f4\u3002",
+      "after": "\u6d1b\u514b\u8d1f\u5c40\uff08\u4f24\u5bb3/\u5206\u949f 605.5\u3001\u53c2\u56e2\u7387 36.4%\uff09\u5df2\u7ecf\u8bc1\u660e\u5b89\u5168\u53d1\u80b2\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u662f\u9020\u6210\u5dee\u5f02\u7684\u539f\u56e0\u3002"
+    }
+  },
+  "files_sha256": {
+    "context.json": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
+    "a.md": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+    "b.md": "92904899ae6c7b95b4f75a89d3ff510be8c7d6739dfee77fe7ebe292360c33bc",
+    "c.md": "7141e301c580d024812de74baa091c46dd7aa2557fa8e967d3c0d7f8fb9952f7"
+  },
+  "live_model_results": null,
+  "semantic_improvement_proven": false,
+  "old_run_modified": false,
+  "automatic_patch_application": false,
+  "product_admitted": false
+}

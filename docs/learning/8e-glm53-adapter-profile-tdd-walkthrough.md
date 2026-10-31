@@ -212,3 +212,93 @@ compiler、Agent/工具/Harness、Zhipu Provider、Runtime policy 和 Trace。�
 `temperature=1`、`top_p=0.95`、SDK retries=0 和 Worker 360/60 秒 lease/heartbeat 都由受信代码固定，调用方
 不能升权。这里的“产品目标”不等于“生产准入”：新实现仍须自己的 exact-SHA 公共 CI、同 SHA G53-3、独立 G53-7
 领域门、完整黄金切片和安全/部署/合规证据；旧 G53-3/G53-4/G53-6 结果不可覆盖。
+
+## 12. RQ-178：为什么要把实现提交 A 和证据提交 B 分开
+
+### 要解决的具体问题
+
+G53-3 会在某个已经冻结的实现提交上真实调用模型。调用结束后，脱敏 JSON 通常要再提交进仓库；这个新提交
+的 `HEAD` 已经变了。如果门禁把“当前 HEAD”同时当成“协议执行代码”，就会把证据提交 B 错认成执行提交，或
+逼着我们修改结果里的 SHA 来追上 B，形成不可审计的循环。
+
+### 代码地图与数据流
+
+- `app/evaluation/glm53_domain_gate.py` 的 `GLM53ABIdentityBinding` 保存 A、B、两次 CI 运行号、协议 `code_sha`
+  和 canonical 结果摘要。
+- `build_glm53_ab_identity_binding` 只做本地检查：读 B 的 Git blob，校验脱敏三调用合同；检查 B 是 A 的直接
+  单父提交且只新增 capability-result 白名单文件（不允许改写既有结果）；再比较当前工作文件与 B blob 的 LF 规范摘要。
+- `build_glm53_preflight` 将通过的绑定嵌入 schema 1.1 admission；旧 schema 1.0 结果在摘要时省略新增的空字段，
+  所以历史 G53-4/G53-6 仍能读取，但不会被新身份复用。
+- CLI 的真实领域路径必须显式提供 A 的实现 SHA/CI 运行号和 B 的证据 SHA/CI 运行号；缺任何一项时在读取 `.env`
+  或构造 Provider 之前停止。
+
+可以把控制流记成：`A 的代码 → G53-3 结果(code_sha=A) → 只新增证据的 B → HEAD=B 的无 I/O 预检 → 才有资格构造 Provider`。
+CI 运行号是已核对的外部见证，不在这个本地函数里联网查询；这不会把“本地预检”夸大成公共生产准入。
+
+### 测试如何证明边界
+
+`tests/test_glm53_identity_binding.py` 覆盖 A/B 分离、真实 Git 父子与 blob、旧协议错配、摘要篡改、路径穿越/代码
+混入、当前 HEAD 错配、缺身份 CLI 和 Provider 构造前停止；配合既有 gate/runtime 回归，当前聚焦为 `53 passed`（身份绑定文件
+`18 passed`）。生产入口不接受可注入的 diff reader，证据路径始终由 Git 的 A→B 差异读取。
+这里的 `1fda…` 是提交 Git blob 的 canonical LF 摘要；Windows 工作副本因 CRLF 得到的 `6c6e…` 只用于解释环境
+差异，不能填入准入绑定。
+
+### 这一步没有解决什么
+
+本批随后按 RQ-180 在 A/B 证据链完成后执行了一次 G53-7 真实领域尝试：协议 3/3、领域 2/12，首例以
+`provider_response_invalid/incomplete_chat_response` 停止，后两例跳过，`admitted=false`。这不表示领域采用、
+生产成熟度或 Stage 8 完成；底层 vendor finish reason 未保留，不能进一步断言为 `length`。结果由本地 C=`9157cde…`
+承载且未推送/未取得公共 CI。Portal、Account、Workbench、Auth、默认模型和 `production_media=0` 均不变。
+
+### 面试时的安全表述
+
+“我把实现身份和证据身份拆成 A/B 两个提交：协议结果内部永远指向执行代码 A，B 只承载脱敏证据。门禁在本地
+读取 B 的不可变 blob、检查直接父子关系和文件摘要，并在缺 CI 见证或工作树不一致时 fail closed；这证明的是证据链
+完整，不是把一次本地领域实验包装成生产上线。”
+
+## 13. RQ-179：为什么公共 CI 必须拿到 Git 历史
+
+RQ-178 的测试最初只在本机完整仓库通过。代码提交后出现两层红灯：第一层是历史 fixture 把旧证据 B 当成了
+任意新 checkout 的当前 HEAD；第二层是 Actions 默认浅克隆只有最新提交，无法执行历史 A→B 的 `merge-base`、
+blob 与 diff 检查。修复没有放宽生产规则：测试只为旧 A/B 样例替换私有 HEAD reader，公共 CI 则获取完整 Git 历史。
+
+最终实现 A 是 `9e6d78be51c3a5c512b67f83d2849f9b1261cf77`，Actions run `33378687984` 三 job 全绿；
+`fe7d577…` 和 `3ccd827…` 的失败 runs 保留为验证环境故障证据。随后在 A/B 证据链上按 RQ-180 执行一次 G53-7，
+结果 SHA=`21e664d…`、`admitted=false`；这个公共 CI 仍只证明身份校验可复现，不证明领域或生产准入。当前不自动重试，
+若继续须另立版本化 Flash 响应完成/截断诊断。
+
+## 14. RQ-180：一次有界领域尝试为何停止
+
+G53-7 使用已完成 A/B 见证的干净 LF checkout，只运行一次，协议 3/3、领域 2/12、累计 5/15 calls，领域 3505
+tokens。首例 `flash_gate_baseline_01` 的两次 Provider 请求没有形成可用的完整响应，适配器因此只暴露脱敏的
+`provider_response_invalid` / `incomplete_chat_response`；Agent 状态为 failed/degraded，后两例按首错停止跳过，
+最终 `admitted=false`。这是当前运行链的响应完整性失败，不是 G53-3 的认证失败，也不能推出模型一般质量结论。
+
+结果文件 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_domain_adoption_g53_7_runtime_profile_v1.json`
+的 canonical-LF SHA-256 为 `21e664d57d53bfc48ad9e109be48a999f52e25a0060821d711ae915002484426`，experiment 为
+`236525300ed9c432a9ad2ffcfdcd298168666676076e5efcb3ce4129a7cee2e0`；本地 C=`9157cde…` 仅承载脱敏结果，未推送且
+没有公共 CI。为避免敏感信息和误判，底层 vendor finish reason、Key、Prompt、响应正文和 reasoning 都没有持久化，
+所以不能把 `incomplete_chat_response` 进一步解释为 `length`。当前停止自动重试；若要继续，必须另建版本化的
+响应完成/截断诊断并重新取得授权。Stage 8/8E 仍 `in_progress`，`production_media=0`，旧结果和产品前端边界不变。
+
+## 15. RQ-181：把“响应不完整”拆成可学习的失败路径
+
+RQ-180 的领域尝试只暴露了 `provider_response_invalid/incomplete_chat_response`，所以不能仅凭聚合码判断是
+网络、权限还是输出截断。用户授权后，我们在独立工作树对同一个冻结首例做了一次正文零留存诊断，不重跑旧领域门。
+诊断结果记录了适配器已经看到、但不会泄露内容的状态字段：
+
+- `finish_reason=length`；
+- `input_tokens=2220`，`output_tokens=2048`，Usage 结构有效；
+- `content_state=empty`，`reasoning_content_state=non_empty`，ToolCall 为 `0`；
+- 适配器在结束原因校验处返回 `incomplete_chat_response`，所以 normalized/settled 都是 `0/1`，Agent 状态为
+  `failed/provider_error`。
+
+这说明在本案例里，`enabled/max/clear_thinking=false` 的最大推理档案先把受控的 2048 输出额度用在了 reasoning，
+还没生成可交付正文就被供应商以 `length` 结束。它不是“把 reasoning 当答案”的理由，也不能把 RQ-180 的旧第二回合
+追溯成同样原因；一次观察也不能证明模型一般质量或账号不可用。
+
+脱敏结果文件为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_response_completion_diagnostic_v1.json`，
+canonical-LF SHA-256=`050df3fc7afb2c2dc4e99fd2e731f8d9e6133d2806c65171f2dcdbd30834a000`；它不含 Prompt、正文、
+reasoning、Key、请求 ID 或工具参数。当前教学结论是：先把“响应完成策略”做成版本化合同，再用离线 TDD 固定预算、
+截断、继续请求和 fail-closed 行为；在此之前不静默提高全局上限、不自动重试、不把一次诊断写成 G53-7 或生产准入。

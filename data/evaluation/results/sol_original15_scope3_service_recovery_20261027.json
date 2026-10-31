@@ -1,0 +1,68 @@
+{
+  "kind": "sol-original15-scope3-service-recovery-20261027",
+  "ready_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-recovery-ready.json",
+  "ready_sha256": "2e9d6062fd4047b8dec3e3602c469c956bf8553ee94a509a6a2d83ee8526cd8c",
+  "ready": {
+    "version": "original15-scope3-service-recovery-ready-v1",
+    "case": "scope:3",
+    "historical_failure_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-failure.json",
+    "historical_failure_evidence_sha256": "93fe70f14567e3e59fe0aa39b69c8c396479475a086d1fd388e541ca92d6b89e",
+    "original_failure_roots": {
+      "checkpoint_sha256": "204fbd600e74d1bc68a9e3b3d428126d08f0bad3ca5461fa21da31c82376d37b",
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
+    },
+    "original_closed_failure_preserved": true,
+    "active_recovery_terminal": "terminal-service-recovery.json",
+    "current_recovery_closed": false,
+    "recovery_manifest_sha256": "b7206583d19ce67bf0a5b2c1c5a1bcee92d8ac7176824555534c11690928e124",
+    "installation": {
+      "focused_checks_passed": 8,
+      "historical_failure_and_budget_preserved": true,
+      "key_reads": 0,
+      "manifest_sha256": "b7206583d19ce67bf0a5b2c1c5a1bcee92d8ac7176824555534c11690928e124",
+      "module_sha256": "0e0c7d243a45d2f6df2d3004d7b30cb08bfa4d284ec12191d571916ec402c323",
+      "operator_sha256": "ffcd3934207e977c8e766316976c7d648645fc750f1288db983a9138d3111f2b",
+      "provider_requests": 0,
+      "publication_allowed": false,
+      "qualified": false,
+      "settings_sha256": "fbf6582ee7de1136b6cf5a992f6089a231d328c25b9d1ef685c355f61bf8a190",
+      "version": "original15-scope3-service-recovery-installed-v1"
+    },
+    "focused_checks_passed": 9,
+    "actual_host_only_return": {
+      "phase": "paused",
+      "reason": "original15_awaiting_manual_retry",
+      "key": "scope:3",
+      "publication_allowed": false
+    },
+    "original_stdout_roots": {
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+      "checkpoint_sha256": "7b6cf1384859a1c5c5e57a65f5a850ef91276e15b28718c4c43853870a1a8992",
+      "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\scope-3\\session\\checkpoints\\0011.json",
+      "phase": "paused"
+    },
+    "host_only_exit": {
+      "operation": "run",
+      "case": "scope:3",
+      "exit_code": 0,
+      "stdout": "0078.stdout.txt",
+      "stdout_sha256": "d734d83152cb79575c4825dda6f29142d76eef019f4727fb7638d65f67a4d4a6"
+    },
+    "host_only_exit_sha256": "51b2fc9f6e0af8661b398969e40efbe68cf5493343d827c8f0c6acb2e770607a",
+    "original_inventory_preserved": true,
+    "successful_cases_preserved": 5,
+    "calls": 19,
+    "known_tokens": 336074,
+    "unknown_reserved_tokens": 68614,
+    "retries": 0,
+    "next_case": "scope:3",
+    "next_stage": "facts-initial",
+    "manual_retry_required": true,
+    "ready_for_hidden_key": true,
+    "new_provider_requests": 0,
+    "key_reads": 0,
+    "batch_closed": false,
+    "qualified": false,
+    "publication_allowed": false
+  }
+}

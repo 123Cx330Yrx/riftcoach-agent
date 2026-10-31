@@ -1,0 +1,63 @@
+# 同一产品任务的一次补充重试准备
+
+用户报告上游曾故障、现可准备重试；该恢复尚未由当前模型路由独立验证。继续原非流式，同一facts-initial请求，保留三次生成、三次524和所有费用，不另开模型批。
+
+原授权最多2次手动补测已耗尽，Runtime同样拒绝第3次。准备限定到task/run/owner、最新checkpoint和失败结果SHA的一次行政补充许可；产品默认2次不变。许可不会由HTTP resume接受，只有显式配置的Operator/Worker可传入。授权、有效期、旧授权SHA、旧累计重试数及原总预算须核对；未授权草案不能发送。
+
+补充只增加一次手动动作，不改变8总请求/401920tokens/900活动秒/单次300秒、10月31日15:45北京时间截止。当前6请求、29323 known、220146 unknown预留、553.594活动秒完整继承。只剩2总请求槽；若初审要求修稿，双fresh不能容纳时保存审查并暂停，不偷加预算。
+
+新许可随同manual-retry操作追加到原日记，消费后重启只回放。旧操作、失败、费用不改；缺许可、错误任务/检查点/失败、过期、扩大总预算、重复使用均零发送。已提交操作即使许可过期仍可只读回放，不能据此重发。
+
+完成判据：真实Session/预算的禁网回归、默认2次不变、成功前缀/未知预留保持、当前库存一致、真实原件与数据库的零发送预检，冻结新执行版本及其CI。执行前再激活针对该具体方案的补充授权；本准备不自行扩大原授权。
+
+## 准备验证
+
+2026-10-31 用户报告上游恢复并要求准备重试：同一任务的一次补充manual retry已实现，保持原非流式；产品默认2次不变，仅该task/run/owner、最新checkpoint和失败结果SHA可使用一次补充许可。草案authorized=false，尚无新增付费请求；上游恢复仅为用户报告，未独立验证。
+
+真实数据库零发送预检已通过，原154份上一快照原件保持；当前142份运行库存核验通过。预检生成最新checkpoint a8ec5dc9bdf5ad697b6d67a977d10b0ec5bb2cc8ecff8f4ffcc817f255f2054a，后续须用Control/manual-retry-extension-ready-20261031/recovered-db.dump（SHA f22b154d55056bccd3eee5c61309c8c49e7a2228cfee34999160026b6bb6c3f6），不能退回attempt-7数据库。累计仍6HTTP/29323 known/220146 unknown预留/2retry，活动554.500/900秒，未发布。
+
+验证：补充许可及既有产品合同27项通过；过期许可的已提交操作只读回放补测1项通过；库存/Worker等11项通过，11个Runtime入口匹配。4份当前Sol清单和新库存仅更新实现摘要，旧清单/原15/历史冻结不改。工作卡docs/plans/2026-10-31-task-retry-supplement.md；机器记录sol_product_retry_supplement_prepared_20261031.json。
+
+下一动作：一次提交推送、冻结新执行树并绑定同HEAD CI；Control/binding与ci-success为执行依据，旧56cd86b2的CI41151387633全绿不能代替新CI。准备完成后取得明确的一次补充许可再执行，automation保持PAUSED。原8总请求/401920tokens/900活动秒和10月31日15:45北京时间截止不延长；仅余2总请求槽，初审需修订而双fresh放不下时保存结果暂停。Stage8E/默认产品入口/玩家稿与Evidence消费目标保持。
+
+## 授权后CI故障处理
+
+2026-10-31 14:47北京时间，用户“继续呗”明确触发上一答复列明的一次同项补充重试。Control/manual-retry-extension-ready-20261031/supplemental-authorization.json已激活（SHA 26a6d33c49653157b06525eee606eea99b0a70f06645dcad1765067c2e64e1e1），原8请求/401920tokens/900活动秒和15:45截止不变。尚无attempt-8或新增付费。
+
+CI41166396355实际失败：四个pytest分片、打包、迁移通过，web-checks的真库浏览器resume场景等待“检查并继续”90秒超时；retry/cancel通过，汇总pytest仅继承web失败。截图显示恢复详情加载失败；原CI未保留trace/失败HTTP，不能把根因直接追认为已证。
+
+已独立稳定复现同类本地缺陷：恢复详情与用量同时只读核验会争用CandidateSession非阻塞独占锁，第二请求抛session_executor_active，被API当作完整性错误。修复只在只读入口有界等待锁5秒，仍核原checkpoint/全部证据；耗尽返回503，真正损坏仍500，不发送模型或重试业务。新增争用/有界等待/损坏不重试及双API分类回归，28项通过；11个Runtime清单与治理通过。CI增加fixture trace、attempt-state和错误上下文保留。
+
+真实Chromium→API→临时Postgres→Worker的resume/retry/cancel三场景均通过（116.61秒，模型/来源替身，零外部模型请求），保留前缀、费用与发布边界；结果sol_product_session_read_lock_repair_20261031.json。下一动作：一次提交推送、冻结新版本及CI绑定；已授权的同项补测仅在新CI通过且未过15:45时执行。当前仍原checkpoint a8ec5dc9…、6HTTP/29323 known/220146 unknown预留/2retry、554.500活动秒；历史成功/失败不重写，Stage8E和automation PAUSED保持。工作卡docs/plans/2026-10-31-task-retry-supplement.md。
+
+## 本次执行结果
+
+2026-10-31 16:13同HEAD CI41178505872八项全绿后，唯一执行器完成已授权补测；call-007真实HTTP524，130.407秒，request/wire SHA与前三次完全一致，closed/reaped。新增观测cf-ray a5313371ac6bc5bf-NRT，发送后约126.563秒才同时收到响应头和首字节；本地配置300秒，没有本地读取超时异常。仍无Sol语义意见，不能宣称该路由上游已经恢复，也不能仅凭524确定源站内部根因。
+
+本轮新增1HTTP，累计7HTTP/29323 known/293528 unknown预留/3retry，receiptless0、unresolved0，第8次未发；活动690.172/900秒。额外一次补测已消费，不再自动重试。原142份运行库存、上轮154份快照及原成功生成逐字保持。最新checkpoint 1006173c2969d9eb981fccddb1febb975290a17e15e58bcba488341eb205a7c1，最新数据库Control/attempt-8/terminal-db.dump SHA d03bae291a606529f003a469401ee589ecaf6a85afdd8537cba0bdac0f066b51；attempt-8-snapshot.json追加保留，session未封闭，可按新决定恢复，不退回旧DB。
+
+真实浏览器1440/320已核用量和3次补测、刷新不POST恢复、无横向溢出，未审查正文不可读；当前paused时usage独立端点409，页面从continuation显示真实用量。真库任务1/暂停1，assistant/Training/Evidence snapshot均0。inspection-complete后执行器与waiter均已退出，exit原件确认临时容器已移除；riftcoach监控已实际删除。结果data/evaluation/results/sol_product_extra_retry_timeout_20261031.json、Control/attempt-8/audit-proof.json保留完整证据。
+
+下一动作：本次补测与监控收尾，删除automation；暂停受影响的首审步骤，保留整链，等待用户对传输方案及后续验证范围的新决定，不重复同一付费请求。原总预算仅余1请求槽，不能把它当作额外补测授权或保证可完成双初审。原15完成、Stage8E和产品准入保持，玩家稿发布/Evidence实际消费尚未完成。旧失败/到期/续授权原件不改。
+
+## 新授权的逐次接续
+
+2026-10-31 用户要求准备后再测，并明确放开同任务手动重试次数。当前按新授权落实一次同项补测，保留原非流式、完整请求、成功生成和4次524；不把用户对上游稳定的判断写成已验证。现有代码只接受第3次重试的补充许可，改为可逐次接受绑定当前task/run/owner/checkpoint/失败结果的新许可，默认2次不变，旧许可不能复用；每次许可仍只消费一次，不自动循环。
+
+真实临时SQL/Worker零发送恢复已通过，原attempt-8快照全部保持；最新checkpoint 8143eafa4cf87f6ddf33b4a97f187556000b86e1e7718ac5682e79d48c2d7236，数据库successive-retry-ready-20261031/zero-send-preflight/terminal-db.dump SHA a50932a8da4937f740869e4a6194516c95cfb1ab69b324374cb3de817589cdb0。累计7HTTP/29323known/293528unknown预留/3retry，活动691.406秒，未发第8次。旧attempt-8数据库及原件不改。
+
+当前补测只用旧包剩余1请求槽，401920tokens/900活动秒/单请求300秒和11月1日15:50:40北京时间截止保持；放开次数不清零或自动扩大token/时间预算。请求预留73382tokens，若再次用量未知则累计396233tokens（known加unknown），仍在旧总额内。新许可及用户原话保存在Control/successive-retry-ready-20261031；待相关回归、冻结新执行HEAD及同HEAD CI通过后，唯一启动器仅执行Control/run_successive_retry.py一次。无需再次询问本次补测授权；有执行者不重复启动。即使首审成功，后续双审也不能保证在旧剩余额度内完成，先保留结果再确定接续范围。原15完成、阶段及发布边界不变。
+
+验证：28项补充许可与产品合同回归通过（334.73秒），11个Runtime入口、原15离线清单保持检查、实际检查点新许可校验及治理通过；真实SQL零发送预检容器已清理。仅产品许可校验一处判断及对应当前manifest改变，模型输入/角色/政策不改。
+
+2026-10-31 18:20北京时间，修复db47d0d50f683bbe05b4378be09a334c24723446已提交推送，冻结执行cwd D:/riftcoach-sol-product-successive-retry-execution-20261031保持干净；对应CI41192280556运行中。Control/run_successive_retry.py和wait_successive_retry_ci.py实际发送前只读guard均通过，零凭据/零发送。Ready/binding.json SHA a2d26c2c978af0bbe3a1402d9bca16699139b632d8c3fd75fb3337f1f2e2ed3e。唯一waiter-v4实际PID72880、launcher16892已启动，以Ready/waiter-v4-start.json及当前进程为准，只在同HEAD CI八项全绿后调用一次run_successive_retry.py；不存在attempt-9时不得另起执行者。riftcoach监控已重新创建为本次补测的监控，等待无变化不通知。终局核验后删除。当前本次新HTTP仍0，不声称重测已执行。
+
+## 本次接续补测结果
+
+2026-10-31 19:29北京时间，冻结db47d0d5对应CI41192280556八项全绿后，唯一执行器已完成本次补测。call-008仍真实HTTP524，耗时128.782秒，request/wire SHA与前4次一致；本轮实际HTTP1、无审查意见，不声称上游恢复或语义拒绝。新观测cf-ray a53252ebee68c8d8-NRT，发送后125.547秒收到响应头及首字节；本地timeout为按剩余活动预算收紧的206.032秒，未发生本地读取超时异常。5次同请求约129—130秒524支持持续路由超时的推断，不能直接确定源站内部根因。
+
+累计8HTTP/29323known/366910unknown预留/4retry，receiptless0、unresolved0，第9次未发；活动824.281/900秒。已知加未知预留共396233/401920tokens，只余5687tokens和75.719活动秒，低于同项请求73382tokens预留。用户已放开重试次数，但原token/时间预算不足再发；不清零旧费用或无限重试，不另开批。暂停仅限当前首审，保留整个任务。
+
+真实浏览器1440/320核验通过：累计用量与API一致，无横向溢出，刷新没有resume/review POST，未审查正文不可读；paused用量独立端点409，页面从continuation取得真实账目。真库原始状态recovery_required任务1，assistant消息/Training/Evidence snapshot均0。原174份准备库存及前快照183份原件校验通过。最新checkpoint 60f635066d2debd253994fb77647f6e63e6198b9bb57e48a548af56c52d6a980，最新DB Control/attempt-9/terminal-db.dump SHA 8263f05c1d3dc7e391292cf28f367b531aadbae659d8186966023f2dbcb955cc；attempt-9-snapshot.json追加且closed=false，后续不得退回旧数据库。执行器/waiter已退出，临时容器已清理，riftcoach监控已实际删除。
+
+下一行动：根据这5次同请求超时的证据，先确定传输方案和追加token/活动时间范围，再接续同一首审；本次无限重试次数授权保留，不把计数当新审批门槛。当前不启动新付费请求。原15完成、Stage8E与默认发布准入不变；本次没有新报告发布。证据data/evaluation/results/sol_product_successive_retry_timeout_20261031.json。

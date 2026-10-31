@@ -1,0 +1,50 @@
+{
+  "kind": "OFFLINE-full-chain-qualification-validation-v1",
+  "tests": {
+    "command": "python -m pytest tests/test_full_chain_qualification.py -q --tb=short",
+    "passed": 41,
+    "seconds": 16.41,
+    "success_path": "synthetic replay and native-reader boundary fixtures, NOT real qualification"
+  },
+  "historical_negative_checks": [
+    {
+      "path": "data/evaluation/results/golden_document_full15_time600_result_20261010.json",
+      "sha256": "30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576",
+      "rejection": "full_chain_qualification_seal_kind",
+      "unchanged": true
+    },
+    {
+      "path": "data/evaluation/results/golden_document_remaining8_time600_result_20261011.json",
+      "sha256": "75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8",
+      "rejection": "full_chain_qualification_seal_kind",
+      "unchanged": true
+    },
+    {
+      "path": "data/evaluation/results/golden_document_remaining4_time600_result_20261011.json",
+      "sha256": "a98734911f9384bd23f1b8e76bdd47513d6024add89c6a830b3155c13351feec",
+      "rejection": "full_chain_qualification_seal_kind",
+      "unchanged": true
+    },
+    {
+      "path": "data/evaluation/results/full_chain_host_rehearsal_20261013/initial-disagreement/seal.json",
+      "sha256": "63e009ffd6f03fe16aa033918a10b4e0bfbc9142b95c11d96b039f8f1ee8aa83",
+      "rejection": "full_chain_qualification_incomplete_or_rejected",
+      "unchanged": true
+    },
+    {
+      "path": "data/evaluation/results/full_chain_host_rehearsal_20261013/explicit-count/seal.json",
+      "sha256": "a0a3a6f9b0a4023aac2a38133b7bac6d829a818ca3a14b2a544307ae6d60f2d3",
+      "rejection": "full_chain_qualification_incomplete_or_rejected",
+      "unchanged": true
+    }
+  ],
+  "source_sha256": {
+    "scripts/qualify_full_chain_controls.py": "6cb2aaf5f0b390d7cc0ae783bfd9b6aa3c9fa7d66d8b0dc43d588727612b1508",
+    "tests/test_full_chain_qualification.py": "ebbb378dc403326db7b9fb3b4ce74a7dd26ab69aceb7c85c35b4d52b19b5e10d",
+    "data/evaluation/results/full_chain_qualification_preparation_20261013.json": "c57c56ef46e9e1dcfc36b94cd93a2cd9dbb46169f461502b31007e9c0bef6ae9"
+  },
+  "new_qualification": 0,
+  "external_provider_calls": 0,
+  "new_native_tasks": 0,
+  "production_admitted": false
+}

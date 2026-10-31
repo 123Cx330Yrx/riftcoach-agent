@@ -45,12 +45,21 @@ class HarnessConfig:
     publish_score_threshold: int = 85
     max_revisions: int = 1
     allow_deterministic_fallback: bool = True
+    # Optional stricter evidence floor used by explicitly bounded candidate
+    # runs.  The default keeps the historical product behavior unchanged.
+    minimum_evidence_sources: int = 0
 
     def __post_init__(self) -> None:
         if not 0 <= self.publish_score_threshold <= 100:
             raise ValueError("publish_score_threshold must be between 0 and 100.")
         if not 0 <= self.max_revisions <= 3:
             raise ValueError("max_revisions must be between 0 and 3.")
+        if (
+            isinstance(self.minimum_evidence_sources, bool)
+            or not isinstance(self.minimum_evidence_sources, int)
+            or self.minimum_evidence_sources < 0
+        ):
+            raise ValueError("minimum_evidence_sources must be a non-negative integer.")
 
 
 @dataclass
@@ -65,6 +74,9 @@ class RunManifest:
     artifacts: list[dict[str, Any]] = field(default_factory=list)
     transitions: list[dict[str, Any]] = field(default_factory=list)
     final_decision: str | None = None
+    # Optional body-free diagnostic for a failed bounded candidate run.
+    # Historical manifests omit this field and remain readable.
+    failure_code: str | None = None
 
     @classmethod
     def new(cls, run_id: str, config: HarnessConfig) -> "RunManifest":

@@ -1,0 +1,26 @@
+{
+  "origin": "primary_author_expectations_not_independent_verdicts",
+  "J1": {
+    "blocking_issues": [],
+    "requirement": "Preserve all supported content; review the entire report."
+  },
+  "J2": {
+    "blocking_issues": [
+      14,
+      15
+    ],
+    "checks": [
+      "Detect the middle-cohort mean proximity error; retain whole-five-game 2.50/2.67.",
+      "Detect false all-win-below-all-loss CS claim: both 8.95 and 8.66 exceed losing 8.38.",
+      "CS win mean remains below loss mean; do not reverse it or claim all wins are higher.",
+      "Repair suggestions must not deny early-death sample separation or introduce causality.",
+      "Review every other assertion, reference, explanation, correction and advisory."
+    ]
+  },
+  "grading": {
+    "detection": "Record each genuine issue separately; empty issues on J2 is missed_error.",
+    "correction": "Assess every returned correction separately; absent correction is not a successful repair.",
+    "preservation": "Assess all correct content in both documents, including optional advice.",
+    "inference": "Any candidate error rejects this candidate on this scope; both pass/no baseline failure gives no improvement evidence."
+  }
+}

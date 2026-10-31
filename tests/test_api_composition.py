@@ -52,6 +52,17 @@ VALID_ENV = {
 }
 
 
+def test_publication_mode_is_explicit_and_invalid_mode_fails_before_io():
+    from app.api.composition import load_api_composition_settings
+    from app.tasks.models import TaskPublicationMode
+    assert load_api_composition_settings(VALID_ENV).task_publication_mode is TaskPublicationMode.LEGACY
+    selected = load_api_composition_settings({**VALID_ENV,
+        'RIFTCOACH_TASK_PUBLICATION_MODE': 'evidence_bound_v1'})
+    assert selected.task_publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1
+    with pytest.raises(ValueError, match='RIFTCOACH_TASK_PUBLICATION_MODE'):
+        load_api_composition_settings({**VALID_ENV, 'RIFTCOACH_TASK_PUBLICATION_MODE': 'pass'})
+
+
 class ScalarResult:
     def scalar_one(self) -> int:
         return 1

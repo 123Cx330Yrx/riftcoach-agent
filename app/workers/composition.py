@@ -67,6 +67,7 @@ from app.tasks.reconciliation import (
 )
 from app.workers.polling import PollingPolicy
 from app.workers.review_worker import ReviewWorker
+from app.tasks.continuation import WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, contract_for_worker_profile
 
 
 WorkerCompositionErrorCode: TypeAlias = Literal[
@@ -120,6 +121,7 @@ class WorkerCompositionSettings:
     polling_policy: PollingPolicy
     lease_policy: TaskLeasePolicy
     runtime_profile: ModelRuntimeProfile | None = field(default=None, repr=False)
+    execution_profile: str = "legacy"
 
 
 @dataclass(frozen=True, slots=True)
@@ -170,6 +172,11 @@ def load_worker_composition_settings(
             }
         )
         registry = load_provider_registry_settings(environment)
+        execution_profile = environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE", "legacy").strip()
+        if execution_profile not in {"legacy", WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+            raise ValueError("unknown worker execution profile")
+        if execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE} and raw_zhipu.model != ZHIPU_GLM53_FLASH_MODEL:
+            raise ValueError("Sol routes require Flash generation")
         if registry.default_provider_id != "zhipu":
             raise ValueError("only the current product baseline may be selected")
         runtime_profile = resolve_model_runtime_profile(
@@ -306,6 +313,7 @@ def load_worker_composition_settings(
             polling_policy=polling_policy,
             lease_policy=lease_policy,
             runtime_profile=runtime_profile,
+            execution_profile=execution_profile,
         )
     except WorkerCompositionError:
         raise
@@ -416,6 +424,9 @@ def build_review_worker_process(
             ),
             runtime=runtime,
             receipt_writer=FileRunReceiptStore(settings.runs_root),
+            publication_sources=_publication_sources(settings.runs_root),
+            publication_writer=_publication_writer(settings.runs_root),
+            allow_legacy_without_publication=True,
         )
         evidence_verifier = RecentReviewTerminalEvidenceVerifier(
             settings.runs_root
@@ -423,14 +434,21 @@ def build_review_worker_process(
         executor = RecentReviewTaskExecutor(
             application_service=application,
             evidence_verifier=evidence_verifier,
+            runs_root=settings.runs_root,
         )
+        executor = compose_continuation_executor(settings, repository=repository,
+            legacy=executor, summary_builder=summary_builder, knowledge=knowledge,
+            memory_repository=PostgresMemoryContextRepository(session_factory))
         worker = ReviewWorker(
             repository=repository,
             executor=executor,
+            continuation_store=executor.store,
             worker_id=normalized_worker_id,
             polling_policy=settings.polling_policy,
             observability=TaskObservability(logger_name="riftcoach.worker"),
-            terminal_turn_writer=PostgresTerminalTurnWriter(session_factory),
+            terminal_turn_writer=PostgresTerminalTurnWriter(
+                session_factory, runs_root=settings.runs_root
+            ),
             lease_policy=settings.lease_policy,
             recovery=ExpiredReviewTaskRecovery(
                 repository=repository,
@@ -449,6 +467,58 @@ def build_review_worker_process(
         raise WorkerCompositionError("worker_dependency_invalid") from None
 
 
+def compose_continuation_executor(settings, *, repository, legacy, summary_builder,
+                                  knowledge, memory_repository=None):
+    """Shared production composition seam, also exercised by offline SQL tests."""
+    from app.persistence.task_continuations import PostgresTaskContinuations
+    from app.workers.sol_continuation import ContinuationRoutingExecutor, SolContinuationExecutor
+    store = PostgresTaskContinuations(repository)
+    candidate = None
+    if settings.execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+        contract = contract_for_worker_profile(settings.execution_profile)
+        from app.runtime.sol_natural_provider import SolNaturalProviderFactory
+        generator = ZhipuSettings(api_key=_read_secret_value(settings.secret_source,
+            name=settings.llm_secret_name), base_url=settings.zhipu.base_url,
+            model=settings.zhipu.model, default_timeout_s=settings.zhipu.default_timeout_s)
+        reviewer_key = _read_secret_value(settings.secret_source, name="sol-review-api")
+        candidate = SolContinuationExecutor(store=store, runs_root=settings.runs_root, contract_module=contract,
+            summary_builder=summary_builder, knowledge_provider=knowledge,
+            memory_repository=memory_repository,
+            publication_sources=_publication_sources(settings.runs_root),
+            provider_factory_builder=lambda root: SolNaturalProviderFactory(
+                generator_settings=generator, api_key=reviewer_key, transport_root=root,
+                contract_module=contract))
+    elif settings.execution_profile != "legacy":
+        raise WorkerCompositionError("worker_configuration_invalid")
+    return ContinuationRoutingExecutor(store, legacy, candidate)
+
+
+def _publication_sources(runs_root: Path):
+    # Keep evidence publication opt-in at the task/context level while making
+    # the worker capable of producing the same verified payload when requested.
+    from app.evidence.publication import EvidencePublicationSources
+
+    class DynamicEvidencePublicationSources(EvidencePublicationSources):
+        def project(self, summary, *, routing_region):
+            # ``now`` must be per execution; a worker can live longer than the
+            # summary's generated_at timestamp.
+            return EvidencePublicationSources(
+                now=datetime.now(timezone.utc),
+                observed_at=self.observed_at,
+                data_dragon=self.data_dragon,
+                official_patch=self.official_patch,
+                meta_evidence=self.meta_evidence,
+            ).project(summary, routing_region=routing_region)
+
+    return DynamicEvidencePublicationSources(now=datetime.now(timezone.utc))
+
+
+def _publication_writer(runs_root: Path):
+    from app.evidence.publication_store import FileEvidencePublicationStore
+
+    return FileEvidencePublicationStore(runs_root)
+
+
 def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecretSource:
     source = InMemorySecretSource()
     try:
@@ -462,6 +532,9 @@ def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecret
             version="environment",
             value=_required_secret(environment, "LLM_API_KEY"),
         )
+        if environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE") in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+            source.put(name="sol-review-api", version="environment",
+                       value=_required_secret(environment, "RIFTCOACH_SOL_REVIEW_API_KEY"))
     except ValueError:
         raise
     return source

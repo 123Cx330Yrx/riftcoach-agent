@@ -1,0 +1,282 @@
+{
+  "kind": "sol-original15-scope4-completed-20261027",
+  "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completed-accepted.json",
+  "accepted_evidence_sha256": "44791e77f6e8f31662c5b51c255dd2d07a0bc52fb2cbcb07a363f25e0180193d",
+  "replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completed-replay.json",
+  "replay_sha256": "9417b8c29fc959e2a0b3639a354de71c302bc2bf9de0d5686d4a26bd7edfd7c4",
+  "accepted": {
+    "version": "original15-scope4-completed-accepted-v1",
+    "case": "scope:4",
+    "completion_fresh": {
+      "native_observed": {
+        "author_json_equal": true,
+        "author_sha256": "1693b0d91ea340ef6c57a762a98087ca7dd735b9f9474d6a0a091f23dd173526",
+        "author_text_equal": false,
+        "checkpoint_sha256": "a4e3b94f6c0f59791d394f1aee6007d451b3b6a5468f5a7aec17a85efd95b4eb",
+        "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17b69-4203-7921-901d-e7c4c6799ad8/msg_0fdcb483ddf38b4a016ae01b787be4819d90fc0f691a6d9692",
+        "key_reads": 0,
+        "native_final_sha256": "3ea0a3cde3bd459f10f483c26ab3ab3dedd89a4a355d828173e1b1eb4bd685b8",
+        "native_import_verified": true,
+        "original_stdout_roots": {
+          "checkpoint_sha256": "0ac95d0372bfb47cdf0ca8ea0b3e879f4709aa42c586bf7bb8e6e02e5c8a2a3d",
+          "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60"
+        },
+        "provider_requests": 0,
+        "raw_event_sha256": "b238c127da124d013eda9b82c515ace27bdd7d0fea5add496957e96e05c86d2d",
+        "review": {
+          "binding": {
+            "key": "completion-fresh",
+            "plan_sha256": "4ec449ca567d1e0d4c339bfbada14ebfc8bab952aa3dbcc57a4aba66e367df04",
+            "report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+            "request_sha256": "0ced2bc93a469e4c865e05cd048e931b5e1e19131ba9353c4734ef467b4fc2b8",
+            "response_sha256": "32c5707628a1e72a8e6eaf76fa60491418e47c0cd9cb52074bde4686cad771f3",
+            "stage": "final"
+          },
+          "decision": {
+            "accepted": true,
+            "actual_report_checked": true,
+            "compatibility": null,
+            "defects": [],
+            "kind": "opinion",
+            "material_sha256": "8da4229ec074ae8e5ee92c890b323377d8d2283319f467a62226313330f1a257",
+            "report_assessment": null,
+            "reviewer": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+            "source_review": "\u672c\u6b21\u6309 completion-fresh checkpoint \u72ec\u7acb\u91cd\u8bfb\u4e86\u6750\u65998da4229ec074ae8e5ee92c890b323377d8d2283319f467a62226313330f1a257\uff0c\u68c0\u67e5\u5b8c\u6574\u65b0\u7a3f25\u6bb5\u3001\u5b9e\u9645\u7528\u6237\u539f\u8bdd\u3001\u5168\u90e8\u4e8b\u5b9e\u4e0e\u51fa\u5904\u3001\u751f\u6210\u6295\u5f71\u3001\u786e\u5b9a\u6027\u62a5\u544a\u3001K1\u81f3K5\u5b8c\u6574\u77e5\u8bc6\u3001\u8bf7\u6c42\u5185\u5b8c\u6210\u5ea6\u653f\u7b56\u3001\u65e0\u635f\u8868\u683c\u4e0ecomputed_evidence\u53ca\u552f\u4e00\u539f\u59cbProvider\u610f\u89c1\u3002\u5b9e\u9645\u62a5\u544aSHA256\u4e3a03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e\uff1b\u8868\u683c\u6062\u590d\u7684facts\u3001provenance\u3001\u77e5\u8bc6\u4e0ecomplete_source\u4e00\u81f4\uff0crequest\u5185\u6821\u9a8c\u6750\u6599\u4ea6\u4e00\u81f4\u3002\u6ca1\u6709\u7528\u5176\u4ed6\u804c\u8d23\u7684\u5206\u6570\u6216\u5148\u524d\u8f6e\u6b21\u63a8\u65ad\u672c\u6b21\u901a\u8fc7\u3002Provider\u672c\u8f6e\u8f93\u51fascore100\u3001verdict=pass\uff0cissues\u3001issue_resolutions\u3001advisories\u5747\u4e3a\u7a7a\uff1b\u5176\u4e2dissue_resolutions\u4e3a\u7a7a\u7b26\u5408\u6b64\u6b21\u72ec\u7acb\u65b0\u5ba1\u67e5\u672a\u63d0\u4f9b\u65e7\u8bc4\u4f30\u7684\u6761\u4ef6\u3002\n\n\u5b9e\u9645\u7528\u6237\u8bf7\u6c42\u662f\u201c\u590d\u6838ShowMaker\u89c2\u6469\u62a5\u544a\uff1b\u8fd9\u662f\u89c2\u6469\u5bf9\u8c61\uff0c\u4e0d\u662f\u9605\u8bfb\u8005\u672c\u4eba\u3002\u201d\u63d0\u4f9b\u7684player\u4e3aDK ShowMaker#KR1\uff0c\u800c\u975e\u9605\u8bfb\u8005\u3002\u5168\u6587\u7b2c1\u30014\u6bb5\u5c06\u62a5\u544a\u5b9a\u4f4d\u4e3a\u8be5\u5bf9\u8c61\u4e94\u5c40\u89c2\u6469\u590d\u76d8\uff0c\u7b2c4\u6bb5\u76f4\u63a5\u58f0\u660e\u5bf9\u8c61\u4e0d\u662f\u9605\u8bfb\u8005\uff1b\u7b2c19\u6bb5\u518d\u6b21\u58f0\u660e\u8be5\u6570\u636e\u4e0d\u6784\u6210\u9605\u8bfb\u8005\u4e2a\u4eba\u57fa\u7ebf\u3002\u7b2c3\u81f314\u6bb5\u7ed9\u51fa\u603b\u4f53\u7ed3\u8bba\u3001\u6837\u672c\u4eae\u70b9\u3001\u98ce\u9669\u53ca\u5206\u4f4d\u7f6e\u80dc\u8d25\u6bd4\u8f83\uff1b\u7b2c16\u300117\u6bb5\u5b89\u6392\u5bf9\u6240\u7ed9\u8d25\u5c40\u548c\u80dc\u5c40\u7684\u89c2\u6469\u590d\u76d8\uff1b\u7b2c23\u81f325\u6bb5\u4ea4\u4ee3\u8bc1\u636e\u8303\u56f4\u3001\u6570\u636e\u7f3a\u53e3\u53ca\u77e5\u8bc6\u6765\u6e90\u3002\u56e0\u6b64\u4e0d\u662f\u53ea\u91cd\u590d\u8eab\u4efd\u58f0\u660e\u6216\u53ea\u5217\u6570\u636e\uff0c\u800c\u662f\u5df2\u7ecf\u4ea4\u4ed8\u4e0e\u6240\u7ed9\u6bd4\u8d5b\u76f8\u5173\u7684\u89c2\u6469\u5185\u5bb9\u548c\u4e0b\u4e00\u6b65\u89c2\u5bdf\u52a8\u4f5c\u3002\u5b9e\u9645\u8bf7\u6c42\u6ca1\u6709\u8981\u6c42\u8bfb\u8005\u672c\u4eba\u8bad\u7ec3\u3001\u786e\u5b9a\u4e3b\u4f4d\u7f6e\u3001\u6307\u5b9a\u82f1\u96c4\u6c60\u3001\u5236\u5b9a\u65e5\u7a0b\u6216\u8865\u5145\u4e2a\u4eba\u57fa\u7ebf\uff1b\u4e0d\u80fd\u4e3a\u4e86\u5b8c\u6210\u5ea6\u8865\u9020\u8fd9\u4e9b\u4e49\u52a1\u3002\n\n\u7b2c18\u6bb5\u6807\u9898\u201c\u8bad\u7ec3\u8ba1\u5212\u201d\u4e0e\u7b2c19\u6bb5\u201c\u60f3\u8bad\u7ec3\u7684\u4f4d\u7f6e\u201d\u5e94\u8fde\u540c\u5176\u540e\u76f4\u63a5\u7ba1\u8f96\u540e\u6587\u7684\u201c\u4ee5\u4e0b\u4e3a\u6761\u4ef6\u6027\u89c2\u6469\u7ec3\u4e60\u201d\u7406\u89e3\u3002\u7b2c20\u6bb5\u5b9e\u9645\u52a8\u4f5c\u662f\u82e5\u9009\u62e9\u4e2d\u5355\uff0c\u4ece\u5df2\u67095\u5c40\u4e2d\u90091\u81f32\u5c40\uff0c\u89c2\u5bdf5\u5206\u949f\u533a\u95f4\u7684\u8865\u5200\u8282\u594f\u548c\u8d44\u6e90\u524d\u540e\u8def\u7ebf\u5e76\u8bb0\u5f55\u53d8\u5316\uff1b\u5b83\u6ca1\u6709\u8981\u6c42\u9605\u8bfb\u8005\u672c\u4eba\u6253\u8fd9\u4e9b\u5c40\uff0c\u4e5f\u6ca1\u6709\u628aShowMaker\u6570\u503c\u8bbe\u4e3a\u9605\u8bfb\u8005\u8fbe\u6807\u7ebf\u3002\u7b2c21\u6bb5\u5728\u8be5\u89c2\u6469\u9650\u5b9a\u4e0b\u4e0d\u8bbe\u56fa\u5b9a\u6570\u503c\u76ee\u6807\uff0c\u5e76\u63d0\u51fa\u6837\u672c\u6269\u5927\u540e\u4e0e\u540c\u4f4d\u7f6e\u5386\u53f2\u6837\u672c\u6bd4\u8f83\uff1b\u6ca1\u6709\u660e\u786e\u6539\u6210\u8bfb\u8005\u5fc5\u987b\u5b9e\u6218\u6216\u5bf9\u4e2a\u4eba\u8fbe\u6807\u3002\u7f3a\u5c11\u8bad\u7ec3\u76ee\u6807\u65f6\u4f4d\u7f6e\u4fdd\u6301\u4e0d\u9009\u5e76\u7ed9\u51fa\u6761\u4ef6\u9009\u9879\uff0c\u7b26\u5408\u672c\u6b21\u653f\u7b56\u3002\u53ef\u8fdb\u4e00\u6b65\u7edf\u4e00\u63aa\u8f9e\uff0c\u4f46\u5df2\u6709\u5168\u6587\u9650\u5b9a\u8db3\u4ee5\u786e\u5b9a\u5b9e\u9645\u5bf9\u8c61\u548c\u7528\u9014\uff0c\u4e0d\u6784\u6210\u9700\u8981\u4fee\u6539\u7684\u8eab\u4efd\u6216\u76ee\u6807\u51b2\u7a81\uff1b\u4e5f\u4e0d\u80fd\u4ec5\u56e0\u201c\u8bad\u7ec3\u201d\u4e00\u8bcd\u5236\u9020\u4efb\u52a1\u7f3a\u53e3\u3002\n\n\u65e2\u6709\u77e5\u8bc6\u6d88\u8d39\u4e49\u52a1\u5df2\u5b9e\u9645\u5b8c\u6210\uff0c\u8fdc\u4e0d\u6b62\u7b2c25\u6bb5\u5217\u6765\u6e90\u540d\u3002K5\u6b63\u6587\u8981\u6c42\u7edf\u8ba1\u63cf\u8ff0\u7ed3\u679c\u3001\u65f6\u95f4\u7ebf\u5b9a\u4f4d\u4e8b\u4ef6\u3001\u5f55\u50cf\u5224\u65ad\u539f\u56e0\uff0c\u7b2c16\u6bb5\u636e\u6b64\u9009\u5b9a\u827e\u5c3c\u7ef4\u4e9a\u4e0e\u6d1b\u514b\u8d25\u5c40\uff0c\u7ed9\u51fa\u9700\u5b9a\u4f4d\u7684\u6b7b\u4ea1\u65f6\u95f4\u5e76\u5b89\u6392\u540e\u7eed\u51b3\u5b9a\u662f\u5426\u5f55\u50cf\u6838\u9a8c\uff1b\u7b2c11\u6bb5\u4ea6\u7528K5\u533a\u5206\u7ed3\u679c\u4e0e\u539f\u56e0\u3002K4\u6b63\u6587\u652f\u6301\u6709\u9650\u53ef\u89c2\u5bdf\u76ee\u6807\u3001\u89c2\u5bdf\u5468\u671f\u3001\u8d44\u6e90\u524d\u540e\u6d3b\u52a8\u8def\u7ebf\u4e0e\u8bb0\u5f55\u53d8\u5316\uff0c\u7b2c20\u6bb5\u4ee5[K4]\u8fde\u63a51\u81f32\u5c40\u9009\u62e9\u30015\u5206\u949f\u89c2\u5bdf\u533a\u95f4\u3001\u8def\u7ebf\u6bd4\u8f83\u53ca\u8bb0\u5f55\u52a8\u4f5c\uff0c\u76f4\u63a5\u6ee1\u8db3\u81f3\u5c11\u4e00\u5904\u5b9e\u9645\u63d0\u4f9b\u4e14\u652f\u6301\u5efa\u8bae\u7684[K\u7f16\u53f7]\u5f15\u7528\u8981\u6c42\u3002\u7b2c17\u6bb5\u7528[K2]\u5c06\u80dc\u5c40\u6b7b\u4ea1\u524d\u8def\u7ebf\u6bd4\u8f83\u4fdd\u6301\u4e3a\u5f85\u9a8c\u89c2\u5bdf\uff1b\u7b2c21\u6bb5\u7528[K3]\u8fde\u63a5\u4e0d\u8bbe\u4efb\u610f\u9608\u503c\u4e0e\u6269\u5927\u540c\u4f4d\u7f6e\u5386\u53f2\u6837\u672c\u6bd4\u8f83\uff1bK1\u4e5f\u5728\u76f8\u5173\u89e3\u91ca\u4e2d\u5b9e\u9645\u4f7f\u7528\u3002\u8fd9\u91cc\u786e\u8ba4\u5df2\u6709\u77e5\u8bc6\u5230\u884c\u52a8\u7684\u8fde\u63a5\uff0c\u4e0d\u5c06\u4ec5\u6709\u5f15\u7528\u76ee\u5f55\u5f53\u4f5c\u5b8c\u6210\uff0c\u4e5f\u4e0d\u989d\u5916\u8981\u6c42\u628a\u6bcf\u4e00\u77e5\u8bc6\u6761\u76ee\u6539\u5199\u6210\u66f4\u591a\u7ec3\u4e60\u3002\n\n\u5168\u90e8\u6765\u6e90\u672a\u63d0\u4f9bOP.GG\u5feb\u7167\uff1aexternal_fact_paths\u4e3a\u7a7a\uff0csource_roots\u5c06external_bundle\u5217\u4e3aunavailable\uff0ccomplete_source\u4e5f\u6ca1\u6709\u53ef\u5339\u914d\u4f4d\u7f6e\u6216\u82f1\u96c4\u7684tier\u3001rank\u3001rate\u3002\u6545\u201c\u5bf9\u53ef\u7528\u4e14\u5339\u914d\u4f4d\u7f6e/\u82f1\u96c4\u7684OP.GG\u4e8b\u5b9e\u81f3\u5c11\u6d88\u8d39\u4e00\u9879\u201d\u7684\u6761\u4ef6\u672a\u89e6\u53d1\uff0c\u4e0d\u80fd\u8981\u6c42\u7f16\u9020\u6392\u540d\u3001\u68c0\u7d22\u65f6\u95f4\u6216\u5916\u90e8\u82f1\u96c4\u5efa\u8bae\u3002\u7b2c24\u6bb5\u5df2\u660e\u786e\u8bf4\u660e\u672c\u4f1a\u8bdd\u672a\u63d0\u4f9bOP.GG\u6570\u636e\u53ca\u56e0\u6b64\u4e0d\u542b\u5916\u90e8\u5feb\u7167\u82f1\u96c4\u6c60\u5efa\u8bae\u3002\u7b2c23\u6bb5\u540c\u65f6\u4ea4\u4ee3\u4ec5\u4e94\u5c40\u3001\u6df7\u5408\u4f4d\u7f6e\u3001\u5355\u82f1\u96c4\u4e00\u6b21\u53ca\u5f55\u50cf\u5c42\u6b21\u9650\u5236\uff0c\u7f3a\u5c11\u8d44\u6599\u5df2\u4f5c\u5fc5\u8981\u8bf4\u660e\uff1b\u7528\u6237\u4e5f\u672a\u8981\u6c42\u83b7\u53d6\u5176\u4ed6\u6765\u6e90\u3002\n\n\u672c\u6b21\u804c\u8d23\u4e0d\u91cd\u590d\u88c1\u51b3\u73b0\u6709\u65ad\u8a00\u7684\u6570\u5b57\u3001\u5f52\u56e0\u3001\u56e0\u679c\u6216\u5efa\u8bae\u4f9d\u636e\u7b49\u4e8b\u5b9e\u4e13\u8d23\u5185\u5bb9\u3002\u7b2c13\u300114\u6bb5\u7684\u5b9e\u9645\u65b0\u6587\u672c\u5df2\u7ecf\u8bfb\u5165\uff0c\u5305\u62ec\u4e2d\u5355\u4e0e\u5168\u6837\u672c\u65e9\u671f\u6b7b\u4ea1\u5bf9\u7167\uff1b\u672c\u6b21pass\u4e0d\u7528\u4e8e\u8c41\u514d\u4efb\u4f55\u4e8b\u5b9e\u95ee\u9898\u3002Provider\u6ca1\u6709\u65b0\u589e\u89e3\u91ca\u3001\u4fee\u6cd5\u6216\u5f15\u7528\uff0c\u56e0\u6b64\u4e0d\u5b58\u5728\u5176\u89e3\u91ca\u51ed\u7a7a\u6dfb\u52a0\u7528\u6237\u4e49\u52a1\u3001\u9519\u8bef\u66f4\u6362\u89c2\u6469\u5bf9\u8c61\u6216\u5220\u9664\u6b63\u786e\u4e8b\u5b9e\u7684\u60c5\u51b5\u3002\u5168\u6587\u672a\u53d1\u73b0\u9700\u7ec8\u6b62\u7684\u63d0\u793a\u6ce8\u5165\uff1b\u7a7aadvisories\u4e5f\u4e0d\u4ee3\u8868\u5fc5\u987b\u5236\u9020\u63aa\u8f9e\u4f18\u5316\u3002\n\n\u636e\u6b64\u63a5\u53d7\u8be5\u5b8c\u6210\u5ea6\u610f\u89c1\uff1a\u5b9e\u9645\u7528\u6237\u4efb\u52a1\u4e0e\u9002\u7528\u8d44\u6599\u6d88\u8d39\u4e49\u52a1\u65e0\u672a\u5b8c\u6210\u7f3a\u53e3\uff0caccepted=true\uff0cdefects\u4e3a\u7a7a\uff0cactual_report_checked=true\u3002\u6b64\u5224\u65ad\u53ea\u5bf9\u5e94\u672c\u8f6e\u5b8c\u6210\u5ea6\u804c\u8d23\uff0c\u4e0d\u7b49\u4e8e\u5b8c\u6574\u62a5\u544a\u53d1\u5e03\u3001\u751f\u4ea7\u51c6\u5165\u6216\u5176\u4ed6\u5ba1\u67e5\u804c\u8d23\u901a\u8fc7\u3002"
+          }
+        },
+        "terminal_newline_only_difference": true
+      },
+      "primary_sha256": "207eb003f806c5af3b28b8738a407f1d84a58cca55b47c57facde897bd8f9c1b",
+      "input_tokens": 16254,
+      "output_tokens": 186,
+      "known_tokens": 16440,
+      "elapsed_s": 14.391,
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true
+    },
+    "provider_verdict": "pass",
+    "score": 100,
+    "issues": [],
+    "issue_resolutions": [],
+    "advisories": [],
+    "receipt": {
+      "version": "research-responses-single-call-v1",
+      "ok": true,
+      "code": "ok",
+      "worker_code": "ok",
+      "failure_category": null,
+      "request_sha256": "1d0a73aad2aecf2ffc5cc43929f4d510c6f86526d2f3c9cd0b60ba4f498badb8",
+      "wire_sha256": "bff9c902b74d7a03dfae578210f4fdbfea6fd4d48064627cd4f4e2998001f1bc",
+      "profile": {
+        "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+        "base_url": "https://yujianwudi.top/v1",
+        "model": "gpt-6.1-sol",
+        "route": "proxy-12000"
+      },
+      "usage": {
+        "input_tokens": 16254,
+        "output_tokens": 186,
+        "total_tokens": 16440,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 104
+      },
+      "usage_state": "known",
+      "usage_conflict": false,
+      "conflicting_worker_usage": null,
+      "usage_basis": "channel_reported_unverified_upstream",
+      "http_requests": 1,
+      "reaped": true,
+      "worker_exit": 0,
+      "elapsed_s": 14.391,
+      "semantic_approval": false,
+      "group_verified": false,
+      "upstream_identity_verified": false,
+      "qualified": false,
+      "response_mode": "natural-sol-dual-necessity-v1",
+      "validation_context_sha256": "53ae022b455bf76e42ccd151a1da570529940ad3a2a467069472d42b91a40288"
+    },
+    "receipt_sha256": "36822dcb191067e6d6eb992cd276f80ac23682e380af8648e86ab4149d2dd136",
+    "observation": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completion-fresh-native-observed.json",
+    "observation_sha256": "47a2c94c07159a249bfcc6beb7cbffcbb3a8e4abd54d6d68dde5fa2e4ba09489",
+    "segments": {
+      "0074": {
+        "exit": {
+          "operation": "run",
+          "case": "scope:4",
+          "exit_code": 0,
+          "stdout": "0074.stdout.txt",
+          "stdout_sha256": "7a6f79febe21299403ee3b750dce6d2b28cce407e74fb47719ffbdefdd8ef190"
+        },
+        "exit_sha256": "dc1aa506c30961c0d9e670b1e42ceaf1e5a54e5ed7293a277497e31d01422085"
+      },
+      "0075": {
+        "exit": {
+          "operation": "submit",
+          "case": "scope:4",
+          "exit_code": 0,
+          "stdout": "0075.stdout.txt",
+          "stdout_sha256": "d025857c65626155bc088c46b8b922156004a9760c426fd6dd34dbef9c09255e"
+        },
+        "exit_sha256": "7f51659f71ed1b2f2797f7039b82965bb49d3b8d64e85ec54b7a346e6aee7737"
+      },
+      "0076": {
+        "exit": {
+          "operation": "run",
+          "case": "scope:4",
+          "exit_code": 0,
+          "stdout": "0076.stdout.txt",
+          "stdout_sha256": "dc5cfc7c51a21ed3e38bc8a9d973e59356b71b260d85c23ff0fe8055b5f0edda"
+        },
+        "exit_sha256": "b63feb92568be26d0a6876ef577d96874c3712b3d2b0b4b0687f60a3c590fac6"
+      }
+    },
+    "original_stdout_roots": {
+      "checkpoint_sha256": "ddef7814dadee4d788e692a39305600cc9bb06753a1c6a53f9544c8c3ae72bab",
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60"
+    },
+    "result": {
+      "accounting": {
+        "attempts": [
+          {
+            "input_tokens": 20075,
+            "model": "gpt-6.1-sol",
+            "ordinal": 1,
+            "output_tokens": 1699,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "9df78828d9a1e22c63c05398d8f1819ac07a42b6fe4de622ed80a3e2ff00cba5",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 18502,
+            "model": "gpt-6.1-sol",
+            "ordinal": 2,
+            "output_tokens": 223,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "e3be0d749afb2b7baa0bcb437c7a76681f988be5dc45083aded984566298a0f7",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 17827,
+            "model": "gpt-6.1-sol",
+            "ordinal": 3,
+            "output_tokens": 564,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "d8270dffdc28537bdbe7ce2a035b93b6825188720469d61b25b5f0754bdf9c2c",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 16254,
+            "model": "gpt-6.1-sol",
+            "ordinal": 4,
+            "output_tokens": 186,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "8b9eb8d47b85721e253802901d1d833c5b358aa1fb9541b5205408d16e69a4e4",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          }
+        ],
+        "calls": 4,
+        "failed": false,
+        "logical": {
+          "generation": 0,
+          "review": 4
+        },
+        "reserved_tokens": 0,
+        "retries": 0,
+        "router_calls": 4,
+        "stopped": false,
+        "tokens": 75330
+      },
+      "actual_report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+      "expected_outcome": "candidate_repaired_pass_unqualified",
+      "key": "scope:4",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false
+    },
+    "actual_report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+    "application_sha256": "2ab2b91577f4a2723708d44748b2967f916cfecbea0f10b3b1200985629c94b7",
+    "application_count": 1,
+    "fresh_same_actual_report_verified": true,
+    "strict_replay": true,
+    "strict_replay_under_recorded_terminal_lf_exception": true,
+    "terminal_lf_exceptions": [
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-facts-fresh-terminal-lf-recovery.json",
+        "sha256": "ecef23a378ffc2c6250dcf7756ed7ca91fc66de2b76de84a53bffa03da189206"
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completion-fresh-terminal-lf-recovery.json",
+        "sha256": "90e477621161167528a2881e2475a66f082661978e13f9f2d23c2076bb75c2e6"
+      }
+    ],
+    "recovery_installation": {
+      "selection": {
+        "module_sha256": "07f2c8820b4851db59807f4cc1150dfec5046b58a8f9d4bd259a2b61f77f630f",
+        "manifest_sha256": "ecef23a378ffc2c6250dcf7756ed7ca91fc66de2b76de84a53bffa03da189206",
+        "additional_manifests": [
+          {
+            "file": "scope-4-completion-fresh-terminal-lf-recovery.json",
+            "sha256": "90e477621161167528a2881e2475a66f082661978e13f9f2d23c2076bb75c2e6"
+          }
+        ]
+      },
+      "settings_sha256": "52e55472e319ddd8d728e2dc83f9aa20fabb7a863a27b3d026febfd170304fbd",
+      "focused_checks_passed": 16,
+      "original_facts_manifest_unchanged": true,
+      "no_generic_json_equivalence": true,
+      "provider_requests": 0,
+      "key_reads": 0
+    },
+    "local_wait": {
+      "version": "original15-scope4-completion-local-wait-v1",
+      "credential_finished_checkpoint": "0067.json",
+      "attempt_reserved_checkpoint": "0070.json",
+      "credential_finished_to_attempt_reserved_wall_seconds": 454.478,
+      "provider_elapsed_s": 14.391,
+      "provider_http_requests": 1,
+      "provider_ok": true,
+      "no_provider_retry": true,
+      "interpretation": "Recorded local wall time after hidden input until attempt reservation includes repeated read-only prefix/source/native checks. It is separate from the 14.391-second successful provider request; not a provider timeout. No performance optimization applied to the active run."
+    },
+    "replay_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-completed-replay.json",
+    "replay_sha256": "9417b8c29fc959e2a0b3639a354de71c302bc2bf9de0d5686d4a26bd7edfd7c4",
+    "batch_accounting": {
+      "calls": 18,
+      "http_requests_known": 18,
+      "http_requests_unknown": 0,
+      "known_tokens": 336074,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "retries": 0,
+      "unknown_reserved_tokens": 0
+    },
+    "cases_completed": 5,
+    "case_closed": true,
+    "next_case": "scope:3",
+    "next_stage": "facts-initial",
+    "next_case_created": false,
+    "original_reviewer_reused": true,
+    "batch_closed": false,
+    "qualified": false,
+    "publication_allowed": false,
+    "production_admitted": false
+  },
+  "cases_completed": 5,
+  "next_case": "scope:3",
+  "qualified": false,
+  "publication_allowed": false
+}

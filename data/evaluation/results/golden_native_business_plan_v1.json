@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "expected_host_only": "reject",
+      "id": "explicit_combined_population",
+      "index": 3,
+      "input_ceiling": 43002,
+      "report_sha256": "792db98a3e9ad94c8e1aa18ab8bf5da12824ac2f74d30a59bee132a700142518",
+      "request_sha256": "85ddafb824411f255d196b4569902ea15995b47e53f29fe04a46219d8ab6fda2",
+      "suite": "claim-scope"
+    },
+    {
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "expected_host_only": "reject",
+      "id": "explicit_universal_metrics",
+      "index": 4,
+      "input_ceiling": 43010,
+      "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+      "request_sha256": "85dda80452ef479b9394ffbdf5a694a4ec245350988b5d1adcfde879941b2227",
+      "suite": "claim-scope"
+    },
+    {
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "expected_host_only": "accept",
+      "id": "original_topic_window",
+      "index": 1,
+      "input_ceiling": 42956,
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "request_sha256": "4946c3d30ac62e67f0a3866f96b74aaba7f316c59b2678c1e8af6b6fc0cd64e4",
+      "suite": "claim-scope"
+    },
+    {
+      "dataset_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+      "expected_host_only": "reject",
+      "id": "attribution_original",
+      "index": 1,
+      "input_ceiling": 42876,
+      "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+      "request_sha256": "97be9486e9c2503defbc5a1ee11a34576541cbdbf92807c95c77e83ed88f35ee",
+      "suite": "attribution"
+    }
+  ],
+  "experiment": "golden-native-business-policy-v1",
+  "manual_review_between_cases": true,
+  "max_calls": 20,
+  "max_calls_per_report": 5,
+  "max_seconds_per_report": 900,
+  "max_tokens_per_report": 401920,
+  "model": "glm-5.3-flash",
+  "production_admitted": false,
+  "reasoning_effort": "high",
+  "semantic_approval": false,
+  "stop_after_first_failed_case": true
+}

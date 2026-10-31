@@ -1,0 +1,111 @@
+{
+  "case": "claim-scope:6",
+  "stage": "facts-fresh-accepted-completion-fresh-running",
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e6d-6dbc-7f00-bd82-330ab5b625c4/msg_0ecbd62c944c67ef016ae0e145e9048193a09a3356fae73e31",
+      "author_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
+      "native_final_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
+      "checkpoint_sha256": "6401aac80b5662d17ccb9239e4cc50038fdaa3f823203d2af1aa138e17c307e5",
+      "submission_sha256": "c6f03ede1fe6655e3d24ea031e66a6a0efc55706b80355be39bc7bd0839f6828",
+      "accepted": true
+    },
+    {
+      "stage": "completion-initial",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e81-8b1c-7d43-93b3-59b3a91b0fbe/msg_0ecbd62c944c67ef016ae0e63938588193bb4a7407927788e4",
+      "author_sha256": "07c9dbbe56dcdd2f1a8e7f294763f01c7c39cadf699194ffcb91f13eb5948446",
+      "native_final_sha256": "07c9dbbe56dcdd2f1a8e7f294763f01c7c39cadf699194ffcb91f13eb5948446",
+      "checkpoint_sha256": "ca9cf2ab41336fbcadb80ddc303767ba735eff3504024a38cf7280925068a811",
+      "submission_sha256": "c5c1a0393e57d17327a68159f7a08564565bf2ae06ddc1555af2529c19f26298",
+      "accepted": true
+    },
+    {
+      "stage": "compatibility",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e89-3dcc-7920-bc02-a7119aaed537/msg_0ecbd62c944c67ef016ae0e857bdfc8193a623be969b98162b",
+      "author_sha256": "065dabc85d4c8323e58215a0f569a035c9131ec379f12d9574c998a281597dd9",
+      "native_final_sha256": "065dabc85d4c8323e58215a0f569a035c9131ec379f12d9574c998a281597dd9",
+      "checkpoint_sha256": "8d50d57d08b729d41f40bf6b39b3e6f0438c28833461cb7957a7935b25d445ba",
+      "submission_sha256": "c2670409f13d3c730586389cbb42f74640b251aeeca8e292a78549affb5b0ae4",
+      "accepted": true
+    },
+    {
+      "stage": "edit",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e92-ad78-7161-ac55-e75037b06215/msg_0ecbd62c944c67ef016ae0eaab58c48193a4d519b22757c003",
+      "author_sha256": "252f80a479609702d4921969cde214650ceaab25736eda80d9946afa0334a483",
+      "native_final_sha256": "252f80a479609702d4921969cde214650ceaab25736eda80d9946afa0334a483",
+      "checkpoint_sha256": "45cb334f60a7b526cac18389870f91901d86db7c07303b4b6fa6a3420c11cf0f",
+      "submission_sha256": "03197b3201550c75b2101533fd270e73de9b59773e0db6386f73fd0159c77d9b",
+      "accepted": true
+    },
+    {
+      "stage": "facts-fresh",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17ea7-2661-7d10-8ba4-c5841c0d8bac/msg_0ecbd62c944c67ef016ae0eff180e88193b1fd2bb07f272e10",
+      "author_sha256": "a8ebdd6339aef4c55a955d47977234471a3a05750b994abeb0997af08451dc94",
+      "native_final_sha256": "a8ebdd6339aef4c55a955d47977234471a3a05750b994abeb0997af08451dc94",
+      "checkpoint_sha256": "bb6f2b28a73ed6906532f0879f8395cb0dd777671af90f0fa169c59b57dc2b8c",
+      "submission_sha256": "1d8946f625c1b6ee3dff52dab77b528f835bd39fd7d5f6b5ee4fb479d6c473bb",
+      "accepted": true
+    }
+  ],
+  "original_stdout_roots": {
+    "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565",
+    "checkpoint_sha256": "65097e043649e1fd8d208ef1c7284c73098f9b2c899b198fdf1bbdc268f42126"
+  },
+  "original_stdout_segment": "0123",
+  "active_seconds_at_boundary": 2494.795999999973,
+  "cases_completed": 8,
+  "batch_accounting": {
+    "calls": 31,
+    "http_requests_known": 31,
+    "http_requests_unknown": 0,
+    "known_tokens": 549278,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "retries": 2,
+    "unknown_reserved_tokens": 137228
+  },
+  "application_count": 1,
+  "application_sha256": "7accc410e75fbbbd429baafe6d4e02d58af3e1fbce4829ee09e54a6071a2e0fb",
+  "actual_report_sha256": "1068d56a74f779f59bcefbfb6d7b49261b6e101259e74d48876f897cc8ac193a",
+  "unique_continuation_segment": "0124",
+  "new_provider_receipt": {
+    "version": "research-responses-single-call-v1",
+    "ok": true,
+    "code": "ok",
+    "worker_code": "ok",
+    "failure_category": null,
+    "request_sha256": "b066e05a241144bb634e0e353b8c5a6786f95efc22092c71724b88aeefa917d4",
+    "wire_sha256": "e5857258f5b755614dd51d235f3c7646e061458198047bb92e437dd7208a8bc0",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "usage": {
+      "input_tokens": 17798,
+      "output_tokens": 857,
+      "total_tokens": 18655,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 813
+    },
+    "usage_state": "known",
+    "usage_conflict": false,
+    "conflicting_worker_usage": null,
+    "usage_basis": "channel_reported_unverified_upstream",
+    "http_requests": 1,
+    "reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 31.219,
+    "semantic_approval": false,
+    "group_verified": false,
+    "upstream_identity_verified": false,
+    "qualified": false,
+    "response_mode": "natural-sol-dual-necessity-v1",
+    "validation_context_sha256": "16f6080005196d80c8ba80aa8ba7c63dd24b5b21879ce84f11d7dc99cc28abe0"
+  },
+  "publication_allowed": false,
+  "qualified": false,
+  "automation_status": "PAUSED"
+}

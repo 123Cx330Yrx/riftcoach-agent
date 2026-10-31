@@ -9,7 +9,7 @@ from enum import Enum
 from pathlib import PurePosixPath
 from typing import Any, Generic, Literal, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, model_serializer
 
 from app.harness.run_ids import normalize_run_id
 from app.memory.context_models import MemoryContextBinding
@@ -17,6 +17,7 @@ from app.skills.execution import SkillExecutionRequest
 from app.skills.routing_models import RouteOutcome
 
 from .lifecycle import RuntimeHarnessLifecycleV11
+from .coach_contract import CoachContractSnapshot
 from .signals import (
     AgentRunTerminatedSignal,
     ContextBuiltSignal,
@@ -25,6 +26,7 @@ from .signals import (
     HarnessTransitionedSignal,
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
+    ProviderCallFailedUsageSignal,
     ProviderCallStartedSignal,
     PublicationDecidedSignal,
     RunCompletedSignal,
@@ -70,6 +72,13 @@ class CostObservation(str, Enum):
 class RuntimeContractModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
+    @model_serializer(mode="wrap")
+    def omit_unused_coach_contract(self, handler):
+        result = handler(self)
+        if result.get("coach_contract") is None:
+            result.pop("coach_contract", None)
+        return result
+
 
 def _validate_semver(value: str, *, field_name: str) -> str:
     if not _SEMVER_PATTERN.fullmatch(value):
@@ -102,6 +111,7 @@ def _validate_utc(value: datetime, *, field_name: str) -> datetime:
 
 
 class RuntimePolicySnapshot(RuntimeContractModel):
+    coach_contract: CoachContractSnapshot | None = None
     policy_version: str
     event_budget: int = Field(default=256, ge=2, le=1024)
     max_iterations: int = Field(ge=1, le=20)
@@ -145,6 +155,12 @@ class RuntimePolicySnapshot(RuntimeContractModel):
 
     @model_validator(mode="after")
     def validate_runtime_profile_binding(self) -> "RuntimePolicySnapshot":
+        if self.coach_contract is not None and (
+            self.policy_version != "1.2.0" or self.runtime_profile_id is not None
+            or self.publish_score_threshold != 85 or self.max_revisions != 1
+            or self.allow_deterministic_fallback
+        ):
+            raise ValueError("Coach policy must retain its unadmitted version and quality rules")
         has_id = self.runtime_profile_id is not None
         has_version = self.runtime_profile_version is not None
         has_timeout = self.execution_timeout_s is not None
@@ -160,6 +176,7 @@ class RuntimePolicySnapshot(RuntimeContractModel):
 
 
 class RuntimeIdentitySnapshot(RuntimeContractModel):
+    coach_contract: CoachContractSnapshot | None = None
     skill_name: str
     skill_version: str
     context_contract_version: str
@@ -456,6 +473,8 @@ class RuntimeEvent(RuntimeContractModel):
                     )
             return self
         signal = self.signal
+        if isinstance(signal, ProviderCallFailedUsageSignal):
+            raise ValueError("event_schema_version 1.0 has no failed usage")
         if isinstance(signal, AgentRunTerminatedSignal):
             raise ValueError("event_schema_version 1.0 has no Agent terminal")
         if isinstance(signal, ContextBuiltSignal) and any(
@@ -564,6 +583,50 @@ class RuntimeTrace(RuntimeContractModel):
 
     @model_validator(mode="after")
     def validate_trace_invariants(self) -> "RuntimeTrace":
+        if self.identity.coach_contract != self.policy.coach_contract:
+            raise ValueError("trace Coach contract identity does not match policy")
+        role_contract = None
+        role_descriptor = None
+        snapshot = self.identity.coach_contract
+        if snapshot is not None and (
+            snapshot.contract_id in {"recent-form-review-roles-v1", "natural-duty-direct-patch-time300-v1", "natural-flash-sol-development-v1", "natural-flash-sol-necessity-development-v1", "natural-flash-sol-dual-necessity-development-v1", "natural-flash-sol-product-v1"}
+            or snapshot.version in {"1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5"}
+        ):
+            # Only this exact opt-in contract permits per-request model roles.
+            # Its digest binds the model/profile/transport role map; a caller
+            # cannot grant itself mixed-model access by changing a label.
+            from .coach_contract import ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT, LEGACY_NOTE_ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, BOUNDARY_EXAMPLES_COACH_CONTRACT
+            candidates = (ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT, LEGACY_NOTE_ROLE_COACH_CONTRACT,
+                COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, BOUNDARY_EXAMPLES_COACH_CONTRACT)
+            if snapshot.contract_id == 'natural-duty-direct-patch-time300-v1':
+                from app.evaluation.natural_duty_contract import CONTRACT as natural_duty
+                candidates += (natural_duty,)
+            if snapshot.contract_id == 'natural-flash-sol-development-v1':
+                from app.evaluation.sol_natural_contract import CONTRACT as sol_natural
+                candidates += (sol_natural,)
+            if snapshot.contract_id == 'natural-flash-sol-necessity-development-v1':
+                from app.evaluation.sol_necessity_contract import CONTRACT as necessity_natural
+                candidates += (necessity_natural,)
+            if snapshot.contract_id == 'natural-flash-sol-dual-necessity-development-v1':
+                from app.evaluation.sol_review_contract import CONTRACT as dual_necessity
+                candidates += (dual_necessity,)
+            if snapshot.contract_id == 'natural-flash-sol-product-v1':
+                from app.product.sol_contract import CONTRACT as product
+                candidates += (product,)
+            role_contract = next((contract for contract in
+                candidates
+                if snapshot == contract.snapshot()), None)
+            if role_contract is None:
+                raise ValueError("trace role contract is not the trusted contract")
+            role_descriptor = role_contract.descriptor()
+            if (self.identity.skill_version != role_descriptor['skill_version']
+                    or self.identity.prompt_profile_version != role_descriptor['program_version']):
+                raise ValueError("trace role program identity mismatch")
+            if (
+                self.identity.provider_id != role_descriptor.get("provider_id", "zhipu")
+                or self.identity.provider_model != role_descriptor["model"]
+            ):
+                raise ValueError("trace role composition identity mismatch")
         if self.trace_schema_version != self.event_schema_version:
             raise ValueError("Trace and Event schema versions must match")
         if (
@@ -672,10 +735,19 @@ class RuntimeTrace(RuntimeContractModel):
                     raise ValueError("provider call requires built context")
                 if signal.ordinal != next_provider_ordinal:
                     raise ValueError("provider call ordinal is not contiguous")
-                if (
-                    signal.provider_id != self.identity.provider_id
-                    or signal.model != self.identity.provider_model
-                ):
+                if role_descriptor is None:
+                    expected_provider = self.identity.provider_id
+                    expected_model = self.identity.provider_model
+                else:
+                    role = {
+                        RuntimeProviderPhase.AGENT: "generation",
+                        RuntimeProviderPhase.EVALUATION: "review",
+                        RuntimeProviderPhase.EVALUATION_REPAIR: "review",
+                        RuntimeProviderPhase.REVISION: "revision",
+                    }[signal.phase]
+                    expected = role_descriptor["roles"][role]
+                    expected_provider, expected_model = expected["provider"], expected["model"]
+                if (signal.provider_id, signal.model) != (expected_provider, expected_model):
                     raise ValueError("provider call identity mismatch")
                 provider_open[signal.ordinal] = (
                     signal.provider_id,
@@ -755,21 +827,39 @@ class RuntimeTrace(RuntimeContractModel):
             isinstance(event.signal, ProviderCallStartedSignal)
             for event in self.events
         )
-        provider_completes = [
+        provider_usage_observations = [
             event.signal
             for event in self.events
-            if isinstance(event.signal, ProviderCallCompletedSignal)
+            if isinstance(event.signal, (ProviderCallCompletedSignal, ProviderCallFailedUsageSignal))
         ]
         if self.usage.provider_calls_attempted != provider_starts:
             raise ValueError("provider attempted-call usage does not match events")
-        if self.usage.provider_responses_observed != len(provider_completes):
+        if self.usage.provider_responses_observed != len(provider_usage_observations):
             raise ValueError("provider response usage does not match events")
         if self.usage.observed_input_tokens != sum(
-            signal.input_tokens for signal in provider_completes
+            signal.input_tokens for signal in provider_usage_observations
         ) or self.usage.observed_output_tokens != sum(
-            signal.output_tokens for signal in provider_completes
+            signal.output_tokens for signal in provider_usage_observations
         ):
             raise ValueError("observed token usage does not match events")
+        if role_contract is not None:
+            prices = role_contract.pricing_profiles
+            schedule = next(iter(prices.values()))
+            if (
+                self.usage.pricing_profile_id,
+                self.usage.pricing_profile_version,
+                self.usage.currency,
+            ) != (schedule.profile_id, schedule.version, schedule.currency):
+                raise ValueError("trace role pricing schedule mismatch")
+            if self.usage.cost_observation is CostObservation.COMPLETE:
+                expected_cost = sum((
+                    (Decimal(signal.input_tokens) * prices[(signal.provider_id, signal.model)].input_cost_per_million
+                     + Decimal(signal.output_tokens) * prices[(signal.provider_id, signal.model)].output_cost_per_million)
+                    / Decimal(1_000_000)
+                    for signal in provider_usage_observations
+                ), Decimal(0))
+                if self.usage.cost != expected_cost:
+                    raise ValueError("trace role cost does not match actual model events")
 
         tool_starts = sum(
             isinstance(event.signal, ToolCallStartedSignal)

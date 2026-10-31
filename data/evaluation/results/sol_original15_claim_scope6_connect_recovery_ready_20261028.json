@@ -1,0 +1,119 @@
+{
+  "kind": "sol-original15-claim-scope6-connect-recovery-ready-v1",
+  "case": "claim-scope:6",
+  "focused_checks": {
+    "passed": 32,
+    "files": [
+      "tests/test_original15_transport_recovery.py",
+      "tests/test_original15_execution_time_allowance.py"
+    ]
+  },
+  "installation": {
+    "additional_requests": 0,
+    "additional_tokens": 0,
+    "historical_failure_and_all_prior_evidence_preserved": true,
+    "key_reads": 0,
+    "new_provider_requests": 0,
+    "operator_sha256": "3c261cad7aab3bad01ef4db76fb6bc8fce0c79deb1ba4ba36bf9613934e17eea",
+    "prior_case_time_allowance_preserved": true,
+    "publication_allowed": false,
+    "qualified": false,
+    "reset_accounting": false,
+    "service_manifest_sha256": "c771ff2282a48d0d0f559fc2e351d20b6138be699448b126f8ebee4d84ddfecb",
+    "service_module_sha256": "c9eecc3f8a4477be9565a95aa819c0e761ec78ed5675325debed19ebc7dfde9f",
+    "settings_sha256": "30cb11f0fae3a057a6e630dd83cc66143aa13492daf9c015f6cafb2f821c2158",
+    "stored_key_binding_sha256": "9216296ea5de2f56442acb2c31e16ab19c65640d26ce93653019e1e9a3fe20d2",
+    "stored_key_target_and_profile_preserved": true,
+    "time_manifest_sha256": "b3d92833da840e435404f78c516eaf6a14d26c1acbe44110f7eea8f5f9d8808a",
+    "time_module_sha256": "048e6257d861be769059b2383030c24bfe917cdcba0deebfc42d8d9bc6296ec7",
+    "version": "original15-claim-scope6-connect-recovery-install-v1"
+  },
+  "installation_sha256": "636616820d01c16641e2406b4e513e13395dd2938bd86a2b8543efa55af7811b",
+  "actual_resume_preflight": {
+    "author_inventory_unchanged": true,
+    "completed_prefix_cases_verified": 8,
+    "findings": [],
+    "five_accepted_reviews_preserved": true,
+    "key_reads": 0,
+    "new_provider_requests": 0,
+    "next_launch_manual_retry": false,
+    "old_terminal_and_outcome_preserved": true,
+    "original_inventory_unchanged": true,
+    "original_stdout_roots": {
+      "checkpoint_sha256": "041546a1c544967e67aac9d471a82fca5d5850f3fa9f60202be1ff35e88ff10a",
+      "guard_sha256": "38514a17d4c7797ec432ed4f984f39638078b6dd147cf073ad7450e32febf565"
+    },
+    "passes": [
+      {
+        "ordinal": 22,
+        "phase": "before_credentials",
+        "request_sha256": "e28169e2e9d43baaccbc9bc74dff181eb6b0a2b971a58baf08f8cc5aa5b4d83c"
+      },
+      {
+        "ordinal": 22,
+        "phase": "after_credentials",
+        "request_sha256": "e28169e2e9d43baaccbc9bc74dff181eb6b0a2b971a58baf08f8cc5aa5b4d83c"
+      }
+    ],
+    "prefix_replays": 16,
+    "publication_allowed": false,
+    "qualified": false,
+    "result": {
+      "key": "claim-scope:6",
+      "phase": "paused",
+      "publication_allowed": false,
+      "reason": "session_diagnostic_verified_unsent_boundary"
+    },
+    "staged_retry_authority_is_single_use": true,
+    "transport": {
+      "actual_attempts": 4,
+      "completed_calls": 3,
+      "failed_calls": 1,
+      "http_requests_known": 4,
+      "http_requests_unknown": 0,
+      "known_tokens": 58700,
+      "known_usage_calls": 3,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 58350,
+      "unknown_usage_calls": 1
+    },
+    "unique_application_preserved": true,
+    "version": "claim-scope6-actual-resume-no-send-verification-v1",
+    "wrapper_exit": 0
+  },
+  "budget_after_single_retry_approval": {
+    "calls": 4,
+    "tokens": 58700,
+    "reserved_tokens": 58350,
+    "retries": 1
+  },
+  "actual_resume_preflight_sha256": "85482f62bd94988369ba5268bb68f861e2382929b5b9078c3aec239b906c9e76",
+  "controls": {
+    "operator.py": "3c261cad7aab3bad01ef4db76fb6bc8fce0c79deb1ba4ba36bf9613934e17eea",
+    "settings.json": "30cb11f0fae3a057a6e630dd83cc66143aa13492daf9c015f6cafb2f821c2158",
+    "stored-key-binding.json": "9216296ea5de2f56442acb2c31e16ab19c65640d26ce93653019e1e9a3fe20d2",
+    "original15_transport_recovery.py": "c9eecc3f8a4477be9565a95aa819c0e761ec78ed5675325debed19ebc7dfde9f",
+    "original15_execution_time_allowance.py": "048e6257d861be769059b2383030c24bfe917cdcba0deebfc42d8d9bc6296ec7",
+    "claim-scope-6-connect-recovery.json": "c771ff2282a48d0d0f559fc2e351d20b6138be699448b126f8ebee4d84ddfecb",
+    "claim-scope-6-execution-time-allowance.json": "b3d92833da840e435404f78c516eaf6a14d26c1acbe44110f7eea8f5f9d8808a",
+    "audit_completed_original15_case.py": "b7deca5de128d31c2516381b0e436d62e59c45d80eba7b83f108c1f6037a25bd",
+    "record_completed_original15_case.py": "fe946a727f0ab4ba744cacae46249ecb4b82c67d1a7bc5325a96b4f87df85835"
+  },
+  "additional_active_seconds": 3600,
+  "effective_case_active_seconds": 7200,
+  "time_exception_is_case_and_stage_bound": true,
+  "original_envelope_pass": false,
+  "requests_and_tokens_unchanged": true,
+  "accounting_reset": false,
+  "completed_cases": 8,
+  "same_actual_report_sha256": "1068d56a74f779f59bcefbfb6d7b49261b6e101259e74d48876f897cc8ac193a",
+  "next_stage": "completion-fresh",
+  "next_launch_manual_retry": false,
+  "staged_retry_authority_is_single_use": true,
+  "authorization_expiry_unchanged": true,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "qualified": false,
+  "publication_allowed": false
+}

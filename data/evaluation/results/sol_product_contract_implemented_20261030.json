@@ -1,0 +1,140 @@
+{
+  "schema": "sol-product-contract-implementation-v1",
+  "date": "2026-10-30",
+  "baseline_commit": "765fa5f5b2f07d499270a186a09c59b4cc9838aa",
+  "authorization": "User explicitly accepted ADR0119: \u6388\u6743\u7ee7\u7eed",
+  "contract": {
+    "id": "natural-flash-sol-product-v1",
+    "version": "1.7.0",
+    "worker_profile": "sol-dual-product-v1",
+    "max_requests": 8,
+    "total_tokens": 401920,
+    "active_seconds": 900,
+    "explicit_same_item_retries": 2,
+    "automatic_retries": 0
+  },
+  "implemented": [
+    "explicit Worker composition and profile-bound durable session",
+    "complete initial pair, optional exact application, same-report fresh pair",
+    "identical replacement deduplication with full issue coverage",
+    "unresolved conflicting repairs pause without prefix replay",
+    "cumulative accounting on published Workbench content"
+  ],
+  "request_reuse": {
+    "inventory": "sol_review_qualification_inventory_product_contract_20261030.json",
+    "changed_fields": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "unchanged_fields": 28,
+    "original15_completed": true,
+    "original15_rerun": false,
+    "initial_requests_preserved": 30
+  },
+  "validation": {
+    "new_runtime_contract_cases": 17,
+    "new_runtime_contract_result": "passed in three focused invocations (7 + 5 + 5 distinct cases)",
+    "true_postgres_distinct_cases": 7,
+    "true_postgres_result": "4 product publish/recovery/cancel + 1 atomic Evidence + 2 profile isolation passed",
+    "frontend_cases": 26,
+    "frontend_result": "passed",
+    "typescript": "passed",
+    "related_regression": {
+      "passed": 57,
+      "seconds": 299.7,
+      "scope": "prior dual-review Runtime, session, Worker composition and continuation; no database env inherited"
+    },
+    "post_regression_changes": "Documentation strings/error wording only; manifests and current offline inventory refreshed after these non-behavior changes.",
+    "new_runtime_contract_invocations": [
+      {
+        "passed": 7,
+        "seconds": 158.35
+      },
+      {
+        "passed": 5,
+        "seconds": 16.25
+      },
+      {
+        "passed": 5,
+        "seconds": 28.9
+      }
+    ],
+    "compile": "passed",
+    "json_parse": "passed",
+    "governance": "passed",
+    "diff_check": "passed",
+    "final_manifest_and_publication_smoke": {
+      "passed": 2,
+      "seconds": 33.93,
+      "included_in_distinct_counts": true
+    }
+  },
+  "evidence_scope": {
+    "models": "scripted subprocess HTTP fixtures",
+    "postgres": "new disposable postgres:17-alpine containers",
+    "riot": "fixture SummaryBuilder",
+    "browser": "not repeated in this package; controller/component tests only"
+  },
+  "execution_fixes": [
+    {
+      "failure": "session_send_preflight_required",
+      "cause": "new test harness omitted mandatory callback",
+      "fix": "explicit test callback; production callback unchanged"
+    },
+    {
+      "failure": "worker_configuration_invalid",
+      "cause": "new product profile missing from existing reviewer secret-source branch",
+      "fix": "include both explicit profiles; credential remains separately required"
+    },
+    {
+      "failure": "NameError in profile isolation test",
+      "cause": "assertion block inserted into wrong test",
+      "fix": "restore block to its original publication test; rerun two affected cases"
+    },
+    {
+      "failure": "published session costs absent from Workbench",
+      "cause": "published branch read segment usage only",
+      "fix": "consume owner-bound cumulative usage when segment usage is null"
+    }
+  ],
+  "external_effects": {
+    "real_model_requests": 0,
+    "real_secret_reads": 0,
+    "real_product_database_migrated": false,
+    "default_route_changed": false,
+    "public_deployment": false
+  },
+  "remaining": [
+    "representative real-model product consumption under a new bounded authorization",
+    "default activation after evidence review",
+    "Stage8E and deferred frontend/README/Training/knowledge/operations work"
+  ],
+  "semantic_boundary": "This implements the adopted policy, not a new model-quality result. Fresh reviews may jointly miss a semantically incorrect patch; structural checks do not prove semantics.",
+  "evidence_files": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\product-contract-postgres-result.json",
+      "sha256": "81d4bf926fdfb5c74ecf01504cf4a84607868eeda7463180c3d94f96767d731d"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\product-contract-postgres-v2-result.json",
+      "sha256": "d1bb55a2a9cbe015ad2a5d02322cd1c94a835af8a7319cb45ce1c97df552b9e4"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\product-contract-postgres-boundaries-result.json",
+      "sha256": "8cecbb5cbdc654718566c0eb567aef731fe57756197da9142f45d74523cab5b5"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\product-contract-postgres-profiles-final-result.json",
+      "sha256": "8645a41ca1d4fef4bc6d06489983f76268767292eaa91ff4a18e8070ae926a31"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-integration-20261030/product-contract-regression.stdout.txt",
+      "sha256": "74d3f3c1b911946e5c3bf9d495fc65833bf0048a8fe6e97f6261d90b9dee3374"
+    }
+  ],
+  "cleanup": {
+    "disposable_postgres_containers_removed": true,
+    "docker_desktop_restored_to_stopped": true,
+    "temporary_node_modules_junction_removed": true
+  }
+}

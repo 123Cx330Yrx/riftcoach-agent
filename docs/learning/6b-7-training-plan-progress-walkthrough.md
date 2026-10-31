@@ -1,6 +1,39 @@
 # 6B-7 Training Plan / Progress 实现复盘
 
+2026-10-09逐场生产接线补充：下文当时的“生产者未接线”已由本包接续，历史缺口证据保留。
+详见docs/plans/2026-10-09-training-match-measurement.md与ADR0044补充，不宣称真实训练效果。
+
+问题是重复复盘会把同一比赛当多个训练样本，或者把取得数据的时刻当比赛发生时刻。
+现在只有用户明确Plan中的match指标可生产：每场早死/count、每场视野/score，全实际分路。
+比赛原始结束毫秒限定在Plan创建与task创建之间；未知跳过，真实0保留。旧key/窗口不猜范围。
+
+数据与控制流：match_analyzer保留Riot时间→完整验签RunQuery→规范化Summary digest核主体来源
+→服务器producer→同事务pending Candidate/终态消息/completed→用户accept→已有Progress writer。
+文件SHA说明字节是否变过，规范化SHA说明完整JSON投影是否仍是任务当时绑定的内容，两者分开。
+固定owner/relationship/Plan/metric/match键控制首次候选；含source的完整指纹仍保持来源不可变。
+
+验证是23个公开测量/接受解析例和11个真实文件+真库新整链例，并运行相邻合同与20项真库检查；
+没有实际Provider/Riot。中断实际暴露pending批双列scalars查询故障，修成execute并验证完整恢复。
+恢复操作仍用terminal writer的replay_pending_batch；来源损坏停投影、不改原件、不重新调用模型。
+重复/拒绝/隐藏不重发，system不能接受新测量；换Plan旧候选接受失败。测试库销毁，业务库不迁移。
+
+可以说已把服务器逐场测量接进现有Candidate采用链，防止跨run重复样本并保证新增服务器候选
+原子恢复。不能说已证明训练效果/实际自然消费；新逐场纠错、窗口/特定分路生产未接，原泛指
+纠错保留，旧模型提案独立事务未扩大。下一核HTTP/UI的本人计划/测量说明与明确accept可达性。
+
 ## 1. 问题与原理
+
+2026-10-09生产侧核验：现有复盘executor没有提出Progress候选，模型terminal提案也不能
+声明deterministic_run_fact；存储/采用能力不等于服务器测量已接线。已复现并修复时间线
+缺失变成零或子集均值冒充整组均值的问题，Summary→报告→查询/MCP→页面保留number|null。
+实际范围、红绿证据、兼容边界和测量时间/跨run去重待办见
+docs/plans/2026-10-09-training-progress-source-audit.md；不把获取时刻当比赛时间或补签旧run。
+
+2026-10-09消费一致性补充：页面和Coach记忆必须选同一条最新进度；两个时间相同时，
+共同使用progress_id降序作为稳定裁决。一次Memory读取只选一次当前Plan，计划与进度
+共用plan_id，避免读取期间另一事务换计划后混绑。真库红灯和修后9项检查见
+docs/plans/2026-10-09-training-context-consistency.md；这保证训练投影一致，不保证整个
+READ COMMITTED事务中的所有记录来自同一时点，也不证明真实模型消费或训练效果。
 
 一次模型建议不等于长期训练计划，一次聊天中的“感觉变好了”也不等于进度。6B-7 把二者拆开：
 

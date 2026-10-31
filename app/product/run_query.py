@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 import math
 import re
+import time
+from contextlib import ExitStack
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import datetime
@@ -15,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from app.harness.models import ArtifactKind, RunManifest, RunStatus
 from app.harness.run_ids import normalize_run_id
-from app.harness.store import FileRunStore
+from app.harness.store import ArtifactIntegrityError, FileRunStore
 from app.lol.summary_schema import validate_summary_document
 from app.runtime.models import (
     RuntimeArtifactReference,
@@ -44,6 +46,7 @@ def _reject_non_finite_json(value: str) -> Any:
 
 RunQueryErrorCode = Literal[
     "run_not_found",
+    "run_not_ready",
     "report_not_available",
     "run_integrity_failed",
 ]
@@ -99,7 +102,7 @@ class RecentAveragesView(BaseModel):
     kill_participation_percent: float = Field(ge=0, le=100)
     damage_share_percent: float = Field(ge=0, le=100)
     gold_share_percent: float = Field(ge=0, le=100)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentComparisonRowView(BaseModel):
@@ -114,7 +117,7 @@ class RecentComparisonRowView(BaseModel):
     gold_per_min: float = Field(ge=0)
     damage_per_min: float = Field(ge=0)
     vision_score: float = Field(ge=0)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentWinLossComparisonView(BaseModel):
@@ -361,6 +364,55 @@ class RunQueryService:
         self._runs_root = Path(runs_root).resolve()
         self._receipts = receipt_store or FileRunReceiptStore(self._runs_root)
 
+    def get_session_accounting(self, run_id, reference):
+        from app.tasks.continuation import contract_for_worker_profile, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE
+        contract = contract_for_worker_profile(reference["profile"])
+        from app.evaluation.sol_natural_session import CandidateSession
+        from app.product.session_usage import session_accounting
+        from app.tasks.continuation import SessionAccounting
+        run_id = normalize_run_id(run_id)
+        if reference["binding"]["run_id"] != run_id:
+            raise RunQueryError("run_integrity_failed")
+        root = self._runs_root / run_id / ".continuation"
+        if root.resolve() != root:
+            raise RunQueryError("run_integrity_failed")
+        candidate = CandidateSession(root / "session", binding=reference["binding"],
+                transport_root=root / "transport" / run_id, journal_root=root / "journal",
+                guard_sha=reference["guard_sha256"], checkpoint_sha=reference["checkpoint_sha256"],
+                contract_module=contract, read_only=True, worker_development=reference["profile"] == WORKER_SOL_PROFILE,
+                worker_product=reference["profile"] == WORKER_SOL_PRODUCT_PROFILE)
+        # Usage and recovery details can arrive together (including after reload).
+        # Keep the kernel lock and all pin checks; wait only for lock acquisition.
+        deadline = time.monotonic() + 5.0
+        with ExitStack() as stack:
+            while True:
+                try:
+                    session = stack.enter_context(candidate)
+                    break
+                except ValueError as exc:
+                    if str(exc) != "session_executor_active":
+                        raise
+                    if time.monotonic() >= deadline:
+                        raise RunQueryError("run_not_ready") from exc
+                    time.sleep(0.02)
+            value = session_accounting(session)
+            if value != reference["accounting"]:
+                raise RunQueryError("run_integrity_failed")
+            return SessionAccounting.model_validate(value)
+
+    def read_training_measurement_source(self, run_id: str) -> tuple[dict, str, str]:
+        """Internal server source; no HTTP/MCP route exposes the full Summary."""
+        verified = self._load_safely(run_id)
+        self._require_published_skill(verified, "recent-form-review")
+        try:
+            summary = self._read_verified_player_summary(verified)
+        except (ArtifactIntegrityError, OSError, UnicodeDecodeError, TypeError, ValueError, KeyError):
+            raise RunQueryError("run_integrity_failed") from None
+        references = self._artifact_references(verified.trace, ArtifactKind.PLAYER_SUMMARY)
+        if verified.report_sha256 is None:
+            raise RunQueryError("run_integrity_failed")
+        return dict(summary), references[0].sha256, verified.report_sha256
+
     def get_run(self, run_id: str) -> RunView:
         verified = self._load_safely(run_id)
         trace = verified.trace
@@ -386,7 +438,8 @@ class RunQueryService:
                 trace.completed_at_utc if trace is not None else None
             ),
             elapsed_ms=trace.elapsed_ms if trace is not None else None,
-            usage=trace.usage if trace is not None else None,
+            usage=(trace.usage if trace is not None and not
+                   (self._runs_root / run_id / ".continuation").exists() else None),
             report_available=verified.receipt.report_available,
         )
 

@@ -35,6 +35,30 @@ async function expectNoOverflow(page: Page) {
 }
 
 test.describe("live owner-scoped workbench", () => {
+  test("shows cancelled usage without fetching unpublished content", async ({ page }, testInfo) => {
+    const testId = uniqueTestId("cancelled-usage")
+    await useScenario(page, "cancelled", testId)
+    await page.addInitScript(() => localStorage.setItem("riftcoach.ui-locale.v1", JSON.stringify({ schema_version: "1.0", locale: "zh-CN" })))
+    for (const width of [1440, 320]) {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto(workbenchUrl())
+      const panel = page.getByRole("region", { name: "任务用量" })
+      await expect(panel).toBeVisible()
+      await expect(page.getByRole("heading", { name: "复盘已取消" })).toBeVisible()
+      await expect(page.getByText("当前证据不足，不显示不可靠的建议。")).toHaveCount(0)
+      await expect(panel.getByText("未知", { exact: true })).toHaveCount(2)
+      await expect(panel.getByText("已记录 140 Token，总量尚不完整。")).toBeVisible()
+      await expect(page.locator(".safe-markdown")).toHaveCount(0)
+      await expectNoOverflow(page)
+      await page.screenshot({ path: testInfo.outputPath(`cancelled-usage-${width}.png`), fullPage: true })
+    }
+    const ledger = await requestLedger(page, testId)
+    expect(ledger.requests.some((path) => path.endsWith("/usage"))).toBe(true)
+    for (const suffix of ["/report", "/recent-summary", "/timeline", "/evidence"]) {
+      expect(ledger.requests.some((path) => path.endsWith(suffix))).toBe(false)
+    }
+  })
+
   test("moves from active SSE to authoritative published content with no remote I/O", async ({ page }) => {
     const testId = uniqueTestId("active-published")
     await useScenario(page, "active", testId)
