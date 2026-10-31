@@ -194,6 +194,64 @@ class PostgresTaskContinuations:
                 occurred_at=record.updated_at, reason=record.recovery_reason)
             return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=False)
 
+    def recover_zero_send_rejection(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
+        """Adopt an audited pre-send failure copy, preserving the terminal event."""
+        from app.product.zero_send_recovery import verify
+        from app.evaluation.sol_natural_session import SessionBlocked
+        if not isinstance(task_id, UUID) or not re.fullmatch(r'[0-9a-f]{64}', proof_sha256):
+            raise ContinuationError('continuation_conflict')
+        with self.repository._session_factory() as session, session.begin():
+            record = self._row(session, task_id, owner_id, lock=True)
+            value = deepcopy(record.continuation_reference)
+            if value is None:
+                raise ContinuationError('continuation_conflict')
+            previous = value.get('zero_send_recovery')
+            if previous is not None:
+                if previous['proof_sha256'] != proof_sha256 or previous['runs_root'] != str(runs_root):
+                    raise ContinuationError('continuation_conflict')
+                return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=True)
+            if (record.status != TaskStatus.SUCCEEDED.value or record.terminal_reason != 'evaluation_failed'
+                    or record.lease_token is not None or record.cancel_requested_at is not None
+                    or record.report_available
+                    or record.publication_status not in (None, 'rejected')):
+                raise ContinuationError('continuation_conflict')
+            if record.publication_reference is not None:
+                from app.persistence.task_repository import _validate_publication_reference_identity
+                _validate_publication_reference_identity(record.publication_reference,
+                    record=record, summary_digest=record.summary_digest)
+            try:
+                proof = verify(proof_path, proof_sha256, runs_root=runs_root)
+            except (OSError, ValueError, KeyError, SessionBlocked):
+                raise ContinuationError('zero_send_recovery_invalid') from None
+            parent = proof['parent_reference']
+            if (proof['binding']['task_id'] != str(task_id) or proof['binding']['owner_id'] != owner_id
+                    or proof['binding']['run_id'] != record.run_id
+                    or any(parent[k] != value[k] for k in
+                           ('binding','profile','guard_sha256','checkpoint_sha256','accounting'))):
+                raise ContinuationError('continuation_conflict')
+            value['zero_send_recovery'] = dict(proof_sha256=proof_sha256, runs_root=str(runs_root),
+                parent_checkpoint_sha256=value['checkpoint_sha256'], terminal_reason=record.terminal_reason,
+                finished_at=record.finished_at.isoformat(), publication_status=record.publication_status,
+                trace_reference=deepcopy(record.trace_reference),
+                receipt_reference=deepcopy(record.receipt_reference),
+                artifact_reference=deepcopy(record.artifact_reference),
+                publication_reference=deepcopy(record.publication_reference),
+                first_snapshot_id=None if record.first_snapshot_id is None else str(record.first_snapshot_id),
+                first_snapshot_digest=record.first_snapshot_digest,
+                lease_generation=record.lease_generation)
+            value.update(proof['child_checkpoint'], manual_retry=False)
+            record.continuation_reference = value
+            record.status = TaskStatus.RECOVERY_REQUIRED.value
+            record.finished_at = record.terminal_reason = record.publication_status = None
+            record.trace_reference = record.receipt_reference = record.artifact_reference = None
+            record.recovery_reason = 'local_zero_send_recovered'
+            record.updated_at = record.recovery_required_at = max(record.updated_at, datetime.now(timezone.utc))
+            self.repository._append_event(session, record=record,
+                event_kind=TaskLifecycleEventKind.RECOVERY_REQUIRED,
+                operation_identity='zero-send-recovery-'+proof_sha256,
+                occurred_at=record.updated_at, reason=record.recovery_reason)
+            return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=False)
+
     def migrate_product_stream(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
         """Adopt a verified copy of one paused task; no retry or budget grant."""
         from app.product.stream_migration import verify

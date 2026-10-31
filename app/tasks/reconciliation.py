@@ -146,6 +146,13 @@ def read_evidence_bound_terminal(
         store = FileEvidencePublicationStore(runs_root)
         manifest = store.read(context)
         pending = store.read_pending_snapshot(context)
+        if task.publication_recovery_sha256 is not None:
+            # Keep the rejected snapshot's publication-1 immutable. The adopted
+            # recovery has one stable id across Worker and reconciliation.
+            pending = PendingEvidenceBundleSnapshot.model_validate({
+                **pending.model_dump(mode='python'),
+                'refresh_id': 'publication-recovery-'+task.publication_recovery_sha256,
+            })
         if (
             not isinstance(pending, PendingEvidenceBundleSnapshot)
             or pending.owner_id != task.owner_id

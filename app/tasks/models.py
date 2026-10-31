@@ -328,6 +328,7 @@ class ReviewTask(TaskContractModel):
     summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    publication_recovery_sha256: Fingerprint | None = Field(default=None, exclude=True, repr=False)
     message_projection_status: str = Field(default="not_required", exclude=True, repr=False)
     conversation_binding: ConversationReviewTaskBinding | None = None
     execution_target: ConversationReviewExecutionTarget | None = Field(

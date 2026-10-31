@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "9405210dd58ca26c99aae0b832ca11c30645b40ccefae6c09515cec7c9fc967e"
+      "sha256": "741407855117b832e6dd6e168e90c8e1836367ffac0b9f0dbe8ca6988152ad55"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -437,7 +437,7 @@
     {
       "component_id": "app.product.manual_retry_grant",
       "source": "app/product/manual_retry_grant.py",
-      "sha256": "95bea739598c5190f3761db030111402acdf9246c7182dfdd9d573eea2530f2d"
+      "sha256": "5111129ea63abac13a79b485842bbe5bed1bb18b6429a0580611a06694049b57"
     },
     {
       "component_id": "scripts.reviewer_responses_stream",
@@ -460,9 +460,29 @@
       "sha256": "6a8055c8848ef823961a331da0b81281609484f113e99a606fe22f2120e08ca9"
     },
     {
+      "component_id": "app.product.zero_send_recovery",
+      "source": "app/product/zero_send_recovery.py",
+      "sha256": "a5185ee486f32c7b13a6b35b2ea14aefc9cc50f18f71f5608e254c960e00ec5b"
+    },
+    {
+      "component_id": "app.tasks.reconciliation",
+      "source": "app/tasks/reconciliation.py",
+      "sha256": "39482f6584430feee13a6f1fc242135cbd7c25240e72e0214374df131c141ab0"
+    },
+    {
+      "component_id": "app.tasks.models",
+      "source": "app/tasks/models.py",
+      "sha256": "a5cb50ea3bb3ce411f0bb0b639cb0733a2f56d1ce34be95d74e0d7e43f83e433"
+    },
+    {
+      "component_id": "app.persistence.task_repository",
+      "source": "app/persistence/task_repository.py",
+      "sha256": "04dbb990a05254f4f93c600594778ca6bdd36cf11594ac593e134f0d87c3697b"
+    },
+    {
       "component_id": "app.persistence.task_continuations",
       "source": "app/persistence/task_continuations.py",
-      "sha256": "64b5b3ab4c8a35b5b0ed5a43faad1d5d23c77d24a3153338b9521846cf86b5f9"
+      "sha256": "3028282666245ff99a917493213367547900c613dd8d751100c41d40c831cdbf"
     },
     {
       "component_id": "coach_execution_contract",
@@ -470,5 +490,5 @@
       "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
     }
   ],
-  "program_sha256": "47aab50dcd9ca9a0b18688a17bc1e3d2177c3586f13370747222a97b80a117aa"
+  "program_sha256": "16b4eb0f14b9594623fc10dc0089a4d77076e133868a028630585c6a3667fd7a"
 }

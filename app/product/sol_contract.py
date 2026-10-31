@@ -70,6 +70,8 @@ def component_fingerprints(skill):
     for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
                  'app/product/manual_retry_grant.py', 'scripts/reviewer_responses_stream.py',
                  'app/product/stream_migration.py', 'app/product/budget_supplement.py', 'app/workers/sol_continuation.py',
+                 'app/product/zero_send_recovery.py',
+                 'app/tasks/reconciliation.py', 'app/tasks/models.py', 'app/persistence/task_repository.py',
                  'app/persistence/task_continuations.py'):
         key = path.replace('/', '.').removesuffix('.py')
         rows[key] = ComponentFingerprint(component_id=key, source=path,

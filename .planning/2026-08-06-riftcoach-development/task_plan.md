@@ -13,6 +13,28 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-01 04:21北京时间，已完成本地零发送拒绝的窄范围恢复与实际数据库预检。新增zero_send_recovery只允许固定父checkpoint之后恰好多一条manual-retry、transport与审查journal零新增、未发布且没有evaluation意见的本地拒绝；归档完整父terminal/原件，逐字继承23项操作与全部回执，不删除原terminal或回退DB。旧手动许可从归档检查点回放，当前额度仅重新绑定新guard，authorization/累计上限/截止保持。
+
+采用attempt-10最新DB（288a96dd…），真实SQL/Worker普通resume已到达相同facts-initial请求发送前边界，新增HTTP0、真实Key读取0、来源调用0；累计8HTTP/29323known/366910unknown预留/5retry，活动838.344秒。当前runs_root D:/rc-stream-guard-recovery-20261101/verified-runs，checkpoint 080c977df9ad3080d79a23a265043ea2744b816062ae76f0569ae1aee54c3541；最新DB outputs/riftcoach-product-stream-guard-recovery-20261101/recovered-db.dump，SHA 43934d6c2f75be2cf5f84b8ae145e5e7b42032658df9b86f4d67901030d86dbc。不能使用旧准备DB或诊断副本。
+
+外置guard持锁时仅排除session.lock，其余原件及session完整性仍核；普通异常记body-free类别并转SessionBlocked暂停，避免Harness误记业务拒绝。实际拒绝任务已有证据快照；它是拒绝阶段的来源快照，不代表报告发布。恢复保留原publication-1，后续按恢复proof固定新refresh_id，Worker与reconciliation一致，测试验证两份快照都保留。没有把publication_reference的存在错误地当成已发布。
+
+验证：12项真实SQL恢复/拒绝篡改/身份与旧pin场景通过，25项预算/许可/guard、17项产品合同、43项任务模型/恢复、10项CI前置检查通过；11个Runtime入口、compile/governance/diff通过。四项产品测试在编辑期间遇到fingerprint漂移，固定输入后定向复跑4项通过；最终验证增强后两种发布模式的SQL正向再次通过。外部模型均替身，实际原任务预检零发送，不冒充流式语义验收。临时容器均清理，未启动付费执行者。
+
+下一行动：一次提交推送，固定干净执行目录D:/riftcoach-sol-product-guard-recovery-execution-20261101和同HEAD新CI；当前外置Control outputs/riftcoach-product-stream-guard-recovery-20261101，唯一新执行attempt-11，旧attempt-10/退出记录保持。新driver普通resume（manual_retry=false），复用第5次已提交许可，无新许可消耗；核driver/waiter实际发送前guard后启动唯一waiter，CI八项全绿且原授权有效才发，最多4新审查、每segment1。授权3203ae78…仍12/723456/2100、每次300秒/16384输出、北京时间11月1日15:50:40截止，不延长。原15完成、Stage8E/默认准入不改。结果data/evaluation/results/sol_product_stream_guard_recovery_prepared_20261101.json。
+
+以下为上一轮记录（不作为当前队列）。
+
+2026-11-01 04:05北京时间，CI41229639171（b3ee0313）八项通过，唯一waiter自动启动attempt-10。实际新增模型HTTP/回执/未决intent均0；Worker虽返回succeeded，业务终态为evaluation_failed、publication_allowed=false，报告API409，不能记产品成功。原8HTTP/29323known/366910unknown预留保持；手动许可已追加为第5次retry，活动836.813秒。原131份准备原件逐字保持。
+
+相同driver、初始DB和成功前缀在隔离临时SQL中零密钥/零发送复现PermissionError：持有Windows会话互斥锁时，外置guard又读取child_inventory中的session.lock。只在持锁检查排除该互斥文件后，同材料到达diagnostic_send_boundary并正确paused；其他证据哈希/请求pin保持检查。原现场未保存异常栈，结论来自可区分的本地复现；不是新增524。修正尚仅在诊断副本验证，不能据此称正式续接完成。
+
+真实只读浏览器1440/320验收通过：未审稿不可读，累计用量一致，无恢复点击/新增请求。完整运行快照与最新DB已留存，inspection-complete已写，执行器/waiter正常退出，实际与两次诊断临时容器均清理。最新正式checkpoint 2cffffb7c3bc7e192ddb88b14f20f2b3c4b9dbddc04d8c8a97a10c08157c3d7d；最新DB outputs/riftcoach-product-stream-ci-recovery-20261101/attempt-10/terminal-db.dump，SHA 288a96dd362da2af19534182f818d8e514c81dd0fc2575019c82ec257d02ff49。该session已封闭为本地拒绝，不能普通resume或退回迁移DB。
+
+下一行动：完成同task/run的create-only本地拒绝恢复，归档并保留此次terminal、23项已提交操作、第5次许可及全部费用/时间；严格证明未新增模型、未产生审查或发布后再采用最新DB恢复副本。现有local_failure_recovery只支持生成前失败，stream_migration只支持旧非流式暂停，均不适用，不能宽泛绕过或删除terminal。新driver持锁时只排除session.lock，guard异常显式暂停并留下安全错误类别。以真实SQL/Worker零发送到达下一请求边界验证恢复与guard，完成后在原授权12/723456/2100及北京时间15:50:40截止内续首审，无新审批必要；不重发生成、不清零、不自动重试付费故障。旧15完成、Stage8E与默认准入保持。证据data/evaluation/results/sol_product_stream_local_guard_failure_20261101.json。当前无活跃付费执行者或waiter；monitor继续推动本地修复，旧首启已用不可重启。
+
+以下为上一轮记录（不作为当前队列）。
+
 2026-11-01 02:32北京时间，CI41223907574以failure结束，唯一等待器正常退出，新增模型请求0。web-checks通过；pytest分片1和2各失败1项，均为原15时间追加适配器测试仍给当前产品函数匹配旧预算读取语句，触发source_shape/retry_shape；不是上游524。原日志保存在outputs/riftcoach-product-stream-authorized-20261101/ci-failure-41223907574。
 
 已将这两个历史回归绑定原15最后两例冻结e7a7ab0b的真实方法，逐字提取并固定来源和SHA；旧适配器与产品源码均不改。另验证旧适配器继续拒绝当前execution_limits接口，避免绕过现产品任务预算。23项针对性检查、来源逐字校验、governance与diff检查通过。原15完成保留，当前任务仍8HTTP/29323known/366910unknown预留/4retry，最新checkpoint fc0d4830…与DB f3a5f822…未变。
