@@ -1,3 +1,9 @@
+## 2026-11-01 CI终局与单次执行入口就绪
+
+2026-11-01 13:35北京时间，修复提交1eb9eb43170d2635cffde8a926a01d25329c9155的CI41271213029八项终局success，证据保存到Control/ci-success.json；不再轮询该CI。干净执行目录D:/riftcoach-sol-product-preamble-recovery-execution-20261101保持该提交。新增外置单次入口run_protocol_retry.py绑定attempt-13、最新preflight-v3 DB/checkpoint/proof及原首审请求，execution-binding.json追加固定摘要，不改旧binding或恢复原件。实际入口--preflight通过；无授权路径已验证在claim/凭据读取前拒绝，未创建attempt-13、未消耗第7次许可、无新HTTP/真实Key读取，全部child inventory逐字保持。最初预检发现新ready缺旧请求摘要字段，已用实际0026-intent与原首审摘要相等的证据单独绑定，原失败记录保留。未启动waiter或付费执行者，无待观察工作，monitor不重建。
+
+下一行动：仅待本次具体单次补测的新明确决定。方案仍为同一facts-initial最多1次，预留73382 tokens，单次300秒/16384输出，不自动第二次/completion/fresh；原12HTTP/723456tokens/2100活动秒及北京时间15:50:40截止不延长。上次单次授权已经用完，剩余2槽不是新授权；若需要双初审及双fresh，2槽不足。技术兼容已离线验证，真实上游尚未验收；累计10HTTP/97298known/366910unknown/6retry及1100.281活动秒不变，正式审查/application/fresh均0、未发布。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_preamble_execution_ready_20261101.json。
+
 ## 2026-11-01 受限空ID兼容与两次协议失败恢复
 
 2026-11-01，按用户“继续”完成空ID前导的受限兼容与同任务离线恢复。只接收开头created(0)/queued(1)两个queued空ID信封，要求output=[]、无usage/error/incomplete且契约回显不冲突，随后必须立即绑定带有效ID的created(0)；其他顺序、内容、费用、身份变化仍拒绝。补充不含正文的嵌套结构观测。旧现场未记录完整嵌套字段，因此这只是已验证的严格兼容规则，不能声称真实上游已经通过，也不把旧诊断意见转正。
