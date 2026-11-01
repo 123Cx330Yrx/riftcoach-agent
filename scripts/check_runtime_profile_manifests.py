@@ -1,9 +1,27 @@
-"""Bootstrap current consumer profiles without providers, keys or model IO.
+"""Check current consumer profiles and inventories without provider or model IO.
 
 Historical frozen execution checkouts and archived qualification inventories
 are deliberately outside this current-source consistency check.
 """
 from pathlib import Path
+import json
+
+
+CURRENT_INVENTORY_SNAPSHOTS = {
+    'natural-duty': 'natural_duty_qualification_inventory_product_purpose_20261101.json',
+    'sol-review': 'sol_review_qualification_inventory_product_purpose_20261101.json',
+}
+
+
+def check_inventories(repository: Path) -> int:
+    from scripts import audit_natural_duty_qualification as natural
+    from scripts import audit_sol_review_qualification as sol
+
+    for name, auditor in (('natural-duty', natural), ('sol-review', sol)):
+        path = repository / 'data/evaluation/results' / CURRENT_INVENTORY_SNAPSHOTS[name]
+        if json.loads(path.read_bytes()) != auditor.audit():
+            raise ValueError(f'{name}: current inventory snapshot differs from current source')
+    return len(CURRENT_INVENTORY_SNAPSHOTS)
 
 
 def check() -> int:
@@ -41,8 +59,9 @@ def check() -> int:
             failures.append(f'{name}: {exc}')
     if failures:
         raise ValueError('\n'.join(failures))
+    check_inventories(repository)
     return len(consumers)
 
 
 if __name__ == '__main__':
-    print(f'{check()} current Runtime profiles verified; no provider construction.')
+    print(f'{check()} current Runtime profiles and {len(CURRENT_INVENTORY_SNAPSHOTS)} current inventories verified; no provider construction.')

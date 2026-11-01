@@ -6,6 +6,7 @@ import socket
 import pytest
 
 from scripts import audit_natural_duty_qualification as inventory
+from scripts.check_runtime_profile_manifests import CURRENT_INVENTORY_SNAPSHOTS
 
 
 @pytest.fixture(autouse=True)
@@ -18,18 +19,29 @@ def offline(monkeypatch):
 
 def test_current_inventory_rebuilds_without_changing_historical_qualification():
     value = inventory.audit()
-    path = inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_budget_supplement_20261101.json'
+    path = inventory.ROOT/'data/evaluation/results'/CURRENT_INVENTORY_SNAPSHOTS['natural-duty']
     assert value == json.loads(path.read_bytes())
-    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_product_stream_20261101.json').read_bytes())
+    previous = json.loads((inventory.ROOT/'data/evaluation/results/natural_duty_qualification_inventory_budget_supplement_20261101.json').read_bytes())
     assert {k:v for k,v in value.items() if k not in ('component_fingerprints','program_sha256')} == {
         k:v for k,v in previous.items() if k not in ('component_fingerprints','program_sha256')}
     old_rows = {r['component_id']: r for r in previous['component_fingerprints']}
     new_rows = {r['component_id']: r for r in value['component_fingerprints']}
     assert new_rows.keys() == old_rows.keys()
     assert {k for k in new_rows if new_rows[k] != old_rows[k]} == {
-        'app.runtime.coach_budget'}
+        'app.runtime.coach_contract', 'app.product.natural_duty_candidate'}
     assert value['provider_calls'] == value['new_host_tasks'] == value['new_qualification'] == 0
     assert not value['qualified']
+
+
+def test_historical_budget_supplement_inventory_keeps_its_change_boundary():
+    base = inventory.ROOT/'data/evaluation/results'
+    value = json.loads((base/'natural_duty_qualification_inventory_budget_supplement_20261101.json').read_bytes())
+    previous = json.loads((base/'natural_duty_qualification_inventory_product_stream_20261101.json').read_bytes())
+    assert {k:v for k,v in value.items() if k not in ('component_fingerprints','program_sha256')} == {
+        k:v for k,v in previous.items() if k not in ('component_fingerprints','program_sha256')}
+    old = {r['component_id']: r for r in previous['component_fingerprints']}
+    assert {r['component_id'] for r in value['component_fingerprints']
+        if r != old[r['component_id']]} == {'app.runtime.coach_budget'}
 
 
 def test_historical_inventory_keeps_original_change_boundary():

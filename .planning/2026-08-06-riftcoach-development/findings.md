@@ -1,3 +1,7 @@
+## 2026-11-01 CI 清单消费者遗漏
+
+Runtime manifest 可加载不等于当前资格清单已同步。92fa3ea3 刷新共享 coach_contract/natural_duty_candidate/reviewer_responses_process 的指纹后，旧清单仍被当前测试消费；CI 准确暴露该遗漏。当前清单只能 create-only 更新，保留历史边界，并验证业务请求/标签/合同完全不变；现已纳入原本地入口，无需另建检查框架或重跑真实 15。
+
 ## 2026-11-01 通道裁决与缺陷责任定位
 
 - 现场流观测处于 SDK model_dump 之后，未知类型仅有哈希，不能定位产生层或断言 ping；公开提供方主页没有足够的 Responses 事件契约。当前路线暂停新增真实验收，不再逐次购买请求猜兼容规则。相同 wire 的用量不同也不足以证明具体计费或模型原因。
