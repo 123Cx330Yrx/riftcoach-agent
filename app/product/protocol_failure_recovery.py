@@ -16,10 +16,37 @@ from app.product.session_usage import session_accounting
 
 VERSION = 'product-initial-protocol-recovery-v1'
 ERRORS = ['event_sequence', 'response_not_created', 'unexpected_event']
+ANONYMOUS_ERRORS = ['response_identity', 'event_sequence']
 
 
 def read(path):
     return json.loads(Path(path).read_bytes())
+
+
+def rejection_errors(worker, obs):
+    protocol = worker.get('stream_protocol') or {}
+    errors = protocol.get('errors')
+    if errors == ERRORS:
+        return ERRORS
+    if errors != ANONYMOUS_ERRORS or protocol != obs.get('stream_protocol'):
+        raise ValueError('protocol_recovery_rejection_family')
+    contexts = protocol.get('event_context', [])[:3]
+    events = protocol.get('events', [])[:3]
+    empty = digest(b'')
+    if (len(contexts) != 3 or len(events) != 3
+            or [(c.get('ordinal'), c.get('type'), c.get('sequence'), c.get('created_count'),
+                 c.get('output_items'), c.get('terminal_seen')) for c in contexts] != [
+                (1, 'response.created', 0, 0, 0, False),
+                (2, 'response.queued', 1, 0, 0, False),
+                (3, 'response.created', 0, 0, 0, False)]
+            or [e.get('response_id_sha256') for e in events[:2]] != [empty, empty]
+            or not isinstance(events[2].get('response_id_sha256'), str)
+            or events[2]['response_id_sha256'] == empty
+            or protocol.get('first_rejection') != dict(code='response_identity', event=contexts[0])):
+        raise ValueError('protocol_recovery_anonymous_evidence')
+    # This proves only the historical rejection shape, not that unrecorded
+    # nested fields were harmless. Recovery never accepts the old tool result.
+    return ANONYMOUS_ERRORS
 
 
 def failure_evidence(session, ordinal):
@@ -50,6 +77,7 @@ def failure_evidence(session, ordinal):
         'receipt.json', 'worker-result.json', 'observation/observation.json'))
     usage = receipt.get('usage')
     response = obs.get('response_contract') or {}
+    errors = rejection_errors(worker, obs)
     if (receipt.get('response_mode') != sol_contract.RESPONSE_MODE
             or receipt.get('profile') != asdict(sol_contract.REVIEW_PROFILE)
             or read(transport/'request.json') != business or read(transport/'validation-context.json') != context
@@ -57,15 +85,15 @@ def failure_evidence(session, ordinal):
             or receipt.get('wire_sha256') != wire_digest(build_wire(business))
             or receipt.get('validation_context_sha256') != wire_digest(context)
             or receipt.get('ok') is not False or receipt.get('code') != 'worker_rejected'
-            or receipt.get('worker_code') != ERRORS[0] or receipt.get('worker_exit') != 0
+            or receipt.get('worker_code') != errors[0] or receipt.get('worker_exit') != 0
             or receipt.get('reaped') is not True or receipt.get('http_requests') != 1
             or receipt.get('usage_state') != 'known' or receipt.get('usage_conflict') is not False
             or not isinstance(usage, dict) or worker.get('usage') != usage
             or worker.get('ok') is not False or worker.get('public_tool_call') is not None
             or worker.get('business_validated') is not False or worker.get('semantic_approval') is not False
-            or worker.get('code') != ERRORS[0] or worker.get('usage_conflict') is not False
-            or (worker.get('stream_protocol') or {}).get('errors') != ERRORS
-            or (obs.get('stream_protocol') or {}).get('errors') != ERRORS
+            or worker.get('code') != errors[0] or worker.get('usage_conflict') is not False
+            or (worker.get('stream_protocol') or {}).get('errors') != errors
+            or (obs.get('stream_protocol') or {}).get('errors') != errors
             or obs.get('http_requests') != 1 or obs.get('response_status') != 200
             or obs.get('eof') is not True or obs.get('closed') is not True
             or obs.get('exception_type') is not None or response.get('terminal_status') != 'completed'
@@ -93,10 +121,19 @@ def inspect_parent(parent, reference):
         if (terminal.get('publication_allowed') is not False or terminal.get('production_admitted') is not False
                 or terminal['value']['terminal_reason'] != 'evaluation_failed'
                 or terminal['value']['run_id'] != parent.name or tree(session.journal_root)
-                or (session.root/'seal.json').exists() or (session.root/'protocol-recovery.json').exists()):
+                or (session.root/'seal.json').exists()):
             raise ValueError('protocol_recovery_not_initial_rejection')
         intents = sorted((session.root/'operations').glob('*-intent.json'))
         evidence = failure_evidence(session, len(intents))
+        history = markers(session)
+        if history:
+            # One further recovery of the immediately following failed retry;
+            # no arbitrary successful reviews or unbounded recovery chain.
+            if (len(history) != 1 or evidence['operation_ordinal'] != history[0]['failure']['operation_ordinal']+2
+                    or evidence['ordinal'] != history[0]['failure']['ordinal']+1
+                    or read(session.transport_root/'review'/f"call-{evidence['ordinal']:03d}"/'worker-result.json')['stream_protocol']['errors'] != ANONYMOUS_ERRORS
+                    or read(session.root/'operations'/f"{len(intents)-1:04d}-intent.json")['kind'] != 'manual-retry'):
+                raise ValueError('protocol_recovery_chain_scope')
         for index, path in enumerate(intents, 1):
             value = read(path.with_name(path.name.replace('-intent','-result')))
             intent = read(path)
@@ -106,9 +143,15 @@ def inspect_parent(parent, reference):
             if intent['kind'] == 'model' and index != len(intents):
                 from app.runtime.sol_session_receipts import request_from_raw
                 prior = value['value']
-                req = request_from_raw(prior.get('issued_raw') or prior['reaped_timeout']['issued_raw'])
+                # Failed protocol results intentionally contain no accepted
+                # response/request. Their independently pinned attempt does.
+                attempt = read(session.root/'operations'/f"attempt-{prior['budget']['calls']:03d}.json")
+                if attempt['intent_sha256'] != value['intent_sha256']:
+                    raise ValueError('protocol_recovery_prior_attempt')
+                req = request_from_raw(attempt['issued_raw'])
                 if sol_contract.role_for_request(req) == 'review' and not prior.get('reaped_timeout'):
-                    raise ValueError('protocol_recovery_prior_review')
+                    if not history or history[0]['failure'] != failure_evidence(session, index):
+                        raise ValueError('protocol_recovery_prior_review')
         segment = parent/'.continuation/segments'/str(terminal['value']['segment'])/parent.name
         receipt = read(segment/'api_run_receipt.json')
         if (receipt.get('report_available') is not False or receipt.get('terminal_reason') != 'evaluation_failed'
@@ -123,7 +166,7 @@ def inspect_parent(parent, reference):
             from app.product.budget_supplement import validate
             validate(supplement, session)
         return dict(binding=reference['binding'], accounting=accounting, active_seconds=session.active_before,
-                    failure=evidence, budget_supplement=supplement)
+                    failure=evidence, budget_supplement=supplement, history=history)
 
 
 def prepare(*, parent_run, destination_root, reference):
@@ -146,9 +189,12 @@ def prepare(*, parent_run, destination_root, reference):
         archive = child/'.continuation/protocol-parent.zip'
         with zipfile.ZipFile(archive, 'x', compression=zipfile.ZIP_DEFLATED) as bundle:
             for name in before:bundle.writestr(name, (parent/name).read_bytes())
+        if state['history']:
+            with (child/'.continuation/protocol-history-1.zip').open('xb') as out:
+                out.write((parent/'.continuation/protocol-parent.zip').read_bytes())
         write_new_json(session.root/'protocol-recovery.json', dict(version=VERSION, binding=state['binding'],
             failure=state['failure'], parent_checkpoint_sha256=reference['checkpoint_sha256'],
-            archive_sha256=digest(archive.read_bytes())))
+            archive_sha256=digest(archive.read_bytes()), history=state['history']))
         session._checkpoint('protocol_rejection_prefix_imported')
         if state['budget_supplement'] is not None:
             from app.product.budget_supplement import activate
@@ -164,15 +210,51 @@ def prepare(*, parent_run, destination_root, reference):
 
 
 def retry_evidence(session):
+    for value in markers(session):
+        if session.cursor == value['failure']['operation_ordinal']:
+            return {k:v for k,v in value['failure'].items() if k not in ('operation_ordinal','failed_result_sha256')}
+    return None
+
+
+def markers(session):
     marker = session.root/'protocol-recovery.json'
-    if not marker.exists():return None
+    if not marker.exists():return []
     value = read(marker)
-    if session.cursor != value['failure']['operation_ordinal']:return None
-    if (not session.worker_product or value['version'] != VERSION or value['binding'] != session.binding
-            or digest((session.root.parent/'protocol-parent.zip').read_bytes()) != value['archive_sha256']
-            or failure_evidence(session, session.cursor) != value['failure']):
-        raise ValueError('protocol_recovery_marker_changed')
-    return {k:v for k,v in value['failure'].items() if k not in ('operation_ordinal','failed_result_sha256')}
+    history = value.get('history', [])
+    if not isinstance(history, list) or len(history) > 1 or any(h.get('history') for h in history):
+        raise ValueError('protocol_recovery_history_scope')
+    values = [value, *history]
+    for index, item in enumerate(values):
+        archive = session.root.parent/('protocol-parent.zip' if index == 0 else 'protocol-history-1.zip')
+        if (not session.worker_product or item['version'] != VERSION or item['binding'] != session.binding
+                or digest(archive.read_bytes()) != item['archive_sha256']
+                or failure_evidence(session, item['failure']['operation_ordinal']) != item['failure']):
+            raise ValueError('protocol_recovery_marker_changed')
+    if history:
+        with zipfile.ZipFile(session.root.parent/'protocol-parent.zip') as bundle:
+            if (json.loads(bundle.read('.continuation/session/protocol-recovery.json')) != history[0]
+                    or digest(bundle.read('.continuation/protocol-parent.zip')) != history[0]['archive_sha256']):
+                raise ValueError('protocol_recovery_history_binding')
+    return values
+
+
+def replay_checkpoint_pins(session):
+    pins = set()
+    for index, value in enumerate(markers(session)):
+        archive = session.root.parent/('protocol-parent.zip' if index == 0 else 'protocol-history-1.zip')
+        with zipfile.ZipFile(archive) as bundle:
+            prefix = '.continuation/session/'
+            guard = digest(bundle.read(prefix+'guard.json')); previous = guard
+            names = sorted(n for n in bundle.namelist() if n.startswith(prefix+'checkpoints/') and n.endswith('.json'))
+            for ordinal, name in enumerate(names, 1):
+                raw = bundle.read(name); checkpoint = json.loads(raw)
+                if (name != prefix+f'checkpoints/{ordinal:04d}.json' or checkpoint['previous_sha256'] != previous
+                        or checkpoint['guard_sha256'] != guard):
+                    raise ValueError('protocol_recovery_checkpoint_chain')
+                previous = digest(raw); pins.add(previous)
+            if previous != value['parent_checkpoint_sha256']:
+                raise ValueError('protocol_recovery_checkpoint')
+    return pins
 
 
 def verify(path, sha, *, runs_root):
@@ -193,6 +275,7 @@ def verify(path, sha, *, runs_root):
     with _session(child, dict(binding=proof['binding'], **proof['child_checkpoint'])) as session:
         if (session.root/'terminal.json').exists() or tree(session.journal_root):raise ValueError('protocol_recovery_child_closed')
         session.cursor = state['failure']['operation_ordinal']; retry_evidence(session)
+        replay_checkpoint_pins(session)
         if session_accounting(session) != state['accounting'] or session.active_before < state['active_seconds']:
             raise ValueError('protocol_recovery_accounting')
         old = state['budget_supplement']; new_path = session.root/'budget-supplement.json'

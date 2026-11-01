@@ -53,6 +53,35 @@ def fingerprint(value):
     return hashlib.sha256(value.encode('utf-8')).hexdigest() if isinstance(value, str) else None
 
 
+def response_shape(value):
+    """Only bounded structural facts; never echo nested text or reasoning."""
+    if not isinstance(value, dict):
+        return dict(shape=shape(value))
+    identity = value.get('id')
+    try:
+        legacy.safe_id(identity)
+        identity_shape = 'valid'
+    except legacy.TransportError:
+        identity_shape = 'empty' if identity == '' else 'invalid' if 'id' in value else 'missing'
+    status = value.get('status')
+    output = value.get('output')
+    return dict(shape='object', identity=identity_shape,
+        status=status if status in ('queued', 'in_progress', 'completed', 'incomplete', 'failed') else 'other',
+        output_shape=shape(output), output_count=len(output) if isinstance(output, list) else None,
+        fields={key:shape(value[key]) for key in ('usage', 'error', 'incomplete_details') if key in value},
+        model_matches=value.get('model') == legacy.MODEL, model_present='model' in value,
+        reasoning_echo=codec.reasoning_echo(value),
+        output_limit_matches=value.get('max_output_tokens') == codec.MAX_OUTPUT)
+
+
+def empty_envelope(response):
+    return (response.get('output') == [] and response.get('usage') is None
+            and response.get('error') is None and response.get('incomplete_details') is None
+            and response.get('model') in (None, legacy.MODEL)
+            and codec.reasoning_echo(response) not in ('conflict', 'malformed')
+            and response.get('max_output_tokens') in (None, codec.MAX_OUTPUT))
+
+
 class Decoder(legacy.Decoder):
     def __init__(self, business, on_usage):
         super().__init__(business, on_usage)
@@ -70,6 +99,8 @@ class Decoder(legacy.Decoder):
         self.context_truncated = False
         self.first_rejection = None
         self.current_context = None
+        self.anonymous_preamble = 0
+        self.anonymous_bound = False
 
     def reject(self, code):
         if self.first_rejection is None:
@@ -81,11 +112,15 @@ class Decoder(legacy.Decoder):
         return dict(version='product-stream-protocol-v1', errors=list(self.errors),
                     compatibility=dict(self.compatibility), counts=dict(self.counts),
                     events=list(self.metadata), metadata_truncated=self.metadata_truncated,
-                    event_context_version='body-free-event-context-v1',
+                    event_context_version='body-free-event-context-v2',
                     event_context=list(self.context_events), context_truncated=self.context_truncated,
                     first_rejection=self.first_rejection)
 
     def feed(self, event):
+        if not isinstance(event, dict):
+            self.current_context = dict(ordinal=self.event_ordinal+1, shape=shape(event))
+            self.reject('event_shape')
+            return
         kind = event.get('type', '')
         self.event_ordinal += 1
         self.current_context = dict(
@@ -97,7 +132,8 @@ class Decoder(legacy.Decoder):
             created_count=self.created, output_items=len(self.items),
             terminal_seen=self.terminal is not None,
             fields={key:shape(event[key]) for key in OBSERVED_FIELDS if key in event},
-            extra_field_count=sum(key not in OBSERVED_FIELDS for key in event))
+            extra_field_count=sum(key not in OBSERVED_FIELDS for key in event),
+            response_shape=response_shape(event.get('response')) if 'response' in event else None)
         # Keep every early event plus lifecycle/non-delta events. The first
         # rejection has its own slot so a long valid delta stream cannot hide it.
         if self.event_ordinal <= 8 or not isinstance(kind, str) or not kind.endswith('.delta'):
@@ -115,10 +151,10 @@ class Decoder(legacy.Decoder):
         self.counts[label] += 1
         if sum(self.counts.values()) > 100000:
             self.reject('event_limit')
-        response = event.get('response') or {}
+        response = event.get('response') if isinstance(event.get('response'), dict) else {}
         seq = event.get('sequence_number')
         if lifecycle or kind in ('response.function_call_arguments.done', 'response.output_item.done'):
-            item = event.get('item') or {}
+            item = event.get('item') if isinstance(event.get('item'), dict) else {}
             args = event.get('arguments') if kind == 'response.function_call_arguments.done' else (
                 item.get('arguments') if item.get('type') == 'function_call' else None)
             if len(self.metadata) < 64:
@@ -149,9 +185,13 @@ class Decoder(legacy.Decoder):
         if self.terminal is not None:
             self.reject('event_after_terminal')
             return
+        # Exactly two anonymous, empty envelopes may precede the real created
+        # event. They never establish response identity or approve any content.
+        if self._anonymous_prefix(kind, response, seq):
+            return
         # A second empty created envelope before *any* output can replace a relay
         # preamble. A changed identity after output starts never enters this branch.
-        restart = (kind == 'response.created' and self.created == 1 and not self.items
+        restart = (not self.anonymous_bound and kind == 'response.created' and self.created == 1 and not self.items
                    and response.get('output') == [] and response.get('usage') is None
                    and response.get('error') is None and response.get('incomplete_details') is None)
         if type(seq) is not int or seq < 0 or (seq <= self.raw_sequence and not restart):
@@ -178,6 +218,42 @@ class Decoder(legacy.Decoder):
             self.reject('event_shape')
         except legacy.TransportError as error:
             self.reject(str(error))
+
+    def _anonymous_prefix(self, kind, response, seq):
+        if self.anonymous_preamble == 0:
+            if (self.event_ordinal == 1 and kind == 'response.created' and type(seq) is int and seq == 0
+                    and response.get('id') == '' and response.get('status') == 'queued'
+                    and empty_envelope(response)):
+                self.anonymous_preamble = 1
+                self.raw_sequence = seq
+                return True
+            return False
+        if self.anonymous_preamble == 1:
+            if (self.event_ordinal == 2 and kind == 'response.queued' and type(seq) is int and seq == 1
+                    and response.get('id') == '' and response.get('status') == 'queued'
+                    and empty_envelope(response)):
+                self.anonymous_preamble = 2
+                self.raw_sequence = seq
+                return True
+        elif self.anonymous_preamble == 2:
+            try:
+                legacy.safe_id(response.get('id'))
+                valid_id = True
+            except legacy.TransportError:
+                valid_id = False
+            if (self.event_ordinal == 3 and kind == 'response.created' and type(seq) is int and seq == 0
+                    and valid_id and response.get('status') in ('queued', 'in_progress')
+                    and empty_envelope(response) and not self.errors):
+                self.anonymous_preamble = 3
+                self.anonymous_bound = True
+                self.raw_sequence = -1
+                self.compatibility['anonymous_preamble_bound'] += 1
+                return False
+        else:
+            return False
+        self.reject('anonymous_preamble_binding')
+        self.anonymous_preamble = -1
+        return False
 
     def _lifecycle(self, kind, response, restart):
         terminal = kind in ('response.completed', 'response.incomplete', 'response.failed')
@@ -222,6 +298,8 @@ class Decoder(legacy.Decoder):
                 self._match_call(row, item)
 
     def finish(self):
+        if self.anonymous_preamble in (1, 2):
+            self.reject('anonymous_preamble_unbound')
         if self.terminal is None:
             self.reject('terminal_missing')
         result = dict(self.result, usage=self.usage, usage_conflict=self.usage_conflict,

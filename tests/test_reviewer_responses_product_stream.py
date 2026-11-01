@@ -28,7 +28,7 @@ def test_wire_preserves_business_and_forced_tool(business):
     assert wire['reasoning'] == {'effort': 'high'}
 
 
-@pytest.mark.parametrize('preamble,omit_name', [(False, False), (False, True), (True, True)])
+@pytest.mark.parametrize('preamble,omit_name', [(False, False), (False, True), (True, True), ('anonymous', True)])
 def test_actual_sdk_accepts_bounded_compatibility(tmp_path, business, preamble, omit_name):
     rows = events_for_response(response(), preamble=preamble, omit_done_name=omit_name)
     recorded, uses = [], []
@@ -41,7 +41,8 @@ def test_actual_sdk_accepts_bounded_compatibility(tmp_path, business, preamble, 
     assert recorded == [stream.build_wire(business)]
     assert uses == [result['usage']]
     compatibility = result['stream_protocol']['compatibility']
-    assert compatibility.get('empty_created_replacement', 0) == int(preamble)
+    assert compatibility.get('empty_created_replacement', 0) == int(preamble is True)
+    assert compatibility.get('anonymous_preamble_bound', 0) == int(preamble == 'anonymous')
     assert compatibility.get('done_name_from_bound_item', 0) == int(omit_name)
     assert result['public_tool_call']['arguments'] == response()['output'][0]['arguments']
     assert result['diagnostic_tool_call']['wire_sha256'] == digest(recorded[0])
@@ -158,3 +159,48 @@ def test_late_rejection_keeps_bounded_metadata_without_unknown_body(business):
     assert protocol['first_rejection']['event']['type'] == 'unrecognized'
     assert protocol['first_rejection']['event']['ordinal'] > 100
     assert PRIVATE not in json.dumps(protocol) and KEY not in json.dumps(protocol)
+
+
+@pytest.mark.parametrize('fault', [
+    'missing_id', 'null_id', 'content', 'usage', 'error', 'incomplete', 'model', 'reasoning', 'limit',
+    'status', 'sequence', 'extra', 'order', 'short', 'unbound', 'late', 'second_identity', 'terminal_identity',
+])
+def test_anonymous_preamble_requires_empty_pair_and_immediate_identity(business, fault):
+    rows = events_for_response(response(), preamble='anonymous')
+    # Independent objects make mutations to either envelope meaningful.
+    rows[0]['response'] = deepcopy(rows[0]['response'])
+    first = rows[0]['response']
+    if fault == 'missing_id': first.pop('id')
+    elif fault == 'null_id': first['id'] = None
+    elif fault == 'content': first['output'] = [{'type': 'message', 'text': PRIVATE}]
+    elif fault == 'usage': first['usage'] = dict(input_tokens=1, output_tokens=1, total_tokens=2)
+    elif fault == 'error': rows[1]['response']['error'] = {'message': PRIVATE}
+    elif fault == 'incomplete': first['incomplete_details'] = {'reason': PRIVATE}
+    elif fault == 'model': first['model'] = PRIVATE
+    elif fault == 'reasoning': first['reasoning'] = {'effort': PRIVATE}
+    elif fault == 'limit': first['max_output_tokens'] = 32768
+    elif fault == 'status': first['status'] = 'completed'
+    elif fault == 'sequence': rows[1]['sequence_number'] = 2
+    elif fault == 'extra': rows.insert(2, deepcopy(rows[1]))
+    elif fault == 'order': rows[0], rows[1] = rows[1], rows[0]
+    elif fault == 'short': rows.pop(1)
+    elif fault == 'unbound': rows = rows[:2]
+    elif fault == 'late': rows = rows[2:4]+rows[:2]+rows[4:]
+    elif fault == 'second_identity': rows.insert(3, deepcopy(rows[2]))
+    elif fault == 'terminal_identity': rows[-1]['response']['id'] = 'different'
+    result = decode(business, rows)
+    assert result['ok'] is False and result['public_tool_call'] is None
+    assert result['usage'] is None if fault == 'unbound' else result['usage']['total_tokens'] == 20
+    assert PRIVATE not in json.dumps(result['stream_protocol'])
+
+
+def test_anonymous_context_records_nested_shapes_not_nested_text(business):
+    rows = events_for_response(response(), preamble='anonymous')
+    rows[0]['response']['unrecognized'] = {'text': PRIVATE, 'key': KEY}
+    result = decode(business, rows)
+    assert result['ok']
+    contexts = result['stream_protocol']['event_context']
+    assert [c['response_shape']['identity'] for c in contexts[:3]] == ['empty', 'empty', 'valid']
+    assert contexts[0]['response_shape']['output_count'] == 0
+    assert contexts[0]['response_shape']['status'] == 'queued'
+    assert PRIVATE not in json.dumps(contexts) and KEY not in json.dumps(contexts)

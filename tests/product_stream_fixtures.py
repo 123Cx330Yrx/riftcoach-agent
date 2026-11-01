@@ -8,7 +8,7 @@ def events_for_response(value, *, preamble=False, omit_done_name=True):
     base = dict(value, output=[], usage=None, status='in_progress')
     rows = []
     if preamble:
-        prefix = dict(base, id='relay-placeholder', status='queued')
+        prefix = dict(base, id='' if preamble == 'anonymous' else 'relay-placeholder', status='queued')
         rows += [dict(type='response.created',response=prefix),dict(type='response.queued',response=prefix)]
     rows += [dict(type='response.created',response=base),dict(type='response.in_progress',response=base)]
     for index,item in enumerate(value['output']):

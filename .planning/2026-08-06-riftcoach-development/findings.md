@@ -1,3 +1,17 @@
+## 2026-11-01 受限空ID兼容与两次协议失败恢复
+
+2026-11-01，按用户“继续”完成空ID前导的受限兼容与同任务离线恢复。只接收开头created(0)/queued(1)两个queued空ID信封，要求output=[]、无usage/error/incomplete且契约回显不冲突，随后必须立即绑定带有效ID的created(0)；其他顺序、内容、费用、身份变化仍拒绝。补充不含正文的嵌套结构观测。旧现场未记录完整嵌套字段，因此这只是已验证的严格兼容规则，不能声称真实上游已经通过，也不把旧诊断意见转正。
+
+以attempt-12最新终态DB 5e1c1606…创建恢复副本，183份父原件及26项操作完整保留，两个协议失败和已消费第6次许可不改。真实SQL/Worker普通resume已到session_protocol_awaiting_manual_retry，新增模型/真实Key/许可消耗均0；累计10HTTP/97298known/366910unknown预留/6retry，活动1100.281秒，正式审查/application/fresh均0、未发布。恢复链保留旧marker、archive和SQL恢复记录，归档checkpoint用于回放旧许可；最多容纳本次第二次协议恢复，不泛化为无限重试。
+
+最新runs_root D:/rc-preamble-recovery-20261101/verified-runs；checkpoint0005 SHA8a50f2d95b35222a4c2edbe7185e8f9b0ce292dd718684b8041c4ce2c0f179d1；DB outputs/riftcoach-product-preamble-recovery-20261101/preflight-v3/recovered-db.dump SHA2a22578c63e159a8eba5ffb8a8239477c0133f17da0950957422292cebc20639；proof SHAe4c89f915a9067ead336ad51935377474851ebd01736e507d1b6d1cb16558c91。完整恢复快照已校验，临时容器清理。后续采用这些最新pin，禁止回退旧准备或诊断副本。
+
+验证：47项流接收、25项预算/许可/guard、30项真实SQL恢复、17项产品合同通过；11个Runtime入口、governance/compile/diff通过。SQL模型为合成替身，真实任务预检零发送。最初的产品清单旧指纹已更新，旧恢复读取失败结果的请求假设已修正；预检复用幂等key的本地冲突保留并改用独立恢复标识。上述局部失败未增加真实请求。结果data/evaluation/results/sol_product_preamble_recovery_prepared_20261101.json。
+
+下一行动：合并提交并固定干净执行目录D:/riftcoach-sol-product-preamble-recovery-execution-20261101；当前没有付费driver/waiter。具体单次方案已在Control/decision-ready.json准备但authorized=false，只有新明确决定及新HEAD八项CI通过才可执行。原单次授权已用，不复用；原总12/723456/2100及北京时间15:50:40截止不延长。尚余2槽/259248tokens/999.719活动秒，若需要双初审及双fresh则不足4槽。旧15完成、Stage8E/默认准入不变。
+
+以下为上一轮记录（已终局，不作为执行队列）。
+
 ## 2026-11-01 单次协议补测终局：空ID前导与序号回退
 
 2026-11-01 11:10北京时间，单次已授权协议补测attempt-12已终局并完成核验。执行HEAD093ee6154d05764c39fb962ef21f038387b9e5f0的CI41263056973八项全绿；唯一waiter启动一次同task/run首审。新增1次HTTP200，103.969秒，首字节约1.531秒，完整EOF/completed；新增46503 known tokens，无新增unknown或524。不自动追加第二次、completion或fresh。

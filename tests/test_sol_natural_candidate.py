@@ -71,9 +71,13 @@ def collect(business,**kwargs):
     status=STATUS
     if is_product_stream:
         from tests.product_stream_fixtures import events_for_response, Bytes
-        if MODE == 'protocol_preamble':
+        if MODE in ('protocol_preamble', 'anonymous_rejected'):
             value['reasoning'] = dict(effort='high')
-        events = events_for_response(value, preamble=True)
+        events = events_for_response(value, preamble='anonymous' if MODE == 'anonymous_rejected' else True)
+        if MODE == 'anonymous_rejected':
+            # Reproduce the old receiver path, preserving its failed receipt.
+            # Only this synthetic child disables the newly added compatibility.
+            codec.Decoder._anonymous_prefix = lambda *args: False
         if MODE == 'protocol_preamble':
             events.insert(0, dict(type='ping'))
             events.insert(-1, dict(type='keepalive'))

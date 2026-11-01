@@ -221,9 +221,10 @@ class PostgresTaskContinuations:
                 raise ContinuationError('continuation_conflict')
             previous = value.get(recovery_key)
             if previous is not None:
-                if previous['proof_sha256'] != proof_sha256 or previous['runs_root'] != str(runs_root):
+                if previous['proof_sha256'] == proof_sha256 and previous['runs_root'] == str(runs_root):
+                    return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=True)
+                if recovery_key != 'protocol_recovery' or previous.get('previous') is not None:
                     raise ContinuationError('continuation_conflict')
-                return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=True)
             if (record.status != TaskStatus.SUCCEEDED.value or record.terminal_reason != 'evaluation_failed'
                     or record.lease_token is not None or record.cancel_requested_at is not None
                     or record.report_available
@@ -241,7 +242,8 @@ class PostgresTaskContinuations:
             if (proof['binding']['task_id'] != str(task_id) or proof['binding']['owner_id'] != owner_id
                     or proof['binding']['run_id'] != record.run_id
                     or any(parent[k] != value[k] for k in
-                           ('binding','profile','guard_sha256','checkpoint_sha256','accounting'))):
+                           ('binding','profile','guard_sha256','checkpoint_sha256','accounting'))
+                    or parent.get(recovery_key) != previous):
                 raise ContinuationError('continuation_conflict')
             value[recovery_key] = dict(proof_sha256=proof_sha256, runs_root=str(runs_root),
                 parent_checkpoint_sha256=value['checkpoint_sha256'], terminal_reason=record.terminal_reason,
@@ -253,6 +255,8 @@ class PostgresTaskContinuations:
                 first_snapshot_id=None if record.first_snapshot_id is None else str(record.first_snapshot_id),
                 first_snapshot_digest=record.first_snapshot_digest,
                 lease_generation=record.lease_generation)
+            if previous is not None:
+                value[recovery_key]['previous'] = previous
             value.update(proof['child_checkpoint'], manual_retry=False)
             record.continuation_reference = value
             record.status = TaskStatus.RECOVERY_REQUIRED.value

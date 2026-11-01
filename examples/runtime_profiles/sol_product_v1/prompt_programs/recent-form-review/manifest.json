@@ -437,12 +437,12 @@
     {
       "component_id": "app.product.manual_retry_grant",
       "source": "app/product/manual_retry_grant.py",
-      "sha256": "5111129ea63abac13a79b485842bbe5bed1bb18b6429a0580611a06694049b57"
+      "sha256": "6003ab6c6e4bafb937aadf4934a8c4aad8222be88f7db0e74e5c4195de043a85"
     },
     {
       "component_id": "scripts.reviewer_responses_stream",
       "source": "scripts/reviewer_responses_stream.py",
-      "sha256": "ead75451f595770809491a7989d552666576761201a097dc17ac930d22db6158"
+      "sha256": "57535515d1725c8e1d9b7629c257aa7b5fa0ce9323280a88973747e63ff11b1e"
     },
     {
       "component_id": "app.product.stream_migration",
@@ -467,7 +467,7 @@
     {
       "component_id": "app.product.protocol_failure_recovery",
       "source": "app/product/protocol_failure_recovery.py",
-      "sha256": "31d02ce3a701c117f560caa3be599b7bc05e5845fe4307843bf0cd48e525da83"
+      "sha256": "e601b261035450fc61d036b49f872aaa8598a46b8915a0ffc7da4e3537fb1650"
     },
     {
       "component_id": "app.tasks.reconciliation",
@@ -487,7 +487,7 @@
     {
       "component_id": "app.persistence.task_continuations",
       "source": "app/persistence/task_continuations.py",
-      "sha256": "80b6bccf97694ae594f95109c87c170b7c72f63370419d8bc779e371d0254eba"
+      "sha256": "15b7cd8b8a8cb60ad7cceb871f73c908583af9d73eb9fc07ecb6ebfc01716a6d"
     },
     {
       "component_id": "coach_execution_contract",
@@ -495,5 +495,5 @@
       "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
     }
   ],
-  "program_sha256": "03ec7db422a8025107a37f0bfbe7a953bd6130c4020ff96efb762ed8fe5530b7"
+  "program_sha256": "888a4470de3cfc3c6952844843975a66fb5a9f34a91febb67c2286022216562b"
 }

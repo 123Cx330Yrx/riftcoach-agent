@@ -29,7 +29,8 @@ def rejected(continued_api, tmp_path, monkeypatch, request):
         task, run = created.task.task_id, created.task.run_id
     make, _, _, calls = setup_worker(tmp_path, monkeypatch, repo, mode='protocol_preamble',
         contract=product, profile=product.WORKER_PROFILE)
-    worker, _ = make(); assert worker.run_once().status.value == 'succeeded'
+    worker, _ = make(); outcome = worker.run_once()
+    assert outcome.status.value == 'succeeded', repo.get_by_task_id(owner_id='owner-1', task_id=task).recovery_reason
     store = PostgresTaskContinuations(repo)
     ref = store.load(owner_id='owner-1', task_id=task)
     assert calls == [[200]] and ref['accounting']['retries'] == 0
@@ -101,3 +102,57 @@ def test_tampered_recovery_not_adopted(rejected, target):
     victim.write_bytes(victim.read_bytes()+b' ')
     with pytest.raises(ContinuationError, match='invalid'): adopt(c, path, sha)
     assert c['store'].load(owner_id='owner-1', task_id=c['task'])['checkpoint_sha256'] == c['ref']['checkpoint_sha256']
+
+
+def second_rejection(c, monkeypatch):
+    path, sha = recover(c); adopt(c, path, sha)
+    ref = c['store'].load(owner_id='owner-1', task_id=c['task'])
+    c['store'].resume(owner_id='owner-1', task_id=c['task'], request_id='first-protocol-ordinary',
+        command=ResumeContinuation(checkpoint_sha256=ref['checkpoint_sha256']))
+    make, _, _, calls = setup_worker(c['root'], monkeypatch, c['repo'], mode='anonymous_rejected',
+        contract=product, profile=product.WORKER_PROFILE)
+    worker, _ = make(); assert worker.run_once().status.value == 'paused'
+    ref = c['store'].load(owner_id='owner-1', task_id=c['task'])
+    assert ref['pause_reason'] == 'session_protocol_awaiting_manual_retry'
+    c['store'].resume(owner_id='owner-1', task_id=c['task'], request_id='first-protocol-retry',
+        command=ResumeContinuation(checkpoint_sha256=ref['checkpoint_sha256'], manual_retry=True))
+    worker, _ = make(); assert worker.run_once().status.value == 'succeeded'
+    assert calls == [[], [200]]
+    ref = c['store'].load(owner_id='owner-1', task_id=c['task'])
+    assert ref['accounting']['retries'] == 1
+    return dict(c, ref=ref, parent=c['root']/c['run'], root=c['root'].parent/'second-recovered',
+                original=tree(c['root']/c['run']))
+
+
+def test_second_recovery_preserves_both_failures_and_committed_retry(rejected, monkeypatch):
+    first = rejected; c = second_rejection(first, monkeypatch)
+    path, sha = recover(c); verify(path, sha, runs_root=c['root'])
+    adopt(c, path, sha)
+    assert adopt(c, path, sha)['replayed']
+    ref = c['store'].load(owner_id='owner-1', task_id=c['task'])
+    assert ref['protocol_recovery']['previous'] == c['ref']['protocol_recovery']
+    c['store'].resume(owner_id='owner-1', task_id=c['task'], request_id='second-ordinary',
+        command=ResumeContinuation(checkpoint_sha256=ref['checkpoint_sha256']))
+    make, summary, factories, calls = setup_worker(c['root'], monkeypatch, c['repo'],
+        contract=product, profile=product.WORKER_PROFILE)
+    worker, _ = make(); assert worker.run_once().status.value == 'paused'
+    paused = c['store'].load(owner_id='owner-1', task_id=c['task'])
+    assert paused['pause_reason'] == 'session_protocol_awaiting_manual_retry'
+    assert paused['accounting'] == c['ref']['accounting'] and calls == [[]] and summary.reads == 0
+    assert all(not p.generator.requests for f in factories for p in f.providers.values())
+    assert not c['repo'].get_by_task_id(owner_id='owner-1', task_id=c['task']).report_available
+    assert tree(first['parent']) == first['original'] and tree(c['parent']) == c['original']
+    assert tree(c['parent']/'.continuation/session/operations') == tree(c['root']/c['run']/'.continuation/session/operations')
+
+
+@pytest.mark.parametrize('target', ['history_archive', 'history_marker', 'prior_result'])
+def test_second_recovery_rejects_history_tampering(rejected, monkeypatch, target):
+    c = second_rejection(rejected, monkeypatch)
+    path, sha = recover(c)
+    base = c['root']/c['run']/'.continuation'
+    if target == 'history_archive': victim = base/'protocol-history-1.zip'
+    elif target == 'history_marker': victim = base/'session/protocol-recovery.json'
+    else: victim = next((base/'session/operations').glob('*-result.json'))
+    victim.write_bytes(victim.read_bytes()+b' ')
+    with pytest.raises(ContinuationError, match='invalid'): adopt(c, path, sha)
+    assert c['store'].load(owner_id='owner-1', task_id=c['task']) == c['ref']
