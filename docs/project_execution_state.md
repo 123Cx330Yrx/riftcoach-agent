@@ -9,10 +9,18 @@ pause_reason: ""
 
 # RiftCoach 当前执行状态
 
-2026-10-30。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+2026-11-01。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
+
+2026-11-01 用户审阅[产品推进计划](plans/2026-11-01-product-delivery-reset.md)后明确“好，开展”。当前 P1_complete / P2_partial_verified；已完成[通道裁决与数值/可信用途子包](plans/2026-11-01-product-route-adjudication.md)，整个 P2 尚未完成。现有通道缺少可核实的 Responses 扩展契约，不再同条件真实补测；尚无已核实替代通道。Stage8E、原完成证据和 attempt-13 终态/费用不变，新真实模型调用及凭据读取均为 0。
+
+Summary 聚合改为 Decimal HALF_UP；服务器冻结的 observed/self/unbound 关系经产品合同 1.7.2 贯穿可信生成、双审/修订/复审。65 项数值消费者、25 项用途/产品合同、10 项真实隔离 SQL/API/Worker、1 项浏览器恢复和 82 项传输恢复边界通过；11 个 Runtime 及治理/diff 通过。模型均为替身，不是新真实语义验收；临时数据库已清理。旧 qualification 政策及冻结请求保持，旧任务不自动升级。新策略预算情景 7 请求/335183 tokens，900 秒全程可达性未获保证；同 HEAD CI 尚无终局证据。
+
+唯一下一行动：取得提供方的 Responses 事件/终态/用量契约或可核实替代入口信息，再决定剩余 P2 通道工作及 P3 完整预算方案。公开说明目前不足以区分现场未知事件；不为等待重复测试或购买请求，不恢复旧任务、创建新补测/monitor 或扩大预算。
+
+以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 
 2026-11-01 14:26北京时间，用户新明确“授权”的同一首审单次补测attempt-13已执行并核验终局。授权原话存Control/retry-authorization.json，SHA756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae；绑定原decision-ready SHA594e4415…，执行HEAD1eb9eb43170d2635cffde8a926a01d25329c9155及其CI41271213029八项全绿。完整授权前缀/一次性许可预检通过后唯一driver只执行1个segment、1次HTTP，无第二次/completion/fresh。
 

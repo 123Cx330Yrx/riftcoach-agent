@@ -1,4 +1,5 @@
 """Normal composed HTTP entry with real SQL/Memory/Evidence; external IO scripted."""
+import json
 import os
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
@@ -21,14 +22,15 @@ from tests.test_natural_duty_worker_postgres import no_external_services
 from tests.test_sol_worker_continuation_postgres import continued_api, setup_worker, resume
 
 
-@pytest.mark.parametrize('conversation_bound', [False, True])
+@pytest.mark.parametrize('conversation_bound,role', [(False, RelationshipRole.OBSERVED),
+    (True, RelationshipRole.OBSERVED), (True, RelationshipRole.SELF)])
 def test_composed_api_binds_evidence_and_observed_conversation(
-    continued_api, tmp_path, monkeypatch, conversation_bound,
+    continued_api, tmp_path, monkeypatch, conversation_bound, role,
 ):
     _, _, repo, _ = continued_api
     factory = repo._session_factory
     subject, relationship, conversation = seed_conversation(factory, number=901,
-        owner_id='owner-1', role=RelationshipRole.OBSERVED)
+        owner_id='owner-1', role=role)
     with factory.begin() as session:
         session.add(PlayerAliasRecord(player_alias_id=uuid4(), player_subject_id=subject,
             routing_region='asia', game_name='DemoPlayer', tag_line='TEST',
@@ -48,13 +50,15 @@ def test_composed_api_binds_evidence_and_observed_conversation(
         # Publication mode is server-selected, never a client bypass.
         assert owner.post(path, headers={'Idempotency-Key': 'forged-mode'},
             json={**payload, 'publication_mode': 'legacy'}).status_code == 422
+        assert owner.post(path, headers={'Idempotency-Key': 'forged-purpose'},
+            json={**payload, 'product_task_purpose': 'self'}).status_code == 422
         response = owner.post(path, headers={'Idempotency-Key': 'normal-product-entry'}, json=payload)
         assert response.status_code == 202, response.text
         task, run = UUID(response.json()['task_id']), response.json()['run_id']
         stored = repo.get_by_task_id(owner_id='owner-1', task_id=task)
         assert stored.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1
         if conversation_bound:
-            assert stored.conversation_binding.relationship_role.value == 'observed'
+            assert stored.conversation_binding.relationship_role is role
             assert other.post(path, headers={'Idempotency-Key': 'foreign'}, json=payload).status_code == 404
         make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo,
             contract=product, profile=product.WORKER_PROFILE,
@@ -77,6 +81,20 @@ def test_composed_api_binds_evidence_and_observed_conversation(
         assert other.get(f'/runs/{run}/report').status_code == 404
         total = owner.get(f'/runs/{run}/usage').json()['session_accounting']
         assert total['requests_reserved'] == 4 and total['known_tokens'] == 80
+        expected_purpose = role.value if conversation_bound else 'unbound'
+        private = tmp_path / run / '.continuation'
+        guard = json.loads((private/'session/guard.json').read_bytes())
+        assert guard['binding']['product_task_purpose'] == expected_purpose
+        for path in (private/'session/operations').glob('*-intent.json'):
+            value = json.loads(path.read_bytes())
+            if value['kind'] != 'model':
+                continue
+            request = value['request']
+            system = '\n'.join(m['content'] or '' for m in request['messages'] if m['role'] == 'system')
+            assert f'trusted_product_task_purpose={expected_purpose}' in system
+            context = request['metadata'].get(product.CONTEXT)
+            if context:
+                assert json.loads(context['data_json'])['product_task_purpose'] == expected_purpose
         if conversation_bound:
             assert summary.calls[0][0] == 'build_by_puuid'
             assert summary.calls[0][1]['puuid'] == 'PUUID_MEMORY_901'

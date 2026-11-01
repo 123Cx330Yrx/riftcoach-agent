@@ -82,6 +82,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
         validate_business(business, validation_context)
     elif response_mode in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
         from app.evaluation.sol_review_contract import validate_business, REVIEW_PROFILE
+        if response_mode == 'natural-sol-product-stream-v1' and (validation_context or {}).get('version') == 'natural-flash-sol-product-v1':
+            from app.product.sol_contract import validate_business
         if profile != REVIEW_PROFILE:
             raise ValueError('dual_necessity_profile_binding')
         validate_business(business, validation_context)
@@ -264,6 +266,8 @@ def worker():
             validate = validate_business(payload['business'], payload['validation_context'])
         elif payload.get('response_mode') in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
             from app.evaluation.sol_review_contract import validate_business, REVIEW_PROFILE
+            if payload.get('response_mode') == 'natural-sol-product-stream-v1' and (payload.get('validation_context') or {}).get('version') == 'natural-flash-sol-product-v1':
+                from app.product.sol_contract import validate_business
             if Profile(**payload['profile']) != REVIEW_PROFILE:
                 raise ValueError('dual_necessity_profile_binding')
             validate = validate_business(payload['business'], payload['validation_context'])

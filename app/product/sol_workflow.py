@@ -48,6 +48,11 @@ class ProductWorkflow(SessionWorkflow):
             raise ValueError('product_workflow_binding')
         self.identical_coordination = None
 
+    def inputs_for(self, request):
+        from .review_purpose import bind_inputs
+        return bind_inputs(super().inputs_for(request),
+            self.session.binding.get('product_task_purpose', 'unbound'))
+
     def assemble(self, inputs):
         inventory = direct.conflict_inventory(inputs, self.proposals)
         if not inventory['conflicts']:

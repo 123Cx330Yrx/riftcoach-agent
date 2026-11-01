@@ -133,6 +133,8 @@ class SolContinuationExecutor:
             request_fingerprint=task.request_fingerprint,
             publication_mode=task.publication_mode.value)
         if self.profile == WORKER_SOL_PRODUCT_PROFILE:
+            from app.product.review_purpose import task_purpose
+            binding['product_task_purpose'] = task_purpose(task)
             binding['execution_contract'] = contract.CONTRACT.snapshot().model_dump(mode='json')
         try:
             saved = self.store.begin(task, binding)

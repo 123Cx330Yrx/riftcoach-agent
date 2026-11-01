@@ -64,6 +64,11 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
     root = RuntimeCompositionRoot.from_directories(skills_root=assets/'skills',
         prompt_programs_root=assets/'prompt_programs', coach_contract=contract)
     context = CoachContextBuilder(coach_contract=contract, compact_json=True)
+    from app.product import sol_contract
+    if candidate is sol_contract:
+        from app.product.review_purpose import ProductContextBuilder
+        context = ProductContextBuilder(coach_contract=contract, compact_json=True,
+            purpose=execution_session.binding.get('product_task_purpose', 'unbound'))
     if memory_repository is not None:
         context = MemoryAwareContextBuilder(delegate=context, repository=memory_repository,
             manifest_store=memory_manifest_store)

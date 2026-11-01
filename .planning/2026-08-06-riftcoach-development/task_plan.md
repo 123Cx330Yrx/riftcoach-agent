@@ -13,6 +13,14 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-01 用户“好，开展”已恢复计划实施。P1_complete / P2_partial_verified；入口 `docs/plans/2026-11-01-product-delivery-reset.md`，裁决与验收 `docs/plans/2026-11-01-product-route-adjudication.md`。数值/可信用途子包已完成本地验证，整个 P2 尚未完成，通道证据不足仍阻断真实验收。
+
+本包结果：聚合 Decimal HALF_UP 修正来源均值；独立产品 1.7.2 可信用途及完整请求绑定贯穿生成、初审和同稿双 fresh。验证：65 项数值/消费者、25 项用途/产品合同、10 项真实 SQL/API/Worker、1 项浏览器恢复、82 项传输恢复边界及 11 个 Runtime，通过治理/diff；模型替身不算真实质量证据，临时数据库清理。同 HEAD CI 尚未终局核验。旧原件/成本/资格/默认保持，新真实模型与凭据读取 0。
+
+唯一下一行动：取得提供方协议或可核实替代入口依据，然后确定剩余 P2 通道修正与 P3 完整预算。当前 7 请求/335183 tokens 只是情景，900 秒可达性未获证明。没有新依据不重复补测，不把外部依赖改写成“再修一个字段”。
+
+以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
+
 2026-11-01 14:26北京时间，用户新明确“授权”的同一首审单次补测attempt-13已执行并核验终局。授权原话存Control/retry-authorization.json，SHA756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae；绑定原decision-ready SHA594e4415…，执行HEAD1eb9eb43170d2635cffde8a926a01d25329c9155及其CI41271213029八项全绿。完整授权前缀/一次性许可预检通过后唯一driver只执行1个segment、1次HTTP，无第二次/completion/fresh。
 
 本次HTTP200、160.328秒，首字节约1.907秒，完整EOF/completed；新增22409 known tokens（17381输入/5028输出）、unknown与524新增0。Worker succeeded仅指执行结束：业务terminal=evaluation_failed，publication_allowed=false、报告409。累计11HTTP/119707known/366910unknown预留/7retry、1273.250活动秒，无未决或无回执请求。154份准备原件逐字保持，28项操作/回执齐全，3次成功生成、5旧524和2次旧HTTP200拒绝保留；新首审请求与call-010逐字相同。

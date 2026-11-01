@@ -1,5 +1,5 @@
 from collections import Counter, defaultdict
-from statistics import mean
+from decimal import Decimal, ROUND_HALF_UP
 
 
 def safe_div(numerator: float, denominator: float) -> float:
@@ -270,13 +270,17 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
     role_counter = Counter(row.get("role") or "UNKNOWN" for row in match_rows)
     champion_counter = Counter(row["champion_name"] for row in match_rows)
 
-    def avg(rows: list[dict], key: str) -> float:
-        values = [row[key] for row in rows if row.get(key) is not None]
-        return round(mean(values), 2) if values else 0.0
-
-    def avg_percent(rows: list[dict], key: str) -> float:
-        values = [row[key] * 100 for row in rows if row.get(key) is not None]
-        return round(mean(values), 1) if values else 0.0
+    def avg(rows: list[dict], key: str, *, percent: bool = False) -> float:
+        # These published row values are also the report's numerical evidence.
+        # Keep decimal ties intact through averaging (and percentage scaling),
+        # then use the report contract's HALF_UP display rule exactly once.
+        values = [Decimal(str(row[key])) for row in rows if row.get(key) is not None]
+        if not values:
+            return 0.0
+        value = sum(values) / len(values)
+        if percent:
+            value *= 100
+        return float(value.quantize(Decimal("0.1" if percent else "0.01"), rounding=ROUND_HALF_UP))
 
     def early_death_average(rows: list[dict]) -> float | None:
         # This field describes the entire named sample, not only the subset
@@ -339,9 +343,9 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
             "gold_per_min": avg(match_rows, "gold_per_min"),
             "damage_per_min": avg(match_rows, "damage_per_min"),
             "vision_score": avg(match_rows, "vision_score"),
-            "kill_participation_percent": avg_percent(match_rows, "kill_participation"),
-            "damage_share_percent": avg_percent(match_rows, "damage_share"),
-            "gold_share_percent": avg_percent(match_rows, "gold_share"),
+            "kill_participation_percent": avg(match_rows, "kill_participation", percent=True),
+            "damage_share_percent": avg(match_rows, "damage_share", percent=True),
+            "gold_share_percent": avg(match_rows, "gold_share", percent=True),
             "deaths_before_15": early_death_average(match_rows),
         },
 

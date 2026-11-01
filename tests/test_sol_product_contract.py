@@ -17,9 +17,9 @@ from tests.test_native_editor_product_budget import SummaryBuilder
 from tests.test_runtime_execution_factory_combined import _NoopObserver
 
 
-def session_at(root, *, manual=False, pins=None, clock=None, max_new_models=None):
+def session_at(root, *, manual=False, pins=None, clock=None, max_new_models=None, purpose='unbound'):
     return CandidateSession(root / 'session', binding=dict(worker_profile=product.WORKER_PROFILE,
-        task_id='product-test', candidate_contract=product.VERSION),
+        task_id='product-test', candidate_contract=product.VERSION, product_task_purpose=purpose),
         transport_root=root / 'transport' / 'candidate', journal_root=root / 'journal',
         contract_module=product, worker_product=True, manual_retry=manual,
         guard_sha=None if pins is None else pins['guard_sha256'],
@@ -89,7 +89,7 @@ def test_unsafe_or_rejected_repairs_pause_without_rebuying(tmp_path, mode, reaso
             assert not (tmp_path/'session/terminal.json').exists()
 
 
-def test_contract_reuses_complete_business_requests_but_has_independent_budget():
+def test_contract_preserves_sources_and_schemas_with_product_purpose_and_independent_budget():
     from app.evaluation import role_qualification
     from scripts import review_duty_composition as duty
     cases, _ = role_qualification.frozen_cases()
@@ -97,7 +97,14 @@ def test_contract_reuses_complete_business_requests_but_has_independent_budget()
     for _, source in cases:
         inputs = duty.TimedDocumentWorkflow.build_inputs(source)
         for name in duty.DUTIES:
-            assert product.request_bytes(product.make_request(inputs, name)) == prior.request_bytes(prior.make_request(inputs, name))
+            current, historical = product.make_request(inputs, name), prior.make_request(inputs, name)
+            assert current.messages[1:] == historical.messages[1:]
+            assert current.tools == historical.tools and current.response_contract == historical.response_contract
+            assert current.messages[0].content.startswith(historical.messages[0].content)
+            assert 'trusted_product_task_purpose=unbound' in current.messages[0].content
+            assert product.role_for_request(current) == 'review'
+            assert prior.role_for_request(historical) == 'review'
+            assert 'trusted_product_task_purpose=' not in historical.messages[0].content
     d = product.CONTRACT.descriptor()
     assert (d['max_calls'], d['total_tokens'], d['execution_timeout_s'], d['transport_retries']) == (8, 401920, 900, 2)
     assert product.CONTRACT.snapshot() != prior.CONTRACT.snapshot()

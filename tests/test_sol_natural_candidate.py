@@ -51,7 +51,11 @@ def collect(business,**kwargs):
     value=response(dict(result.tool_calls[0].arguments))
     if MODE in ('overlap', 'identical'):
         from tests.test_sol_original15_session import opinion
-        value = response(opinion(context if MODE == 'overlap' else dict(context, duty='facts'), 'overlap' if MODE == 'overlap' else 'repair'))
+        # Reuse only the synthetic edit producer under its historical context;
+        # the real child validator still checks the current product request.
+        from app.evaluation import sol_review_contract as historical
+        fixture_context = dict(context, version=historical.VERSION) if is_product_stream else context
+        value = response(opinion(fixture_context if MODE == 'overlap' else dict(fixture_context, duty='facts'), 'overlap' if MODE == 'overlap' else 'repair'))
     if MODE == 'non_tool':
         value['output'] = [dict(type='message', status='completed',
             content=[dict(type='output_text', text='OFFLINE_TEXT_ONLY', annotations=[])])]

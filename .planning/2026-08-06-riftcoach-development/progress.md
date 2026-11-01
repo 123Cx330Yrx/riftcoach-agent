@@ -1,3 +1,15 @@
+## 2026-11-01 P1 裁决与 P2 数值/可信用途子包收口
+
+用户“好，开展”后先执行通道裁决，选择暂不采用当前中转进入下一次真实验收；没有可核实的 Responses 扩展契约，也没有已核实替代入口。停止同条件付费补测，未改流兼容规则。数据定位确认 8.13/1280.91 首先来自 Summary 聚合，已按 Decimal HALF_UP 修正；观摩约束原已传入但与通用可信政策冲突，产品合同 1.7.2 改由服务器冻结关系贯穿生成、双审、修订与 fresh。
+
+验证：65 项数值/来源消费者；25 项用途/产品合同最终通过（23 通过后，仅修正并重跑两个旧上下文替身分支）；10 项真实隔离 SQL/API/Worker；1 项真实浏览器恢复；82 项流/进程/恢复边界；11 个 Runtime、governance/diff 通过。最初的新版本分派和验证器选择遗漏已在集成检查中修正。模型均为替身，实际模型 HTTP/真实凭据读取 0；临时数据库已清理。原资格请求、旧原件/失败/账目保持，未重跑真实 15。尚无本包同 HEAD CI 终局或新真实语义验收。
+
+P1_complete / P2_partial_verified，不宣称整个 P2、真实发布或 Stage8E 完成。下一行动是取得提供方协议或可核实替代入口依据，再确定剩余通道实现及完整时间方案；7 请求/335183 tokens 是新策略情景，900 秒仍未证实可达。详见 docs/plans/2026-11-01-product-route-adjudication.md 和 data/evaluation/results/sol_product_route_adjudication_20261101.json。不启动新补测/monitor，不延长旧授权。
+
+## 2026-11-01 用户暂停后产品推进规划
+
+用户要求先停止执行、复盘，并规划清楚产品目标、修改范围、验证顺序与质量标准。已形成 `docs/plans/2026-11-01-product-delivery-reset.md`：先裁定审查通道和责任边界，再做受影响离线闭环、完整预算验收包及真实产品消费，最后按原路线推进四块联动/整体体验。当前指针明确 planning_only / execution_paused，不启动旧补测；原 15、attempt-13 终态及费用保持。本轮仅文档，无业务修改、功能测试、CI、凭据或模型调用，未提交推送。
+
 ## 2026-11-01 单次空ID兼容补测终局核验
 
 2026-11-01 14:26北京时间，用户新明确“授权”的同一首审单次补测attempt-13已执行并核验终局。授权原话存Control/retry-authorization.json，SHA756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae；绑定原decision-ready SHA594e4415…，执行HEAD1eb9eb43170d2635cffde8a926a01d25329c9155及其CI41271213029八项全绿。完整授权前缀/一次性许可预检通过后唯一driver只执行1个segment、1次HTTP，无第二次/completion/fresh。

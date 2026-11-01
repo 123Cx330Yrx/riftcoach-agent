@@ -37,7 +37,7 @@
     {
       "component_id": "generation_policy",
       "source": "generation_policy",
-      "sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae"
+      "sha256": "8d7b8a2d0df39cefb33cc3272993d09bfd2c3e4d642828a8a7658543309138fc"
     },
     {
       "component_id": "app.evaluation.golden_native_issues_review",
@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "0b952c71a93206d20be037883aa4dde59d58860d3de201c7264ea15f351900c4"
+      "sha256": "38c847d13727ca77e23e5eca9f4d8ade019cc4afee1f11b3fdbe9a07e28e52e3"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "d6395186b49d4f3ed6054b09ab883475c4537a355a985f064aa67712b49f1834"
+      "sha256": "1ce2db628bff3a103b75ad45e4cd885034eb0475e94a29c2b0429515abf5ee01"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -382,7 +382,7 @@
     {
       "component_id": "scripts.reviewer_responses_process",
       "source": "scripts/reviewer_responses_process.py",
-      "sha256": "a7964b8de8583705d3b7add309435c0840bbfd3d240c540a5c82a4b2e1d72ce7"
+      "sha256": "1521c374ae359318832e9e835636d61d8706d5089698828098a379a9641faebf"
     },
     {
       "component_id": "scripts.reviewer_responses_nonstream",
@@ -427,17 +427,22 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "f238ba18cf8afd4950c2bb47a70929db5cedb335c304f4e09991a784d3f324e1"
+      "sha256": "de91af9ed00f71f85626e833aeb48225ab192531733cc754c63a4e544149963a"
     },
     {
       "component_id": "app.product.sol_workflow",
       "source": "app/product/sol_workflow.py",
-      "sha256": "8d3c92653f9e3039fbaf209f80b5f0ec0966a48bb63131171d8286cc758b90c7"
+      "sha256": "b2d357ba3f11045a6281fff566d21aa36febd5d61042626e5e644b4574088c32"
     },
     {
       "component_id": "app.product.manual_retry_grant",
       "source": "app/product/manual_retry_grant.py",
       "sha256": "6003ab6c6e4bafb937aadf4934a8c4aad8222be88f7db0e74e5c4195de043a85"
+    },
+    {
+      "component_id": "app.product.review_purpose",
+      "source": "app/product/review_purpose.py",
+      "sha256": "ac8afc5ebe637e67670f5c3b80aeea9cf784b8a93a867a96bded5e8d0f2c400a"
     },
     {
       "component_id": "scripts.reviewer_responses_stream",
@@ -457,7 +462,7 @@
     {
       "component_id": "app.workers.sol_continuation",
       "source": "app/workers/sol_continuation.py",
-      "sha256": "6a8055c8848ef823961a331da0b81281609484f113e99a606fe22f2120e08ca9"
+      "sha256": "3b5525d9329bbf58074e8128ead84373ee0f11cb7d7ade138fe1b1aeaadfcc82"
     },
     {
       "component_id": "app.product.zero_send_recovery",
@@ -491,9 +496,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.product.sol_contract:v1.7.1",
-      "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
+      "source": "app.product.sol_contract:v1.7.2",
+      "sha256": "a71f7629a325161eea456afbfc2650809ef90a7b59c326498a8d50523056cf16"
     }
   ],
-  "program_sha256": "888a4470de3cfc3c6952844843975a66fb5a9f34a91febb67c2286022216562b"
+  "program_sha256": "7c70bfda2f1ba08f0d402c4028a6ffbc958704dcc4dbaf3cf45b0a2f5e0a7f83"
 }

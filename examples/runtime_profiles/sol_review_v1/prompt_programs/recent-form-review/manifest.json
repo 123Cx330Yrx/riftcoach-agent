@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "0b952c71a93206d20be037883aa4dde59d58860d3de201c7264ea15f351900c4"
+      "sha256": "38c847d13727ca77e23e5eca9f4d8ade019cc4afee1f11b3fdbe9a07e28e52e3"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "d6395186b49d4f3ed6054b09ab883475c4537a355a985f064aa67712b49f1834"
+      "sha256": "1ce2db628bff3a103b75ad45e4cd885034eb0475e94a29c2b0429515abf5ee01"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -382,7 +382,7 @@
     {
       "component_id": "scripts.reviewer_responses_process",
       "source": "scripts/reviewer_responses_process.py",
-      "sha256": "a7964b8de8583705d3b7add309435c0840bbfd3d240c540a5c82a4b2e1d72ce7"
+      "sha256": "1521c374ae359318832e9e835636d61d8706d5089698828098a379a9641faebf"
     },
     {
       "component_id": "scripts.reviewer_responses_nonstream",
@@ -430,5 +430,5 @@
       "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
     }
   ],
-  "program_sha256": "f09db9e0b3d2135aa38f04c7ae94040787cca0662166dca06ccd780c00d4bc2e"
+  "program_sha256": "9fa939a83dbbcfc63ed384fde1363aa5e3555d00def2c5dbc3deeb6e984485d4"
 }
