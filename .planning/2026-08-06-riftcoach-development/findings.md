@@ -1,3 +1,9 @@
+## 2026-11-01 Chat候选复用边界与预算判断
+
+实际SDK在DONE处停止读取，完整工具+usage与HTTP真正EOF必须分开；已有TailCheckedStream可复用，无需新增传输框架。Chat候选可保持完整消息/schema，并将工具参数交给同一product.validate_business；不必把Chat结果伪造成Responses completed对象。静态函数没有owned process/账目接线，不能声明运行链完整。
+
+两种接口相同业务输入的JSON各仅差69字节；把整个JSON再次当文本估算会使两接口都超过原业务估算，不能把该测法产生的较大数字认成Chat真实超限或新增准入门槛。当前较紧的不确定项是全程活动时间，不能拿默认单次300秒推导四次审查都能在任务900秒内完成。
+
 ## 2026-11-01 本地协议严格程度与中转支持
 
 本站 `/api/pricing` 为 Sol/企业分组列出 Chat 与 Responses；官方 Sol 的工具接口限制不能据此推导中转不支持转换。反过来，公开端点声明和群助手建议也不能证明实际工具完整性或计费相同。当前 SolReviewProvider/子进程回执仍绑定 Responses，不是改 URL 就能替换。
