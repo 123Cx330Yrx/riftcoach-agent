@@ -27,7 +27,7 @@ def rejected(continued_api, tmp_path, monkeypatch, request):
             request=RecentReviewProductRequest(riot_id='DemoPlayer#TEST', routing_region='asia', focus='overall'),
             publication_mode=TaskPublicationMode.EVIDENCE_BOUND_V1))
         task, run = created.task.task_id, created.task.run_id
-    make, _, _, calls = setup_worker(tmp_path, monkeypatch, repo, mode='protocol_preamble',
+    make, _, _, calls = setup_worker(tmp_path, monkeypatch, repo, mode='protocol_unknown_preamble',
         contract=product, profile=product.WORKER_PROFILE)
     worker, _ = make(); outcome = worker.run_once()
     assert outcome.status.value == 'succeeded', repo.get_by_task_id(owner_id='owner-1', task_id=task).recovery_reason

@@ -75,16 +75,19 @@ def collect(business,**kwargs):
     status=STATUS
     if is_product_stream:
         from tests.product_stream_fixtures import events_for_response, Bytes
-        if MODE in ('protocol_preamble', 'anonymous_rejected'):
+        if MODE in ('protocol_unknown_preamble', 'anonymous_rejected'):
             value['reasoning'] = dict(effort='high')
         events = events_for_response(value, preamble='anonymous' if MODE == 'anonymous_rejected' else True)
         if MODE == 'anonymous_rejected':
             # Reproduce the old receiver path, preserving its failed receipt.
             # Only this synthetic child disables the newly added compatibility.
             codec.Decoder._anonymous_prefix = lambda *args: False
-        if MODE == 'protocol_preamble':
-            events.insert(0, dict(type='ping'))
-            events.insert(-1, dict(type='keepalive'))
+        if MODE == 'protocol_unknown_preamble':
+            # Deliberately unsupported synthetic events keep the recovery
+            # fixture rejected. Metadata-only ping/keepalive are now valid;
+            # neither these labels nor this fixture identify the old upstream.
+            events.insert(0, dict(type='synthetic.unknown.before'))
+            events.insert(-1, dict(type='synthetic.unknown.after'))
         return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
             stream=Bytes(events) if status==200 else httpx.ByteStream(b'{}'),
             headers={'content-type':'text/event-stream' if status==200 else 'application/json'})))

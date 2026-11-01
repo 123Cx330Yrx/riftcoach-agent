@@ -21,6 +21,36 @@ def request():
     return product.make_request(duty.TimedDocumentWorkflow.build_inputs(Responses().req), 'facts')
 
 
+@pytest.mark.parametrize('mode,errors', [
+    ('protocol_unknown_preamble', ['event_sequence', 'response_not_created', 'unexpected_event']),
+    ('anonymous_rejected', ['response_identity', 'event_sequence']),
+])
+def test_sql_recovery_stream_fixtures_reject_one_owned_call_with_known_usage(tmp_path, mode, errors):
+    """Check both SQL parent-failure producers without needing a database.
+
+    The anonymous case intentionally emulates the old receiver in its child;
+    current acceptance of empty prefixes and metadata heartbeats is separate.
+    """
+    from app.providers.errors import ProviderResponseError
+
+    factory, attempts = application(tmp_path, mode=mode, candidate=product, factory_only=True)
+    provider = factory('candidate')
+    with pytest.raises(ProviderResponseError, match='sol_call_failed'):
+        provider.chat(request())
+    assert attempts == [200] and provider.generator.requests == []
+    call = provider.reviewer.directory/'call-001'
+    receipt = json.loads((call/'receipt.json').read_bytes())
+    result = json.loads((call/'worker-result.json').read_bytes())
+    observation = json.loads((call/'observation/observation.json').read_bytes())
+    assert receipt['code'] == 'worker_rejected' and receipt['reaped']
+    assert receipt['http_requests'] == 1 and receipt['usage_state'] == 'known'
+    assert receipt['usage']['total_tokens'] == 20
+    assert result['stream_protocol']['errors'] == errors
+    assert observation['stream_protocol'] == result['stream_protocol']
+    assert observation['eof'] and observation['closed']
+    assert result['public_tool_call'] is None and not result['business_validated']
+
+
 @pytest.mark.parametrize('mode', ['bad_json', 'non_tool'])
 def test_format_pause_does_not_resend_without_explicit_retry(tmp_path, mode):
     req = request()
