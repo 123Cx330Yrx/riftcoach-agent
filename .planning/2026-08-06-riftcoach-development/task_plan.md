@@ -13,6 +13,22 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-01 11:10北京时间，单次已授权协议补测attempt-12已终局并完成核验。执行HEAD093ee6154d05764c39fb962ef21f038387b9e5f0的CI41263056973八项全绿；唯一waiter启动一次同task/run首审。新增1次HTTP200，103.969秒，首字节约1.531秒，完整EOF/completed；新增46503 known tokens，无新增unknown或524。不自动追加第二次、completion或fresh。
+
+真实首个拒绝已定位：第1个response.created序号0的response ID为空字符串，第2个response.queued序号1也是空ID；第3个response.created携非空ID并重置序号0。safe_id在created计数递增前拒绝空ID，计数仍0，使已有的空created替换分支未触发，随后记录event_sequence。完整错误为response_identity/event_sequence。此为当前调用的实证，不是合成ping推测，也不能倒推出attempt-11的未知事件；前导事件由哪一层生成、是否可安全忽略，现有嵌套字段观测仍不足以证明。
+
+Worker succeeded仅指执行结束：业务terminal=evaluation_failed，publication_allowed=false、报告409。诊断工具返回85/needs_revision、2项问题，但public_tool_call为空、business_validated=false，未导入、未应用；正式审查/application/fresh均0。已通读报告、完整来源/原用户约束及诊断修订：报告把仅观摩要求延伸成阅读者个人训练，确有适用范围冲突；按展示逐局值HALF_UP得8.14/1280.92。该离线分析不将协议拒绝的意见转正，也不代替后续全文语义验收。
+
+累计10HTTP/97298known/366910unknown预留/6retry、1092.250活动秒，未决或无回执请求0；140份准备文件逐字保持，3次成功生成、5旧524和前次完整HTTP200拒绝均保留，新请求与前次失败首审逐字相同。总预算仍12/723456/2100，余2请求槽/259248tokens/1007.750活动秒；一次补测授权已消耗，余总额度不是新调用许可。北京时间15:50:40截止不延长；若仍需双初审和双fresh，剩余2槽不足。
+
+最新checkpoint为D:/rc-protocol-recovery-20261101/verified-runs/review_1a568160d5aa44b5a2acd2f72fb679f8/.continuation/session/checkpoints/0013.json，SHA74fe7e6e449dae50e636ea08b952a01fa0fc0f9356f8991dd561aa062e649b1c。最新DB为outputs/riftcoach-product-protocol-ci-recovery-20261101/attempt-12/terminal-db.dump，SHA5e1c160673bfad632bc39f7ff237113f37e17266b8d481d76941ea8e5dd02489；恢复必须采用此终态，不回退准备DB。完整快照ce903d3a…及逐文件校验已存；真实SQL/浏览器1440与320无溢出、用量一致、未发布稿不可见、无resume/新任务POST。inspection-complete已写，临时容器清理、driver/waiter正常退出。
+
+下一行动：本次单次补测交付已完成，停止付费重试并结束此monitor。未来局部修复应先验证严格受限的前导事件识别、身份绑定和拒绝分支，再设计保留本次终态/费用的同任务恢复；不能简单跳过空ID或删除错误，也不能复用旧诊断意见。另一次付费必须对应准备好的具体方案和新决定。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_protocol_probe_rejected_20261101.json。
+
+以下为上一轮记录（已终局，不作为执行队列）。
+
+2026-11-01 11:08北京时间，修复提交093ee615已推送并固定干净执行目录D:/riftcoach-sol-product-protocol-ci-recovery-execution-20261101，CI41263056973八项全绿。新Control outputs/riftcoach-product-protocol-ci-recovery-20261101，binding e5e40c96…；实际driver完整授权前缀、一次性许可和waiter预检通过，唯一waiter实际PID81136（launcher91124）已启动attempt-12。新请求ordinal26于03:05:55Z进入发送边界；最多1次，不追加completion/fresh。新driver路径转义错误在零Key/零发送预检阶段修复，失败材料保留。原授权、准备DB/checkpoint和全部账目保持；当前等待最终回执及浏览器核验。
+
 2026-11-01 10:00北京时间，CI41256378646终局cancelled：packaging/SQL及pytest分片0/1/3成功；分片2仅1项历史适配器测试失败（1934通过），web卡在Chromium依赖安装的Ubuntu镜像源读取，约60分钟后取消，聚合门槛失败。旧waiter正常退出，attempt-12未创建，新增模型HTTP/真实Key读取0；不能当成新增524或产品验收失败。
 
 历史适配器的补丁来自冻结e7a7ab0b方法，断言却仍比较当前产品方法的kwdefaults；当前新增protocol_repair使该比较失效。仅将断言比较对象改为原冻结方法，23项相关测试通过；旧fixture/业务源码/旧冻结目录及运行原件均不改。web原日志保留，本次不降低浏览器门槛、不扩大超时；新CI重新安装依赖验证。
