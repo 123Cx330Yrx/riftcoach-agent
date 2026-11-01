@@ -14,6 +14,26 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-11-01 10:00北京时间，CI41256378646终局cancelled：packaging/SQL及pytest分片0/1/3成功；分片2仅1项历史适配器测试失败（1934通过），web卡在Chromium依赖安装的Ubuntu镜像源读取，约60分钟后取消，聚合门槛失败。旧waiter正常退出，attempt-12未创建，新增模型HTTP/真实Key读取0；不能当成新增524或产品验收失败。
+
+历史适配器的补丁来自冻结e7a7ab0b方法，断言却仍比较当前产品方法的kwdefaults；当前新增protocol_repair使该比较失效。仅将断言比较对象改为原冻结方法，23项相关测试通过；旧fixture/业务源码/旧冻结目录及运行原件均不改。web原日志保留，本次不降低浏览器门槛、不扩大超时；新CI重新安装依赖验证。
+
+下一行动：将授权记录和本次局部测试修复合并提交，固定新干净目录D:/riftcoach-sol-product-protocol-ci-recovery-execution-20261101及同HEAD八项全绿CI。新Control为outputs/riftcoach-product-protocol-ci-recovery-20261101，逐字继承ready、proposal、retry-authorization与最新preflight-v2 DB；maintenance-proof验证仅测试/记录差异、原waiter已退出及原attempt-12未创建。旧Control/冻结/取消CI保留，不复活旧waiter。
+
+仍执行用户“授权”的同一facts-initial最多1次，authorization SHA a225259a…保持。原9HTTP/50795known/366910unknown/5retry、976.031活动秒、checkpoint cbc1ca1a…及DB d1827a8e…不变；累计12HTTP/723456tokens/2100活动秒、300秒/16384输出及北京时间15:50:40截止不延长。全绿后唯一新waiter仅启动一次attempt-12，执行后事件/账目/语义/只读浏览器核验和快照清理；不自动第二次。原15完成、Stage8E/默认准入不改。结果sol_product_protocol_ci_recovery_20261101.json。
+
+以下为上一轮授权记录（原授权仍有效，旧waiter已退出）。
+
+2026-11-01 08:26北京时间，用户明确回复“授权”，已批准准备好的单次协议补测，原话存Control/retry-authorization.json，SHA a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31。本次仅从最新恢复pin补测同一facts-initial 1次，取得具体事件类型/序号/首个拒绝信息；不自动继续completion/fresh或再次补测，不导入旧诊断意见。累计12HTTP/723456tokens含旧unknown/2100活动秒、单次300秒/16384输出和北京时间15:50:40截止保持，不再询问这次既有授权。
+
+冻结执行目录D:/riftcoach-sol-product-protocol-recovery-execution-20261101，HEAD ed1c1e8a0f3b789d1b7601a50738406e5c1559ae；CI41256378646仍在运行。同HEAD八项全绿且授权有效才由唯一wait_protocol_ci.py调用一次run_protocol_retry.py。等待器实际PID23244（launcher98576只是线索，以start与当前进程为准）已启动；Control为outputs/riftcoach-product-protocol-recovery-20261101，binding SHA fb24b72ef68ccd1e50f3696cb8492235953f98b73deee851ead77c6033132d16。driver完整发送前授权前缀/一次性许可校验及waiter实际preflight通过，零Key/零模型，未创建attempt-12。CI查询失败不记CI失败；活跃waiter/执行者存在不得重复启动。
+
+采用既有最新恢复checkpoint cbc1ca1a…及preflight-v2/recovered-db.dump d1827a8e…；基线9HTTP/50795known/366910unknown预留/5retry、976.031活动秒保持，本次预计第6次manual retry。原166份父原件、24操作、3生成、5旧524及HTTP200协议拒绝均保留。执行后实读新事件观测和完整业务回执，检查账目/成功前缀/未发布状态，只读浏览器inspect_current_browser_v3.cjs attempt-12，追加恢复snapshot、inspection-complete并确认清理。新失败先保存证据做离线定位，不自动发第二次。
+
+当前授权结果和本段待与执行终局统一提交，避免等待期间触发细碎CI；monitor riftcoach-ci已更新为授权执行后的跟进，未变保持安静，终局核验或需新决定且无待观察工作时删除。旧15完成、Stage8E/默认准入不改，无关untracked脚本不动。结果data/evaluation/results/sol_product_protocol_retry_authorized_20261101.json。
+
+以下为上一轮准备记录（已取得本次授权）。
+
 2026-11-01 08:17北京时间，按用户“继续”完成协议拒绝后的离线观测与同任务恢复准备；本轮新模型HTTP/真实Key读取/来源请求均0。新增事件类型白名单、序号、字段结构、首个拒绝事件与有界上下文；未知类型只留SHA，不记正文或私有reasoning。接收规则未放宽；合成ping/keepalive能复现原三项拒绝，仅用于验证定位能力，不能据此宣称实际额外事件就是ping/keepalive。
 
 新增create-only protocol_failure_recovery仅接受尚无正式初审、单次HTTP200/完整EOF/known usage且三项协议拒绝完全匹配的终态。166份父原件、24项操作、此次诊断返回和旧失败均完整归档，原失败值不改；独立marker只能导向明确手动重试。实际采用attempt-11最新DB（890d2214…），普通SQL/Worker resume已到session_protocol_awaiting_manual_retry，无新模型intent、无新增retry、未发布稿保持不可读。前端对该暂停显示手动补测按钮，加载不自动POST。

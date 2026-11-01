@@ -122,7 +122,7 @@ def test_retry_patch_preserves_real_source_and_closure(original15_methods):
         'limits = self.contract_module.CONTRACT.descriptor()',
         'limits = _original15_retry_limits(self, failed)',lambda owner,failed:{})
     assert callable(fn) and inspect.getsourcefile(fn)=='<original15-recorded-time-allowance>'
-    assert fn.__kwdefaults__ == SessionBudget._manual_retry.__kwdefaults__ == {'format_repair': False}
+    assert fn.__kwdefaults__ == original15_methods['retry'].__kwdefaults__ == {'format_repair': False}
 
     class Parent:
         def chat(self,request):return 'parent'
