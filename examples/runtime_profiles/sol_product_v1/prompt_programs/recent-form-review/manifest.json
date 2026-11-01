@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "38c847d13727ca77e23e5eca9f4d8ade019cc4afee1f11b3fdbe9a07e28e52e3"
+      "sha256": "a9e4467773ad4fc3f2efe72337b8e92646a89a131ba430eff86ed7351d700133"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "de91af9ed00f71f85626e833aeb48225ab192531733cc754c63a4e544149963a"
+      "sha256": "9bb693c1ae068819280565c5830da6150b5a69c7b97ea9993636964bb9ae14aa"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -447,7 +447,7 @@
     {
       "component_id": "scripts.reviewer_responses_stream",
       "source": "scripts/reviewer_responses_stream.py",
-      "sha256": "57535515d1725c8e1d9b7629c257aa7b5fa0ce9323280a88973747e63ff11b1e"
+      "sha256": "ce0d48fce8b6744fa4a08bf57cd59a208728c7f0a7455ef1e5ff1c71d062af51"
     },
     {
       "component_id": "app.product.stream_migration",
@@ -496,9 +496,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.product.sol_contract:v1.7.2",
-      "sha256": "a71f7629a325161eea456afbfc2650809ef90a7b59c326498a8d50523056cf16"
+      "source": "app.product.sol_contract:v1.7.3",
+      "sha256": "c395a36ee274cf6c9a672e9608067cace500365d534c2c762850038164771c28"
     }
   ],
-  "program_sha256": "7c70bfda2f1ba08f0d402c4028a6ffbc958704dcc4dbaf3cf45b0a2f5e0a7f83"
+  "program_sha256": "28a788b2c6b6cf3d0fd407266d8246012a417d13616df9ed40b56f5e174968a3"
 }

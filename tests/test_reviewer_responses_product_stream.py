@@ -162,17 +162,15 @@ def test_late_rejection_keeps_bounded_metadata_without_unknown_body(business):
 
 
 @pytest.mark.parametrize('fault', [
-    'missing_id', 'null_id', 'content', 'usage', 'error', 'incomplete', 'model', 'reasoning', 'limit',
-    'status', 'sequence', 'extra', 'order', 'short', 'unbound', 'late', 'second_identity', 'terminal_identity',
+    'content', 'usage', 'error', 'incomplete', 'model', 'reasoning', 'limit',
+    'status', 'unbound', 'late', 'second_identity', 'terminal_identity',
 ])
-def test_anonymous_preamble_requires_empty_pair_and_immediate_identity(business, fault):
+def test_anonymous_preamble_cannot_carry_results_or_change_bound_identity(business, fault):
     rows = events_for_response(response(), preamble='anonymous')
     # Independent objects make mutations to either envelope meaningful.
     rows[0]['response'] = deepcopy(rows[0]['response'])
     first = rows[0]['response']
-    if fault == 'missing_id': first.pop('id')
-    elif fault == 'null_id': first['id'] = None
-    elif fault == 'content': first['output'] = [{'type': 'message', 'text': PRIVATE}]
+    if fault == 'content': first['output'] = [{'type': 'message', 'text': PRIVATE}]
     elif fault == 'usage': first['usage'] = dict(input_tokens=1, output_tokens=1, total_tokens=2)
     elif fault == 'error': rows[1]['response']['error'] = {'message': PRIVATE}
     elif fault == 'incomplete': first['incomplete_details'] = {'reason': PRIVATE}
@@ -180,10 +178,6 @@ def test_anonymous_preamble_requires_empty_pair_and_immediate_identity(business,
     elif fault == 'reasoning': first['reasoning'] = {'effort': PRIVATE}
     elif fault == 'limit': first['max_output_tokens'] = 32768
     elif fault == 'status': first['status'] = 'completed'
-    elif fault == 'sequence': rows[1]['sequence_number'] = 2
-    elif fault == 'extra': rows.insert(2, deepcopy(rows[1]))
-    elif fault == 'order': rows[0], rows[1] = rows[1], rows[0]
-    elif fault == 'short': rows.pop(1)
     elif fault == 'unbound': rows = rows[:2]
     elif fault == 'late': rows = rows[2:4]+rows[:2]+rows[4:]
     elif fault == 'second_identity': rows.insert(3, deepcopy(rows[2]))
@@ -192,6 +186,79 @@ def test_anonymous_preamble_requires_empty_pair_and_immediate_identity(business,
     assert result['ok'] is False and result['public_tool_call'] is None
     assert result['usage'] is None if fault == 'unbound' else result['usage']['total_tokens'] == 20
     assert PRIVATE not in json.dumps(result['stream_protocol'])
+
+
+@pytest.mark.parametrize('variant', ['missing_id', 'null_id', 'sequence_gap', 'extra', 'order', 'short'])
+def test_empty_queue_preamble_is_not_bound_to_one_captured_event_sequence(business, variant):
+    rows = deepcopy(events_for_response(response(), preamble='anonymous'))
+    if variant == 'missing_id': rows[0]['response'].pop('id')
+    elif variant == 'null_id': rows[0]['response']['id'] = None
+    elif variant == 'sequence_gap': rows[1]['sequence_number'] = 5
+    elif variant == 'extra': rows.insert(2, deepcopy(rows[1]))
+    elif variant == 'order': rows[0], rows[1] = rows[1], rows[0]
+    elif variant == 'short': rows.pop(1)
+    result = decode(business, rows)
+    assert result['ok'], result['stream_protocol']
+    assert result['public_tool_call']['arguments'] == response()['output'][0]['arguments']
+    assert result['stream_protocol']['compatibility']['anonymous_preamble_bound'] == 1
+
+
+@pytest.mark.parametrize('kind', ['ping', 'heartbeat', 'keepalive', 'keep_alive'])
+def test_metadata_only_keepalive_does_not_require_response_identity_or_sequence(business, tmp_path, kind):
+    rows = events_for_response(response(), preamble='anonymous')
+    rows.insert(0, dict(type=kind))
+    rows.insert(2, dict(type=kind, sequence_number=500, timestamp=123))
+    rows.insert(-1, dict(type=kind, timestamp='2026-11-01T00:00:00Z'))
+    rows.append(dict(type=kind))
+    result = stream.collect(business, profile=Profile(group='GPT-企业专线', route='proxy-12000'),
+        api_key=KEY, observation_dir=tmp_path/'observation',
+        transport=httpx.MockTransport(lambda _: httpx.Response(200,
+            headers={'content-type': 'text/event-stream'}, stream=Bytes(rows))))
+    assert result['ok'], result
+    assert result['stream_protocol']['compatibility']['metadata_keepalive'] == 4
+    assert result['usage']['total_tokens'] == 20
+
+
+@pytest.mark.parametrize('field,value', [('usage', {}), ('error', {}), ('delta', PRIVATE),
+    ('response', {}), ('item', {}), ('message', PRIVATE), ('unknown', PRIVATE)])
+def test_keepalive_with_unclassified_or_business_payload_is_not_silently_dropped(business, field, value):
+    rows = events_for_response(response())
+    rows.insert(0, dict(type='ping', **{field:value}))
+    result = decode(business, rows)
+    assert not result['ok'] and result['public_tool_call'] is None
+    assert result['usage']['total_tokens'] == 20
+
+
+def test_keepalive_cannot_hide_real_identity_conflict_or_unfinished_prefix(business):
+    rows = events_for_response(response())
+    rows.insert(0, dict(type='heartbeat'))
+    rows[-1]['response']['id'] = 'wrong-response'
+    result = decode(business, rows)
+    assert not result['ok'] and 'response_identity' in result['stream_protocol']['errors']
+    prefix = events_for_response(response(), preamble='anonymous')[:2]
+    result = decode(business, [dict(type='ping'), *prefix, dict(type='ping')])
+    assert not result['ok'] and result['usage'] is None
+
+
+@pytest.mark.parametrize('count,expected', [(64, True), (65, False)])
+def test_queue_preamble_has_a_resource_bound_without_a_fixed_pair_contract(business, count, expected):
+    rows = events_for_response(response(), preamble='anonymous')
+    result = decode(business, [deepcopy(rows[0]) for _ in range(count)] + rows[2:])
+    assert result['ok'] is expected
+    assert result['usage']['total_tokens'] == 20
+
+
+@pytest.mark.parametrize('notice', [{'type': 'vendor_notice'}, {'type': {}},
+    {'type': 'ping', 'sequence_number': -1}, {'type': 'ping', 'timestamp': {}}])
+def test_unknown_or_malformed_notice_is_still_rejected(business, notice):
+    result = decode(business, [notice, *events_for_response(response())])
+    assert not result['ok'] and result['public_tool_call'] is None
+    assert result['usage']['total_tokens'] == 20
+
+
+def test_integer_keepalive_timestamp_does_not_overflow_float_conversion(business):
+    result = decode(business, [dict(type='ping', timestamp=10**400), *events_for_response(response())])
+    assert result['ok'] and result['usage']['total_tokens'] == 20
 
 
 def test_anonymous_context_records_nested_shapes_not_nested_text(business):

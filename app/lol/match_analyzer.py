@@ -274,12 +274,17 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
         # These published row values are also the report's numerical evidence.
         # Keep decimal ties intact through averaging (and percentage scaling),
         # then use the report contract's HALF_UP display rule exactly once.
-        values = [Decimal(str(row[key])) for row in rows if row.get(key) is not None]
+        raw_values = [row[key] for row in rows if row.get(key) is not None]
+        values = [Decimal(str(value)) for value in raw_values]
         if not values:
             return 0.0
         value = sum(values) / len(values)
         if percent:
             value *= 100
+        # Preserve the prior JSON number type for exact integer-derived means.
+        # Fractional means and float inputs remain floats, even when rounded whole.
+        if all(isinstance(raw, int) for raw in raw_values) and value == value.to_integral_value():
+            return int(value)
         return float(value.quantize(Decimal("0.1" if percent else "0.01"), rounding=ROUND_HALF_UP))
 
     def early_death_average(rows: list[dict]) -> float | None:

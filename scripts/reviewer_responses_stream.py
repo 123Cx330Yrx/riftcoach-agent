@@ -32,6 +32,8 @@ OBSERVED_TYPES = frozenset({
 OBSERVED_FIELDS = ('type', 'sequence_number', 'response', 'item', 'item_id',
                    'output_index', 'content_index', 'summary_index', 'name',
                    'arguments', 'delta', 'error', 'code', 'message', 'timestamp')
+KEEPALIVE_TYPES = frozenset(('ping', 'heartbeat', 'keepalive', 'keep_alive'))
+MAX_EMPTY_PREAMBLE_EVENTS = 64
 
 
 def shape(value):
@@ -109,7 +111,7 @@ class Decoder(legacy.Decoder):
             self.errors.append(code)
 
     def protocol(self):
-        return dict(version='product-stream-protocol-v1', errors=list(self.errors),
+        return dict(version='product-stream-protocol-v2', errors=list(self.errors),
                     compatibility=dict(self.compatibility), counts=dict(self.counts),
                     events=list(self.metadata), metadata_truncated=self.metadata_truncated,
                     event_context_version='body-free-event-context-v2',
@@ -151,6 +153,12 @@ class Decoder(legacy.Decoder):
         self.counts[label] += 1
         if sum(self.counts.values()) > 100000:
             self.reject('event_limit')
+        # Transport keepalives have no model identity or model sequence. Only
+        # a known name with bounded metadata qualifies; payloads/unknown types
+        # still follow the rejecting path, even after a completed response.
+        if self._metadata_keepalive(event):
+            self.compatibility['metadata_keepalive'] += 1
+            return
         response = event.get('response') if isinstance(event.get('response'), dict) else {}
         seq = event.get('sequence_number')
         if lifecycle or kind in ('response.function_call_arguments.done', 'response.output_item.done'):
@@ -185,8 +193,9 @@ class Decoder(legacy.Decoder):
         if self.terminal is not None:
             self.reject('event_after_terminal')
             return
-        # Exactly two anonymous, empty envelopes may precede the real created
-        # event. They never establish response identity or approve any content.
+        # Empty relay queue envelopes do not establish a model response. Their
+        # count/order is not a business invariant; the real created event must
+        # bind a nonempty identity before any output and the terminal must agree.
         if self._anonymous_prefix(kind, response, seq):
             return
         # A second empty created envelope before *any* output can replace a relay
@@ -220,40 +229,36 @@ class Decoder(legacy.Decoder):
             self.reject(str(error))
 
     def _anonymous_prefix(self, kind, response, seq):
-        if self.anonymous_preamble == 0:
-            if (self.event_ordinal == 1 and kind == 'response.created' and type(seq) is int and seq == 0
-                    and response.get('id') == '' and response.get('status') == 'queued'
-                    and empty_envelope(response)):
-                self.anonymous_preamble = 1
-                self.raw_sequence = seq
-                return True
-            return False
-        if self.anonymous_preamble == 1:
-            if (self.event_ordinal == 2 and kind == 'response.queued' and type(seq) is int and seq == 1
-                    and response.get('id') == '' and response.get('status') == 'queued'
-                    and empty_envelope(response)):
-                self.anonymous_preamble = 2
-                self.raw_sequence = seq
-                return True
-        elif self.anonymous_preamble == 2:
+        if kind in ('response.created', 'response.queued', 'response.in_progress') and response.get('id') in (None, ''):
+            if (self.response_id is not None or self.created or self.items or self.anonymous_bound
+                    or response.get('status') not in ('queued', 'in_progress') or not empty_envelope(response)
+                    or seq is not None and (type(seq) is not int or seq < 0)
+                    or self.anonymous_preamble >= MAX_EMPTY_PREAMBLE_EVENTS):
+                self.reject('anonymous_preamble_binding')
+            else:
+                self.anonymous_preamble += 1
+            return True
+        if self.anonymous_preamble and not self.anonymous_bound and kind == 'response.created':
             try:
                 legacy.safe_id(response.get('id'))
-                valid_id = True
             except legacy.TransportError:
-                valid_id = False
-            if (self.event_ordinal == 3 and kind == 'response.created' and type(seq) is int and seq == 0
-                    and valid_id and response.get('status') in ('queued', 'in_progress')
-                    and empty_envelope(response) and not self.errors):
-                self.anonymous_preamble = 3
-                self.anonymous_bound = True
-                self.raw_sequence = -1
-                self.compatibility['anonymous_preamble_bound'] += 1
+                self.reject('anonymous_preamble_binding')
                 return False
-        else:
-            return False
-        self.reject('anonymous_preamble_binding')
-        self.anonymous_preamble = -1
+            if (not self.created and not self.items and empty_envelope(response)
+                    and response.get('status') in ('queued', 'in_progress') and not self.errors):
+                self.anonymous_bound = True
+                self.compatibility['anonymous_preamble_bound'] += 1
         return False
+
+    @staticmethod
+    def _metadata_keepalive(event):
+        kind = event.get('type')
+        if not isinstance(kind, str) or kind not in KEEPALIVE_TYPES or set(event) - {'type', 'sequence_number', 'timestamp'}:
+            return False
+        sequence, stamp = event.get('sequence_number'), event.get('timestamp')
+        return ((sequence is None or type(sequence) is int and sequence >= 0)
+                and (stamp is None or type(stamp) is int or type(stamp) is float and math.isfinite(stamp)
+                     or isinstance(stamp, str) and len(stamp) <= 64))
 
     def _lifecycle(self, kind, response, restart):
         terminal = kind in ('response.completed', 'response.incomplete', 'response.failed')
@@ -298,7 +303,7 @@ class Decoder(legacy.Decoder):
                 self._match_call(row, item)
 
     def finish(self):
-        if self.anonymous_preamble in (1, 2):
+        if self.anonymous_preamble and not self.anonymous_bound:
             self.reject('anonymous_preamble_unbound')
         if self.terminal is None:
             self.reject('terminal_missing')

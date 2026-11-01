@@ -120,7 +120,7 @@ class ProductContract(parent.DualNecessityContract):
             raise ValueError('sol_product_provider_contract')
 
 
-CONTRACT = ProductContract(version='1.7.2')
+CONTRACT = ProductContract(version='1.7.3')
 
 
 def component_fingerprints(skill):

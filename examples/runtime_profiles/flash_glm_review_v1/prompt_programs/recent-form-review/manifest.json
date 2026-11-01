@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "38c847d13727ca77e23e5eca9f4d8ade019cc4afee1f11b3fdbe9a07e28e52e3"
+      "sha256": "a9e4467773ad4fc3f2efe72337b8e92646a89a131ba430eff86ed7351d700133"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -275,5 +275,5 @@
       "sha256": "ffc45471455a546a2b75a35ee902e5f5405ebd01b9bfbe3606fac34649fcea4a"
     }
   ],
-  "program_sha256": "fe28d31c5fed0dec925a3632c407b7d26a4bb66002f6986d903d041340fee69f"
+  "program_sha256": "00f6d02ee4b0d38e192a879a06c9b48dddf7d1c5e7204ab41b763a68c46f5980"
 }

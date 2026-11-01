@@ -57,6 +57,22 @@ def test_percentage_mean_uses_decimal_before_scaling_and_rounding():
     assert summary["recent_summary"]["averages"]["kill_participation_percent"] == 28.5
 
 
+@pytest.mark.parametrize("values, expected, value_type", [
+    ([510, 540], 525, int),
+    ([510, 511], 510.5, float),
+    ([1, 1, 2], 1.33, float),
+    ([525.0, 525.0], 525.0, float),
+    ([510, 540.0], 525.0, float),
+    ([None, 510, 540], 525, int),
+    ([None, None], 0.0, float),
+])
+def test_json_number_types_remain_stable_when_rounding_does_not_change_value(values, expected, value_type):
+    summary = summary_with_rows(damage_per_min=values)
+    actual = summary["recent_summary"]["averages"]["damage_per_min"]
+    assert actual == expected and type(actual) is value_type
+    assert json.dumps({"value": actual}) == json.dumps({"value": expected})
+
+
 def test_outcome_groups_stay_separate_and_input_rows_are_unchanged():
     summary = summary_with_rows(cs_per_min=[8.71, 7.56, 5.1, 5.3],
                                 win=[True, True, False, False])
