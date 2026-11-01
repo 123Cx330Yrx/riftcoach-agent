@@ -13,6 +13,20 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-01 14:26北京时间，用户新明确“授权”的同一首审单次补测attempt-13已执行并核验终局。授权原话存Control/retry-authorization.json，SHA756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae；绑定原decision-ready SHA594e4415…，执行HEAD1eb9eb43170d2635cffde8a926a01d25329c9155及其CI41271213029八项全绿。完整授权前缀/一次性许可预检通过后唯一driver只执行1个segment、1次HTTP，无第二次/completion/fresh。
+
+本次HTTP200、160.328秒，首字节约1.907秒，完整EOF/completed；新增22409 known tokens（17381输入/5028输出）、unknown与524新增0。Worker succeeded仅指执行结束：业务terminal=evaluation_failed，publication_allowed=false、报告409。累计11HTTP/119707known/366910unknown预留/7retry、1273.250活动秒，无未决或无回执请求。154份准备原件逐字保持，28项操作/回执齐全，3次成功生成、5旧524和2次旧HTTP200拒绝保留；新首审请求与call-010逐字相同。
+
+首个真实拒绝为第1事件无sequence、无response字段，type不在观测白名单，SHA037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441；随后为有效ID的created(0)/in_progress(1)。同一未知类型在第1409事件再次出现，序号1407，位于工具输出之后、completed之前。完整错误event_sequence/response_not_created/unexpected_event。上下文未截断；本次没有空ID前导，故不能声称上轮匿名前导修复已被真实验证。未知类型文本及其额外字段未保留；离线比对本机SDK的55个response事件名无匹配，也不能据此识别为ping/keepalive或认定可忽略。output_limit_matches=false不能区分缺失/null与不同值，不当作已证额度冲突。
+
+已实读完整4条请求消息、全部来源/原用户约束、报告和诊断修订。诊断返回88/needs_revision、2项问题：赢局均值HALF_UP应为8.14/1280.92；个人位置/英雄训练安排违背仅观摩约束，两项均有来源支持。但public_tool_call为空、business_validated=false，诊断意见未导入、未应用；正式审查/application/fresh均0，模型分数不代替协议或语义验收。不同请求间协议形态变化，下一步不能继续仅补最后报错后付费碰运气。
+
+最新runs_root仍D:/rc-preamble-recovery-20261101/verified-runs；checkpoint为0013.json SHAd6a74f8ad751369a6776304de711886ff0c3cefd7b1865fe412e16cbac57e5f1；最新DB为Control/attempt-13/terminal-db.dump SHAf96d4a854ab7151d5b72c12310b8471533c4b671e6dc3ce8f6b3a8ee6ebc4e39，不得退回preflight-v3或旧终态。完整恢复快照SHA1207172d746e945bb280371e114cf54088ccd2b3abb5835710087a99a7842f63，ZIP逐文件与DB校验通过。真实SQL/浏览器1440与320只读通过、用量一致、未发布稿不可见、无恢复/新任务POST；inspection-complete已写，临时容器清理、driver正常退出，monitor确认已不存在。
+
+下一行动：本次单次授权交付已完成，不再自动付费。保留新终态，先依据现有/离线材料明确未知事件的协议定义、内容边界及产生环节；现有元数据不足以安全放行，也不支持把旧诊断意见转正。未来若有可靠修复与恢复方案，再形成具体可审查决定。原总12HTTP/723456tokens/2100活动秒、单次300秒/16384输出和北京时间15:50:40截止不延长；余1槽/236839tokens/826.750活动秒，一槽无法完成尚缺的双初审和双fresh。无新的付费授权或待观察执行。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_preamble_probe_rejected_20261101.json。
+
+以下为上一轮准备记录（授权已消费，不作为执行队列）。
+
 2026-11-01，按用户“继续”完成空ID前导的受限兼容与同任务离线恢复。只接收开头created(0)/queued(1)两个queued空ID信封，要求output=[]、无usage/error/incomplete且契约回显不冲突，随后必须立即绑定带有效ID的created(0)；其他顺序、内容、费用、身份变化仍拒绝。补充不含正文的嵌套结构观测。旧现场未记录完整嵌套字段，因此这只是已验证的严格兼容规则，不能声称真实上游已经通过，也不把旧诊断意见转正。
 
 以attempt-12最新终态DB 5e1c1606…创建恢复副本，183份父原件及26项操作完整保留，两个协议失败和已消费第6次许可不改。真实SQL/Worker普通resume已到session_protocol_awaiting_manual_retry，新增模型/真实Key/许可消耗均0；累计10HTTP/97298known/366910unknown预留/6retry，活动1100.281秒，正式审查/application/fresh均0、未发布。恢复链保留旧marker、archive和SQL恢复记录，归档checkpoint用于回放旧许可；最多容纳本次第二次协议恢复，不泛化为无限重试。
