@@ -71,8 +71,14 @@ def collect(business,**kwargs):
     status=STATUS
     if is_product_stream:
         from tests.product_stream_fixtures import events_for_response, Bytes
+        if MODE == 'protocol_preamble':
+            value['reasoning'] = dict(effort='high')
+        events = events_for_response(value, preamble=True)
+        if MODE == 'protocol_preamble':
+            events.insert(0, dict(type='ping'))
+            events.insert(-1, dict(type='keepalive'))
         return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
-            stream=Bytes(events_for_response(value, preamble=True)) if status==200 else httpx.ByteStream(b'{}'),
+            stream=Bytes(events) if status==200 else httpx.ByteStream(b'{}'),
             headers={'content-type':'text/event-stream' if status==200 else 'application/json'})))
     return original(business,**kwargs,transport=httpx.MockTransport(lambda request:httpx.Response(status,
         stream=httpx.ByteStream(json.dumps(value if status==200 else {'error':'timeout'}).encode()),

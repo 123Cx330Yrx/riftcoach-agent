@@ -5,7 +5,7 @@ import { useI18n } from "../i18n/ProductLocaleProvider"
 import { RunUsagePanel } from "./RunUsagePanel"
 
 type Action = "resume" | "retry" | "cancel"
-const MANUAL_REASONS = new Set(["session_timeout_awaiting_manual_retry", "session_format_awaiting_manual_retry"])
+const MANUAL_REASONS = new Set(["session_timeout_awaiting_manual_retry", "session_format_awaiting_manual_retry", "session_protocol_awaiting_manual_retry"])
 
 export function TaskRecoveryPanel({ taskId, runId, csrfToken, onChanged, onAuthFailure, api: suppliedApi }: {
   readonly taskId: string; readonly runId: string; readonly csrfToken: string

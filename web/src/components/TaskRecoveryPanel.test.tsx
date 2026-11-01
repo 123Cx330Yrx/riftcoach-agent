@@ -41,6 +41,19 @@ describe("explicit task recovery", () => {
     expect(new Headers(calls[0]?.headers).get("X-CSRF-Token")).toBe("csrf-test")
   })
 
+  it("keeps a recovered protocol failure manual and sends only after a click", async () => {
+    const api = new TaskContinuationApi()
+    vi.spyOn(api, "get").mockResolvedValue({ checkpoint: "c".repeat(64), reason: "session_protocol_awaiting_manual_retry", accounting: { ...ACCOUNTING, scope: "cumulative_session" } })
+    const resume = vi.spyOn(api, "resume").mockResolvedValue()
+    show(api)
+    const button = await screen.findByRole("button", { name: "补测当前步骤一次" })
+    expect(resume).not.toHaveBeenCalled()
+    expect(screen.queryByRole("button", { name: "检查并继续" })).toBeNull()
+    fireEvent.click(button)
+    await waitFor(() => expect(resume).toHaveBeenCalledOnce())
+    expect(resume.mock.calls[0]?.slice(0, 4)).toEqual([TASK, RUN, "c".repeat(64), true])
+  })
+
   it("uses ordinary continuation for a repaired local step and suppresses double clicks", async () => {
     const api = new TaskContinuationApi()
     vi.spyOn(api, "get").mockResolvedValue({ checkpoint: "b".repeat(64), reason: "session_projection_changed", accounting: { ...ACCOUNTING, scope: "cumulative_session" } })

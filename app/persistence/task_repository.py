@@ -1965,7 +1965,8 @@ def _record_to_task(
         summary_digest=record.summary_digest,
         first_snapshot_id=record.first_snapshot_id,
         first_snapshot_digest=record.first_snapshot_digest,
-        publication_recovery_sha256=(record.continuation_reference or {}).get('zero_send_recovery', {}).get('proof_sha256'),
+        publication_recovery_sha256=((record.continuation_reference or {}).get('protocol_recovery')
+            or (record.continuation_reference or {}).get('zero_send_recovery') or {}).get('proof_sha256'),
         # Pre-0014 fixture rows have no projection marker; legacy tasks do not
         # require a post-commit message projection.
         message_projection_status=record.message_projection_status or "not_required",

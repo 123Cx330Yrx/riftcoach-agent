@@ -122,7 +122,8 @@ class PostgresTaskContinuations:
             # Explicit retry only applies to a receipt-classified recoverable
             # failure. Unknown/pending intent is never resend permission.
             if command.manual_retry and record.recovery_reason not in {
-                    "session_timeout_awaiting_manual_retry", "session_format_awaiting_manual_retry"}:
+                    "session_timeout_awaiting_manual_retry", "session_format_awaiting_manual_retry",
+                    "session_protocol_awaiting_manual_retry"}:
                 raise ContinuationError("continuation_conflict")
             value["resumes"][request_id] = request
             value["manual_retry"] = command.manual_retry
@@ -197,6 +198,19 @@ class PostgresTaskContinuations:
     def recover_zero_send_rejection(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
         """Adopt an audited pre-send failure copy, preserving the terminal event."""
         from app.product.zero_send_recovery import verify
+        return self._recover_rejected(owner_id=owner_id, task_id=task_id, proof_path=proof_path,
+            proof_sha256=proof_sha256, runs_root=runs_root, verify=verify,
+            recovery_key='zero_send_recovery', recovery_reason='local_zero_send_recovered')
+
+    def recover_protocol_rejection(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
+        """Adopt an archived protocol rejection, without approving a retry."""
+        from app.product.protocol_failure_recovery import verify
+        return self._recover_rejected(owner_id=owner_id, task_id=task_id, proof_path=proof_path,
+            proof_sha256=proof_sha256, runs_root=runs_root, verify=verify,
+            recovery_key='protocol_recovery', recovery_reason='protocol_rejection_recovered')
+
+    def _recover_rejected(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root,
+                          verify, recovery_key, recovery_reason):
         from app.evaluation.sol_natural_session import SessionBlocked
         if not isinstance(task_id, UUID) or not re.fullmatch(r'[0-9a-f]{64}', proof_sha256):
             raise ContinuationError('continuation_conflict')
@@ -205,7 +219,7 @@ class PostgresTaskContinuations:
             value = deepcopy(record.continuation_reference)
             if value is None:
                 raise ContinuationError('continuation_conflict')
-            previous = value.get('zero_send_recovery')
+            previous = value.get(recovery_key)
             if previous is not None:
                 if previous['proof_sha256'] != proof_sha256 or previous['runs_root'] != str(runs_root):
                     raise ContinuationError('continuation_conflict')
@@ -222,14 +236,14 @@ class PostgresTaskContinuations:
             try:
                 proof = verify(proof_path, proof_sha256, runs_root=runs_root)
             except (OSError, ValueError, KeyError, SessionBlocked):
-                raise ContinuationError('zero_send_recovery_invalid') from None
+                raise ContinuationError(recovery_key+'_invalid') from None
             parent = proof['parent_reference']
             if (proof['binding']['task_id'] != str(task_id) or proof['binding']['owner_id'] != owner_id
                     or proof['binding']['run_id'] != record.run_id
                     or any(parent[k] != value[k] for k in
                            ('binding','profile','guard_sha256','checkpoint_sha256','accounting'))):
                 raise ContinuationError('continuation_conflict')
-            value['zero_send_recovery'] = dict(proof_sha256=proof_sha256, runs_root=str(runs_root),
+            value[recovery_key] = dict(proof_sha256=proof_sha256, runs_root=str(runs_root),
                 parent_checkpoint_sha256=value['checkpoint_sha256'], terminal_reason=record.terminal_reason,
                 finished_at=record.finished_at.isoformat(), publication_status=record.publication_status,
                 trace_reference=deepcopy(record.trace_reference),
@@ -244,11 +258,11 @@ class PostgresTaskContinuations:
             record.status = TaskStatus.RECOVERY_REQUIRED.value
             record.finished_at = record.terminal_reason = record.publication_status = None
             record.trace_reference = record.receipt_reference = record.artifact_reference = None
-            record.recovery_reason = 'local_zero_send_recovered'
+            record.recovery_reason = recovery_reason
             record.updated_at = record.recovery_required_at = max(record.updated_at, datetime.now(timezone.utc))
             self.repository._append_event(session, record=record,
                 event_kind=TaskLifecycleEventKind.RECOVERY_REQUIRED,
-                operation_identity='zero-send-recovery-'+proof_sha256,
+                operation_identity=recovery_key.replace('_','-')+'-'+proof_sha256,
                 occurred_at=record.updated_at, reason=record.recovery_reason)
             return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=False)
 

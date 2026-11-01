@@ -357,7 +357,7 @@
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "394942e4b59291eaf68725a00a59867dc09d4c2cb1978e494819f4b2f8dce610"
+      "sha256": "4765355d78fa90a72a173c2e1673bcd73aa2bff60bed82de41b2b81221e1bb7f"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "741407855117b832e6dd6e168e90c8e1836367ffac0b9f0dbe8ca6988152ad55"
+      "sha256": "f238ba18cf8afd4950c2bb47a70929db5cedb335c304f4e09991a784d3f324e1"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -442,7 +442,7 @@
     {
       "component_id": "scripts.reviewer_responses_stream",
       "source": "scripts/reviewer_responses_stream.py",
-      "sha256": "3606600b3771686a98b540c49ab06486c2aef346a5564d3ee2556576f6e697c9"
+      "sha256": "ead75451f595770809491a7989d552666576761201a097dc17ac930d22db6158"
     },
     {
       "component_id": "app.product.stream_migration",
@@ -465,6 +465,11 @@
       "sha256": "a5185ee486f32c7b13a6b35b2ea14aefc9cc50f18f71f5608e254c960e00ec5b"
     },
     {
+      "component_id": "app.product.protocol_failure_recovery",
+      "source": "app/product/protocol_failure_recovery.py",
+      "sha256": "31d02ce3a701c117f560caa3be599b7bc05e5845fe4307843bf0cd48e525da83"
+    },
+    {
       "component_id": "app.tasks.reconciliation",
       "source": "app/tasks/reconciliation.py",
       "sha256": "39482f6584430feee13a6f1fc242135cbd7c25240e72e0214374df131c141ab0"
@@ -477,12 +482,12 @@
     {
       "component_id": "app.persistence.task_repository",
       "source": "app/persistence/task_repository.py",
-      "sha256": "04dbb990a05254f4f93c600594778ca6bdd36cf11594ac593e134f0d87c3697b"
+      "sha256": "4c81ea9f874715255bd74a372a7ef316e1c85535e89263a1ddb0e060c130dc63"
     },
     {
       "component_id": "app.persistence.task_continuations",
       "source": "app/persistence/task_continuations.py",
-      "sha256": "3028282666245ff99a917493213367547900c613dd8d751100c41d40c831cdbf"
+      "sha256": "80b6bccf97694ae594f95109c87c170b7c72f63370419d8bc779e371d0254eba"
     },
     {
       "component_id": "coach_execution_contract",
@@ -490,5 +495,5 @@
       "sha256": "3946b86731b13367d92c3dfae3ac58af8aed95d9aac5a088c40f6755936ae5eb"
     }
   ],
-  "program_sha256": "16b4eb0f14b9594623fc10dc0089a4d77076e133868a028630585c6a3667fd7a"
+  "program_sha256": "03ec7db422a8025107a37f0bfbe7a953bd6130c4020ff96efb762ed8fe5530b7"
 }

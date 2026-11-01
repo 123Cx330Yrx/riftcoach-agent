@@ -355,6 +355,8 @@ jobs:
             tests/test_sol_worker_continuation_postgres.py \
             tests/test_sol_product_worker_postgres.py \
             tests/test_sol_local_failure_recovery_postgres.py \
+            tests/test_zero_send_recovery_postgres.py \
+            tests/test_protocol_failure_recovery_postgres.py \
             tests/test_sol_stream_migration_postgres.py \
             tests/test_product_budget_supplement_postgres.py \
             tests/test_sol_product_entry_postgres.py \

@@ -16,6 +16,34 @@ from scripts.stream_observation import StreamObservation
 
 MODE = 'natural-sol-product-stream-v1'
 
+# Log only named protocol tokens, never an arbitrary server-supplied type/body.
+# Unknown tokens retain a digest so repeated types can still be distinguished.
+OBSERVED_TYPES = frozenset({
+    'ping', 'heartbeat', 'keepalive', 'keep_alive', 'error',
+    'response.created', 'response.queued', 'response.in_progress',
+    'response.completed', 'response.incomplete', 'response.failed', 'response.done',
+    'response.output_item.added', 'response.output_item.done',
+    'response.function_call_arguments.delta', 'response.function_call_arguments.done',
+    *('response.' + family + '.' + suffix for family in (
+        'output_text', 'refusal', 'content_part', 'reasoning_text',
+        'reasoning_summary_text', 'reasoning_summary_part')
+      for suffix in ('added', 'delta', 'done')),
+})
+OBSERVED_FIELDS = ('type', 'sequence_number', 'response', 'item', 'item_id',
+                   'output_index', 'content_index', 'summary_index', 'name',
+                   'arguments', 'delta', 'error', 'code', 'message', 'timestamp')
+
+
+def shape(value):
+    if value is None: return 'null'
+    if type(value) is bool: return 'boolean'
+    if type(value) is int: return 'integer'
+    if type(value) is float: return 'number'
+    if isinstance(value, str): return 'string'
+    if isinstance(value, list): return 'array'
+    if isinstance(value, dict): return 'object'
+    return 'other'
+
 
 def build_wire(business):
     return dict(codec.build_wire(business), stream=True)
@@ -37,18 +65,46 @@ class Decoder(legacy.Decoder):
         self.metadata_truncated = False
         self.result = codec.inspect_response(None, business, output_policy=codec.TOOL_WITH_MESSAGE)
         self.compatibility = Counter()
+        self.event_ordinal = 0
+        self.context_events = []
+        self.context_truncated = False
+        self.first_rejection = None
+        self.current_context = None
 
     def reject(self, code):
+        if self.first_rejection is None:
+            self.first_rejection = dict(code=code, event=self.current_context)
         if code not in self.errors:
             self.errors.append(code)
 
     def protocol(self):
         return dict(version='product-stream-protocol-v1', errors=list(self.errors),
                     compatibility=dict(self.compatibility), counts=dict(self.counts),
-                    events=list(self.metadata), metadata_truncated=self.metadata_truncated)
+                    events=list(self.metadata), metadata_truncated=self.metadata_truncated,
+                    event_context_version='body-free-event-context-v1',
+                    event_context=list(self.context_events), context_truncated=self.context_truncated,
+                    first_rejection=self.first_rejection)
 
     def feed(self, event):
         kind = event.get('type', '')
+        self.event_ordinal += 1
+        self.current_context = dict(
+            ordinal=self.event_ordinal,
+            type=kind if isinstance(kind, str) and kind in OBSERVED_TYPES else 'unrecognized',
+            type_sha256=fingerprint(kind),
+            sequence=event.get('sequence_number') if type(event.get('sequence_number')) is int else None,
+            previous_sequence=self.raw_sequence,
+            created_count=self.created, output_items=len(self.items),
+            terminal_seen=self.terminal is not None,
+            fields={key:shape(event[key]) for key in OBSERVED_FIELDS if key in event},
+            extra_field_count=sum(key not in OBSERVED_FIELDS for key in event))
+        # Keep every early event plus lifecycle/non-delta events. The first
+        # rejection has its own slot so a long valid delta stream cannot hide it.
+        if self.event_ordinal <= 8 or not isinstance(kind, str) or not kind.endswith('.delta'):
+            if len(self.context_events) < 64:
+                self.context_events.append(self.current_context)
+            else:
+                self.context_truncated = True
         lifecycle = kind in ('response.created', 'response.queued', 'response.in_progress',
                             'response.completed', 'response.incomplete', 'response.failed')
         terminal = kind in ('response.completed', 'response.incomplete', 'response.failed')

@@ -132,6 +132,17 @@ class SessionBudget(CoachBudgetedProvider):
             value, replayed = self.session.operation('model', normalized, send)
             if replayed:
                 self.restore(value['budget'])
+                if not value.get('ok') and self.session.worker_product:
+                    from app.product.protocol_failure_recovery import retry_evidence
+                    try:
+                        evidence = retry_evidence(self.session)
+                    except (OSError, ValueError, KeyError, TypeError):
+                        raise SessionBlocked('session_protocol_recovery_invalid') from None
+                    if evidence is not None:
+                        # Derived permission-to-retry evidence, never a changed
+                        # old result, accepted opinion, or automatic retry.
+                        self._manual_retry(dict(value, rejected_protocol=evidence), protocol_repair=True)
+                        continue
             if value.get('not_sent_ordinal') is not None:
                 if unsent_stop:
                     raise unsent_stop[0]
@@ -156,7 +167,7 @@ class SessionBudget(CoachBudgetedProvider):
         self._exchange = Exchange(issued, response, value['receipt_request_sha256'])
         return response
 
-    def _manual_retry(self, failed, *, format_repair=False):
+    def _manual_retry(self, failed, *, format_repair=False, protocol_repair=False):
         """Append one human-triggered decision, then replay the same logical call.
 
         The failure was classified while its original exception and immutable
@@ -165,9 +176,9 @@ class SessionBudget(CoachBudgetedProvider):
         """
         session, router = self.session, self.router
         previous = session.root/'operations'/f'{session.cursor:04d}-result.json'
-        failure_key = 'recoverable_format' if format_repair else 'reaped_timeout'
+        failure_key = 'rejected_protocol' if protocol_repair else 'recoverable_format' if format_repair else 'reaped_timeout'
         bound = dict(failed_result_sha256=digest(previous.read_bytes()),
-            **{'format' if format_repair else 'timeout': failed[failure_key]}, budget=failed['budget'])
+            **{'protocol' if protocol_repair else 'format' if format_repair else 'timeout': failed[failure_key]}, budget=failed['budget'])
         attempt = failed[failure_key]
         next_path = session.root/'operations'/f'{session.cursor+1:04d}-intent.json'
         extra_retry = False
@@ -179,7 +190,8 @@ class SessionBudget(CoachBudgetedProvider):
                     failed_sha=bound['failed_result_sha256'], retries=router._retries, replay=True)
         if not next_path.exists():
             if session.read_only or not session.manual_retry:
-                raise SessionPaused('session_format_awaiting_manual_retry' if format_repair
+                raise SessionPaused('session_protocol_awaiting_manual_retry' if protocol_repair
+                                    else 'session_format_awaiting_manual_retry' if format_repair
                                     else 'session_timeout_awaiting_manual_retry')
             limits = self.execution_limits()
             if router._retries >= limits['transport_retries'] and session.manual_retry_grant is not None:

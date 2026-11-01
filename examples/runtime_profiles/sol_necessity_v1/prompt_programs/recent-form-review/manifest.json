@@ -357,7 +357,7 @@
     {
       "component_id": "app.runtime.sol_session_runtime",
       "source": "app/runtime/sol_session_runtime.py",
-      "sha256": "394942e4b59291eaf68725a00a59867dc09d4c2cb1978e494819f4b2f8dce610"
+      "sha256": "4765355d78fa90a72a173c2e1673bcd73aa2bff60bed82de41b2b81221e1bb7f"
     },
     {
       "component_id": "app.runtime.sol_session_receipts",
@@ -415,5 +415,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "4bf4c545d9332e314f571c46a113ebe0ab2b2093fe9d2c6f3b7173f8641c1c43"
+  "program_sha256": "7924682628dedde10c40ec1c238116cb70dee3167f8c0ae10324b552b45f38e5"
 }

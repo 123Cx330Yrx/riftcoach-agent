@@ -13,6 +13,18 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-01 08:17北京时间，按用户“继续”完成协议拒绝后的离线观测与同任务恢复准备；本轮新模型HTTP/真实Key读取/来源请求均0。新增事件类型白名单、序号、字段结构、首个拒绝事件与有界上下文；未知类型只留SHA，不记正文或私有reasoning。接收规则未放宽；合成ping/keepalive能复现原三项拒绝，仅用于验证定位能力，不能据此宣称实际额外事件就是ping/keepalive。
+
+新增create-only protocol_failure_recovery仅接受尚无正式初审、单次HTTP200/完整EOF/known usage且三项协议拒绝完全匹配的终态。166份父原件、24项操作、此次诊断返回和旧失败均完整归档，原失败值不改；独立marker只能导向明确手动重试。实际采用attempt-11最新DB（890d2214…），普通SQL/Worker resume已到session_protocol_awaiting_manual_retry，无新模型intent、无新增retry、未发布稿保持不可读。前端对该暂停显示手动补测按钮，加载不自动POST。
+
+当前累计9HTTP/50795known/366910unknown预留/5retry，活动976.031秒。最新runs_root D:/rc-protocol-recovery-20261101/verified-runs；checkpoint0005 SHAcbc1ca1ac90ede78c62a70c78b42580c9cc5a53d5defd8dc32c49337da6b670d；最新DB outputs/riftcoach-product-protocol-recovery-20261101/preflight-v2/recovered-db.dump SHAd1827a8e4bad85adf2fe2a9c73e9cd8646d3f264160f3e7d4f896e1f13230c82。恢复proof SHA0a1baf1937d483f4937ffd3c33d16d893ae02ab650af113486b4795f94a3ad36；暂停快照1e009b7ec02f484a5bf7c5561e219725aa950eabf0df98f4c486a984c825011a已追加。父terminal/旧DB不回退，临时容器已清理。
+
+验证：27项流接收、10项新恢复真实SQL、12项旧恢复真实SQL、7项页面回归与类型检查、11个Runtime入口、10项CI前置检查通过；48项预算/许可/旧手动恢复检查通过（777.42秒），合计114项定向测试；governance/compile/diff通过。首轮新SQL夹具缺high echo被严格拒绝；实际预检因budget字段名假定错误在创建副本前停止，按原budget_before修复后通过。库存新增快照只改变当前session组件及程序摘要，其他字段及原15业务请求保持；旧库存原件不改。模型均替身或零发送，这些检查不构成真实流式语义验收。
+
+下一行动：收尾验证已完成，合并提交推送并绑定干净执行目录D:/riftcoach-sol-product-protocol-recovery-execution-20261101。格式失败不自动补测；已准备具体单次方案decision-ready.json（authorized=false）：从最新pin仅补测1次同一首审，预留73382 tokens，每次300秒/16384输出，原累计12HTTP/723456tokens/2100秒及北京时间15:50:40截止不变。尚余3请求槽、305751 tokens、1123.969活动秒；若需要双初审与双fresh共4请求，原剩余预算无法覆盖。取得该格式故障补测的明确决定后再绑定干净HEAD/全绿CI和一次性许可；单次driver run_protocol_retry.py已准备，只允许一个新请求且重读追加授权；retry-authorization.json尚不存在，当前不启付费driver/waiter。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_protocol_recovery_prepared_20261101.json。
+
+以下为上一轮记录（不作为当前队列）。
+
 2026-11-01 05:50北京时间，2ebaa4a6对应CI41238725398八项全绿，唯一waiter已自动完成attempt-11；实际新增1次流式HTTP，状态200、约2秒收到首字节、130.063秒结束，完整EOF与response.completed已观测。新增21472 known tokens，无新增unknown或524。此前session.lock局部修复与同任务恢复已越过真实发送边界；128份准备原件逐字保持，3次生成与5次旧524均未重发或抹去。
 
 本次不是产品成功：流接收器拒绝event_sequence/response_not_created/unexpected_event，Worker虽succeeded，业务终态evaluation_failed、publication_allowed=false、报告409。已收到单工具诊断意见但未通过协议验收，不导入、不应用、不当作正式首审；completion/fresh均未发送。记录中2个额外body事件被归并为other_body_event，具体类型与位置未留存，不能断言ping/keepalive或某一上游事件就是根因，也不能据终态completed直接放行。本地协议兼容/观测不足和可能上游序列异常尚不能区分；不继续盲目重测。

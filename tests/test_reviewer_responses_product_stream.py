@@ -121,3 +121,40 @@ def test_http_failure_never_approved_and_usage_survives(tmp_path, business, faul
     assert result['usage'] is None if fault == '524' else result['usage']['total_tokens'] == 20
     obs = json.loads((tmp_path/'observation/observation.json').read_text())
     assert obs['http_requests'] == 1
+
+
+def test_extra_events_are_located_without_relaxing_rejection(business, tmp_path):
+    rows = events_for_response(response())
+    rows.insert(0, {'type': 'ping', 'message': PRIVATE, 'secret_field': KEY})
+    rows.insert(-1, {'type': 'keepalive', 'delta': PRIVATE})
+    result = stream.collect(business, profile=Profile(group='GPT-企业专线', route='proxy-12000'),
+        api_key=KEY, observation_dir=tmp_path/'observation',
+        transport=httpx.MockTransport(lambda _: httpx.Response(200,
+            headers={'content-type': 'text/event-stream'}, stream=Bytes(rows))))
+    assert result['ok'] is False and result['public_tool_call'] is None
+    assert result['usage']['total_tokens'] == 20
+    protocol = result['stream_protocol']
+    assert protocol['errors'] == ['event_sequence', 'response_not_created', 'unexpected_event']
+    first = protocol['first_rejection']
+    assert first['code'] == 'event_sequence'
+    assert first['event']['ordinal'] == 1 and first['event']['type'] == 'ping'
+    assert first['event']['sequence'] is None and first['event']['created_count'] == 0
+    extra = next(e for e in protocol['event_context'] if e['type'] == 'keepalive')
+    assert extra['created_count'] == 1 and extra['output_items'] == 1
+    persisted = json.dumps(result) + ''.join(p.read_text() for p in tmp_path.rglob('*.json'))
+    assert PRIVATE not in persisted and KEY not in persisted and 'secret_field' not in persisted
+
+
+def test_late_rejection_keeps_bounded_metadata_without_unknown_body(business):
+    decoder = stream.Decoder(business, lambda _: None)
+    rows = events_for_response(response())
+    for event in rows[:-1]: decoder.feed(event)
+    for i in range(100):
+        decoder.feed({'type': 'response.reasoning_text.delta', 'sequence_number': decoder.raw_sequence+1,
+                      'delta': PRIVATE, 'output_index': 0, 'item_id': 'arbitrary'})
+    decoder.feed({'type': PRIVATE, 'sequence_number': None, KEY: PRIVATE})
+    protocol = decoder.protocol()
+    assert len(protocol['event_context']) <= 64
+    assert protocol['first_rejection']['event']['type'] == 'unrecognized'
+    assert protocol['first_rejection']['event']['ordinal'] > 100
+    assert PRIVATE not in json.dumps(protocol) and KEY not in json.dumps(protocol)
