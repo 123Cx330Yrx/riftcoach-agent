@@ -17,11 +17,11 @@ from tests.test_native_editor_product_budget import SummaryBuilder
 from tests.test_runtime_execution_factory_combined import _NoopObserver
 
 
-def session_at(root, *, manual=False, pins=None, clock=None, max_new_models=None, purpose='unbound'):
-    return CandidateSession(root / 'session', binding=dict(worker_profile=product.WORKER_PROFILE,
-        task_id='product-test', candidate_contract=product.VERSION, product_task_purpose=purpose),
+def session_at(root, *, manual=False, pins=None, clock=None, max_new_models=None, purpose='unbound', candidate=product):
+    return CandidateSession(root / 'session', binding=dict(worker_profile=candidate.WORKER_PROFILE,
+        task_id='product-test', candidate_contract=candidate.VERSION, product_task_purpose=purpose),
         transport_root=root / 'transport' / 'candidate', journal_root=root / 'journal',
-        contract_module=product, worker_product=True, manual_retry=manual,
+        contract_module=candidate, worker_product=True, manual_retry=manual,
         guard_sha=None if pins is None else pins['guard_sha256'],
         checkpoint_sha=None if pins is None else pins['checkpoint_sha256'],
         max_new_models=max_new_models, before_new_model=lambda: None,
@@ -34,8 +34,8 @@ def current_pins(root):
             'checkpoint_sha256': digest(sorted((root/'session/checkpoints').glob('*.json'))[-1].read_bytes())}
 
 
-def make_app(root, session, *, mode='repair', statuses=(), extra_round=False):
-    factory, attempts = application(root, mode=mode, statuses=statuses, candidate=product, factory_only=True)
+def make_app(root, session, *, mode='repair', statuses=(), extra_round=False, candidate=product):
+    factory, attempts = application(root, mode=mode, statuses=statuses, candidate=candidate, factory_only=True)
     original = factory.make
     def make(name):
         provider = original(name)
@@ -45,7 +45,7 @@ def make_app(root, session, *, mode='repair', statuses=(), extra_round=False):
     app = build_natural_duty_candidate(summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory, knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
         runs_root=root/'runs'/str(len(list((root/'session/checkpoints').glob('*.json')))),
-        candidate=product, execution_session=session)
+        candidate=candidate, execution_session=session)
     flows = []
     original_flow = app._runtime._execution_factory._review_workflow_factory
     def capture(runtime, budget):

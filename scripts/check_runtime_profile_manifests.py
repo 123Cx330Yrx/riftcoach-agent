@@ -8,8 +8,8 @@ import json
 
 
 CURRENT_INVENTORY_SNAPSHOTS = {
-    'natural-duty': 'natural_duty_qualification_inventory_product_stream_compat_20261101.json',
-    'sol-review': 'sol_review_qualification_inventory_chat_process_20261102.json',
+    'natural-duty': 'natural_duty_qualification_inventory_chat_product_20261102.json',
+    'sol-review': 'sol_review_qualification_inventory_chat_product_20261102.json',
 }
 
 
@@ -27,7 +27,7 @@ def check_inventories(repository: Path) -> int:
 def check() -> int:
     from app.runtime import coach_contract as coach
     from app.evaluation import natural_duty_contract, sol_natural_contract, sol_necessity_contract, sol_review_contract
-    from app.product import sol_contract
+    from app.product import sol_contract, sol_chat_contract
     from app.runtime.composition import RuntimeCompositionRoot
 
     profiles = (
@@ -41,6 +41,7 @@ def check() -> int:
         ('sol_necessity_v1', sol_necessity_contract.CONTRACT),
         ('sol_review_v1', sol_review_contract.CONTRACT),
         ('sol_product_v1', sol_contract.CONTRACT),
+        ('sol_product_chat_v1', sol_chat_contract.CONTRACT),
     )
     repository = Path(__file__).resolve().parents[1]
     root = repository / 'examples/runtime_profiles'

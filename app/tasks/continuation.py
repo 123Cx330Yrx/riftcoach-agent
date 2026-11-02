@@ -11,15 +11,20 @@ from pydantic import BaseModel, ConfigDict, Field
 
 WORKER_SOL_PROFILE = "sol-dual-development-v1"
 WORKER_SOL_PRODUCT_PROFILE = "sol-dual-product-v1"
+WORKER_SOL_CHAT_PRODUCT_PROFILE = "sol-dual-product-chat-v1"
+PRODUCT_WORKER_PROFILES = frozenset({WORKER_SOL_PRODUCT_PROFILE, WORKER_SOL_CHAT_PRODUCT_PROFILE})
+SOL_WORKER_PROFILES = PRODUCT_WORKER_PROFILES | {WORKER_SOL_PROFILE}
 
 
 def contract_for_worker_profile(profile):
     from app.evaluation import sol_review_contract
-    from app.product import sol_contract
+    from app.product import sol_contract, sol_chat_contract
     if profile == WORKER_SOL_PROFILE:
         return sol_review_contract
     if profile == WORKER_SOL_PRODUCT_PROFILE:
         return sol_contract
+    if profile == WORKER_SOL_CHAT_PRODUCT_PROFILE:
+        return sol_chat_contract
     raise ContinuationError("continuation_profile_unavailable")
 
 

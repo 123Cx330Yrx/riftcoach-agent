@@ -67,7 +67,7 @@ from app.tasks.reconciliation import (
 )
 from app.workers.polling import PollingPolicy
 from app.workers.review_worker import ReviewWorker
-from app.tasks.continuation import WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, contract_for_worker_profile
+from app.tasks.continuation import WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, SOL_WORKER_PROFILES, contract_for_worker_profile
 
 
 WorkerCompositionErrorCode: TypeAlias = Literal[
@@ -173,9 +173,9 @@ def load_worker_composition_settings(
         )
         registry = load_provider_registry_settings(environment)
         execution_profile = environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE", "legacy").strip()
-        if execution_profile not in {"legacy", WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+        if execution_profile not in ({"legacy"} | SOL_WORKER_PROFILES):
             raise ValueError("unknown worker execution profile")
-        if execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE} and raw_zhipu.model != ZHIPU_GLM53_FLASH_MODEL:
+        if execution_profile in SOL_WORKER_PROFILES and raw_zhipu.model != ZHIPU_GLM53_FLASH_MODEL:
             raise ValueError("Sol routes require Flash generation")
         if registry.default_provider_id != "zhipu":
             raise ValueError("only the current product baseline may be selected")
@@ -474,7 +474,7 @@ def compose_continuation_executor(settings, *, repository, legacy, summary_build
     from app.workers.sol_continuation import ContinuationRoutingExecutor, SolContinuationExecutor
     store = PostgresTaskContinuations(repository)
     candidate = None
-    if settings.execution_profile in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+    if settings.execution_profile in SOL_WORKER_PROFILES:
         contract = contract_for_worker_profile(settings.execution_profile)
         from app.runtime.sol_natural_provider import SolNaturalProviderFactory
         generator = ZhipuSettings(api_key=_read_secret_value(settings.secret_source,
@@ -532,7 +532,7 @@ def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecret
             version="environment",
             value=_required_secret(environment, "LLM_API_KEY"),
         )
-        if environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE") in {WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE}:
+        if environment.get("RIFTCOACH_WORKER_EXECUTION_PROFILE") in SOL_WORKER_PROFILES:
             source.put(name="sol-review-api", version="environment",
                        value=_required_secret(environment, "RIFTCOACH_SOL_REVIEW_API_KEY"))
     except ValueError:

@@ -26,6 +26,9 @@ from app.evaluation import natural_duty_contract as legacy
 from importlib import import_module
 contract=import_module(CONTRACT_MODULE)
 is_product_stream = getattr(contract, 'RESPONSE_MODE', None) == 'natural-sol-product-stream-v1'
+is_product_chat = getattr(contract, 'RESPONSE_MODE', None) == 'natural-sol-product-chat-v1'
+if is_product_chat:
+    from scripts import reviewer_chat_stream as codec
 if is_product_stream:
     from scripts import reviewer_responses_stream as codec
 from tests.test_natural_duty_candidate import Responses
@@ -54,7 +57,7 @@ def collect(business,**kwargs):
         # Reuse only the synthetic edit producer under its historical context;
         # the real child validator still checks the current product request.
         from app.evaluation import sol_review_contract as historical
-        fixture_context = dict(context, version=historical.VERSION) if is_product_stream else context
+        fixture_context = dict(context, version=historical.VERSION) if is_product_stream or is_product_chat else context
         value = response(opinion(fixture_context if MODE == 'overlap' else dict(fixture_context, duty='facts'), 'overlap' if MODE == 'overlap' else 'repair'))
     if MODE == 'non_tool':
         value['output'] = [dict(type='message', status='completed',
@@ -73,6 +76,24 @@ def collect(business,**kwargs):
     elif MODE == 'sdk_decode_conflict':
         value['reasoning'] = dict(effort='high')
     status=STATUS
+    if is_product_chat:
+        from tests.test_reviewer_chat_contract import rows
+        class ChatBytes(httpx.SyncByteStream):
+            def __iter__(self):
+                events=rows(value['output'][0]['arguments'])
+                for event in events:
+                    event['model']=value['model']
+                    if MODE == 'reasoning_conflict':event['reasoning_effort']='low'
+                    if MODE == 'two_tools' and event['choices'] and event['choices'][0]['delta'].get('tool_calls'):
+                        event['choices'][0]['delta']['tool_calls'] *= 2
+                    yield ('data: '+json.dumps(event)+'\n\n').encode()
+                yield b'data: [DONE]\n\n'
+        def handler(req):
+            assert req.url.path == '/v1/chat/completions'
+            assert json.loads(req.content) == codec.build_wire(business)
+            return httpx.Response(status, content=b'{}') if status != 200 else httpx.Response(
+                200, headers={'content-type':'text/event-stream'}, stream=ChatBytes())
+        return original(business, **kwargs, transport=httpx.MockTransport(handler))
     if is_product_stream:
         from tests.product_stream_fixtures import events_for_response, Bytes
         if MODE in ('protocol_unknown_preamble', 'anonymous_rejected'):

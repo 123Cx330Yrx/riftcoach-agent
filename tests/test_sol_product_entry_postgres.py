@@ -14,7 +14,7 @@ from app.memory.models import RelationshipRole
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
 from app.persistence.player_records import PlayerAliasRecord
 from app.persistence.terminal_turn_writer import PostgresTerminalTurnWriter
-from app.product import sol_contract as product
+from app.product import sol_contract as responses_product, sol_chat_contract as chat_product
 from app.tasks.models import TaskPublicationMode
 from tests.memory_candidate_postgres_support import seed_conversation
 from tests.test_evidence_product_api_postgres import migrated_product_api
@@ -24,8 +24,9 @@ from tests.test_sol_worker_continuation_postgres import continued_api, setup_wor
 
 @pytest.mark.parametrize('conversation_bound,role', [(False, RelationshipRole.OBSERVED),
     (True, RelationshipRole.OBSERVED), (True, RelationshipRole.SELF)])
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
 def test_composed_api_binds_evidence_and_observed_conversation(
-    continued_api, tmp_path, monkeypatch, conversation_bound, role,
+    continued_api, tmp_path, monkeypatch, conversation_bound, role, product,
 ):
     _, _, repo, _ = continued_api
     factory = repo._session_factory

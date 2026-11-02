@@ -20,7 +20,7 @@ function show(api: TaskContinuationApi, onChanged = vi.fn()) {
 }
 
 describe("explicit task recovery", () => {
-  it.each(["sol-dual-development-v1", "sol-dual-product-v1"])("does not retry on load; preserves key/checkpoint for %s", async (profile) => {
+  it.each(["sol-dual-development-v1", "sol-dual-product-v1", "sol-dual-product-chat-v1"])("does not retry on load; preserves key/checkpoint for %s", async (profile) => {
     const calls: RequestInit[] = []
     const api = new TaskContinuationApi(new ApiClient({ fetcher: async (_url, init) => {
       if (init?.method !== "POST") return json({ ...wire(), profile })

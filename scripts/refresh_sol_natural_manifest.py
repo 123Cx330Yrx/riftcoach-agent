@@ -11,12 +11,12 @@ def main(candidate=None):
     if candidate is None:
         from app.evaluation import sol_natural_contract as candidate
     from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
-    from app.product import sol_contract
-    if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract):
+    from app.product import sol_contract, sol_chat_contract
+    if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract, sol_chat_contract):
         raise ValueError('unsupported_natural_manifest')
     contract, fingerprints = candidate.CONTRACT, candidate.component_fingerprints
     root = ROOT/'examples/runtime_profiles'/('sol_necessity_v1' if candidate is sol_necessity_contract else 'sol_natural_v1')
-    if candidate in (sol_review_contract, sol_contract):
+    if candidate in (sol_review_contract, sol_contract, sol_chat_contract):
         root = candidate.ASSETS
     skill = SkillCatalog.from_directory(root/'skills').get('recent-form-review')
     value = dict(schema_version='1.0', program_id='recent-form-review-coach', program_version='4.0.0',

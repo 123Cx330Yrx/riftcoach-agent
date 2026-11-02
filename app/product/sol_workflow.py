@@ -43,8 +43,8 @@ class ProductBudget(SessionBudget):
 class ProductWorkflow(SessionWorkflow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from . import sol_contract
-        if self.contract_module is not sol_contract or not self.session.worker_product:
+        from . import sol_contract, sol_chat_contract
+        if self.contract_module not in (sol_contract, sol_chat_contract) or not self.session.worker_product:
             raise ValueError('product_workflow_binding')
         self.identical_coordination = None
 

@@ -365,7 +365,7 @@ class RunQueryService:
         self._receipts = receipt_store or FileRunReceiptStore(self._runs_root)
 
     def get_session_accounting(self, run_id, reference):
-        from app.tasks.continuation import contract_for_worker_profile, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE
+        from app.tasks.continuation import contract_for_worker_profile, WORKER_SOL_PROFILE, PRODUCT_WORKER_PROFILES
         contract = contract_for_worker_profile(reference["profile"])
         from app.evaluation.sol_natural_session import CandidateSession
         from app.product.session_usage import session_accounting
@@ -380,7 +380,7 @@ class RunQueryService:
                 transport_root=root / "transport" / run_id, journal_root=root / "journal",
                 guard_sha=reference["guard_sha256"], checkpoint_sha=reference["checkpoint_sha256"],
                 contract_module=contract, read_only=True, worker_development=reference["profile"] == WORKER_SOL_PROFILE,
-                worker_product=reference["profile"] == WORKER_SOL_PRODUCT_PROFILE)
+                worker_product=reference["profile"] in PRODUCT_WORKER_PROFILES)
         # Usage and recovery details can arrive together (including after reload).
         # Keep the kernel lock and all pin checks; wait only for lock acquisition.
         deadline = time.monotonic() + 5.0

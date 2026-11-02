@@ -22,7 +22,7 @@ from app.memory.models import RelationshipRole
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
 from app.persistence.player_records import PlayerAliasRecord, PlayerLinkTaskRecord
 from app.persistence.terminal_turn_writer import PostgresTerminalTurnWriter
-from app.product import sol_contract as product
+from app.product import sol_contract as responses_product, sol_chat_contract as chat_product
 from app.tasks.sse import TaskEventStreamService
 from scripts.run_local_observation_api import create_local_observation_app
 from tests.memory_candidate_postgres_support import seed_conversation
@@ -36,7 +36,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.mark.parametrize("action", ["resume", "retry", "cancel"])
-def test_browser_to_product_worker(continued_api, tmp_path, monkeypatch, action):
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+def test_browser_to_product_worker(continued_api, tmp_path, monkeypatch, action, product):
     repo = continued_api[2]
     factory = repo._session_factory
     subject, relationship, _ = seed_conversation(factory, number=901,
@@ -97,7 +98,7 @@ def test_browser_to_product_worker(continued_api, tmp_path, monkeypatch, action)
     api_thread = threading.Thread(target=lambda: server.run(sockets=[listener]), daemon=True)
     worker_thread = threading.Thread(target=run_worker, daemon=True)
     out_root = Path(os.environ.get("RIFTCOACH_BROWSER_OUTPUT", str(tmp_path / "browser")))
-    out = out_root / action
+    out = out_root / product.WORKER_PROFILE / action
     out.mkdir(parents=True, exist_ok=True)
     env = {k: v for k, v in os.environ.items() if k.upper() in {
         "PATH", "SYSTEMROOT", "WINDIR", "TEMP", "TMP", "USERPROFILE", "LOCALAPPDATA", "APPDATA", "HOME", "PLAYWRIGHT_BROWSERS_PATH"}}

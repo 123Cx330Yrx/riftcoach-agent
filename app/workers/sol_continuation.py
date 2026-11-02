@@ -13,7 +13,7 @@ from app.product.session_usage import session_accounting
 from app.product.natural_duty_candidate import build_natural_duty_candidate
 from app.runtime.dispatch_control import require_dispatch_allowed
 from app.tasks.continuation import (ContinuationError,
-                                    TaskExecutionPause, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, contract_for_worker_profile)
+                                    TaskExecutionPause, WORKER_SOL_PROFILE, WORKER_SOL_PRODUCT_PROFILE, PRODUCT_WORKER_PROFILES, contract_for_worker_profile)
 from app.tasks.recent_review_executor import RecentReviewTaskExecutor
 from app.tasks.reconciliation import RecentReviewTerminalEvidenceVerifier
 
@@ -120,7 +120,7 @@ class SolContinuationExecutor:
         self.manual_retry_grant = manual_retry_grant
         self.budget_supplement = budget_supplement
         self.contract = contract_module
-        self.profile = (WORKER_SOL_PROFILE if contract_module is default_contract else WORKER_SOL_PRODUCT_PROFILE)
+        self.profile = (WORKER_SOL_PROFILE if contract_module is default_contract else contract_module.WORKER_PROFILE)
         if contract_for_worker_profile(self.profile) is not contract_module:
             raise ValueError("worker_contract_binding")
 
@@ -132,7 +132,7 @@ class SolContinuationExecutor:
             run_id=task.run_id, owner_id=task.owner_id,
             request_fingerprint=task.request_fingerprint,
             publication_mode=task.publication_mode.value)
-        if self.profile == WORKER_SOL_PRODUCT_PROFILE:
+        if self.profile in PRODUCT_WORKER_PROFILES:
             from app.product.review_purpose import task_purpose
             binding['product_task_purpose'] = task_purpose(task)
             binding['execution_contract'] = contract.CONTRACT.snapshot().model_dump(mode='json')
@@ -151,7 +151,7 @@ class SolContinuationExecutor:
             transport_root=transport / task.run_id, journal_root=private / "journal",
             guard_sha=saved["guard_sha256"], checkpoint_sha=saved["checkpoint_sha256"],
             contract_module=contract, worker_development=self.profile == WORKER_SOL_PROFILE,
-            worker_product=self.profile == WORKER_SOL_PRODUCT_PROFILE,
+            worker_product=self.profile in PRODUCT_WORKER_PROFILES,
             manual_retry=saved["manual_retry"], before_new_model=require_dispatch_allowed,
             manual_retry_grant=self.manual_retry_grant,
             max_new_models=self.max_new_models,
@@ -159,7 +159,7 @@ class SolContinuationExecutor:
                 {**value, "checkpoint": Path(value["checkpoint"]).name}, session_accounting(session)))
         try:
             with session:
-                if self.profile == WORKER_SOL_PRODUCT_PROFILE:
+                if self.profile in PRODUCT_WORKER_PROFILES:
                     from app.product.budget_supplement import activate
                     activate(session, self.budget_supplement)
                 closed = session.root / "terminal.json"

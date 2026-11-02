@@ -2,8 +2,8 @@
 
 **Goal:** 先交付普通用户可发起、可恢复、可核源、可阅读的可信复盘，再按既有路线完成 Coach / Review / Training / Evidence 联动和整体体验。
 **Architecture:** 复用现有 API → SQL 任务 → Worker → 来源/Memory → Flash 生成 → Sol 双审 → 必要时唯一修订与同稿双 fresh → Evidence/报告查询路径。传输、任务执行、内容质量、界面消费分别验证；开发诊断不进入产品正常使用流程。
-**Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses 接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
-**Status:** P1_complete / P2_partial_verified。用户要求等待CI期间同步推进，已完成[Chat候选离线可行性与资源核对](2026-11-01-chat-candidate-offline.md)，2026-11-02 选择该候选接入现有单次子进程及用量回执；产品 Worker/SQL/浏览器接线和真实调用仍未完成。2026-11-01 用户“好，开展”恢复实施，随后要求先离线收尾，并追加审查过紧本地协议约束。数值与可信用途子包已本地验证，SQL/Worker/浏览器使用替身；当前收尾包含整数序列化兼容修正、1.7.3 空排队前导与纯元数据心跳处理，详见 [通道裁决与内容修正](2026-11-01-product-route-adjudication.md)。本站公开配置为 Sol/企业分组同时列出 Chat 与 Responses，Chat 是有依据但未实测的候选；官方限制不能直接否定它。提供方文档/群内答复是可选依据，不是用户必须交付的前提。整个 P2 尚未完成，本轮不包含新付费、旧任务恢复、默认切换或部署。
+**Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
+**Status:** P1_complete / P2_partial_verified。2026-11-02 已将独立Chat产品合同接入现有Runtime/session/Worker/SQL/API/浏览器，完成替身模型的直接通过、修订、恢复、取消与账目消费验证；P3的一个新observed近期五场任务方案已具体化，见 [Chat工作卡](2026-11-01-chat-candidate-offline.md)。新HEAD CI和真实中转/内容/时延证据尚缺，未把本包离线闭环当成整个产品完成。此前数值/可信用途、整数序列化、1.7.3空排队前导与元数据心跳修正保留，见 [通道裁决与内容修正](2026-11-01-product-route-adjudication.md)。本站公开配置同时列出Chat/Responses，提供方答复只作依据之一；实际契约仍以真实取证核实。本轮不包含新付费、旧任务恢复、默认切换或部署。
 
 ## 1. 起点与目标层次
 

@@ -151,13 +151,14 @@ def test_inventory_preserves_original15_and_uses_runtime_contract():
     from scripts.check_runtime_profile_manifests import CURRENT_INVENTORY_SNAPSHOTS
     value, original = audit(), legacy.audit()
     assert value == json.loads((candidate.ROOT/'data/evaluation/results'/CURRENT_INVENTORY_SNAPSHOTS['sol-review']).read_bytes())
-    previous = json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_protocol_recovery_20261101.json').read_bytes())
+    previous = json.loads((candidate.ROOT/'data/evaluation/results/sol_review_qualification_inventory_chat_process_20261102.json').read_bytes())
     assert {k: v for k, v in value.items() if k not in ('component_fingerprints', 'program_sha256')} == {
         k: v for k, v in previous.items() if k not in ('component_fingerprints', 'program_sha256')}
     prior_components = {r['component_id']: r for r in previous['component_fingerprints']}
     assert {r['component_id'] for r in value['component_fingerprints']
             if r != prior_components[r['component_id']]} == {
-        'app.runtime.coach_contract', 'app.product.natural_duty_candidate', 'scripts.reviewer_responses_process'}
+        'app.runtime.coach_contract', 'app.runtime.coach_budget', 'app.runtime.models', 'app.product.natural_duty_candidate',
+        'app.runtime.sol_natural_provider', 'app.evaluation.sol_natural_session', 'scripts.reviewer_responses_process'}
     assert value['contract'] == candidate.CONTRACT.snapshot().model_dump(mode='json')
     assert value['label_counts'] == dict(accept=5, reject=10)
     assert value['initial_request_count'] == 30

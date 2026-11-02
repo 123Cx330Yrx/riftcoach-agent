@@ -1,3 +1,13 @@
+## 2026-11-02 Chat持久产品消费链与Docker启动兼容
+
+起点8a838c58的CI41375428589八项success。本包独立Chat合同1.7.4接入现有Runtime/session/Worker/SQL/API/浏览器，默认legacy/Responses保持。完成直接双审、唯一修订/同稿fresh、格式/超时暂停、普通resume、明确retry和取消，旧task不能换Worker偷换合同。
+
+68传输、14新产品、13配置/清单、60共享回归、11真实SQL/Worker、3真实浏览器、8页面检查通过；12Runtime/2清单、typecheck/编译通过。首次resolver与RuntimeTrace遗漏、空超时观测分类、页面白名单已修复；局部测试变量误写和取消持久化时序假设修正后相应用例通过，失败日志保留。9旧manifest同步共享组件，2份新清单保留原15业务字段。
+
+用户追加Docker报错已查出正常重启会复发；独立新AF_UNIX socket也不能在关闭后重命名。有限兼容启动入口只处理两个已知空socket目录，三次启动/容器检查通过；原数据/卷不动，临时测试容器清理。底层缺陷未声明修好，直接exe/CLI/应用内restart不受该入口保护。自动审批拒绝删除备份和写独立Docker汇总说明，备份保留、未绕过。
+
+真实模型HTTP/凭据读取0，替身发布不是语义验收。P3已形成一个新observed近期五场任务的正常入口、默认8/401920/900预算、核验和停止条件；仍需新HEAD CI及实际对象/日期/费用范围决定，旧授权不复用。记录/实现合并一次提交推送；结果 `sol_product_chat_integration_20261102.json`。
+
 ## 2026-11-02 Chat 候选接入现有单次执行与用量回执
 
 先核4ca90c6b的CI41297485491八项success，SQL315项/692.68秒，上一夹具修正完成远端验证。本轮沿同一产品计划选择Chat作为工程/取证候选，复用原owned process、deadline/cancel、观测及业务校验；没有切默认、注册新产品provider或恢复旧task。

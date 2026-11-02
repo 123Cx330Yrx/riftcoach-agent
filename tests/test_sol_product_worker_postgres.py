@@ -4,14 +4,15 @@ from uuid import UUID
 
 import pytest
 
-from app.product import sol_contract as product
+from app.product import sol_contract as responses_product, sol_chat_contract as chat_product
 from tests.test_evidence_product_api_postgres import migrated_product_api
 from tests.test_natural_duty_worker_postgres import no_external_services
 from tests.test_sol_worker_continuation_postgres import continued_api, create, resume, setup_worker
 
 
 @pytest.mark.parametrize('mode,restart', [('pass', False), ('repair', True)])
-def test_product_worker_publishes_owner_report_with_cumulative_accounting(continued_api, tmp_path, monkeypatch, mode, restart):
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+def test_product_worker_publishes_owner_report_with_cumulative_accounting(continued_api, tmp_path, monkeypatch, mode, restart, product):
     owner, other, repo, _ = continued_api
     task, run = create(owner)
     make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
@@ -47,7 +48,40 @@ def test_product_worker_publishes_owner_report_with_cumulative_accounting(contin
         assert {v['report_sha256'] for v in fresh} == {application['report_sha256']}
 
 
-def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued_api, tmp_path, monkeypatch):
+def test_chat_format_pause_keeps_known_cost_and_original_generation(continued_api, tmp_path, monkeypatch):
+    owner, _, repo, _ = continued_api
+    task, run = create(owner)
+    make, _, _, failed = setup_worker(tmp_path, monkeypatch, repo, mode='bad_json',
+        contract=chat_product, profile=chat_product.WORKER_PROFILE)
+    worker, _ = make()
+    assert worker.run_once().status.value == 'paused'
+    state = owner.get(f'/tasks/{task}/continuation').json()
+    assert state['reason'] == 'session_format_awaiting_manual_retry'
+    assert state['session_accounting']['known_tokens'] == 60
+    assert state['session_accounting']['unknown_token_reservation'] == 0
+    assert owner.get(f'/runs/{run}/report').status_code == 409
+    assert failed == [[200]]
+    root = tmp_path / run / '.continuation/transport'
+    before = {p: p.read_bytes() for p in root.rglob('*.json')}
+    make, summary, _, calls = setup_worker(tmp_path, monkeypatch, repo,
+        contract=chat_product, profile=chat_product.WORKER_PROFILE)
+    assert resume(owner, task, state['checkpoint_sha256'], 'format-ordinary').status_code == 200
+    worker, _ = make()
+    assert worker.run_once().status.value == 'paused'
+    assert calls == [[]]
+    state = owner.get(f'/tasks/{task}/continuation').json()
+    assert resume(owner, task, state['checkpoint_sha256'], 'format-manual', True).status_code == 200
+    worker, _ = make()
+    assert worker.run_once().status.value == 'succeeded'
+    assert owner.get(f'/runs/{run}/report').status_code == 200
+    total = owner.get(f'/runs/{run}/usage').json()['session_accounting']
+    assert (total['requests_reserved'], total['known_tokens'], total['unknown_token_reservation'], total['retries']) == (5, 100, 0, 1)
+    assert calls == [[], [200, 200]] and summary.reads == 0
+    assert before and all(p.read_bytes() == value for p, value in before.items())
+
+
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued_api, tmp_path, monkeypatch, product):
     from app.tasks.service import ReviewTaskService
     from app.tasks.models import CreateReviewTaskCommand, TaskPublicationMode
     from app.product.recent_review import RecentReviewProductRequest
@@ -74,12 +108,14 @@ def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued
 
 
 @pytest.mark.parametrize('initial_product', [False, True])
-def test_existing_task_never_changes_contract_on_worker_switch(continued_api, tmp_path, monkeypatch, initial_product):
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+def test_existing_task_never_changes_contract_on_worker_switch(continued_api, tmp_path, monkeypatch, initial_product, product):
     from app.evaluation import sol_review_contract as old
     from app.tasks.continuation import WORKER_SOL_PROFILE
     owner, _, repo, _ = continued_api
     task, _ = create(owner)
-    contracts = [(old, WORKER_SOL_PROFILE), (product, product.WORKER_PROFILE)]
+    prior = responses_product if product is chat_product else old
+    contracts = [(prior, prior.WORKER_PROFILE if product is chat_product else WORKER_SOL_PROFILE), (product, product.WORKER_PROFILE)]
     first_contract, first_profile = contracts[int(initial_product)]
     make, _, _, first_calls = setup_worker(tmp_path, monkeypatch, repo,
         contract=first_contract, profile=first_profile)
@@ -99,7 +135,8 @@ def test_existing_task_never_changes_contract_on_worker_switch(continued_api, tm
 
 
 @pytest.mark.parametrize('cancel', [False, True])
-def test_product_timeout_recovery_or_cancel_keeps_unknown_cost(continued_api, tmp_path, monkeypatch, cancel):
+@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+def test_product_timeout_recovery_or_cancel_keeps_unknown_cost(continued_api, tmp_path, monkeypatch, cancel, product):
     owner, other, repo, _ = continued_api
     task, run = create(owner)
     make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo, statuses=(524,),

@@ -36,25 +36,25 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         provider_type, assets = NaturalDutyProvider, ASSETS
     else:
         from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
-        from app.product import sol_contract
+        from app.product import sol_contract, sol_chat_contract
         from app.runtime.sol_natural_provider import SolNaturalProvider
-        if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract):
+        if candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract, sol_chat_contract):
             raise ValueError("unsupported_natural_candidate")
         provider_type, assets = SolNaturalProvider, ROOT/"examples/runtime_profiles/sol_natural_v1"
         if candidate is sol_necessity_contract:
             assets = ROOT/'examples/runtime_profiles/sol_necessity_v1'
-        elif candidate in (sol_review_contract, sol_contract):
+        elif candidate in (sol_review_contract, sol_contract, sol_chat_contract):
             assets = candidate.ASSETS
-        if candidate is sol_contract and execution_session is None:
+        if candidate in (sol_contract, sol_chat_contract) and execution_session is None:
             raise ValueError("product_requires_durable_session")
     contract = candidate.CONTRACT
     if getattr(provider_factory.descriptor, 'contract_module', candidate) is not candidate:
         raise ValueError('natural_candidate_provider_contract')
     if execution_session is not None:
         from app.evaluation import sol_natural_contract, sol_necessity_contract, sol_review_contract
-        from app.product import sol_contract
+        from app.product import sol_contract, sol_chat_contract
         from app.evaluation.sol_natural_session import CandidateSession
-        if (candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract)
+        if (candidate not in (sol_natural_contract, sol_necessity_contract, sol_review_contract, sol_contract, sol_chat_contract)
                 or type(execution_session) is not CandidateSession
                 or execution_session.contract_module is not candidate):
             raise ValueError('session_requires_sol_candidate')
@@ -64,8 +64,8 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
     root = RuntimeCompositionRoot.from_directories(skills_root=assets/'skills',
         prompt_programs_root=assets/'prompt_programs', coach_contract=contract)
     context = CoachContextBuilder(coach_contract=contract, compact_json=True)
-    from app.product import sol_contract
-    if candidate is sol_contract:
+    from app.product import sol_contract, sol_chat_contract
+    if candidate in (sol_contract, sol_chat_contract):
         from app.product.review_purpose import ProductContextBuilder
         context = ProductContextBuilder(coach_contract=contract, compact_json=True,
             purpose=execution_session.binding.get('product_task_purpose', 'unbound'))
@@ -88,9 +88,9 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         workflow_type = NaturalDutyWorkflow
         if execution_session is not None:
             from app.runtime.sol_session_runtime import SessionWorkflow
-            from app.product import sol_contract
+            from app.product import sol_contract, sol_chat_contract
             from app.product.sol_workflow import ProductWorkflow
-            selected_workflow = ProductWorkflow if candidate is sol_contract else SessionWorkflow
+            selected_workflow = ProductWorkflow if candidate in (sol_contract, sol_chat_contract) else SessionWorkflow
             return selected_workflow(SharedBudgetReviewSender(budget), session=execution_session,
                 journal_root=execution_session.journal_root, contract_module=candidate,
                 patch_coordination=patch_coordination)
@@ -100,9 +100,9 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
     session_factories = {}
     if execution_session is not None:
         from app.runtime.sol_session_runtime import SessionBudget, SessionTools
-        from app.product import sol_contract
+        from app.product import sol_contract, sol_chat_contract
         from app.product.sol_workflow import ProductBudget
-        selected_budget = ProductBudget if candidate is sol_contract else SessionBudget
+        selected_budget = ProductBudget if candidate in (sol_contract, sol_chat_contract) else SessionBudget
         session_factories = dict(
             budget_factory=lambda provider, **kwargs: selected_budget(provider, session=execution_session, **kwargs),
             knowledge_runtime_factory=lambda registry: SessionTools(registry, session=execution_session))

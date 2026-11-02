@@ -14,17 +14,17 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-11-02，按用户“继续”推进已授权的离线产品工作。P1_complete / P2_partial_verified；Stage8E、原15完成及默认准入不变。产品总计划见 [推进计划](plans/2026-11-01-product-delivery-reset.md)，本包工作卡见 [Chat 候选接线](plans/2026-11-01-chat-candidate-offline.md)。
+2026-11-02，按用户“继续吧”完成 Chat 显式产品接线的本地验证。P1_complete / P2_partial_verified；其中本包 SDK→Runtime/session→Worker→真实SQL/API→浏览器已走通。Stage8E、原15完成及默认准入不变。总计划见 [推进计划](plans/2026-11-01-product-delivery-reset.md)，工作卡及P3方案见 [Chat 产品接线](plans/2026-11-01-chat-candidate-offline.md)。
 
-上一修正提交4ca90c6b的CI41297485491已终局八项success；SQL315项通过、692.68秒。此前两轮SQL异常的夹具修正完成远端验证，不再轮询已终局CI，也不把当前成功倒推成此前超时原因已证。
+起点8a838c581854e4be742776f88d0ebd97b1c609b5的CI41375428589八项success，已终局不再轮询。本包新合同为natural-flash-sol-product-chat-v1 / 1.7.4、Worker为sol-dual-product-chat-v1；复用原来源、用途、业务校验、唯一修订、双fresh与8/401920/900预算。默认legacy及原Responses合同保持，旧task不能靠切换Worker隐式换合同，没有迁移旧账目。
 
-本包选择Chat作为后续工程和取证候选，复用现有单次执行器：完整产品请求→owned subprocess→Chat SDK流→工具组装/即时usage→原产品业务验证→持久回执。增加显式candidate模式，默认Responses产品合同和provider注册保持；没有第二套任务框架。已知用量在读取/关闭失败后保留，冲突另存两份证据，取消/期限杀进程后仍按unknown；立即取消若发送记录未持久，HTTP次数保持未知，不能认定零发送。
+本地覆盖：68项Chat传输、14项产品、13项配置/清单、60项共享Responses/产品回归、11项真实SQL/API/Worker、3条真实浏览器流程及8项页面检查全部通过。12个Runtime和2份当前清单通过，类型/编译通过。浏览器1440/320检查普通继续、明确手动重试、取消；重启沿用来源和成功前缀，超时unknown不清零，取消后无报告/assistant turn/Training事件。模型为SDK替身，真实模型HTTP/凭据读取0，合成pass不是内容质量或真实中转验收。
 
-68项候选检查通过；两份完整历史输入派生的当前初审请求，business/wire摘要与上一包一致，实际SDK/子进程/替身HTTP/业务绑定走通。它们是合成意见，不作语义证据、不导入、不发布。4个当前manifest只同步共享process指纹及派生program摘要；sol-review当前清单create-only更新，原请求/来源/标签/合同不变，natural清单不变。11个Runtime及2份当前清单通过；共享Responses/恢复/产品回归85项全部通过，共153项；编译通过。
+首轮暴露的resolver/RuntimeTrace注册遗漏、Chat空HTTP超时观测分类和前端恢复白名单已修复。测试中的既有负例变量误改及过早取消的身份落盘假设已修正，原失败日志保留。取消若持久回执没有可信身份，仍按unknown；不是看到usage就强行算known。9个现有manifest同步实际共享源码指纹，新Chat资产独立；两份资格清单create-only更新，仅组件/派生program摘要变化，原15输入/报告/标签/合同不改。
 
-普通用户的Chat产品闭环尚未开通。本包不含Worker/SQL/浏览器的Chat接线、真实本站兼容和全程时延证据；P2/P3均不宣称完成。下一行动：本包已完成153项检查，记录收口并一次合并提交推送；下一步推进同一候选的显式opt-in产品合同/持久任务接线；验证直接通过、唯一修订/同稿双fresh、故障账目与普通resume，并沿既有SQL/API/浏览器检查实际消费，再形成完整P3取证包。
+用户追加的Docker问题已局部处理：直接正常重启仍复现Windows残留socket错误；兼容启动脚本仅在Docker已停且目录只含已知空socket时保留并移开临时目录，桌面/开始菜单入口接入，三次启动及容器检查通过。它是已验证的本地启动绕行，不是底层永久修复；直接exe/CLI/应用内重启会绕过。测试容器已清理，原镜像/卷/业务库未改。
 
-整任务情景仍7请求/335183 tokens；历史耗时情景785.203秒，四次审查均300秒则1343.891秒，默认900秒没有保证。旧授权已过期，本轮真实模型HTTP/真实凭据读取0；旧task/run/原件/DB和全部成本不改，不恢复旧任务、不建monitor、不发布。结果记录见 `data/evaluation/results/sol_product_chat_process_candidate_20261102.json`，外置回执与日志在 `outputs/riftcoach-product-chat-process-20261102`。
+下一行动：本包记录与实现合并一次提交推送，核新HEAD的CI终局；通过后按已具体化的P3方案准备一个新observed近期五场产品任务。真实执行仍缺该任务的对象/日期/费用范围决定，旧授权已过期不能复用；本轮不恢复旧task、不新付费、不建monitor、不部署。情景7请求/335183 tokens可供规划，默认900活动秒没有全程保证，失败先离线裁决不自动再买。结果见 `data/evaluation/results/sol_product_chat_integration_20261102.json`，外置日志与浏览器证据在 `outputs/riftcoach-product-chat-integration-20261102`。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 

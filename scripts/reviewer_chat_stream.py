@@ -1,7 +1,8 @@
 """Explicit Chat candidate transport; no credential discovery or batch launcher.
 
 The existing single-call supervisor owns deadlines, cancellation and durable
-receipts. Product routing still uses Responses; this does not migrate a task.
+receipts. Only explicitly selected Chat modes use this transport; existing
+tasks and the default product route are not migrated.
 """
 import math
 
@@ -47,7 +48,7 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
             decoder.feed(event.model_dump(mode='json', exclude_unset=True))
             observer.update(chat_protocol=dict(version='relay-chat-candidate-v1',
                 chunk_count=decoder.result['chunk_count'], errors=list(decoder.result['errors']),
-                usage_conflict=decoder.result['usage_conflict']))
+                usage_conflict=decoder.result['usage_conflict']), response_contract=decoder.observation())
             if decoder.result['chunk_count'] > 131072:
                 break
     except Exception as error:
@@ -64,8 +65,11 @@ def collect(business, *, profile, api_key, observation_dir, timeout_s=300,
                     resource.close()
                 except Exception:
                     error_code = error_code or 'close_failed'
+    try:
+        result = decoder.finish(eof=observer.values['eof'], closed=observer.values['closed'])
+        observer.update(response_contract=result['response_observation'])
+    finally:
         observer.close()
-    result = decoder.finish(eof=observer.values['eof'], closed=observer.values['closed'])
     result['failure_category'] = failure_category
     if error_code:
         result.update(ok=False, code=error_code)

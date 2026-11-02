@@ -118,6 +118,29 @@ class Decoder:
             wire_sha256=responses.digest(self.wire), chunk_count=0)
         self.raw_parts, self.on_usage = [], on_usage
         self.on_usage_conflict = on_usage_conflict
+        self.identity = None
+        self.observed = dict(api='chat.completions', response_received=False,
+            model_matches=None, identity_bound=False, identity_consistent=True,
+            finish_reason=None, function_calls=0)
+
+    def observation(self):
+        return dict(self.observed, protocol_errors=list(self.result['errors']))
+
+    def observe_identity(self, chunk):
+        self.observed['response_received'] = True
+        if chunk.get('model') is not None:
+            matches = chunk['model'] == responses.MODEL
+            self.observed['model_matches'] = matches and self.observed['model_matches'] is not False
+        if chunk.get('id') is not None:
+            try:
+                responses.safe_id(chunk['id'])
+                if self.identity is None:
+                    self.identity = chunk['id']
+                    self.observed['identity_bound'] = True
+                elif chunk['id'] != self.identity:
+                    self.observed['identity_consistent'] = False
+            except responses.TransportError:
+                self.observed['identity_consistent'] = False
 
     def reject(self, code):
         if code not in self.result['errors']:
@@ -134,6 +157,7 @@ class Decoder:
             chunk = codec.mapping(value)
             if chunk is None:
                 raise StreamAdapterError('chat_chunk_shape')
+            self.observe_identity(chunk)
             reported = None
             if chunk.get('usage') is not None:
                 reported = _usage(chunk['usage'])
@@ -157,6 +181,10 @@ class Decoder:
                 return
             event, parts = _event(chunk, ordinal, reported)
             self.assembler.accept(event)
+            if event.tool_call_deltas:
+                self.observed['function_calls'] = 1
+            if event.finish_reason is not None:
+                self.observed['finish_reason'] = event.finish_reason
             self.raw_parts.extend(parts)
         except StreamAdapterError as error:
             self.reject(error.code)
@@ -190,6 +218,7 @@ class Decoder:
         result.update(ok=not result['errors'], code=result['errors'][0] if result['errors'] else 'ok')
         if result['usage_conflict']:
             result['usage_state'] = 'unknown'
+        result['response_observation'] = self.observation()
         return result
 
 

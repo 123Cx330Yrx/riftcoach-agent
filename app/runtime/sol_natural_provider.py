@@ -24,8 +24,8 @@ def inventory(directory):
 
 def selected_contract(value=None):
     from app.evaluation import sol_necessity_contract, sol_completion_contract, sol_review_contract
-    from app.product import sol_contract
-    if value is sol_contract:
+    from app.product import sol_contract, sol_chat_contract
+    if value in (sol_contract, sol_chat_contract):
         return value
     if value is None or value is contract:
         return contract
@@ -162,7 +162,7 @@ class SolReviewProvider:
                 or observation.get('response_status') != 200 or observation.get('eof') is not True
                 or observation.get('closed') is not True or observation.get('exception_type') is not None
                 or not observed_contract or worker.get('response_observation') != observed_contract
-                or observed_contract.get('terminal_status') != 'completed'
+                or not self.complete_response(observed_contract)
                 or observed_contract.get('function_calls') != 1 or observed_contract.get('model_matches') is not True):
             raise ProviderResponseError(provider=self.provider_name, code='sol_incomplete_evidence')
         tool = worker['public_tool_call']
@@ -185,9 +185,26 @@ class SolReviewProvider:
         return response
 
     def expected_profile(self, request):
-        return dict(**asdict(self.profile), reasoning_effort='high', api='responses',
+        return dict(**asdict(self.profile), reasoning_effort='high',
+            api='chat.completions' if self.is_chat else 'responses',
             max_output_tokens=16384, max_retries=0, timeout_s=request.timeout_s,
             group_verified=False, upstream_identity_verified=False, response_mode=self.response_mode)
+
+    @property
+    def is_chat(self):
+        return self.response_mode == 'natural-sol-product-chat-v1'
+
+    def response_identity_valid(self, response):
+        return bool(isinstance(response, dict) and response.get('response_received') is True
+            and response.get('model_matches') is True and (not self.is_chat or
+                response.get('api') == 'chat.completions' and response.get('identity_bound') is True
+                and response.get('identity_consistent') is True))
+
+    def complete_response(self, response):
+        if self.is_chat:
+            return (self.response_identity_valid(response) and response.get('finish_reason') == 'tool_calls'
+                    and response.get('protocol_errors') == [])
+        return response.get('terminal_status') == 'completed'
 
     def failure_usage(self, error, request):
         failure = self.last_failure
@@ -210,8 +227,8 @@ class SolReviewProvider:
                 or receipt.get('http_requests') != 1
                 or read_json(directory / 'profile.json') != self.expected_profile(request)
                 or observation.get('http_requests') != 1 or observation.get('response_status') != 200
-                or observation.get('eof') is not True or not isinstance(response, dict)
-                or response.get('response_received') is not True or response.get('model_matches') is not True):
+                or not self.is_chat and observation.get('eof') is not True
+                or not self.response_identity_valid(response)):
             return None
         checkpoint_path, worker_path = directory / 'usage.json', directory / 'worker-result.json'
         checkpoint, worker = read_json(checkpoint_path), read_json(worker_path)
@@ -252,8 +269,12 @@ class SolReviewProvider:
         # persisted a rejection (or a complete response). That timeout must
         # never hide a structural/identity failure and buy another response.
         timeout_codes = ('request_failed', 'http_status_408', 'http_status_504', 'http_status_524')
+        response = obs.get('response_contract')
         if (r.get('worker_code') not in (None, *timeout_codes)
-                or obs.get('response_contract') is not None
+                or response is not None and not (self.is_chat
+                    and (self.response_identity_valid(response) or
+                         response.get('response_received') is False and obs.get('response_status') in (None, 408, 504, 524))
+                    and set(response.get('protocol_errors') or []) <= {'stream_not_exhausted', 'stream_not_closed'})
                 or obs.get('response_status') not in (None, 200, 408, 504, 524)):
             return False
         if r.get('worker_code') == 'request_failed' and r.get('failure_category') not in (
@@ -275,6 +296,21 @@ class SolReviewProvider:
         Multiple/unknown tools, business-invalid patches and identity failures
         are not classified as formatting. Original usage and receipts survive.
         """
+        if self.is_chat:
+            if self.failure_usage(error, request) is None:
+                return False
+            directory = self.last_failure['directory']
+            receipt, worker = read_json(directory/'receipt.json') or {}, read_json(directory/'worker-result.json') or {}
+            observation = read_json(directory/'observation/observation.json') or {}
+            response = observation.get('response_contract') or {}
+            code = worker.get('code')
+            return bool(receipt.get('code') == 'worker_rejected' and receipt.get('worker_exit') == 0
+                and receipt.get('worker_code') == code and code in ('tool_call_arguments', 'tool_schema_invalid')
+                and worker.get('ok') is False and worker.get('business_validated') is False
+                and worker.get('public_tool_call') is None and observation.get('closed') is True
+                and observation.get('eof') is True and observation.get('exception_type') is None
+                and response.get('finish_reason') == 'tool_calls' and response.get('function_calls') == 1
+                and response.get('protocol_errors') == [code])
         if (self.contract_module.CONTRACT.descriptor().get('output_recovery_mode')
                 != 'manual-reaped-format-v1' or self.response_mode not in (
                     'natural-sol-necessity-v2', 'natural-sol-completion-necessity-v1',
