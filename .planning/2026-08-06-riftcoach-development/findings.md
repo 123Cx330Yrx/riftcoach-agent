@@ -1,3 +1,9 @@
+## 2026-11-02 CI结构变更遗漏了packaging消费者
+
+SQL完整分片在远端326/326通过、零跳过，证明上一轮超时修复有效；新的红色是普通pytest中旧结构断言，没有第二个业务故障证据。上一轮只检查database/frontend相关测试，漏查test_packaging_contract.py，导致一个0.32秒可复现的断言在80分钟全套后才反馈。
+
+CI结构修改的相称本地验证应先检索全部直接读取workflow的消费者，再联合核对其原业务覆盖要求；本次实际集合是database_config、frontend_package_contract、packaging_contract三个文件。保留五项必须执行的SQL文件断言，通过实际分片清单及依赖链验证，不删除测试或把failed/skip改成通过。命名汇总门保持，因此既有以postgres-migrations成功作为前提的入口仍会被失败SQL阻断。
+
 ## 2026-11-02 SQL CI覆盖增长后需要独立分片
 
 326项SQL检查串行放入20分钟job，实际推进到88%后被平台取消；没有断言失败证据，也不能根据旧-q进度点断言某条测试卡死。迁移已成功与整个SQL门通过必须分开。

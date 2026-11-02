@@ -1,3 +1,9 @@
+## 2026-11-02 SQL分片远端通过，补齐遗漏的CI契约消费者
+
+ed1ad9c0 / CI41407947133终局failure：SQL四片326项、迁移/metadata汇总、Web、打包及3个普通pytest分片均成功。片2只有test_packaging_contract.py的一条断言失败（1972通过/69跳过/47subtests通过），汇总因此失败。该测试仍要求SQL文件名出现在旧job内联命令，是上一轮改动的消费者核查遗漏；本地同断言1失败/0.32秒复现，不归因业务或上游。
+
+仅更新该断言为迁移依赖→SQL分片→实际清单，原5个conversation/memory必测文件全部保留。全仓确认直接读取此workflow的三个测试文件一并核验，28项/1.03秒通过；CI执行配置、SQL清单、业务代码不变，不重跑已获远端通过的SQL/浏览器。原日志与失败保留，模型HTTP/真实凭据0、无Docker改动。结果sol_product_chat_ci_contract_followup_20261102.json。一次提交推送后核替换CI，未将本地通过当远端终局。
+
 ## 2026-11-02 Chat产品提交的SQL CI超时与完整分片修复
 
 e84e3a3e / CI41402912392的postgres-migrations由GitHub明确标注超过20分钟取消；迁移往返已通过，串行测试至少288项通过/88%，未见断言失败，旧日志无法确定最后一项。保留原日志与annotations，不认作通过或臆断某项卡死。
