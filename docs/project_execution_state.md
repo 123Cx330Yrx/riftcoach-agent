@@ -26,7 +26,11 @@ pause_reason: ""
 
 e84e3a3e的SQL串行CI超20分钟问题已由ed1ad9c0四片修复。CI41407947133已终局：SQL四片326项全通过且汇总零跳过，测试耗时246.51/356.92/224.95/277.36秒；迁移、Web、打包及另外三片普通pytest均通过。普通pytest片2有1条失败（其余1972通过/69跳过），pytest汇总随之失败：上一轮漏改test_packaging_contract.py，仍要求SQL文件名内联在旧job。已本地复现后仅调整这条断言，沿迁移依赖/SQL任务/实际清单保留原五项必测要求；全部三个直接读取CI配置的测试文件共28项通过。SQL执行配置、清单和业务源码不改，没有重复实跑SQL/浏览器。结果见 `data/evaluation/results/sol_product_chat_ci_contract_followup_20261102.json`；旧超时/失败记录保留，新提交远端CI待验证。
 
-下一行动：合并提交推送本次配套测试修正，核该HEAD全部必需检查（现12个任务，含SQL四片与汇总），不重复已终局SQL查询；若出现新的失败，按真实日志做局部修复。通过后按已具体化的P3方案准备一个新observed近期五场产品任务。真实执行仍缺该任务的对象/日期/费用范围决定，旧授权已过期不能复用；本轮不恢复旧task、不新付费、不建monitor、不部署。情景7请求/335183 tokens可供规划，默认900活动秒没有全程保证，失败先离线裁决不自动再买。结果见 `data/evaluation/results/sol_product_chat_integration_20261102.json`，外置日志与浏览器证据在 `outputs/riftcoach-product-chat-integration-20261102`。
+2026-11-02 23:58北京时间，0a99c28a9594a012cc8e72ff5bbe68c72d358f4e 对应 CI41430754834 已终局 success，12个必需任务全部通过，CI修复收口，不再轮询。上述“新提交远端CI待验证”现已由此结果替代。
+
+按用户“已经全绿，可以继续”推进P3独立准备：干净冻结执行目录为 `D:/riftcoach-chat-product-validation-execution-20261102`，仍为已全绿0a99c28a。独立空Postgres迁移至0015，正常API就绪、PlayerLink/Review Worker实际`--check`、Chat合同/资产与普通路由检查通过；任务/会话表均0。预检首轮错误是操作者将外网全部拦截，误拦DataDragon启动字典；异常链已留存，读取5份无需密钥的官方静态资源后原脚本通过，没有修改业务源码。字典16.21.1只供启动，不冒充未来对局版本。真实密钥/玩家来源/模型请求均0，临时容器已清理。
+
+下一行动：对已准备的具体P3范围取得新任务费用决定后，从正常入口运行一次新建`DK ShowMaker#KR1`/asia/observed近期五场、queue420、overall任务；重新解析官方身份和读取来源，记录真实比赛日期、样本及回退队列。上限仍8HTTP/401920tokens含unknown/900活动秒，每次300秒/16384输出；拟定有效期为新确认起24小时，不延长旧授权。成功路径可完成双初审及必要唯一修订/同稿双fresh；新付费失败不自动重试或另开任务。当前公开价格获取未成功，不承诺当前人民币费用或全程时延。完整准备、待验证项和验收判据在 `data/evaluation/results/sol_product_chat_p3_prepared_20261102.json` 与工作卡；外置 `outputs/riftcoach-chat-product-validation-20261102/decision-ready.json` 明确authorized=false，不是许可。当前没有付费执行者、waiter或monitor，旧task/账目/默认准入/Stage8E不变。记录提交不替换已验证的执行源码HEAD。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 

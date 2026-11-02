@@ -1,6 +1,6 @@
 # 本站 Chat 候选的离线可行性与验证准备
 
-2026-11-01 建立离线映射包；2026-11-02 已推进至显式 Chat 产品合同及持久任务接线，最新进展见末节。用户要求在 CI 等待期间同步推进。本包复用现有工具流组装器，检查 Chat 表示能否承载当前产品审查；保持默认采用及原 Responses 合同；新增显式 Chat 合同，旧任务和费用不改。本站公开端点声明支持该候选，实际兼容仍需真实证据。
+2026-11-01 建立离线映射包；2026-11-02 显式 Chat 产品接线的CI全部通过，已完成P3正常入口启动准备，具体范围见末节。用户要求在 CI 等待期间同步推进。本包复用现有工具流组装器，检查 Chat 表示能否承载当前产品审查；保持默认采用及原 Responses 合同；新增显式 Chat 合同，旧任务和费用不改。本站公开端点声明支持该候选，实际兼容仍需真实证据。
 
 ## 已完成什么
 
@@ -126,3 +126,27 @@
 ed1ad9c0 / CI41407947133已终局：SQL326项分片和迁移汇总均成功，零跳过，最慢356.92秒；Web、打包及另外三片pytest成功。片2只失败1条packaging契约断言，仍读取旧job内联SQL文件；pytest汇总因此失败。上一轮消费者检索范围遗漏该文件，不能把它说成业务或中转故障。
 
 本地复现后仅修正该断言，检查迁移依赖/分片入口/实际清单中的原五项必测文件。全仓直接workflow消费者三个文件共28项通过，业务源码/CI工作流/SQL清单不动，旧成功证据复用，不重复SQL/浏览器。结果sol_product_chat_ci_contract_followup_20261102.json。下一动作合并提交推送该测试修正，核新HEAD全必需CI；当前无付费、旧任务恢复或Docker操作。
+
+
+### 2026-11-02 P3工作卡：CI收口与单任务启动准备
+
+**目标与当前证据。** 0a99c28a9594a012cc8e72ff5bbe68c72d358f4e / CI41430754834的12项检查全部success。固定执行目录`D:/riftcoach-chat-product-validation-execution-20261102`干净且同HEAD；Python为`D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`。这次正常API、PlayerLink Worker及Review Worker的实际`--check`已通过独立Postgres，迁移0015，任务/会话表均0；Chat合同1.7.4摘要07249021…与冻结模块一致。预检使用明确假凭据，全部模型/玩家API拦截，未加载真实.env。它证明部署依赖能组装，不证明真实凭据或上游可用。
+
+首轮预检的worker_dependency_invalid来自操作者把公共字典联网也拦住：原异常链定位到DataDragonService._get_json。仅预先读取五份无需密钥的官方静态数据、保留URL/摘要后，同一预检脚本通过；未修改产品代码或放宽模型限制。启动字典16.21.1不得冒充比赛版本。该次临时空数据库容器已清理；Docker从已停状态经既有兼容入口启动，底层问题的既有局限保持。
+
+**具体范围。** 一次新建`DK ShowMaker#KR1`、asia、observed任务；正常近期复盘body为`count=5, queue=420, focus=overall`。正式运行时重新解析官方身份、抓取当时最新可用来源，保存真实比赛日期/版本/有效数量；若发生队列回退或不足五场，必须显式记录，不能宣称五场单排验收成立。既有ShowMaker只是选定对象依据，旧报告/意见/成功回执不导入。observed只做观摩结论，不向阅读者派发个人训练任务。
+
+**资源与时间。** 一个任务最多8次模型HTTP、401920tokens（含unknown预留）、900活动秒，每次300秒/16384输出；拟由新明确确认起24小时有效。成功路径允许生成→双初审→必要时唯一应用与同稿双fresh，不自动重买失败或另开第二个任务。历史7请求/335183tokens仅为情景；当前公开计价查询未成功，不承诺人民币金额或900秒足够。现有Riot、Flash和Sol凭据只在该新决定涵盖后读取，旧已到期许可不复用。
+
+**正常入口执行顺序。** 复用现有应用，不写第二套评测/恢复driver：
+
+1. 核冻结HEAD、绑定、同HEAD已终局CI；检查没有本次执行者/claim。建立本次独立空数据库与runs根，迁移head，队列全局/owner并发上限1，API为local/evidence_bound_v1。未来正式库不从此次预检空库或任何旧任务dump恢复。
+2. 明确配置Chat Worker profile及凭据，沿现有两类Worker的`--check`预检。以`POST /player-links`发上述observed绑定，再由普通PlayerLink Worker `--once`解析；从真实返回取得relationship/player_profile_id，不预造PUUID或task/run身份。
+3. `POST /conversations`创建该profile的会话，再`POST /conversations/{conversation_id}/reviews/recent`提交上述body；保存真实返回的task_id。每次写入使用该任务的稳定Idempotency-Key，遇到客户端不确定不得换Key重复创建。
+4. 同配置运行`python -m scripts.run_review_worker --worker-id chat-product-validation --once`。成功边界按现有会话逻辑推进；错误/预算暂停保存最新checkpoint、完整回执和数据库，不改SQL来放行，不自动点击手动重试。
+5. 实读实际请求、完整来源、报告、两职责意见、修订应用和fresh；逐项核数值/舍入、版本和用途、事实与推断边界。检查HTTP/known/unknown/receiptless/未发明细；有修订时要求唯一应用与两fresh同稿。模型pass或Worker succeeded不替代独立全文验收，严重内容错误不能记通过。
+6. 核`/tasks/{task_id}/continuation`及`/runs/{run_id}/report|evidence|usage`，用1440/320实际浏览器验收正常展示、来源/费用和刷新不触发重复付费；拒绝/暂停稿不可被当作已通过报告。保存可恢复快照及真实终态，清理本次进程和容器。只记一个代表性闭环，不升级默认准入或宣称全部产品完成。
+
+**尚未完成与失败决定。** 当前没有真实官方玩家解析、当前样本、模型鉴权/调用、实际内容/时延验收。出现通道或语义失败先保留证据、离线判定，只停受影响付费步骤；不猜事件、不不断改解析后再买、不追加授权上限。独立本地修复可继续。该新任务费用决定是下一行动；在此之前不启动paid worker、waiter或monitor。
+
+结果与具体提案：`data/evaluation/results/sol_product_chat_p3_prepared_20261102.json`；外置Control `C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102`中binding、decision-ready、environment-readiness、公共字典请求、首次错误链及cleanup齐全。decision-ready明确authorized=false。当前仅更新记录，不修改已全绿0a99c28a执行源码，不为记录提交重新等待同一业务CI。
