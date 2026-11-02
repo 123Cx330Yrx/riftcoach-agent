@@ -1,6 +1,6 @@
 """Offline relay Chat candidate: pure request/chunk mapping, no client or CLI.
 
-This is not registered in the product or the paid process supervisor. Callers
+This is not registered as a product provider. Callers
 must supply transport EOF/close evidence; SDK iteration alone is insufficient.
 Only the expected public tool may leave this module, never prose or reasoning.
 """
@@ -104,78 +104,103 @@ def _event(chunk, ordinal, usage):
         content_observed=content_seen, reasoning_observed=reasoning_seen), raw_parts
 
 
-def inspect_chunks(chunks, business, *, eof=False, closed=False):
-    """Offline inspection, preserving reported usage even after rejection.
+class Decoder:
+    """Incremental assembly so reported usage can survive process termination."""
+    def __init__(self, business, on_usage=lambda value: None, on_usage_conflict=lambda first, other: None):
+        self.wire = build_wire(business)
+        self.assembler = ProviderStreamAssembler(provider_id='relay-chat-candidate',
+            requested_model=responses.MODEL, max_output_tokens=codec.MAX_OUTPUT,
+            require_request_identity=True, max_tool_calls=1)
+        self.result = dict(ok=False, code=None, errors=[], usage=None, usage_state='unknown',
+            usage_conflict=False, public_tool_call=None, business_validated=False,
+            semantic_approval=False, publication_allowed=False, qualified=False,
+            upstream_identity_verified=False, eof=False, closed=False,
+            wire_sha256=responses.digest(self.wire), chunk_count=0)
+        self.raw_parts, self.on_usage = [], on_usage
+        self.on_usage_conflict = on_usage_conflict
 
-    `ok` covers transport shape and tool schema only. Product validation still
-    uses the original trusted context. This function cannot publish or send.
-    """
-    wire = build_wire(business)
-    assembler = ProviderStreamAssembler(provider_id='relay-chat-candidate',
-        requested_model=responses.MODEL, max_output_tokens=codec.MAX_OUTPUT,
-        require_request_identity=True, max_tool_calls=1)
-    result = dict(ok=False, code=None, errors=[], usage=None, usage_state='unknown',
-        usage_conflict=False, public_tool_call=None, business_validated=False,
-        semantic_approval=False, publication_allowed=False, qualified=False,
-        upstream_identity_verified=False, eof=eof is True, closed=closed is True,
-        wire_sha256=responses.digest(wire), chunk_count=0)
-    raw_parts = []
+    def reject(self, code):
+        if code not in self.result['errors']:
+            self.result['errors'].append(code)
 
-    def reject(code):
-        if code not in result['errors']:
-            result['errors'].append(code)
-
-    try:
-        for ordinal, value in enumerate(chunks, 1):
-            result['chunk_count'] = ordinal
-            if ordinal > 131072:
-                reject('stream_event_limit')
-                break
-            try:
-                chunk = codec.mapping(value)
-                if chunk is None:
-                    raise StreamAdapterError('chat_chunk_shape')
-                reported = None
-                if chunk.get('usage') is not None:
-                    reported = _usage(chunk['usage'])
-                    if result['usage'] is None:
-                        result.update(usage=reported, usage_state='known')
-                    elif reported != result['usage']:
-                        result['usage_conflict'] = True
-                        reject('usage_conflict')
-                # Continue observing usage after a structural rejection, but
-                # never repair or resume the poisoned content assembly.
-                if result['errors']:
-                    continue
-                event, parts = _event(chunk, ordinal, reported)
-                assembler.accept(event)
-                raw_parts.extend(parts)
-            except StreamAdapterError as error:
-                reject(error.code)
-            except responses.TransportError as error:
-                reject(str(error))  # fixed local codes, never vendor messages
-            except (TypeError, ValueError, KeyError, AttributeError):
-                reject('chat_chunk_shape')
-    except Exception:
-        reject('stream_interrupted')
-    if eof is not True:
-        reject('stream_not_exhausted')
-    if closed is not True:
-        reject('stream_not_closed')
-    if not result['errors']:
+    def feed(self, value):
+        result = self.result
+        result['chunk_count'] += 1
+        ordinal = result['chunk_count']
+        if ordinal > 131072:
+            self.reject('stream_event_limit')
+            return
         try:
-            assembler.mark_exhausted()
-            response = assembler.finalize().response
-            if response.finish_reason != 'tool_calls' or len(response.tool_calls) != 1:
-                raise StreamAdapterError('single_tool_required')
-            if result['usage']['input_tokens'] > codec.MAX_INPUT:
-                raise StreamAdapterError('usage_over_budget')
-            raw = ''.join(raw_parts)
-            Draft202012Validator(wire['tools'][0]['function']['parameters']).validate(codec.strict_json(raw))
-            result['public_tool_call'] = dict(name=responses.TOOL, arguments=raw)
+            chunk = codec.mapping(value)
+            if chunk is None:
+                raise StreamAdapterError('chat_chunk_shape')
+            reported = None
+            if chunk.get('usage') is not None:
+                reported = _usage(chunk['usage'])
+                if result['usage'] is None:
+                    result.update(usage=reported, usage_state='known')
+                    try:
+                        self.on_usage(reported)
+                    except Exception:
+                        self.reject('usage_write_failed')
+                elif reported != result['usage']:
+                    first_conflict = not result['usage_conflict']
+                    result['usage_conflict'] = True
+                    self.reject('usage_conflict')
+                    if first_conflict:
+                        try:
+                            self.on_usage_conflict(result['usage'], reported)
+                        except Exception:
+                            self.reject('usage_write_failed')
+            # A poisoned stream still contributes usage, never accepted content.
+            if result['errors']:
+                return
+            event, parts = _event(chunk, ordinal, reported)
+            self.assembler.accept(event)
+            self.raw_parts.extend(parts)
         except StreamAdapterError as error:
-            reject(error.code)
-        except Exception:
-            reject('tool_schema_invalid')
-    result.update(ok=not result['errors'], code=result['errors'][0] if result['errors'] else 'ok')
-    return result
+            self.reject(error.code)
+        except responses.TransportError as error:
+            self.reject(str(error))  # fixed local codes, never vendor messages
+        except (TypeError, ValueError, KeyError, AttributeError):
+            self.reject('chat_chunk_shape')
+
+    def finish(self, *, eof=False, closed=False):
+        result = self.result
+        result.update(eof=eof is True, closed=closed is True)
+        if eof is not True:
+            self.reject('stream_not_exhausted')
+        if closed is not True:
+            self.reject('stream_not_closed')
+        if not result['errors']:
+            try:
+                self.assembler.mark_exhausted()
+                response = self.assembler.finalize().response
+                if response.finish_reason != 'tool_calls' or len(response.tool_calls) != 1:
+                    raise StreamAdapterError('single_tool_required')
+                if result['usage']['input_tokens'] > codec.MAX_INPUT:
+                    raise StreamAdapterError('usage_over_budget')
+                raw = ''.join(self.raw_parts)
+                Draft202012Validator(self.wire['tools'][0]['function']['parameters']).validate(codec.strict_json(raw))
+                result['public_tool_call'] = dict(name=responses.TOOL, arguments=raw)
+            except StreamAdapterError as error:
+                self.reject(error.code)
+            except Exception:
+                self.reject('tool_schema_invalid')
+        result.update(ok=not result['errors'], code=result['errors'][0] if result['errors'] else 'ok')
+        if result['usage_conflict']:
+            result['usage_state'] = 'unknown'
+        return result
+
+
+def inspect_chunks(chunks, business, *, eof=False, closed=False):
+    """Offline shape/schema inspection; callers still supply EOF/close evidence."""
+    decoder = Decoder(business)
+    try:
+        for value in chunks:
+            decoder.feed(value)
+            if decoder.result['chunk_count'] > 131072:
+                break
+    except Exception:
+        decoder.reject('stream_interrupted')
+    return decoder.finish(eof=eof, closed=closed)

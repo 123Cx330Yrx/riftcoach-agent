@@ -9,7 +9,7 @@ import json
 
 CURRENT_INVENTORY_SNAPSHOTS = {
     'natural-duty': 'natural_duty_qualification_inventory_product_stream_compat_20261101.json',
-    'sol-review': 'sol_review_qualification_inventory_product_stream_compat_20261101.json',
+    'sol-review': 'sol_review_qualification_inventory_chat_process_20261102.json',
 }
 
 

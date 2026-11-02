@@ -21,6 +21,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def response_contract(mode):
+    if mode == 'natural-sol-product-chat-candidate-v1':
+        from scripts import reviewer_chat_stream as chat
+        return chat.build_wire, chat.collect
     if mode == 'natural-sol-product-stream-v1':
         from scripts import reviewer_responses_stream as product_stream
         return product_stream.build_wire, product_stream.collect
@@ -77,7 +80,12 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     if not isinstance(profile, Profile):
         raise ValueError('profile_required')
     make_wire, _ = response_contract(response_mode)
-    if response_mode == 'natural-sol-v1':
+    if response_mode == 'natural-sol-product-chat-candidate-v1':
+        from app.product.sol_contract import validate_business, REVIEW_PROFILE
+        if profile != REVIEW_PROFILE:
+            raise ValueError('product_chat_profile_binding')
+        validate_business(business, validation_context)
+    elif response_mode == 'natural-sol-v1':
         from app.evaluation.sol_natural_contract import validate_business
         validate_business(business, validation_context)
     elif response_mode in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
@@ -113,7 +121,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     if validation_context is not None:
         write_json(directory/'validation-context.json', validation_context)
     saved_profile = dict(**asdict(profile), reasoning_effort='high',
-        api='responses', max_output_tokens=wire['max_output_tokens'], max_retries=0, timeout_s=timeout_s,
+        api='chat.completions' if response_mode == 'natural-sol-product-chat-candidate-v1' else 'responses',
+        max_output_tokens=wire.get('max_completion_tokens', wire.get('max_output_tokens')), max_retries=0, timeout_s=timeout_s,
         group_verified=False, upstream_identity_verified=False)
     if response_mode != 'stream':
         saved_profile['response_mode'] = response_mode
@@ -176,7 +185,8 @@ def run_once(business, *, profile, api_key, directory, cancel=lambda: False,
     usage = checkpoint_usage if valid_saved_usage(checkpoint_usage) else None
     worker_usage = worker.get('usage') if worker else None
     usage_conflict = bool(worker and worker.get('usage_conflict') is True or
-        valid_saved_usage(usage) and valid_saved_usage(worker_usage) and usage != worker_usage)
+        valid_saved_usage(usage) and valid_saved_usage(worker_usage) and usage != worker_usage or
+        response_mode == 'natural-sol-product-chat-candidate-v1' and (directory/'usage-conflict.json').exists())
     worker_code = worker.get('code') if isinstance(worker, dict) and isinstance(worker.get('code'), str) else None
     failure_category = (worker.get('failure_category')
                         if isinstance(worker, dict) and isinstance(worker.get('failure_category'), str)
@@ -261,7 +271,12 @@ def worker():
     directory = Path(payload['directory'])
     result = dict(ok=False, code='worker_preflight_failed', usage=None, public_tool_call=None)
     try:
-        if payload.get('response_mode') == 'natural-sol-v1':
+        if payload.get('response_mode') == 'natural-sol-product-chat-candidate-v1':
+            from app.product.sol_contract import validate_business, REVIEW_PROFILE
+            if Profile(**payload['profile']) != REVIEW_PROFILE:
+                raise ValueError('product_chat_profile_binding')
+            validate = validate_business(payload['business'], payload['validation_context'])
+        elif payload.get('response_mode') == 'natural-sol-v1':
             from app.evaluation.sol_natural_contract import validate_business
             validate = validate_business(payload['business'], payload['validation_context'])
         elif payload.get('response_mode') in ('natural-sol-dual-necessity-v1', 'natural-sol-product-stream-v1'):
@@ -287,10 +302,14 @@ def worker():
         else:
             validate = screen_validator(payload['business'], response_mode=payload.get('response_mode', 'stream'))
         _, collect_response = response_contract(payload.get('response_mode', 'stream'))
+        options = {}
+        if payload.get('response_mode') == 'natural-sol-product-chat-candidate-v1':
+            options['on_usage_conflict'] = lambda first, other: write_json(
+                directory/'usage-conflict.json', dict(first=first, conflicting=other))
         result = collect_response(payload['business'], profile=Profile(**payload['profile']),
             api_key=payload['api_key'], observation_dir=directory/'observation',
             timeout_s=payload['timeout_s'],
-            on_usage=lambda usage: write_json(directory/'usage.json', usage))
+            on_usage=lambda usage: write_json(directory/'usage.json', usage), **options)
         if result['ok']:
             try:
                 validate(result['public_tool_call']['arguments'])

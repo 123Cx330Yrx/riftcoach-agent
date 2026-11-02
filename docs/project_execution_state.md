@@ -9,22 +9,22 @@ pause_reason: ""
 
 # RiftCoach 当前执行状态
 
-2026-11-01。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
+2026-11-02。当前工作树 `D:/riftcoach-review-route-diagnostics`，分支 `codex/reviewer-route-diagnostics`。
 原backend 5b19e3ee为封存回放位置；主树未完成前端保持。阶段0—8与当前8E checkpoint不变。
 
 ## 当前行动
 
-2026-11-01 用户审阅产品推进计划后“好，开展”，现要求 CI 等待期间同步推进。P1_complete / P2_partial_verified，Stage8E 及原15完成/默认准入不变。产品计划见 [推进计划](plans/2026-11-01-product-delivery-reset.md)，前轮裁决与修正见 [通道记录](plans/2026-11-01-product-route-adjudication.md)。
+2026-11-02，按用户“继续”推进已授权的离线产品工作。P1_complete / P2_partial_verified；Stage8E、原15完成及默认准入不变。产品总计划见 [推进计划](plans/2026-11-01-product-delivery-reset.md)，本包工作卡见 [Chat 候选接线](plans/2026-11-01-chat-candidate-offline.md)。
 
-整数 Summary 序列化兼容及 1.7.3 空排队/已知元数据心跳修正已提交推送 dfe601fe。CI41292199945 已终局 cancelled：SQL任务超过20分钟，其余7项success。后续84e0f55f的CI41293639744中，SQL实际failure：297通过/18个setup错误，全在同一恢复夹具；其他任务尚未全部终局。灰色取消不是通过，也不是已证测试断言失败。
+上一修正提交4ca90c6b的CI41297485491已终局八项success；SQL315项通过、692.68秒。此前两轮SQL异常的夹具修正完成远端验证，不再轮询已终局CI，也不把当前成功倒推成此前超时原因已证。
 
-本地责任已定位：恢复夹具仍用纯ping/keepalive制造拒绝，但1.7.3已允许这类心跳。现改为明确不支持的合成事件，不改接收器/业务源码或历史回执；新增两个无数据库的实际子进程检查，覆盖两类恢复父失败、单次请求和known usage，均通过。17项合法心跳/空前导及内容冲突检查、18项实际SQL恢复和2项正常发布/修订正例全部通过，共39项；SQL耗时290.18秒，临时数据库已清理。上一轮超时的具体耗时归因尚无证据，不提高超时或减少检查。证据 `data/evaluation/results/sol_product_protocol_recovery_fixture_fix_20261101.json`。
+本包选择Chat作为后续工程和取证候选，复用现有单次执行器：完整产品请求→owned subprocess→Chat SDK流→工具组装/即时usage→原产品业务验证→持久回执。增加显式candidate模式，默认Responses产品合同和provider注册保持；没有第二套任务框架。已知用量在读取/关闭失败后保留，冲突另存两份证据，取消/期限杀进程后仍按unknown；立即取消若发送记录未持久，HTTP次数保持未知，不能认定零发送。
 
-本轮独立完成 [Chat 候选离线包](plans/2026-11-01-chat-candidate-offline.md)：纯请求/分块映射，无网络入口或 provider 注册；复用中立组装器、SSE 尾部检查和原业务验证接口。42 项模拟流/实际SDK与4项当前产品绑定测试通过；两份完整初审请求的消息/schema/可信上下文逐字往返一致。SDK遇DONE不等于HTTP读完，现有TailCheckedStream可直接复用；新模块未接入付费supervisor、Worker/SQL/浏览器，不能宣称真实可用或默认采用。证据 `data/evaluation/results/sol_product_chat_offline_candidate_20261101.json`。
+68项候选检查通过；两份完整历史输入派生的当前初审请求，business/wire摘要与上一包一致，实际SDK/子进程/替身HTTP/业务绑定走通。它们是合成意见，不作语义证据、不导入、不发布。4个当前manifest只同步共享process指纹及派生program摘要；sol-review当前清单create-only更新，原请求/来源/标签/合同不变，natural清单不变。11个Runtime及2份当前清单通过；共享Responses/恢复/产品回归85项全部通过，共153项；编译通过。
 
-同输入Chat序列化仅各增加69字节，不证明真实token或计费相同。既有估算为7请求/335183 tokens，剩1槽/66737；143.891秒历史生成加四次历史最慢审查为785.203秒，四次300秒则1343.891秒，默认900秒没有全程保证。序列化压力估算只作敏感性分析，不加新门槛。本站Chat公开声明支持它成为候选，官方限制不代替本站实证，也无需用户联系管理员。
+普通用户的Chat产品闭环尚未开通。本包不含Worker/SQL/浏览器的Chat接线、真实本站兼容和全程时延证据；P2/P3均不宣称完成。下一行动：本包已完成153项检查，记录收口并一次合并提交推送；下一步推进同一候选的显式opt-in产品合同/持久任务接线；验证直接通过、唯一修订/同稿双fresh、故障账目与普通resume，并沿既有SQL/API/浏览器检查实际消费，再形成完整P3取证包。
 
-Chat离线包的编译/治理/diff/JSON/原件摘要/预算检查通过。SQL夹具修正已完成针对性验证，按本包一次合并提交推送；当前下一行动是核新提交CI。之后依据两条路线的剩余证据成本选一条，复用现有进程/预算/账目接线并准备P3完整验证包；不同时扩建两套运行链、不以单次成功替代产品验收。旧授权已到期，本轮模型HTTP/真实凭据读取0，不恢复旧任务、不建monitor、不发布。整个P2及真实闭环仍未完成。
+整任务情景仍7请求/335183 tokens；历史耗时情景785.203秒，四次审查均300秒则1343.891秒，默认900秒没有保证。旧授权已过期，本轮真实模型HTTP/真实凭据读取0；旧task/run/原件/DB和全部成本不改，不恢复旧任务、不建monitor、不发布。结果记录见 `data/evaluation/results/sol_product_chat_process_candidate_20261102.json`，外置回执与日志在 `outputs/riftcoach-product-chat-process-20261102`。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 
