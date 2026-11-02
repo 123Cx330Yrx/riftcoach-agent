@@ -144,7 +144,8 @@ def test_appended_directory_cannot_satisfy_body_citation_floor(knowledge):
             report=report, knowledge=knowledge)))
 
 
-@pytest.mark.parametrize('title', [COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划'])
+@pytest.mark.parametrize('title', [COACH_REPORT_HEADINGS[6], '## 6. 观摩练习计划',
+    '## 6. 训练计划（观摩性质）'])
 def test_harness_revision_and_publication_use_same_bytes(tmp_path, title):
     _, req = prepare_claim_scope(4)
     records = []

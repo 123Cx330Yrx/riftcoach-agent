@@ -84,7 +84,8 @@ def test_exact_consumption_and_full_fresh_have_no_paraphrase_step(sample):
         'native_acceptance_verified', 'semantic_compatibility_verified'))
 
 
-@pytest.mark.parametrize('title', ['## 6. 训练计划', '## 6. 观摩练习计划'])
+@pytest.mark.parametrize('title', ['## 6. 训练计划', '## 6. 观摩练习计划',
+    '## 6. 训练计划（观摩性质）', '## 6. 观摩练习计划 (observation)'])
 def test_task_section_title_survives_exact_preview_and_both_fresh_inputs(sample, title):
     from app.report_validation import COACH_REPORT_HEADINGS
     inputs, value = sample

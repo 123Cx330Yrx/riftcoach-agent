@@ -150,3 +150,14 @@ ed1ad9c0 / CI41407947133已终局：SQL326项分片和迁移汇总均成功，�
 **尚未完成与失败决定。** 当前没有真实官方玩家解析、当前样本、模型鉴权/调用、实际内容/时延验收。出现通道或语义失败先保留证据、离线判定，只停受影响付费步骤；不猜事件、不不断改解析后再买、不追加授权上限。独立本地修复可继续。该新任务费用决定是下一行动；在此之前不启动paid worker、waiter或monitor。
 
 结果与具体提案：`data/evaluation/results/sol_product_chat_p3_prepared_20261102.json`；外置Control `C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102`中binding、decision-ready、environment-readiness、公共字典请求、首次错误链及cleanup齐全。decision-ready明确authorized=false。当前仅更新记录，不修改已全绿0a99c28a执行源码，不为记录提交重新等待同一业务CI。
+
+
+### 2026-11-03 P3实际结果与局部修复
+
+新授权“确认继续”后，以已绿0a99c28a从普通API/Worker执行一次ShowMaker observed任务。Riot实际新取5场queue420，比赛为10月13—15日/16.20；3次Flash成功、29849 tokens/61.047活动秒、unknown/retry/receiptless为0。草稿标题“训练计划（观摩性质）”被报告识别器误判缺节，业务拒绝且未进入Sol；原manifest保存report_missing_headings，同原稿/冻结guard离线复现。
+
+开发树只修完整括号限定语识别，保留正文和真假标题边界；111项章节/补丁/fresh/发布消费检查及12Runtime/2清单通过。实际桌面/手机只读验收拒绝稿不可见、费用一致、刷新不新发；SQL assistant/Training均0。102原件及最新DB已做103项ZIP逐字核验，容器/进程已清理，原件/授权未改。
+
+账目实读发现启动预检遗漏：方案承诺每次16384输出，Flash实际配置32768；三次实际输出327/115/2327未超，但请求上限不能记合规。外置只读scope检查正确拒绝该配置，不改历史合同来掩盖。后续新发送必须直接核实际请求和角色边界。
+
+内容也未通过全文验收：混合位置的输局均值不能支撑所有输局“发育塌陷”，两个中路负局CS均值7.695反高于中路胜局7.56；已用静态名称映射与缺失历史版本证据需要区分。本地分析不作为审查意见导入。闭环仍缺首审/修订/fresh/发布；session closed，历史恢复器不适用。下一包先做同任务保留前缀恢复与零发送边界验证，不重买生成，不自动追加付费。结果sol_product_chat_p3_draft_rejected_20261103.json。

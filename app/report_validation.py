@@ -20,7 +20,12 @@ _HEADING_ALIASES = {"## 6. 观摩练习计划": COACH_REPORT_HEADINGS[6]}
 
 def report_heading_identity(text: str) -> str | None:
     for heading in (*COACH_REPORT_HEADINGS, *_HEADING_ALIASES):
-        if text == heading or any(text.startswith(heading + separator) for separator in ("：", ":", " ")):
+        # A parenthesized qualifier describes the section; it does not create a
+        # different section. Require a complete qualifier, not a bare prefix.
+        parenthetical = text[len(heading):] if text.startswith(heading) else ""
+        if (text == heading
+                or any(text.startswith(heading + separator) for separator in ("：", ":", " "))
+                or re.fullmatch(r"(?:（[^（）\r\n]+）|\([^()\r\n]+\))(?:[：: ].*)?", parenthetical)):
             return _HEADING_ALIASES.get(heading, heading)
     return None
 

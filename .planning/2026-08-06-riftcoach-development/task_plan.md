@@ -13,19 +13,19 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-11-02 Chat 显式产品接线本地通过。起点8a838c58的CI41375428589八项success，不再监控该终局。总计划P1_complete / P2_partial_verified，当前包的离线产品消费闭环已验证。
+2026-11-03，用户“确认继续”批准的P3新任务已经执行并完成失败收尾。当前开发树为`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`；原backend和主树未完成前端不动。总计划P1_complete / P2_partial_verified，P3仍未通过；Stage8E、原15完成及默认准入不变。
 
-- 用户结果：显式Chat任务可沿普通入口完成、暂停、继续/明确重试或取消，并在实际页面查看报告、来源与累计费用；当前证据使用替身模型。
-- 路线：独立合同/Worker profile复用同一Runtime、session、SQL与发布规则。旧任务合同冻结，默认legacy和Responses配置保持。
-- 本包实现：1.7.4 Chat合同、配置/版本/trace消费者、可信失败usage结算、格式/超时恢复分类、报告查询与前端恢复白名单。已有锁/预算/身份/发布规则保持。
-- 证据：68传输、14产品、13配置/清单、60共享回归、11真实SQL/Worker、3真实浏览器与8页面检查通过；12Runtime/2当前清单、编译与typecheck通过。真实HTTP/凭据0。详见工作卡及 `sol_product_chat_integration_20261102.json`。
-- 边界：真实中转工具兼容、整任务时延及内容质量未验收；Stage8E/默认准入/旧15和旧task成本不变。Docker已通过兼容入口恢复，测试容器清理，底层socket问题未声明永久修复。
-- 当前CI修复：ed1ad9c0 / CI41407947133已终局。SQL四片326项及迁移汇总、Web、打包、其余3个pytest分片均成功；片2只有一条配套断言失败，汇总跟随失败。上一轮漏查packaging测试，仍检查旧job内联文件；已复现并改为核迁移→SQL分片→清单，原5项必测要求保持。三个直接CI配置消费者共28项通过；仅测试修正，没有业务源码、CI配置或SQL清单变动。
-- CI收口：0a99c28a / CI41430754834全部12任务success，已终局，不再轮询或重复SQL/浏览器测试。
-- P3准备：已固定同HEAD干净执行目录`D:/riftcoach-chat-product-validation-execution-20261102`；隔离空Postgres、正常API及两类Worker实际启动检查通过。预检外网拦截误拦公共DataDragon字典的问题已在外置准备中纠正，业务源码未改；新真实密钥/玩家来源/模型请求均0，专属容器已清理。
-- 下一动作：确认一份具体新任务费用范围后，用普通入口执行一次`DK ShowMaker#KR1`/asia/observed、count5/queue420/overall任务，实际取源时记录比赛日期/数量/队列。预算8HTTP/401920tokens含unknown/900活动秒，每次300秒/16384输出，拟新确认起24小时。成功路径可续双初审/必要唯一修订及同稿fresh；失败保存证据并离线判定，不自动付费重试、切路或另开批。准备结果`sol_product_chat_p3_prepared_20261102.json`，外置decision-ready不是许可。
+执行源码固定0a99c28a9594a012cc8e72ff5bbe68c72d358f4e（CI41430754834十二项success，不再轮询）。通过正常PlayerLink→Conversation→Review API→Worker只创建task `04c9a865-db03-4edb-af9e-70cb8d719db0` / run `review_ee91ab480ecf4c4992f82ec08cc4bbf4`。新授权原话及SHA e04215bf…保留，原范围8请求/401920含unknown/900活动秒、每次300秒/16384输出、北京时间11月4日00:30:06截止；明确不自动付费重试。详细工作卡见[Chat产品接线](../../../docs/plans/2026-11-01-chat-candidate-offline.md)，总体路线见[推进计划](../../../docs/plans/2026-11-01-product-delivery-reset.md)。
 
-整任务情景7请求/335183 tokens，900活动秒无全程保证，旧授权截止不延长。新HEAD CI与启动准备已完成；真实来源样本、凭据/中转兼容、内容和时延尚未验证，当前币种价格也未核实，不将替身闭环或CI认作日常采用。记录提交不替换0a99c28a冻结执行源码；已有CI/失败证据保留。
+实际Riot新取源5/5场queue420、无回退/排除；比赛日期为北京时间10月13—15日、版本16.20.824.8524，不能称为最近几天。3次Flash生成成功，累计29849 known tokens（27080输入/2769输出）、unknown/receiptless/retry均0，61.047活动秒。随后terminal=draft_safety_failed，manifest failure_code=report_missing_headings；Sol/Chat双审、应用和fresh均0，报告409、未发布，不能说真实Chat审查已经验证。
+
+原稿第六节“训练计划（观摩性质）”被旧识别器当成缺失；同一原稿+冻结guard离线复现，开发树已支持完整中英文括号限定语，正文不改。111项相称报告消费测试、12个Runtime/2份当前清单通过；不把格式放行当内容验收。全文仍有混合位置输局“发育塌陷”推断，以及将已用的静态中文映射与缺失的历史版本证据混为一谈的问题，留待正式审查/局部修订，不导入本地诊断意见冒充模型意见。
+
+另有操作者启动预检错误：批准方案写每请求16384，但Flash三次实际发送配置max_tokens=32768；实际输出327/115/2327均未超16384，总预算也未超。实际用量较低不能证明请求上限合规。原授权/请求不回写；已新增只读scope核查，正确拒绝当前配置，零Key/零模型。后续必须逐角色核实际待发送请求，不把Sol审查上限当作Flash生成上限，也不因总额余量自动放行。
+
+实际浏览器1440/320：拒绝稿不可见、29849/0用量显示、无横向溢出/JS错误，刷新无新发送；SQL仅1任务/1会话，assistant消息/Training计划及进度均0。102份原件逐字保留，含DB的103项恢复ZIP已逐项验证；容器、API、前端及driver已退出。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102`；最新DB为`execution-1/latest-db.dump`，SHA fb970618cd63bcc9227c91274ac422f3411e45f8263b5f8b67ced28430717643。最新checkpoint SHA c4217d1e3fc8e8da8020d054e955f065210c116cb5ac2db9838f0e7ab5caa010；runs_root=`D:/rc-chat-product-20261103/runs`。结果`data/evaluation/results/sol_product_chat_p3_draft_rejected_20261103.json`。
+
+下一行动：准备保留这次终态/账目/3次成功生成的同任务恢复，并在真实SQL/Worker中零发送验证到首审边界；先校准实际下一请求的授权上限。session已closed，现有两种历史恢复器均不适用，不能删除terminal直接resume、改原稿或重开任务。新付费不自动进行；标题修复的新CI只验证该变更，不解除上述恢复与授权缺口。无运行中的worker/waiter或monitor，不重复无关SQL/浏览器/已终局CI。Docker本次容器正常运行清理，旧兼容启动绕行不宣称底层永久修复。
 
 以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
 
