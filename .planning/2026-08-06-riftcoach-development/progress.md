@@ -1,3 +1,11 @@
+## 2026-11-02 Chat产品提交的SQL CI超时与完整分片修复
+
+e84e3a3e / CI41402912392的postgres-migrations由GitHub明确标注超过20分钟取消；迁移往返已通过，串行测试至少288项通过/88%，未见断言失败，旧日志无法确定最后一项。保留原日志与annotations，不认作通过或臆断某项卡死。
+
+复用现有分片库存工具，将原51文件/326项逐字清单分到4个独立Postgres任务；保留20分钟上限、完整迁移/metadata门、原其他CI任务。汇总拒绝失败、漏跑、重复、不同HEAD以及SQL跳过，日志改-vv和耗时列表。17项工具验证通过；真实SQL四片82/82/81/81项全部通过，用时390.50/479.95/425.20/452.48秒；实际CLI汇总326/326且零跳过。迁移upgrade/downgrade/upgrade及alembic check通过，专属容器已清理。
+
+结果sol_product_chat_sql_ci_sharding_20261102.json记录测试候选文件SHA、原日志及四片库存。业务源码/旧task/费用/原15/Stage8E不变，模型HTTP及真实凭据0。接下来一次提交推送并核新HEAD全必需CI（现12任务），本地Windows耗时不承诺远端Linux表现；不重跑未受影响检查、不新付费。
+
 ## 2026-11-02 Chat持久产品消费链与Docker启动兼容
 
 起点8a838c58的CI41375428589八项success。本包独立Chat合同1.7.4接入现有Runtime/session/Worker/SQL/API/浏览器，默认legacy/Responses保持。完成直接双审、唯一修订/同稿fresh、格式/超时暂停、普通resume、明确retry和取消，旧task不能换Worker偷换合同。

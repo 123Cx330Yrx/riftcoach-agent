@@ -44,7 +44,7 @@ class Inventory:
             subtest_reports=self.subtests, exit_code=int(code))
 
 
-def verify(records, *, count, head):
+def verify(records, *, count, head, require_no_skips=False):
     if (len(records) != count or {r['index'] for r in records} != set(range(count))
         or any(r['count'] != count or r['head_sha'] != head or r['version'] != 2
             or r['exit_code'] != 0 for r in records)):
@@ -63,6 +63,9 @@ def verify(records, *, count, head):
         all_executed.extend(r['executed_nodeids'])
     if Counter(all_executed) != Counter(full):
         raise ValueError('ci_shard_full_coverage')
+    if require_no_skips and any(r['skipped_nodeids'] or
+            any(s['outcome'] == 'skipped' for s in r['subtest_reports']) for r in records):
+        raise ValueError('ci_shard_unexpected_skip')
     return dict(head_sha=head, shard_count=count, collected=len(full), completed=len(all_executed),
         skipped=sum(len(r['skipped_nodeids']) for r in records),
         subtest_reports=sum(len(r['subtest_reports']) for r in records), exact_full_coverage=True)
@@ -75,21 +78,31 @@ def main():
     run.add_argument('--index', type=int, required=True)
     run.add_argument('--count', type=int, required=True)
     run.add_argument('--manifest', type=Path, required=True)
+    run.add_argument('--test-list', type=Path)
     run.add_argument('pytest_args', nargs=argparse.REMAINDER)
     check = actions.add_parser('verify')
     check.add_argument('--directory', type=Path, required=True)
     check.add_argument('--count', type=int, required=True)
+    check.add_argument('--require-no-skips', action='store_true')
     args = parser.parse_args()
     head = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     if args.action == 'verify':
         files = sorted(args.directory.rglob('shard-*.json'))
-        print(json.dumps(verify([json.loads(f.read_bytes()) for f in files],count=args.count,head=head)))
+        print(json.dumps(verify([json.loads(f.read_bytes()) for f in files],count=args.count,head=head,
+            require_no_skips=args.require_no_skips)))
         return
     inventory = Inventory(args.index,args.count,head)
     flags = args.pytest_args[1:] if args.pytest_args[:1] == ['--'] else args.pytest_args
+    if args.test_list is not None:
+        selected_files = args.test_list.read_text(encoding='utf-8').splitlines()
+        if not selected_files or len(selected_files) != len(set(selected_files)) or any(
+                not name.startswith('tests/test_') or not name.endswith('.py')
+                or '..' in Path(name).parts or not Path(name).is_file() for name in selected_files):
+            raise ValueError('ci_test_list_invalid')
+        flags = [*selected_files, *flags]
     code = pytest.main(flags,plugins=[inventory])
     args.manifest.parent.mkdir(parents=True,exist_ok=True)
-    args.manifest.write_text(json.dumps(inventory.record(code),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    args.manifest.write_text(json.dumps(inventory.record(code),ensure_ascii=True,indent=2)+'\n',encoding='utf-8')
     raise SystemExit(code)
 
 

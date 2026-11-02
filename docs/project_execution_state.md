@@ -24,7 +24,9 @@ pause_reason: ""
 
 用户追加的Docker问题已局部处理：直接正常重启仍复现Windows残留socket错误；兼容启动脚本仅在Docker已停且目录只含已知空socket时保留并移开临时目录，桌面/开始菜单入口接入，三次启动及容器检查通过。它是已验证的本地启动绕行，不是底层永久修复；直接exe/CLI/应用内重启会绕过。测试容器已清理，原镜像/卷/业务库未改。
 
-下一行动：本包记录与实现合并一次提交推送，核新HEAD的CI终局；通过后按已具体化的P3方案准备一个新observed近期五场产品任务。真实执行仍缺该任务的对象/日期/费用范围决定，旧授权已过期不能复用；本轮不恢复旧task、不新付费、不建monitor、不部署。情景7请求/335183 tokens可供规划，默认900活动秒没有全程保证，失败先离线裁决不自动再买。结果见 `data/evaluation/results/sol_product_chat_integration_20261102.json`，外置日志与浏览器证据在 `outputs/riftcoach-product-chat-integration-20261102`。
+本包已在e84e3a3e提交推送；CI41402912392的postgres-migrations超过20分钟被取消，迁移已通过，日志至少288项通过并推进到88%，未观察到断言失败；旧日志不能定位最后具体用例。现完成CI局部修复：原51文件/326项全部分到四个独立SQL任务，保留20分钟上限与原迁移汇总门，严格核同HEAD完整覆盖、零跳过；其他CI任务不改。17项工具检查、326项真实SQL（82/82/81/81）及迁移往返/metadata通过；实际汇总零漏跑/重复/跳过，四片390.50/479.95/425.20/452.48秒。临时容器已清理。结果见 `data/evaluation/results/sol_product_chat_sql_ci_sharding_20261102.json`。这是本地候选验证，新提交的远端CI仍待验证。
+
+下一行动：合并提交推送本次CI修复，核该HEAD全部必需检查（现12个任务，含SQL四片与汇总），不重复已终局SQL查询；若出现新的失败，按真实日志做局部修复。通过后按已具体化的P3方案准备一个新observed近期五场产品任务。真实执行仍缺该任务的对象/日期/费用范围决定，旧授权已过期不能复用；本轮不恢复旧task、不新付费、不建monitor、不部署。情景7请求/335183 tokens可供规划，默认900活动秒没有全程保证，失败先离线裁决不自动再买。结果见 `data/evaluation/results/sol_product_chat_integration_20261102.json`，外置日志与浏览器证据在 `outputs/riftcoach-product-chat-integration-20261102`。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 

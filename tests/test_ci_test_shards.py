@@ -14,13 +14,21 @@ ROOT = Path(__file__).resolve().parents[1]
 @pytest.fixture(scope='module')
 def actual_shards(tmp_path_factory):
     root = tmp_path_factory.mktemp('ci-shard-coverage')
-    source = root/'test_example.py'
+    (root/'tests').mkdir()
+    source = root/'tests/test_example.py'
     source.write_text('import pytest\nimport unittest\n@pytest.mark.parametrize("i",range(7))\ndef test_complete(i):\n    assert i < 7\n@pytest.mark.skip(reason="fixture skip")\ndef test_skipped():\n    pass\nclass TestNested(unittest.TestCase):\n    def test_subtests(self):\n        for i in range(3):\n            with self.subTest(i=i):\n                self.assertLess(i,3)\n        with self.subTest(skipped=True):\n            self.skipTest("subtest skip")\n',encoding='utf-8')
+    subprocess.run(['git','init','-q',str(root)],check=True)
+    subprocess.run(['git','-c','user.name=CI test','-c','user.email=ci@example.invalid',
+        'commit','--allow-empty','-qm','fixture'],cwd=root,check=True)
+    listing = root/'sql-files.txt'
+    listing.write_text('tests/test_example.py\n',encoding='utf-8')
     records = []
     for index in range(4):
         manifest = root/f'shard-{index}.json'
-        done = subprocess.run([sys.executable,'-m','scripts.ci_test_shards','run','--index',str(index),
-            '--count','4','--manifest',str(manifest),'--','-q',str(source)],cwd=ROOT,
+        # Both CLI entry forms must collect identical suites and split once.
+        selection = ['--test-list',str(listing),'--','-q'] if index % 2 == 0 else ['--','-q',str(source)]
+        done = subprocess.run([sys.executable,str(ROOT/'scripts/ci_test_shards.py'),'run','--index',str(index),
+            '--count','4','--manifest',str(manifest),*selection],cwd=root,
             text=True,capture_output=True,encoding='utf-8')
         assert done.returncode == 0, done.stdout+done.stderr
         records.append(json.loads(manifest.read_bytes()))
@@ -33,6 +41,33 @@ def test_four_real_pytest_processes_cover_all_collected_tests_once(actual_shards
     if int(pytest.__version__.split('.')[0]) >= 9:
         assert result['subtest_reports']==4
         assert any(s['outcome']=='skipped' for r in actual_shards for s in r['subtest_reports'])
+
+
+@pytest.mark.parametrize('kind', ['test', 'subtest'])
+def test_sql_gate_rejects_a_skip_even_with_successful_processes(actual_shards, kind):
+    records = deepcopy(actual_shards)
+    for record in records:
+        record['skipped_nodeids'] = []
+        record['subtest_reports'] = []
+    first = records[0]
+    if kind == 'test':
+        first['skipped_nodeids'] = [first['executed_nodeids'][0]]
+    else:
+        first['subtest_reports'] = [dict(nodeid=first['executed_nodeids'][0],outcome='skipped')]
+    with pytest.raises(ValueError,match='ci_shard_unexpected_skip'):
+        verify(records,count=4,head=first['head_sha'],require_no_skips=True)
+
+
+@pytest.mark.parametrize('content', ['', 'tests/test_database_config.py\ntests/test_database_config.py\n',
+    'tests/test_missing_ci_file.py\n', 'tests/../test_outside.py\n'])
+def test_invalid_explicit_file_list_fails_before_running_tests(tmp_path, content):
+    listing = tmp_path/'files.txt'; listing.write_text(content,encoding='utf-8')
+    manifest = tmp_path/'shard-0.json'
+    done = subprocess.run([sys.executable,'-m','scripts.ci_test_shards','run','--index','0',
+        '--count','1','--manifest',str(manifest),'--test-list',str(listing),'--','-q'],cwd=ROOT,
+        text=True,capture_output=True,encoding='utf-8')
+    assert done.returncode != 0 and 'ci_test_list_invalid' in done.stderr
+    assert not manifest.exists()
 
 
 @pytest.mark.parametrize('fault',['missing_shard','missing_test','duplicate_test','failed_shard','different_suite','wrong_head','duplicate_skip','failed_subtest','foreign_subtest'])
