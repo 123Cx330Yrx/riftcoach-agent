@@ -15,7 +15,7 @@ from tests.test_sol_worker_continuation_postgres import continued_api, create, r
 def test_product_worker_publishes_owner_report_with_cumulative_accounting(continued_api, tmp_path, monkeypatch, mode, restart, product):
     owner, other, repo, _ = continued_api
     task, run = create(owner)
-    make, summary, factories, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
+    make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
         contract=product, profile=product.WORKER_PROFILE)
     worker, route = make()
     if restart:
@@ -40,23 +40,6 @@ def test_product_worker_publishes_owner_report_with_cumulative_accounting(contin
     assert (total['requests_reserved'], total['known_tokens'], total['unknown_token_reservation']) == (count, count * 20, 0)
     assert summary.reads == 1
     assert requests == ([[200], [200, 200, 200]] if restart else [[200, 200]])
-    from app.product.source_scope import SOURCE_SCOPE_POLICY, SCOPE_MARKER
-    # These requests crossed the normal SQL Worker composition, including the
-    # resumed lease. No second source acquisition or display-only rewrite.
-    generation = [r for factory in factories for provider in factory.providers.values()
-                  for r in provider.generator.requests]
-    assert len(generation) == 2
-    for request in generation:
-        sections = [s for m in request.messages if m.content and m.content.lstrip().startswith('{')
-                    for s in json.loads(m.content).get('sections', [])]
-        assert any(SOURCE_SCOPE_POLICY in s['content'] and s['trust'] == 'internal_policy' for s in sections)
-        assert any(SCOPE_MARKER in s['content'] for s in sections)
-    review_root = tmp_path / run / '.continuation/transport' / run / 'review'
-    contexts = [json.loads(p.read_bytes()) for p in review_root.glob('call-*/validation-context.json')]
-    assert len(contexts) == (4 if restart else 2)
-    for context in contexts:
-        supplied = json.loads(context['data_json'])['deterministic_source_facts']
-        assert SCOPE_MARKER in supplied
     if restart:
         journal = tmp_path / run / '.continuation/journal'
         application = json.loads((journal / 'application.json').read_bytes())
@@ -97,8 +80,9 @@ def test_chat_format_pause_keeps_known_cost_and_original_generation(continued_ap
     assert before and all(p.read_bytes() == value for p, value in before.items())
 
 
+@pytest.mark.parametrize('mode,restart', [('pass', False), ('repair', True)])
 @pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
-def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued_api, tmp_path, monkeypatch, product):
+def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued_api, tmp_path, monkeypatch, product, mode, restart):
     from app.tasks.service import ReviewTaskService
     from app.tasks.models import CreateReviewTaskCommand, TaskPublicationMode
     from app.product.recent_review import RecentReviewProductRequest
@@ -108,9 +92,15 @@ def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued
         request=RecentReviewProductRequest(riot_id='DemoPlayer#TEST', routing_region='asia', focus='overall'),
         publication_mode=TaskPublicationMode.EVIDENCE_BOUND_V1))
     task, run = result.task.task_id, result.task.run_id
-    make, _, _, _ = setup_worker(tmp_path, monkeypatch, repo,
+    make, summary, factories, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
         contract=product, profile=product.WORKER_PROFILE)
-    worker, _ = make()
+    worker, route = make()
+    if restart:
+        route.candidate.max_new_models = 3
+        assert worker.run_once().status.value == 'paused'
+        paused = owner.get(f'/tasks/{task}/continuation').json()
+        assert resume(owner, task, paused['checkpoint_sha256'], 'evidence-continue').status_code == 200
+        worker, _ = make()
     result = worker.run_once()
     assert result.status.value == 'succeeded', result
     stored = repo.get_by_task_id(owner_id='owner-1', task_id=task)
@@ -122,6 +112,35 @@ def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued
     assert other.get(f'/runs/{run}/evidence').status_code == 404
     assert owner.get(f'/runs/{run}/report').status_code == (200 if stored.report_available else 409)
     assert other.get(f'/runs/{run}/report').status_code == 404
+    assert stored.report_available and worker.run_once().status.value == 'idle'
+    assert summary.reads == 1
+    assert requests == ([[200], [200, 200, 200]] if restart else [[200, 200]])
+    total = owner.get(f'/runs/{run}/usage').json()['session_accounting']
+    count = 6 if restart else 4
+    assert (total['requests_reserved'], total['known_tokens'], total['unknown_token_reservation']) == (count, count * 20, 0)
+    from app.product.source_scope import SOURCE_SCOPE_POLICY, SCOPE_MARKER
+    # The task above explicitly selects Evidence publication. Legacy tasks
+    # intentionally have no source projection and are covered separately.
+    generation = [r for factory in factories for provider in factory.providers.values()
+                  for r in provider.generator.requests]
+    assert len(generation) == 2
+    for request in generation:
+        sections = [s for m in request.messages if m.content and m.content.lstrip().startswith('{')
+                    for s in json.loads(m.content).get('sections', [])]
+        assert any(SOURCE_SCOPE_POLICY in s['content'] and s['trust'] == 'internal_policy' for s in sections)
+        assert any(SCOPE_MARKER in s['content'] for s in sections)
+    review_root = tmp_path / run / '.continuation/transport' / run / 'review'
+    contexts = [json.loads(p.read_bytes()) for p in review_root.glob('call-*/validation-context.json')]
+    assert len(contexts) == (4 if restart else 2)
+    for context in contexts:
+        supplied = json.loads(context['data_json'])['deterministic_source_facts']
+        assert SCOPE_MARKER in supplied
+    if restart:
+        journal = tmp_path / run / '.continuation/journal'
+        application = json.loads((journal / 'application.json').read_bytes())
+        fresh = [json.loads(p.read_bytes()) for p in journal.glob('*-fresh.json')]
+        assert len(fresh) == 2
+        assert {v['report_sha256'] for v in fresh} == {application['report_sha256']}
 
 
 @pytest.mark.parametrize('initial_product', [False, True])

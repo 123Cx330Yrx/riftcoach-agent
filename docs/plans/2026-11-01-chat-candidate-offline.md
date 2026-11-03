@@ -232,4 +232,6 @@ a7045106 / CI41558836855十二项全绿，授权的4个新review均已完成：f
 
 无新增真实模型/来源/Key；P3_not_accepted、Stage8E和默认准入不变。结果见data/evaluation/results/sol_product_source_scope_offline_20261103.json，外置证据位于outputs/riftcoach-product-source-scope-20261103。旧生成限额CI41574190537全绿终局记录一并收尾，不重复轮询。
 
-下一行动：提交来源范围实施包并核同HEAD全部12项CI，优先观察新增SQL/Worker断言；查询错误不当CI失败，真实失败再按日志局部修正。CI等待期可梳理原文安全排版，随后落实国服称呼/外号和自然教练口吻；这三项尚未完成。旧四审查许可已消费，无新付费授权，不改旧稿或冻结执行树。Docker端点清理被审批拒绝，保持未修复记录，不绕过审批或恢复出厂。
+2026-11-03 来源范围CI41596735646已证四个PostgreSQL分片各1例失败，均为新增SCOPE_MARKER断言误放到legacy发布任务；该模式按设计不附带Evidence来源投影。同轮原有Responses/Chat的Evidence-bound用例均通过，不能把这次失败归给上游或来源renderer。仅修改tests/test_sol_product_worker_postgres.py：保留原legacy记账/发布测试，把范围断言放到显式evidence_bound_v1任务，并覆盖两接口的正常完成与修订后Worker续接，保留一次取源、累计费用、owner隔离、唯一应用与双fresh同稿。17项收集及编译/diff通过，收集不等于执行；本机Docker仍不可用，修后SQL四例待新CI实跑，生产代码与原件不改。真实模型/来源/Key新增0；详见sol_product_source_scope_ci_repair_20261103.json。
+
+下一行动：提交本次SQL测试模式修正，核修复HEAD全部12项CI，重点确认显式Evidence-bound四例实际生成/初审/fresh来源说明及SQL/migration；不以测试收集代替执行。仅跟踪新CI，旧失败日志保留。等待期间按P3/P4卡梳理原文安全Markdown排版，随后落实国服称呼/外号和自然玩家口吻；这三项尚未完成。旧四审查许可已消费，无新付费授权，不改旧稿/冻结树。Docker仍未修复，已被审批拒绝的停止/端点清理操作不绕过。

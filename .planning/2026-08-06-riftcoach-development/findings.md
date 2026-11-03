@@ -1,3 +1,9 @@
+## 2026-11-03 来源范围SQL测试模式修正
+
+2026-11-03 来源范围CI41596735646已证四个PostgreSQL分片各1例失败，均为新增SCOPE_MARKER断言误放到legacy发布任务；该模式按设计不附带Evidence来源投影。同轮原有Responses/Chat的Evidence-bound用例均通过，不能把这次失败归给上游或来源renderer。仅修改tests/test_sol_product_worker_postgres.py：保留原legacy记账/发布测试，把范围断言放到显式evidence_bound_v1任务，并覆盖两接口的正常完成与修订后Worker续接，保留一次取源、累计费用、owner隔离、唯一应用与双fresh同稿。17项收集及编译/diff通过，收集不等于执行；本机Docker仍不可用，修后SQL四例待新CI实跑，生产代码与原件不改。真实模型/来源/Key新增0；详见sol_product_source_scope_ci_repair_20261103.json。
+
+下一行动：提交本次SQL测试模式修正，核修复HEAD全部12项CI，重点确认显式Evidence-bound四例实际生成/初审/fresh来源说明及SQL/migration；不以测试收集代替执行。仅跟踪新CI，旧失败日志保留。等待期间按P3/P4卡梳理原文安全Markdown排版，随后落实国服称呼/外号和自然玩家口吻；这三项尚未完成。旧四审查许可已消费，无新付费授权，不改旧稿/冻结树。Docker仍未修复，已被审批拒绝的停止/端点清理操作不绕过。
+
 ## 2026-11-03 产品来源范围实施及验证
 
 2026-11-03，P3/P4来源范围修复已落到产品实际链路（Responses1.7.7 / Chat1.7.8）：生成与双初审/双fresh共用范围说明，产品专用renderer分别携带摘要名称字典元数据与对局版本，保留外部目录缺失、原目录身份guard和历史资格政策。35项定向离线检查、12Runtime/2清单、compile通过；旧15业务内容/请求摘要及旧报告/DB/恢复快照未变。四份真实旧审查输入只读重组并经实际请求字节校验，保守输入上限分别63634/59238/57360/52964，均低于64000；未新发。当前SQL/Worker/API四例含新来源范围断言，因本机Docker启动失败尚未运行，待同HEAD CI验证。Docker日志显示sailor-ingest.sock不可访问导致backend启动失败；停止失败进程并删除套接字被自动审批以blocked by policy拒绝，未执行清理，不声称Docker已修复。
