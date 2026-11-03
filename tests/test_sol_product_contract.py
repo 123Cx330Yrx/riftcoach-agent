@@ -42,7 +42,7 @@ def generation_request(candidate=product):
                    metadata={**policy.metadata(), 'agent_loop_iteration': 1})
 
 
-def make_app(root, session, *, mode='repair', statuses=(), extra_round=False, candidate=product):
+def make_app(root, session, *, mode='repair', statuses=(), extra_round=False, candidate=product, **publication):
     factory, attempts = application(root, mode=mode, statuses=statuses, candidate=candidate, factory_only=True)
     original = factory.make
     def make(name):
@@ -53,7 +53,7 @@ def make_app(root, session, *, mode='repair', statuses=(), extra_round=False, ca
     app = build_natural_duty_candidate(summary_builder=SummaryBuilder(factory.descriptor.generator.req.player_summary),
         provider_factory=factory, knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
         runs_root=root/'runs'/str(len(list((root/'session/checkpoints').glob('*.json')))),
-        candidate=candidate, execution_session=session)
+        candidate=candidate, execution_session=session, **publication)
     flows = []
     original_flow = app._runtime._execution_factory._review_workflow_factory
     def capture(runtime, budget):

@@ -1,3 +1,17 @@
+## 2026-11-03 产品来源范围实施及验证
+
+2026-11-03，P3/P4来源范围修复已落到产品实际链路（Responses1.7.7 / Chat1.7.8）：生成与双初审/双fresh共用范围说明，产品专用renderer分别携带摘要名称字典元数据与对局版本，保留外部目录缺失、原目录身份guard和历史资格政策。35项定向离线检查、12Runtime/2清单、compile通过；旧15业务内容/请求摘要及旧报告/DB/恢复快照未变。四份真实旧审查输入只读重组并经实际请求字节校验，保守输入上限分别63634/59238/57360/52964，均低于64000；未新发。当前SQL/Worker/API四例含新来源范围断言，因本机Docker启动失败尚未运行，待同HEAD CI验证。Docker日志显示sailor-ingest.sock不可访问导致backend启动失败；停止失败进程并删除套接字被自动审批以blocked by policy拒绝，未执行清理，不声称Docker已修复。
+
+无新增真实模型/来源/Key；P3_not_accepted、Stage8E和默认准入不变。结果见data/evaluation/results/sol_product_source_scope_offline_20261103.json，外置证据位于outputs/riftcoach-product-source-scope-20261103。旧生成限额CI41574190537全绿终局记录一并收尾，不重复轮询。
+
+下一行动：提交来源范围实施包并核同HEAD全部12项CI，优先观察新增SQL/Worker断言；查询错误不当CI失败，真实失败再按日志局部修正。CI等待期可梳理原文安全排版，随后落实国服称呼/外号和自然教练口吻；这三项尚未完成。旧四审查许可已消费，无新付费授权，不改旧稿或冻结执行树。Docker端点清理被审批拒绝，保持未修复记录，不绕过审批或恢复出厂。
+
+## 2026-11-03 来源范围的真实请求核对
+
+本次完整已审稿与7份实际请求只读核对：生成使用16.21.1静态字典，比赛为16.20.824.8524；同一正式审查输入同时保留generation_view.request.data_dragon_version=16.21.1与外部bundle.data_dragon=null。后者是未提供历史外部目录材料，不能抹去已经完成的名称映射；也不能反向把版本元数据当完整历史字典证据。共享generation policy与publication context中的历史版本措辞确实可达当前产品请求，不能当死代码略过。后续从产品生成/双审共同的范围说明修正，保留旧资格策略与已审报告原文；SafeMarkdown仅按原文呈现，禁止另造未审改写稿。
+
+外置证据：Control/p4-serialized-source-trace.json、p4-source-scope-implementation-preparation.json；最终稿SHA e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455未变。这是离线定位与实施准备，尚未实现或验收称呼/口吻。
+
 ## 2026-11-03 CI测试依赖遗漏修正
 
 2026-11-03 CI41573136399已暴露本地验证遗漏：web入口两项当前清单测试未列本次新增变动组件；PostgreSQL分片的cap反例仍期待恢复专用错误码，实际被更早的通用限额检查正确阻断，聚合项因该分片失败。不是已证Docker或上游故障。仅同步三处测试及同机制timeout预期，保留精确组件范围、原15业务内容、零发送/无新意图断言；完整web前置11项及真实SQL恢复范围5项通过，容器清理。生产代码/历史原件不改，新真实模型/来源/Key均0。此前151项本地通过仍真实，但覆盖选择漏了这些依赖断言，不能据此宣称CI通过。详见sol_product_generation_limits_ci_repair_20261103.json。

@@ -23,11 +23,13 @@ REVIEW_PROVIDER, REVIEW_MODEL, REVIEW_PROFILE = parent.REVIEW_PROVIDER, parent.R
 FRESH_REVIEW_RESERVATION = parent.FRESH_REVIEW_RESERVATION
 def make_request(inputs, name, stage='initial'):
     from .review_purpose import input_purpose, purpose_policy
+    from .source_scope import SOURCE_SCOPE_POLICY
     base = parent.make_request(inputs, name, stage)
     metadata = dict(base.metadata)
     metadata[CONTEXT] = dict(metadata.pop(parent.CONTEXT), version=VERSION)
     return replace(base, metadata=metadata, messages=(replace(base.messages[0],
-        content=base.messages[0].content+'\n\n'+purpose_policy(input_purpose(inputs))), *base.messages[1:]))
+        content=base.messages[0].content+'\n\n'+purpose_policy(input_purpose(inputs))
+            +'\n\n'+SOURCE_SCOPE_POLICY), *base.messages[1:]))
 
 
 def restore_context(context):
@@ -103,7 +105,13 @@ class ProductContract(parent.DualNecessityContract):
         base = super().context_policy
         if base.count(historical) != 1:
             raise ValueError('product_position_policy_binding')
-        return base.replace(historical, POSITION_POLICY)
+        from .source_scope import (HISTORICAL_GENERATION_SCOPE, PRODUCT_GENERATION_SCOPE,
+                                   SOURCE_SCOPE_POLICY)
+        if base.count(HISTORICAL_GENERATION_SCOPE) != 1:
+            raise ValueError('product_source_scope_policy_binding')
+        return (base.replace(historical, POSITION_POLICY)
+            .replace(HISTORICAL_GENERATION_SCOPE, PRODUCT_GENERATION_SCOPE)
+            +'\n\n'+SOURCE_SCOPE_POLICY)
 
     request_identity = staticmethod(request_identity)
 
@@ -119,6 +127,7 @@ class ProductContract(parent.DualNecessityContract):
             qualification_only=False, publication_policy='dual-review-exact-application-v1',
             reused_business_contract=parent.VERSION,
             task_purpose_policy='product-review-purpose-v1',
+            source_scope_policy='product-source-scope-v1',
             context_policy_sha256=hashlib.sha256(self.context_policy.encode()).hexdigest())
         value['roles']['review'].update(transport_id=REVIEW_TRANSPORT,
             thinking_profile_id=REVIEW_THINKING_PROFILE)
@@ -138,7 +147,7 @@ class ProductContract(parent.DualNecessityContract):
             raise ValueError('sol_product_provider_contract')
 
 
-CONTRACT = ProductContract(version='1.7.5')
+CONTRACT = ProductContract(version='1.7.7')
 
 
 def component_fingerprints(skill):
@@ -148,6 +157,7 @@ def component_fingerprints(skill):
         source='generation_policy', sha256=hashlib.sha256(CONTRACT.context_policy.encode()).hexdigest())
     for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
                  'app/product/generation_request.py',
+                 'app/product/source_scope.py',
                  'app/product/manual_retry_grant.py', 'app/product/review_purpose.py', 'scripts/reviewer_responses_stream.py',
                  'app/product/stream_migration.py', 'app/product/budget_supplement.py', 'app/workers/sol_continuation.py',
                  'app/product/zero_send_recovery.py',

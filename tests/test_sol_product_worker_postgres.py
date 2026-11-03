@@ -15,7 +15,7 @@ from tests.test_sol_worker_continuation_postgres import continued_api, create, r
 def test_product_worker_publishes_owner_report_with_cumulative_accounting(continued_api, tmp_path, monkeypatch, mode, restart, product):
     owner, other, repo, _ = continued_api
     task, run = create(owner)
-    make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
+    make, summary, factories, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
         contract=product, profile=product.WORKER_PROFILE)
     worker, route = make()
     if restart:
@@ -40,6 +40,23 @@ def test_product_worker_publishes_owner_report_with_cumulative_accounting(contin
     assert (total['requests_reserved'], total['known_tokens'], total['unknown_token_reservation']) == (count, count * 20, 0)
     assert summary.reads == 1
     assert requests == ([[200], [200, 200, 200]] if restart else [[200, 200]])
+    from app.product.source_scope import SOURCE_SCOPE_POLICY, SCOPE_MARKER
+    # These requests crossed the normal SQL Worker composition, including the
+    # resumed lease. No second source acquisition or display-only rewrite.
+    generation = [r for factory in factories for provider in factory.providers.values()
+                  for r in provider.generator.requests]
+    assert len(generation) == 2
+    for request in generation:
+        sections = [s for m in request.messages if m.content and m.content.lstrip().startswith('{')
+                    for s in json.loads(m.content).get('sections', [])]
+        assert any(SOURCE_SCOPE_POLICY in s['content'] and s['trust'] == 'internal_policy' for s in sections)
+        assert any(SCOPE_MARKER in s['content'] for s in sections)
+    review_root = tmp_path / run / '.continuation/transport' / run / 'review'
+    contexts = [json.loads(p.read_bytes()) for p in review_root.glob('call-*/validation-context.json')]
+    assert len(contexts) == (4 if restart else 2)
+    for context in contexts:
+        supplied = json.loads(context['data_json'])['deterministic_source_facts']
+        assert SCOPE_MARKER in supplied
     if restart:
         journal = tmp_path / run / '.continuation/journal'
         application = json.loads((journal / 'application.json').read_bytes())

@@ -37,7 +37,7 @@
     {
       "component_id": "generation_policy",
       "source": "generation_policy",
-      "sha256": "8d7b8a2d0df39cefb33cc3272993d09bfd2c3e4d642828a8a7658543309138fc"
+      "sha256": "6999f870d4af0045bc25b6b08666fc9845744b3c4c3b772a46a252b8d38a6dd7"
     },
     {
       "component_id": "app.evaluation.golden_native_issues_review",
@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "f9f1c4174b85cc4f6a7e1c5aa4736c41fdeb14379fe1ae46e59d3cbb62cefe62"
+      "sha256": "dced577a2d3eaa57178693d012d9a246bfa7280e65838b01b39a6ad6d80cc0e8"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "be2d5b84849281e3823b057dd7580993715fecabcb8a186344f7bf832dd4f262"
+      "sha256": "b0c3207c21b9f79b0f0fd766b5d569d7dfdeda61017f5c1c4f51dc2209c1e7dd"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "dd1e5e83a144f1995ee3b4ce2f94c845ea3f8dd37349fdc20b80393d018bafb6"
+      "sha256": "86aea9baa3a7e5f8b836473a92e540487fe8246f978f4dbb0392238b6dfdcf33"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -438,6 +438,11 @@
       "component_id": "app.product.generation_request",
       "source": "app/product/generation_request.py",
       "sha256": "6e13ccae6423d0452982c261a11fd5370b7488b578b29d37b0b0e914a1538efb"
+    },
+    {
+      "component_id": "app.product.source_scope",
+      "source": "app/product/source_scope.py",
+      "sha256": "76cafacff2a7a803f4a86c7d51169ce1c5b635c402665f5402f61b0bf8f475f3"
     },
     {
       "component_id": "app.product.manual_retry_grant",
@@ -507,7 +512,7 @@
     {
       "component_id": "app.product.sol_chat_contract",
       "source": "app/product/sol_chat_contract.py",
-      "sha256": "4a637d94c9df32853cee8fdca60051542409b4e118665c8ed185ab84cd438527"
+      "sha256": "23e7b89f3c7e423e60be5d02ad1906c26f7ca63e2eb14388830469d337244540"
     },
     {
       "component_id": "scripts.reviewer_chat_contract",
@@ -526,9 +531,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.product.sol_chat_contract:v1.7.6",
-      "sha256": "c472acf580edbd560d150e2eecf7376602b9d927ed8b06f02cd6567e78f695fc"
+      "source": "app.product.sol_chat_contract:v1.7.8",
+      "sha256": "f4fde56bc183595eaaa45a4229cdd6394a252ff0e2287e53fe7fdad05cb8f769"
     }
   ],
-  "program_sha256": "c32962d00558f81cdac31b89bc74fc206bcaf46cb13ae9c6d7871e528d68d97b"
+  "program_sha256": "e56ecde6e2b77bb2bb3a58fbcf132d59fbdc5fa45fe9424f3389fd61ddef43a3"
 }

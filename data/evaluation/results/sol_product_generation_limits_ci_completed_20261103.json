@@ -1,0 +1,126 @@
+{
+  "kind": "product-generation-limits-ci-completed-v1",
+  "observed_at_utc": "2026-11-03T05:13:56.025935+00:00",
+  "head": "c131cb05903dc063dfd2bb446424b976ae25f7eb",
+  "ci": 41574190537,
+  "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41574190537",
+  "status": "completed",
+  "conclusion": "success",
+  "expected_jobs": [
+    "packaging-smoke",
+    "postgres-migrations",
+    "postgres-tests (0)",
+    "postgres-tests (1)",
+    "postgres-tests (2)",
+    "postgres-tests (3)",
+    "pytest",
+    "pytest-shards (0)",
+    "pytest-shards (1)",
+    "pytest-shards (2)",
+    "pytest-shards (3)",
+    "web-checks"
+  ],
+  "jobs": [
+    {
+      "id": 125713786485,
+      "name": "packaging-smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786718,
+      "name": "pytest-shards (0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786739,
+      "name": "web-checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786769,
+      "name": "postgres-tests (0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786797,
+      "name": "postgres-tests (2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786801,
+      "name": "postgres-tests (3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786824,
+      "name": "postgres-tests (1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786867,
+      "name": "pytest-shards (2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786871,
+      "name": "pytest-shards (1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125713786883,
+      "name": "pytest-shards (3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125715819285,
+      "name": "postgres-migrations",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 125739930564,
+      "name": "pytest",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "terminal_evidence": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-generation-limits-20261103\\ci-terminal-41574190537.json",
+    "sha256": "735738eedebfe6e575481b4cfd434cacfe9694a5c2080063eaf24d289124d8f9"
+  },
+  "previous_failure_preserved": "sol_product_generation_limits_ci_repair_20261103.json",
+  "new_model_http": 0,
+  "new_source_calls": 0,
+  "real_key_reads": 0,
+  "P3_accepted": false,
+  "Stage8E_changed": false,
+  "default_admission_changed": false,
+  "paid_authorization_added": false,
+  "next_action": "P3/P4 source scope clarification, followed by safe player presentation and verified common names/tone; no changes to approved historic report.",
+  "commit_policy": "merge this terminal record with next substantive work commit; no CI-only commit",
+  "verification": {
+    "expected_12_job_names_exact": true,
+    "all_jobs_completed_success": true,
+    "pytest_exact_coverage_step_success": true,
+    "postgres_exact_coverage_no_skip_step_success": true,
+    "postgres_migration_reversible_and_metadata_steps_success": true,
+    "governance": "passed",
+    "diff_check": "passed",
+    "unrelated_untracked_sha256_unchanged": true
+  },
+  "monitor": {
+    "id": "riftcoach-ci",
+    "status": "deleted",
+    "reason": "same_head_ci_terminal_success_verified_and_recorded"
+  }
+}

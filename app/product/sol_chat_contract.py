@@ -95,7 +95,7 @@ class ChatProductContract(parent.ProductContract):
             raise ValueError('sol_chat_product_provider_contract')
 
 
-CONTRACT = ChatProductContract(version='1.7.6')
+CONTRACT = ChatProductContract(version='1.7.8')
 
 
 def component_fingerprints(skill):
