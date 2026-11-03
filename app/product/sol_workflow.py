@@ -22,6 +22,8 @@ class ProductBudget(SessionBudget):
         return execution_limits(self.session)
 
     def _provider_for_request(self, request):
+        from .generation_request import validate_new_request
+        validate_new_request(self.contract_module, request)
         if (self.session.root/'budget-supplement.json').exists() and self.contract_module.role_for_request(request) == 'generation':
             raise SessionPaused('product_supplement_generation_forbidden')
         # Leave the two initial duties and possible two fresh duties intact.

@@ -37,10 +37,11 @@ def offline(monkeypatch):
 
 
 class Responses(ScriptedProductProvider):
-    def __init__(self, *, reviewer=False, mode='repair', extra_round=False, fault=None):
+    def __init__(self, *, reviewer=False, mode='repair', extra_round=False, fault=None, request_digest=request_sha):
         super().__init__(recover=False, charge_ceiling=False)
         self.req = cases()['claim-scope:4'][0]
         self.mode, self.extra_round, self.fault = mode, extra_round, fault
+        self.request_digest = request_digest
         if reviewer:
             self.model_name = 'glm-5.3'
             self.thinking_profile_id = ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE.profile_id
@@ -98,7 +99,7 @@ class Responses(ScriptedProductProvider):
             response = ChatResponse(provider='zhipu',model=self.model_name,content=None,
                 tool_calls=(ToolCall(id='review',name='submit_report_review',arguments=value),),
                 finish_reason='tool_calls',usage=TokenUsage(input_tokens=10,output_tokens=10))
-        self.last_exchange = Exchange(request,response,request_sha(request))
+        self.last_exchange = Exchange(request,response,self.request_digest(request))
         if marker and self.fault=='receipt': self.last_exchange=None
         if marker and self.fault=='model': response=replace(response,model='glm-5.3-flash')
         return response

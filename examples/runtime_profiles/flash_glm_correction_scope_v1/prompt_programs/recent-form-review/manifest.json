@@ -72,7 +72,7 @@
     {
       "component_id": "app.evaluation.golden_stream_bridge",
       "source": "app/evaluation/golden_stream_bridge.py",
-      "sha256": "5f70227212a7e890b730e2e108676092f7459f775c5ad75dcebd3a26a6bda3b2"
+      "sha256": "bddf709b8df6a93a61478c5e3a68ac1e0bcf42ade271c2e3e5ac661108455b53"
     },
     {
       "component_id": "app.runtime.review_sender",
@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "a59f0e88bffc40760600ee4610ae070abf5a4877da39ddbf504ec145e909cfd8"
+      "sha256": "f9f1c4174b85cc4f6a7e1c5aa4736c41fdeb14379fe1ae46e59d3cbb62cefe62"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -267,7 +267,7 @@
     {
       "component_id": "app.model_runtime",
       "source": "app/model_runtime.py",
-      "sha256": "4c1698822995fe2c25ded49a3a809cc1cbb67aa68668e905cf8ee3cfb4ed51db"
+      "sha256": "2a123f66c7e82877d20ed6b124a2b2bd81c41fa5ba849d47fa7c739e78d4ba42"
     },
     {
       "component_id": "app.evaluation.golden_role_coarse",
@@ -292,7 +292,7 @@
     {
       "component_id": "app.prompt_program.resolver",
       "source": "app/prompt_program/resolver.py",
-      "sha256": "c51fcbb341adeeb39a7934234b4b52b30eb0f880a8df1234634a32cc7d8f2f54"
+      "sha256": "9f08dca69938d6179eea196d36b5361b877a5023c12dc11b6b4ce044113f5f15"
     },
     {
       "component_id": "app.prompt_program.models",
@@ -325,5 +325,5 @@
       "sha256": "68f341bda79cc3c0b8d2e94fdfb02baa1e7b5572b3c4c16770aa61fa8f0b6193"
     }
   ],
-  "program_sha256": "a0676bde4feb6858a8b3cc8e4258391bde388b515fdf2b82529c09ce44f76a64"
+  "program_sha256": "52e2bd7ca6fff7de87be8ab26122c13f32037e39feebd306484d06e1b3efab98"
 }

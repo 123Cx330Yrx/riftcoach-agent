@@ -144,7 +144,7 @@ def application(tmp_path, *, mode='repair', statuses=(), candidate=contract, run
 
         def make(self, name):
             folder = tmp_path/'transport'/name
-            return SolNaturalProvider(Responses(), SolReviewProvider(api_key='OFFLINE_SENTINEL',
+            return SolNaturalProvider(Responses(request_digest=candidate.request_sha), SolReviewProvider(api_key='OFFLINE_SENTINEL',
                 directory=folder/'review', task_directory=folder, sender=sender,
                 contract_module=candidate), contract_module=candidate)
 

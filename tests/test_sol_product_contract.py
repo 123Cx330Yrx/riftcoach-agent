@@ -1,5 +1,6 @@
 """Product contract on actual Runtime/session; all model IO is scripted."""
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -32,6 +33,13 @@ def current_pins(root):
     from app.evaluation.sol_natural_session import digest
     return {'guard_sha256': digest((root/'session/guard.json').read_bytes()),
             'checkpoint_sha256': digest(sorted((root/'session/checkpoints').glob('*.json'))[-1].read_bytes())}
+
+
+def generation_request(candidate=product):
+    from tests.test_natural_duty_transport import generation
+    policy = candidate.CONTRACT.request_policy
+    return replace(generation(), max_tokens=policy.max_output_tokens,
+                   metadata={**policy.metadata(), 'agent_loop_iteration': 1})
 
 
 def make_app(root, session, *, mode='repair', statuses=(), extra_round=False, candidate=product):
@@ -120,7 +128,6 @@ def isolated_budget(root, session, statuses=()):
 
 @pytest.mark.parametrize('limit', ['calls', 'tokens', 'generation_slots', 'active_time'])
 def test_budget_stops_before_transport_and_preserves_cumulative_clock(tmp_path, limit):
-    from tests.test_natural_duty_transport import generation
     now = [0.0]
     with session_at(tmp_path, clock=lambda: now[0]) as session:
         budget, attempts = isolated_budget(tmp_path, session)
@@ -134,7 +141,7 @@ def test_budget_stops_before_transport_and_preserves_cumulative_clock(tmp_path, 
             now[0] = 900.0
         before = budget.calls
         with pytest.raises(SessionPaused, match='product_budget_exhausted'):
-            budget.chat(generation())
+            budget.chat(generation_request())
         assert budget.calls == before and attempts == []
         assert not list((tmp_path/'transport').rglob('http-request.json'))
     if limit == 'active_time':
@@ -143,7 +150,7 @@ def test_budget_stops_before_transport_and_preserves_cumulative_clock(tmp_path, 
             assert resumed.active_seconds == 900
             budget, attempts = isolated_budget(tmp_path, resumed)
             with pytest.raises(SessionPaused, match='product_budget_exhausted'):
-                budget.chat(generation())
+                budget.chat(generation_request())
             assert attempts == []
 
 

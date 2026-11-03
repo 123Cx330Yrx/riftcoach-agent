@@ -1,0 +1,105 @@
+{
+  "kind": "sol-product-generation-request-limits-offline-v1",
+  "date": "2026-11-03",
+  "base_head": "63b6fe49cf86ec14f948e546236814a37aa2e8a6",
+  "scope": "normal opt-in product generation; no new live task or paid execution",
+  "problem": {
+    "promised_max_output_tokens": 16384,
+    "historical_generation_request_max_tokens": 32768,
+    "legacy_policy_and_top_level_budget_inherited": true,
+    "ordinary_pre_intent_limit_missing": true
+  },
+  "implementation": {
+    "generation_policy": "sol-product-generation-time300-16384-v1",
+    "responses_product_version": "1.7.5",
+    "chat_product_version": "1.7.6",
+    "max_output_tokens": 16384,
+    "request_timeout_s": 300,
+    "guards": [
+      "new durable model intent before preflight",
+      "actual budgeted provider request before capture or IO",
+      "Flash child before settings read"
+    ],
+    "legacy_generation_serialization_retained": true,
+    "committed_replay_bypasses_new_send_guard": true,
+    "old_contract_bindings_not_silently_migrated": true
+  },
+  "verification": {
+    "initial_counterexamples": {
+      "failed": 4,
+      "scope": "two contracts: inherited policy cap and missing pre-intent cap"
+    },
+    "focused_product_runtime_and_sdk": {
+      "cases": 45,
+      "first_run_passed": 41,
+      "old_generation_fixture_failures": 4
+    },
+    "budget_transport_policy_and_resume": {
+      "cases": 102,
+      "first_run_passed": 101,
+      "old_generation_fixture_failures": 1
+    },
+    "repaired_fixture_selectors": {
+      "passed": 9,
+      "previous_failures_covered": 5,
+      "already_passing_cases_in_same_selectors": 4
+    },
+    "final_unique_targeted_cases_passed": 147,
+    "actual_postgres_worker_api_cases_passed": 4,
+    "sdk_wire": {
+      "library": "OpenAI SDK",
+      "transport": "httpx.MockTransport",
+      "max_tokens": 16384,
+      "stream": true,
+      "oversize_settings_reads": 0,
+      "oversize_http_sends": 0
+    },
+    "normal_runtime_generation_and_replay": {
+      "contracts": 2,
+      "new_request_cap": 16384,
+      "replay_generator_calls": 0
+    },
+    "runtime_profiles": 12,
+    "current_inventories": 2,
+    "inventory_changes_only": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "original15_cases_sources_reports_request_digests_unchanged": true,
+    "pytest_options": [
+      "--tb=short",
+      "--show-capture=no"
+    ],
+    "test_only_changes": "Scripted generation receipts use the selected contract digest; budget tests use valid current generation requests. Legacy oversized requests have separate rejection and read-only tests.",
+    "postgres_container_removed": "riftcoach-product-limits-20261103"
+  },
+  "live_activity": {
+    "new_model_http": 0,
+    "new_source_calls": 0,
+    "real_key_reads": 0,
+    "new_semantic_qualification": false
+  },
+  "preserved": {
+    "frozen_execution_head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+    "frozen_worktree_clean": true,
+    "authorization_sha256": "3f4d5ef8be4e1d45c1c136c4b0c9003957e290da9ede1c1249bb0595e14aa65e",
+    "latest_db_sha256": "5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533",
+    "recovery_snapshot_sha256": "38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f",
+    "historical_32768_violation_retained": true,
+    "unrelated_probe_unchanged": true
+  },
+  "limits": {
+    "status": "offline_verified_ci_pending",
+    "P3_accepted": false,
+    "default_admission_changed": false,
+    "Stage8E_changed": false,
+    "four_review_authorization_consumed": true,
+    "additional_paid_authorization": false,
+    "next": "verify this commit CI; continue source-scope clarity and P4 player-facing reading using existing evidence, without paid retries"
+  },
+  "deferred_required": [
+    "mainland Chinese hero/item names and confirmed common aliases",
+    "natural evidence-grounded player-facing coach tone",
+    "safe structured report presentation"
+  ]
+}

@@ -35,7 +35,7 @@ def grant(session):
 
 @pytest.mark.parametrize('boundary',['calls','tokens','time','expiry','generation'])
 def test_scoped_limit_stops_before_send(tmp_path,boundary,monkeypatch):
-    from tests.test_natural_duty_transport import generation
+    from tests.test_sol_product_contract import generation_request
     request=product.make_request(duty.TimedDocumentWorkflow.build_inputs(Responses().req),'facts')
     with opened(tmp_path) as session:
         activate(session,grant(session))
@@ -43,7 +43,7 @@ def test_scoped_limit_stops_before_send(tmp_path,boundary,monkeypatch):
         if boundary=='calls':budget.calls=12
         elif boundary=='tokens':budget.tokens=723455
         elif boundary=='time':session.active_before=2101
-        elif boundary=='generation':request=generation()
+        elif boundary=='generation':request=generation_request()
         else:
             from app.product import budget_supplement
             class Later(datetime):

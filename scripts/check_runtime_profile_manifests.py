@@ -8,8 +8,8 @@ import json
 
 
 CURRENT_INVENTORY_SNAPSHOTS = {
-    'natural-duty': 'natural_duty_qualification_inventory_chat_product_20261102.json',
-    'sol-review': 'sol_review_qualification_inventory_draft_recovery_20261103.json',
+    'natural-duty': 'natural_duty_qualification_inventory_product_limits_20261103.json',
+    'sol-review': 'sol_review_qualification_inventory_product_limits_20261103.json',
 }
 
 

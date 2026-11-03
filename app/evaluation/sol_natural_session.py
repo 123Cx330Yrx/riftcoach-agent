@@ -315,6 +315,12 @@ class CandidateSession:
                 raise SessionBlocked('session_closed')
             if kind == 'model':
                 if self.worker_product:
+                    from app.product.generation_request import validate_new_request
+                    from app.evaluation.golden_stream_bridge import REQUEST
+                    try:
+                        validate_new_request(self.contract_module, REQUEST.validate_json(json.dumps(request)))
+                    except (ValueError, KeyError, TypeError, OverflowError):
+                        raise SessionBlocked('session_product_request_limits') from None
                     from app.product.draft_guard_recovery import guard_new_request
                     guard_new_request(self, request)
                 if self.max_new_models is not None and self.new_models >= self.max_new_models:

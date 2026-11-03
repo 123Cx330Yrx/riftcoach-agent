@@ -21,11 +21,13 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 用户再次明确国服英雄/装备通用叫法、外号和面向玩家的口吻。已有TerminologyStore/name_naturalizer及旧报告脚本支持ID与自然称呼分离，但当前Worker未接入这套处理，不能据模块存在宣称已完成。只因“米利奥/米利欧”字面不同就判事实错误不成立；也未证明前者是已确认通用别名。后续按实体/版本/上下文识别，再验自然称呼。沿2026-10-30要求验关键判断、依据、下一步、本人/观摩边界与手机阅读；可选风格不升级事实拒绝。实际SafeMarkdown仍显示转义纯文本，标题/表格标记原样显示，安全结构化呈现尚未完成。
 
-累计7HTTP/100656known tokens/243.406活动秒，unknown/receiptless/retry/未决均0；本次增4HTTP/70807tokens。4次新审查实际请求均16384输出/300秒。原3次generation配置32768违反原16384请求上限的历史事实保留，实际输出2769不能抵消该违规；未来正常generation的发送上限缺口仍须修。总8HTTP/401920含unknown/900秒及2026-11-03T16:30:06Z截止未扩大；最多4次新审查授权已用完，余总槽不是再次调用许可。
+累计7HTTP/100656known tokens/243.406活动秒，unknown/receiptless/retry/未决均0；本次增4HTTP/70807tokens。4次新审查实际请求均16384输出/300秒。原3次generation配置32768违反原16384请求上限的历史事实保留，实际输出2769不能抵消该违规；未来正常generation的发送上限缺口已按下述新版本离线修复，真实新调用仍未重测。总8HTTP/401920含unknown/900秒及2026-11-03T16:30:06Z截止未扩大；最多4次新审查授权已用完，余总槽不是再次调用许可。
 
 1440/320实际只读浏览器核验：报告与最终稿一致、费用一致、无横向溢出/页面异常/恢复或新发；SQL仍1任务/1会话、1条assistant消息、Training为0，2份Evidence快照保留旧拒绝与新发布。最新checkpoint0039 SHA5a62399f189ad5637839efd4f5a714358410a80a7db29dcd26f48419cf251776；Control/execution-1/segment-04/latest-db.dump SHA5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533；recovery-snapshot.zip SHA38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f，219项CRC/逐字已核。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`；runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`。inspection完成，driver/API/web/临时容器已清理，冻结目录干净，monitor已删除；无待观察执行，不再轮询该终局CI。
 
-下一行动：以这份实际报告为依据，离线对齐“国服称呼＋教练口吻＋来源范围＋安全排版”的实际产品消费者和验收样例，复用现有术语机制；具体工作卡见`docs/plans/2026-11-01-chat-candidate-offline.md`末节。新generation上限修复作为任何未来付费的前置依赖。保存终局原件、不改已审稿、不另加润色模型调用；本次授权与终局记录合并一次提交推送。结果`data/evaluation/results/sol_product_chat_review_continuation_completed_20261103.json`；名称判断更正另存Control/player-language-inspection-addendum.json。
+正常生成限额离线修复已完成：产品独立generation策略和总描述统一16384/300，新意图、预算后实际请求及Flash子进程读取设置前均核范围；产品版本1.7.5/Chat1.7.6。147项定向检查及4项真实PostgreSQL/Worker/API检查通过，12Runtime/2当前清单通过；原15的案例、来源、稿件和请求摘要未变。真实SDK替身wire已核16384，超限零Key/零发送，成功操作可回放。旧合同/32768原件仍只按原字节读，旧绑定不静默迁移；原冻结HEAD/DB/快照未变、临时测试容器清理。本包新增真实模型/来源请求均0，不计新语义质量证据。结果：data/evaluation/results/sol_product_generation_limits_offline_20261103.json。
+
+下一行动：合并本包一次提交并核对应HEAD的CI；不重复查询旧终局CI或付费重跑。随后按既定P3/P4顺序处理已证的来源范围表述、玩家阅读与安全排版，落实国服称呼/外号和自然教练口吻；本轮提醒不改变优先级。称呼/口吻尚未实现，不能以记录需求代替完成。四审查许可已消费，无新付费授权。
 
 以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
 

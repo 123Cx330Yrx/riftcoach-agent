@@ -188,6 +188,9 @@ def validate_request(request, *, transport_id=TRANSPORT_ID):
     if transport_id in NATURAL_TRANSPORTS:
         # Candidate identity belongs to both parent and child validation. Do not
         # relabel a legacy request, even when its model and timeout would fit.
+        from app.product import generation_request
+        if request.metadata.get('evaluation_policy_id') == generation_request.POLICY_ID:
+            return generation_request.request_bytes(request, transport_id=transport_id)
         from app.evaluation.natural_duty_contract import request_bytes
         return request_bytes(request, transport_id=transport_id)
     if ("natural_duty_candidate" in request.metadata

@@ -51,6 +51,9 @@ def validate_business(business, context):
 
 def role_for_request(request):
     if CONTEXT not in request.metadata:
+        from . import generation_request
+        if request.metadata.get('evaluation_policy_id') == generation_request.POLICY_ID:
+            return generation_request.role_for_request(request)
         if parent.role_for_request(request) != 'generation':
             raise ValueError('product_review_context_required')
         return 'generation'
@@ -69,6 +72,11 @@ def request_identity(request):
 
 def request_bytes(request, *, transport_id=None):
     if role_for_request(request) == 'generation':
+        from . import generation_request
+        if request.metadata.get('evaluation_policy_id') == generation_request.POLICY_ID:
+            return generation_request.request_bytes(request, transport_id=transport_id)
+        # Historical bytes remain readable; the new-intent guard refuses to
+        # send a legacy generation request under the current product contract.
         return parent.request_bytes(request, transport_id=transport_id)
     if transport_id not in (None, REVIEW_TRANSPORT):
         raise ValueError('product_stream_transport_binding')
@@ -84,6 +92,11 @@ def request_sha(request):
 
 class ProductContract(parent.DualNecessityContract):
     @property
+    def request_policy(self):
+        from .generation_request import policy
+        return policy()
+
+    @property
     def context_policy(self):
         from app.evaluation.golden_position_policy import POSITION_POLICY as historical
         from .review_purpose import POSITION_POLICY
@@ -95,9 +108,12 @@ class ProductContract(parent.DualNecessityContract):
     request_identity = staticmethod(request_identity)
 
     def descriptor(self):
+        from .generation_request import POLICY_ID, MAX_OUTPUT_TOKENS, REQUEST_TIMEOUT_S
         value = super().descriptor()
         value.update(contract_id=VERSION, component_contract=VERSION,
             max_calls=8, total_tokens=401920, execution_timeout_s=900,
+            max_output_tokens=MAX_OUTPUT_TOKENS, request_timeout_s=REQUEST_TIMEOUT_S,
+            generation_policy_reused=POLICY_ID, inference_policy_id=POLICY_ID,
             transport_retries=2, generation_logical_calls=4,
             time_basis='cumulative-active-seconds', workflow_scope='opt-in-product',
             qualification_only=False, publication_policy='dual-review-exact-application-v1',
@@ -106,6 +122,8 @@ class ProductContract(parent.DualNecessityContract):
             context_policy_sha256=hashlib.sha256(self.context_policy.encode()).hexdigest())
         value['roles']['review'].update(transport_id=REVIEW_TRANSPORT,
             thinking_profile_id=REVIEW_THINKING_PROFILE)
+        value['roles']['generation'].update(max_output_tokens=MAX_OUTPUT_TOKENS,
+            request_timeout_s=REQUEST_TIMEOUT_S, request_policy_id=POLICY_ID)
         return value
 
     def snapshot(self):
@@ -120,7 +138,7 @@ class ProductContract(parent.DualNecessityContract):
             raise ValueError('sol_product_provider_contract')
 
 
-CONTRACT = ProductContract(version='1.7.3')
+CONTRACT = ProductContract(version='1.7.5')
 
 
 def component_fingerprints(skill):
@@ -129,6 +147,7 @@ def component_fingerprints(skill):
     rows['generation_policy'] = ComponentFingerprint(component_id='generation_policy',
         source='generation_policy', sha256=hashlib.sha256(CONTRACT.context_policy.encode()).hexdigest())
     for path in ('app/product/sol_contract.py', 'app/product/sol_workflow.py',
+                 'app/product/generation_request.py',
                  'app/product/manual_retry_grant.py', 'app/product/review_purpose.py', 'scripts/reviewer_responses_stream.py',
                  'app/product/stream_migration.py', 'app/product/budget_supplement.py', 'app/workers/sol_continuation.py',
                  'app/product/zero_send_recovery.py',

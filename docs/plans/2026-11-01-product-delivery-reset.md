@@ -3,9 +3,9 @@
 **Goal:** 先交付普通用户可发起、可恢复、可核源、可阅读的可信复盘，再按既有路线完成 Coach / Review / Training / Evidence 联动和整体体验。
 **Architecture:** 复用现有 API → SQL 任务 → Worker → 来源/Memory → Flash 生成 → Sol 双审 → 必要时唯一修订与同稿双 fresh → Evidence/报告查询路径。传输、任务执行、内容质量、界面消费分别验证；开发诊断不进入产品正常使用流程。
 **Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
-**Status:** P1_complete / P2_partial_verified / P3_not_accepted。2026-11-03同任务标题拒绝恢复准备已完成：102父原件/12操作/3成功生成及29849tokens保留，真实最新DB经普通resume/Worker零发送到首审，未发布稿逐字不改。新审查请求上限已在intent前实核16384/300，旧生成32768配置违规仍保留。47项SQL、38项Chat/绑定与Runtime清单覆盖完成；本次新提交CI待核。原授权不自动付费重试，准备方案为同任务最多4次审查、原总预算/截止不变。详细材料见[Chat工作卡](2026-11-01-chat-candidate-offline.md)及sol_product_chat_draft_recovery_prepared_20261103.json；真实内容和发布闭环仍未验收，原15与Stage8E/默认准入不变。
+**Status:** P1_complete / P2_partial_verified / P3_not_accepted。2026-11-03同任务受控续接已完成双初审、唯一确定性应用、同稿双fresh及SQL/API/1440与320浏览器消费；累计7HTTP/100656known，unknown/retry/未决均0。四次审查许可已全部消费，进程/容器和monitor已收尾。原三次生成32768请求配置违规保留；正常生成请求16384/300上限已离线修复（151项定向/SQL检查、12Runtime/2清单通过，当前提交CI待核），随后按依赖处理来源范围表述与P4玩家阅读。国服称呼/外号和自然教练口吻是既有必做要求，本轮提醒不改变优先级。详细真实结果见sol_product_chat_review_continuation_completed_20261103.json及[Chat工作卡](2026-11-01-chat-candidate-offline.md)。代表性闭环已实证，不等于P3全部验收或日常使用准入；原15、Stage8E/默认准入不变。
 
-## 1. 起点与目标层次
+## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）
 
 已核开发 HEAD 为 `4c7aead1ad1bc9b755b05dc2a239057874beae26`，checkout 为 `D:/riftcoach-review-route-diagnostics`。Stage8E 仍 in_progress，主树未完成前端保持独立。
 

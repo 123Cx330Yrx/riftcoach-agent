@@ -157,7 +157,9 @@ class CandidateEvaluationRequestPolicy:
             ("glm-5.3-review-diagnostic-high-32768", "1.0.0", "zhipu", "glm-5.3"))
         timed_policy = (self.policy_id, self.version, self.provider_id, self.model) == (
             "glm-5.3-review-time600-high-32768", "1.0.0", "zhipu", "glm-5.3")
-        timeout_limit = 660 if timed_policy else 360 if capacity_policy else 300
+        product_policy = (self.policy_id, self.version, self.provider_id, self.model) == (
+            "sol-product-generation-time300-16384-v1", "1.0.0", "riftcoach-mixed", "flash-generation-tianjige-sol-review-v1")
+        timeout_limit = 660 if timed_policy else 360 if capacity_policy or product_policy else 300
         for field_name in (
             "agent_timeout_s",
             "llm_tool_timeout_s",
@@ -176,7 +178,7 @@ class CandidateEvaluationRequestPolicy:
             raise ValueError(
                 "transport_timeout_s must cover the LLM tool deadline"
             )
-        output_limit = (32768 if capacity_policy or timed_policy else 16384 if (self.policy_id, self.version, self.provider_id, self.model) ==
+        output_limit = (32768 if capacity_policy or timed_policy else 16384 if product_policy or (self.policy_id, self.version, self.provider_id, self.model) ==
                         ("glm-5.3-flash-coach-high-16384", "1.0.0", "zhipu", "glm-5.3-flash") else 8192)
         if (
             isinstance(self.max_output_tokens, bool)
