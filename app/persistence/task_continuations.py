@@ -209,8 +209,16 @@ class PostgresTaskContinuations:
             proof_sha256=proof_sha256, runs_root=runs_root, verify=verify,
             recovery_key='protocol_recovery', recovery_reason='protocol_rejection_recovered')
 
+    def recover_draft_guard_rejection(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root):
+        """Recover a receipted pre-review heading rejection; no paid permission."""
+        from app.product.draft_guard_recovery import verify
+        return self._recover_rejected(owner_id=owner_id, task_id=task_id, proof_path=proof_path,
+            proof_sha256=proof_sha256, runs_root=runs_root, verify=verify,
+            recovery_key='draft_guard_recovery', recovery_reason='draft_heading_rejection_recovered',
+            terminal_reason='draft_safety_failed')
+
     def _recover_rejected(self, *, owner_id, task_id, proof_path, proof_sha256, runs_root,
-                          verify, recovery_key, recovery_reason):
+                          verify, recovery_key, recovery_reason, terminal_reason='evaluation_failed'):
         from app.evaluation.sol_natural_session import SessionBlocked
         if not isinstance(task_id, UUID) or not re.fullmatch(r'[0-9a-f]{64}', proof_sha256):
             raise ContinuationError('continuation_conflict')
@@ -225,7 +233,7 @@ class PostgresTaskContinuations:
                     return dict(task_id=str(task_id), run_id=record.run_id, status=record.status, replayed=True)
                 if recovery_key != 'protocol_recovery' or previous.get('previous') is not None:
                     raise ContinuationError('continuation_conflict')
-            if (record.status != TaskStatus.SUCCEEDED.value or record.terminal_reason != 'evaluation_failed'
+            if (record.status != TaskStatus.SUCCEEDED.value or record.terminal_reason != terminal_reason
                     or record.lease_token is not None or record.cancel_requested_at is not None
                     or record.report_available
                     or record.publication_status not in (None, 'rejected')):

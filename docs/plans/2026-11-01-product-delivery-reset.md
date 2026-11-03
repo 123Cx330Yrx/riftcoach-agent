@@ -3,7 +3,7 @@
 **Goal:** 先交付普通用户可发起、可恢复、可核源、可阅读的可信复盘，再按既有路线完成 Coach / Review / Training / Evidence 联动和整体体验。
 **Architecture:** 复用现有 API → SQL 任务 → Worker → 来源/Memory → Flash 生成 → Sol 双审 → 必要时唯一修订与同稿双 fresh → Evidence/报告查询路径。传输、任务执行、内容质量、界面消费分别验证；开发诊断不进入产品正常使用流程。
 **Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
-**Status:** P1_complete / P2_partial_verified / P3_not_accepted。2026-11-03已执行一次用户明确批准的新observed任务：普通入口取源及3次Flash生成成功；因本地标题识别误拒绝，Sol/Chat请求0、报告未发布。括号标题已离线修复并验证，不能把它当成完整内容或真实Chat验收。另发现操作者方案16384与Flash请求32768输出上限不一致，实际用量未超但配置漏核；原件/账目完整保存，未自动重试，临时容器已清理。下一包先校准实际待发送请求与授权，并验证同任务保留生成前缀恢复，不重开任务或扩预算。详见[Chat工作卡](2026-11-01-chat-candidate-offline.md)及`sol_product_chat_p3_draft_rejected_20261103.json`。已全绿0a99c28a/CI41430754834只证明原执行版本工程检查；标题修复另走相称检查和CI。Stage8E、默认准入、原15完成和既有未完路线保持。
+**Status:** P1_complete / P2_partial_verified / P3_not_accepted。2026-11-03同任务标题拒绝恢复准备已完成：102父原件/12操作/3成功生成及29849tokens保留，真实最新DB经普通resume/Worker零发送到首审，未发布稿逐字不改。新审查请求上限已在intent前实核16384/300，旧生成32768配置违规仍保留。47项SQL、38项Chat/绑定与Runtime清单覆盖完成；本次新提交CI待核。原授权不自动付费重试，准备方案为同任务最多4次审查、原总预算/截止不变。详细材料见[Chat工作卡](2026-11-01-chat-candidate-offline.md)及sol_product_chat_draft_recovery_prepared_20261103.json；真实内容和发布闭环仍未验收，原15与Stage8E/默认准入不变。
 
 ## 1. 起点与目标层次
 

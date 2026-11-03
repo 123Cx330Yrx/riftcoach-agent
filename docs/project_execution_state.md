@@ -11,19 +11,19 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-11-03，用户“确认继续”批准的P3新任务已经执行并完成失败收尾。当前开发树为`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`；原backend和主树未完成前端不动。总计划P1_complete / P2_partial_verified，P3仍未通过；Stage8E、原15完成及默认准入不变。
+2026-11-03，按用户“继续”完成同一P3任务的标题误拒绝恢复准备；未新增真实模型或来源请求。开发树仍为`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。P1_complete / P2_partial_verified / P3_not_accepted，Stage8E、原15完成和默认准入不变。
 
-执行源码固定0a99c28a9594a012cc8e72ff5bbe68c72d358f4e（CI41430754834十二项success，不再轮询）。通过正常PlayerLink→Conversation→Review API→Worker只创建task `04c9a865-db03-4edb-af9e-70cb8d719db0` / run `review_ee91ab480ecf4c4992f82ec08cc4bbf4`。新授权原话及SHA e04215bf…保留，原范围8请求/401920含unknown/900活动秒、每次300秒/16384输出、北京时间11月4日00:30:06截止；明确不自动付费重试。详细工作卡见[Chat产品接线](plans/2026-11-01-chat-candidate-offline.md)，总体路线见[推进计划](plans/2026-11-01-product-delivery-reset.md)。
+标题修复afe24661 / CI41486674481十二项全绿已核，不再轮询。新增窄范围create-only恢复，仅接受Chat、report_missing_headings、首审前完整成功生成前缀，并核原终态/trace/全部回执和当前标题结构。102父原件、12项操作、3次生成和原拒绝完整归档，父目录/最新父DB不改。SQL沿现有恢复事务保留失败事件、绑定新Evidence refresh_id；随后普通resume（manual_retry=false）与Worker回放，不删除terminal或重开任务。
 
-实际Riot新取源5/5场queue420、无回退/排除；比赛日期为北京时间10月13—15日、版本16.20.824.8524，不能称为最近几天。3次Flash生成成功，累计29849 known tokens（27080输入/2769输出）、unknown/receiptless/retry均0，61.047活动秒。随后terminal=draft_safety_failed，manifest failure_code=report_missing_headings；Sol/Chat双审、应用和fresh均0，报告409、未发布，不能说真实Chat审查已经验证。
+实际原任务`04c9a865-db03-4edb-af9e-70cb8d719db0` / `review_ee91ab480ecf4c4992f82ec08cc4bbf4`从最新fb970618…DB恢复并零发送到facts-initial：3HTTP/29849known、unknown/receiptless/retry/未决均0，活动62.078秒。5场原来源和草稿逐字保留，source/model/真实Key读取均0。仍1任务/1会话、assistant/Training均0，旧拒绝证据快照保留，报告仍未发布。正式审查/应用/fresh仍0，实际内容问题未验收，也未导入本地诊断意见。
 
-原稿第六节“训练计划（观摩性质）”被旧识别器当成缺失；同一原稿+冻结guard离线复现，开发树已支持完整中英文括号限定语，正文不改。111项相称报告消费测试、12个Runtime/2份当前清单通过；不把格式放行当内容验收。全文仍有混合位置输局“发育塌陷”推断，以及将已用的静态中文映射与缺失的历史版本证据混为一谈的问题，留待正式审查/局部修订，不导入本地诊断意见冒充模型意见。
+新request guard在发送意图写入前核实际待发送请求：只允许review，max_tokens<=16384、timeout<=300；历史生成32768配置违规保留，只能回放不能新发。实际首审待发请求预留78924（62540输入上界+16384输出），这只是待发请求摘要而非已发送HTTP。总上限8HTTP/401920含unknown/900活动秒不变；余5槽/372071tokens/837.922秒。
 
-另有操作者启动预检错误：批准方案写每请求16384，但Flash三次实际发送配置max_tokens=32768；实际输出327/115/2327均未超16384，总预算也未超。实际用量较低不能证明请求上限合规。原授权/请求不回写；已新增只读scope核查，正确拒绝当前配置，零Key/零模型。后续必须逐角色核实际待发送请求，不把Sol审查上限当作Flash生成上限，也不因总额余量自动放行。
+最新runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`；checkpoint0004 SHA a7f34dc7deed3f4a6757ece025a608eae4230d3d7a9a68a641f4754585d351b8。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`，`recovered-db.dump` SHA8e720688c06832f23c71c97a6eafce9039ab9ec659130b7b2c6986df9ef38076；恢复proof SHA06fcf4b902db3ad481a69802ff3e636f5d918736de30a60d5354c62ab5244f9c。64项恢复ZIP逐项/CRC已核；其内父归档包含102原件。未来必须采用这些最新材料，不退回父DB或原closed session。
 
-实际浏览器1440/320：拒绝稿不可见、29849/0用量显示、无横向溢出/JS错误，刷新无新发送；SQL仅1任务/1会话，assistant消息/Training计划及进度均0。102份原件逐字保留，含DB的103项恢复ZIP已逐项验证；容器、API、前端及driver已退出。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102`；最新DB为`execution-1/latest-db.dump`，SHA fb970618cd63bcc9227c91274ac422f3411e45f8263b5f8b67ced28430717643。最新checkpoint SHA c4217d1e3fc8e8da8020d054e955f065210c116cb5ac2db9838f0e7ab5caa010；runs_root=`D:/rc-chat-product-20261103/runs`。结果`data/evaluation/results/sol_product_chat_p3_draft_rejected_20261103.json`。
+本包验证覆盖47项SQL恢复（旧36、新11）、38项Chat产品/绑定及12Runtime/2当前清单；真实模型均为替身。测试曾与源码编辑重叠造成指纹漂移，已固定源码后逐项复核；一次read_error用量断言未稳定复现，原因未证，不归咎上游；取消用例改用正常服务修正错误的SQL形状。详细结果`data/evaluation/results/sol_product_chat_draft_recovery_prepared_20261103.json`。本次新业务提交还需同HEAD CI；旧绿CI不代替它。
 
-下一行动：准备保留这次终态/账目/3次成功生成的同任务恢复，并在真实SQL/Worker中零发送验证到首审边界；先校准实际下一请求的授权上限。session已closed，现有两种历史恢复器均不适用，不能删除terminal直接resume、改原稿或重开任务。新付费不自动进行；标题修复的新CI只验证该变更，不解除上述恢复与授权缺口。无运行中的worker/waiter或monitor，不重复无关SQL/浏览器/已终局CI。Docker本次容器正常运行清理，旧兼容启动绕行不宣称底层永久修复。
+下一行动：完成本包合并提交与新CI核验后，仅就已准备的同任务审查续接作决定。Control/decision-ready.json仍authorized=false：最多4个新review（双初审及必要双fresh），不新生成/新任务、不自动重试；同一总预算和北京时间11月4日00:30:06截止不延长。原authorization.json明确paid_retry_after_failure=false，因此本轮“继续”已执行离线恢复准备，未据剩余额度自动付费。无付费driver/waiter/monitor；原稿仍需正式语义验收，默认准入不变。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 

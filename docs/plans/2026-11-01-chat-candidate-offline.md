@@ -161,3 +161,19 @@ ed1ad9c0 / CI41407947133已终局：SQL326项分片和迁移汇总均成功，�
 账目实读发现启动预检遗漏：方案承诺每次16384输出，Flash实际配置32768；三次实际输出327/115/2327未超，但请求上限不能记合规。外置只读scope检查正确拒绝该配置，不改历史合同来掩盖。后续新发送必须直接核实际请求和角色边界。
 
 内容也未通过全文验收：混合位置的输局均值不能支撑所有输局“发育塌陷”，两个中路负局CS均值7.695反高于中路胜局7.56；已用静态名称映射与缺失历史版本证据需要区分。本地分析不作为审查意见导入。闭环仍缺首审/修订/fresh/发布；session closed，历史恢复器不适用。下一包先做同任务保留前缀恢复与零发送边界验证，不重买生成，不自动追加付费。结果sol_product_chat_p3_draft_rejected_20261103.json。
+
+### 2026-11-03 同任务草稿拒绝恢复准备完成
+
+2026-11-03，按用户“继续”完成同一P3任务的标题误拒绝恢复准备；未新增真实模型或来源请求。开发树仍为`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。P1_complete / P2_partial_verified / P3_not_accepted，Stage8E、原15完成和默认准入不变。
+
+标题修复afe24661 / CI41486674481十二项全绿已核，不再轮询。新增窄范围create-only恢复，仅接受Chat、report_missing_headings、首审前完整成功生成前缀，并核原终态/trace/全部回执和当前标题结构。102父原件、12项操作、3次生成和原拒绝完整归档，父目录/最新父DB不改。SQL沿现有恢复事务保留失败事件、绑定新Evidence refresh_id；随后普通resume（manual_retry=false）与Worker回放，不删除terminal或重开任务。
+
+实际原任务`04c9a865-db03-4edb-af9e-70cb8d719db0` / `review_ee91ab480ecf4c4992f82ec08cc4bbf4`从最新fb970618…DB恢复并零发送到facts-initial：3HTTP/29849known、unknown/receiptless/retry/未决均0，活动62.078秒。5场原来源和草稿逐字保留，source/model/真实Key读取均0。仍1任务/1会话、assistant/Training均0，旧拒绝证据快照保留，报告仍未发布。正式审查/应用/fresh仍0，实际内容问题未验收，也未导入本地诊断意见。
+
+新request guard在发送意图写入前核实际待发送请求：只允许review，max_tokens<=16384、timeout<=300；历史生成32768配置违规保留，只能回放不能新发。实际首审待发请求预留78924（62540输入上界+16384输出），这只是待发请求摘要而非已发送HTTP。总上限8HTTP/401920含unknown/900活动秒不变；余5槽/372071tokens/837.922秒。
+
+最新runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`；checkpoint0004 SHA a7f34dc7deed3f4a6757ece025a608eae4230d3d7a9a68a641f4754585d351b8。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`，`recovered-db.dump` SHA8e720688c06832f23c71c97a6eafce9039ab9ec659130b7b2c6986df9ef38076；恢复proof SHA06fcf4b902db3ad481a69802ff3e636f5d918736de30a60d5354c62ab5244f9c。64项恢复ZIP逐项/CRC已核；其内父归档包含102原件。未来必须采用这些最新材料，不退回父DB或原closed session。
+
+本包验证覆盖47项SQL恢复（旧36、新11）、38项Chat产品/绑定及12Runtime/2当前清单；真实模型均为替身。测试曾与源码编辑重叠造成指纹漂移，已固定源码后逐项复核；一次read_error用量断言未稳定复现，原因未证，不归咎上游；取消用例改用正常服务修正错误的SQL形状。详细结果`data/evaluation/results/sol_product_chat_draft_recovery_prepared_20261103.json`。本次新业务提交还需同HEAD CI；旧绿CI不代替它。
+
+下一行动：完成本包合并提交与新CI核验后，仅就已准备的同任务审查续接作决定。Control/decision-ready.json仍authorized=false：最多4个新review（双初审及必要双fresh），不新生成/新任务、不自动重试；同一总预算和北京时间11月4日00:30:06截止不延长。原authorization.json明确paid_retry_after_failure=false，因此本轮“继续”已执行离线恢复准备，未据剩余额度自动付费。无付费driver/waiter/monitor；原稿仍需正式语义验收，默认准入不变。

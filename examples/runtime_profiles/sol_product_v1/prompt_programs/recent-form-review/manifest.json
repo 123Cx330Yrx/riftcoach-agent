@@ -352,7 +352,7 @@
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "22a65d6cd98ef03abbaa76117681cafadfdc185e75be57b9129d1b5539cff648"
+      "sha256": "0acf13b7cfd479204d438f47e4ba17bada8f588c5fc80b6f177b6ac133caa407"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
@@ -427,7 +427,7 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "9bb693c1ae068819280565c5830da6150b5a69c7b97ea9993636964bb9ae14aa"
+      "sha256": "62b2daca492ce35386f07dfdba4adf40904ae2ac0e14516a5934e380ad8de143"
     },
     {
       "component_id": "app.product.sol_workflow",
@@ -470,6 +470,11 @@
       "sha256": "a5185ee486f32c7b13a6b35b2ea14aefc9cc50f18f71f5608e254c960e00ec5b"
     },
     {
+      "component_id": "app.product.draft_guard_recovery",
+      "source": "app/product/draft_guard_recovery.py",
+      "sha256": "b636ca21de0b59e163190d075a72e1a144e9a1314ef3b7cbb0ec54ebeb560820"
+    },
+    {
       "component_id": "app.product.protocol_failure_recovery",
       "source": "app/product/protocol_failure_recovery.py",
       "sha256": "e601b261035450fc61d036b49f872aaa8598a46b8915a0ffc7da4e3537fb1650"
@@ -487,12 +492,12 @@
     {
       "component_id": "app.persistence.task_repository",
       "source": "app/persistence/task_repository.py",
-      "sha256": "4c81ea9f874715255bd74a372a7ef316e1c85535e89263a1ddb0e060c130dc63"
+      "sha256": "946bbf0456fb4b250db40da44f9564b1224d4c8e9e994eb0866860213160bb4d"
     },
     {
       "component_id": "app.persistence.task_continuations",
       "source": "app/persistence/task_continuations.py",
-      "sha256": "15b7cd8b8a8cb60ad7cceb871f73c908583af9d73eb9fc07ecb6ebfc01716a6d"
+      "sha256": "a4cff22a3fde30a983e0fd63d8971149891d7ab3a90af33a3a7057cec8c1a8ac"
     },
     {
       "component_id": "coach_execution_contract",
@@ -500,5 +505,5 @@
       "sha256": "c395a36ee274cf6c9a672e9608067cace500365d534c2c762850038164771c28"
     }
   ],
-  "program_sha256": "f4136612e18fabf13ffe2a7e33ff0b4e6b4db553a81221b88426911f858f93e6"
+  "program_sha256": "9b480bb1a892471d43dea451aa1bd4c031c1c8763031abf72b39ac0af7284538"
 }

@@ -1,3 +1,9 @@
+## 2026-11-03 同任务已恢复到首审边界（零新发送）
+
+完成create-only Chat标题拒绝恢复；保留102父原件、12项操作、3成功生成和29849tokens，原终态在归档及SQL事件中。真实最新父DB已恢复到独立副本，经普通resume/Worker到facts-initial，Riot/模型/真实Key读取0、原稿逐字一致，活动累计62.078秒。待发请求16384输出/300秒，预留78924tokens；新发送前角色/额度校验已接入，历史32768配置违规不改写。
+
+47项SQL恢复、38项Chat/绑定和12Runtime/2当前清单已覆盖；失败与复核边界见结果JSON。最新checkpoint a7f34dc7…、DB8e720688…、proof06fcf4b9…、64项ZIP已核；临时容器和Worker已清理。一次合并提交后核新CI，旧绿CI不替代本包。新付费方案仍authorized=false，最多4次同任务审查、原预算/截止不延长，需明确决定。P3未验收，Stage8E及原15不变。结果sol_product_chat_draft_recovery_prepared_20261103.json。
+
 ## 2026-11-03 P3真实任务：本地标题误拒绝、范围上限漏核及离线收尾
 
 新授权“确认继续”后，以已绿0a99c28a从普通API/Worker执行一次ShowMaker observed任务。Riot实际新取5场queue420，比赛为10月13—15日/16.20；3次Flash成功、29849 tokens/61.047活动秒、unknown/retry/receiptless为0。草稿标题“训练计划（观摩性质）”被报告识别器误判缺节，业务拒绝且未进入Sol；原manifest保存report_missing_headings，同原稿/冻结guard离线复现。

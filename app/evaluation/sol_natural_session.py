@@ -314,6 +314,9 @@ class CandidateSession:
             if (self.root/'terminal.json').exists() or (self.root/'seal.json').exists():
                 raise SessionBlocked('session_closed')
             if kind == 'model':
+                if self.worker_product:
+                    from app.product.draft_guard_recovery import guard_new_request
+                    guard_new_request(self, request)
                 if self.max_new_models is not None and self.new_models >= self.max_new_models:
                     raise SessionPaused('session_model_boundary')
                 if self.before_new_model is None:

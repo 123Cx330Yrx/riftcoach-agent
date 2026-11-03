@@ -1,3 +1,10 @@
+## 2026-11-03 closed草稿恢复与实际请求边界
+
+1. 原closed session不能直接resume；保留父终态ZIP并将同task/run的已验回执前缀导入新session，可由现有SQL恢复事务和普通Worker到首审，实际最新DB零发送验证已成功。Evidence旧publication-1必须保留，新发布使用proof绑定refresh_id；替身SQL消费验证了两份快照。
+2. 限制必须核实际新model请求，不能只看review合同就声称generation符合16384。恢复marker被checkpoint固定；仅新发送核review/16384/300，原生成按原字节回放，读取异常作为SessionBlocked，避免吞成业务拒绝。新任务生成限额问题不被此恢复伪装解决。
+3. 验证期间并发改源码使四条测试明确报manifest指纹漂移，另有service_configuration_invalid；固定源码后相关项通过。一次read_error用量断言初次失败、单独复核通过，原原因未证；不据此宣称上游故障。取消负例不得乱写违反约束的SQL，已走正常服务取消并核resume拒绝。
+4. 本地实际前缀恢复、替身发布与真实模型语义质量是三种证据；当前只有前两种。未改正文/诊断意见，实际首审仍未发送。结果sol_product_chat_draft_recovery_prepared_20261103.json。
+
 ## 2026-11-03 P3真实任务：本地标题误拒绝、范围上限漏核及离线收尾
 
 新授权“确认继续”后，以已绿0a99c28a从普通API/Worker执行一次ShowMaker observed任务。Riot实际新取5场queue420，比赛为10月13—15日/16.20；3次Flash成功、29849 tokens/61.047活动秒、unknown/retry/receiptless为0。草稿标题“训练计划（观摩性质）”被报告识别器误判缺节，业务拒绝且未进入Sol；原manifest保存report_missing_headings，同原稿/冻结guard离线复现。
