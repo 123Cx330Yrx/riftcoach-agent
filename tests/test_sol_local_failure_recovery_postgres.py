@@ -241,8 +241,13 @@ def test_recovery_new_request_scope_precedes_intent_and_boundary(draft_rejected,
         before = tree(session.root / "operations")
         def no_send():
             pytest.fail("request guard called provider")
+        # The ordinary product cap now runs before the narrower recovery scope;
+        # both guards must still precede the intent and any provider action.
+        reason = ("session_model_boundary" if mutation == "valid" else
+                  "session_product_request_limits" if mutation in ("cap", "timeout") else
+                  "session_new_request_scope_rejected")
         with pytest.raises(SessionPaused if mutation == "valid" else SessionBlocked,
-                           match="session_model_boundary" if mutation == "valid" else "session_new_request_scope_rejected"):
+                           match=reason):
             session.operation("model", pending, no_send)
         assert tree(session.root / "operations") == before
 

@@ -28,7 +28,8 @@ def test_current_inventory_rebuilds_without_changing_historical_qualification():
     new_rows = {r['component_id']: r for r in value['component_fingerprints']}
     assert new_rows.keys() == old_rows.keys()
     assert {k for k in new_rows if new_rows[k] != old_rows[k]} == {
-        'app.runtime.coach_contract', 'app.runtime.coach_budget', 'app.runtime.models', 'app.product.natural_duty_candidate'}
+        'app.runtime.coach_contract', 'app.runtime.coach_budget', 'app.runtime.models', 'app.product.natural_duty_candidate',
+        'app.model_runtime', 'app.evaluation.golden_stream_bridge'}
     assert value['provider_calls'] == value['new_host_tasks'] == value['new_qualification'] == 0
     assert not value['qualified']
 
