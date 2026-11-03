@@ -1,0 +1,128 @@
+{
+  "kind": "sol-natural-coordination-live-readiness-v1",
+  "execution_head": "1ac2388d58da37762d66ed1fd862d0129ae66f88",
+  "execution_cwd": "D:\\riftcoach-natural-coordination-execution-20261028",
+  "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+  "codex": "C:\\Users\\33502\\.codex\\packages\\standalone\\releases\\0.153.4-x86_64-pc-windows-msvc\\bin\\codex.exe",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028-control",
+  "plan_sha256": "1e66f02d2f3726f360afc225197e24c7238b0329dfc70596acff47cea59d1e8c",
+  "first_request_sha256": "626392fbda571e7c62286aa6563095507262916a17cf6e2ebeaa7d5d7da80b22",
+  "source": {
+    "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+    "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+  },
+  "candidate_contract": "natural-flash-sol-dual-necessity-development-v1",
+  "logical_generation_calls": 2,
+  "logical_review_calls": 4,
+  "limits": {
+    "execution_timeout_s": 3600,
+    "max_calls": 10,
+    "request_timeout_s": 300,
+    "total_tokens": 739840,
+    "transport_retries": 4
+  },
+  "estimated_uncached_cny": "1.0683904",
+  "hard_billing_cap": false,
+  "ci": {
+    "headSha": "1ac2388d58da37762d66ed1fd862d0129ae66f88",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobs": [
+      {
+        "name": "web-checks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "packaging-smoke",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "independent_reused": true,
+  "native": {
+    "roots": {
+      "guard_sha256": "f021e02043d6df45aebb7fe196d9ece0b2817895cfddb9b3999726c05b8708f3",
+      "checkpoint_sha256": "6a6ff540d26b7001c22df2453ac6299434125aee1e33cf1d5d11420d7a7dcb11"
+    },
+    "author": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028-authors\\07be1b22e5cf290bf7574c5315f26cab2e9edd086b0fa2a93c4e2664e3561f8a.json",
+    "author_sha256": "c30bf6b0bb3a6f6fad42bb948a50c64ef486fbc37935515bdc46fc4b9db761e5",
+    "checkpoint_sha256": "07be1b22e5cf290bf7574c5315f26cab2e9edd086b0fa2a93c4e2664e3561f8a",
+    "actual_native_final_import": true,
+    "read_only_replay": true,
+    "originals_unchanged": true,
+    "administrative_only": true,
+    "provider_requests": 0,
+    "key_read": false
+  },
+  "adapter_checks": {
+    "callback_stub_checks": 3,
+    "missing_authorization_actual_process_rejected": true,
+    "no_execution_or_claim_created": true,
+    "provider_requests": 0,
+    "real_credential_reads": 0
+  },
+  "control_inventory": {
+    "adapter-checks.json": "9c05ba0015e0159559ca38a95f3f568a191e9a22d66e0d209f9aad598d89cd50",
+    "authorization-proposal.json": "72b320f6fc19603d5253cb3a9bfbb8296381f4b20248c35aee0605d96ae1f03e",
+    "ci-readiness.json": "233dbbe7ce46fa050fc58fd41394c4dbafa8d1cd2a6dfb716ae508cae6a1e018",
+    "control-binding.json": "d366f2de2bffcae9d6b39a21bd740549335215a895022f786730f320b9c55fd5",
+    "native-dispatch.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-dispatch.txt": "6f59607558ae0c7e5d739fcf0e655977e2861314875c8aa3106dfd27d0ff7151",
+    "native-preflight-proof.json": "beb15b156a74456817b779f63f1a84d2769dc41fcedb19391d3af082d02d4387",
+    "native-submit-exit.json": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "native-submit.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-submit.stdout.txt": "b4040a6ac75a159e9845c240ca4853ea171d198aadeaa234a157be2d249ac25a",
+    "native-task-exit.json": "3ecd6c9bc7bad9049a5a7f9ca2cef3484eb6a796cd728f7b1963eda3a4298cd2",
+    "native-task.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-task.stdout.txt": "95432baa544b38a6cf07e3872b0243553c0dd5b4e05f9d420d6ab051752e3806",
+    "native-verified.json": "873beeb8fe61daf510390d3f88dd6c07977ea84f379a7a2c6def5f56720f12f5",
+    "operator.py": "a626f75dffd846af8598bf0477ba0980de77e11541b6f63eb1e4d0c75c561d6e",
+    "prepared-paths.json": "549c995d39b8a79e55772e51e2cf3affab4bec331be9925911b73f6775c11cf8",
+    "primary-startup-preflight.json": "de7bd587f98c5f4d7bd76847f49fc09cafe099d7c7a53371f3193e5f80df10ee",
+    "start-authorized.ps1": "0a36114bb17248956c7c1b15f83524f03c078b13ca7b8489575cb880b777dfa6"
+  },
+  "execution_authorized": false,
+  "local_launcher_prepared": true,
+  "paid_launcher_ready": false,
+  "provider_requests": 0,
+  "key_read": false,
+  "execution_exists": false,
+  "semantic_approval": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "remaining": [
+    "New user authorization for this exact task",
+    "Same frozen HEAD public CI all green"
+  ],
+  "historical_trials_reopened": false,
+  "automation_reenabled": false
+}

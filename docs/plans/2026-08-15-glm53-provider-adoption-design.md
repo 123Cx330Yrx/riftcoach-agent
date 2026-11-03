@@ -113,3 +113,35 @@ DeepSeek 实验变量隔离，也让旧 GLM-5.2 证据难以解释。
 
 GLM-5.3 只因为“版本号更新”不能跳过这两层。当前我们只记录迁移路线，下一步仍先完成
 5D-7 既定的零调用新鲜领域采用门设计。
+
+### 后续执行记录：RQ-165（2026-08-31）
+
+后续公开资料核对确认普通 API 的 `glm-5.3-flash` 与标准端点，G53-1 已按本设计完成本地
+thinking profile 离线 TDD。原文中的 G53-0/普通 API 未开放是当时的历史状态；当前仍不代表
+账号权限、真实协议、领域质量或默认切换。随后 G53-2 已以
+`0f97b92683e4981842e745a695864deb611bb630` / Actions `33325222755` 完成 exact-SHA 三 job 公共验证；
+下一检查点为等待独立授权的 G53-3 有界协议门。
+
+### 后续执行记录：RQ-167（2026-08-31）
+
+用户明确继续后，G53-3 以最多三次硬预算启动一次普通 API `adapter_protocol`。A1 结构化合同第 1 次调用
+返回脱敏 `authentication_failed`，A2 跳过，`calls_used=1/3`、`admitted=false`；客户端无重试，未追加请求。
+该结果不区分 Key、权限或端点接缝，也不代表模型质量。下一步需用户确认凭证接缝并另行决定是否重开同一协议门，
+G53-4 仍保持关闭。
+
+### 后续执行记录：RQ-168/169（2026-08-31）
+
+前次 Key 已确认被删除。用户创建新的普通 API Key 并修正 `.env` 后，G53-3 以普通端点和
+`glm-5.3-flash` 重开；A1 结构化合同与 A2 Agent 工具往返均通过，严格 `3/3` 次、`admitted=true`。
+脱敏结果保留在 `zhipu_glm53_flash_adapter_protocol_retry2.json`；G53-4 仍是独立、待授权的新鲜领域门。
+
+### 后续执行记录：RQ-170 G53-4（2026-08-31）
+
+用户授权后，按本设计使用全新匿名 Dataset、Input Plan 与 Prompt/Context snapshot 执行一次真实领域门；
+no-I/O preflight 先校验全部身份、预算和不可覆盖输出路径，未在预检阶段构造 Provider 或发起外部调用。
+真实运行首案第 1 次响应触发当前适配器的 `unsupported_parallel_tool_calls` 安全拒绝，后两案按首错停止跳过；
+领域使用 `1/12` calls、`0` normalized tokens，累计含 G53-3 为 `4/15` calls、`1115` tokens，费用状态 `unknown`。
+不可变脱敏结果 `zhipu_glm53_flash_domain_adoption_v1.json` SHA-256 为
+`ae4c54f421bd716f14d01e0fbf32a020f93b313d111b2ddb1832773ad53b7f45`；不含 Key、Prompt/响应正文、reasoning、
+完整请求标识或注入 marker。结论为 `completed-local-rejected`，不改变默认 GLM-5.2；新领域 runner/资产尚未
+通过 exact-SHA 公共 CI，因此不得将本地结果描述为公共生产准入，也不自动重跑已见考卷。

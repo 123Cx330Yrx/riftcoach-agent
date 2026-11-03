@@ -1,0 +1,37 @@
+{
+  "authorization": {
+    "activated_at_utc": "2026-10-31T07:50:40.024669+00:00",
+    "additional_retries": 1,
+    "authorized": true,
+    "expires_at_utc": "2026-11-01T07:50:40.024669+00:00",
+    "limits": {
+      "execution_timeout_s": 900,
+      "max_calls": 8,
+      "total_tokens": 401920
+    },
+    "new_model_requests_before_activation": 0,
+    "new_supplement_sha256": "af94f201878303b487daa957abb9d91ee56cb1b117314c310acfe6a7e5741d20",
+    "original_grant_sha256": "189858696aec46389050fb0d18e9c1c391b8cb2268bd799b4e849a6af77838e2",
+    "prior_supplement_sha256": "26a6d33c49653157b06525eee606eea99b0a70f06645dcad1765067c2e64e1e1",
+    "prior_waiter_exit_sha256": "cd5fd94d98acbe11f30b1e227e77ab17ce57bfe77ff4772e6982eef5e70e81f3",
+    "ready_sha256": "c7a975059ad7fd266582a39659bb8818553b227fac6d0e58cd7f507db3071c8d",
+    "scope": "renew unused single same-item manual retry; all cumulative limits and prior usage unchanged",
+    "user_instruction": "\u8865\u6388\u6743"
+  },
+  "binding_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\manual-retry-extension-ready-20261031\\binding-v3.json",
+  "host_path_preflight": {
+    "binding_v3_sha256": "674d3b7ec9ffc41e47fcff7f506f75afc01048a537929e804533cc273ae671f9",
+    "driver_sha256": "91ebf07a70f769814d519e65d2bd3fe481a9ea1a73362c65ca1616fa7825b15c",
+    "new_model_requests": 0,
+    "unlaunched_v2_driver_path_escape_detected": true,
+    "v3_actual_ast_root_verified": "D:/riftcoach-sol-product-query-recovery-execution-20261031"
+  },
+  "new_requests": 0,
+  "status": "renewed_waiting_same_head_ci",
+  "waiter": {
+    "binding_sha256": "674d3b7ec9ffc41e47fcff7f506f75afc01048a537929e804533cc273ae671f9",
+    "ci_id": 41178505872,
+    "pid": 37880,
+    "started_at_utc": "2026-10-31T07:51:56.305364+00:00"
+  }
+}

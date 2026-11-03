@@ -1,0 +1,115 @@
+{
+  "version": "reviewer-responses-offline-v1",
+  "date": "2026-10-15",
+  "base_head": "8bc45457e32696857c3361cb6d7e7b0201f67947",
+  "evidence_class": "offline-software-contract-not-model-quality",
+  "code_and_tests": {
+    "scripts/reviewer_responses_transport.py": "561e720ff2a4128e2baffaa82ee1bc1a2b4265ce3053ecb622bcbc11ace336f0",
+    "scripts/reviewer_responses_process.py": "dd370577f5f63cf938d1e1fb96d38139f8a15f93cec63bd45ebe098ece7f986f",
+    "tests/test_reviewer_responses_transport.py": "81408f72692d1651c52f7605323c4ac60f95ae9b169b5850b46b1ac5809710e5",
+    "tests/test_reviewer_responses_supervisor.py": "80a275d07c6c341c344707ede714465361727c656fb675705b03cb2a07ae483f"
+  },
+  "prepared_artifacts_unchanged_from_base": {
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/channel-check.json": "6fe02c528f3cb59e7c6972454f23592084352cd4cec862e5a46f379e70488082",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/evaluation.json": "002852f42c24b627e83a7d593c17fe4f27dab5383d901155e23295103da5bc95",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/independent-material-review.md": "40350d15a99bbe27d2289de7f50ecf5a9943011ae593f827edd42ad989ff9445",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/manifest.json": "76d8ca809825d89108c4832c7bcb27692a6d1da5f32b19cf698c2e6b11e4db09",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/material-review-task.json": "021b7a7d45351fdde88c17094946f506b670ae2a1929a8ff2af8dcd5e8afdb7c",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/primary-material-review.md": "7927ae23b18a714282147f6a87959f1fdf48c7118cc5ad024dcf09c922ccc37b",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/r01.md": "0a4c073e282beca5cbb3e1226e628e0a033ff8a43b0a210a1a0e1816dc85bcb6",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/r02.md": "c3e944095a41b00303b6a7f86fc413c120b009b884a8cd5c5025d9a42a2385d0",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-completion.json": "fc408e9e182cec2234439957f1c83d720154d0403519354bec74427f10a6bf9d",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-facts.json": "abaa7cebd116b496a7c94b63c7464981ab8ecb83e35d4108e3cddb5c1857b674",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-completion.json": "aeb497a870a5a080ee8a5ed9c1faac46055ce2fc4fc39002cc1d0565b5a0efb1",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-facts.json": "f9df23ed4183d3478ce1c1e13a5cfd609025b00f3ee6d3c6e680077faf697110"
+  },
+  "wire_rows": [
+    {
+      "id": "r01-facts",
+      "business_file_sha256": "abaa7cebd116b496a7c94b63c7464981ab8ecb83e35d4108e3cddb5c1857b674",
+      "business_value_sha256": "ef4a901a3faa086546dff47333cd2bdb86c19fbe0dd1f97ba47b130849b417fc",
+      "responses_wire_sha256": "b75253efa6bc39c2c034fff9d4b767082cbb17c0dbdcd9fee9a6aa25efb17972"
+    },
+    {
+      "id": "r01-completion",
+      "business_file_sha256": "fc408e9e182cec2234439957f1c83d720154d0403519354bec74427f10a6bf9d",
+      "business_value_sha256": "d380dc3edb1ceaa5c13cdf3de47ef3ddc60b458bee00163c60d389e04a9b9dc7",
+      "responses_wire_sha256": "12089402ad153dbdc55b74fbb0350fda7afa3820409244d5b2d1c38301d21c7c"
+    },
+    {
+      "id": "r02-facts",
+      "business_file_sha256": "f9df23ed4183d3478ce1c1e13a5cfd609025b00f3ee6d3c6e680077faf697110",
+      "business_value_sha256": "c1f36255ee0c81b4231ab66cc939a238349df2b5ba8197bd38cdeb164068492b",
+      "responses_wire_sha256": "01004df06517eba30e33eddc77207828dcda0616fe46a24af9f7eeea041f50ed"
+    },
+    {
+      "id": "r02-completion",
+      "business_file_sha256": "aeb497a870a5a080ee8a5ed9c1faac46055ce2fc4fc39002cc1d0565b5a0efb1",
+      "business_value_sha256": "1843ee76a89b0aef778082b6bc6dda7ff6d92bb07b7af22c6c79e99fb3b1c24a",
+      "responses_wire_sha256": "e74fdaf55f240964af8c9937520c19189c3bd7f3f1032de89ab49ed246bc28d9"
+    }
+  ],
+  "runtime": {
+    "python": "3.11.9",
+    "openai": "2.54.0",
+    "httpx": "0.28.1"
+  },
+  "verification": {
+    "command": "python -m pytest -q tests/test_reviewer_profile_screen.py tests/test_reviewer_responses_transport.py tests/test_reviewer_responses_supervisor.py --tb=short --show-capture=no",
+    "passed": 85,
+    "failed": 0,
+    "seconds": 41.53,
+    "network": "parent socket blocked; SDK uses HTTPX MockTransport; end-to-end worker socket blocked; process fixtures perform no network",
+    "governance_passed": true,
+    "diff_check_passed": true
+  },
+  "independent_engineering_review": {
+    "agent": "/root/host_scope_calibration",
+    "business_native_review": false,
+    "supervisor_tests": 28,
+    "supervisor_seconds": 17.06,
+    "findings_fixed": [
+      "non_tool_events_not_silently_ignored",
+      "actual_eof_before_acceptance",
+      "final_cancel_interrupt_retains_receipt",
+      "checkpoint_failure_retains_observed_usage"
+    ]
+  },
+  "boundaries": {
+    "max_requests_per_call": 1,
+    "hard_request_seconds": 300,
+    "reap_grace_seconds": 5,
+    "max_retries": 0,
+    "max_output_tokens": 32768,
+    "reasoning_effort": "high",
+    "schema_strict": false,
+    "tool_choice": "auto",
+    "parallel_tool_calls": false,
+    "environment_proxy": false,
+    "redirects": false,
+    "implicit_credentials": false
+  },
+  "provider_calls": 0,
+  "real_credentials_used": 0,
+  "new_dependencies": 0,
+  "selected_execution_profile": null,
+  "actual_channel_estimate": null,
+  "batch_launcher_implemented": false,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "qualified": false,
+  "semantic_detection_proven": false,
+  "group_verified": false,
+  "upstream_identity_verified": false,
+  "public_ci_verified": false,
+  "production_changed": false,
+  "automation_resumed": false,
+  "remaining": [
+    "fixed account group and safe credential access decision",
+    "actual channel/network/price verification",
+    "four-request budget and per-result human decision launcher",
+    "frozen preparation and exact HEAD public CI",
+    "new explicit bounded paid authorization",
+    "real semantic full-source review"
+  ]
+}

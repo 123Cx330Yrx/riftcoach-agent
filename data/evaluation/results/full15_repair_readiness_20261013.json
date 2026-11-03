@@ -1,0 +1,200 @@
+{
+  "kind": "OFFLINE-full15-repair-readiness-v1",
+  "seal": "data/evaluation/results/golden_document_full15_time600_result_20261010.json",
+  "seal_sha256": "30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576",
+  "cases": [
+    {
+      "key": "claim-scope:4",
+      "stage": "initial",
+      "recorded_outcome": "both_rejected",
+      "original_file_sha256": {
+        "claim-scope-4/initial/issued-request.json": "053e62a20bcfa5250da8f47576d81783656f3cc0f1f91db3af04537888f749e8",
+        "claim-scope-4/initial/response.json": "421e585c29a8411ee03c03e597b17e7b406c22c504205e745715cd82c8654071",
+        "claim-scope-4/initial/stage.json": "81acfff16cc39f36ab54fb92088eb5b3972085d0ec50b9d2bf3f25acfb08636a",
+        "claim-scope-4/initial/host-reviews.json": "1fcecdbd7af6f01547eed66f38bcda9b159c5756d401e26daab1b856c1c5fae4"
+      },
+      "historical_principal_ids": {
+        "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+      },
+      "recorded_host_acceptance": {
+        "primary": false,
+        "independent": false
+      },
+      "recorded_defects": {
+        "primary": [
+          {
+            "kind": "false_positive",
+            "detail": "第4段早期死亡句未明确限定为中单；全文第14段明确同项比较为全样本胜2.5/败2.67，已消解省略范围。模型第二项issue承认该全样本数据和第4节，却仍仅按前一伤害句补成中单命题，把本可选择的前移口径说明升级为medium/fact_error。中单2.5/0.5数字虽正确，不证明原文实际断言它们几乎相同；全称拉低错误是独立句，也不能撤销第14段限定。该误报向editor要求新增中单比较，违反完整上下文及仅修已确认问题的政策。"
+          }
+        ],
+        "independent": [
+          {
+            "kind": "false_positive",
+            "detail": "模型第二项 issue（block 4、medium/fact_error）把“早期死亡在胜败样本间几乎相同”强制按前句中单伤害口径解释为中单比较，并称全文仍有影响结论的未消解歧义。然而第 14 段明确写“全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]”，与 selected cohort 胜局 3/2、败局 7/0/1 的均值 2.5/2.666666…一致，已经确定对象和范围。中单早期死亡 2.5/0.5 本身正确，却不能反证这个被后文限定的全样本命题，也不能仅从邻近的中单伤害比较补造作者明确中单断言。模型甚至承认第 4 节的全样本数据，但没有说明该显式限定后为何仍有两种 materially different 未解含义。依完整上下文政策，此处前移限定或补充中单比较至多为可选可读性建议，不应进入 issues 并触发修订。第一项针对“每一个指标均被辅助局拉低，包括视野/早期死亡”的真错与正确修法不抵消这项实质误报。"
+          }
+        ]
+      },
+      "same_complete_model_request": true,
+      "changed_request_fields": [],
+      "current_structural_validator_accepts_old_response": true,
+      "semantic_approval": false,
+      "new_host_assessment": false,
+      "shared_request_sha256": "cd8d050fee9f6712a52bafab317af5deba7cc8b0db84f8ec9c31c10cb56551fb"
+    },
+    {
+      "key": "scope:4",
+      "stage": "initial",
+      "recorded_outcome": "primary_independent_disagreement",
+      "original_file_sha256": {
+        "scope-4/initial/issued-request.json": "bce8dad56a47fb735300cc8f128f3b3ec76a997cc077937ba75f6d269cecb30d",
+        "scope-4/initial/response.json": "4995247243d752299349a22ebe58178a5dba63c1e7b528bcc981b871ba8a01e4",
+        "scope-4/initial/stage.json": "99e5c21b369afad9e783f455bd1ccf84d2ea85bcac7824bf3223f8a092f20547",
+        "scope-4/initial/host-reviews.json": "fde2b3fccfe08522a8c990ef76f01da0394948586a548c5ea26cc62d846647d0"
+      },
+      "historical_principal_ids": {
+        "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+      },
+      "recorded_host_acceptance": {
+        "primary": true,
+        "independent": false
+      },
+      "recorded_defects": {
+        "primary": [],
+        "independent": [
+          {
+            "kind": "missed_error",
+            "detail": "第4段的“早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点[K1]”被仅标为advisory。该句承接中单伤害比较，而全文唯一对早期死亡胜败差的数值解释在第14段，明确写“中单口径下…2.5、2.67，差异很小”；报告没有另一处正确、明确的混合口径限定消解第4段。若概括中单，原始两胜3/2、两败0/1给出2.5对0.5，差2.0，与几乎相同冲突；若概括全部五局，才是2.5对2.666666…，差约0.17。这里不是仅因相邻词句补造范围，而是全文明确的同指标解释把摘要导向中单且未解决口径冲突；即使不选定中单解释，也存在影响主要胜负分界判断和风险排序的实质未解歧义。模型虽在第14段指出真错，解释还提到第4段独有的“不应作为主要胜负分界点”，但修法仅指定改第14段为中单2.5对0.5，未要求同步修复或明确限定摘要的“几乎相同”，并将第4段留在advisories。按policy真实错误或影响结论的未解歧义不能藏入advisories；应将摘要的早死口径及对应比较纳入真实修复范围，同时保留无依据能力及因果推断的限制。"
+          }
+        ]
+      },
+      "same_complete_model_request": true,
+      "changed_request_fields": [],
+      "current_structural_validator_accepts_old_response": true,
+      "semantic_approval": false,
+      "new_host_assessment": false,
+      "shared_request_sha256": "161cb2b4683f0476636b337751ba80456920507bc33388de58966626bab1ecea"
+    },
+    {
+      "key": "scope:3",
+      "stage": "final",
+      "recorded_outcome": "both_rejected",
+      "original_file_sha256": {
+        "scope-3/final/issued-request.json": "8e99d3fed75a8f17df2b59eae16ba06b7604c21203082e0b21294200e6a68b6d",
+        "scope-3/final/response.json": "5f109dfab02cfb7478dcb557956fc37ce19b90958b764b15686b73e6aa71ce5d",
+        "scope-3/final/stage.json": "d77904437f747fae1c8ec0541431160c68925ca9845705b3c0b6210e524e3711",
+        "scope-3/final/host-reviews.json": "fb58abcdbe709c0e927c130be35597f57955cecefb6c8d1cedb0ca1da1d0ebec"
+      },
+      "historical_principal_ids": {
+        "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+      },
+      "recorded_host_acceptance": {
+        "primary": false,
+        "independent": false
+      },
+      "recorded_defects": {
+        "primary": [
+          {
+            "kind": "false_positive",
+            "detail": "第4段泛指混合位置均值受辅助拉低未断言每个指标或早死/视野都下降。当前成稿同段明确混合早死2.67/中单0.5、分位置表明示辅助视野90，第14段分别说明CS受构成影响、伤害主要在中单内部，这些完整上下文使指标不同方向可解而不是实质歧义。原CS混合败均6.453333…/中单9.01与胜8.805支持该泛指强影响。Provider通过“紧跟早死、提及视野、按最近语境读”把可选限定升级为fact_error；所列真实数字不能证明原文作了这些错误方向断言，needs_revision/82由此实质误报，不符合policy的泛指/全文语境边界。"
+          }
+        ],
+        "independent": [
+          {
+            "kind": "false_positive",
+            "detail": "第 4 段的“混合位置均值受辅助局强烈拉低，应按位置分开解读”没有断言每个指标、早期死亡或视野均降低。第 13 段明确列辅助视野 90 对中单败局 34.0；第 14 段进一步把明显样本构成影响限定到补刀，并明确伤害差距不能主要归因于辅助局。原精度补刀混合败局 6.453333…、中单败局 9.01，量级支持这项概括；伤害胜负差混合 695.418333…、中单 669.235，仅变化 26.183333…，报告的否定归因亦正确。当前 explanation 仅按最近语境补出早期死亡/视野指向，并称全文无法消解，忽略上述明确上下文，将可选限定措辞误报为 medium/fact_error。新列举的早期死亡和视野确实被辅助局拉高，但这些正确数字不能构成原文未作断言的冲突；该 issue 不应触发修订。"
+          }
+        ]
+      },
+      "same_complete_model_request": true,
+      "changed_request_fields": [],
+      "current_structural_validator_accepts_old_response": true,
+      "semantic_approval": false,
+      "new_host_assessment": false,
+      "shared_request_sha256": "e81cfd8e068997b58cb7017ff2edb2984b5bae19bc1f56a773457d1eaadf151d"
+    },
+    {
+      "key": "claim-scope:1",
+      "stage": "initial",
+      "recorded_outcome": "both_accepted",
+      "original_file_sha256": {
+        "claim-scope-1/initial/issued-request.json": "6e266f60c120477a02fcab012c757f010d7e179ce7339f56f87645cf70e12fe8",
+        "claim-scope-1/initial/response.json": "31ab29fad9717306527f952cff3e696a2961f5344d4b64a1c8900ac2364714fe",
+        "claim-scope-1/initial/stage.json": "4c584964e2067be9eb6d2b882bbfa31e107c0127194dd031514f110810a5fb93",
+        "claim-scope-1/initial/host-reviews.json": "26fd282af5f5643efe3fa5c5227de56f4dee63085aee78d313459074da846b03"
+      },
+      "historical_principal_ids": {
+        "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+      },
+      "recorded_host_acceptance": {
+        "primary": true,
+        "independent": true
+      },
+      "recorded_defects": {
+        "primary": [],
+        "independent": []
+      },
+      "same_complete_model_request": true,
+      "changed_request_fields": [],
+      "current_structural_validator_accepts_old_response": true,
+      "semantic_approval": false,
+      "new_host_assessment": false,
+      "shared_request_sha256": "3081ef71bca6186ab767236e25076f237d39d11cc55698d2384958a0c1af4715"
+    },
+    {
+      "key": "claim-scope:3",
+      "stage": "final",
+      "recorded_outcome": "both_accepted",
+      "original_file_sha256": {
+        "claim-scope-3/final/issued-request.json": "027acdc556eacfea96c5426e67be2c5acf65f3d30a02f56e69a42a96613e13b8",
+        "claim-scope-3/final/response.json": "0c2ce092aaf13b639c1cb45f5e518c5bce51fa3e366afa759d18bde4e6673088",
+        "claim-scope-3/final/stage.json": "2939d62ff2c7c3ce64a78261b2cdd08e07665e7e1904d825e42b417968d8e1b7",
+        "claim-scope-3/final/host-reviews.json": "3c385ae92e5751aeaa8dedbdea99782010faea21ab770018989265b9fe130ca7"
+      },
+      "historical_principal_ids": {
+        "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+      },
+      "recorded_host_acceptance": {
+        "primary": true,
+        "independent": true
+      },
+      "recorded_defects": {
+        "primary": [],
+        "independent": []
+      },
+      "same_complete_model_request": true,
+      "changed_request_fields": [],
+      "current_structural_validator_accepts_old_response": true,
+      "semantic_approval": false,
+      "new_host_assessment": false,
+      "shared_request_sha256": "509ff34abcb555a2b3f47373fbdd826221f0aeb75f0a148beed05e80123ac009"
+    }
+  ],
+  "source_sha256": {
+    "scripts/audit_full15_repair_readiness.py": "a83d18d9f22a205ed4d0b59539308ee1c099bc8a2fec672e44e1f2176247c74f",
+    "scripts/report_timed_document_workflow.py": "9987fbf500bb4091aac071c35d8ec6c25c5ad3aede665c1540ab65094baf7989",
+    "scripts/report_contrast_review.py": "200e2a79baf297181954b2836d309ffc516978fe8507b504de3055669c78bead",
+    "scripts/report_block_keyed_editor.py": "57852ee42c79a6a759093836cb331b25b0352b64dd3d0ac0c2605bcd514a0272",
+    "scripts/report_document_workflow.py": "e69f60dc5a3c99e2a08eeee074933e4e2804dfe8027cd4354e10e3abd68578d8",
+    "scripts/full_chain_execution.py": "0aeea836ccf2a8e50526c63c7574e7fa9ebdb9924b77784a24cf0677b0b094e9",
+    "app/evaluation/document_review_timing_adapter.py": "c1da437c24d9af39dfa6e5437a0049238234a0f4f4a450a92db961b1007452b0"
+  },
+  "failed_contexts_with_changed_model_input": 0,
+  "failed_contexts_with_new_structural_rejection": 0,
+  "new_semantic_repair_evidence": false,
+  "full15_paid_proposal_status": "withdrawn",
+  "execution_authorized": false,
+  "provider_calls": 0,
+  "new_host_tasks": 0,
+  "new_qualification": 0,
+  "limits": [
+    "Request equality excludes neither report text nor source nor policy nor schema nor sampling parameters.",
+    "Only the known budget metadata marker is added to a prepared request for comparison.",
+    "Same request does not imply deterministic future output; stochastic success would not prove a repair.",
+    "Historical Host opinions are cited, not reissued or certified by this audit."
+  ]
+}

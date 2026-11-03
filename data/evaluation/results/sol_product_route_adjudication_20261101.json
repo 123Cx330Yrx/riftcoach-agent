@@ -1,0 +1,340 @@
+{
+  "schema_version": "product-route-adjudication-v1",
+  "date": "2026-11-01",
+  "phase": "P1_complete_P2_partial_verified",
+  "route_decision": "withhold_current_route_live_adoption_no_further_identical_probe",
+  "route_scope": "Current relay Responses stream; not a claim that Sol or all relays are unusable",
+  "basis": {
+    "nonstream_524": 5,
+    "stream_http200_protocol_rejected": 3,
+    "official_event_tokens_compared": 59,
+    "unknown_type_digest_matches": 0,
+    "provider_public_docs_responses_contract_found": false,
+    "alternative_route_verified": false
+  },
+  "http_calls": [
+    {
+      "call": 4,
+      "http": 524,
+      "elapsed_s": 130.391,
+      "known_tokens": null,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "errors": null,
+      "first_rejection": null
+    },
+    {
+      "call": 5,
+      "http": 524,
+      "elapsed_s": 128.875,
+      "known_tokens": null,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "errors": null,
+      "first_rejection": null
+    },
+    {
+      "call": 6,
+      "http": 524,
+      "elapsed_s": 130.047,
+      "known_tokens": null,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "errors": null,
+      "first_rejection": null
+    },
+    {
+      "call": 7,
+      "http": 524,
+      "elapsed_s": 130.407,
+      "known_tokens": null,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "errors": null,
+      "first_rejection": null
+    },
+    {
+      "call": 8,
+      "http": 524,
+      "elapsed_s": 128.782,
+      "known_tokens": null,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "errors": null,
+      "first_rejection": null
+    },
+    {
+      "call": 9,
+      "http": 200,
+      "elapsed_s": 130.063,
+      "known_tokens": 21472,
+      "wire_sha256": "c05b663a09e28e60c417b7130945dc9714c4e82a8e58db43019c8e1e2468417e",
+      "errors": [
+        "event_sequence",
+        "response_not_created",
+        "unexpected_event"
+      ],
+      "first_rejection": null
+    },
+    {
+      "call": 10,
+      "http": 200,
+      "elapsed_s": 103.969,
+      "known_tokens": 46503,
+      "wire_sha256": "c05b663a09e28e60c417b7130945dc9714c4e82a8e58db43019c8e1e2468417e",
+      "errors": [
+        "response_identity",
+        "event_sequence"
+      ],
+      "first_rejection": {
+        "code": "response_identity",
+        "event": {
+          "ordinal": 1,
+          "type": "response.created",
+          "type_sha256": "90a13e4133e07ec1e734505e4b18e469923f88651444fa65922ee7e805a54c8c",
+          "sequence": 0,
+          "previous_sequence": -1,
+          "created_count": 0,
+          "output_items": 0,
+          "terminal_seen": false,
+          "fields": {
+            "type": "string",
+            "sequence_number": "integer",
+            "response": "object"
+          },
+          "extra_field_count": 0
+        }
+      }
+    },
+    {
+      "call": 11,
+      "http": 200,
+      "elapsed_s": 160.328,
+      "known_tokens": 22409,
+      "wire_sha256": "c05b663a09e28e60c417b7130945dc9714c4e82a8e58db43019c8e1e2468417e",
+      "errors": [
+        "event_sequence",
+        "response_not_created",
+        "unexpected_event"
+      ],
+      "first_rejection": {
+        "code": "event_sequence",
+        "event": {
+          "ordinal": 1,
+          "type": "unrecognized",
+          "type_sha256": "037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441",
+          "sequence": null,
+          "previous_sequence": -1,
+          "created_count": 0,
+          "output_items": 0,
+          "terminal_seen": false,
+          "fields": {
+            "type": "string"
+          },
+          "extra_field_count": 1,
+          "response_shape": null
+        }
+      }
+    }
+  ],
+  "rounding": [
+    {
+      "metric": "cs_per_min",
+      "source_summary": 8.13,
+      "displayed_rows_mean": "8.135",
+      "raw_rates_mean": "8.135644048802815789889041465",
+      "displayed_half_up": "8.14",
+      "raw_half_up": "8.14"
+    },
+    {
+      "metric": "damage_per_min",
+      "source_summary": 1280.91,
+      "displayed_rows_mean": "1280.915",
+      "raw_rates_mean": "1280.919551115109616932619916",
+      "displayed_half_up": "1280.92",
+      "raw_half_up": "1280.92"
+    }
+  ],
+  "rounding_origin": "app/lol/match_analyzer.py aggregate_recent_matches; report copied supplied summary",
+  "purpose": {
+    "actual_generation_and_review_receive_observed_constraint": true,
+    "trusted_unspecified_goal_policy_also_recommends_personal_training_options": true,
+    "causal_model_failure_proven": false,
+    "selected_change_scope": "Product contract 1.7.2: frozen server relationship -> trusted generation context -> both initial and fresh reviews; no historical qualification policy change"
+  },
+  "budget": {
+    "product_max_calls": 8,
+    "product_total_tokens": 401920,
+    "product_active_seconds": 900,
+    "saved_generation_calls": 3,
+    "saved_generation_known_tokens": 29323,
+    "saved_generation_transport_seconds": 143.891,
+    "initial_reservations": {
+      "facts": 73382,
+      "completion": 68986
+    },
+    "fresh_pair_reserved": 160768,
+    "total_with_saved_generation": 332459,
+    "remaining_token_headroom": 69461,
+    "remaining_calls_after_clean_repair": 1,
+    "observed_review_seconds": [
+      130.063,
+      103.969,
+      160.328
+    ],
+    "four_reviews_at_observed_max_seconds": 785.203,
+    "four_reviews_at_request_timeout_seconds": 1343.891,
+    "time_guarantee": false,
+    "scope": "Feasibility scenario only; not old-task ledger reset, new-task authorization, or future fresh report measurement"
+  },
+  "new_model_http": 0,
+  "credential_reads": 0,
+  "originals": [
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\segments\\21\\review_1a568160d5aa44b5a2acd2f72fb679f8\\inputs\\player_summary.json",
+      "sha256": "0cdbb4040eaf7fb6f60b92f977f8864ce4b728c3c16b8197ec7c8b5989b37f8e"
+    },
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\segments\\21\\review_1a568160d5aa44b5a2acd2f72fb679f8\\drafts\\coach_draft_attempt_0.md",
+      "sha256": "c75b5386c0160fd062c5b9c6fc90a384fb053a648a2c8742fc707bf9be0117a7"
+    },
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\generation\\request-001.json",
+      "sha256": "2245a5aaa5c58067115c6aba0ba94e57707f6b957bc7bfc591661cd58a962a88"
+    },
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\generation\\request-003.json",
+      "sha256": "20366e97c33bf69a8e9daba2f64510bd1ba30b4b0ab6507295de9d01c39b0704"
+    },
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\review\\call-011\\request.json",
+      "sha256": "d0d15081db4d99ef2f593cab40a83854fe329c8a68b17c8be99abba347efe409"
+    },
+    {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\session\\operations\\0028-intent.json",
+      "sha256": "cbba6f9373ea2406787b71f366b63543f5846c6076e43c4b3cc9b71e17443079"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\provider-public-reference.txt",
+      "sha256": "8e4ff95f32c95909f62bca72ca5600e670ce028b03a881ecd190bcc7bfe9924d"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\openai-public-reference.txt",
+      "sha256": "677be08b906eb1f3e332bc5852b6abc1d70836f7030c6fececa44809a3407482"
+    }
+  ],
+  "current_policy_budget_scenario": {
+    "contract_version": "1.7.2",
+    "initial_reservations": {
+      "facts": 74744,
+      "completion": 70348
+    },
+    "generation_cost_basis": "historical 29323; new generation not measured",
+    "fresh_pair_reserved": 160768,
+    "total_with_historical_generation": 335183,
+    "time_guarantee": false
+  },
+  "verification": {
+    "rounding_before_fix": {
+      "failed": 4,
+      "passed": 5
+    },
+    "rounding_and_consumers_passed": 65,
+    "original_sha256_checks_passed": 8,
+    "actual_saved_rows_recomputed": {
+      "winning_cs_per_min": 8.14,
+      "winning_damage_per_min": 1280.92
+    },
+    "runtime_profiles_passed": 11,
+    "purpose_and_product_contract": {
+      "files": [
+        "tests/test_product_review_purpose.py",
+        "tests/test_sol_product_contract.py"
+      ],
+      "passed_final": 25,
+      "final_full_run_passed": 23,
+      "failed_fixture_branches_rerun_passed": 2,
+      "real_model_io": false
+    },
+    "postgres_entry_worker": {
+      "files": [
+        "tests/test_sol_product_entry_postgres.py",
+        "tests/test_sol_product_worker_postgres.py"
+      ],
+      "passed": 10,
+      "real_sql": true,
+      "real_model_io": false
+    },
+    "browser_resume": {
+      "file": "tests/test_sol_product_browser_postgres.py",
+      "selection": "resume",
+      "passed": 1,
+      "real_sql_api_browser": true,
+      "real_model_io": false
+    },
+    "transport_recovery": {
+      "files": [
+        "tests/test_sol_product_stream_recovery.py",
+        "tests/test_reviewer_responses_product_stream.py",
+        "tests/test_reviewer_responses_supervisor.py"
+      ],
+      "passed": 82,
+      "real_model_io": false
+    },
+    "initial_local_integration_failures": "Version dispatch and parent/child validator selection were corrected; two legacy-context patch fixtures were subsequently corrected and rerun. No paid calls.",
+    "governance": "passed",
+    "diff_check": "passed",
+    "same_head_ci": "not_verified",
+    "temporary_postgres": {
+      "name": "riftcoach-purpose-test-20261101",
+      "removed_confirmed": true
+    },
+    "browser_artifacts": [
+      {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/browser/resume/browser-proof.json",
+        "sha256": "e5af8a12fdd95d59c35a02ef5e30a85c6846c851369075e37024f4615337a0df"
+      },
+      {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/browser/resume/worker-proof.json",
+        "sha256": "5b1a0b61107934f22397acfe5dc23f627c0a79f33dde5cc970247d369ee31886"
+      },
+      {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/browser/resume/playwright.stdout.txt",
+        "sha256": "439e88cbea7f25e9fbf8d6ed54b0018d60c1b8b883714c244ce1ba1cbffddd68"
+      }
+    ],
+    "browser_observations": {
+      "external_requests": 0,
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 4,
+        "requests_observed": 4,
+        "known_tokens": 80,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "action": "resume",
+      "outcomes": [
+        "paused",
+        "succeeded"
+      ],
+      "source_reads": 1,
+      "source_method": "build_by_puuid",
+      "scripted_reviewer_statuses": [
+        [
+          200
+        ],
+        [
+          200
+        ]
+      ],
+      "real_external_requests": 0,
+      "tasks": 1,
+      "training_progress_events": 0,
+      "assistant_turns": 1
+    }
+  },
+  "product_contract_version": "1.7.2",
+  "remaining_dependencies": [
+    "Provider Responses event/terminal/usage contract or verified alternative entry",
+    "Full required review path feasibility within default 900 active seconds",
+    "Same-HEAD CI and future real semantic/product acceptance"
+  ],
+  "next_action": "Obtain protocol or alternative-entry evidence before selecting remaining P2 transport work and a P3 full-path budget; no identical paid retry"
+}

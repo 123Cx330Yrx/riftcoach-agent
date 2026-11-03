@@ -1,0 +1,89 @@
+{
+  "kind": "host-relation-joint-material-calibration-close-v1",
+  "recorded_at": "2026-10-13T08:39:32.615371+00:00",
+  "status": "completed_development_calibration",
+  "material_sha256": "7997f6d571f72b2e47bb49803e57f11cca02b00205d299ca568a57f2bb17c927",
+  "task_sha256": "738ecd4647a8b83711a257d923eeebb669091d1e06d1b55ee5499e615eced077",
+  "new_agents": 0,
+  "independent_material_tasks": 1,
+  "project_provider_calls": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "native": {
+    "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+    "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "original_turn_id": "01a133e7-c6ef-7d73-8d5d-dc67426f16cf",
+    "original_status": "interrupted",
+    "completion_turn_id": "01a13462-fba7-7821-860c-03b51332bbd2",
+    "dispatch_id": "amsg_01a13463-037c-7e80-9f41-9ebfd499d542",
+    "message_id": "msg_0c80bb9c90932f73016acded4845348191bd02a2ab0996a803",
+    "api_status": "completed",
+    "api_final_count": 1,
+    "final_text_sha256": "283b3302ad9ba6ea82d747443c406da0bcf38c24b7bde9c1cbaffd8fc7a31398",
+    "dispatch_body_readable": false,
+    "route_and_final_verified": true
+  },
+  "recovery": {
+    "original_task_sent_once": true,
+    "user_pause_preserved": true,
+    "administrative_wakes_are_native_new_task_envelopes": true,
+    "same_material_resumed_by_message": true,
+    "administrative_confirmation_excluded_from_review": true,
+    "business_protocol_not_changed": true
+  },
+  "visible_read_audit": {
+    "public_tool_calls": 10,
+    "all_exit_zero": true,
+    "commands_inspected": true,
+    "full_reports_policy_input_source_visible": true,
+    "console_newline_normalization": "CR removed for Windows console comparison only; archived originals unchanged",
+    "only_task_material_and_own_answer": true,
+    "rehash_and_json_load_before_final_verified": true,
+    "author_matches_final_except_terminal_newline": true,
+    "os_sandbox_proven": false
+  },
+  "primary_post_review": {
+    "full_report_blocks_read": [
+      26,
+      26
+    ],
+    "policy_and_all_input_fields_read": true,
+    "source_tables_reconstructed_and_verified": true,
+    "case_results": [
+      {
+        "case_id": "J1",
+        "decision": "no_material_error",
+        "issue_blocks": []
+      },
+      {
+        "case_id": "J2",
+        "decision": "requires_correction",
+        "issue_blocks": [
+          14,
+          15
+        ]
+      }
+    ],
+    "source_review": "已核全部26段及K1-K5：对象是观摩者，五局2胜3负、中单2胜2负与辅助单负场；辛德拉输出、艾尼维亚无早死、卡蜜尔统计、时间线及条件建议均有来源。第6段是四局内补刀描述，不追加长期全称。第13段四指标表与原精度均值相符。第14段2.50/.50及逐对greater与全部五局2.50/约2.67不同；第15段8.95/8.66均大于8.38又均小于9.64，均值略低不证全部更低。两项独立修法逐个新断言均正确，保留数值、混合样本影响与因果限制；补刀重分组差约2.5567，伤害差仅约26.1833，未把描述变因果。第7段advisory只为可选措辞，未升事实门。全部来源根32/31/25与表行2/6及4/5核过。",
+    "all_corrections_reviewed": true,
+    "correct_content_preserved": true,
+    "agreement": true,
+    "new_qualification": 0
+  },
+  "files": {
+    "author-answer.json": "935205b9e9ff65bf9ddff4ca22ff8ace44339b33bc315fe504f2854fe837450b",
+    "branch-reconciliation-resume.json": "b2ff548e626c5d8d500c332ebee87bf524cb81ef0be2d802a285e688cf0a3234",
+    "independent-final.txt": "283b3302ad9ba6ea82d747443c406da0bcf38c24b7bde9c1cbaffd8fc7a31398",
+    "native-final-record.json": "59c48308b0e387aa3b79d2b75174673ee8232f2138890caefb447dc7d2124499",
+    "native-public-turns.json": "c9c10e985f02af64d40eb1e27c14570395ff2488655d6322b7a0de5d24352989",
+    "native-route-proof.json": "9d0561612884d1c66a838126391932afc2ff69b83a456e34dec8f9771ca98936",
+    "primary-existing-expectations.json": "c61e3910536e7182b452a63e6501ac8ff913639fa637386b37d08b0920fdc5c5",
+    "primary-post-review.json": "53d87984cab94633bcd18a93d80f9098ea6e3457bdf89f0919b01e3d510a04ce"
+  },
+  "limitations": [
+    "Familiar-source development calibration, not holdout, Provider quality or qualification.",
+    "Native administrative wake route is distinct from the original task; same fixed material continued by MESSAGE after user-approved wake.",
+    "Encrypted dispatch body not decrypted; public route, exact native final, fixed-file reads and author original verified.",
+    "Original preparation and user-pause snapshots remain unchanged."
+  ]
+}

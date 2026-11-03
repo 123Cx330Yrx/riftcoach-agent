@@ -1,0 +1,45 @@
+{
+  "accounting": {
+    "known_tokens": 29323,
+    "requests_observed": 8,
+    "requests_reserved": 8,
+    "retries": 4,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 366910,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 827.172,
+  "artifact_sha256": {
+    "api-readback.json": "12c0c331da3f581ed114bd26335334187fd0b2452598b0facf40c0802264eda8",
+    "budget-grant.json": "253a96d331fba745864abc5000212c5eda0c1f38885bfacbd555931c1bcf0fff",
+    "cleanup.json": "844a4c82dbbab73ee03f80831ed0144a799b519a3b03d3bb318e4d045a3a4bfc",
+    "manual-retry-grant.json": "4e7fcc74032aa02baa52fbab9d6552327c84d7ade36231dd46de60735161d7b7",
+    "ready.json": "7e542a7008d1b5cadb684cc84c554a50d3027ffdf18b1acc238a4395564f20ef",
+    "run_stream_continuation.py": "80f8b588a7bff4d04141d9bbf7d9bc88d1ec58500656067c8ff446961fb1f31d"
+  },
+  "authorization_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-stream-migration-20261101\\authorization.json",
+  "authorization_sha256": "3203ae789cb82ba88d0ab66bcd51a6037f681a3278061ce08a31435f3fb7136f",
+  "authorized": true,
+  "checkpoint_sha256": "fc0d48305548f26c2abbc47fb566fb9d95822b3de5e8ad2e1d6a24781153de06",
+  "checks": {
+    "ci_early": 10,
+    "legacy_budget": 27,
+    "postgres": 1,
+    "product_and_retry": 40,
+    "runtime_profiles": 11
+  },
+  "database_dump_sha256": "f3a5f822fe3b6bb487f3e65e32bad28fb7031287d4c23f870bd1d975178130f7",
+  "expiry": "2026-11-01T07:50:40.024669+00:00",
+  "global_budget_changed": false,
+  "kind": "product-stream-budget-authorized",
+  "limits": {
+    "execution_timeout_s": 2100,
+    "max_calls": 12,
+    "total_tokens": 723456
+  },
+  "new_paid_requests": 0,
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "stage_8e_complete": false,
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "user_confirmation": "\u786e\u8ba4"
+}

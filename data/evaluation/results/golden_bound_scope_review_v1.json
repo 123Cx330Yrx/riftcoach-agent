@@ -1,0 +1,36 @@
+{
+  "kind": "offline_post_budget_binding_measurement",
+  "runtime_registered": false,
+  "model_calls": 0,
+  "whole_report_acceptance": false,
+  "cases": [
+    {
+      "case_id": "stable_unbounded",
+      "input_ceiling": 35630,
+      "request_sha256": "e92ff0f2a363b88ba438d61879f8bfd16d7a405cb6bed08a17866acf33957f73",
+      "report_sha256": "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219"
+    },
+    {
+      "case_id": "stable_defined_before",
+      "input_ceiling": 35790,
+      "request_sha256": "2443f3353797e587535ad2dae2a9eb9030b5dba202382867be851c0bcefcfd05",
+      "report_sha256": "c0e055fc78418f69c86c4f207b0b9f4ecc7f0bbfa0797cf44c3ca8060814a113"
+    },
+    {
+      "case_id": "heading_unbounded",
+      "input_ceiling": 35656,
+      "request_sha256": "8329138862e647bd0efc7b1bfed82cf519b64694203d3ecf9f7fd85e62e155b7",
+      "report_sha256": "1751f41bd5753721a5944f8baca8c264e5f87e8cb06c93f239f5be87f8dc130a"
+    },
+    {
+      "case_id": "heading_defined_after",
+      "input_ceiling": 35722,
+      "request_sha256": "751e283e99d2862b5f42f859556749a29a84e416ae0d5bc46276a1bc7006a207",
+      "report_sha256": "4cd70e431aa0edc8cd9c8ed4d72da87ff2d35f5587a223cc49cd8637539f10e0"
+    }
+  ],
+  "output_cap": 32768,
+  "request_timeout_s": 300,
+  "receipt_binding": "exact_golden_stream_transport_bytes_after_budget_wrapper",
+  "old_response_projection": "scripted_only_original_remains_invalid"
+}

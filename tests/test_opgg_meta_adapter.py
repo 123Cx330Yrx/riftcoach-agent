@@ -38,6 +38,40 @@ NOW = datetime(2026, 8, 21, 6, 0, tzinfo=timezone.utc)
 FIXTURES = Path("examples/fixtures")
 
 
+def test_target_selection_finds_champion_beyond_first_ten():
+    text = lane_meta_text()
+    rows = ",".join(f'Top("Hero{i}",0.5,0.1,0.01,1,{i},1,1)' for i in range(1, 13))
+    text = text[:text.index('LolListLaneMetaChampions("')] + (
+        'LolListLaneMetaChampions("en_US","top",Data(Positions([' + rows + '])))'
+    )
+    adapter, _ = make_adapter(result_text=text)
+    evidence = adapter.fetch(position="top", target_champions=("Hero12",))
+    assert [fact.champion for fact in evidence.facts] == ["Hero12"]
+    assert evidence.facts[0].rank == 12
+
+
+def test_target_missing_is_not_reported_as_global_upstream_absence():
+    adapter, _ = make_adapter()
+    with pytest.raises(OPGGMetaError) as error:
+        adapter.fetch(position="top", target_champions=("Anivia",))
+    assert error.value.code == "opgg_meta_target_not_in_response"
+
+
+@pytest.mark.parametrize("targets", [(), (" ",), ("Nasus", "nasus"), ["Nasus"], tuple(f"Hero{i}" for i in range(11))])
+def test_target_validation_precedes_tool_call(targets):
+    adapter, calls = make_adapter()
+    before = len(calls)
+    with pytest.raises(ValueError, match="target_champions_invalid"):
+        adapter.fetch(position="top", target_champions=targets)
+    assert len(calls) == before
+
+
+def test_partial_target_selection_keeps_only_matched_facts():
+    adapter, _ = make_adapter()
+    evidence = adapter.fetch(position="top", target_champions=("Nasus", "Anivia"))
+    assert [fact.champion for fact in evidence.facts] == ["Nasus"]
+
+
 def lane_meta_text(*, first_champion: str = "Nasus") -> str:
     return (
         "class LolListLaneMetaChampions: lang,position_filter,data\n"

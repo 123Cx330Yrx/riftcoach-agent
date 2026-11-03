@@ -1,0 +1,43 @@
+{
+  "version": "sol-natural-timeout-observed-20261022-v1",
+  "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-natural-continuation-20261021",
+  "execution_head": "51f31f6010989a6d80ad34760409789e85b9c253",
+  "ci_run": "39623758447",
+  "ci_conclusion": "success",
+  "parent_seal_sha256": "b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55",
+  "seal_sha256": "4b44688ef494debc8cdae8bd8b42dec67f0ea5a5c54c5c8bc4aa4474e40c7809",
+  "original_stdout_roots": {
+    "guard": "1f053a0819ea70d7e7ead5dbabf05757946d1665e26c58ccb4a361ab821ba837",
+    "checkpoint": "6e6615a348511711409c85881cfbfd77e681fb0a14370d945e5af3c5279a5f44",
+    "authorization_sha": "37676388e5fc6a0ffeb27cf723a042590ac15c2c36b5dad54f0ebb78350501f5",
+    "source_stdout_sha256": "7f8157531493d6e9ef24057dbcf5181beff30ec088a1f742aa601c692c072295"
+  },
+  "attempts": [
+    {"ordinal": 4, "http_status": 524, "elapsed_seconds": 128.89, "http_requests": 1, "worker_exit": 0, "reaped": true, "eof": true, "closed": true, "usage_state": "unknown"},
+    {"ordinal": 5, "http_status": 524, "elapsed_seconds": 128.282, "http_requests": 1, "worker_exit": 0, "reaped": true, "eof": true, "closed": true, "usage_state": "unknown"}
+  ],
+  "first_deviation": "remote_http_524_before_local_300_second_deadline",
+  "semantic_result": null,
+  "business_request_sha256": "008987be27dc121516010a488e2fae70d5d167f454f555b9bccbb7db435b3eae",
+  "report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+  "frontier_request_sha256": "a639148f5208a1a2e19c62d82bbb80704e91b5684d2bea802269925c35664edc",
+  "cumulative_accounting": {"calls": 5, "tokens": 52067, "reserved_tokens": 145824, "retries": 1, "active_seconds": 472.672},
+  "native_business_reviews": 0,
+  "applications": 0,
+  "fresh_reviews": 0,
+  "strict_read_only_replay": true,
+  "old_evidence_changed": false,
+  "provider_web_log_evidence": {
+    "source": "https://yujianwudi.top/usage-logs/common",
+    "entries": [
+      {"displayed_time": "09:55:54", "input_tokens": 21594, "output_tokens": 3171, "cached_tokens": 21376, "displayed_cny": "0.006856", "duration": "2m15s"},
+      {"displayed_time": "09:59:47", "input_tokens": 21594, "output_tokens": 6452, "cached_tokens": 21376, "displayed_cny": "0.013418", "duration": "3m56s"}
+    ],
+    "request_id_matched": false,
+    "reconciles_local_unknown_usage": false,
+    "interpretation": "consistent with upstream continuing after gateway timeout; cause and exact request linkage unproven"
+  },
+  "next_action": "Prepare a new explicitly authorized continuation from this seal, preserve all completed work and failed accounting, send no paid request until the user starts after upstream recovery.",
+  "qualified": false,
+  "publication_allowed": false
+}

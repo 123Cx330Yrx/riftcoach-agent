@@ -1,0 +1,37 @@
+{
+  "purpose": "Offline integration feasibility, not paid execution or new candidate validation",
+  "http_requests": 0,
+  "key_read": false,
+  "rows": [
+    {
+      "duty": "facts",
+      "stage": "fresh",
+      "wire_builds": true,
+      "worker_accepts_dynamic_request": false,
+      "error": "semantic_request_binding"
+    },
+    {
+      "duty": "completion",
+      "stage": "fresh",
+      "wire_builds": true,
+      "worker_accepts_dynamic_request": false,
+      "error": "semantic_request_binding"
+    }
+  ],
+  "proposed_limits": {
+    "max_generation_calls": 2,
+    "max_review_calls": 4,
+    "max_calls": 6,
+    "total_tokens": 401920,
+    "execution_timeout_s": 900,
+    "request_timeout_s": 300,
+    "generation_output": 32768,
+    "review_output": 16384
+  },
+  "estimated_uncached_cny": "0.4741120",
+  "price_sources": {
+    "flash": "existing ADR0108 snapshot 0.8/2.8 CNY per million, current price not reverified",
+    "sol": "user confirmed GPT-pro 0.4/2 CNY per million on 2026-10-18"
+  },
+  "ready": false
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-10-30T04:29:08.121365+00:00",
+  "baseline": "a000443db9bda7639b37028038d7e812789d3bd8",
+  "status": "implementation_verified_remote_ci_pending",
+  "original_ci": [
+    {
+      "run": 40996162649,
+      "observed_failed_tests": [
+        "test_openapi_versions_the_async_contract_and_exact_paths",
+        "test_app_factory_and_openapi_do_not_read_keys_or_open_io"
+      ],
+      "cause": "two exact API path inventories omitted continuation and resume"
+    },
+    {
+      "run": 40998305806,
+      "observed_failed_tests": [
+        "test_openapi_versions_the_async_contract_and_exact_paths"
+      ],
+      "cause": "same exact API path inventory omission; remaining shards still running at last observation"
+    },
+    {
+      "run": 41000871576,
+      "postgres_passed": 249,
+      "postgres_failed": 6,
+      "cause": "correction-scope runtime component fingerprint drift before provider construction; shards still running"
+    }
+  ],
+  "manifest_maintenance": [
+    {
+      "profile": "flash_glm_review_v1",
+      "changed_sources": [
+        "app/runtime/coach_contract.py",
+        "app/runtime/coach_budget.py",
+        "app/runtime/models.py"
+      ],
+      "old_program_sha256": "6db69edde3740351634ea1a1aa154fd07b8f184317e36c907194b97219bb5185",
+      "new_program_sha256": "5813c657fd2233063f8918d097ad4d515dc5e6f862d255e86c5e280208784aa3",
+      "other_manifest_fields_unchanged": true
+    },
+    {
+      "profile": "flash_glm_coarse_v1",
+      "changed_sources": [
+        "app/runtime/coach_contract.py",
+        "app/runtime/coach_budget.py",
+        "app/runtime/models.py",
+        "app/prompt_program/resolver.py"
+      ],
+      "old_program_sha256": "8670e5c825ecd5140ebbd7ff985354b10057b2eebec5a1552d15ac6b484687c2",
+      "new_program_sha256": "9e8290cced0b9153f4dd6786d76e0ee940ba23a222f3d5127c09961691d7c9c9",
+      "other_manifest_fields_unchanged": true
+    },
+    {
+      "profile": "flash_glm_correction_scope_v1",
+      "changed_sources": [
+        "app/runtime/coach_contract.py",
+        "app/runtime/coach_budget.py",
+        "app/runtime/models.py",
+        "app/prompt_program/resolver.py"
+      ],
+      "old_program_sha256": "6128b746be8c762d4c12aff99b06de353f8a6ea2798c10672a683000e352765d",
+      "new_program_sha256": "65287f26a98e083361c25623db2facca3dacbea83ee05805edc818117ca459d4",
+      "other_manifest_fields_unchanged": true
+    },
+    {
+      "profile": "flash_glm_boundary_examples_v1",
+      "changed_sources": [
+        "app/runtime/coach_contract.py",
+        "app/runtime/coach_budget.py",
+        "app/runtime/models.py",
+        "app/prompt_program/resolver.py"
+      ],
+      "old_program_sha256": "08f53b86209cdd60c0d2944c8abdbb6259771ae6665704d199ba1c2bf6d61701",
+      "new_program_sha256": "9f0f389ede69676b8bf4cdab73af623b22fbede3e0a96eba7a4d10253a5ba612",
+      "other_manifest_fields_unchanged": true
+    }
+  ],
+  "profile_bootstrap": {
+    "passed": 11,
+    "model_calls": 0
+  },
+  "verification": {
+    "offline_runtime_and_original_api_case": 36,
+    "api_and_composition": 61,
+    "overlap_between_offline_groups": 1,
+    "postgres_original_and_continuation": 21,
+    "postgres_new_normal_entry": 2,
+    "postgres_evidence_repeat_after_projection_fix": 1,
+    "postgres_distinct": 23
+  },
+  "product_changes": [
+    "server-only opt-in Evidence publication mode on both HTTP creation routes",
+    "persist first actual Evidence projection and original timestamps across task leases",
+    "Evidence adapter version 2; legacy adapter version 1 unchanged"
+  ],
+  "preflight": {
+    "observed_conversation": true,
+    "ordinary_composed_api": true,
+    "real_disposable_postgres": true,
+    "scripted_models_and_riot": true,
+    "resume_without_rebuy": true,
+    "evidence_and_report_owner_reads": true,
+    "one_assistant_turn": true,
+    "observed_training_progress_writes": 0,
+    "browser_exercised": false,
+    "live_sources_checked": false,
+    "real_model_calls": 0,
+    "real_secret_reads": 0,
+    "product_database_migrated": false,
+    "default_profile_changed": false
+  },
+  "original_15": "completed, preserved, not rerun",
+  "old_seals_modified": false,
+  "stage_8e": "in_progress",
+  "automation": "paused",
+  "limitations": [
+    "new remote CI pending",
+    "browser and actual account/source preflight pending",
+    "old Evidence adapter-1 sessions are not silently reinterpreted under adapter-2; no live sessions were migrated"
+  ],
+  "evidence": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\ci-repair-offline.stdout.txt",
+      "sha256": "7e94c3f720fa2dc3fc5d68c9dcabc1ccd3a6cf91bc25dc7743d7d91b4ed6c8ae"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\api-entry-offline.stdout.txt",
+      "sha256": "dd19ef59e2b93f8f17a77b0dc7fcc0e3fb9463d63023919af7be5eb5b5d7471c"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\ci-repair-postgres.stdout.txt",
+      "sha256": "072f5d7ec5da6272fe23bbc4a399b342208a0c498594bb9f75140690d50e2adb"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\product-entry-postgres-verified.stdout.txt",
+      "sha256": "3793b218b40e6db8e1f07388c1013a634b80560547e67b16fb9c539014198230"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\product-evidence-regression.stdout.txt",
+      "sha256": "430a774df3def9609fd41bd708732edb5a3fac0948ccebf08b46232af1f68e8c"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\entry-replay-diagnostic.json",
+      "sha256": "33177b71dabd235beb3128f563f8fe18588106fae411d20e75c4c5eb5ea4c8a1"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\ci-original-status-20261030-v2.json",
+      "sha256": "639aa73435b6bac56f5d25088855de42ab16e8adccf22394f64d79dcfb9f3d81"
+    }
+  ]
+}

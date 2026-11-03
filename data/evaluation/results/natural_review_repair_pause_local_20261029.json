@@ -1,0 +1,45 @@
+{
+  "version": "initial-review-repair-pause-local-v1",
+  "recorded_at": "2026-10-29T09:24:48.847294+00:00",
+  "development_base": "ddd3e06b",
+  "scope": "prospective initial missed-error pause only",
+  "provider_requests": 0,
+  "key_reads": 0,
+  "policy": "pause-initial-review-v1",
+  "default_historical_behavior": "stop",
+  "recovery_approval_implemented": false,
+  "application_restored": false,
+  "formal_tail_completed": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "tests": {
+    "unique_passed": 11,
+    "first_run": "8 passed, 1 component fingerprint failure",
+    "after_current_manifest_refresh": "9 passed in 71.11 seconds",
+    "additional_boundary_run": "7 passed in 22.48 seconds, including 5 repeated cases",
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed"
+  },
+  "verified": [
+    "initial missed-error submission remains false without terminal",
+    "restart retains rejected native and author originals",
+    "unresolved rejection prevents new model action and repeated submission",
+    "native tampering remains rejected",
+    "fresh and other defects still stop",
+    "policy pinned by prepare and cannot be changed by run",
+    "default legacy whole application still applies exactly once"
+  ],
+  "inventory_changed_fields": [
+    "component_fingerprints",
+    "program_sha256"
+  ],
+  "original15_cases": 15,
+  "original15_repeated": false,
+  "source_sha256": {
+    "app/evaluation/sol_session_review.py": "d92dd4039787c4bd871492d16fd07d3c693ef77e4c47908235daefcc26f2a15f",
+    "scripts/sol_natural_launch.py": "081d2a0edbe22f7e604329c17430de2b051a83c673878c25cd7dd1fb7b6b1e32",
+    "tests/test_sol_review_repair_pause.py": "f71a49247b0185d6ff2a73a5d7580f370ee5b7c09c7ba050bb0782d620e67c1d"
+  },
+  "next_action": "Implement native joint-coverage review and validated resolution before allowing continuation; do not silently accept the rejected opinion."
+}

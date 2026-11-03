@@ -1,0 +1,392 @@
+{
+  "schema_version": "1.0",
+  "scope": "single_frozen_ShowMaker_native_product_development_not_holdout",
+  "run_id": "native-product-ac2725c",
+  "original_plan": {
+    "ci_run": "35424463066",
+    "contract": {
+      "contract_id": "recent-form-review-flash-v2",
+      "scope": "unadmitted_opt_in",
+      "sha256": "a4f75e43a71fd36f7604a24bee7a7b21a0f3447c0e5a3fe29e8543cd670b36f1",
+      "version": "1.4.0"
+    },
+    "first_input_ceiling": 29790,
+    "head_sha": "ac2725cc331edec4ef4098753b9c179d5bfdc802",
+    "max_revisions": 1,
+    "max_seconds": 900,
+    "production_admitted": false,
+    "real_generation_included": true,
+    "run_id": "native-product-ac2725c",
+    "semantic_approval": false,
+    "source_scope": "frozen_ShowMaker_development_not_current_meta",
+    "total_calls": 5,
+    "total_tokens": 401920
+  },
+  "original_result": {
+    "completed_calls": 3,
+    "evidence_bundle_digest": "66834abf0e643c7aa951e4cf5a63ab65e8862ed48ae0f910175497cd23817f3b",
+    "input_tokens": 26883,
+    "output_tokens": 3494,
+    "pending_snapshot_run_id": "native-product-ac2725c",
+    "production_admitted": false,
+    "report_available": true,
+    "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+    "reserved_calls": 3,
+    "result": {
+      "output": {
+        "evaluation_score": 97,
+        "evidence_source_ids": [
+          "01_metric_interpretation.md",
+          "03_training_plan.md",
+          "02_review_method.md"
+        ],
+        "report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置均值受辅助局强烈拉低，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀与伤害差距主要来自辅助局拉低，不应解读为某一位置的能力差距。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+        "run_id": "native-product-ac2725c",
+        "status": "published",
+        "warnings": []
+      },
+      "publication_status": "published",
+      "run_id": "native-product-ac2725c",
+      "runtime_status": "completed",
+      "schema_version": "1.0",
+      "terminal_reason": "quality_gate_passed",
+      "trace_reference": {
+        "relative_path": "runtime_trace.json",
+        "run_id": "native-product-ac2725c",
+        "sha256": "04608b60dd6e150a64ae7412537d74d87d5300b7539c104a6e0c216b36d88563",
+        "trace_schema_version": "1.1"
+      }
+    },
+    "semantic_approval": false,
+    "status": "published",
+    "unknown_usage_calls": 0
+  },
+  "manual_semantic_acceptance": false,
+  "production_admitted": false,
+  "raw_receipts_modified": false,
+  "findings": [
+    {
+      "id": "composition_attribution_false_negative",
+      "blocking": true,
+      "quote": "全样本补刀与伤害差距主要来自辅助局拉低，不应解读为某一位置的能力差距。",
+      "reason": "Removing the support loss leaves about 669.24 of the 695.42 damage/min gap; the support row changes it by only about 26.18. The CS observation cannot justify the same damage attribution.",
+      "arithmetic": {
+        "damage_per_min": {
+          "win_mean": "1286.755",
+          "selected_loss_mean": "591.3366666666666666666666667",
+          "middle_loss_mean": "617.52",
+          "selected_gap": "695.4183333333333333333333333",
+          "middle_gap": "669.235",
+          "change_when_support_removed": "26.1833333333333333333333333"
+        },
+        "cs_per_min": {
+          "win_mean": "8.805",
+          "selected_loss_mean": "6.453333333333333333333333333",
+          "middle_loss_mean": "9.01",
+          "selected_gap": "2.351666666666666666666666667",
+          "middle_gap": "-0.205",
+          "change_when_support_removed": "2.556666666666666666666666667"
+        },
+        "gold_per_min": {
+          "win_mean": "505.29",
+          "selected_loss_mean": "389.4066666666666666666666667",
+          "middle_loss_mean": "432.815",
+          "selected_gap": "115.8833333333333333333333333",
+          "middle_gap": "72.475",
+          "change_when_support_removed": "43.4083333333333333333333333"
+        },
+        "deaths_before_15": {
+          "win_mean": "2.5",
+          "selected_loss_mean": "2.666666666666666666666666667",
+          "middle_loss_mean": "0.5",
+          "selected_gap": "-0.166666666666666666666666667",
+          "middle_gap": "2.0",
+          "change_when_support_removed": "-2.166666666666666666666666667"
+        }
+      }
+    },
+    {
+      "id": "publication_sources_not_in_model_input",
+      "blocking": true,
+      "reason": "The saved Evidence has Data Dragon, patch and two OP.GG snapshots; neither generation nor review received the external-source context. The OP.GG snapshots expired on September 10, so the repair must expose omission/expiry, not call them current usable facts."
+    }
+  ],
+  "manual_review": {
+    "identity": "Observed ShowMaker, not reader; preserved",
+    "facts": "Per-game values, role/outcome counts, four table metrics and timeline times checked against saved input",
+    "knowledge": "All five citations read; cited topics supported, but citations do not cure the subgroup attribution",
+    "remaining_claims": "Sample-scoped CS wording is not rejected merely for using stable; no dictionary definition required",
+    "review": "97/pass with zero issues missed the false attribution; original model result retained"
+  },
+  "responses": [
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-001.json",
+      "sha256": "d51b471ff57a313f6b98a31170086a985bf25946cca544a32b27f75fcad54ea4",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_1f8907f60d9c46cc8ae3ec17",
+          "name": "knowledge.search",
+          "arguments": {
+            "query": "早期死亡 生存 对线风险 复盘",
+            "top_k": 5
+          }
+        },
+        {
+          "id": "call_2a238d285fa049b0a916b90b",
+          "name": "knowledge.search",
+          "arguments": {
+            "query": "补刀 经济 伤害 赢局输局差异",
+            "top_k": 5
+          }
+        },
+        {
+          "id": "call_8cc2ab95d5104dcca155d68e",
+          "name": "knowledge.search",
+          "arguments": {
+            "query": "事实与复盘假设 训练目标 复盘方法",
+            "top_k": 5
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 6880,
+        "output_tokens": 448,
+        "cached_input_tokens": 0
+      },
+      "finish_reason": "tool_calls"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-002.json",
+      "sha256": "cfb810f71acd4cd988b5c0aba767f04967f348ebbc2f94f633cff65ca7285254",
+      "content": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置均值受辅助局强烈拉低，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀与伤害差距主要来自辅助局拉低，不应解读为某一位置的能力差距。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "tool_calls": [],
+      "usage": {
+        "input_tokens": 9486,
+        "output_tokens": 2104,
+        "cached_input_tokens": 6848
+      },
+      "finish_reason": "stop"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-003.json",
+      "sha256": "0eec4c75f56be15cb09293f16dbf6cd1b8ec41bf2092233065bc05a99c6dcad3",
+      "content": "\n{\"score\": 97, \"verdict\": \"pass\", \"issues\": [], \"issue_resolutions\": []}\n",
+      "tool_calls": [],
+      "usage": {
+        "input_tokens": 10517,
+        "output_tokens": 942,
+        "cached_input_tokens": 64
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "files": [
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/api_run_receipt.json",
+      "sha256": "f40b5acc4b5f8207bcccfa84348b333b970f00e378ab1a85100920a1cac7d924"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/drafts/coach_draft_attempt_0.md",
+      "sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/evaluations/evaluation_attempt_0.json",
+      "sha256": "1955ad75f0e4e38d831b3b02431469a341e34adea911b787e09b0efb7d82298d"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/evidence_bundle.json",
+      "sha256": "8637b5b362825cf4e16a12dfd48e14c691e4c56c1221105c15f6dc0f101b946e"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/evidence_publication_manifest.json",
+      "sha256": "8ded19e4f1325609a9a08acf1a4ba7322c739ca9888aff1c2543fa0f31f5706c"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/inputs/deterministic_report.md",
+      "sha256": "7712030e85551cf50f0c8e0904938cd20fe34d457d3d32809c8e939e00f2651b"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/inputs/player_summary.json",
+      "sha256": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/knowledge/retrieval_evidence.json",
+      "sha256": "e5e69bb9616f7e3c8f82e9f50541d40e7409e3e7c04484c29359a68b49343d5d"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/manifest.json",
+      "sha256": "ed0a1ffcae1b48fe3a85c3afa92f9a539402b02ee0a6eff9b28ed2bdf51882f7"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/memory_context_manifest.json",
+      "sha256": "5ed92065da9dfae79d4962dc828b0dd0096e3594ff09392ae202dcd0e7c3f49c"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/output/final_report.md",
+      "sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195"
+    },
+    {
+      "path": "data/runs/native_product/reports/native-product-ac2725c/runtime_trace.json",
+      "sha256": "04608b60dd6e150a64ae7412537d74d87d5300b7539c104a6e0c216b36d88563"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/request-001.json",
+      "sha256": "bdc424238ad70e0039788ff3447be8128df447a4e87e8e55c89dea0d6659f058"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/request-002.json",
+      "sha256": "7ee42c98af071091f535a4b10b009b6cacf89bb64a7bb251e4f22258fcc821da"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/request-003.json",
+      "sha256": "d10166bf90544d9ffff6cc1ed915c70408bae7952f6c33565af6af642fbdd60b"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-001.json",
+      "sha256": "d51b471ff57a313f6b98a31170086a985bf25946cca544a32b27f75fcad54ea4"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-002.json",
+      "sha256": "cfb810f71acd4cd988b5c0aba767f04967f348ebbc2f94f633cff65ca7285254"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/response-003.json",
+      "sha256": "0eec4c75f56be15cb09293f16dbf6cd1b8ec41bf2092233065bc05a99c6dcad3"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-001/progress.json",
+      "sha256": "07b02e43a197d87e5eccb085ea4ba03582baf05c331ebc932622480091b95027"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-001/reservation.json",
+      "sha256": "1b6fb55921ae6974e77b646748a81c37f68e341aecdcd5ae8aeef1273190d172"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-001/result.json",
+      "sha256": "3c4314516135aff19f9b7c7ba4f3c0196f66406db05d1f9fb5f0804d82c686c4"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-002/progress.json",
+      "sha256": "3c68ae4005d671b36a52cba9a8135f693f98edcd72e3166eebfaf0ffe4977d88"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-002/reservation.json",
+      "sha256": "4df6d56410be35a2fa9c239d5746ccbf5922f8ebb70d0133851b2934ae1f0b6e"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-002/result.json",
+      "sha256": "eae58019db30c4b9d464412b01c88ea0a6236f0093c270af08c14f9595bb4b30"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-003/progress.json",
+      "sha256": "32973815154c5d51acd30d47f523faa39e28e0b86d775ef4c7f22d0616b20220"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-003/reservation.json",
+      "sha256": "c0da775eaa589e9999dfb91096ef97e35468f47c9111d81b9b3a6e1ac1345445"
+    },
+    {
+      "path": "data/runs/native_product/transport/native-product-ac2725c/stream-003/result.json",
+      "sha256": "c132adf3399414b2e3595f4842419bbd998d14424a1f5c943c69bc8242efc606"
+    },
+    {
+      "path": "data/runs/native_product/observations/native-product-ac2725c/plan.json",
+      "sha256": "5a0fd374fa4da9b1d69dd81644215c87f54c142b1aa5073e23e5eec4ad648ee1"
+    },
+    {
+      "path": "data/runs/native_product/observations/native-product-ac2725c/result.json",
+      "sha256": "289496457fc404031c972fcb896706068e944e020e081c969aec459215491935"
+    }
+  ],
+  "readback": {
+    "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+    "evidence_digest": "66834abf0e643c7aa951e4cf5a63ab65e8862ed48ae0f910175497cd23817f3b",
+    "run": {
+      "schema_version": "1.0",
+      "run_id": "native-product-ac2725c",
+      "runtime_status": "completed",
+      "publication_status": "published",
+      "terminal_reason": "quality_gate_passed",
+      "skill_name": "recent-form-review",
+      "skill_version": "0.6.0",
+      "prompt_profile_id": "recent-form-review-coach",
+      "prompt_profile_version": "3.0.0",
+      "started_at_utc": "2026-09-19T05:45:40.433220Z",
+      "completed_at_utc": "2026-09-19T05:47:18.187018Z",
+      "elapsed_ms": 97766,
+      "usage": {
+        "provider_calls_attempted": 3,
+        "provider_responses_observed": 3,
+        "observed_input_tokens": 26883,
+        "observed_output_tokens": 3494,
+        "input_tokens": 26883,
+        "output_tokens": 3494,
+        "token_observation": "complete",
+        "tool_calls": 3,
+        "tool_attempts": 3,
+        "tool_latency_ms": 15.999999995983671,
+        "cost": null,
+        "currency": null,
+        "pricing_profile_id": null,
+        "pricing_profile_version": null,
+        "cost_observation": "not_configured"
+      },
+      "report_available": true
+    },
+    "summary": {
+      "schema_version": "1.0",
+      "run_id": "native-product-ac2725c",
+      "skill_name": "recent-form-review",
+      "skill_version": "0.6.0",
+      "runtime_status": "completed",
+      "publication_status": "published",
+      "terminal_reason": "quality_gate_passed",
+      "report_available": true,
+      "games_analyzed": 5,
+      "wins": 2,
+      "losses": 3,
+      "win_rate": 40.0,
+      "main_role": "MIDDLE",
+      "main_champions": [
+        "薇古丝",
+        "卡蜜尔",
+        "艾尼维亚",
+        "洛克",
+        "辛德拉"
+      ],
+      "averages": {
+        "kda": 3.7,
+        "cs_per_min": 7.39,
+        "gold_per_min": 435.76,
+        "damage_per_min": 869.5,
+        "vision_score": 45.0,
+        "kill_participation_percent": 50.4,
+        "damage_share_percent": 21.1,
+        "gold_share_percent": 20.0,
+        "deaths_before_15": 2.6
+      },
+      "win_loss_comparison": {
+        "wins": {
+          "cs_per_min": 8.8,
+          "gold_per_min": 505.29,
+          "damage_per_min": 1286.76,
+          "vision_score": 33.5,
+          "deaths_before_15": 2.5
+        },
+        "losses": {
+          "cs_per_min": 6.45,
+          "gold_per_min": 389.41,
+          "damage_per_min": 591.34,
+          "vision_score": 52.67,
+          "deaths_before_15": 2.67
+        }
+      }
+    },
+    "timeline_counts": {
+      "total_matches": 5,
+      "projected_matches": 5,
+      "timeline_status": "available"
+    }
+  }
+}

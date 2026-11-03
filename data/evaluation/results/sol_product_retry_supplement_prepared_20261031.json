@@ -1,0 +1,37 @@
+{
+  "accounting": {
+    "known_tokens": 29323,
+    "requests_observed": 6,
+    "requests_reserved": 6,
+    "retries": 2,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 220146,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 554.4999999999709,
+  "checkpoint_sha256": "a8ec5dc9bdf5ad697b6d67a977d10b0ec5bb2cc8ecff8f4ffcc817f255f2054a",
+  "database_dump_sha256": "f22b154d55056bccd3eee5c61309c8c49e7a2228cfee34999160026b6bb6c3f6",
+  "default_manual_retries": 2,
+  "draft_authorized": false,
+  "draft_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\manual-retry-extension-ready-20261031\\proposed-supplement-v2.json",
+  "driver_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\run_manual_retry_supplement.py",
+  "driver_sha256": "1c0ec61f327fb09dff8c1cfc21b98dd4a9f212bdf779e236f3102e5a240993ae",
+  "expires_at_utc": "2026-10-31T07:45:00+00:00",
+  "new_model_requests": 0,
+  "original_limits_preserved": true,
+  "proposed_task_additional_retries": 1,
+  "ready_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\manual-retry-extension-ready-20261031\\ready.json",
+  "ready_sha256": "c7a975059ad7fd266582a39659bb8818553b227fac6d0e58cd7f507db3071c8d",
+  "real_credential_reads": 0,
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "schema": "task-retry-supplement-preparation-v1",
+  "status": "prepared_pending_frozen_ci_and_explicit_supplement",
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "tests": {
+    "expired_committed_replay_recheck": 1,
+    "grant_and_product_contract": 27,
+    "inventory_and_worker": 11,
+    "runtime_profiles": 11
+  },
+  "upstream_recovery_independently_verified": false
+}

@@ -60,7 +60,8 @@ def migrated_product_api(
     )
     tasks = PostgresTaskRepository(factory)
     evidence = PostgresEvidenceSnapshotRepository(factory)
-    task_service = ReviewTaskService(repository=tasks)
+    from app.persistence.task_continuations import PostgresTaskContinuations
+    task_service = ReviewTaskService(repository=tasks, continuation_store=PostgresTaskContinuations(tasks))
     products = EvidenceProductService(
         task_service=task_service,
         repository=evidence,

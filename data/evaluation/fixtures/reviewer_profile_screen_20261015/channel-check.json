@@ -1,0 +1,138 @@
+{
+  "observed_at": "2026-10-15T22:37:25.140355+08:00",
+  "kind": "public-page-and-public-config-observation-not-live-model-receipt",
+  "model": "gpt-6.1-sol",
+  "sources": [
+    "https://yjapi.shenlanqaq.com/api/pricing",
+    "https://yujianwudi.top/api/pricing",
+    "https://yujianwudi.top/pricing",
+    "https://doc.yujianwudi.top/",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://developers.openai.com/api/docs/guides/function-calling",
+    "https://developers.openai.com/api/docs/guides/reasoning"
+  ],
+  "yj_api": {
+    "model_listed": true,
+    "listed_endpoints": [
+      "/v1/chat/completions"
+    ],
+    "responses_confirmed_by_public_config": false,
+    "billing_mode": "tiered_expr",
+    "interpretation": "not proof Responses is unavailable; actual Sol group and wire contract unverified"
+  },
+  "tianjige": {
+    "base_url": "https://yujianwudi.top/v1",
+    "responses_example": "client.responses.create(model=\"gpt-6.1-sol\", input=...)",
+    "listed_endpoints": [
+      "/v1/chat/completions",
+      "/v1/responses",
+      "/v1/responses/compact"
+    ],
+    "price_display": "standard CNY per million tokens; not verified account debit or recharge conversion",
+    "groups": [
+      {
+        "name": "GPT-plus",
+        "input": 0.2,
+        "output": 1,
+        "cache_read": 0.01,
+        "four_request_uncached_display_estimate": 0.182272,
+        "display_success_percent": 96.17,
+        "display_ttft_seconds": 17.93,
+        "display_latency_seconds": 43.73,
+        "display_tps": 39.2
+      },
+      {
+        "name": "GPT-pro",
+        "input": 0.4,
+        "output": 2,
+        "cache_read": 0.02,
+        "four_request_uncached_display_estimate": 0.364544,
+        "display_success_percent": 99.13,
+        "display_ttft_seconds": 14.8,
+        "display_latency_seconds": 28.59,
+        "display_tps": 44.6
+      },
+      {
+        "name": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+        "input": 0.5,
+        "output": 2.5,
+        "cache_read": 0.025,
+        "four_request_uncached_display_estimate": 0.45568,
+        "display_success_percent": 95.82,
+        "display_ttft_seconds": 3.17,
+        "display_latency_seconds": 23.3,
+        "display_tps": 38.3
+      }
+    ],
+    "aggregate": {
+      "success_percent": 96.27,
+      "latency_seconds": 25.29,
+      "tps": 39.0,
+      "caption": "recent 24 hours; excludes business refusals; includes current incomplete hour",
+      "window_ambiguity": "group accessible description also says 30 day uptime; sample counts/endpoints/reasoning not provided"
+    },
+    "auto_group_chain": [
+      "GPT-plus",
+      "GPT-pro",
+      "GPT-\u4f01\u4e1a\u4e13\u7ebf"
+    ],
+    "api_parameter_table": {
+      "temperature": "0..2 default 1",
+      "top_p": "0..1 default 1",
+      "max_tokens": "integer >=1",
+      "frequency_penalty": "-2..2 default 0",
+      "presence_penalty": "-2..2 default 0",
+      "stop": "up to 4 strings",
+      "seed": "integer",
+      "n": "integer >=1 default 1",
+      "stream": "boolean default false; SSE",
+      "response_format": "JSON or schema object",
+      "tools": "function array",
+      "tool_choice": "auto/none/required or function name",
+      "logprobs": "boolean default false",
+      "top_logprobs": "0..20",
+      "logit_bias": "object",
+      "user": "string"
+    },
+    "parameter_table_unchanged_after_selecting_responses": true,
+    "documentation_gap": "new-user document has no responses/reasoning/tool_choice/stream/high text; usage only described for choices-style chat response"
+  },
+  "contract_assessment": {
+    "responses_discovery": "declared",
+    "tool_and_stream_support": "listed in common table, not verified by response",
+    "reasoning_high": "official model supports; channel not verified",
+    "response_fields_to_verify": [
+      "output[].type=function_call",
+      "name=submit_report_review",
+      "arguments",
+      "status",
+      "incomplete_details",
+      "usage.input_tokens",
+      "usage.output_tokens",
+      "usage.output_tokens_details.reasoning_tokens"
+    ],
+    "request_mapping": [
+      "reasoning.effort=high",
+      "max_output_tokens=32768, not copied max_tokens",
+      "tools function parameters preserve existing schema; explicit strict=false avoids optional-field coercion",
+      "tool_choice=auto retained; exactly one named function call checked on receipt",
+      "no automatic group fallback; GPT-pro group is not reasoning.mode=pro"
+    ],
+    "unverified": [
+      "account group access",
+      "upstream identity",
+      "actual parameter enforcement",
+      "authenticated model response",
+      "terminal streaming events",
+      "actual billing",
+      "tokens counted by this channel"
+    ],
+    "recommendation": "prefer further preparation on a fixed Tianjige GPT-pro group, subject to access and actual contract verification; not selected or authorized"
+  },
+  "provider_requests": 0,
+  "secret_access": false,
+  "network_settings_changed": false,
+  "browser_connection": "worked after user changed to TUN; intermittent timeout/login interruption; causal attribution not established",
+  "return_to_previous_network_requested": true,
+  "network_restoration_confirmed": false
+}

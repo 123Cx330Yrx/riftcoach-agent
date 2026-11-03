@@ -1,0 +1,316 @@
+{
+  "version": "sol-original15-overlap-stop-and-closure-v1",
+  "created_at": "2026-10-28T02:59:40.768660+00:00",
+  "case": "observed:3",
+  "cases_completed": 12,
+  "case_records_verified": 13,
+  "remaining_cases_not_run": [
+    "observed:4",
+    "observed:5"
+  ],
+  "current_case_completed": false,
+  "batch_closed": true,
+  "all_cases_matched": false,
+  "model_quality_failure_proven": false,
+  "first_deviation": "preview_overlap_before_host_compatibility",
+  "diagnosis": {
+    "version": "original15-exact-patch-overlap-diagnosis-v1",
+    "created_at": "2026-10-28T02:55:38.872129+00:00",
+    "case": "observed:3",
+    "original_report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+    "error_code": "direct_patch_overlap_requires_new_joint_design",
+    "exception_type": "ValueError",
+    "actual_terminal_sha256": "a5fa41b87371d126eac3b0d8fbd6008f7faa0964562b5a9b6e12de9cc5021d6d",
+    "checkpoint_sha256": "8306e2c33990a40d2cccf180303069dab37dfdb3a204a12e6ae1c93520001a9e",
+    "original_frozen_preview_reproduced": true,
+    "patches": [
+      {
+        "duty": "facts",
+        "selector": "block_21",
+        "issue_ids": [
+          1
+        ],
+        "before": "\u8fd9 4 \u5c40\u4e2d\u5355\u5176\u5b9e\u662f\u9605\u8bfb\u8005\u672c\u4eba\u6253\u51fa\u7684\u6bd4\u8d5b\uff0c\u9605\u8bfb\u8005\u81ea\u5df1\u7684\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+        "after": "ShowMaker \u6240\u9009 4 \u5c40\u4e2d\u5355\u7684\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+        "reason": "\u7ea0\u6b63\u6bd4\u8d5b\u53ca\u7edf\u8ba1\u91cf\u88ab\u9519\u8bef\u5f52\u4e8e\u9605\u8bfb\u8005\u7684\u8eab\u4efd\u4e8b\u5b9e\uff0c\u4fdd\u7559\u6765\u6e90\u652f\u6301\u7684\u6570\u503c\uff0c\u4f7f\u5176\u4e0e\u5168\u6587\u89c2\u6469\u5bf9\u8c61\u8eab\u4efd\u53ca\u672c\u6bb5\u540e\u53e5\u4e00\u81f4\u3002"
+      },
+      {
+        "duty": "completion",
+        "selector": "block_21",
+        "issue_ids": [
+          1
+        ],
+        "before": "\u8fd9 4 \u5c40\u4e2d\u5355\u5176\u5b9e\u662f\u9605\u8bfb\u8005\u672c\u4eba\u6253\u51fa\u7684\u6bd4\u8d5b\uff0c\u9605\u8bfb\u8005\u81ea\u5df1\u7684\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+        "after": "\u8fd9 4 \u5c40\u4e2d\u5355\u5c5e\u4e8e\u89c2\u6469\u5bf9\u8c61 ShowMaker\uff0c\u5176\u8865\u5200/\u5206\u949f\u4e2d\u4f4d\u6570\u4e3a 8.805\u300115 \u5206\u949f\u524d\u6b7b\u4ea1\u5747\u503c\u4e3a 1.5\u3002",
+        "reason": "\u6062\u590d\u7528\u6237\u660e\u786e\u8981\u6c42\u7684\u89c2\u6469\u5bf9\u8c61\u5f52\u5c5e\uff0c\u4fdd\u7559\u6765\u6e90\u652f\u6301\u7684\u6837\u672c\u6570\u5b57\u53ca\u672c\u6bb5\u5176\u4f59\u89c2\u6469\u5b89\u6392\u3002"
+      }
+    ],
+    "same_before": true,
+    "different_after": true,
+    "first_deviation": "preview interval overlap check, before compatibility/edit Host tasks and before application/fresh",
+    "model_opinions_semantically_accepted": true,
+    "assembly_design_limitation": true,
+    "model_quality_failure_proven": false,
+    "transport_failure": false,
+    "provider_requests": 0,
+    "key_reads": 0,
+    "inventory_unchanged": true,
+    "author_inventory_unchanged": true,
+    "qualified": false,
+    "publication_allowed": false
+  },
+  "diagnosis_sha256": "18e521f180ef99a1d972ec05077617fc3131d42ebb42103850e2b7b64246b7a2",
+  "initials_accepted_evidence": "data/evaluation/results/sol_original15_observed3_initials_accepted_20261028.json",
+  "initials_accepted_evidence_sha256": "1a2cda2cc0be866dc3f44fcf60a4cacd6431e347bb7da59a96cbb1a1e2042ed1",
+  "original_stdout_roots": {
+    "checkpoint_sha256": "8306e2c33990a40d2cccf180303069dab37dfdb3a204a12e6ae1c93520001a9e",
+    "guard_sha256": "4fa94ec50cf7fcd83d27ad36b572ae557a8b9bfe905b5229d9bc871397e46065"
+  },
+  "original_stdout_sha256": "e2638636e4c3178f7926e8114f233a08e0df141e0822e53657fc360578a2378e",
+  "original_exit_sha256": "a9cec9efe127dd28b286d5e04575306bc77c3e33057c6e80e8a08ce9865598fc",
+  "terminal_sha256": "a5fa41b87371d126eac3b0d8fbd6008f7faa0964562b5a9b6e12de9cc5021d6d",
+  "phase_result": {
+    "calls": 2,
+    "host_semantics_verified": false,
+    "known_tokens": 43742,
+    "outcome": "candidate_execution_failed",
+    "production_admitted": false,
+    "publication_allowed": false,
+    "unknown_reserved_tokens": 0,
+    "version": "natural-flash-sol-dual-necessity-development-v1"
+  },
+  "phase_result_sha256": "2950dee3cb4177c7d657865cfca5384c2191ac6f22e56a4e077ba66304fb31e0",
+  "strict_read_only_replay": true,
+  "verified_prefix": [
+    {
+      "key": "claim-scope:1",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "reason": null,
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39425
+      }
+    },
+    {
+      "key": "claim-scope:4",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 4,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 70729
+      }
+    },
+    {
+      "key": "claim-scope:3",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 4,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 74782
+      }
+    },
+    {
+      "key": "attribution:1",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 4,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 75808
+      }
+    },
+    {
+      "key": "scope:4",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 4,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 75330
+      }
+    },
+    {
+      "key": "scope:3",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 6,
+        "reserved_tokens": 137228,
+        "retries": 2,
+        "tokens": 75249
+      }
+    },
+    {
+      "key": "claim-scope:2",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "reason": null,
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39891
+      }
+    },
+    {
+      "key": "claim-scope:5",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "reason": null,
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39364
+      }
+    },
+    {
+      "key": "claim-scope:6",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 5,
+        "reserved_tokens": 58350,
+        "retries": 1,
+        "tokens": 75111
+      }
+    },
+    {
+      "key": "claim-scope:7",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "reason": null,
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 39618
+      }
+    },
+    {
+      "key": "observed:1",
+      "matched": true,
+      "outcome": "candidate_initial_pass_unqualified",
+      "reason": null,
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 42785
+      }
+    },
+    {
+      "key": "observed:2",
+      "matched": true,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "reason": null,
+      "native_reviews": 6,
+      "accounting": {
+        "calls": 4,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 81211
+      }
+    },
+    {
+      "key": "observed:3",
+      "matched": false,
+      "outcome": null,
+      "reason": "case_execution_failed",
+      "native_reviews": 2,
+      "accounting": {
+        "calls": 2,
+        "reserved_tokens": 0,
+        "retries": 0,
+        "tokens": 43742
+      }
+    }
+  ],
+  "seal_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\seal.json",
+  "seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "roots_file_sha256": "05bfc5b1de02c2be087776dffa6b5b0d8da2e3959ad6a48032603fbd370f8ce9",
+  "seal_stdout_sha256": "d5285a954f72854c63a308396ca7db536c353533872fa6732516552d9b38353b",
+  "seal_exit_code": 0,
+  "evidence_files_verified": 2184,
+  "inventory_unchanged_except_create_only_seal": true,
+  "author_files_verified": 55,
+  "batch_accounting": {
+    "calls": 43,
+    "known_tokens": 773045,
+    "unknown_reserved_tokens": 195578,
+    "retries": 3
+  },
+  "transport": {
+    "actual_attempts": 43,
+    "completed_calls": 40,
+    "failed_calls": 3,
+    "http_requests_known": 43,
+    "http_requests_unknown": 0,
+    "known_tokens": 773045,
+    "known_usage_calls": 40,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 195578,
+    "unknown_usage_calls": 3
+  },
+  "current_case_accounting": {
+    "calls": 2,
+    "reserved_tokens": 0,
+    "retries": 0,
+    "tokens": 43742
+  },
+  "current_case_transport": {
+    "actual_attempts": 2,
+    "completed_calls": 2,
+    "failed_calls": 0,
+    "http_requests_known": 2,
+    "http_requests_unknown": 0,
+    "known_tokens": 43742,
+    "known_usage_calls": 2,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 0,
+    "unknown_usage_calls": 0
+  },
+  "active_seconds": 2727.217999999981,
+  "original_envelope_pass": false,
+  "actual_edit_performed": false,
+  "application_count": 0,
+  "fresh_sent": false,
+  "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
+  "new_provider_requests_during_diagnosis_and_closure": 0,
+  "key_reads_during_diagnosis_and_closure": 0,
+  "automation_status": "PAUSED",
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "next_action": "Implement and verify the explicit no-send overlap-coordination design in the development checkout; keep the sealed original version unchanged and retain both accepted initials.",
+  "recovery_plan": "docs/plans/2026-10-28-original15-overlap-recovery.md"
+}

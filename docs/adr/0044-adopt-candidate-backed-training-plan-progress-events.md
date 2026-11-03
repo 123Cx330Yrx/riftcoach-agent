@@ -83,6 +83,26 @@ GET /memory/players/{relationship_id}/training-progress
 写入继续复用 Candidate create/accept endpoint；不增加 Plan/Progress PATCH。6B-8 Context、typed assistant
 terminal，6B-9 lifecycle/export，以及 Auth/RSO、SSE、前端、Redis/向量库、新 SDK 和真实外部调用不在本批。
 
+## 2026-10-09 生产映射补充（不改变已有泛指指标）
+
+为此前缺失的确定性服务器生产者选定最小逐场合同，详见
+[逐场测量合同](../plans/2026-10-09-training-match-measurement.md)。只有显式
+`match.deaths_before_15/count`与`match.vision_score/score`映射本次纳入的单场、所有实际分路；
+泛指旧key不映射，窗口均值与特定分路扩展不在本轮。比赛结束时间必须有Riot原始整数毫秒，
+在Plan创建与task创建之间。缺失不填零，也不以生成时间或持续时长推算。
+
+value五字段不变，可选measurement envelope绑定match身份、实际位置/queue、结束毫秒、
+Summary文件字节SHA和规范化投影SHA，两摘要按各自用途核验；旧envelope保持兼容。
+仅新evidence_bound_v1 succeeded公开完整任务生产，已完成投影/legacy任务不回填。
+owner/relationship/Plan/metric/match固定key沿用Candidate唯一约束，首次占位的来源不改；
+重复/变化/拒绝/过期/隐藏不再提案，也不当新样本或原样replay。不自动纠错；新逐场key本轮
+不开放supersedes，旧泛指指标追加式纠错保留。
+
+服务器Candidate与终态消息、projection completed同事务；恢复从原run读取，不调用模型。
+模型proposal继续拒绝deterministic。新测量必须由用户accept，system也不能自动采用。
+accept再核当前active Plan/单位/测量身份及完整task来源；不增写路由、表或依赖。
+
+
 ## 备选方案
 
 - **复用万能 Review Memory JSON**：拒绝，Plan/metric/Artifact/纠错不变量无法由数据库证明。

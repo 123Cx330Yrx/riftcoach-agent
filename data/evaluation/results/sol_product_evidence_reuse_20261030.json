@@ -1,0 +1,855 @@
+{
+  "kind": "sol-product-evidence-reuse-audit-v1",
+  "date": "2026-10-30",
+  "head": "b5a99545ecb95c693d774303a32a0ff9f39e44ba",
+  "provider_calls": 0,
+  "key_reads": 0,
+  "network_forbidden": true,
+  "historical_artifacts_modified": false,
+  "completed_original15": 15,
+  "version_distribution": [
+    12,
+    1,
+    2
+  ],
+  "new_same_version_qualification": false,
+  "automatic_full15_rerun_required": false,
+  "inventory_comparisons": [
+    {
+      "source": {
+        "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_20261025.json",
+        "sha256": "4e31201e7b7033abb7e9fec23d26444606ec937f199209e873c97ec444ece962"
+      },
+      "changed_fields_against_current": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "unchanged_field_count": 28
+    },
+    {
+      "source": {
+        "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_patch_coordination_20261028.json",
+        "sha256": "72d330f724ddff922e75aa00c079700619bfc153f3fece0c9c324828029312c5"
+      },
+      "changed_fields_against_current": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "unchanged_field_count": 28
+    },
+    {
+      "source": {
+        "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_repair_inheritance_ready_20261029.json",
+        "sha256": "0553d0490a8043e854cd59b74fb6bfc2c8a9a972a1c41b6067105bac3a2852f7"
+      },
+      "changed_fields_against_current": [],
+      "unchanged_field_count": 30
+    }
+  ],
+  "current_runtime_inventory_matches_latest_snapshot": true,
+  "case_request_bindings": [
+    {
+      "key": "claim-scope:1",
+      "expected_initial": "accept",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "8cfcb43989c9161e1e770e817828eba202e97b1a26e45e34b5c3b9ebc18e0348",
+          "input_ceiling": 52216,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "3be3d4a7b47c1174bc4f0098e0b0907dac9b1cfb3d74577d4664ed2243e18e53",
+          "input_ceiling": 47820,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:4",
+      "expected_initial": "reject",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "39ab474693151b624560c80a26790d748c9279104efad8a8e598635a5641623f",
+      "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "f50ff62b21949b277eb8a16562e37754221993fbf7937800192a7fbff6a61fd9",
+          "input_ceiling": 52268,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "811867b2195bc0e08af74d200481ef591623cc01fddafdc23c5652869f59a2f0",
+          "input_ceiling": 47872,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:3",
+      "expected_initial": "reject",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "0b62a56852210caf441b7c7473430ca3c9ef1dae0a4619de2740a87ff59dc56d",
+      "report_sha256": "792db98a3e9ad94c8e1aa18ab8bf5da12824ac2f74d30a59bee132a700142518",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "c647595be7005692080d8185b95bf817bc1e1b92d1afe6781503c969b4e07e4e",
+          "input_ceiling": 52262,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "15b126783f125fd243fbda1cfe034eac384dcb67d0cd4cb9d7357b60316c7b6b",
+          "input_ceiling": 47866,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "attribution:1",
+      "expected_initial": "reject",
+      "dataset_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+      "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+      "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "bf158780b1d21e911289f8ceba645bddbcb3941c12a50925cd07c038fbef42a2",
+          "input_ceiling": 52136,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "5291793fe0a440bfdde7d46e0b0d75fb0fe48b100cf4780dd55e504ab2a674f8",
+          "input_ceiling": 47740,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "scope:4",
+      "expected_initial": "reject",
+      "dataset_sha256": "a2a493a37995e4d7844929480d5e1a64bf76a17f34f8d03a2fe933974dec5273",
+      "input_sha256": "a0e789f23705d441dfe1b5fb487a5ef9bdccab21870e0caf38211e25329e64d8",
+      "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "35a4d3700bedae4c9a2b092c6bc887d53fd539bf442381a621a26da216504e69",
+          "input_ceiling": 52214,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "9ec48df60693605ba2971f165f51d71d825dbba911f6555fc349c0113e7b6eb7",
+          "input_ceiling": 47818,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "scope:3",
+      "expected_initial": "reject",
+      "dataset_sha256": "a2a493a37995e4d7844929480d5e1a64bf76a17f34f8d03a2fe933974dec5273",
+      "input_sha256": "8bc028f5ad6d3a9a475835c0321bbbb20a11b40babaed1644ef0e7d88e7369da",
+      "report_sha256": "b37807a43c1a62d4eab39951d3136909c0e0a02e4925707e5955a9a7b6d0290c",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "c0d67a1dc021c928038b28f5f382b212554a1e0e2b8d35d73251d00bceb80f34",
+          "input_ceiling": 52230,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "dbb9ab3b8f521b9cf377a9b0a8254762cafd7fcf360d87a7367af75eb103f715",
+          "input_ceiling": 47834,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:2",
+      "expected_initial": "accept",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "8a8138fdd6c2a36a0d1bf6f7b031f705cddf33933e498dfa1ffc68d83dea09bc",
+      "report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "39cf88c4023481578ac74e78fa5a5769adaa4ed036e5b49cce20918ef728ce41",
+          "input_ceiling": 52442,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "47731e77459af3dc49f1274d6e7ddaf1d57843c8f796faf462f757f598eec4be",
+          "input_ceiling": 48046,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:5",
+      "expected_initial": "accept",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "5a932ffd0aa906f18ce24e7684f8f1b3cc24d5fb7e0be01ef5d3dca2a6243514",
+      "report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "233dccae4115b0af3a30d9b58a11cb1124b3c1706620d85a66a7569b8a9154cd",
+          "input_ceiling": 52264,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "5b613efa894d5bc8fa2c85ab61ca83679812cf24bc4296d35b448373b7b95e04",
+          "input_ceiling": 47868,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:6",
+      "expected_initial": "reject",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "5e5b98436d367283728268070342b1004d3027f85a195d1cf731f43e63409db3",
+      "report_sha256": "a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "b07cd0357c71802c196477ccf7b870e7f53ca7d5ea244e5bfa947114993171e0",
+          "input_ceiling": 52136,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "6d7cf03a92740ea8331f7bafa087d1873c78bd7b901ffef3d4049a2bcf299e29",
+          "input_ceiling": 47740,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "claim-scope:7",
+      "expected_initial": "accept",
+      "dataset_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "405edc1145c12f1ed6dc9de2e2eebb51b91e815f273e10d44845735de8f588a7",
+      "report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "f5682e4307caa75bdc033c8d58e1bc1c10fa349a705029478cde737023d4a9a0",
+          "input_ceiling": 52256,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "662f01f8620d9b20e095a386828aac25a31f706435c062e68f3b4f6b479b3404",
+          "input_ceiling": 47860,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "observed:1",
+      "expected_initial": "accept",
+      "dataset_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "input_sha256": "8d1fd90da314457c5981068dc1be765870a27f0ccb45fa1a6b3ed28dc1ebf954",
+      "report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "be2578b30b1088cede5e86fdc1948e233ff5fbe6090819efd89c204e23bf4d6b",
+          "input_ceiling": 56864,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "2413dec52e44cb7807088d262bf19f28fb3289be3a9de42d33dc7243324bf74e",
+          "input_ceiling": 52468,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "observed:2",
+      "expected_initial": "reject",
+      "dataset_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "input_sha256": "9a64c3f3b9302fed8ed1665ce2af2e0e7d9a3f4ecdbfb73c7976064b6ec32da9",
+      "report_sha256": "440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "b6b9291ad84224537f0757c8ace9d2bb5fd6685f24f7901ce31fcbecfd2ba305",
+          "input_ceiling": 56938,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "ada788cf266d016d085e5d7b146c2af8ce40bda48fdeae857a85b596285965f7",
+          "input_ceiling": 52542,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "observed:3",
+      "expected_initial": "reject",
+      "dataset_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "input_sha256": "4ac28ff702fa7dacb2236b7ed46fe0b9170b9943d472fe67a94dcc508fab8211",
+      "report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "4484b84c823cf9d8e4a4c76247b9fa409d7a21555ed074670fda7a63894a4968",
+          "input_ceiling": 56862,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "0c22121dbbbe9c14e4ff9eff18f6bdf02623d2328c26839b766ce7da52d86fa4",
+          "input_ceiling": 52466,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "observed:4",
+      "expected_initial": "reject",
+      "dataset_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "input_sha256": "e6f98d76e70f172e70e26f923017ac4cfba58b486a290221c4db67d1cf04e105",
+      "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "2821713622c36ea2595f48ccd9ee241bc8e913b338ca28da05fadce91fce8162",
+          "input_ceiling": 56918,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "4097ff28c601f020782dbd52acd2c8f3131aae332fea168535ff66a8df68fdfd",
+          "input_ceiling": 52522,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    },
+    {
+      "key": "observed:5",
+      "expected_initial": "reject",
+      "dataset_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "input_sha256": "58c6a9c6348d890024d6dce56d35bfeeba3b7af8dde1233a355912d4a0c5b72c",
+      "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+      "initial_requests": {
+        "facts": {
+          "request_sha256": "4712bd5de55bcb704cca938450eb8ba9ddf0be78f6eba61c1a2cac309336ba54",
+          "input_ceiling": 56906,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        },
+        "completion": {
+          "request_sha256": "eeb236ba33312d8c05ac55f32337ed015073a6017941800c4e1dcce8860e6995",
+          "input_ceiling": 52510,
+          "timeout_s": 300,
+          "max_output_tokens": 16384
+        }
+      },
+      "fresh_request_sha256": null,
+      "fresh_binding": "requires_actual_applied_report",
+      "completed": false
+    }
+  ],
+  "policies": {
+    "necessity_policy_sha256": "f81e5a90568943b0089b68f71fc18d9eba19240c976799573bdb105ec98d012d",
+    "completion_policy_sha256": "8439c3b393dfd0f0a93e15fe632f46010a0c8ad635504dbb5dd5f20c34fd3222"
+  },
+  "current_contract": {
+    "contract_id": "natural-flash-sol-dual-necessity-development-v1",
+    "version": "1.6.6",
+    "scope": "unadmitted_opt_in",
+    "target_runtime_profile_id": "flash-sol-high-development-v1",
+    "target_runtime_profile_version": "1.0.0",
+    "skill_version": "0.7.0",
+    "program_version": "4.0.0",
+    "request_policy_id": "natural-duty-direct-patch-time300-v1",
+    "request_policy_version": "2.0.0",
+    "request_policy": {
+      "provider_id": "riftcoach-mixed",
+      "model": "flash-generation-tianjige-sol-review-v1",
+      "agent_timeout_s": 330,
+      "llm_tool_timeout_s": 330,
+      "transport_timeout_s": 360,
+      "max_output_tokens": 32768,
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "max_retries": 0,
+      "deterministic_fallback_allowed": false
+    },
+    "report_contract_id": "coach-markdown-generation-revision-v2",
+    "retrieval_policy_id": "coaching-query-recovery-v1",
+    "context_policy_sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae",
+    "minimum_evidence_sources": 1,
+    "minimum_score": 85,
+    "max_revisions": 1,
+    "max_calls": 10,
+    "max_input_tokens": 64000,
+    "max_output_tokens": 32768,
+    "total_tokens": 739840,
+    "request_timeout_s": 300,
+    "agent_timeout_s": 330,
+    "execution_timeout_s": 3600,
+    "extra_retries": 0,
+    "allow_deterministic_fallback": false,
+    "evaluation_contract_version": "4.0.0",
+    "missing_citation_policy": "existing-single-revision",
+    "evaluation_repair_policy": "none",
+    "reasoning_effort": "high",
+    "max_tool_calls": 8,
+    "max_context_tokens": 28000,
+    "include_deterministic_source_facts": true,
+    "position_policy_id": "golden-position-intent-v1",
+    "include_generation_facts": true,
+    "source_use_policy_id": "golden-source-advice-v1",
+    "compact_report_policy_id": "golden-concise-evidence-report-v1",
+    "inference_policy_id": "natural-duty-direct-patch-time300-v1",
+    "anchor_repair_policy": "shared-single-structured-repair",
+    "stream_transport_id": "mixed-explicit",
+    "model": "flash-generation-tianjige-sol-review-v1",
+    "thinking_profile_id": "flash-sol-high-development-v1",
+    "roles": {
+      "generation": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "natural-duty-direct-patch-time300-v1:generation",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 300
+      },
+      "review": {
+        "provider": "tianjige",
+        "model": "gpt-6.1-sol",
+        "thinking_profile_id": "sol-high-nonstream-v1",
+        "transport_id": "natural-sol-dual-necessity-nonstream-v1",
+        "sdk_max_retries": 0,
+        "max_output_tokens": 16384,
+        "request_timeout_s": 300,
+        "upstream_identity_verified": false,
+        "request_extra_body": {}
+      }
+    },
+    "source_projection": "native-explicit-source-projection-v1",
+    "revision_policy": "reviewer-authored-exact-patches",
+    "qualification_only": true,
+    "publication_policy": "always-reject-unqualified-candidate",
+    "provider_id": "riftcoach-mixed",
+    "generation_logical_calls": 2,
+    "review_logical_calls": 4,
+    "transport_retries": 4,
+    "generation_policy_reused": "natural-duty-direct-patch-time300-v1",
+    "component_contract": "natural-flash-sol-dual-necessity-development-v1",
+    "transport_retry_mode": "manual-reaped-timeout-v1",
+    "output_policy": "single-tool-with-message-v2",
+    "output_recovery_mode": "manual-reaped-format-v1",
+    "necessity_policy_sha256": "f81e5a90568943b0089b68f71fc18d9eba19240c976799573bdb105ec98d012d",
+    "review_profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "route": "proxy-12000"
+    },
+    "review_prices_cny_per_million": {
+      "input": "0.5",
+      "output": "2.5"
+    },
+    "completion_policy_sha256": "8439c3b393dfd0f0a93e15fe632f46010a0c8ad635504dbb5dd5f20c34fd3222",
+    "workflow_scope": "dynamic-natural-task-and-original15-candidate"
+  },
+  "current_contract_snapshot": {
+    "contract_id": "natural-flash-sol-dual-necessity-development-v1",
+    "version": "1.6.6",
+    "scope": "unadmitted_opt_in",
+    "sha256": "4d5d9c1a3714ad895c96a5ac5d6982b76b1cf2ed4320e4c07c7e62cb282b0a07"
+  },
+  "version_deltas": [
+    {
+      "from": "34abe04e2218f523505f32e41817eb24e9c179c1",
+      "to": "58a947ca98cee17bc5de555c4cce7cbda892b34f",
+      "changed_file_count": 79,
+      "changed_files": [
+        ".planning/2026-08-06-riftcoach-development/findings.md",
+        ".planning/2026-08-06-riftcoach-development/progress.md",
+        ".planning/2026-08-06-riftcoach-development/task_plan.md",
+        "app/evaluation/natural_duty_workflow.py",
+        "app/evaluation/original15_patch_recovery.py",
+        "app/evaluation/sol_original15_session.py",
+        "app/runtime/sol_session_runtime.py",
+        "data/evaluation/results/sol_original15_authorization_continuation_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope2_completed_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope2_facts_initial_20261027.json",
+        "data/evaluation/results/sol_original15_claim_scope5_facts_initial_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope6_connect_failure_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope6_connect_recovery_ready_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope6_edit_accepted_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope6_facts_fresh_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope6_facts_initial_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope7_facts_initial_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope_5_completed_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope_6_completed_20261028.json",
+        "data/evaluation/results/sol_original15_claim_scope_7_completed_20261028.json",
+        "data/evaluation/results/sol_original15_connection_recovery_20261027.json",
+        "data/evaluation/results/sol_original15_continuation_20261027.json",
+        "data/evaluation/results/sol_original15_facts_fresh_20261027.json",
+        "data/evaluation/results/sol_original15_live_20261025.json",
+        "data/evaluation/results/sol_original15_observed2_edit_accepted_20261028.json",
+        "data/evaluation/results/sol_original15_observed2_facts_fresh_20261028.json",
+        "data/evaluation/results/sol_original15_observed2_facts_initial_20261028.json",
+        "data/evaluation/results/sol_original15_observed3_assembly_stop_20261028.json",
+        "data/evaluation/results/sol_original15_observed3_facts_initial_paused_20261028.json",
+        "data/evaluation/results/sol_original15_observed3_initials_accepted_20261028.json",
+        "data/evaluation/results/sol_original15_observed_1_completed_20261028.json",
+        "data/evaluation/results/sol_original15_observed_2_completed_20261028.json",
+        "data/evaluation/results/sol_original15_patch_coordination_local_20261028.json",
+        "data/evaluation/results/sol_original15_patch_inheritance_local_20261028.json",
+        "data/evaluation/results/sol_original15_patch_launcher_local_20261028.json",
+        "data/evaluation/results/sol_original15_scope3_application_clock_recovery_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_applied_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_completed_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_facts_fresh_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_facts_initial_accepted_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_retry_preparation_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_service_recovery_20261027.json",
+        "data/evaluation/results/sol_original15_scope3_service_retry_20261027.json",
+        "data/evaluation/results/sol_original15_scope4_completed_20261027.json",
+        "data/evaluation/results/sol_original15_session_preparation_20261025.json",
+        "data/evaluation/results/sol_original15_stored_credential_ready_20261027.json",
+        "docs/plans/2026-10-25-dual-policy-runtime-binding.md",
+        "docs/plans/2026-10-27-local-reviewer-credential.md",
+        "docs/plans/2026-10-28-original15-overlap-recovery.md",
+        "docs/project_execution_state.md",
+        "docs/runbooks/sol-original15-session.md",
+        "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_necessity_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_review_v1/prompt_programs/recent-form-review/manifest.json",
+        "scripts/codex_dispatch_recovery.py",
+        "scripts/original15_authorization_continuation.py",
+        "scripts/original15_execution_time_allowance.py",
+        "scripts/original15_native_newline_recovery.py",
+        "scripts/original15_native_snapshot.py",
+        "scripts/original15_patch_recovery_launch.py",
+        "scripts/original15_transport_recovery.py",
+        "scripts/prepare_original15_patch_recovery.py",
+        "scripts/review_duty_direct_patch.py",
+        "scripts/review_duty_host_gate.py",
+        "scripts/sol_original15_launch.py",
+        "scripts/windows_reviewer_credentials.py",
+        "tests/test_codex_dispatch_recovery.py",
+        "tests/test_original15_authorization_continuation.py",
+        "tests/test_original15_execution_time_allowance.py",
+        "tests/test_original15_native_newline_recovery.py",
+        "tests/test_original15_native_snapshot.py",
+        "tests/test_original15_patch_recovery.py",
+        "tests/test_original15_patch_recovery_launch.py",
+        "tests/test_original15_transport_recovery.py",
+        "tests/test_patch_coordination.py",
+        "tests/test_patch_coordination_session.py",
+        "tests/test_sol_original15_session.py",
+        "tests/test_windows_reviewer_credentials.py"
+      ],
+      "runtime_changes": [
+        "app/evaluation/natural_duty_workflow.py",
+        "app/evaluation/original15_patch_recovery.py",
+        "app/evaluation/sol_original15_session.py",
+        "app/runtime/sol_session_runtime.py",
+        "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_necessity_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_review_v1/prompt_programs/recent-form-review/manifest.json"
+      ],
+      "manifest_changed_fields": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "changed_components": [
+        "app.evaluation.natural_duty_workflow",
+        "app.runtime.sol_session_runtime",
+        "scripts.review_duty_direct_patch"
+      ]
+    },
+    {
+      "from": "58a947ca98cee17bc5de555c4cce7cbda892b34f",
+      "to": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+      "changed_file_count": 17,
+      "changed_files": [
+        ".github/workflows/tests.yml",
+        ".planning/2026-08-06-riftcoach-development/findings.md",
+        ".planning/2026-08-06-riftcoach-development/progress.md",
+        ".planning/2026-08-06-riftcoach-development/task_plan.md",
+        "data/evaluation/results/natural_duty_qualification_inventory_patch_coordination_20261028.json",
+        "data/evaluation/results/sol_original15_live_20261025.json",
+        "data/evaluation/results/sol_original15_observed3_recovery_completed_20261028.json",
+        "data/evaluation/results/sol_original15_patch_recovery_progress_20261028.json",
+        "data/evaluation/results/sol_original15_remaining_two_preparation_20261028.json",
+        "data/evaluation/results/sol_review_qualification_inventory_patch_coordination_20261028.json",
+        "docs/plans/2026-10-28-original15-overlap-recovery.md",
+        "docs/project_execution_state.md",
+        "scripts/original15_remaining_launch.py",
+        "tests/test_natural_duty_qualification_inventory.py",
+        "tests/test_original15_execution_time_allowance.py",
+        "tests/test_original15_remaining_launch.py",
+        "tests/test_sol_review_binding.py"
+      ],
+      "runtime_changes": [],
+      "manifest_changed_fields": [],
+      "changed_components": []
+    },
+    {
+      "from": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+      "to": "227a8373c8730c01fd61b73b0fac9dd05e09bd4c",
+      "changed_file_count": 81,
+      "changed_files": [
+        ".github/workflows/tests.yml",
+        ".planning/2026-08-06-riftcoach-development/findings.md",
+        ".planning/2026-08-06-riftcoach-development/progress.md",
+        ".planning/2026-08-06-riftcoach-development/task_plan.md",
+        "AGENTS.md",
+        "app/evaluation/coach_grounded_development.py",
+        "app/evaluation/coach_report.py",
+        "app/evaluation/sol_natural_contract.py",
+        "app/evaluation/sol_review_contract.py",
+        "app/evaluation/sol_session_review.py",
+        "app/evaluation/source_bound_report.py",
+        "app/evaluation/source_patch_editor.py",
+        "app/product/natural_duty_candidate.py",
+        "app/report_validation.py",
+        "app/runtime/sol_session_runtime.py",
+        "data/evaluation/results/natural_completion_continuation_ci_repair_20261029.json",
+        "data/evaluation/results/natural_completion_continuation_preparation_20261029.json",
+        "data/evaluation/results/natural_completion_continuation_stopped_20261029.json",
+        "data/evaluation/results/natural_duty_qualification_inventory_natural_coordination_20261028.json",
+        "data/evaluation/results/natural_duty_qualification_inventory_observation_heading_20261029.json",
+        "data/evaluation/results/natural_review_repair_coverage_local_20261029.json",
+        "data/evaluation/results/natural_review_repair_inheritance_local_20261029.json",
+        "data/evaluation/results/natural_review_repair_pause_local_20261029.json",
+        "data/evaluation/results/observation_heading_recovery_20261029.json",
+        "data/evaluation/results/retained_report_content_audit_20261029.json",
+        "data/evaluation/results/retained_report_fresh_ci_repair_20261029.json",
+        "data/evaluation/results/retained_report_fresh_completed_20261029.json",
+        "data/evaluation/results/retained_report_fresh_preparation_20261029.json",
+        "data/evaluation/results/sol_natural_consumption_gap_audit_20261028.json",
+        "data/evaluation/results/sol_natural_coordination_binding_20261028.json",
+        "data/evaluation/results/sol_natural_coordination_live_readiness_20261028.json",
+        "data/evaluation/results/sol_natural_coordination_live_stop_20261029.json",
+        "data/evaluation/results/sol_natural_coordination_preparation_20261028.json",
+        "data/evaluation/results/sol_original15_live_20261025.json",
+        "data/evaluation/results/sol_original15_remaining_two_completed_20261028.json",
+        "data/evaluation/results/sol_original15_remaining_two_preparation_20261028.json",
+        "data/evaluation/results/sol_review_qualification_inventory_completion_continuation_20261029.json",
+        "data/evaluation/results/sol_review_qualification_inventory_natural_coordination_20261028.json",
+        "data/evaluation/results/sol_review_qualification_inventory_observation_heading_20261029.json",
+        "data/evaluation/results/sol_review_qualification_inventory_repair_coverage_20261029.json",
+        "data/evaluation/results/sol_review_qualification_inventory_repair_inheritance_20261029.json",
+        "data/evaluation/results/sol_review_qualification_inventory_repair_inheritance_ready_20261029.json",
+        "data/evaluation/results/sol_review_qualification_inventory_repair_pause_20261029.json",
+        "docs/plans/2026-09-22-agent-delivery-method.md",
+        "docs/plans/2026-10-25-dual-policy-runtime-binding.md",
+        "docs/plans/2026-10-28-original15-overlap-recovery.md",
+        "docs/project_execution_state.md",
+        "docs/requirements_change_log.md",
+        "docs/runbooks/retained-report-fresh-diagnostic.md",
+        "docs/runbooks/sol-natural-session.md",
+        "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_necessity_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_review_v1/prompt_programs/recent-form-review/manifest.json",
+        "scripts/natural_completion_continuation.py",
+        "scripts/natural_duty_preparation.py",
+        "scripts/natural_review_repair_continuation.py",
+        "scripts/prepare_completion_continuation.py",
+        "scripts/prepare_natural_completion_frontier.py",
+        "scripts/prepare_natural_review_repair.py",
+        "scripts/retained_report_fresh_launch.py",
+        "scripts/review_duty_host_gate.py",
+        "scripts/sol_natural_continuation.py",
+        "scripts/sol_natural_launch.py",
+        "tests/fixtures/document_closed_program_sources.json",
+        "tests/test_coach_grounded_suite.py",
+        "tests/test_natural_completion_frontier.py",
+        "tests/test_natural_duty_qualification_inventory.py",
+        "tests/test_natural_review_repair_inheritance.py",
+        "tests/test_report_heading_consumption.py",
+        "tests/test_retained_report_fresh_launch.py",
+        "tests/test_review_duty_direct_patch.py",
+        "tests/test_sol_natural_candidate.py",
+        "tests/test_sol_natural_coordination.py",
+        "tests/test_sol_natural_repair_launch.py",
+        "tests/test_sol_review_binding.py",
+        "tests/test_sol_review_repair_continuation.py",
+        "tests/test_sol_review_repair_pause.py",
+        "tests/test_sol_session_review.py",
+        "tests/test_source_bound_report.py",
+        "tests/test_source_patch_editor.py"
+      ],
+      "runtime_changes": [
+        "app/evaluation/coach_grounded_development.py",
+        "app/evaluation/coach_report.py",
+        "app/evaluation/sol_natural_contract.py",
+        "app/evaluation/sol_review_contract.py",
+        "app/evaluation/sol_session_review.py",
+        "app/evaluation/source_bound_report.py",
+        "app/evaluation/source_patch_editor.py",
+        "app/product/natural_duty_candidate.py",
+        "app/report_validation.py",
+        "app/runtime/sol_session_runtime.py",
+        "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_necessity_v1/prompt_programs/recent-form-review/manifest.json",
+        "examples/runtime_profiles/sol_review_v1/prompt_programs/recent-form-review/manifest.json"
+      ],
+      "manifest_changed_fields": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "changed_components": [
+        "app.evaluation.sol_natural_contract",
+        "app.evaluation.sol_review_contract",
+        "app.evaluation.sol_session_review",
+        "app.evaluation.source_patch_editor",
+        "app.product.natural_duty_candidate",
+        "app.runtime.sol_session_runtime",
+        "scripts.natural_completion_continuation",
+        "scripts.natural_review_repair_continuation",
+        "scripts.sol_natural_continuation"
+      ]
+    },
+    {
+      "from": "227a8373c8730c01fd61b73b0fac9dd05e09bd4c",
+      "to": "b5a99545ecb95c693d774303a32a0ff9f39e44ba",
+      "changed_file_count": 6,
+      "changed_files": [
+        ".planning/2026-08-06-riftcoach-development/findings.md",
+        ".planning/2026-08-06-riftcoach-development/progress.md",
+        ".planning/2026-08-06-riftcoach-development/task_plan.md",
+        "data/evaluation/results/natural_review_repair_authorized_20261029.json",
+        "data/evaluation/results/natural_review_repair_completed_20261029.json",
+        "docs/project_execution_state.md"
+      ],
+      "runtime_changes": [],
+      "manifest_changed_fields": [],
+      "changed_components": []
+    }
+  ],
+  "sources": [
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_20261025.json",
+      "sha256": "4e31201e7b7033abb7e9fec23d26444606ec937f199209e873c97ec444ece962"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_patch_coordination_20261028.json",
+      "sha256": "72d330f724ddff922e75aa00c079700619bfc153f3fece0c9c324828029312c5"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_review_qualification_inventory_repair_inheritance_ready_20261029.json",
+      "sha256": "0553d0490a8043e854cd59b74fb6bfc2c8a9a972a1c41b6067105bac3a2852f7"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_original15_live_20261025.json",
+      "sha256": "ee19b48388bb365041ee720226f26fe9db4f3c9e95c3696ed4bb1af216bc92cf"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_original15_observed3_recovery_completed_20261028.json",
+      "sha256": "463ba3e449ef84679678b1f7d946d6a689f17bd5861d491e55751f57677ab7af"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\sol_original15_remaining_two_completed_20261028.json",
+      "sha256": "f6c497646fccc86140d1712dc7e2a5047919609412f6ddbfd2c1c33e3da28046"
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\natural_review_repair_completed_20261029.json",
+      "sha256": "32c6d1e0c841f84adf335808a3f68f2511c0e631e1f933fbbcc6d1fd976ab959"
+    }
+  ],
+  "seals_hash_checked": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028\\seal.json",
+      "sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-remaining-two-20261028\\seal.json",
+      "sha256": "3b8c3ae148b683d8fd23617b149bc9def2d7c79f4d2724d393263398d81e164c"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029\\seal.json",
+      "sha256": "8c2fcb76932a4bd72b5439f89b94c578f41d61b27fb2609466e56bbb2be6bd50"
+    }
+  ],
+  "natural_actual_report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+  "natural_tail_completed": true,
+  "conclusions": {
+    "business_inputs_labels_policies_requests_budgets_unchanged": true,
+    "runtime_behavior_changes_exist": true,
+    "reusable_evidence_is_not_new_same_version_execution": true,
+    "development_host_review_is_not_product_automatic_review": true,
+    "bare_current_contract_automatic_retry": false,
+    "durable_pause_requires_session_adapter": true,
+    "default_worker_registration_present": false,
+    "product_publication_policy_remains_always_reject": true,
+    "normal_repair_minimum_model_calls": 6,
+    "diagnostic_actual_request_cap_is_not_six": true
+  }
+}

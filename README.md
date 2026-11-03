@@ -9,9 +9,15 @@ AgentRuntime、PostgreSQL 异步任务基座、玩家身份绑定，以及 owner
 foundation、typed Memory、Training Plan/Progress、Memory-aware Context/terminal turns 和 owner lifecycle/
 export。阶段 6 Session/Memory V1 已由 `cbc7cbd` / Actions `32408101770` 完成最终 exact-SHA 公共闭环。
 Stage 7 标准 MCP 与动态 Meta V1 已由 `fac6fe0` / Actions `32484257736` 完成最终公共闭环：RiftCoach
-既能通过标准 MCP 调用受限 OP.GG lane-meta，也能被官方 MCP SDK 经 stdio 调用。项目没有直接合并
-EchoMind 或 AGI-Saber；正式 Auth/RSO、SSE/前端、Riot+OP.GG 精确版本融合与阶段 8 恢复/Multi-Agent
-仍未实现。
+既能通过标准 MCP 调用受限 OP.GG lane-meta，也能被官方 MCP SDK 经 stdio 调用。
+
+阶段 8 的 entry、8A、8B、8C、8D 已完成公共闭环；8B 的产品化多 Agent 方向已否决，保留有界并行
+证据方案。当前处于 `8e-productization`：Portal/Account 和 Broadcast Workbench 已有本地/公共基础，
+但完整 8E 仍在进行，8F 最终评估与作品集尚未开始。正式 OIDC/RSO、HTTPS/公网部署、GLM-5.3
+领域采用、受限 Review Coach、Riot+Data Dragon+OP.GG 的完整版本融合、Evidence/Trace 与 Training
+的完整消费闭环仍是开放闸门；研究媒体不等于生产媒体，`production_media=0`。
+
+项目没有直接合并 EchoMind、AGI-Saber、Sea 或 Pi；它们只提供经过审计的局部设计参考。
 
 如果你想理解这些能力怎样一步步搭建、对应哪些源码/测试、面试时怎样准确表述，请从
 [学习与工程证据索引](docs/learning/README.md) 开始。项目执行位置仍以
@@ -44,13 +50,26 @@ Riot ID
 → 通过后发布
 ```
 
+上面是 Recent Review 的受限执行链，不代表“追加 Conversation 消息就会自动运行 Agent”。当前
+terminal assistant 只能由可信任务、发布状态和 final Artifact 一致时的内部 writer 写入；Web 端尚
+没有开放域聊天，也还没有绑定某次 Review 的受限追问 Coach。
+
+## 当前产品面（Stage 8E）
+
+固定产品组合是 `Cinematic Portal → Broadcast Workbench`。工作台围绕五个模块展开：Riot ID 入口、
+Recent Review、Rift Timeline、Evidence/Agent Trace 抽屉、Training Plan/Progress。
+
+Portal/Account 当前的 13 区 Focus Rail、双语标题和有边界的 Account handoff 是 research-only 的
+展示切片；RQ-161/162 的本地 unit、E2E、typecheck/build 和视觉检查已通过，但不改变 Auth、Workbench、
+素材权利或 `production_media=0`。旧的两地区试验和“决定第三地区”建议只保留在历史记录中，不是当前路线。
+
 ## 项目边界
 
 RiftCoach 只分析已经结束的公开赛后数据，不提供实时对局辅助，不读取客户端内存，不追踪隐藏敌方信息，也不自动操作游戏。
 
 动态 Meta 已通过标准 MCP 接入受限 OP.GG lane-meta 当前快照，并以 partial provenance 与 Riot 玩家事实
 严格分层。精确 patch/source freshness、全部 OP.GG 工具，以及 Riot 官方版本/静态/patch 与 OP.GG 的
-多源 join 尚未实现。
+多源 join 尚未实现；完整的版本化多源黄金切片仍是 8E 后续闸门。
 
 ## 本地开发
 
@@ -343,6 +362,64 @@ Batch D 入口审计进一步确认：当前事实 Evaluator 没有看到用户�
 评测合同与不可修订的发布阻断；独立 held-out 和有限真实 Provider 比较必须等新合同与
 实验身份冻结后才能进入。该设计尚不是已完成的注入防护或真实模型准入。
 
+### 当前 Provider 与 Agent 产品准入状态（Stage 8E）
+
+用户已经明确决定：产品的正常运行路线以普通智谱 API 的 `zhipu/glm-5.3-flash` 为目标，
+并使用独立的 `glm-5.3-flash-runtime-v1` 运行时档案；GLM-5.2 不再是正常默认路线，只保留为
+明确的兼容/应急回退。这里要分清两件事：路线决定已经做出，但公共可复现性、领域质量和生产
+发布仍必须逐项取得证据，不能把“决定使用”写成“所有闸门已通过”。正式收口仍依次检查：
+
+1. G53-0：不读取 Secret 的可用性、账号、端点、模型和配置审计（已完成本地审计，采用仍不决）；
+2. G53-1：离线 thinking/结构化输出/工具调用/多工具批次/结束原因/用量/错误合同测试（已完成本地适配档案 TDD）；
+3. G53-2：精确 SHA 的公共 CI（已完成）；
+4. G53-3：最多三次真实协议调用的边界门（已通过）；
+5. G53-4：使用新 Dataset、输入计划和 Prompt/Context 快照的领域采用评估（历史尝试未准入，旧结果不重写）；
+6. G53-7：已在新实现、同一 exact SHA 和独立结果路径上完成一次有界真实尝试，但首例以
+   `provider_response_invalid/incomplete_chat_response` 停止，`admitted=false`；这不表示模型一般质量或账号失败，
+   也不等于生产准入。RQ-181 随后对同一首例做了一次正文零留存诊断，确认原始 `finish_reason=length`、
+    `output_tokens=2048` 且正文为空、reasoning 非空；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 又完成了候选
+     runtime/attempt/Trace/预算的离线合同；RQ-184 已为候选合同取得实现 A/B 的 exact-SHA 公共 CI，并在同一 A
+     重取 G53-3（严格 `3/3` 调用通过）。严格 Flash v1 仍为 2048 输出上限、零额外调用；8192 输出上限和一次
+     fresh-recovery 只登记为未注册候选。若继续，必须单独授权一次有界候选恢复诊断并审查成本、延迟、失败与脱敏
+     Trace，随后才是完整黄金切片与安全/部署/合规收口。
+
+G53-3 的旧协议证据、G53-4/G53-6 的拒绝结果和 G53-5 的观察结果都保持不可变；它们不能被新
+运行时接线自动改写。Flash/Pro 横向比较不再是当前产品路线的前置决策，只有在未来确有成本、
+延迟或质量坏例时才作为单独优化实验重开。
+
+G53-0 的本地无 I/O 审计、G53-1 的离线适配、G53-2 的旧 exact-SHA 公共 CI 和 G53-3 的协议通过
+记录均保留。RQ-165 的 `enabled + low` 是历史档案，当前 Flash 适配沿用 RQ-171 的
+`enabled + max + clear_thinking=false`，并由 RQ-175/RQ-176 的专属运行时预算档案约束。上述内容
+不等于领域质量或生产成熟度。Flash 的正式模型标识和公开 API 合同
+来自官方资料，本机被忽略的 `.env` 仍只做遮罩式检查，发现的 `LLM_PROVIDER=glm` 也不符合
+当前 loader 的 `zhipu` 合同。旧的 G53-2 提交与其 Actions 结果只说明当时那批离线实现可复现，
+不能冒充本次 dirty worktree 的新实现证据；本次也没有读取或输出 Key。
+
+RQ-176 已把这份档案接入产品组合根、Worker、Runtime、Agent/工具/Harness、Provider、运行时策略和
+Trace 身份：Agent/工具执行窗 90 秒、Provider 传输 120 秒、单次输出上限 2048、
+`temperature=1`、`top_p=0.95`，SDK 重试为 0；Skill 原有 30 秒仍是质量资源门，不是新的网络截止。
+`.env.example` 与 Compose 模板已对齐 Flash，Worker 的默认租约/心跳为 360/60 秒。GLM-5.2 的
+兼容路径仍可显式使用，但不会悄悄继承 Flash 档案。RQ-179/180 已完成新实现公共 CI、同 SHA G53-3、
+证据 B CI，并按授权执行一次 G53-7；RQ-184 又为候选合同完成 A/B exact-SHA 公共 CI 与同 SHA G53-3；首例因 `provider_response_invalid/incomplete_chat_response` 停止且
+`admitted=false`。RQ-181 的一次性诊断进一步确认该首例是 `finish_reason=length` 且 2048 输出额度先被
+reasoning 耗尽；当前不自动重试，也不把领域尝试写成公共生产成熟度。结果见
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_response_completion_diagnostic_v1.json`。
+本批没有修改 Portal、Account、Broadcast Workbench、Auth、路由或 `production_media=0`。
+
+### 当前 Agent 产品缺口
+
+后端已经有 Conversation、Recent Review、Memory-aware Context、terminal turns、SSE 生命周期
+和 Training Candidate/Plan 合同，但 Conversation 追加 user message 不会自动启动 Agent，Web
+端也没有提交受限追问的 API。下一项产品能力应是绑定 owner、Conversation、source run 和玩家
+身份的 review-grounded Coach：只允许有限 Skill，输出仍经过 ReviewHarness，Training Candidate
+必须由用户编辑/确认后才写入长期计划；这不是开放域聊天。
+
+8E 的后续消费者还包括 Data Dragon 版本/语言/回退、Evidence/Agent Trace 深化、Training
+完整页面、Timeline 最终 QA、OP.GG champion analysis 与 lane matchup breadth，以及一条
+Riot match → Data Dragon → 官方版本 → OP.GG → typed EvidenceBundle → 个性化训练建议 →
+前端证据追踪的全链路黄金切片。正式 Auth/RSO、HTTPS、密钥生命周期、备份擦除和公网部署仍
+要单独验收。
+
 ## 测试
 
 ```powershell
@@ -352,6 +429,29 @@ python -m pytest -q
 Pull Request 和推送到默认分支时，GitHub Actions 会在 Python 3.11 环境重复执行同一测试命令。
 CI 还会检查项目治理状态连续性、阶段 4M 独立 RAG 保留集、真实 PostgreSQL 事务/并发，以及不读取
 Riot/Provider Key 的 Linux Docker/Compose package smoke。
+
+## Stage 8 余项与执行顺序
+
+当前顺序为：Agent 主线交接和 README 事实版已完成，G53-0 已做无 I/O 审计，G53-1 普通 API 离线适配档案
+TDD、G53-2 exact-SHA 公共 CI 与 G53-3 有界结构化/工具协议门均已完成；G53-4 已按一次授权执行但未准入，
+RQ-180 又在新 A/B 证据链上按一次授权执行 G53-7，首例因 `provider_response_invalid/incomplete_chat_response`
+停止且未准入；RQ-181 随后按授权完成一次正文零留存诊断，确认该首例为 `finish_reason=length`、2048 输出额度
+先被非空 reasoning 耗尽，正文为空。旧结果不重跑、不覆盖，当前不自动重试。RQ-182 已完成版本化 Flash 响应完成/截断
+策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/Trace/预算合同，RQ-184 已完成候选 A/B 公共 CI 与同 SHA G53-3；严格策略不续接，8192/一次 fresh-recovery 仍是未注册候选。
+（上段关于“先授权候选恢复诊断”的表述是 RQ-185–RQ-187 的历史顺序；当前已由后续 RQ-188–RQ-191 取代。）
+随后实现受限 Review Coach，
+再补 Data Dragon、Evidence/Trace、Training 和 Timeline 消费闭环，
+接着完成 OP.GG 有用宽度与全链路黄金切片，最后收口安全/部署/合规、8E 退出和 8F 最终评估。
+这个顺序不重排 0–8 主路线，也不把本地测试通过写成公共生产成熟度。
+
+RQ-192 已在候选边界内完成离线的提供商无关流式装配合同：原始分块先归一化为事件，
+再由单次装配器在 EOF、终止和有效 Usage 均成立时交付；工具/正文边界、JSON 安全、
+失败毒化和脱敏 Trace 均有聚焦回归。它没有接入产品 streaming、没有注册候选，也没有
+改变严格 Flash v1 的 2048/零额外调用。当前下一精确动作是同一新实现 SHA 的公共 CI
+与供应商适配器一致性测试；这一步完成前不把本地通过写成公共生产准入。
+
+README 任务分两层：RQ-067 的早期学习/运行文档回填已经完成；RQ-085 要求的广泛 README/作品集
+研究、架构图、截图、演示和简历证据矩阵留在 8F。当前这次更新只做事实版，不提前冒充最终作品集。
 
 ## 架构路线
 

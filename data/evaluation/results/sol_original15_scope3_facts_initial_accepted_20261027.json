@@ -1,0 +1,161 @@
+{
+  "kind": "original15-scope3-facts-initial-accepted-v1",
+  "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-facts-initial-accepted.json",
+  "evidence_sha256": "51ed5f040292792544916ceeab75cb86b22c60f7bbcc7f53b16c0e9ecec4f0b6",
+  "audit": {
+    "version": "original15-scope3-facts-initial-accepted-v1",
+    "case": "scope:3",
+    "stage": "facts-initial",
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "provider_verdict": "needs_revision",
+    "score": 92,
+    "issues": 1,
+    "patch_groups": 1,
+    "patch_block": 4,
+    "issue_summary": "Explicit middle-role early-death comparison is wrong: wins 2.5 versus losses 0.5; all-selected losses 2.67 cannot substitute for middle-role losses.",
+    "patch_accepted": true,
+    "actual_application_performed": false,
+    "checkpoint_sha256": "6ed891738644491aff5b14c874cca1fd23fcf57856b77ca606b32b7ddfcc66d6",
+    "material_sha256": "2d35bc15ef9c73c08478c54bff17bcd353f3e25f148e520d37a2aab613f49775",
+    "report_sha256": "b37807a43c1a62d4eab39951d3136909c0e0a02e4925707e5955a9a7b6d0290c",
+    "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17bf8-b1eb-77b3-9d1b-2c0a615e9846/msg_0fdcb483ddf38b4a016ae04060fa0c819da0f2de2cf93c77f3",
+    "author_sha256": "98df5df52877e1f348dde22dd003992fea7ec16fec3fdf4d55ca665376cda38a",
+    "native_final_sha256": "7d3463c3e44300e869de4d732b9332b8a387820cea0d3553109c4ed20385c8a3",
+    "terminal_lf_exception": {
+      "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-facts-initial-terminal-lf-recovery.json",
+      "sha256": "f0257d88d87f7cb0f597f7020c325ffadb685a0bf3ebe757542e201ca3f2b7ad",
+      "reason": "Author file has one additional terminal LF. Original bytes retained; exact checkpoint/event/raw-event and both hashes explicitly bound. Not an unqualified exact-byte match."
+    },
+    "original_stdout_roots": {
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+      "checkpoint_sha256": "50d5b23c1adb37df2c40fb9d6257fa43688626e670bca1ca30a9f87667b8a8d4"
+    },
+    "successful_model_segment": {
+      "operation": "run",
+      "case": "scope:3",
+      "exit_code": 0,
+      "stdout": "0082.stdout.txt",
+      "stdout_sha256": "5ef49c487f1512b72c68d6f996b44c450e048c482bba1784838d0418e22a3d53"
+    },
+    "native_import_segment": {
+      "operation": "submit",
+      "case": "scope:3",
+      "exit_code": 0,
+      "stdout": "0083.stdout.txt",
+      "stdout_sha256": "2d8a5cce76a497ccdcf4d19f5b426ecd74b531da7a7cb365f95da3cffde1b8cd"
+    },
+    "host_only_segment": {
+      "operation": "run",
+      "case": "scope:3",
+      "exit_code": 0,
+      "stdout": "0085.stdout.txt",
+      "stdout_sha256": "6de468f17e8db7aa43416a984eee4f39e9232946ec1912c67ef56ddfd0d791a1"
+    },
+    "host_only_exit_sha256": "e2d048d441b46abaa26dac76f9ed50b5d34ce86cc01f59e8e9cd453944fd7a9d",
+    "interrupted_segment": {
+      "operation": "run",
+      "case": "scope:3",
+      "exit_code": null,
+      "stdout": "0084.stdout.txt",
+      "stdout_sha256": "780bc97fb554bce6997ed5b509c8d8281a8853d05352b0569b5b8dfd4fa99b46",
+      "record_kind": "recovered-interruption-no-exit-observed",
+      "actual_process_exit_observed": false,
+      "reason": "User stopped host-only verification to move computer; no controller process remains and the kernel entry lock was acquired. Preserve partial stdout. Actual exit status is unknown.",
+      "recovered_at": "2026-10-27T08:04:22.684201+00:00",
+      "latest_original_stdout_roots": {
+        "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+        "checkpoint_sha256": "33b826f580f7356cc24d4eb0dbe1ebc9a8c137d3f31c923f5e927f6fa6c37cce"
+      },
+      "session_status": {
+        "operations": 8,
+        "unresolved": [],
+        "timeout_waiting": false,
+        "format_waiting": false,
+        "closed": false,
+        "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+        "checkpoint_sha256": "33b826f580f7356cc24d4eb0dbe1ebc9a8c137d3f31c923f5e927f6fa6c37cce",
+        "publication_allowed": false,
+        "production_admitted": false,
+        "transport_waiting": false
+      },
+      "provider_requests_observed_in_partial_stdout": 0
+    },
+    "interrupted_exit_observed": false,
+    "receipt_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\scope-3\\transport\\review\\call-003\\receipt.json",
+    "receipt_sha256": "4ea626bb29fcc5af3548070d2ce3795a7fbc9d5a059fee3d590d5067ded39362",
+    "observation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\scope-3\\transport\\review\\call-003\\observation\\observation.json",
+    "observation_sha256": "f237c1bfc51232cbf6acc2570e9f8e5e71536e16acc5d545fc208b5f9362962f",
+    "http_status": 200,
+    "provider_elapsed_s": 45.719,
+    "usage": {
+      "input_tokens": 20160,
+      "output_tokens": 1201,
+      "total_tokens": 21361,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 768
+    },
+    "response_request_id": "df31e60c-53ff-4a4b-8069-b86682d72758",
+    "request_context_profile_unchanged": true,
+    "status": {
+      "operations": 9,
+      "unresolved": [],
+      "timeout_waiting": false,
+      "format_waiting": false,
+      "closed": false,
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+      "checkpoint_sha256": "50d5b23c1adb37df2c40fb9d6257fa43688626e670bca1ca30a9f87667b8a8d4",
+      "publication_allowed": false,
+      "production_admitted": false,
+      "transport_waiting": false
+    },
+    "transport": {
+      "actual_attempts": 3,
+      "completed_calls": 1,
+      "failed_calls": 2,
+      "known_usage_calls": 1,
+      "unknown_usage_calls": 2,
+      "known_tokens": 21361,
+      "unknown_reserved_tokens": 137228,
+      "http_requests_known": 3,
+      "http_requests_unknown": 0,
+      "receiptless_calls": 0,
+      "not_sent": 0
+    },
+    "accounting": {
+      "calls": 3,
+      "tokens": 21361,
+      "reserved_tokens": 137228,
+      "retries": 2
+    },
+    "batch_accounting": {
+      "calls": 21,
+      "known_tokens": 357435,
+      "unknown_reserved_tokens": 137228,
+      "retries": 2,
+      "http_requests_known": 21,
+      "http_requests_unknown": 0
+    },
+    "active_seconds": 1847.3620000000083,
+    "read_only_inventory_unchanged": true,
+    "original_inventory_files_preserved": 1012,
+    "successful_cases_preserved": 5,
+    "case_completed": false,
+    "batch_closed": false,
+    "outer_seal_exists": false,
+    "new_provider_requests_this_resume": 0,
+    "key_reads_this_resume": 0,
+    "next_case": "scope:3",
+    "next_stage": "completion-initial",
+    "next_stage_sent": false,
+    "manual_retry_needed": false,
+    "host_only_stop": "session_model_boundary",
+    "qualified": false,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "automation_status": "PAUSED",
+    "failure_500_root_cause": "unresolved",
+    "historical_closed_failure_preserved": true
+  }
+}

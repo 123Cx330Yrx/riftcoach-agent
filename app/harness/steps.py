@@ -33,6 +33,15 @@ class KnowledgeCitation:
 
 
 @dataclass(frozen=True)
+class KnowledgeRetrieval:
+    """One search result's origin, including repeated/cached chunk membership."""
+
+    provider: str
+    retrieved_at: str | None
+    chunk_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class KnowledgeEvidence:
     """Bounded knowledge supplied to generation, evaluation, and revision."""
 
@@ -41,6 +50,7 @@ class KnowledgeEvidence:
     citations: tuple[KnowledgeCitation, ...] = field(default_factory=tuple)
     abstained: bool = False
     diagnostics: Mapping[str, Any] = field(default_factory=dict)
+    retrievals: tuple[KnowledgeRetrieval, ...] = field(default_factory=tuple)
 
     @classmethod
     def empty(cls) -> "KnowledgeEvidence":

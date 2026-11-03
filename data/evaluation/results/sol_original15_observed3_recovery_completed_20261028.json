@@ -1,0 +1,342 @@
+{
+  "version": "original15-overlap-recovery-completed-v1",
+  "key": "observed:3",
+  "original_version_cases_completed": 12,
+  "repaired_version_cases_completed": 1,
+  "cases_with_complete_evidence_across_versions": 13,
+  "remaining_cases": [
+    "observed:4",
+    "observed:5"
+  ],
+  "original15_qualified": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "automation_status": "PAUSED",
+  "execution_head": "58a947ca98cee17bc5de555c4cce7cbda892b34f",
+  "execution_cwd": "D:/riftcoach-original15-overlap-execution-20261028",
+  "plan_sha256": "3b98b782f8a7875ba4eb9122da4a7e7501ebb3800960a3af9a3fe4053c868f2b",
+  "guard_sha256": "8bf741656511d62f336f97ea8a230d76e26247c9cbe66046205b90894211747d",
+  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028\\execution\\session\\checkpoints\\0069.json",
+  "checkpoint_sha256": "feb0ba77310c5732de6150cac1c5d8d0adc84f7608b6f598b8934ed462703bbe",
+  "checkpoint_source": "segment-0015-run.stdout last emitted checkpoint",
+  "terminal": {
+    "accounting": {
+      "attempts": [
+        {
+          "input_tokens": 21835,
+          "model": "gpt-6.1-sol",
+          "ordinal": 1,
+          "output_tokens": 824,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "e3a81c21abeb549c6228daf60379b80e0ec249cbb2907741d5b004338e1a4884",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        },
+        {
+          "input_tokens": 20262,
+          "model": "gpt-6.1-sol",
+          "ordinal": 2,
+          "output_tokens": 821,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "eb194531eddff209551728cfc75adcf8267eee8f4b6201be215b8cd319480a5b",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        },
+        {
+          "input_tokens": 19270,
+          "model": "gpt-6.1-sol",
+          "ordinal": 3,
+          "output_tokens": 439,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "1ae76389db5db3f4c9f0b660743c4f65e2f4b69b71dbee3ca688efde4d4a980a",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        },
+        {
+          "input_tokens": 17697,
+          "model": "gpt-6.1-sol",
+          "ordinal": 4,
+          "output_tokens": 329,
+          "phase": "native_business_review",
+          "profile": "sol-high-nonstream-v1",
+          "request_sha256": "847c83441613c5aa8b9d18039fbba284883d8c938fdd4b9159eb8cf87ade03e7",
+          "role": "review",
+          "status": "completed",
+          "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+        }
+      ],
+      "calls": 4,
+      "failed": false,
+      "logical": {
+        "generation": 0,
+        "review": 4
+      },
+      "reserved_tokens": 0,
+      "retries": 0,
+      "router_calls": 4,
+      "stopped": false,
+      "tokens": 81477
+    },
+    "actual_report_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
+    "cumulative_batch_accounting": {
+      "calls": 45,
+      "reserved_tokens": 195578,
+      "retries": 3,
+      "tokens": 810780
+    },
+    "expected_outcome": "candidate_repaired_pass_unqualified",
+    "inherited_proof_sha256": "693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4",
+    "key": "observed:3",
+    "matched": true,
+    "original15_qualified": false,
+    "outcome": "candidate_repaired_pass_unqualified",
+    "production_admitted": false,
+    "publication_allowed": false,
+    "recovery_version": "original15-overlap-prefix-recovery-v1"
+  },
+  "strict_replay": {
+    "parent_failure_retained": true,
+    "publication_allowed": false,
+    "qualified": false,
+    "result": {
+      "accounting": {
+        "attempts": [
+          {
+            "input_tokens": 21835,
+            "model": "gpt-6.1-sol",
+            "ordinal": 1,
+            "output_tokens": 824,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "e3a81c21abeb549c6228daf60379b80e0ec249cbb2907741d5b004338e1a4884",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 20262,
+            "model": "gpt-6.1-sol",
+            "ordinal": 2,
+            "output_tokens": 821,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "eb194531eddff209551728cfc75adcf8267eee8f4b6201be215b8cd319480a5b",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 19270,
+            "model": "gpt-6.1-sol",
+            "ordinal": 3,
+            "output_tokens": 439,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "1ae76389db5db3f4c9f0b660743c4f65e2f4b69b71dbee3ca688efde4d4a980a",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          },
+          {
+            "input_tokens": 17697,
+            "model": "gpt-6.1-sol",
+            "ordinal": 4,
+            "output_tokens": 329,
+            "phase": "native_business_review",
+            "profile": "sol-high-nonstream-v1",
+            "request_sha256": "847c83441613c5aa8b9d18039fbba284883d8c938fdd4b9159eb8cf87ade03e7",
+            "role": "review",
+            "status": "completed",
+            "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+          }
+        ],
+        "calls": 4,
+        "failed": false,
+        "logical": {
+          "generation": 0,
+          "review": 4
+        },
+        "reserved_tokens": 0,
+        "retries": 0,
+        "router_calls": 4,
+        "stopped": false,
+        "tokens": 81477
+      },
+      "actual_report_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
+      "cumulative_batch_accounting": {
+        "calls": 45,
+        "reserved_tokens": 195578,
+        "retries": 3,
+        "tokens": 810780
+      },
+      "expected_outcome": "candidate_repaired_pass_unqualified",
+      "inherited_proof_sha256": "693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4",
+      "key": "observed:3",
+      "matched": true,
+      "original15_qualified": false,
+      "outcome": "candidate_repaired_pass_unqualified",
+      "production_admitted": false,
+      "publication_allowed": false,
+      "recovery_version": "original15-overlap-prefix-recovery-v1"
+    },
+    "strict_replay": true,
+    "transport": {
+      "actual_attempts": 4,
+      "completed_calls": 4,
+      "failed_calls": 0,
+      "http_requests_known": 4,
+      "http_requests_unknown": 0,
+      "known_tokens": 81477,
+      "known_usage_calls": 4,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 0,
+      "unknown_usage_calls": 0
+    }
+  },
+  "seal": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028\\seal.json",
+  "seal_sha256": "3b3cb0621222e4912d04c46fd4e8a1e8a96273c41b4211fb6225410221414d2b",
+  "seal_inventory_count": 211,
+  "accepted_stages": [
+    {
+      "stage": "patch-coordination",
+      "checkpoint_sha256": "ebb35bd738be7124a9bfb75275a5d2d7eab18b3125e285254f8dbee0a7bf85c2",
+      "material_sha256": "4284a69420ef9a83a5bd411fd2664091e897bf14bf261b3c69fb1187a4d4c6e7",
+      "submission_sha256": "1c0c5eafa45ef654901229981ed443cec7e3529ea33bffbeb1bc48a54bd3b2b9",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028-authors\\ebb35bd738be7124a9bfb75275a5d2d7eab18b3125e285254f8dbee0a7bf85c2.json",
+      "author_sha256": "46ea497417ec583381966151c8d393c7084360641b5d5a7ca879d822f2af9a5c",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a18151-0c53-7c10-8b01-b7d234ed12c4/msg_0d357ccb09213e18016ae1a4b1b47481969c20e8d78a31ce71",
+      "raw_event_sha256": "8cc74795f88b2f1fc8da902ec14e4fe3dce27e8997893c38abe862e0f805e82d",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "compatibility",
+      "checkpoint_sha256": "dd9f5fdaf0246b7bd4a7f3d9247682e5d9f3c0c4326fe23a1c5d342072f47af6",
+      "material_sha256": "06a37b81e665f0f1457e92cf244f35de787c5d25f149711e33ebb9ff767cd11a",
+      "submission_sha256": "d11eccd91bad42310abd40fb0fb6bc6256bf65f9506e032f6ea98a53cb3d5966",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028-authors\\dd9f5fdaf0246b7bd4a7f3d9247682e5d9f3c0c4326fe23a1c5d342072f47af6.json",
+      "author_sha256": "456d0be6e89b3d228e5d69be21f0f8bf96a6c28f929ff6b5505aa6a10a9584a7",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a18173-0631-7cd3-aa94-22ebb1fb253e/msg_0d357ccb09213e18016ae1a72e88a0819693ad03fc7f2e88a8",
+      "raw_event_sha256": "a688cd9316885032121a5e0bfdf3a8cc58c70f307e9c64f9099be25d5bd4430a",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "edit",
+      "checkpoint_sha256": "c34afe358d21f1d7da7b302ee0171c5e20d6d50608ffb73c262858c3bc298238",
+      "material_sha256": "a6cea0500a7851c96eb785e2b2211387f9fbc3e084b9cc8ec9fade76b858e1c3",
+      "submission_sha256": "180e3db682c4b2aa2d69a7ba49140d5c529b9958d418f3ac83a7a88e3b03c4b4",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028-authors\\c34afe358d21f1d7da7b302ee0171c5e20d6d50608ffb73c262858c3bc298238.json",
+      "author_sha256": "a2f75be2fd54b991369e4a44154998cc6c1fc6dd6c66a199c59b43d4dc76c671",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a18177-33ec-7ba0-be3b-1855db4f495e/msg_0d357ccb09213e18016ae1a85d38548196a16cefa04b8f69df",
+      "raw_event_sha256": "e448643660e512402e9e3c4b1ff2fbf69a62588f75e8d00fe5346de740ba18e5",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "facts-fresh",
+      "checkpoint_sha256": "bf8c0f1e10a722bb6527b1508f354cd0008bfe50a902222705884308a8de07df",
+      "material_sha256": "363a8fb234a2247464450c599f6866e5980055ba0df9833cb2ef865a1f9d667e",
+      "submission_sha256": "cb7185c714702769e2f4bbb6ddfba6c867b4e21fa3dfaf5f5c0fea7223113336",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028-authors\\bf8c0f1e10a722bb6527b1508f354cd0008bfe50a902222705884308a8de07df.json",
+      "author_sha256": "22fdd06beef4da91650368698252563d66c3153a44e8e5dbbba74927b5b4b379",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a181f1-b72f-7fc2-90a4-173b63694aeb/msg_0d357ccb09213e18016ae1c7b4c390819681cda744bd9e229a",
+      "raw_event_sha256": "844f08f5facc14cbc0b2e2cc4b5dce183f6237bb4cd1d5433902bd5e00993b06",
+      "primary_accepted": true,
+      "independent_accepted": true
+    },
+    {
+      "stage": "completion-fresh",
+      "checkpoint_sha256": "83e1d82387e1f4ef0375005add1e60de1afbeb57d02d72f955c1f28735c02f29",
+      "material_sha256": "a248d027a1ee0bc9433cc96a298dbd234f1275a1af92dd1a422ca490a211d06d",
+      "submission_sha256": "6a976705a61776c43fc31e4f02402639ff09493f22497b6f71129a24a63bbcc6",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-recovery-20261028-authors\\83e1d82387e1f4ef0375005add1e60de1afbeb57d02d72f955c1f28735c02f29.json",
+      "author_sha256": "7311408da4da1806c56e6e1f0bf8499461af8a1a1fdb50ac618a2c743d69d724",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a181f7-f896-7ab0-a87c-b0de258b55ba/msg_0d357ccb09213e18016ae1c916fae88196b0c52d9eb2037491",
+      "raw_event_sha256": "89514e924d1133072ea678c54d5e57fb37aaef5c76fb7b4d2a1acea648dfae8c",
+      "primary_accepted": true,
+      "independent_accepted": true
+    }
+  ],
+  "fresh_reviews": [
+    {
+      "stage": "facts-fresh",
+      "receipt_sha256": "04caf546d2fcceba502a9478d4e63eaa289c977ae7caf5af10c9f5ef87d9fef9",
+      "usage": {
+        "input_tokens": 19270,
+        "output_tokens": 439,
+        "total_tokens": 19709,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 400
+      },
+      "elapsed_s": 22.781,
+      "worker_code": "ok",
+      "usage_state": "known",
+      "model_matches": true,
+      "reasoning_echo": "high",
+      "verdict": "pass",
+      "report_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
+      "upstream_identity_verified": false
+    },
+    {
+      "stage": "completion-fresh",
+      "receipt_sha256": "ebaad20f9b28160253b6f098e8aa1ec1a759815f0b8ade9c800b006eea82bbc7",
+      "usage": {
+        "input_tokens": 17697,
+        "output_tokens": 329,
+        "total_tokens": 18026,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 248
+      },
+      "elapsed_s": 17.265,
+      "worker_code": "ok",
+      "usage_state": "known",
+      "model_matches": true,
+      "reasoning_echo": "high",
+      "verdict": "pass",
+      "report_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
+      "upstream_identity_verified": false
+    }
+  ],
+  "new_provider_requests": 2,
+  "new_key_reads": 2,
+  "new_known_tokens": 37735,
+  "new_unknown_reserved_tokens": 0,
+  "new_retries": 0,
+  "cumulative_batch_accounting": {
+    "calls": 45,
+    "reserved_tokens": 195578,
+    "retries": 3,
+    "tokens": 810780
+  },
+  "cumulative_transport": {
+    "actual_attempts": 45,
+    "completed_calls": 42,
+    "failed_calls": 3,
+    "http_requests_known": 45,
+    "http_requests_unknown": 0,
+    "known_tokens": 810780,
+    "unknown_reserved_tokens": 195578,
+    "receiptless_calls": 0,
+    "not_sent": 0
+  },
+  "closed_active_seconds": 3139.497999999978,
+  "public_ci": {
+    "run": "40660394101",
+    "head": "aa9e9bc798dbb7e28d7a3047d37c4a1285f2d24a",
+    "conclusion": "success",
+    "same_head_condition_exception": true,
+    "maintenance_continuation_sha256": "d0158de2ec15905f404de61004111a36341aa98bac1decfc036a1258bca47862"
+  },
+  "old_failure_and_seal_retained": true,
+  "original_seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "next_action": "prepare_remaining_two_case_continuation_with_original_balances_and_sealed_parents"
+}

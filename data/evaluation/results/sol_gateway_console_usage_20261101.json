@@ -1,0 +1,25 @@
+{
+  "cached_input_tokens": 22415,
+  "calculated_cny": 0.000439565,
+  "displayed_group_multiplier": 0.19,
+  "displayed_response_seconds": 3.0,
+  "displayed_total_cny": 0.00044,
+  "evidence_source": "user_provided_console_screenshot",
+  "image_path": "C:\\Users\\33502\\AppData\\Local\\Temp\\codex-clipboard-4b0a081f-125f-4eda-8c86-ad42b3dc285b.png",
+  "image_sha256": "45db55afbcf75e78dfadb76bdee425432a45b3ad9c05f47257513c6d0a9679b4",
+  "input_tokens": 22426,
+  "model_not_visible_in_screenshot": true,
+  "new_model_requests": 0,
+  "noncached_input_tokens": 11,
+  "output_tokens": 5,
+  "prices_cny_per_million": {
+    "cache_read": 0.1,
+    "cache_write": 2.5,
+    "input": 2,
+    "output": 10
+  },
+  "request_id_mapping_to_x_request_id_unverified": true,
+  "selected_group": "GPT-enterprise",
+  "upstream_added_context_unverified": true,
+  "usage_matches_local_receipt": true
+}

@@ -1,0 +1,44 @@
+{
+  "version": "natural-consumption-gap-audit-v1",
+  "scope": "actual_factory_and_assembly_only",
+  "fixture": "existing accepted observed:3 opinions; not new model output",
+  "input_evidence_sha256": "1a2cda2cc0be866dc3f44fcf60a4cacd6431e347bb7da59a96cbb1a1e2042ed1",
+  "source": {
+    "app/product/natural_duty_candidate.py": "a750199b8fae9370204a4938ba64b12a91a8dfac6b8dcbc2e4e4deefc3eff149",
+    "app/runtime/sol_session_runtime.py": "5b9d3b49f9ff3147197050dc680d8e155ccc4cfb8e2c9ec0e0c9504f867ae933",
+    "app/evaluation/sol_original15_session.py": "77f11f3fadcc0b3e9de58eda1541ea03b038d669e9a517987d6e8959d45547bc",
+    "scripts/sol_natural_launch.py": "d5b9cda4ccd30f5d135c59321ad41f4e87efe0c085a5524896a03ca4f67e87df",
+    "scripts/prepare_sol_necessity_natural.py": "68f2e4440ccb834757d463d36b869ffc1638b336c9fb7d5c6835befc9f889daa"
+  },
+  "product_factory_signature": "(*, summary_builder, provider_factory, knowledge_provider, runs_root, memory_repository=None, memory_manifest_store=None, publication_sources=None, publication_writer=None, candidate=None, execution_session=None)",
+  "factory_accepts_patch_coordination": false,
+  "paths": [
+    {
+      "session": false,
+      "workflow": "NaturalDutyWorkflow",
+      "assembly_outcome": "direct_patch_overlap_requires_new_joint_design",
+      "provider_requests": 0,
+      "key_reads": 0
+    },
+    {
+      "session": true,
+      "workflow": "SessionWorkflow",
+      "assembly_outcome": "session_awaiting_patch_coordination",
+      "provider_requests": 0,
+      "key_reads": 0
+    }
+  ],
+  "generic_natural_launcher_outcome": "launch_unknown_candidate",
+  "logical_natural_calls": 6,
+  "existing_product_calls": 5,
+  "call_budget_difference_resolved": false,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "model_quality_evidence": false,
+  "probe_development_correction": "First local probe omitted session ownership; corrected by opening the actual fixture session. No HTTP or execution evidence changed.",
+  "qualified": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "probe_script": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-remaining-two-20261028-control\\audit_natural_consumption.py",
+  "probe_script_sha256": "a386ee640361ddb656e0db73b8c74e243380de4a444e00e97193dd5d0f092409"
+}

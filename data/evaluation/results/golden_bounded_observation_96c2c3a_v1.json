@@ -1,0 +1,86 @@
+{
+  "all_claim_meaning_conflicts": [
+    {
+      "claim_kind": "inference",
+      "code": "correction_meaning_does_not_match_final_claim",
+      "disposition": "literal",
+      "scope": "selected_sample",
+      "target_id": "c001"
+    },
+    {
+      "claim_kind": "inference",
+      "code": "correction_meaning_does_not_match_final_claim",
+      "disposition": "literal",
+      "scope": "selected_sample",
+      "target_id": "c005"
+    },
+    {
+      "claim_kind": "inference",
+      "code": "correction_meaning_does_not_match_final_claim",
+      "disposition": "literal",
+      "scope": "selected_sample",
+      "target_id": "c008"
+    },
+    {
+      "claim_kind": "inference",
+      "code": "correction_language_source_mismatch",
+      "disposition": "defined",
+      "scope": "selected_sample",
+      "target_id": "c010"
+    }
+  ],
+  "audit": "golden-bounded-observation-v1",
+  "boundary": "Protocol contradictions block acceptance under either rubric. Do not relabel old cases or accept projected/repaired historical output.",
+  "case_counts": {
+    "finalized": 1,
+    "interrupted": 0,
+    "not_started": 1,
+    "planned": 2,
+    "started": 1
+  },
+  "ci_run": "34956898101",
+  "full_workflow_passed": false,
+  "historical_bytes_unchanged": true,
+  "historical_sha256": {
+    "receipt.json": "0d258dd92fd4e6948e166c75f841af005322db5653e94d382393c5975f3a1522",
+    "stable_unbounded/input.json": "782d06a1ef9ea47c13227689ec54181ff7aa1ba17f95f8a9e848666f85c467a6",
+    "stable_unbounded/response-001.json": "2e242e857c0228b48c118310f1ac207cfb3fe2e5890ec027644e2f680a47603f",
+    "stable_unbounded/response-002.json": "b1720d65fcefca103722ae32cb3b90f93882909eb4b778c2bf9bfe079f311db1"
+  },
+  "implementation_sha": "96c2c3a1b90d0df105938ccbef98d937f8f65ba4",
+  "meaning_inventory_complete": true,
+  "observed_calls": 2,
+  "positive_control_started": false,
+  "provider_calls_added_by_audit": 0,
+  "raw_model_scores": [
+    95,
+    94
+  ],
+  "raw_scores_are_not_valid_evaluations": true,
+  "returned_tokens": 50669,
+  "revision_attempted": false,
+  "rubric_status": "strict_word_definition_rule_is_assistant_authored; owner_approved_whole_context_on_2026_09_15; old_result_unchanged",
+  "streams": [
+    {
+      "elapsed_ms": 156250,
+      "finish_reason": "stop",
+      "first_visible_content_ms": 126765,
+      "input_ceiling": 50282,
+      "input_tokens": 11733,
+      "ordinal": 1,
+      "output_tokens": 16248,
+      "state": "complete"
+    },
+    {
+      "elapsed_ms": 93844,
+      "finish_reason": "stop",
+      "first_visible_content_ms": 73813,
+      "input_ceiling": 62836,
+      "input_tokens": 13783,
+      "ordinal": 2,
+      "output_tokens": 8905,
+      "state": "complete"
+    }
+  ],
+  "unknown_usage_calls": 0
+}

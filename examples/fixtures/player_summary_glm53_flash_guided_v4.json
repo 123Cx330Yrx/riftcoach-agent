@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-09-06T00:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 5,
+    "matches_received": 5,
+    "matches_analyzed": 5
+  },
+  "player": {
+    "game_name": "LanternMoss",
+    "tag_line": "R3",
+    "riot_id": "GuidedPractice#V4",
+    "puuid_prefix": "glm53-guided-anon..."
+  },
+  "request": {
+    "count": 5,
+    "queue": 420,
+    "region": "asia"
+  },
+  "recent_summary": {
+    "games_analyzed": 5,
+    "wins": 3,
+    "losses": 2,
+    "win_rate": 60.0,
+    "main_role": "MIDDLE",
+    "main_champions": [
+      "灯塔练习者",
+      "苔原练习者"
+    ],
+    "averages": {
+      "cs_per_min": 6.88,
+      "deaths_before_15": 0.8
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 6.93,
+        "deaths_before_15": 0.33
+      },
+      "losses": {
+        "cs_per_min": 6.8,
+        "deaths_before_15": 1.5
+      }
+    },
+    "champion_summary": [
+      {
+        "champion": "灯塔练习者",
+        "games": 3,
+        "wins": 2,
+        "win_rate": 66.67
+      },
+      {
+        "champion": "苔原练习者",
+        "games": 2,
+        "wins": 1,
+        "win_rate": 50.0
+      }
+    ],
+    "role_summary": [
+      {
+        "role": "MIDDLE",
+        "games": 5,
+        "wins": 3,
+        "win_rate": 60.0
+      }
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "GLM53_GUIDED_SYNTH_001",
+      "game_duration_seconds": 1815,
+      "champion_id": 970000,
+      "champion_name": "合成练习者A",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 7.2,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_GUIDED_SYNTH_002",
+      "game_duration_seconds": 1945,
+      "champion_id": 970001,
+      "champion_name": "合成练习者A",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.1,
+      "deaths_before_15": 2
+    },
+    {
+      "match_id": "GLM53_GUIDED_SYNTH_003",
+      "game_duration_seconds": 1750,
+      "champion_id": 970002,
+      "champion_name": "合成练习者B",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.8,
+      "deaths_before_15": 1
+    },
+    {
+      "match_id": "GLM53_GUIDED_SYNTH_004",
+      "game_duration_seconds": 2070,
+      "champion_id": 970003,
+      "champion_name": "合成练习者B",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 5.9,
+      "deaths_before_15": 2
+    },
+    {
+      "match_id": "GLM53_GUIDED_SYNTH_005",
+      "game_duration_seconds": 1885,
+      "champion_id": 970004,
+      "champion_name": "合成练习者B",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.4,
+      "deaths_before_15": 1
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}
+

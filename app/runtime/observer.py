@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from .signals import RuntimeSignal
+from .signals import ProviderCallStartedSignal, RuntimeSignal
 
 
 class RuntimeObservationError(RuntimeError):
@@ -23,9 +23,20 @@ def observe_runtime_signal(
 ) -> None:
     """Send one signal through an optional port without leaking raw errors."""
 
-    if observer is None:
-        return
     try:
+        if isinstance(signal, ProviderCallStartedSignal):
+            # Task ownership is a control-plane precondition, independent of
+            # the model request/receipt contract and the selected observer.
+            from .dispatch_control import DispatchStopped, require_dispatch_allowed
+            try:
+                require_dispatch_allowed()
+            except DispatchStopped as stop:
+                # Only the trusted send guard can bind a recorder for safe
+                # terminal persistence. An observer/delegate failure cannot.
+                stop.observer = observer
+                raise
+        if observer is None:
+            return
         observer.observe(signal)
     except RuntimeObservationError:
         raise

@@ -1,0 +1,166 @@
+{
+  "accounting": {
+    "calls": 1,
+    "reserved_tokens": 0,
+    "retries": 0,
+    "tokens": 21024
+  },
+  "active_seconds": 1000.8279999999941,
+  "actual_edit_performed": false,
+  "application_count": 0,
+  "batch_accounting": {
+    "calls": 25,
+    "http_requests_known": 25,
+    "http_requests_unknown": 0,
+    "known_tokens": 432347,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "retries": 2,
+    "unknown_reserved_tokens": 137228
+  },
+  "batch_closed": false,
+  "case": "claim-scope:2",
+  "case_completed": false,
+  "cases_completed": 6,
+  "fresh_sent": false,
+  "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "frozen_status": "",
+  "key_reads": 0,
+  "last_exit": {
+    "case": "claim-scope:2",
+    "exit_code": 0,
+    "operation": "run",
+    "stdout": "0105.stdout.txt",
+    "stdout_sha256": "a3865acfd47373f7ae7bab9aa629ded07073d05bab8ada2c888335d01573a8e3"
+  },
+  "last_exit_sha256": "a6f7a11eff8da8579f6c48a9e23c4826a7aebefec7c64f60866e52e388dc5dde",
+  "last_return": {
+    "key": "claim-scope:2",
+    "phase": "paused",
+    "publication_allowed": false,
+    "reason": "session_model_boundary"
+  },
+  "native_decisions": [
+    {
+      "accepted": true,
+      "key": "facts-initial"
+    }
+  ],
+  "new_provider_requests": 0,
+  "next_stage": "completion-initial",
+  "next_stage_sent": false,
+  "original_inventory_files_preserved": 1012,
+  "original_stdout_roots": {
+    "checkpoint_sha256": "1d7958efc7fa8dec77dbe1c06c3b97fcf6614f28c91d71bce801f56df1ecb3f6",
+    "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd"
+  },
+  "prior_completed_replay_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-completed-replay.json",
+  "prior_completed_replay_sha256": "6c79ee545d3c2945c105cf850a768aefb233e2bc0d254c3217ba6399d9e4d7b7",
+  "publication_allowed": false,
+  "qualified": false,
+  "read_only_inventory_unchanged": true,
+  "status": {
+    "checkpoint_sha256": "1d7958efc7fa8dec77dbe1c06c3b97fcf6614f28c91d71bce801f56df1ecb3f6",
+    "closed": false,
+    "format_waiting": false,
+    "guard_sha256": "1ee449d55b0a87cc16af44bdfa7d4641e3f8b0703dc09658d072e64d6a00b8bd",
+    "operations": 4,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "timeout_waiting": false,
+    "transport_waiting": false,
+    "unresolved": []
+  },
+  "transport": {
+    "actual_attempts": 1,
+    "completed_calls": 1,
+    "failed_calls": 0,
+    "http_requests_known": 1,
+    "http_requests_unknown": 0,
+    "known_tokens": 21024,
+    "known_usage_calls": 1,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 0,
+    "unknown_usage_calls": 0
+  },
+  "version": "original15-claim-scope2-facts-initial-frontier-v1",
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "0e89756d7ee69ba2fb238eab20f82d93ecc155ff4a52ed58bb7bb5ad935ed593",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17dfc-5a0f-7570-8280-e11f41f1e640/msg_0730884fbbcfc5f8016ae0c43717188197901d04c17f5c3302",
+      "author_sha256": "895d883979414f34a8471f5a5110cc4033c27d046c308de9bca715e9dc302b53",
+      "native_final_sha256": "895d883979414f34a8471f5a5110cc4033c27d046c308de9bca715e9dc302b53",
+      "raw_event_sha256": "80d92dda0bf0079ab5a9204a36d7df9a2f1c27aeebdc51a5789f61961e77282c",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "d4720b3b4952c49e41186cd45803077b046d5c0fca68674673d0667633a25282",
+      "submission_sha256": "3b2e98d7136919d031632cedfec9675ee1f59780890add58103691deedb64db9"
+    }
+  ],
+  "provider_response": {
+    "score": 100,
+    "verdict": "pass",
+    "issues": [],
+    "issue_resolutions": [],
+    "advisories": [
+      {
+        "block": 4
+      }
+    ],
+    "repairs": []
+  },
+  "receipt": {
+    "version": "research-responses-single-call-v1",
+    "ok": true,
+    "code": "ok",
+    "worker_code": "ok",
+    "failure_category": null,
+    "request_sha256": "40de5c0dfecc53e6e8424ff8be9f984d54fbb2ab30157e5c71c71e8daebef441",
+    "wire_sha256": "ae5aa958b6742b98cd435af8a3db79d91b032f832bf62fc96b627d41e98f5fb5",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "usage": {
+      "input_tokens": 20213,
+      "output_tokens": 811,
+      "total_tokens": 21024,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 763
+    },
+    "usage_state": "known",
+    "usage_conflict": false,
+    "conflicting_worker_usage": null,
+    "usage_basis": "channel_reported_unverified_upstream",
+    "http_requests": 1,
+    "reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 40.281,
+    "semantic_approval": false,
+    "group_verified": false,
+    "upstream_identity_verified": false,
+    "qualified": false,
+    "response_mode": "natural-sol-dual-necessity-v1",
+    "validation_context_sha256": "7685e7fb7e74bd54b0c3b1e6cdfcbfcbce4c698eb0a37d289a501cf7bf48c085"
+  },
+  "receipt_sha256": "058a6a7193625ec0eb821d5ffdc94593d658ee192d095d29e0f8a5ee716fc1e7",
+  "native_observation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-native-observed.json",
+  "native_observation_sha256": "3f51cff92cdc6ccb38af817c6ae56ae2c78aafeaf692d659841230aa55a98f3e",
+  "source_check_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-source-check.json",
+  "source_check_sha256": "8fd1f53ac5df4afe0e5c775e7bb65f6af0af1c91821818b9fda55340d156d92f",
+  "next_case": "claim-scope:2",
+  "actual_report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+  "automation_status": "PAUSED",
+  "production_admitted": false,
+  "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-accepted.json",
+  "accepted_evidence_sha256": "e82feb9922c717923c3c72903dfcb8f8f5207196e3c6d42abc3f653ef995a05a",
+  "audit_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\claim-scope-2-facts-initial-frontier.json",
+  "audit_evidence_sha256": "9b682f58113366ac6e6dbcaf02f17892f66ab9e6bdbfbc56fc5c6234c865a69f"
+}

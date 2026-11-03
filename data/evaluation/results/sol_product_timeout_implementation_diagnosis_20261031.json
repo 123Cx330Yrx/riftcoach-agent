@@ -1,0 +1,143 @@
+{
+  "schema": "product-timeout-implementation-diagnosis-v1",
+  "date": "2026-10-31",
+  "paid_requests": 0,
+  "credential_reads": 0,
+  "task_preserved": true,
+  "frozen_execution_changed": false,
+  "model_request_payload_changed": false,
+  "observed_http_524_manufactured_by_local_parser": false,
+  "upstream_root_cause_proven": false,
+  "timeout_resolved": false,
+  "sdk_wire_audit": [
+    {
+      "sample": "past_facts_success",
+      "mock_status": 200,
+      "code": "ok",
+      "category": null,
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "128d48b886a174e64e32ed601d1c3f37bd163664b0ee744e74fc05baeed285d6",
+      "sdk_wire_bytes": 54547,
+      "message_chars": 30888,
+      "tool_schema_chars": 6177,
+      "usage_known": true
+    },
+    {
+      "sample": "past_facts_success",
+      "mock_status": 524,
+      "code": "http_status_524",
+      "category": "sdk_error",
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "128d48b886a174e64e32ed601d1c3f37bd163664b0ee744e74fc05baeed285d6",
+      "sdk_wire_bytes": 54547,
+      "message_chars": 30888,
+      "tool_schema_chars": 6177,
+      "usage_known": false
+    },
+    {
+      "sample": "past_facts_success",
+      "mock_status": "read_timeout",
+      "code": "request_failed",
+      "category": "read_timeout",
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "128d48b886a174e64e32ed601d1c3f37bd163664b0ee744e74fc05baeed285d6",
+      "sdk_wire_bytes": 54547,
+      "message_chars": 30888,
+      "tool_schema_chars": 6177,
+      "usage_known": false
+    },
+    {
+      "sample": "current_failed",
+      "mock_status": 200,
+      "code": "ok",
+      "category": null,
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "sdk_wire_bytes": 53773,
+      "message_chars": 30768,
+      "tool_schema_chars": 6277,
+      "usage_known": true
+    },
+    {
+      "sample": "current_failed",
+      "mock_status": 524,
+      "code": "http_status_524",
+      "category": "sdk_error",
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "sdk_wire_bytes": 53773,
+      "message_chars": 30768,
+      "tool_schema_chars": 6277,
+      "usage_known": false
+    },
+    {
+      "sample": "current_failed",
+      "mock_status": "read_timeout",
+      "code": "request_failed",
+      "category": "read_timeout",
+      "requests": 1,
+      "wire_matches_builder": true,
+      "wire_sha256": "9efa38fa7c4c2012c76ba4f9c0556cdcc8052b7efc41366f3480c0b75dab1005",
+      "sdk_wire_bytes": 53773,
+      "message_chars": 30768,
+      "tool_schema_chars": 6277,
+      "usage_known": false
+    }
+  ],
+  "comparable_historical_facts": {
+    "elapsed_seconds": 104.015,
+    "wire_bytes": 54547,
+    "required_repairs": true,
+    "input_tokens": 21865,
+    "output_tokens": 4571
+  },
+  "current_facts": {
+    "wire_bytes": 53773,
+    "required_repairs": true,
+    "failed_elapsed_seconds": [
+      130.391,
+      128.875,
+      130.047
+    ]
+  },
+  "confirmed_local_defects": [
+    "generic SDK wrappers hide specific HTTPX read/proxy/pool causes",
+    "missing bounded gateway ray and header/first-byte timing diagnostics"
+  ],
+  "repairs": [
+    "prefer specific IO causes without changing cause-less fallback",
+    "persist allowlisted cf-ray and monotonic request/header/first-nonempty-byte timing without response bodies"
+  ],
+  "validation": {
+    "before_fix_regression": {
+      "failed": 13,
+      "passed": 9
+    },
+    "transport_suite_before_manifest_refresh": {
+      "passed": 192,
+      "failed_due_to_fingerprints": 2
+    },
+    "failed_cases_and_inventory_entrypoint_recheck": {
+      "passed": 12
+    },
+    "sdk_mock_cases": 6,
+    "runtime_profiles": 11,
+    "four_manifests_only_two_source_fingerprints_changed": true,
+    "governance": "passed"
+  },
+  "audit_artifact": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\product-live-control\\implementation-diagnosis-20261031\\sdk-audit-v3.json",
+  "audit_sha256": "681878b0c3c65528e4c9f33ad2f63afb6ce23cc2035308fdd5af73fe2eb06da9",
+  "limitations": [
+    "real gateway logs and origin duration unavailable",
+    "nonstream long-request latency remains plausible, not isolated causal proof",
+    "new diagnostic fields do not reconstruct absent historical IDs",
+    "first SDK audit probe used incompatible fresh-schema fixture; second mock had preconsumed body; corrected v3 uses comparable facts and actual byte stream"
+  ],
+  "next_action": "implement separately selected streaming transport preserving current business contract; verify terminal/usage/recovery offline before any new paid plan",
+  "existing_manual_retry_slots": 0
+}

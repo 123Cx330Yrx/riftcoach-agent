@@ -1,0 +1,34 @@
+{
+  "version": "sol-natural-offline-preparation-v1",
+  "run_id": "sol-natural-offline-20261019",
+  "first_request_sha256": "8992aea09c93705a0d856c8eb56cd6dc6e2d015e960cf48c827c99a59de016cc",
+  "source_sha256": {
+    "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+    "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+  },
+  "source_projection_time": "2026-09-10T12:15:28.980990+00:00",
+  "relationship": "observed",
+  "memory_records": 0,
+  "source_scope": "frozen_public_development_not_holdout",
+  "preselected_knowledge": false,
+  "contract": {
+    "contract_id": "natural-flash-sol-development-v1",
+    "version": "1.6.1",
+    "scope": "unadmitted_opt_in",
+    "sha256": "89dbc7379328bb00cf4510e63e399d3989ffaa35bacca361a06fe8028f90fd65"
+  },
+  "limits": {
+    "max_calls": 7,
+    "total_tokens": 498688,
+    "execution_timeout_s": 1200,
+    "transport_retries": 1
+  },
+  "estimated_uncached_cny": "0.6170624",
+  "hard_billing_cap": false,
+  "provider_requests": 0,
+  "key_read": false,
+  "semantic_approval": false,
+  "execution_authorized": false,
+  "paid_launcher_ready": false,
+  "production_admitted": false
+}

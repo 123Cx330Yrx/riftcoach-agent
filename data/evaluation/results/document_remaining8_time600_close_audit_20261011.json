@@ -1,0 +1,1488 @@
+{
+  "kind": "remaining8-time600-close-operator-audit-v1",
+  "seal_path": "data/evaluation/results/golden_document_remaining8_time600_result_20261011.json",
+  "seal_sha256": "75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8",
+  "operator_original_sha256": {
+    "authorization.json": "d15a12578c082442cdf2d8f34fb1cd80eb520b755be6085f07ab8911f8fe0fd0",
+    "execution-authorization.json": "d89e613f370e99d205bba7067e3def61fad63d2f2aea5e3265e070f3de20bfc2",
+    "ci-green.json": "165fd1f7554146f7b98d9a32517be9b67cc1e4dc1fc17470147e0e58d19121a9",
+    "execution-preflight.json": "6acf69766dde22fb95f684d22cc938b8c5d772810deca19500cfdf3a48e5c1f2",
+    "launch-once.json": "aa20e4342be55d566ccd4a08224e50664ccedf760f44e9b0ff4276cc83ab5db3",
+    "execution/process.json": "351531c5391a84ed99bc00d01be87e07e500a8eb7a00bb0565669b9ea4d7b00c",
+    "execution/exit.json": "b2a3689edb5182364696f8b13226419e2b4a72a90b8c5a11ad13c86166d4d5eb",
+    "claim-scope-5-submit-path-correction.json": "e9f1e2d9aa185c9b1d978d3e0046ccbde4d0ca832d256303c5a0219d8cec6a3e",
+    "recovery-duplicate-dispatch-hard-stop.json": "c845dae6c7f9d1e77062f3124f387cbd52a5bc9db9786234207c4d249326e915"
+  },
+  "operator_public_whitelist": {
+    "authorization.json": {
+      "kind": "remaining8-current-user-authorization-v1",
+      "authorized": true,
+      "user_evidence": [
+        "不是啊，我是说后面8例",
+        "不是你是不是糊涂了，你刚才那轮关了是为什么，为什么从旧对话衔接过来就不继续后面的了"
+      ],
+      "authorization_scope": "Continue the eight never-sent cases requested now; no prior-run restart or unused-credit transfer.",
+      "recorded_at_utc": "2026-10-10T14:53:47.894229+00:00",
+      "host_deadline_utc": "2026-10-11T14:53:47.894229+00:00",
+      "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+      "independent_thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+      "run_id": "document-remaining8-time600-20261010",
+      "sequence": [
+        "claim-scope:5",
+        "claim-scope:6",
+        "claim-scope:7",
+        "observed:1",
+        "observed:2",
+        "observed:3",
+        "observed:4",
+        "observed:5"
+      ],
+      "budget": {
+        "max_calls": 18,
+        "role_calls": {
+          "glm-5.3": 13,
+          "glm-5.3-flash": 5
+        },
+        "max_tokens": 1741824,
+        "max_active_seconds": 7200,
+        "max_host_seconds": 86400,
+        "per_request_output": 32768,
+        "per_request_seconds": {
+          "review": 600,
+          "generation": 300,
+          "revision": 300
+        },
+        "estimated_uncached_cny": "19.298304",
+        "hard_billing_cap": false
+      },
+      "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+      "preparation_file_sha256": "662a505207e1514c3500d26d8ecf117f99891c3e399b02997e1135f1681adc9d",
+      "execution_head": "c4f51552d2c7eaf2bedbe8c29772aa55aae4ca91",
+      "ci_run": "38061326419",
+      "no_retries": true,
+      "new_qualification": 0,
+      "ci_green_before_send_required": true
+    },
+    "execution-authorization.json": {
+      "kind": "remaining8-current-user-authorization-v1",
+      "authorized": true,
+      "user_evidence": [
+        "不是啊，我是说后面8例",
+        "不是你是不是糊涂了，你刚才那轮关了是为什么，为什么从旧对话衔接过来就不继续后面的了"
+      ],
+      "authorization_scope": "Continue the eight never-sent cases requested now; no prior-run restart or unused-credit transfer.",
+      "recorded_at_utc": "2026-10-10T14:53:47.894229+00:00",
+      "host_deadline_utc": "2026-10-11T14:53:47.894229+00:00",
+      "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+      "independent_thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+      "run_id": "document-remaining8-time600-20261010",
+      "sequence": [
+        "claim-scope:5",
+        "claim-scope:6",
+        "claim-scope:7",
+        "observed:1",
+        "observed:2",
+        "observed:3",
+        "observed:4",
+        "observed:5"
+      ],
+      "budget": {
+        "max_calls": 18,
+        "role_calls": {
+          "glm-5.3": 13,
+          "glm-5.3-flash": 5
+        },
+        "max_tokens": 1741824,
+        "max_active_seconds": 7200,
+        "max_host_seconds": 86400,
+        "per_request_output": 32768,
+        "per_request_seconds": {
+          "review": 600,
+          "generation": 300,
+          "revision": 300
+        },
+        "estimated_uncached_cny": "19.298304",
+        "hard_billing_cap": false
+      },
+      "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+      "preparation_file_sha256": "662a505207e1514c3500d26d8ecf117f99891c3e399b02997e1135f1681adc9d",
+      "execution_head": "49010a337a79e1dc34e3a94ae89bca3b78dab8cf",
+      "ci_run": "38062139250",
+      "no_retries": true,
+      "new_qualification": 0,
+      "ci_green_before_send_required": true,
+      "prior_authorization_sha256": "d15a12578c082442cdf2d8f34fb1cd80eb520b755be6085f07ab8911f8fe0fd0",
+      "prior_authorization_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-remaining8-20261010\\authorization.json",
+      "amendment": "Test-only portability fixture and whitespace correction; production adapter, frozen source and preparation unchanged.",
+      "ci_green_verified_at_utc": "2026-10-10T15:34:29.088455+00:00"
+    },
+    "ci-green.json": {
+      "conclusion": "success",
+      "headSha": "49010a337a79e1dc34e3a94ae89bca3b78dab8cf",
+      "jobs": [
+        {
+          "completedAt": "2026-10-10T15:07:42Z",
+          "conclusion": "success",
+          "databaseId": 114242379580,
+          "name": "postgres-migrations",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:32Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:40Z",
+              "conclusion": "success",
+              "name": "Initialize containers",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:44Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:46Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:56Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:56Z",
+              "conclusion": "success",
+              "name": "Check project governance continuity",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:59Z",
+              "conclusion": "success",
+              "name": "Verify reversible PostgreSQL migrations",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:38Z",
+              "conclusion": "success",
+              "name": "Run PostgreSQL control-plane tests",
+              "number": 8,
+              "startedAt": "2026-10-10T15:04:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:39Z",
+              "conclusion": "success",
+              "name": "Verify metadata matches the migration head",
+              "number": 9,
+              "startedAt": "2026-10-10T15:07:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:39Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 16,
+              "startedAt": "2026-10-10T15:07:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:40Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 17,
+              "startedAt": "2026-10-10T15:07:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:40Z",
+              "conclusion": "success",
+              "name": "Stop containers",
+              "number": 18,
+              "startedAt": "2026-10-10T15:07:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:40Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 19,
+              "startedAt": "2026-10-10T15:07:40Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379580"
+        },
+        {
+          "completedAt": "2026-10-10T15:05:25Z",
+          "conclusion": "success",
+          "databaseId": 114242379709,
+          "name": "packaging-smoke",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:33Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:37Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:37Z",
+              "conclusion": "success",
+              "name": "Validate the Compose model",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:37Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:17Z",
+              "conclusion": "success",
+              "name": "Build and start the isolated API stack",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:37Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:21Z",
+              "conclusion": "success",
+              "name": "Run the no-I/O Linux package smoke",
+              "number": 5,
+              "startedAt": "2026-10-10T15:05:17Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:21Z",
+              "conclusion": "skipped",
+              "name": "Print bounded service diagnostics after smoke failure",
+              "number": 6,
+              "startedAt": "2026-10-10T15:05:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:21Z",
+              "conclusion": "success",
+              "name": "Inspect runtime image boundary",
+              "number": 7,
+              "startedAt": "2026-10-10T15:05:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:22Z",
+              "conclusion": "success",
+              "name": "Tear down package smoke resources",
+              "number": 8,
+              "startedAt": "2026-10-10T15:05:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:23Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 16,
+              "startedAt": "2026-10-10T15:05:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:23Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 17,
+              "startedAt": "2026-10-10T15:05:23Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379709"
+        },
+        {
+          "completedAt": "2026-10-10T15:28:23Z",
+          "conclusion": "success",
+          "databaseId": 114242379720,
+          "name": "pytest-shards (0)",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:33Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:38Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:40Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:44Z",
+              "conclusion": "success",
+              "name": "Set up Node for isolated evaluation dependencies",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:54Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:57Z",
+              "conclusion": "success",
+              "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:58Z",
+              "conclusion": "success",
+              "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:02Z",
+              "conclusion": "success",
+              "name": "Install fixture web dependencies without lifecycle scripts",
+              "number": 8,
+              "startedAt": "2026-10-10T15:04:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:23Z",
+              "conclusion": "success",
+              "name": "Install the isolated Chromium verification browser",
+              "number": 9,
+              "startedAt": "2026-10-10T15:05:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:39Z",
+              "conclusion": "success",
+              "name": "Install media toolchain",
+              "number": 10,
+              "startedAt": "2026-10-10T15:05:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:19Z",
+              "conclusion": "success",
+              "name": "Run an isolated slice of the complete collected suite",
+              "number": 11,
+              "startedAt": "2026-10-10T15:05:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:20Z",
+              "conclusion": "success",
+              "name": "Retain collection and completion inventory",
+              "number": 12,
+              "startedAt": "2026-10-10T15:28:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:20Z",
+              "conclusion": "success",
+              "name": "Post Set up Node for isolated evaluation dependencies",
+              "number": 22,
+              "startedAt": "2026-10-10T15:28:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:20Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 23,
+              "startedAt": "2026-10-10T15:28:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:21Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 24,
+              "startedAt": "2026-10-10T15:28:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:28:21Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 25,
+              "startedAt": "2026-10-10T15:28:21Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379720"
+        },
+        {
+          "completedAt": "2026-10-10T15:21:59Z",
+          "conclusion": "success",
+          "databaseId": 114242379740,
+          "name": "pytest-shards (2)",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:33Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:36Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:38Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:36Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:39Z",
+              "conclusion": "success",
+              "name": "Set up Node for isolated evaluation dependencies",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:50Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:53Z",
+              "conclusion": "success",
+              "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:55Z",
+              "conclusion": "success",
+              "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:00Z",
+              "conclusion": "success",
+              "name": "Install fixture web dependencies without lifecycle scripts",
+              "number": 8,
+              "startedAt": "2026-10-10T15:04:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:27Z",
+              "conclusion": "success",
+              "name": "Install the isolated Chromium verification browser",
+              "number": 9,
+              "startedAt": "2026-10-10T15:05:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:49Z",
+              "conclusion": "success",
+              "name": "Install media toolchain",
+              "number": 10,
+              "startedAt": "2026-10-10T15:05:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:56Z",
+              "conclusion": "success",
+              "name": "Run an isolated slice of the complete collected suite",
+              "number": 11,
+              "startedAt": "2026-10-10T15:05:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:57Z",
+              "conclusion": "success",
+              "name": "Retain collection and completion inventory",
+              "number": 12,
+              "startedAt": "2026-10-10T15:21:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:57Z",
+              "conclusion": "success",
+              "name": "Post Set up Node for isolated evaluation dependencies",
+              "number": 22,
+              "startedAt": "2026-10-10T15:21:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:57Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 23,
+              "startedAt": "2026-10-10T15:21:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:58Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 24,
+              "startedAt": "2026-10-10T15:21:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:21:58Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 25,
+              "startedAt": "2026-10-10T15:21:58Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379740"
+        },
+        {
+          "completedAt": "2026-10-10T15:32:27Z",
+          "conclusion": "success",
+          "databaseId": 114242379785,
+          "name": "pytest-shards (1)",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:32Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:36Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:37Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:36Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:42Z",
+              "conclusion": "success",
+              "name": "Set up Node for isolated evaluation dependencies",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:37Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:53Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:57Z",
+              "conclusion": "success",
+              "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:59Z",
+              "conclusion": "success",
+              "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:04Z",
+              "conclusion": "success",
+              "name": "Install fixture web dependencies without lifecycle scripts",
+              "number": 8,
+              "startedAt": "2026-10-10T15:04:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:27Z",
+              "conclusion": "success",
+              "name": "Install the isolated Chromium verification browser",
+              "number": 9,
+              "startedAt": "2026-10-10T15:05:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:47Z",
+              "conclusion": "success",
+              "name": "Install media toolchain",
+              "number": 10,
+              "startedAt": "2026-10-10T15:05:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:24Z",
+              "conclusion": "success",
+              "name": "Run an isolated slice of the complete collected suite",
+              "number": 11,
+              "startedAt": "2026-10-10T15:05:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:25Z",
+              "conclusion": "success",
+              "name": "Retain collection and completion inventory",
+              "number": 12,
+              "startedAt": "2026-10-10T15:32:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:25Z",
+              "conclusion": "success",
+              "name": "Post Set up Node for isolated evaluation dependencies",
+              "number": 22,
+              "startedAt": "2026-10-10T15:32:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:25Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 23,
+              "startedAt": "2026-10-10T15:32:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:25Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 24,
+              "startedAt": "2026-10-10T15:32:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:25Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 25,
+              "startedAt": "2026-10-10T15:32:25Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379785"
+        },
+        {
+          "completedAt": "2026-10-10T15:29:08Z",
+          "conclusion": "success",
+          "databaseId": 114242379804,
+          "name": "pytest-shards (3)",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:32Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:36Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:38Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:36Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:42Z",
+              "conclusion": "success",
+              "name": "Set up Node for isolated evaluation dependencies",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:55Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:59Z",
+              "conclusion": "success",
+              "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:01Z",
+              "conclusion": "success",
+              "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:05Z",
+              "conclusion": "success",
+              "name": "Install fixture web dependencies without lifecycle scripts",
+              "number": 8,
+              "startedAt": "2026-10-10T15:05:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:28Z",
+              "conclusion": "success",
+              "name": "Install the isolated Chromium verification browser",
+              "number": 9,
+              "startedAt": "2026-10-10T15:05:05Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:47Z",
+              "conclusion": "success",
+              "name": "Install media toolchain",
+              "number": 10,
+              "startedAt": "2026-10-10T15:05:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:06Z",
+              "conclusion": "success",
+              "name": "Run an isolated slice of the complete collected suite",
+              "number": 11,
+              "startedAt": "2026-10-10T15:05:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:07Z",
+              "conclusion": "success",
+              "name": "Retain collection and completion inventory",
+              "number": 12,
+              "startedAt": "2026-10-10T15:29:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:07Z",
+              "conclusion": "success",
+              "name": "Post Set up Node for isolated evaluation dependencies",
+              "number": 22,
+              "startedAt": "2026-10-10T15:29:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:07Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 23,
+              "startedAt": "2026-10-10T15:29:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:07Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 24,
+              "startedAt": "2026-10-10T15:29:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:29:07Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 25,
+              "startedAt": "2026-10-10T15:29:07Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242379804"
+        },
+        {
+          "completedAt": "2026-10-10T15:08:10Z",
+          "conclusion": "success",
+          "databaseId": 114242380160,
+          "name": "web-checks",
+          "startedAt": "2026-10-10T15:04:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:04:33Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:04:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:37Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 2,
+              "startedAt": "2026-10-10T15:04:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:40Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 3,
+              "startedAt": "2026-10-10T15:04:37Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:42Z",
+              "conclusion": "success",
+              "name": "Set up Node for isolated evaluation dependencies",
+              "number": 4,
+              "startedAt": "2026-10-10T15:04:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:54Z",
+              "conclusion": "success",
+              "name": "Install project and test dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:04:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:04:58Z",
+              "conclusion": "success",
+              "name": "Install isolated Pi spike dependencies without lifecycle scripts",
+              "number": 6,
+              "startedAt": "2026-10-10T15:04:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:00Z",
+              "conclusion": "success",
+              "name": "Install isolated MCP interoperability dependencies without lifecycle scripts",
+              "number": 7,
+              "startedAt": "2026-10-10T15:04:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:05Z",
+              "conclusion": "success",
+              "name": "Install fixture web dependencies without lifecycle scripts",
+              "number": 8,
+              "startedAt": "2026-10-10T15:05:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:05:27Z",
+              "conclusion": "success",
+              "name": "Install the isolated Chromium verification browser",
+              "number": 9,
+              "startedAt": "2026-10-10T15:05:05Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:07:48Z",
+              "conclusion": "success",
+              "name": "Verify the fixture web contract and production bundle",
+              "number": 10,
+              "startedAt": "2026-10-10T15:05:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:03Z",
+              "conclusion": "success",
+              "name": "Verify cinematic audit toolchain and planned ledger",
+              "number": 11,
+              "startedAt": "2026-10-10T15:07:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:04Z",
+              "conclusion": "success",
+              "name": "Check project governance continuity",
+              "number": 12,
+              "startedAt": "2026-10-10T15:08:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:04Z",
+              "conclusion": "success",
+              "name": "Enforce RAG v1 retrieval quality gate",
+              "number": 13,
+              "startedAt": "2026-10-10T15:08:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:04Z",
+              "conclusion": "success",
+              "name": "Enforce independent RAG 4M holdout gate",
+              "number": 14,
+              "startedAt": "2026-10-10T15:08:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:06Z",
+              "conclusion": "success",
+              "name": "Compile Python sources",
+              "number": 15,
+              "startedAt": "2026-10-10T15:08:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:06Z",
+              "conclusion": "success",
+              "name": "Enforce Harness SDK boundary",
+              "number": 16,
+              "startedAt": "2026-10-10T15:08:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:06Z",
+              "conclusion": "success",
+              "name": "Reject tracked local secrets and run data",
+              "number": 17,
+              "startedAt": "2026-10-10T15:08:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:07Z",
+              "conclusion": "success",
+              "name": "Run Harness dry-run fixture",
+              "number": 18,
+              "startedAt": "2026-10-10T15:08:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:07Z",
+              "conclusion": "success",
+              "name": "Post Set up Node for isolated evaluation dependencies",
+              "number": 34,
+              "startedAt": "2026-10-10T15:08:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:07Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 35,
+              "startedAt": "2026-10-10T15:08:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:07Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 36,
+              "startedAt": "2026-10-10T15:08:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:08:08Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 37,
+              "startedAt": "2026-10-10T15:08:08Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114242380160"
+        },
+        {
+          "completedAt": "2026-10-10T15:32:49Z",
+          "conclusion": "success",
+          "databaseId": 114247908711,
+          "name": "pytest",
+          "startedAt": "2026-10-10T15:32:29Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-10T15:32:30Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-10T15:32:29Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:30Z",
+              "conclusion": "success",
+              "name": "Require all unchanged gates and every shard to succeed",
+              "number": 2,
+              "startedAt": "2026-10-10T15:32:30Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:34Z",
+              "conclusion": "success",
+              "name": "Check out repository",
+              "number": 3,
+              "startedAt": "2026-10-10T15:32:30Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:34Z",
+              "conclusion": "success",
+              "name": "Set up Python",
+              "number": 4,
+              "startedAt": "2026-10-10T15:32:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:46Z",
+              "conclusion": "success",
+              "name": "Install inventory verifier dependencies",
+              "number": 5,
+              "startedAt": "2026-10-10T15:32:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:47Z",
+              "conclusion": "success",
+              "name": "Download every shard inventory",
+              "number": 6,
+              "startedAt": "2026-10-10T15:32:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:47Z",
+              "conclusion": "success",
+              "name": "Verify exact full-suite coverage and completed tests",
+              "number": 7,
+              "startedAt": "2026-10-10T15:32:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:47Z",
+              "conclusion": "success",
+              "name": "Post Set up Python",
+              "number": 13,
+              "startedAt": "2026-10-10T15:32:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:47Z",
+              "conclusion": "success",
+              "name": "Post Check out repository",
+              "number": 14,
+              "startedAt": "2026-10-10T15:32:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-10T15:32:47Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 15,
+              "startedAt": "2026-10-10T15:32:47Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/38062139250/job/114247908711"
+        }
+      ],
+      "status": "completed"
+    },
+    "execution-preflight.json": {
+      "execution_head": "49010a337a79e1dc34e3a94ae89bca3b78dab8cf",
+      "ci_run": "38062139250",
+      "native": {
+        "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+        "independent_thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+        "verified": true,
+        "independent_agent_path": "/root/remaining8_independent",
+        "input_readability": {
+          "thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+          "turn_id": "01a12655-3862-7980-9f6e-1a26a11309d6",
+          "dispatch_id": "amsg_01a12655-3903-7503-ac84-ce761e895aed",
+          "current_input_readable": false,
+          "future_input_guaranteed": false,
+          "current_route_and_final_available": true,
+          "host_review_evidence_policy": "native-final-attestation-v1"
+        }
+      },
+      "provider_calls": 0,
+      "checked_at_utc": "2026-10-10T15:34:46.588019+00:00"
+    },
+    "launch-once.json": {
+      "wrapper_pid": 77052,
+      "started_at_utc": "2026-10-10T15:34:38.050503+00:00"
+    },
+    "execution/process.json": {
+      "runner_pid": 91176,
+      "wrapper_pid": 77052,
+      "started_at_utc": "2026-10-10T15:34:46.618157+00:00",
+      "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+      "native": {
+        "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+        "independent_thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+        "verified": true,
+        "independent_agent_path": "/root/remaining8_independent",
+        "input_readability": {
+          "thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+          "turn_id": "01a12655-3862-7980-9f6e-1a26a11309d6",
+          "dispatch_id": "amsg_01a12655-3903-7503-ac84-ce761e895aed",
+          "current_input_readable": false,
+          "future_input_guaranteed": false,
+          "current_route_and_final_available": true,
+          "host_review_evidence_policy": "native-final-attestation-v1"
+        }
+      }
+    },
+    "execution/exit.json": {
+      "exit_code": 1,
+      "ended_at_utc": "2026-10-10T16:23:23.537459+00:00"
+    },
+    "claim-scope-5-submit-path-correction.json": {
+      "kind": "operator-submit-path-correction-v1",
+      "failed_command_directory": "data/runs/model_comparison/document-remaining8-time600-20261010",
+      "correct_directory": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-remaining8-time600-20261010",
+      "checkpoint_path": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-remaining8-time600-20261010\\claim-scope-5\\initial\\task-checkpoint.json",
+      "checkpoint_sha256": "c1972a8b391f3c27f4f7550b0bfbd9f95262489382a2c44cf3e93f7f69ae4533",
+      "checkpoint_unchanged": true,
+      "absolute_task_exact_match": true,
+      "submission_written": false,
+      "provider_retries": 0,
+      "review_retries": 0,
+      "correction": "CLI directory spelling was relative, causing generated instruction-path text to differ from immutable absolute task. Correct operator argument only; no checkpoint/source/event/opinion modification."
+    },
+    "recovery-duplicate-dispatch-hard-stop.json": {
+      "kind": "remaining8-operator-recovery-duplicate-dispatch-hard-stop-v1",
+      "checkpoint_path": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-remaining8-time600-20261010\\observed-1\\initial\\task-checkpoint.json",
+      "checkpoint_sha256": "cefd3bfa005ca33338d5b0aa7960c62945bd01ac5366b0b867dadc2cb42a3294",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a12698-f152-7121-aa93-3e588f927eac/msg_0d4010adabb2cede016aca65f84a288194a2f7343fdfe09dcd",
+      "native_status": "completed",
+      "native_error": null,
+      "native_final_sha256": "a8c583113c865bf06debfb1a045192fe4010913f75210041a319f8cfe76e37bb",
+      "dispatches": [
+        {
+          "index": 505,
+          "id": "amsg_01a12698-f272-7f22-a05b-b4ce8cfaca86",
+          "turn_id": "01a12698-f152-7121-aa93-3e588f927eac",
+          "message_type": "NEW_TASK",
+          "author": "/root",
+          "recipient": "/root/remaining8_independent"
+        },
+        {
+          "index": 550,
+          "id": "amsg_01a1269e-0495-7b92-8d4e-47177e51b063",
+          "turn_id": "01a12698-f152-7121-aa93-3e588f927eac",
+          "message_type": "MESSAGE",
+          "author": "/root",
+          "recipient": "/root/remaining8_independent"
+        },
+        {
+          "index": 552,
+          "id": "amsg_01a1269e-0499-77e1-94f9-2503a9ef19bb",
+          "turn_id": "01a12698-f152-7121-aa93-3e588f927eac",
+          "message_type": "NEW_TASK",
+          "author": "/root",
+          "recipient": "/root/remaining8_independent"
+        }
+      ],
+      "final_response_record_indices": [
+        564
+      ],
+      "final_completed_record_indices": [
+        563
+      ],
+      "failed_submit_code": "codex_review_host_rollout_dispatch_or_final_ambiguous",
+      "review_submission_written": false,
+      "root_recovery_action": "followup_task was sent while the same turn was still active/interrupted; it inserted a second NEW_TASK in that turn.",
+      "responsibility": "Operator recovery error; not a Provider semantic rejection or transport timeout.",
+      "hard_stop": "handoff abort routing_failure",
+      "remediation": "For the same active/interrupted checkpoint use an ordinary message and wait; never issue another NEW_TASK. Do not alter or retroactively certify this closed event.",
+      "provider_calls_for_recovery": 0,
+      "retrospective_credit": 0
+    }
+  },
+  "original_files_unchanged": 138,
+  "certified_stage_events": [
+    {
+      "key": "claim-scope:5",
+      "stage": "initial",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a12675-571b-7730-8637-d087cc81ca2c/msg_0cd69a08386c8171016aca5c1ee0ec8193837d07d44c34875f"
+    },
+    {
+      "key": "claim-scope:6",
+      "stage": "initial",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a1267d-554b-7701-bfd3-b77e1cdee03b/msg_0cd69a08386c8171016aca5e25ce948193bd77002b88f61aec"
+    },
+    {
+      "key": "claim-scope:6",
+      "stage": "revision",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a12683-ad37-7632-bad8-269824a9d5ec/msg_0d4010adabb2cede016aca60ac802881948428620de36cc2cd"
+    },
+    {
+      "key": "claim-scope:6",
+      "stage": "final",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a1268d-c6dc-7092-8103-85a5f1fb74e8/msg_0d4010adabb2cede016aca6251e3548194ac7f8f95b8a1f9f6"
+    },
+    {
+      "key": "claim-scope:7",
+      "stage": "initial",
+      "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a12693-92ed-7970-9ee2-d7aa456b4d3b/msg_0d4010adabb2cede016aca63bf3a0c81948428620cb9fbc03f"
+    }
+  ],
+  "unfinished_native_final_does_not_grant_credit": true,
+  "earliest_batch_deviation": "observed:1 initial: same native turn has two NEW_TASK dispatches; final is readable but not uniquely importable.",
+  "earlier_path_correction": "claim-scope:5 submit relative path was rejected before any submission; absolute-path correction left original checkpoint, task and native final unchanged.",
+  "execution_result": {
+    "budget_known_tokens": 98364,
+    "budget_unknown_reserved_tokens": 0,
+    "case_budgets": [
+      {
+        "calls": 1,
+        "execution_timeout_s": 900,
+        "finished_active_seconds": 47.75,
+        "key": "claim-scope:5",
+        "known_tokens": 14366,
+        "started_active_seconds": 0.0,
+        "unknown_reserved_tokens": 0
+      },
+      {
+        "calls": 3,
+        "execution_timeout_s": 900,
+        "finished_active_seconds": 290.88999999999214,
+        "key": "claim-scope:6",
+        "known_tokens": 50705,
+        "started_active_seconds": 47.75,
+        "unknown_reserved_tokens": 0
+      },
+      {
+        "calls": 1,
+        "execution_timeout_s": 900,
+        "finished_active_seconds": 358.82799999999406,
+        "key": "claim-scope:7",
+        "known_tokens": 16247,
+        "started_active_seconds": 290.88999999999214,
+        "unknown_reserved_tokens": 0
+      },
+      {
+        "calls": 1,
+        "execution_timeout_s": 900,
+        "finished_active_seconds": 433.8119999999908,
+        "key": "observed:1",
+        "known_tokens": 17046,
+        "started_active_seconds": 358.82799999999406,
+        "unknown_reserved_tokens": 0
+      }
+    ],
+    "cases": [
+      {
+        "initial_score": 96,
+        "initial_verdict": "pass",
+        "key": "claim-scope:5",
+        "semantic_accepted": true,
+        "stages": [
+          {
+            "binding": {
+              "key": "claim-scope:5",
+              "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+              "report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+              "request_sha256": "dcfa874df98bddeb47907ea9b1c4c6a6bd97b2a79b4098fbd3c0f0f13864eb71",
+              "response_sha256": "7e3a1881fb6be9d7058b7fbed71643acca48c9e599e35e834bf1781dde5cbaf5",
+              "stage": "initial"
+            },
+            "host_accepted": true,
+            "stage": "initial"
+          }
+        ]
+      },
+      {
+        "final_score": 96,
+        "final_verdict": "pass",
+        "initial_score": 80,
+        "initial_verdict": "needs_revision",
+        "key": "claim-scope:6",
+        "semantic_accepted": true,
+        "stages": [
+          {
+            "binding": {
+              "key": "claim-scope:6",
+              "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+              "report_sha256": "a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14",
+              "request_sha256": "81a233715abe2a73469802eee1258b0cf393c6c4e97591ec5b8b04dbeca8959f",
+              "response_sha256": "b516b640ccfde573dd193d1a6d70e1183877d07345fb97e3090bd67e7cd8b1af",
+              "stage": "initial"
+            },
+            "host_accepted": true,
+            "stage": "initial"
+          },
+          {
+            "binding": {
+              "key": "claim-scope:6",
+              "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+              "report_sha256": "e714407ecbf41231b72377908bc3d2d45cf14a4273de99c6c8fa2e74c47c493c",
+              "request_sha256": "cfad8404c705235d6aae024255a3499ddbccc18b6823ac46cb8e97714f39babd",
+              "response_sha256": "e6fa53896e0463eeaa2104d5affda0c692ab132d8833f2732fba79bd9b5c9a8c",
+              "stage": "revision"
+            },
+            "host_accepted": true,
+            "stage": "revision"
+          },
+          {
+            "binding": {
+              "key": "claim-scope:6",
+              "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+              "report_sha256": "e714407ecbf41231b72377908bc3d2d45cf14a4273de99c6c8fa2e74c47c493c",
+              "request_sha256": "9198ff21f7b5f26a90903e08b04e11b20860ccc5df737a40b43b5049b5473c0e",
+              "response_sha256": "87317f6114a5a85bc86275f95988270b2fb77f0aa6ce0458a1f6a1c633b28b0f",
+              "stage": "final"
+            },
+            "host_accepted": true,
+            "stage": "final"
+          }
+        ]
+      },
+      {
+        "initial_score": 96,
+        "initial_verdict": "pass",
+        "key": "claim-scope:7",
+        "semantic_accepted": true,
+        "stages": [
+          {
+            "binding": {
+              "key": "claim-scope:7",
+              "plan_sha256": "fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556",
+              "report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
+              "request_sha256": "d590fa722540add6300d68609fbe41eac1b81b79710248412fd15538e328aaf3",
+              "response_sha256": "78e76d010faa5c5e7505bd51bb4ffa746fb5469dde393bfd650b10b112a09d88",
+              "stage": "initial"
+            },
+            "host_accepted": true,
+            "stage": "initial"
+          }
+        ]
+      },
+      {
+        "key": "observed:1",
+        "semantic_accepted": false,
+        "stages": []
+      }
+    ],
+    "diagnostic_accepted": false,
+    "error_code": "full15_operator_abort",
+    "error_type": "ValueError",
+    "experiment": "document-remaining8-time600-20261010",
+    "known_tokens": 98364,
+    "new_qualification": 0,
+    "original15_qualified": false,
+    "product_admitted": false,
+    "provider_calls": 6,
+    "scan_completed": false,
+    "timing": {
+      "active_elapsed_seconds": 433.8119999999908,
+      "completed_host_waits": 6,
+      "host_elapsed_seconds": 2459.8750000000073,
+      "mode": "separate-development-host-clock-v1",
+      "plan_sha256": null,
+      "qualification_adopted": false,
+      "wall_elapsed_seconds": 2893.686999999998
+    },
+    "unexecuted_keys": [
+      "observed:2",
+      "observed:3",
+      "observed:4",
+      "observed:5"
+    ],
+    "unfinished_keys": [
+      "observed:1"
+    ],
+    "unknown_reserved_tokens": 0
+  },
+  "accounting": {
+    "calls": 6,
+    "known_tokens": 98364,
+    "unknown_usage_calls": 0,
+    "local_attempts_without_transport_receipt": 0,
+    "known_usage_estimated_uncached_cny": "1.038154",
+    "unknown_usage_is_not_free": true
+  },
+  "close_provider_calls": 0,
+  "new_qualification": 0,
+  "historical_runs_separate": true,
+  "original15_qualified": false,
+  "production_admitted": false,
+  "next_action": "Repair operator recovery dispatch discipline and prepare the four never-sent observed:2..5. No restart, repurchase or retrospective signature for observed:1 or the earlier seventh case."
+}

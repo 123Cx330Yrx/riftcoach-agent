@@ -1,0 +1,96 @@
+{
+  "kind": "natural-duty-dispatch-budget-fix-v1",
+  "date": "2026-10-15",
+  "base_head": "646e5f1be05e2ae993832bf0dba312b09b366d7b",
+  "scope": "Software accounting for a trusted pre-dispatch stop; no model or semantic evaluation.",
+  "reproduced_before": [
+    {
+      "stop_after": 1,
+      "actual_calls": 1,
+      "trace_calls": 1,
+      "budget_calls": 2
+    },
+    {
+      "stop_after": 4,
+      "actual_calls": 4,
+      "trace_calls": 4,
+      "budget_calls": 5
+    },
+    {
+      "stop_after": 5,
+      "actual_calls": 5,
+      "trace_calls": 5,
+      "budget_calls": 6
+    }
+  ],
+  "defect": "The outer budget reserved before the observed provider checked the dispatch fence; cancelled unsent calls leaked into the workflow outcome ledger.",
+  "impact": {
+    "actual_extra_sends": false,
+    "public_api_usage_incorrect": false,
+    "internal_budget_and_outcome_incorrect": true,
+    "billing_claim": false
+  },
+  "fix": {
+    "proof": "Current observed-provider invocation catches the same trusted stop before delegate.chat; proof reset on every chat entry.",
+    "adjustment": "Release only that provisional call and token reservation, retaining stopped=True and all prior usage.",
+    "sent_unknown": "Delegate/completion failures, stale exceptions and transport failures retain reservations."
+  },
+  "verification": {
+    "pre_fix_failing_witnesses": 3,
+    "software": {
+      "passed": 138,
+      "seconds": 57.87,
+      "files": [
+        "test_natural_duty_candidate.py",
+        "test_worker_dispatch_control.py",
+        "test_dispatch_runtime.py",
+        "test_runtime_observed_provider.py",
+        "test_role_budget_failures.py",
+        "test_prompt_program.py"
+      ]
+    },
+    "history_and_old_applications": {
+      "passed": 41,
+      "seconds": 214.71,
+      "files": [
+        "test_document_remaining4_adapter.py",
+        "test_document_remaining8_adapter.py",
+        "test_document_review_timing_decision.py"
+      ],
+      "old_profile_applications": 4
+    },
+    "postgres": {
+      "passed": 7,
+      "skipped": 0,
+      "seconds": 28.25,
+      "models_and_riot_scripted": true,
+      "database_runtime_worker_api_real": true,
+      "disposable_database_removed": true
+    },
+    "inventory": {
+      "passed": 4,
+      "seconds": 14.08,
+      "cases": 15,
+      "request_count": 30,
+      "requests_and_labels_unchanged": true
+    },
+    "unique_passed": 190,
+    "independent_engineering_review": "No further actionable findings; not a business Host certification."
+  },
+  "prior_source_archive": {
+    "commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4",
+    "path": "app/runtime/coach_budget.py",
+    "lf_sha256": "9c2183a069c5dd06ba2f722ff4c9dfacabd8960001e961b35ceb573755460f8f",
+    "historical_decisions_and_seals_unchanged": true
+  },
+  "inventory": "data/evaluation/results/natural_duty_qualification_inventory_dispatch_fix_20261015.json",
+  "source_sha256": {
+    "app/runtime/coach_budget.py": "7e6326e1cdf428082edd0f360ea31cbfd32df48f0218a6b95f2d74c3273cef46",
+    "app/runtime/observed_provider.py": "4303ca5c3008bb84292b703ab69ec34d45420de57ea1905dfcc5f8de07438e9b"
+  },
+  "provider_calls": 0,
+  "execution_authorized": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "automation": "PAUSED"
+}

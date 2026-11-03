@@ -1,0 +1,160 @@
+# 三项必要修订边界诊断：受控入口
+
+本工作包只检验已有事实审查政策候选在三份全文开发对照上的误报/漏报。
+用户已于2026-10-24授权此范围及随后企业分组变更；旧六项及旧封存均不重开。
+材料/标签及失败决策沿用 `data/evaluation/fixtures/review_necessity_20261023/README.md`。
+
+## 当前结论：三项已完成，退出付费诊断
+
+| 全文对照 | 模型结果 | 全来源双审 |
+|---|---|---|
+| a原稿 | 仅检出block21任意7.5门槛并给窄修法；未误报待验假设 | 意见及全部建议补丁接受 |
+| b修正稿 | pass，无issue/repair；中路数字和否定门槛正确保留 | 接受无问题意见 |
+| c新增明确因果错 | 检出block10“已经证明原因”，保留正确单局数据并撤回无依据结论 | 意见及全部建议补丁接受 |
+
+三次企业HTTP200分别46.797/31.328/35.156秒，raw/SDK均high；不能证明渠道长期稳定或独立上游身份。
+真实作者原件及各自唯一native final逐字导入通过；c作者SHAc450fca4。
+最终submit根`d1a5a26ae08a93f7780fcbf384fee9f32b8825dc5fc068f56e0b4830771b691f`来自原stdout，
+唯一create-only seal为`79afb6319bdfd7807531b9992cb2cd692c0f8960a535154e774732a76de82a98`。
+严格只读replay通过，76件Operator与4件作者原件SHA/mtime不变；closed/stopped_at=complete/0未审。
+累计4HTTP/69473known/80384unknown预留，首项Pro524保持，预留不是账单。automation实核PAUSED。
+证据`data/evaluation/results/review_necessity_enterprise_completed_20261024.json`；以下所有启动命令现在只作历史证据，不能重开本批。
+
+保留本政策为开发方向，不重买这三项；熟悉材料/仅facts初审不当holdout、实际应用/fresh或产品资格。
+下一工作包沿用活动task_plan：独立开发合同将同政策绑定facts initial/fresh和动态全文来源，显式企业Profile，
+复用现有natural Runtime/session/worker/原生Gate；先零付费验证唯一应用、同稿双fresh及超时/费用恢复。
+旧Sol合同仍baseline政策且provider硬编码Pro，不能只改Key后把三份固定validator当成自然任务接入。
+旧合同/run及六项接受不改，本grant不挪用到新范围；自然六调用/产品五调用差异及同版本资格要求保持。
+
+## 历史：2026-10-24 用户变更与执行过程
+
+用户先授权三项诊断，首项Pro请求远端524后明确允许多次补测、要求先准备第一次，随后选择企业分组0.25×。
+本地Profile名称为`GPT-企业专线`，只记用户声明；平台实际按Key选择分组，本程序没有独立验证渠道身份。
+不再因共享一次额度耗尽就停止普通超时恢复；无次数/总token自动批预算，改为每次显式启动、隐藏Key输入，
+单次仍64000输入预留/16384输出/80384总预留、300秒、SDK及监督自动重试0。这里没有后台循环或常驻Key。
+旧Pro授权的0.4/2元按用户报告倍率0.25/0.2折算为0.5/2.5元每百万，单次预留估价0.07296元，
+是未核实新报价的比例估算，不是实际用量/账单/企业价格确认；旧未知80384预留及所有旧费用保持。
+本次授权期限沿用原10月25日北京时间10:56:33截止，不延长旧grant；语义实错、来源/观测/协议硬错仍停该候选。
+
+实现复用原`review_necessity_launch`、worker及native Gate，新增`amend`命令。
+只允许在已回收且明确`retry_available`检查点追加执行变更，必须带原stdout plan/checkpoint根，
+完整人类授权及其原SHA、新源码HEAD/库存、绝对cwd/Python、企业分组/新估价和手动补测限额。
+`plan.json`、原请求、旧checkpoint/receipt/native原件不改；`amendments/0001.json`与后继checkpoint新增记录，
+把新的执行环境/分组作为生效覆盖，逐次发送前重核。旧Pro grant缺该变更SHA或分组/价格不符会在读Key前拒绝。
+原历史行政作者proof只读回查复用，不能冒充新业务接受；后续新业务任务用变更后的精确cwd和原样dispatch。
+通过的逻辑项不重做；明确超时可再次手动retry，未知claim/缺receipt不得当作没发。完整意见必须先审，不能以补测挑答案。
+封存/replay保留原计划与全部变更、费用、作者/原生证据；新配置不能补签旧high/max冲突或拼产品资格。
+下文的一次补测/Pro额度描述为原v1计划，未变更的旧计划及其测试仍按原合同执行。
+
+当前企业入口已准备：执行树`D:/riftcoach-review-necessity-enterprise-execution`冻结
+`2bd7e08e260542246db33b445499081088a72291`，Python沿用`D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`。
+原Operator不变，新增amendment0001/checkpoint0006，恢复根
+`b2bb4ab9a7358a83f431659b4cc71783212f1e5b622d59be79b51d474e0bc7df`来自amend原stdout。
+企业Control为`C:/Users/33502/Documents/Agent/outputs/riftcoach-review-necessity-enterprise-20261024-control`，
+用户运行`start-enterprise.ps1`；脚本先等精确代码CI40057680511全绿再隐藏输入企业Key，只执行当前a一次retry。
+实际CheckOnly、CI等待取消、旧Pro入口读Key前退役拒绝均已核，旧原件SHA/mtime保持，新HTTP/Key/claim0。
+旧Pro启动器原字节留存，不能再用下文旧命令启动企业补测；后续手动恢复用每次命令原stdout的checkpoint SHA。
+20项相关行为检查通过151.60秒；证据`data/evaluation/results/review_necessity_enterprise_recovery_20261024.json`。
+随后CI40057680511已completed/success，8个job全绿。企业a补测HTTP200/46.797秒/23399known，raw与SDK均回显high。
+仅指出block21的任意7.5门槛并给出窄补丁，主审/独立完整来源双审接受；真实作者原件及唯一native final逐字核对、submit通过。
+当前根`f45559f57c351ef604942db4a4f2e630ddcc6033615ce567fc4ef267fdaca7ae`来自submit原stdout；
+phase=ready/next=b，累计2HTTP/23399known/80384unknown，原Pro超时不改。
+下一入口为同企业Control/continue-b.ps1，已实际CheckOnly通过；隐藏输入Key仅发b一次，不重复a或重绑CI。
+证据`data/evaluation/results/review_necessity_enterprise_a_reviewed_20261024.json`；未应用/fresh/授资格，企业稳定性未证。
+
+b已完成：HTTP200/31.328秒/22923known，raw和SDK均high；模型pass且无issues/repairs，主审及独立全文/来源核对均接受。
+真实作者SHA32d83f93与唯一native final逐字导入；新根`c44bd04d06f9c7c5bd63c1f6ae2690c0c75eb14b9714b6dbaf18ae3061550652`来自submit原stdout。
+当前ready/next=c，累计3HTTP/46322known/80384unknown/0未审；原a及Pro超时不改。
+当前入口改为同Control/continue-c.ps1，实际CheckOnly通过，只发c一次；复用原授权和已通过CI，不重测a/b。
+证据`data/evaluation/results/review_necessity_enterprise_b_reviewed_20261024.json`；c真实因果错检出仍待验证。
+
+## 实现及证据边界
+
+`scripts/review_necessity_launch.py`调用现有 `reviewer_responses_process.run_once`，
+沿用同一SDK、300秒监督、Key stdin、原HTTP观测和费用回执；不另建模型传输层。
+每次完整结果使用既有 `ExactNativeGate` / `HostReviewWorkspace`：完整报告与可见请求/来源/
+全部意见 → 原生独立作者原件/check-answer/final → 主审自己的判断/event-id → submit。
+评测标签和旧意见不进入模型请求；主审材料标签不是独立接受，也不是模型改善证明。
+
+每次命令明确携带原stdout的 plan/checkpoint SHA，append-only checkpoint记录库存及前序根。
+claim在worker启动前落盘并输出；中断后不能换目录、重置账目或不查回执就重发。
+新命令仅增加受控三项启动/恢复层，未修改产品Runtime、旧接收器、模型或发布标准。
+调用前核实际cwd/Python、clean exact HEAD、tracked源码/材料重建、精确公共CI、授权UTC期限、
+当前原生身份及所有已接受作者/原生记录。源码库存仅读Git tracked，不打开无关untracked probe。
+旧诊断seal及完整库存贯穿准备/发送前核查，旧7HTTP/111392known/145824unknown/retry1单独保留。
+
+## 范围、费用与取消
+
+- 固定a、b、c顺序，每项一次facts-initial；无生成、completion、修订应用、fresh或15项批。
+- 最多增加一次**显式**超时补测，三逻辑项总计最多4尝试，321536 tokens预留；无自动重试。
+- 每尝试64000输入预留+16384输出、300秒。等待CI/Key/Host时没有活动worker计时。
+- GPT-pro / gpt-6.1-sol / 请求high / Responses nonstream / 进程代理127.0.0.1:12000。
+- 按用户已确认0.4/2元每百万输入/输出估算，三次0.175104元，含一次补测最多0.233472元。
+  是预留估算，不是上游账单硬上限或新报价；known/unknown/not_sent分记，不重置旧费用。
+- 新授权显式绑定plan SHA、profile、固定limits、人类授权证据、价格和至多24小时UTC区间。
+  准备代码不自动批准或生成已批准grant。只有实际新授权后才能制作授权文件/固定SHA。
+- Key仅终端隐藏输入，不落盘、不放argv/env，不在日志记录错误正文或私有reasoning。
+  输入前取消没有claim；输入后重新核UTC/来源/原生，过期或漂移不发送。
+
+## 结果决策与恢复
+
+| 实际结果 | 入口行为 |
+|---|---|
+| 完整接收、尚未审查 | awaiting_review；不发送下一项 |
+| 完整意见及修法语义正确，双审接受 | 继续下一份；三份完成也仍不授产品资格 |
+| 任一误报/漏报/解释或修法实错 | 停本候选，不加一句提示后继续购买；有效观察与旧接受保持 |
+| high/max回显冲突但完整有效公开意见 | 正式接收仍失败；仅作原生语义诊断，审完停止，不为档位补测 |
+| 明确524/read timeout/监督deadline且已回收、已观测一次HTTP，无完整可用结果 | retry_available，保留其他已审项；须显式retry且剩余补测额度足够 |
+| worker退出后已有完整receipt，主进程在导入前中断 | reconcile只读取现有回执并建立审查任务，绝不再发送 |
+| claim存在而receipt缺失，或身份/协议/观测/库存不一致 | 禁止发送；保留unknown和原件，人工核查；不冒充not_sent |
+| Key提示处取消 | 保留此前checkpoint，可恢复同一未claim项 |
+
+`seal`为Operator内唯一create-only `seal.json`；它可封存部分结果，不把未做项当通过。
+prepare后先停在needs_native_preflight；native-task只建立行政审查夹具，真实原生提交接受后才进入ready。
+这份proof会在每次发送前重新读取作者/原生，不能靠计划里的自报布尔值直接绕过。
+尚有不确定活动claim时拒绝封存，需先核进程及真实回执。`replay`严格只读，要求原seal SHA，
+重核原生/作者及全部库存，不事后重算trust root充当启动时根。临时锁在Operator外，用OS锁，
+进程退出释放，不用PID猜重启状态。锁文件保留给后续恢复，不进入封存库存。
+
+## 命令与实际准备
+
+干净执行树准备后，保留prepare完整stdout；所有后续命令使用其中的原SHA。
+`check`不读Key、不发请求；业务原生预检仍须真实作者file→check-answer→唯一final→导入，
+历史身份/final可读取不能替代这一过程，也不保证旧Agent仍能被当前协作工具调度。
+
+模块CLI有prepare/check/native-task/send/retry/reconcile/submit/seal/replay。send一次只发送当前项，
+返回完整dispatch文件路径；操作者原样派发，不从摘要重写。submit须主审自己写decision，
+独立JSON只能来自作者及真实event；禁止操作者代写独立判断。
+submit完成后保存其原stdout checkpoint再用同一入口继续，不根据目录mtime挑根。
+每次调用前的CI绑定沿用已有合同；本地准备和复核历史材料不等CI，也不因一行文档重跑整站。
+
+## 本地验收
+
+新测试使用真实worker子进程/SDK、mock HTTP和明确标识的FakeGate，检查三项顺序、审后继续、
+单项超时保留前项、显式有限补测、high/max诊断后停、语义拒绝、取消/UTC/路径/来源漂移拒发、
+OS互斥、完整回执中断恢复、缺观测停发和只读seal。它们只证明工程控制流，不证明真实语义或原生交接。
+不因fixture里模拟接受就给三份预期标签盖独立审查章。实际预检与准确执行树/根另存准备结果。
+
+## 原v1已核入口与恢复用法（已由上方企业入口替代）
+
+执行代码固定在`D:/riftcoach-review-necessity-execution`的6052be74，Python为
+`D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe`；精确CI为39895429952，发送前须success。
+当前Operator为`C:/Users/33502/Documents/Agent/outputs/riftcoach-review-necessity-verified-20261023`，
+同名`-control/start-authorized.ps1`已完成Windows PowerShell本机检查；实际行政作者交接与回查通过。
+plan原根f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e，
+原submit stdout checkpoint为09dd5c9e4610dc80ad421a6b858ede6d36fbfcfdb95cbefa04512826ba7425f8。
+完整路径/作者事件/原stdout SHA见`data/evaluation/results/review_necessity_launch_preparation_20261023.json`。
+
+`start-authorized.ps1 -CheckOnly`零Key/零Provider重读当前真实原生记录；无参数启动在缺少
+`authorization.binding.json`时退出2，尚未创建本候选已批准grant。不是让用户现在输入Key。
+获得具体新费用授权后，绑定文件须记录plan_sha256、authorization_file、authorization_sha256、ci_run；
+入口仍由Python核原grant SHA/范围/真实UTC/精确CI/全部原件，包装文件不代替授权。
+每次只发送当前一项；原stdout JSON即时保存至Control的唯一UTF8文件，exit记录保存该日志最初SHA。
+仅stdout入日志，stdin仍接终端；隐藏输入函数用哨兵真实核过，不记录Key或私有reasoning。
+后续submit原stdout返回新根后，以`-CheckpointSha <该原值>`继续；默认0003根故意不能静默追踪mtime。
+明确超时仅用`-Retry -CheckpointSha <超时命令原stdout值>`；有claim或完整receipt的中断先查原件，
+由CLI reconcile导入已有结果，不能再运行send。不要拿旧入口/首个默认根补发。
+
+本入口已准备不等于模型质量已改善；截至当前新增真实Key/Provider均0。
+早期未执行草稿已标superseded；首次另一行政检查点的尾LF拒收原件保持。
+high/max完整意见仍诊断审完后停，可能只取得部分项，不能承诺三项完整通过或自动升级产品。

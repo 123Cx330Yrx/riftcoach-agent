@@ -1,0 +1,276 @@
+{
+  "kind": "document-relation-repair-close-audit-v1",
+  "closed_at": "2026-10-13T02:58:09.422081+00:00",
+  "audited_at": "2026-10-13T04:32:45.249965+00:00",
+  "execution_head": "e1fff5e932dcfb36f0df17533dda34b4da101381",
+  "ci_run": "38334154675",
+  "ci": {
+    "status": "completed",
+    "conclusion": "success",
+    "headSha": "e1fff5e932dcfb36f0df17533dda34b4da101381",
+    "all_jobs_success": true
+  },
+  "plan_sha256": "2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f",
+  "authorization": {
+    "authorized": true,
+    "budget": {
+      "estimated_uncached_cny": "5.718016",
+      "hard_billing_cap": false,
+      "max_active_seconds": 2400,
+      "max_calls": 4,
+      "max_host_seconds": 86400,
+      "max_tokens": 387072,
+      "per_request_output": 32768,
+      "per_request_seconds": 600,
+      "role_calls": {
+        "glm-5.3": 4,
+        "glm-5.3-flash": 0
+      }
+    },
+    "ci_run": "38334154675",
+    "expires_at": "2026-10-14T01:59:09.672069+00:00",
+    "head": "e1fff5e932dcfb36f0df17533dda34b4da101381",
+    "issued_at": "2026-10-13T01:59:09.672069+00:00",
+    "plan_sha256": "2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f",
+    "user_instruction": "User explicitly confirmed the prepared U1/U2 four new initial reviews; no retries, redelivery, old batch reopening or qualification.",
+    "version": "document-relation-repair-authorization-v1"
+  },
+  "original_authorization_sha256": "dd839f4b09266c985f932c477f27830bd5e06e52dc0abe96b6f47226e4bcc6b1",
+  "frozen_sources_unchanged": true,
+  "source_files": 73,
+  "package_check": {
+    "verified": true,
+    "requests": 4,
+    "plan_sha256": "2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f",
+    "provider_calls": 0
+  },
+  "strict_replay": true,
+  "strict_seal_created": true,
+  "seal_sha256": "b11d033fabffdec069b0d527a7ec11b55aaa1bb75e87388a6b20228494cf669d",
+  "original_files": 66,
+  "original_inventory_sha256_unchanged": true,
+  "accounting": {
+    "attempted_calls": 3,
+    "http_send_unknown_calls": 0,
+    "known_tokens": 45600,
+    "observed_http_requests": 3,
+    "receiptless_calls": 0,
+    "unknown_usage_calls": 0
+  },
+  "known_input_tokens": 39196,
+  "known_output_tokens": 6404,
+  "known_total_tokens": 45600,
+  "estimated_known_cny": "0.492880",
+  "estimate_rates_cny_per_million": {
+    "input": 8,
+    "output": 28
+  },
+  "actual_bill_verified": false,
+  "actual_billed_cny": null,
+  "timing": {
+    "active_elapsed_seconds": 165.10899999996764,
+    "completed_host_waits": 3,
+    "host_elapsed_seconds": 1477.500000000029,
+    "mode": "separate-development-host-clock-v1",
+    "plan_sha256": "2bd63a11ff50005803a746c8ecf7cc9e55d73b4c44be96cd9f04808cdc38ad2f",
+    "qualification_adopted": false,
+    "wall_elapsed_seconds": 1642.6089999999967
+  },
+  "runner_first_deviation": {
+    "code": "semantic_operator_abort",
+    "key": "U2-baseline:initial",
+    "phase": "host"
+  },
+  "first_hard_deviation": {
+    "key": "U2-baseline:initial",
+    "phase": "host",
+    "code": "usageLimitExceeded",
+    "turn_id": "01a1332a-a084-70c2-b19b-757e3010c52b",
+    "native_final_count": 0,
+    "operator_abort_reason": "reviewer_unavailable"
+  },
+  "first_semantic_deviation": {
+    "key": "U2-baseline:initial",
+    "phase": "provider_response",
+    "kind": "missed_error",
+    "block": 14,
+    "win_values": [
+      3,
+      2
+    ],
+    "loss_values": [
+      0,
+      1
+    ],
+    "win_mean": "2.50",
+    "loss_mean": "0.50",
+    "mean_difference": "2.00",
+    "all_pairs": "greater",
+    "primary_rejected": true,
+    "dual_review_certified": false,
+    "repair_returned": false
+  },
+  "cells": [
+    {
+      "key": "U1-baseline:initial",
+      "provider_score": 95,
+      "provider_verdict": "pass",
+      "issues": 0,
+      "advisory_blocks": [
+        4,
+        6
+      ],
+      "provider_complete": true,
+      "dual_review_certified": true
+    },
+    {
+      "key": "U1-relation-contrast:initial",
+      "provider_score": 95,
+      "provider_verdict": "pass",
+      "issues": 0,
+      "advisory_blocks": [
+        6
+      ],
+      "provider_complete": true,
+      "dual_review_certified": true
+    },
+    {
+      "key": "U2-baseline:initial",
+      "provider_score": 96,
+      "provider_verdict": "pass",
+      "issues": 0,
+      "advisory_blocks": [
+        7,
+        15
+      ],
+      "provider_complete": true,
+      "dual_review_certified": false
+    }
+  ],
+  "native_reviews": 2,
+  "native_checks": [
+    {
+      "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a1331b-9d35-7b91-9edf-5871f2469e89/msg_000e89440ad38b1c016acd992c4b7887d081ddf6ad795f0a57",
+      "checkpoint_sha256": "44b790402f4bef9360c499a5c19c221dc054c6efd5b49604ce19c317fe365b89",
+      "author_sha256": "98367a845af2b9aa5206ff8ec43591d946d998c36bdfd928f3cfeb410d06cd01",
+      "command_count": 16,
+      "command_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a13322-0171-7472-9534-7bae9b477c9c/msg_000e89440ad38b1c016acd9abd290487d09a7b076333f25c37",
+      "checkpoint_sha256": "0ac16b2483a13679b0efd09287aab8ae026478cbc3378c67a847da3ebc41010c",
+      "author_sha256": "5f382df6bfac177754f5b3dce88ca89a6fba79ed871650163d53f785b911332f",
+      "command_count": 14,
+      "command_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "unexecuted": [
+    "U2-relation-contrast:initial"
+  ],
+  "scan_completed": false,
+  "new_qualification": 0,
+  "semantic_findings": [
+    "U1 both arms passed dual review: no improvement evidence.",
+    "U2 baseline returned pass without detecting the block14 mean error; primary rejected, no independent native final or submission.",
+    "U2 contrast unissued; the repair mechanism remains untested."
+  ],
+  "decision": "Close this batch. Candidate not adopted; no retry, redelivery, recertification or qualification.",
+  "old_original_checks": [
+    {
+      "run": "document-relation-initial-20261012",
+      "files": 73,
+      "inventory_and_sha256_unchanged": true,
+      "manifest_evidence": "document_relation_initial_result_20261012.json"
+    },
+    {
+      "run": "document-full-report-remaining-initial-20261012",
+      "files": 47,
+      "inventory_and_sha256_unchanged": true,
+      "manifest_evidence": "document_full_report_remaining_close_audit_20261012.json"
+    },
+    {
+      "run": "document-full-report-network-followup-20261012",
+      "files": 26,
+      "inventory_and_sha256_unchanged": true,
+      "manifest_evidence": "document_full_report_network_result_20261012.json"
+    },
+    {
+      "run": "document-full-report-initial-20261012",
+      "files": 14,
+      "inventory_and_sha256_unchanged": true,
+      "manifest_evidence": "document_full_report_initial_result_20261012.json"
+    },
+    {
+      "run": "document-sampling-screening-20261012-corrected-v2",
+      "files": 146,
+      "inventory_and_sha256_unchanged": true,
+      "manifest_evidence": "corrected_temperature_screening_close_audit_20261012.json"
+    }
+  ],
+  "automation_status": "PAUSED",
+  "retry_performed": false,
+  "redelivery_performed": false,
+  "operator_evidence_sha256": {
+    "native-U1-baseline.json": "4f4c1e9c649fbed71f634f9729dad07bc47a6d5f59caa72fa7401850acbe9253",
+    "native-U1-relation-contrast.json": "4ff24dd9dfa5e570af862d4de92d198ae8ec36f82c6a906407930365e72e1673",
+    "native-U2-baseline-unavailable.json": "bb766adece16a7d05fd6a78e9f04cb700aa55311b14b350ab6d118f9050b0f08",
+    "primary-U2-baseline.json": "c64efa4a5a35004b360a522e9122fbc40ed01cb3cfd379294d2522888d11076d",
+    "strict-replay.json": "1be056da916aee207e92ed8015cc86a227136227878a121149818b6c95839ff8",
+    "closed-original-manifest.json": "41f44e82ddb32ef3b98bbd581c4d96c697f494e494d3ffd7fbad920b791a9127"
+  },
+  "execution_exit": {
+    "exit_code": 1,
+    "finished_at": "2026-10-13T02:58:09.422081+00:00",
+    "runner_pid": 120628
+  },
+  "closeout_delegate": {
+    "attempted": true,
+    "failed_before_work": true,
+    "error": "selected_model_at_capacity",
+    "used_for_review": false
+  },
+  "closeout_native_revalidation": {
+    "at": "2026-10-13T04:39:31.013185+00:00",
+    "installed_executable": "C:/Users/33502/AppData/Local/Programs/OpenAI/Codex/bin/codex.exe",
+    "strict_replay": true,
+    "native_reviews": 2,
+    "failed_turn_id": "01a1332a-a084-70c2-b19b-757e3010c52b",
+    "failed_turn_code": "usageLimitExceeded",
+    "native_final_count": 0,
+    "public_command_count": 15,
+    "public_commands_exit_zero": true,
+    "original_sha256_unchanged": true
+  }
+}

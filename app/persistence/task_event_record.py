@@ -77,7 +77,7 @@ class ReviewTaskEventRecord(Base):
             "event_kind IN ('snapshot_imported', 'created', 'claimed', "
             "'heartbeat', 'checkpointed', 'execution_started', "
             "'cancel_requested', 'recovery_requeued', 'recovery_required', "
-            "'succeeded', 'failed', 'cancelled', 'reconciled')",
+            "'succeeded', 'failed', 'cancelled', 'reconciled', 'continuation_resumed')",
             name="event_kind_allowed",
         ),
         sa.CheckConstraint(

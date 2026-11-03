@@ -1,0 +1,210 @@
+{
+  "overall": "usable",
+  "scope": "普通开发材料独立审查；usable 指材料足以裁决，不表示三份报告全部通过，也不是模型输出验收或产品/native业务资格。",
+  "checkpoint": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-reviewer-semantic-materials-20261018/checkpoint.json",
+    "sha256": "0aaae705ff5db042d7329dfed84392dc3f0c1db00f9bca7155b06121fea69d3a",
+    "listed_file_hashes_verified": 10,
+    "all_listed_file_hashes_match": true,
+    "author_answer_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-reviewer-semantic-materials-20261018/independent-answer.json"
+  },
+  "review_basis": {
+    "directory": "D:/riftcoach-review-route-diagnostics/data/evaluation/fixtures/reviewer_semantic_screen_20261018",
+    "read_scope": "实际阅读 s01.md、s02.md、s03.md 全文及 requests 中 facts/completion 两种完整政策、报告和来源 messages。六个请求逐项比对后，政策按职责相同，来源实质内容相同，仅部分来源摘要标识不同。归档 material.json 仅核 SHA，未读取历史模型或作者意见。",
+    "source_addressing": "下列来源编号使用请求 source_roots 的显式编号；表行 7 至 11 等仅为定位地址，不冒充审查 source_id。",
+    "source_roots_used": {
+      "27": "source/deterministic",
+      "28": "request/utterance",
+      "29": "generation/projection",
+      "30": "knowledge/inventory",
+      "36": "source/external_bundle",
+      "37": "source/official_patch",
+      "38": "source/data_dragon",
+      "39": "derived/computed_evidence",
+      "40": "source/facts_and_provenance"
+    },
+    "verification": "使用指定 Python 从 fact_tables 按 columns 复原五局，以 Decimal 重算报告涉及的均值、差值和 HALF_UP 展示；核对实际 queue_id、位置、胜负、纳入状态、死亡时间、知识原文和外部快照。三份 md 与各自请求内 HOST_BLOCK 正文按空白归一后相符。"
+  },
+  "shared_verified_content": [
+    {
+      "blocks": [3, 4, 7, 8, 9, 11, 13],
+      "source_ids": [28, 29, 30, 39, 40],
+      "evidence": "观摩对象为 DK ShowMaker#KR1，用户明确这些比赛不是阅读者个人基线。五局实际 queue_id 均为420，均纳入，无失败或排除；2胜3负，中单4局2胜2负、辅助1负。薇古丝8/5/23、辛德拉14/5/10；艾尼维亚早期死亡0次；中单早期死亡依原顺序为3、0、1、2，均值1.5，计入卡蜜尔7次后五局均值2.6。卡蜜尔总死亡13次。单局结果没有被外推为稳定能力。"
+    },
+    {
+      "blocks": [5, 12, 15, 17],
+      "source_ids": [27, 30, 39, 40],
+      "evidence": "全样本败局补刀均值为6.453333…，中单败局9.01；两种胜局集合均为薇古丝、辛德拉，补刀均值8.805。全样本与中单胜败差方向确实相反。中单败/胜伤害均值617.52/1286.755、经济均值432.815/505.29均正确。全样本胜/败早期死亡均值2.5/2.666666…，差约0.17；中单胜/败视野分33.5/34.0。没有把共同变化写成因果，也没有把微小早期死亡均值差当主要胜负分界。8.8的精度问题另列材料说明。"
+    },
+    {
+      "blocks": [19, 20, 23, 24, 25, 29, 30],
+      "source_ids": [28, 30],
+      "evidence": "建议保持可选观摩身份，未代选阅读者主位置、英雄池或个人训练阈值。K1支持早期死亡风险窗口及能力推断边界；K2支持位置分组和不设统一阈值；K3支持观察目标、周期及复盘方式；K4支持统计、时间线、录像的证据分层；K5支持经济与伤害共同变化而非因果。正文已有实际且适用的知识引用。单局观察周期、死亡与资源事件先后和回看方式足以支撑本次观摩练习，不应额外强制个人训练方案。"
+    },
+    {
+      "blocks": [21, 27, 28],
+      "source_ids": [36, 37, 38, 40],
+      "evidence": "OP.GG opgg[0] 为 mid，检索于2026-09-10T12:15:25.846153+00:00；facts[1] 为 Syndra，tier=2、rank=12、win_rate=0.49。报告写到分钟的检索时间和49.0%正确，均明确历史快照，未宣称今天仍有效或作为个人胜率目标。官方材料只给16.17身份和发布日期，不含英雄改动正文；Data Dragon版本16.17.1用于静态映射。区域、段位及精确上游版本不足，报告保留了这些限制。"
+    }
+  ],
+  "shared_material_notes": [
+    {
+      "id": "precision",
+      "status": "resolved_nonblocking",
+      "source_ids": [27, 39, 40],
+      "source": "facts:recent_aggregate.win_loss_comparison.wins.cs_per_min=8.8；facts:recent_match:00/04.cs_per_min=8.95/8.66；computed_evidence.cohorts.selected.win_mean 的 cs_per_min=8.81。",
+      "explanation": "来源摘要未重算，显示8.8；逐局均值为8.805，按 HALF_UP 保留两位为8.81，保留一位为8.8。报告未声明全表统一保留两位，也未把8.8标为精确值，且同时给出中单均值8.805。因此现有文本可以解释为不同展示精度，不构成实质事实错误。computed_evidence 的两位格式是该计算视图的格式，不能自动补造为报告全篇格式要求。",
+      "impact": "可以统一写8.805或注明展示精度以便阅读，但不据此制造必改问题；也不能从8.8与8.805推断两组胜局不同。若另有统一两位小数合同，则应统一为8.81；本包未提供该合同。"
+    },
+    {
+      "id": "snapshot_scope",
+      "status": "resolved_for_historical_use_only",
+      "source_ids": [28, 36, 40],
+      "source": "opgg[0].expires_at=2026-09-10T12:30:25.846153+00:00、provenance=partial、upstream_patch=null；来源边界要求过期指标不能充当当前事实。",
+      "explanation": "截至本次审查时间，该快照不能支持今天的英雄强弱或当前推荐。三份报告均明确只陈述检索当时的历史快照；s01/s02 的后续同口径查证也没有声称未来数值已知。历史记录并未因当前过期而变成虚假，但应保持历史查证用途。",
+      "impact": "不阻止裁决。s03 的补充行动只能围绕历史记录及后续同口径核对，不能据此新增当前选角、个人能力或个人胜率目标。"
+    },
+    {
+      "id": "source_projection_limit",
+      "status": "nonblocking_limit",
+      "source_ids": [27, 29, 30, 40],
+      "explanation": "所给完整来源是本包的统计、死亡时间、知识与外部快照投影，并非完整录像或所有原始时间线事件。资源事件先后和路线/决策原因尚无逐项观测可供本次核定。source_roots 未提供独立 position_context 根，但确定性来源正文含位置背景，且五局行已足以核对实际位置。",
+      "impact": "报告将事件核对作为后续观摩行动，没有编造已发生的资源顺序或原因，因此不构成既有断言错误。不得把这些可选练习当成已经完成的录像验证。"
+    }
+  ],
+  "reports": [
+    {
+      "id": "s01",
+      "material_decidability": "sufficient",
+      "facts": "pass",
+      "completion": "pass",
+      "findings": [],
+      "rationale": {
+        "facts": "完整30段未发现需要修改的事实断言。第16段正确区分均值与逐局全称，洛克8.38低于薇古丝8.95构成所述反例。共同统计、知识依据、身份和外部来源边界见 shared_verified_content。",
+        "completion": "完成观摩对象的总体复盘、胜败比较、可选行动、观察周期与数据限制。正文有适用K引用；第21段把辛德拉历史tier/rank/rate连接到后续同口径查证，且标明中单、检索时间和历史快照边界，满足既有资料消费义务。"
+      },
+      "correct_content_to_preserve": [
+        "保留第16段均值不代表每局一致的反例与边界。",
+        "保留第21段条件式历史快照查证，不改写成当前选角或个人训练指标。",
+        "保留 shared_verified_content 中所有已核正确的统计、建议、身份与限制；无需为凑问题重写报告。"
+      ],
+      "material_uncertainties": [
+        {"ref": "precision", "effect": "展示精度差异已解释，不影响pass。"},
+        {"ref": "snapshot_scope", "effect": "仅历史用途可裁决，不代表当前快照仍有效。"},
+        {"ref": "source_projection_limit", "effect": "不能验证录像级原因，报告没有声称已验证。"}
+      ],
+      "repairs": []
+    },
+    {
+      "id": "s02",
+      "material_decidability": "sufficient",
+      "facts": "needs_revision",
+      "completion": "pass",
+      "findings": [
+        {
+          "id": "s02-facts-1",
+          "duty": "facts",
+          "block": 16,
+          "severity": "medium",
+          "category": "unsupported_comparison",
+          "quote": "仅中单的每一局败局补刀/分钟都高于每一局胜局；中单败局均值9.01，胜局均值8.805。",
+          "source": {
+            "source_ids": [39, 40],
+            "locators": [
+              "facts:recent_match:00，表行7，KR_8371867671：MIDDLE，胜，cs_per_min=8.95",
+              "facts:recent_match:02，表行9，KR_8370206038：MIDDLE，负，cs_per_min=9.64",
+              "facts:recent_match:03，表行10，KR_8367293977：MIDDLE，负，cs_per_min=8.38",
+              "facts:recent_match:04，表行11，KR_8366083389：MIDDLE，胜，cs_per_min=8.66",
+              "computed_evidence.cohorts.MIDDLE：wins=[7,11]、losses=[9,10]；cs_per_min对应all_pairs=overlap"
+            ]
+          },
+          "explanation": "原文明确断言每一局败局都高于每一局胜局，不能降格解释为仅均值更高。洛克败局8.38同时低于两场胜局8.95和8.66，足以反驳全称；艾尼维亚9.64较高使败局均值9.01高于胜局8.805，并不能挽救逐局断言。",
+          "suggested_correction": "仅中单的败局补刀/分钟均值9.01高于胜局均值8.805，但不是每局败局都高于每局胜局；洛克败局为8.38，低于薇古丝胜局8.95。组均值不能替代逐局比较。"
+        }
+      ],
+      "rationale": {
+        "facts": "仅发现第16段逐局全称比较需要实质修订，其余已核内容应保留。",
+        "completion": "复盘任务、观摩练习、知识引用以及第21段OP.GG条件查证均已覆盖。第16段比较错误由事实职责处理，不能另算完成度缺口；completion通过不豁免该错误。"
+      },
+      "correct_content_to_preserve": [
+        "保留第16段中单败局均值9.01与胜局均值8.805。",
+        "保留第5段及第15段的分组方向、混位限制；不因逐局全称错误删除正确的均值比较。",
+        "保留第21段历史快照待验行动及其位置、时间和用途边界。",
+        "保留 shared_verified_content 中所有其他正确内容。"
+      ],
+      "material_uncertainties": [
+        {"ref": "precision", "effect": "不影响第16段可直接由逐局值裁决。"},
+        {"ref": "snapshot_scope", "effect": "不影响历史查证行动的完成度通过。"},
+        {"ref": "source_projection_limit", "effect": "逐局补刀比较所需四行齐全，无缺失或队列歧义。"}
+      ],
+      "repairs": [
+        {
+          "finding_ids": ["s02-facts-1"],
+          "block": 16,
+          "before": "仅中单的每一局败局补刀/分钟都高于每一局胜局；中单败局均值9.01，胜局均值8.805。",
+          "after": "仅中单的败局补刀/分钟均值9.01高于胜局均值8.805，但不是每局败局都高于每局胜局；洛克败局为8.38，低于薇古丝胜局8.95。组均值不能替代逐局比较。",
+          "reason": "撤销被逐局反例否定的全称判断，保留正确均值，并给出有来源的反例。"
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "material_decidability": "sufficient",
+      "facts": "pass",
+      "completion": "needs_revision",
+      "findings": [
+        {
+          "id": "s03-completion-1",
+          "duty": "completion",
+          "block": 21,
+          "severity": "medium",
+          "category": "other",
+          "quote": "历史OP.GG中单快照中的辛德拉在2026-09-10 12:15 UTC检索时为Tier 2、排名12、胜率49.0%。这里只列检索当时的快照，不称今天仍然如此，不用排名或胜率解释历史败局，也不把它当作阅读者的胜率目标。",
+          "source": {
+            "source_ids": [28, 36, 40],
+            "policy": "s03-completion.json messages[0]：对可用且匹配位置/英雄的OP.GG事实，至少把一项tier/rank/rate连到条件建议或待验行动；只列数字/免责声明不算实际使用。",
+            "locators": [
+              "user_utterance：生成并复核观摩对象报告；练习限于观摩",
+              "external_fact_paths.external:opgg:00:01=[0,1]",
+              "外部来源opgg[0]：position=mid、retrieved_at=2026-09-10T12:15:25.846153+00:00",
+              "外部来源opgg[0].facts[1]：champion=Syndra、tier=2、rank=12、win_rate=0.49"
+            ]
+          },
+          "explanation": "第21段的历史事实和限制本身正确，但全文没有把这项OP.GG指标接到条件行动。第19、20、24、25段的死亡/资源观摩练习并未使用tier/rank/rate；第28段也只是限制说明。因此未满足明确的资料消费义务。缺口不是要求个人训练或当前选角，而是缺少一个受历史快照范围约束的待验动作。",
+          "suggested_correction": "在第21段增加条件式历史查证：若想比较本次观摩涉及的中单英雄，可将辛德拉这项历史排名12作为记录起点，在取得后续同口径中单快照时核对排名如何变化；尚未取得可比快照时保持变化未知。保留既有位置、检索时间、tier/rank/rate以及不解释历史败局、不设个人胜率目标的限制。"
+        }
+      ],
+      "rationale": {
+        "facts": "第16段逐局反例正确，第21段只陈述历史快照也正确。没有实际使用某项可用事实本身不属于事实审查问题，因此本职责pass。",
+        "completion": "其余观摩任务和知识消费均已覆盖；第21段缺少将OP.GG指标接到条件建议或待验行动的实际使用，存在可直接修复的完成度缺口。"
+      },
+      "correct_content_to_preserve": [
+        "保留第21段Tier 2、排名12、胜率49.0%、中单、检索时间和历史用途限制；不把缺口改成事实错误。",
+        "保留第16段均值与逐局比较的正确区别。",
+        "保留其余观摩练习和K引用，不额外要求个人位置、英雄池、基线或达标数值。",
+        "保留 shared_verified_content 中所有其他正确内容。"
+      ],
+      "material_uncertainties": [
+        {"ref": "precision", "effect": "不同展示精度不构成本职责缺口或事实错误。"},
+        {"ref": "snapshot_scope", "effect": "修法限定为历史记录和未来同口径查证，不将已过期数据恢复成当前事实。"},
+        {"ref": "source_projection_limit", "effect": "不影响从全文判断是否存在OP.GG待验行动。"}
+      ],
+      "repairs": [
+        {
+          "finding_ids": ["s03-completion-1"],
+          "block": 21,
+          "before": "这里只列检索当时的快照，",
+          "after": "若想比较本次观摩涉及的中单英雄，可将辛德拉这项历史排名12作为记录起点，在取得后续同口径中单快照时核对排名如何变化；尚未取得可比快照时保持变化未知。这里只使用检索当时的历史快照，",
+          "reason": "将一个匹配英雄和位置的已给排名连接到条件查证行动，保留原有正确数字与限制。"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "本答案只裁决所给材料及对应职责；未联网、调用付费API、使用密钥或修改项目。",
+    "未读取evaluation.json、primary-material-review.json、manifest.json、主线程计划/状态、历史审查意见、测试或prepare脚本。",
+    "未运行真实模型输出验收、check-answer或业务native认证；没有提交或发布报告。",
+    "来源内的统计和历史快照在本包范围内核对，不等于对外部数据采集真实性作独立联网认证。",
+    "修法依据已逐项核对，但未实际改写三份报告；最终判断对应当前原稿。"
+  ]
+}

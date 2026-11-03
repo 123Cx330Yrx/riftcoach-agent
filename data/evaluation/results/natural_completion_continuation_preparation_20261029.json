@@ -1,0 +1,127 @@
+{
+  "version": "natural-completion-continuation-preparation-v1",
+  "outcome": "accepted_prefix_and_existing_runtime_tail_verified_offline",
+  "parent_operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-coordination-20261028",
+  "parent_seal_sha256": "e723a554d852a776cf2eaf30492def52d36a4514bf762931d033199fc8e6c646",
+  "original_failure_preserved": {
+    "key": "completion-initial",
+    "production_admitted": false,
+    "publication_allowed": false,
+    "reason": "semantic_rejected"
+  },
+  "original_rejected_completion_accepted": false,
+  "frontier_audit": {
+    "directory": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-completion-frontier-ready-20261029",
+    "files": {
+      "completion-request.json": "295682b789a8b76d53ed083e33ec811551793817bc4e53c7c81e73b6ae9b4afe",
+      "completion-validation-context.json": "f0fbe5e6d7903cde741c03445cdf1e84d3772d8e60902cdc0447471b80e3f038",
+      "continuation-recipe.json": "cbdd2f7804064e9bec9c0f03c861576800c54a8942dbf98d405ba4d825a4f0cb",
+      "current-prefix-proof.json": "d00b6baf494f8f020779ea2d6e3401899900a51ae789edceefd467298f1f3c15",
+      "frozen-prefix-proof.json": "2298d9150eabf1f5b6626825bcb0377fad34548baaf55431cc809e6558218749"
+    },
+    "accepted_operations": 11,
+    "frozen_and_current_runtime_frontiers_equal": true,
+    "original_native_facts_replayed": true,
+    "failed_facts_budget_and_manual_retry_bytes_preserved": true,
+    "provider_requests": 0,
+    "key_reads": 0
+  },
+  "local_defect": {
+    "code": "scratch_cost_carry_overwrote_failed_facts_snapshot",
+    "symptom": "session_replay_request_changed at committed manual-retry",
+    "fix": "Carry all later cost only at the last successful accepted facts result; never change the earlier failed snapshot.",
+    "frozen_source_or_original_evidence_edited": false
+  },
+  "implementation": {
+    "entry": "scripts.sol_natural_launch",
+    "mode": "dual-necessity with --completion-proof/--completion-proof-sha",
+    "continuation_version": "natural-accepted-facts-continuation-v1",
+    "separate_paid_pipeline_added": false,
+    "actual_consumers": [
+      "Application",
+      "SessionBudget",
+      "SessionWorkflow",
+      "SessionReviewGate"
+    ],
+    "old_facts_owner_preserved": true,
+    "parent_handle_resubmission_forbidden": true,
+    "rejected_completion_never_imported_as_accepted": true,
+    "ordinary_resume_never_retries": true,
+    "each_run_max_one_new_request": true,
+    "stored_enterprise_key_configured": true,
+    "stored_key_read_only_after_specific_grant_and_CI": true
+  },
+  "diagnostic_decision": {
+    "question": "Can an explicitly new diagnostic complete the existing actual revision tail from an accepted prefix?",
+    "zero_call_stitch_rejected": "Earlier fresh evidence cannot make a rejected initial opinion accepted or supply a formal application.",
+    "full_six_rerun_rejected": "Generation and facts were accepted and remain reusable.",
+    "same_policy_retry_is_not_quality_improvement": true,
+    "semantic_rejection_stops_without_another_trial": true
+  },
+  "proposed_new_scope": {
+    "logical_model_reviews": 3,
+    "max_new_http_requests": 5,
+    "max_new_tokens": 401920,
+    "manual_recovery_reserve": 2,
+    "parent_cumulative_active_seconds": 3600,
+    "inherited_active_seconds": 342.267,
+    "per_request_seconds": 300,
+    "max_output_tokens": 16384,
+    "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+    "multiplier": "0.25",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "estimated_ceiling_cny": "0.36480",
+    "hard_billing_cap": false,
+    "phases": [
+      "completion-initial",
+      "optional-host-coordination",
+      "compatibility-host",
+      "edit-host",
+      "unique-application",
+      "facts-fresh",
+      "completion-fresh"
+    ]
+  },
+  "existing_evidence_accounting": {
+    "parent_http": 5,
+    "parent_known_tokens": 67065,
+    "parent_unknown_reserved_tokens": 73756,
+    "parent_retries": 1,
+    "separate_completed_fresh_http": 2,
+    "separate_completed_fresh_known_tokens": 38271,
+    "combined_old_http": 7,
+    "combined_old_known_tokens": 105336,
+    "combined_old_unknown_reserved_tokens": 73756,
+    "combined_old_retries": 1,
+    "old_costs_reset": false
+  },
+  "original15": {
+    "evidence": "data/evaluation/results/sol_original15_remaining_two_completed_20261028.json",
+    "sha256": "f6c497646fccc86140d1712dc7e2a5047919609412f6ddbfd2c1c33e3da28046",
+    "cases_complete_across_versions": 15,
+    "same_version_15_qualified": false,
+    "familiar_sources_not_holdout": true
+  },
+  "verification": {
+    "new_frontier_and_tail_tests": 9,
+    "new_tests_seconds": 453.18,
+    "legacy_frontier_tests_previously_passed": 13,
+    "old_launch_and_continuation_regressions": {
+      "passed": 32,
+      "seconds": 1173.31
+    },
+    "live_plan_and_author_preflight": "See external live_readiness_authority; only that file records post-commit readiness."
+  },
+  "live_readiness_authority": "C:/Users/33502/Documents/Agent/outputs/riftcoach-natural-completion-continuation-20261029-control/readiness.json",
+  "new_provider_requests": 0,
+  "new_business_key_reads": 0,
+  "credential_presence_only_checked": true,
+  "execution_authorized": false,
+  "publication_allowed": false,
+  "qualified": false,
+  "production_admitted": false,
+  "original_workflow_requalified": false,
+  "stage8e_complete": false,
+  "automation_status": "PAUSED"
+}

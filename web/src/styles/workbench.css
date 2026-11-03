@@ -91,8 +91,6 @@
 @keyframes auth-signal-orbit { to { transform: rotate(360deg); } }
 
 .fixture-disclosure--live { color: var(--hex-cyan-300); }.fixture-disclosure--live strong { color: var(--hex-cyan-300); }.fixture-disclosure--live .fixture-disclosure__beacon { border-color: var(--hex-cyan-400); box-shadow: 0 0 12px rgba(82,230,219,.48); }.live-transport-state { color: var(--hex-cyan-700) !important; text-transform: uppercase; }.event-strip__transport { margin-left: auto; color: var(--warning-400); font: 600 .52rem var(--font-display); letter-spacing: .08em; white-space: nowrap; }
-.safe-markdown { margin-top: 1rem; color: var(--ink-300); font-size: .76rem; line-height: 1.72; }.safe-markdown > :first-child { margin-top: 0; }.safe-markdown > :last-child { margin-bottom: 0; }.safe-markdown h2, .safe-markdown h3, .safe-markdown h4 { margin: 1.15rem 0 .45rem; color: var(--ink-100); font-family: var(--font-display); letter-spacing: -.015em; }.safe-markdown h2 { font-size: 1.25rem; }.safe-markdown h3 { font-size: 1.05rem; }.safe-markdown h4 { color: var(--coach-gold-300); font-size: .9rem; }.safe-markdown p, .safe-markdown ul, .safe-markdown ol, .safe-markdown blockquote { max-width: 51rem; }.safe-markdown li { margin-block: .3rem; }.safe-markdown blockquote { margin-inline: 0; padding: .75rem 1rem; color: var(--ink-200); border-left: 2px solid var(--coach-gold-300); background: rgba(214,185,106,.045); font: 540 1rem/1.55 var(--font-display); }.safe-markdown code { color: var(--hex-cyan-300); }.safe-markdown pre { overflow-x: auto; padding: .75rem; border: 1px solid rgba(123,219,211,.12); background: rgba(3,12,16,.7); }
-.safe-markdown__plaintext { max-width: 51rem; margin: 0; color: var(--ink-300); white-space: pre-wrap; overflow-wrap: anywhere; }
 .training-metric { grid-template-columns: repeat(2,minmax(0,1fr)); margin: .8rem 0 0; }.training-metric div { min-width: 0; padding: .35rem; }.training-metric dt { color: var(--ink-500); font-size: .52rem; text-transform: uppercase; }.training-metric dd { margin: .18rem 0 0; color: var(--ink-200); font: 560 .66rem var(--font-display); overflow-wrap: anywhere; }.training-panel__boundary { margin: .8rem 0 0; color: var(--ink-500); font-size: .6rem; line-height: 1.5; }
 
 @media (min-width: 1280px) { .command-layout { grid-template-columns: minmax(0,1fr) 20rem; } }
@@ -113,3 +111,10 @@
 @media (max-width: 959px) { .timeline-detail-grid { grid-template-columns: 1fr; }.timeline-event-list { max-height: 15rem; } }
 @media (max-width: 559px) { .timeline-panel { padding: 1rem; }.timeline-heading { align-items: flex-start; flex-direction: column; }.timeline-match-strip { display: flex; margin-inline: -1rem; padding-inline: 1rem; overflow-x: auto; scroll-snap-type: x proximity; }.timeline-match { flex: 0 0 8.5rem; scroll-snap-align: start; }.timeline-focus { padding: .75rem; }.timeline-phase-key { font-size: .42rem; }.timeline-callout { grid-template-columns: 3.6rem minmax(0,1fr); } }
 @media (prefers-reduced-motion: reduce) { .timeline-match:hover, .timeline-match:focus-visible { transform: none; }.timeline-marker > span { transition: none; } }
+/* Paused task actions use the existing workbench controls and wrap on mobile. */
+.task-recovery-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1rem; }
+.review-start { margin-bottom: 1.25rem; }
+.task-recovery-actions button { min-height: 44px; padding: .6rem 1rem; border: 1px solid var(--panel-border); background: rgba(82,230,219,.08); color: var(--hex-cyan-300); cursor: pointer; }
+.task-recovery-actions button:hover:not(:disabled) { background: rgba(82,230,219,.16); }
+.task-recovery-actions button:focus-visible { outline: 2px solid var(--hex-cyan-300); outline-offset: 3px; }
+.task-recovery-actions button:disabled { opacity: .5; cursor: default; }

@@ -1,0 +1,294 @@
+{
+  "kind": "sol-product-chat-durable-integration-offline-v1",
+  "created_at": "2026-11-02T06:52:35.569795+00:00",
+  "base_commit": "8a838c581854e4be742776f88d0ebd97b1c609b5",
+  "baseline_ci": {
+    "id": 41375428589,
+    "conclusion": "success",
+    "jobs": 8,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41375428589"
+  },
+  "scope": {
+    "new_contract": {
+      "contract_id": "natural-flash-sol-product-chat-v1",
+      "version": "1.7.4",
+      "scope": "unadmitted_opt_in",
+      "sha256": "07249021e8da53c7d830fe3bfde28c831750ffea334b56e8dd6d336343a98c8c"
+    },
+    "worker_profile": "sol-dual-product-chat-v1",
+    "response_mode": "natural-sol-product-chat-v1",
+    "default_profile": "legacy",
+    "existing_responses_contract_unchanged": true,
+    "old_task_resumed": false,
+    "old_evidence_changed": false,
+    "paid_model_http": 0,
+    "real_credential_reads": 0,
+    "production_publication": false,
+    "new_framework": false
+  },
+  "verification": {
+    "chat_transport_cases": 68,
+    "chat_product_cases": 14,
+    "worker_config_and_inventory_cases": 13,
+    "shared_responses_and_product_cases": 60,
+    "chat_sql_api_worker_cases": 11,
+    "chat_browser_cases": 3,
+    "frontend_recovery_cases": 8,
+    "runtime_profiles": 12,
+    "current_inventories": 2,
+    "typecheck": "passed",
+    "compile": "passed",
+    "governance": "passed",
+    "diff_check": "passed",
+    "new_head_ci": "pending_commit_and_push",
+    "model_transport": "installed SDK with substitute HTTP; model sockets blocked",
+    "sql": "isolated real PostgreSQL",
+    "browser": "real local API/SQL/Worker/Chrome at 1440 and 320",
+    "semantic_quality_approved": false,
+    "live_relay_compatibility_verified": false,
+    "whole_task_latency_verified": false
+  },
+  "checks": [
+    "direct two-duty acceptance and exact published report",
+    "single application and both fresh reviews on applied report hash",
+    "wrong model and multiple tools do not publish",
+    "invalid business anchors and rejected fresh review pause",
+    "format failure known cost and timeout unknown reservation remain cumulative",
+    "ordinary resume has no new failed-step send; explicit retry keeps successful generation",
+    "changing Worker profile cannot replace persisted task contract",
+    "read/close/cancel with matching durable identity can settle known usage; conflicting or missing identity remains unknown",
+    "owner report/evidence and purpose bound from actual SQL task",
+    "resume/retry/cancel through actual page; no duplicate SQL task or observed Training progress"
+  ],
+  "browser": {
+    "resume": {
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 4,
+        "requests_observed": 4,
+        "known_tokens": 80,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "resume",
+        "outcomes": [
+          "paused",
+          "succeeded"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            200
+          ],
+          [
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 1
+      },
+      "external_requests": [],
+      "proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/resume/browser-proof.json",
+        "sha256": "f9952aa356681acd7ee0758aa9543a1d5275fec716e97bd8e38d7bc8a1b52c9c",
+        "bytes": 16647
+      },
+      "worker_proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/resume/worker-proof.json",
+        "sha256": "5b1a0b61107934f22397acfe5dc23f627c0a79f33dde5cc970247d369ee31886",
+        "bytes": 341
+      }
+    },
+    "retry": {
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 5,
+        "requests_observed": 5,
+        "known_tokens": 80,
+        "unknown_token_reservation": 75084,
+        "retries": 1,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "retry",
+        "outcomes": [
+          "paused",
+          "succeeded"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            524
+          ],
+          [
+            200,
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 1
+      },
+      "external_requests": [],
+      "proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/retry/browser-proof.json",
+        "sha256": "6951a469fcca09f8c8608f193d86e261ad1db0d546e22862614d13f2c33fbc58",
+        "bytes": 16764
+      },
+      "worker_proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/retry/worker-proof.json",
+        "sha256": "239df53232eb9761e08595daf9b3259611a65a39252fe79b568151d2953ae4ec",
+        "bytes": 352
+      }
+    },
+    "cancel": {
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 3,
+        "requests_observed": 3,
+        "known_tokens": 60,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "worker": {
+        "action": "cancel",
+        "outcomes": [
+          "paused"
+        ],
+        "source_reads": 1,
+        "source_method": "build_by_puuid",
+        "scripted_reviewer_statuses": [
+          [
+            200
+          ]
+        ],
+        "real_external_requests": 0,
+        "tasks": 1,
+        "training_progress_events": 0,
+        "assistant_turns": 0
+      },
+      "external_requests": [],
+      "proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/cancel/browser-proof.json",
+        "sha256": "e4aea4c6f8c8c8f4fdec4bc6761aeaad7ffd3c96a949f026a452e04fa5892e41",
+        "bytes": 15767
+      },
+      "worker_proof": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser/sol-dual-product-chat-v1/cancel/worker-proof.json",
+        "sha256": "6df7288ddeba66815e9a787222b0b3982b41bd772c15a0f5e403f226a3e815d2",
+        "bytes": 297
+      }
+    }
+  },
+  "source_bindings": {
+    "existing_manifest_count": 9,
+    "existing_manifest_changes_only": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "new_chat_assets": "examples/runtime_profiles/sol_product_chat_v1",
+    "current_inventories_create_only": [
+      "natural_duty_qualification_inventory_chat_product_20261102.json",
+      "sol_review_qualification_inventory_chat_product_20261102.json"
+    ],
+    "original15_business_fields_unchanged": true,
+    "stage8e_and_default_admission_unchanged": true
+  },
+  "local_failures_resolved": [
+    "PromptProgram resolver did not register the new contract before first test run",
+    "RuntimeTrace consumer also needed the exact independent Chat role contract",
+    "Empty no-response Chat observation required explicit timeout classification",
+    "Frontend continuation decoder needed the new explicit worker profile",
+    "Existing negative test helper had an accidental candidate variable; corrected and its test passed",
+    "Cancellation fixture waited for durable matching identity before asserting known cost; production rule not weakened",
+    "An initial shared-regression command referenced a nonexistent test path; no tests ran, corrected command was used"
+  ],
+  "failed_runs_preserved": true,
+  "logs": [
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/binding-tests.log",
+      "sha256": "cf636470e74b10ff53b3ecf041e4c2ae205854f6bcad30d89d293c4d42bbaf13",
+      "bytes": 102
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/browser-tests.log",
+      "sha256": "d047e5200c58df04aa1d5959bf14b60b73db94fd34ca16bed7354eda2ae7811c",
+      "bytes": 633
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/chat-transport-regression.log",
+      "sha256": "7d8b811be7b01f18bdb8e537b9e95ef4de7b7e77b84d61eb2526d1806fd48d4e",
+      "bytes": 717
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/product-initial.log",
+      "sha256": "3d2b7a36aa7b35ccd0857f576f54e9c12cfdcb86b796af24519d3fae569323a3",
+      "bytes": 10869
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/product-tests-v2.log",
+      "sha256": "345c1abc74a6c9752cafc07a77f1a7b22c424e8dc64ea27a7df31f49d651e9ea",
+      "bytes": 1132
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/product-tests.log",
+      "sha256": "72b69a77e339ab7a9eca7d3c0b6a3ce62bea8c1658d296d648e168a01efadec3",
+      "bytes": 11314
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/rejection-tests.log",
+      "sha256": "bca8ddecc72fa6ba9e89f0b5d4c5e5464fc8018d4c898df186d0f3002afcd7dd",
+      "bytes": 125
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/shared-regression-v2.log",
+      "sha256": "b22c7c1ffb48d5ec5d273feb1c838c35cae558770e837e802794760accd6d255",
+      "bytes": 678
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/shared-regression.log",
+      "sha256": "c70ece10011869fd13cc49a274c69126f57c44d8ded888ce584413480fcba99e",
+      "bytes": 105
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/sql-tests.log",
+      "sha256": "1adbaea0dbf42ffb999eea340a0404ce6705bcd21ae7b7b9c1354ae40fe50526",
+      "bytes": 635
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-chat-integration-20261102/usage-consumer-tests.log",
+      "sha256": "670c5c761fd1ee1587f3a8f42cd700fdcc885a5881692bdeb44a9fc50362fbeb",
+      "bytes": 116
+    }
+  ],
+  "environment": {
+    "docker_startup_compatibility_verified": true,
+    "permanent_docker_fix_claimed": false,
+    "temporary_test_container_removed": true,
+    "old_business_database_changed": false
+  },
+  "next": {
+    "workcard": "docs/plans/2026-11-01-chat-candidate-offline.md",
+    "task": "one new observed recent-five review via normal product entry",
+    "limits": {
+      "max_calls": 8,
+      "total_tokens": 401920,
+      "execution_timeout_s": 900,
+      "request_timeout_s": 300,
+      "max_output_tokens": 16384
+    },
+    "requires_new_head_green_ci": true,
+    "real_execution_authorized_by_this_record": false,
+    "old_authorization_expired": true,
+    "remaining_decision": "actual subject, date and explicit cost scope; no automatic paid retry",
+    "default_or_deployment_change": false
+  }
+}
