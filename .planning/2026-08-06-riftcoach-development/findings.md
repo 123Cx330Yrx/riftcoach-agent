@@ -1,3 +1,18 @@
+## 2026-11-03 真实闭环、操作者判断修正与旧需求接线缺口
+
+1. 同任务恢复已实走正式SQL/Worker：4次HTTP200，双初审→唯一application→同稿双fresh→报告/API/浏览器消费；无需重买生成。成功的Chat切片不推导旧Responses协议已解决或默认生产准入。
+2. 两项事实修订有证据：原始均值差2.75与展示均值差2.76要标明口径；15分钟补刀差暂无基线，不能伪装成已有复盘指标。未导入旧诊断意见。原稿本已限制混合位置/非逐局一致，之前all-loss标签是操作者扩大解读，不能以该标签反证双审失败。
+3. 请求中的Data Dragon16.21.1静态名称已填充，外部bundle缺少16.20历史比较材料；需区分两种用途。既有来源缺口不能表述为完全没有名称映射。
+4. 用户早期要求允许自然国服叫法；app/lol/name_naturalizer.py、terminology.py及旧报告脚本已存在ID保留/confirmed术语/官方名回退机制，但当前Worker未接线。现有本地术语仅8英雄/26装备、未含902，不代表全量别名覆盖；没有把米利奥/米利欧的字面差异视为认错实体的依据，也不能反向断言未核实写法就是通用别名。原独立审计name_consistency结论已由追加addendum更正。
+5. 10月30日的自然教练口吻和手机报告呈现是既有未完成要求。当前实稿仍含位置代码、重复限制语，SafeMarkdown按既有测试显示转义纯文本；要改真实生成/审查/显示链，不给旧稿偷偷换文本，也不额外付费自由润色。可选表达偏好不升级事实拒绝。
+6. 新4审查真实请求上限已守16384/300，历史3生成32768配置仍违规；actual输出小不代表请求合规。后续正常generation发出前仍须修这一独立缺口。账目以通道已报告usage为据，未冒充独立账单核验。
+
+证据：sol_product_chat_review_continuation_completed_20261103.json，Control/independent-inspection.json及player-language-inspection-addendum.json；旧失败、已审稿和回执不改。
+
+## 2026-11-03 授权状态与CI事实分开保存
+
+本次“确认并且开个任务等”明确批准已准备的最多4次同任务审查；以新的continuation-authorization.json绑定旧decision-ready/execution-binding，不覆写其确认前authorized=false。实际CI41558836855仍进行中，7通过/4分片运行不是全绿；heartbeat负责后续跟踪，未启动付费执行。原预算、截止、原生成配置违规及成功前缀均保留。
+
 ## 2026-11-03 closed草稿恢复与实际请求边界
 
 1. 原closed session不能直接resume；保留父终态ZIP并将同task/run的已验回执前缀导入新session，可由现有SQL恢复事务和普通Worker到首审，实际最新DB零发送验证已成功。Evidence旧publication-1必须保留，新发布使用proof绑定refresh_id；替身SQL消费验证了两份快照。

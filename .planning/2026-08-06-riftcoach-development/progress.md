@@ -1,3 +1,19 @@
+## 2026-11-03 同任务四审查闭环完成；补回玩家称呼与表达验收
+
+a7045106 / CI41558836855十二项全绿后，普通SQL resume/Worker按授权逐段完成双初审、唯一应用、同稿双fresh。新增4HTTP/70807tokens，累计7HTTP/100656known/243.406活动秒，unknown/retry/未决/receiptless均0；原成功生成、来源、原标题拒绝及32768请求配置违规保留。隔离任务已发布并有1条assistant消息，Training为0。实际API报告与最终稿逐字相同，1440/320无溢出、无变更请求；最新DB/checkpoint和219项恢复ZIP核验，全部执行进程/容器清理，monitor删除。四审查许可全部消耗，无后续新发。
+
+独立全文核验认可两项确定性修订，纠正此前把混合位置结论扩大为所有输局的问题判断。用户再次提及国服英雄/装备外号和玩家口吻；已找到早期术语实现与10月30日需求，现明确当前Worker接线未覆盖、SafeMarkdown仍纯文本。把名称字面不一致判成事实错误也已更正，原审计保留并追加addendum。来源映射/外部比较范围、正常generation限额和玩家呈现仍需产品收口，故不记P3全量验收或默认准入。仅更新授权、结果、当前计划及需求，不重跑已覆盖测试。详见sol_product_chat_review_continuation_completed_20261103.json与工作卡末节。
+
+## 2026-11-03 CI等待期间完成外置分段执行准备
+
+等待期间已准备外置run_review_segment.py：复用正常SQL resume/Worker，每段只允许1个新审查，按实际请求校验后惰性读取Sol Key；源请求和生成禁发。实际持锁只读预检及8个范围负例通过，真实Key/模型0；尚未执行该外置driver的实际Worker路径。runner-ready.json固定脚本SHA0a7e45ec3f9eab9f61f68e0613a0ead7e18a7e2926584daf461f05b05e5d4095。监控已更新启动、段间全文验收和最新DB/快照/只读浏览器收尾路径，CI仍待全绿。
+
+## 2026-11-03 用户确认审查续接，等待同HEAD CI
+
+当前授权与下一行动：用户最新明确“确认并且开个任务等”，已批准Control/decision-ready.json的同任务续接方案；新增create-only continuation-authorization.json（SHA3f4d5ef8be4e1d45c1c136c4b0c9003957e290da9ede1c1249bb0595e14aa65e）绑定原提案和execution-binding，旧authorized=false准备记录保留。开发提交a70451060c9d0f5201bd0b154b96a85f2567c9ef已推送，冻结执行D:/riftcoach-chat-guard-recovery-execution-20261103；CI41558836855最新实查7项通过、4个pytest分片运行、聚合项待生成，需全部12项同HEAD成功。已创建本聊天heartbeat riftcoach-ci，每5分钟检查；无付费driver/新请求。全绿后在原预算8HTTP/401920tokens含unknown/900活动秒、每次300秒/16384输出及北京11月4日00:30:06截止内，普通resume且manual_retry=false，最多新增4次review（双初审及必要同稿双fresh），不重发生成、不新任务、不自动付费重试。先核唯一执行claim/实际进程与最新DB/checkpoint；执行结果经全文、账目、浏览器和恢复快照核验后收尾。新确认已满足本提案授权条件，无需重复询问；P3仍未验收，默认准入不变。
+
+授权文件已逐项校验提案、binding、准备DB/checkpoint、proof及干净冻结HEAD；本次真实Key读取和模型请求均0。监控ID与授权SHA存Control/monitor-start.json。授权与执行终局合并收尾提交，等待本身不触发新的业务CI。
+
 ## 2026-11-03 同任务已恢复到首审边界（零新发送）
 
 完成create-only Chat标题拒绝恢复；保留102父原件、12项操作、3成功生成和29849tokens，原终态在归档及SQL事件中。真实最新父DB已恢复到独立副本，经普通resume/Worker到facts-initial，Riot/模型/真实Key读取0、原稿逐字一致，活动累计62.078秒。待发请求16384输出/300秒，预留78924tokens；新发送前角色/额度校验已接入，历史32768配置违规不改写。

@@ -1,6 +1,6 @@
 # 本站 Chat 候选的离线可行性与验证准备
 
-2026-11-01 建立离线映射包；2026-11-02 显式 Chat 产品接线的CI全部通过，已完成P3正常入口启动准备，具体范围见末节。用户要求在 CI 等待期间同步推进。本包复用现有工具流组装器，检查 Chat 表示能否承载当前产品审查；保持默认采用及原 Responses 合同；新增显式 Chat 合同，旧任务和费用不改。本站公开端点声明支持该候选，实际兼容仍需真实证据。
+2026-11-01 建立离线映射包；2026-11-03 同一P3任务已完成正式四审查与正常产品消费，仍有产品收口项，终局和当前行动见末节。用户要求在 CI 等待期间同步推进。本包复用现有工具流组装器，检查 Chat 表示能否承载当前产品审查；保持默认采用及原 Responses 合同；新增显式 Chat 合同，旧任务和费用不改。本站公开端点声明是最初候选依据，本次真实兼容证据限于下述实际任务，不推广为所有场景已验收。
 
 ## 已完成什么
 
@@ -174,6 +174,28 @@ ed1ad9c0 / CI41407947133已终局：SQL326项分片和迁移汇总均成功，�
 
 最新runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`；checkpoint0004 SHA a7f34dc7deed3f4a6757ece025a608eae4230d3d7a9a68a641f4754585d351b8。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`，`recovered-db.dump` SHA8e720688c06832f23c71c97a6eafce9039ab9ec659130b7b2c6986df9ef38076；恢复proof SHA06fcf4b902db3ad481a69802ff3e636f5d918736de30a60d5354c62ab5244f9c。64项恢复ZIP逐项/CRC已核；其内父归档包含102原件。未来必须采用这些最新材料，不退回父DB或原closed session。
 
-本包验证覆盖47项SQL恢复（旧36、新11）、38项Chat产品/绑定及12Runtime/2当前清单；真实模型均为替身。测试曾与源码编辑重叠造成指纹漂移，已固定源码后逐项复核；一次read_error用量断言未稳定复现，原因未证，不归咎上游；取消用例改用正常服务修正错误的SQL形状。详细结果`data/evaluation/results/sol_product_chat_draft_recovery_prepared_20261103.json`。本次新业务提交还需同HEAD CI；旧绿CI不代替它。
+本包验证覆盖47项SQL恢复（旧36、新11）、38项Chat产品/绑定及12Runtime/2当前清单；真实模型均为替身。测试曾与源码编辑重叠造成指纹漂移，已固定源码后逐项复核；一次read_error用量断言未稳定复现，原因未证，不归咎上游；取消用例改用正常服务修正错误的SQL形状。详细结果`data/evaluation/results/sol_product_chat_draft_recovery_prepared_20261103.json`。本包已提交a7045106并推送，新CI41558836855进行中；旧绿CI不代替它。
 
-下一行动：完成本包合并提交与新CI核验后，仅就已准备的同任务审查续接作决定。Control/decision-ready.json仍authorized=false：最多4个新review（双初审及必要双fresh），不新生成/新任务、不自动重试；同一总预算和北京时间11月4日00:30:06截止不延长。原authorization.json明确paid_retry_after_failure=false，因此本轮“继续”已执行离线恢复准备，未据剩余额度自动付费。无付费driver/waiter/monitor；原稿仍需正式语义验收，默认准入不变。
+当前授权与下一行动：用户最新明确“确认并且开个任务等”，已批准Control/decision-ready.json的同任务续接方案；新增create-only continuation-authorization.json（SHA3f4d5ef8be4e1d45c1c136c4b0c9003957e290da9ede1c1249bb0595e14aa65e）绑定原提案和execution-binding，旧authorized=false准备记录保留。开发提交a70451060c9d0f5201bd0b154b96a85f2567c9ef已推送，冻结执行D:/riftcoach-chat-guard-recovery-execution-20261103；CI41558836855最新实查7项通过、4个pytest分片运行、聚合项待生成，需全部12项同HEAD成功。已创建本聊天heartbeat riftcoach-ci，每5分钟检查；无付费driver/新请求。全绿后在原预算8HTTP/401920tokens含unknown/900活动秒、每次300秒/16384输出及北京11月4日00:30:06截止内，普通resume且manual_retry=false，最多新增4次review（双初审及必要同稿双fresh），不重发生成、不新任务、不自动付费重试。先核唯一执行claim/实际进程与最新DB/checkpoint；执行结果经全文、账目、浏览器和恢复快照核验后收尾。新确认已满足本提案授权条件，无需重复询问；P3仍未验收，默认准入不变。
+
+等待期间已准备外置run_review_segment.py：复用正常SQL resume/Worker，每段只允许1个新审查，按实际请求校验后惰性读取Sol Key；源请求和生成禁发。实际持锁只读预检及8个范围负例通过，真实Key/模型0；尚未执行该外置driver的实际Worker路径。runner-ready.json固定脚本SHA0a7e45ec3f9eab9f61f68e0613a0ead7e18a7e2926584daf461f05b05e5d4095。监控已更新启动、段间全文验收和最新DB/快照/只读浏览器收尾路径，CI仍待全绿。
+
+### 2026-11-03 当前结果：四审查及产品消费完成
+
+a7045106 / CI41558836855十二项全绿，授权的4个新review均已完成：facts初审94/needs_revision提出2项有依据的修订，completion初审100/pass；唯一application后两项fresh对相同修订稿100/pass。事实fresh的表格精度提醒仅advisory，不引发另一轮。修订为原始均值差2.75的口径及15分钟指标缺基线的说明，未导入本地诊断意见。完整请求/来源/报告/意见/回执均实读。报告e714e552…在隔离验证任务内published，SQL1任务/1会话/1条assistant、Training0，API和1440/320浏览器消费一致。
+
+本节更正上面历史P3结果中的过强判断：原稿已经说明混合位置、非逐局一致和非因果，不能把它转述为所有输局都塌陷。国服称呼也不能按官方名字面完全一致来验：米利奥/米利欧是否通用别名尚未证，当前没有认错英雄的证据。原报告与失败材料不回写；独立审计的名称结论由Control/player-language-inspection-addendum.json追加更正。
+
+累计7HTTP/100656known/243.406活动秒，unknown/receiptless/retry/未决0；本次4HTTP/70807tokens，4次真实review守16384/300。保留原102文件/12操作/3成功生成及其32768请求配置违规。最新checkpoint0039、DB5b98b57c…和恢复ZIP38b92f59…的219项已核；inspection完成，driver/API/web/container清理，monitor删除，无待观察工作。原最多4次新审查许可用完，余1个总槽不授权下一请求；原截止不延长。P3未全量验收，Stage8E/旧15/默认准入不变。完整摘要和pin见`data/evaluation/results/sol_product_chat_review_continuation_completed_20261103.json`。
+
+### 下一离线工作卡：让当前报告按玩家熟悉的称呼与口吻呈现
+
+**目标与依据。** 落实早期国服称呼与2026-10-30玩家表达要求，以及用户本轮再确认；用本次完整来源/报告作为只读参照，把实际生成、审查、页面消费对齐。达到玩家能认出英雄装备、看懂重点和行动、核查依据的质量，不改变事实和本人/观摩关系。
+
+**起点与差距。** 旧TerminologyStore/name_naturalizer已有ID与confirmed术语机制，当前Worker未接入，词库不是全量；稿中仍有位置代码和重复限定语。SafeMarkdown只渲染转义纯文本，标题/表格不可结构化阅读。来源应区分已用静态名称映射与缺失历史外部比较材料。当前工作不重新解释全部历史试验，不因名称风格另设付费门槛。
+
+**实施路径与取舍。** 先沿Worker→生成数据/提示→正式双审→CoachBrief/SafeMarkdown核当前消费者；复用现有ID/官方名/自然称呼分离机制，避免新造平行词库或强制全量外号替换。约定常用名优先、歧义/未知名回退与版本绑定；在生成输入与要求里提供自然称呼和简短教练表达，审查基于同一映射/来源判断实体，不能把合理别名误判为错误。前端按原文安全排版，不生成第二份未审展示稿。先用真实报告的局部离线示例说明预期，不直接改已发布原件。
+
+**相称验证与验收。** 检查既有常用名/简称、未知名、歧义名、改名/版本不符的代表用例；ID、数值、来源和用户关系保持。用当前完整稿核重点、证据和行动是否自然明确、限制可见；别名与可选措辞不造成误拒绝。实际1440/320页面核标题/短段/列表/表格可读、安全边界和证据定位，展示仍对应受审原文。仅补真实受影响链路的离线/模拟检查，不重跑旧15、不另加付费润色；离线结果不能声称真实新生成口吻已改善。
+
+**依赖与失败分支。** 任何未来新generation前，必须修正常生成请求的实际输出上限并验证意图/Key/provider IO前拒绝超限；当前review guard不替代它。当前无新增付费授权，不改冻结执行源码/原件/终局成本；若别名无共识或有歧义，优先清晰官方名而非猜测。若排版改变文本/证据含义则修消费层，若语言改写需要新模型实证先完成可审查方案。先完成本包授权与终局记录的一次合并提交，再执行这张离线工作卡，不恢复旧CI/monitor。

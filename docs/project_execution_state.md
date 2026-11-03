@@ -11,19 +11,19 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-11-03，按用户“继续”完成同一P3任务的标题误拒绝恢复准备；未新增真实模型或来源请求。开发树仍为`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。P1_complete / P2_partial_verified / P3_not_accepted，Stage8E、原15完成和默认准入不变。
+2026-11-03，已完成用户“确认并且开个任务等”授权的同一P3任务审查续接及终局核验。开发树`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`；执行源码a70451060c9d0f5201bd0b154b96a85f2567c9ef，CI41558836855全部12项completed/success。闭环已实证，P3仍有产品收口项；P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、原15完成和默认准入不变。
 
-标题修复afe24661 / CI41486674481十二项全绿已核，不再轮询。新增窄范围create-only恢复，仅接受Chat、report_missing_headings、首审前完整成功生成前缀，并核原终态/trace/全部回执和当前标题结构。102父原件、12项操作、3次生成和原拒绝完整归档，父目录/最新父DB不改。SQL沿现有恢复事务保留失败事件、绑定新Evidence refresh_id；随后普通resume（manual_retry=false）与Worker回放，不删除terminal或重开任务。
+同task `04c9a865-db03-4edb-af9e-70cb8d719db0` / run `review_ee91ab480ecf4c4992f82ec08cc4bbf4`沿普通SQL resume/Worker完成4段，每段仅1次新review且manual_retry=false。双初审后只应用1次确定性修订，再由两项fresh审查相同修订稿。保留原3次生成、5场来源、102父原件/12操作及原标题拒绝；未新建任务、重发生成/来源或导入诊断意见。实际SQL任务succeeded，隔离验证任务内报告published、API与浏览器可读；这不代表默认生产准入。
 
-实际原任务`04c9a865-db03-4edb-af9e-70cb8d719db0` / `review_ee91ab480ecf4c4992f82ec08cc4bbf4`从最新fb970618…DB恢复并零发送到facts-initial：3HTTP/29849known、unknown/receiptless/retry/未决均0，活动62.078秒。5场原来源和草稿逐字保留，source/model/真实Key读取均0。仍1任务/1会话、assistant/Training均0，旧拒绝证据快照保留，报告仍未发布。正式审查/应用/fresh仍0，实际内容问题未验收，也未导入本地诊断意见。
+全文核验：首审两项修订分别为原始均值差的HALF_UP口径2.75，以及明确15分钟补刀差尚无基线；双fresh通过同稿。修后稿SHA e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455。独立核验纠正旧诊断：原稿已限定混合位置/非逐局一致，不能扩大成“所有输局都塌陷”。当前用过16.21.1静态名称映射，缺的是16.20比赛的外部比较材料，“名称映射缺失”的笼统表述仍需澄清。模型pass不代替这项产品判断。
 
-新request guard在发送意图写入前核实际待发送请求：只允许review，max_tokens<=16384、timeout<=300；历史生成32768配置违规保留，只能回放不能新发。实际首审待发请求预留78924（62540输入上界+16384输出），这只是待发请求摘要而非已发送HTTP。总上限8HTTP/401920含unknown/900活动秒不变；余5槽/372071tokens/837.922秒。
+用户再次明确国服英雄/装备通用叫法、外号和面向玩家的口吻。已有TerminologyStore/name_naturalizer及旧报告脚本支持ID与自然称呼分离，但当前Worker未接入这套处理，不能据模块存在宣称已完成。只因“米利奥/米利欧”字面不同就判事实错误不成立；也未证明前者是已确认通用别名。后续按实体/版本/上下文识别，再验自然称呼。沿2026-10-30要求验关键判断、依据、下一步、本人/观摩边界与手机阅读；可选风格不升级事实拒绝。实际SafeMarkdown仍显示转义纯文本，标题/表格标记原样显示，安全结构化呈现尚未完成。
 
-最新runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`；checkpoint0004 SHA a7f34dc7deed3f4a6757ece025a608eae4230d3d7a9a68a641f4754585d351b8。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`，`recovered-db.dump` SHA8e720688c06832f23c71c97a6eafce9039ab9ec659130b7b2c6986df9ef38076；恢复proof SHA06fcf4b902db3ad481a69802ff3e636f5d918736de30a60d5354c62ab5244f9c。64项恢复ZIP逐项/CRC已核；其内父归档包含102原件。未来必须采用这些最新材料，不退回父DB或原closed session。
+累计7HTTP/100656known tokens/243.406活动秒，unknown/receiptless/retry/未决均0；本次增4HTTP/70807tokens。4次新审查实际请求均16384输出/300秒。原3次generation配置32768违反原16384请求上限的历史事实保留，实际输出2769不能抵消该违规；未来正常generation的发送上限缺口仍须修。总8HTTP/401920含unknown/900秒及2026-11-03T16:30:06Z截止未扩大；最多4次新审查授权已用完，余总槽不是再次调用许可。
 
-本包验证覆盖47项SQL恢复（旧36、新11）、38项Chat产品/绑定及12Runtime/2当前清单；真实模型均为替身。测试曾与源码编辑重叠造成指纹漂移，已固定源码后逐项复核；一次read_error用量断言未稳定复现，原因未证，不归咎上游；取消用例改用正常服务修正错误的SQL形状。详细结果`data/evaluation/results/sol_product_chat_draft_recovery_prepared_20261103.json`。本次新业务提交还需同HEAD CI；旧绿CI不代替它。
+1440/320实际只读浏览器核验：报告与最终稿一致、费用一致、无横向溢出/页面异常/恢复或新发；SQL仍1任务/1会话、1条assistant消息、Training为0，2份Evidence快照保留旧拒绝与新发布。最新checkpoint0039 SHA5a62399f189ad5637839efd4f5a714358410a80a7db29dcd26f48419cf251776；Control/execution-1/segment-04/latest-db.dump SHA5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533；recovery-snapshot.zip SHA38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f，219项CRC/逐字已核。Control=`C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103`；runs_root=`D:/rc-chat-guard-recovery-20261103/verified-runs`。inspection完成，driver/API/web/临时容器已清理，冻结目录干净，monitor已删除；无待观察执行，不再轮询该终局CI。
 
-下一行动：完成本包合并提交与新CI核验后，仅就已准备的同任务审查续接作决定。Control/decision-ready.json仍authorized=false：最多4个新review（双初审及必要双fresh），不新生成/新任务、不自动重试；同一总预算和北京时间11月4日00:30:06截止不延长。原authorization.json明确paid_retry_after_failure=false，因此本轮“继续”已执行离线恢复准备，未据剩余额度自动付费。无付费driver/waiter/monitor；原稿仍需正式语义验收，默认准入不变。
+下一行动：以这份实际报告为依据，离线对齐“国服称呼＋教练口吻＋来源范围＋安全排版”的实际产品消费者和验收样例，复用现有术语机制；具体工作卡见`docs/plans/2026-11-01-chat-candidate-offline.md`末节。新generation上限修复作为任何未来付费的前置依赖。保存终局原件、不改已审稿、不另加润色模型调用；本次授权与终局记录合并一次提交推送。结果`data/evaluation/results/sol_product_chat_review_continuation_completed_20261103.json`；名称判断更正另存Control/player-language-inspection-addendum.json。
 
 以下为历史记录；旧授权、旧下一行动和封存材料不作为当前执行队列。
 
