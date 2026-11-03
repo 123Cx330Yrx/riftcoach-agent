@@ -37,7 +37,9 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 2026-11-03 来源范围CI41596735646已证四个PostgreSQL分片各1例失败，均为新增SCOPE_MARKER断言误放到legacy发布任务；该模式按设计不附带Evidence来源投影。同轮原有Responses/Chat的Evidence-bound用例均通过，不能把这次失败归给上游或来源renderer。仅修改tests/test_sol_product_worker_postgres.py：保留原legacy记账/发布测试，把范围断言放到显式evidence_bound_v1任务，并覆盖两接口的正常完成与修订后Worker续接，保留一次取源、累计费用、owner隔离、唯一应用与双fresh同稿。17项收集及编译/diff通过，收集不等于执行；本机Docker仍不可用，修后SQL四例待新CI实跑，生产代码与原件不改。真实模型/来源/Key新增0；详见sol_product_source_scope_ci_repair_20261103.json。
 
-下一行动：提交本次SQL测试模式修正，核修复HEAD全部12项CI，重点确认显式Evidence-bound四例实际生成/初审/fresh来源说明及SQL/migration；不以测试收集代替执行。仅跟踪新CI，旧失败日志保留。等待期间按P3/P4卡梳理原文安全Markdown排版，随后落实国服称呼/外号和自然玩家口吻；这三项尚未完成。旧四审查许可已消费，无新付费授权，不改旧稿/冻结树。Docker仍未修复，已被审批拒绝的停止/端点清理操作不绕过。
+2026-11-03 CI41598198839的339项SQL及迁移已通过，显式Evidence-bound两接口pass/repair续接四例均实跑通过；本机SQL仍未执行。pytest分片0另有3项失败，已由实际日志与有序复现定位：新增来源范围测试原地修改了cases()缓存摘要，导致后续完整请求和恢复父/子进程输入不一致。原3例单跑通过，先跑来源范围再跑3例则全部复现。仅在tests/test_product_source_scope.py复制本用例摘要并断言共享原件未变，保留生产身份guard。修后连续相关检查54项通过（含原3例）；另1项旧档案哈希检查因Windows末尾CRLF失败，Git原字节在独立目录核验通过，旧档案及断言不改。真实模型/来源/Key新增0，旧报告/DB/恢复ZIP/无关probe及冻结树未变。详见sol_product_source_scope_fixture_isolation_20261103.json；完整修复CI仍待验证，不称全绿。
+
+下一行动：核本次来源范围测试隔离修复提交对应HEAD的全部12项CI；已保存的SQL通过与pytest失败证据分别保留，不放宽生产边界。安全Markdown接线和真实全文只读准备已完成，复用Control/safe-markdown-preparation.json；待本包CI收口后实施原文安全排版，再落实国服称呼/外号与自然玩家口吻，三项均未完成。旧四审查许可已消费，无新付费授权，不改旧稿/冻结树。Docker未修复，已被审批拒绝的停止/端点清理操作不绕过。
 
 以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
 

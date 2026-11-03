@@ -66,7 +66,12 @@ def test_actual_generation_and_four_reviews_share_scope_and_original_source_gaps
         app, factory, flows, attempts = make_app(tmp_path, session, candidate=candidate,
             publication_sources=EvidencePublicationSources(now=datetime(2026, 11, 3, tzinfo=timezone.utc)),
             publication_writer=store)
-        value = app._summary_builder.summary
+        # The scripted provider shares cases() with exact-request/replay tests.
+        # Change only this application's input, never the cached source fixture.
+        shared_summary = app._summary_builder.summary
+        shared_before = deepcopy(shared_summary)
+        value = deepcopy(shared_summary)
+        app._summary_builder.summary = value
         value['request'].update(data_dragon_version='16.21.1', data_dragon_language='zh_CN')
         for row in value['matches']:
             row['game_version'] = '16.20.824.8524'
@@ -103,6 +108,7 @@ def test_actual_generation_and_four_reviews_share_scope_and_original_source_gaps
         fresh = [c['report'] for c in contexts if c['stage'] == 'fresh']
         assert fresh == [flows[0].assembly.report] * 2
         assert len(list((tmp_path/'journal').glob('application.json'))) == 1
+        assert shared_summary == shared_before
         session.close({'completed': True})
     assert HISTORICAL_GENERATION_SCOPE in historical.CONTRACT.context_policy
     assert SOURCE_SCOPE_POLICY not in historical.CONTRACT.context_policy
