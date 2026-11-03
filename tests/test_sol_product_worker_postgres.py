@@ -1,5 +1,6 @@
 """Opt-in product release through real SQL/API/Worker; scripted external IO."""
 import json
+from copy import deepcopy
 from uuid import UUID
 
 import pytest
@@ -10,13 +11,44 @@ from tests.test_natural_duty_worker_postgres import no_external_services
 from tests.test_sol_worker_continuation_postgres import continued_api, create, resume, setup_worker
 
 
+def _name_input(summary):
+    from app.product.player_language import render_name_hints
+    shared = summary.summary
+    before = deepcopy(shared)
+    summary.summary = deepcopy(shared)
+    summary.summary['request'].update(data_dragon_version='16.21.1', data_dragon_language='zh_CN')
+    expected = render_name_hints(summary.summary)
+    assert '青钢影' in expected
+    return shared, before, expected
+
+
+def _assert_language_consumers(root, factories, product, expected, count):
+    from app.product.player_language import PLAYER_LANGUAGE_POLICY
+    for factory in factories:
+        for provider in factory.providers.values():
+            for request in provider.generator.requests:
+                sections = [s for m in request.messages if m.content and m.content.lstrip().startswith('{')
+                            for s in json.loads(m.content).get('sections', [])]
+                assert any(PLAYER_LANGUAGE_POLICY in s['content'] and s['trust'] == 'internal_policy' for s in sections)
+                assert any(expected in s['content'] and s['trust'] != 'internal_policy' for s in sections)
+    contexts = [json.loads(p.read_bytes()) for p in root.glob('call-*/validation-context.json')]
+    assert len(contexts) == count
+    for context in contexts:
+        inputs = product.restore_context(context)
+        request = product.make_request(inputs, context['duty'], context['stage'])
+        product.request_bytes(request)
+        assert PLAYER_LANGUAGE_POLICY in request.messages[0].content
+        assert expected in json.loads(inputs.data_json)['deterministic_source_facts']
+
+
 @pytest.mark.parametrize('mode,restart', [('pass', False), ('repair', True)])
 @pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
 def test_product_worker_publishes_owner_report_with_cumulative_accounting(continued_api, tmp_path, monkeypatch, mode, restart, product):
     owner, other, repo, _ = continued_api
     task, run = create(owner)
-    make, summary, _, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
+    make, summary, factories, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
         contract=product, profile=product.WORKER_PROFILE)
+    shared, before, expected = _name_input(summary)
     worker, route = make()
     if restart:
         route.candidate.max_new_models = 3
@@ -40,6 +72,9 @@ def test_product_worker_publishes_owner_report_with_cumulative_accounting(contin
     assert (total['requests_reserved'], total['known_tokens'], total['unknown_token_reservation']) == (count, count * 20, 0)
     assert summary.reads == 1
     assert requests == ([[200], [200, 200, 200]] if restart else [[200, 200]])
+    _assert_language_consumers(tmp_path/run/'.continuation/transport'/run/'review',
+        factories, product, expected, 4 if restart else 2)
+    assert shared == before
     if restart:
         journal = tmp_path / run / '.continuation/journal'
         application = json.loads((journal / 'application.json').read_bytes())
@@ -94,6 +129,7 @@ def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued
     task, run = result.task.task_id, result.task.run_id
     make, summary, factories, requests = setup_worker(tmp_path, monkeypatch, repo, mode=mode,
         contract=product, profile=product.WORKER_PROFILE)
+    shared, before, expected = _name_input(summary)
     worker, route = make()
     if restart:
         route.candidate.max_new_models = 3
@@ -130,6 +166,8 @@ def test_evidence_bound_product_uses_atomic_snapshot_and_owner_queries(continued
         assert any(SOURCE_SCOPE_POLICY in s['content'] and s['trust'] == 'internal_policy' for s in sections)
         assert any(SCOPE_MARKER in s['content'] for s in sections)
     review_root = tmp_path / run / '.continuation/transport' / run / 'review'
+    _assert_language_consumers(review_root, factories, product, expected, 4 if restart else 2)
+    assert shared == before
     contexts = [json.loads(p.read_bytes()) for p in review_root.glob('call-*/validation-context.json')]
     assert len(contexts) == (4 if restart else 2)
     for context in contexts:

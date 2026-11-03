@@ -13,6 +13,7 @@ from app.product import sol_contract, sol_chat_contract
 from app.product.native_coach_composition import render_native_publication_context
 from app.product.source_scope import (SOURCE_SCOPE_POLICY, SCOPE_MARKER,
     HISTORICAL_GENERATION_SCOPE, HISTORICAL_RENDER_SCOPE, render_product_publication_context)
+from app.product.player_language import render_name_hints, PLAYER_LANGUAGE_POLICY
 from tests.test_evidence_summary_bridge import summary
 from tests.test_evidence_fusion_vertical import NOW, _static
 from tests.test_sol_product_contract import session_at, make_app
@@ -75,6 +76,8 @@ def test_actual_generation_and_four_reviews_share_scope_and_original_source_gaps
         value['request'].update(data_dragon_version='16.21.1', data_dragon_language='zh_CN')
         for row in value['matches']:
             row['game_version'] = '16.20.824.8524'
+        names = render_name_hints(value)
+        assert '青钢影' in names
         result = app.review(product_request(), run_id=ctx.run_id, publication_context=ctx)
         assert result.publication_status.value == 'published'
         router = factory.providers['candidate']
@@ -84,12 +87,14 @@ def test_actual_generation_and_four_reviews_share_scope_and_original_source_gaps
             sections = json.loads(request.messages[0].content)['sections']
             policies = '\n'.join(s['content'] for s in sections if s['trust'] == 'internal_policy')
             assert SOURCE_SCOPE_POLICY in policies
+            assert PLAYER_LANGUAGE_POLICY in policies
             assert HISTORICAL_GENERATION_SCOPE not in policies
             envelopes = [json.loads(m.content) for m in request.messages
                          if m.content and m.content.lstrip().startswith('{')]
             contents = '\n'.join(s['content'] for envelope in envelopes
                                  for s in envelope.get('sections', []))
             assert SCOPE_MARKER in contents and '16.21.1' in contents and '16.20.824.8524' in contents
+            assert names in contents
         contexts = [json.loads(p.read_bytes()) for p in sorted(router.reviewer.directory.glob('call-*/validation-context.json'))]
         assert {(c['duty'], c['stage']) for c in contexts} == {
             ('facts', 'initial'), ('completion', 'initial'), ('facts', 'fresh'), ('completion', 'fresh')}
@@ -98,8 +103,10 @@ def test_actual_generation_and_four_reviews_share_scope_and_original_source_gaps
             request = candidate.make_request(inputs, context['duty'], context['stage'])
             assert candidate.role_for_request(request) == 'review'
             assert SOURCE_SCOPE_POLICY in request.messages[0].content
+            assert PLAYER_LANGUAGE_POLICY in request.messages[0].content
             data = json.loads(inputs.data_json)
             supplied = data['deterministic_source_facts']
+            assert names in supplied
             scope = line_json(supplied, SCOPE_MARKER)
             assert scope['summary_name_mapping_version'] == '16.21.1'
             assert scope['observed_game_versions'] == ['16.20.824.8524']

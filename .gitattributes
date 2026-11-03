@@ -430,3 +430,6 @@
 
 # Exact sealed report copied only as a frontend read-only rendering fixture.
 /web/tests/fixtures/verified-report-20261103.md -text
+
+# Product naming catalog is bound by its deployment bytes, including on Windows.
+/data/terminology/product_cn_names_v1.json -text

@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "dced577a2d3eaa57178693d012d9a246bfa7280e65838b01b39a6ad6d80cc0e8"
+      "sha256": "80e2f55b2d5805088277fef14e18391e6a8b64ccba914b8b30cf6c7cb00c599c"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "b0c3207c21b9f79b0f0fd766b5d569d7dfdeda61017f5c1c4f51dc2209c1e7dd"
+      "sha256": "a2dd734a5925fb9c1ce06c119fc05cfb30559b06b269349a7d5c2ad526e4b59b"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -405,5 +405,5 @@
       "sha256": "f10ee42c6ff53184b6847cc8f1cc4634f190d5aaa39591217eeef4ab5c2c593e"
     }
   ],
-  "program_sha256": "10d6029b0a946ebc9db50adfac2e1bba63a29eaa3c04471b5e03b9ccaad2d4ed"
+  "program_sha256": "dcd545be29a0a42bf8f6d85826e7b22f32032b1181575bac7f2b3ffbfdbf1689"
 }

@@ -65,11 +65,14 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         prompt_programs_root=assets/'prompt_programs', coach_contract=contract)
     context = CoachContextBuilder(coach_contract=contract, compact_json=True)
     publication_renderer = render_native_publication_context
+    report_renderer = render_deterministic_report
     from app.product import sol_contract, sol_chat_contract
     if candidate in (sol_contract, sol_chat_contract):
         from app.product.review_purpose import ProductContextBuilder
         from app.product.source_scope import render_product_publication_context
+        from app.product.player_language import render_product_report
         publication_renderer = render_product_publication_context
+        report_renderer = render_product_report
         context = ProductContextBuilder(coach_contract=contract, compact_json=True,
             purpose=execution_session.binding.get('product_task_purpose', 'unbound'))
     if memory_repository is not None:
@@ -118,4 +121,4 @@ def build_natural_duty_candidate(*, summary_builder, provider_factory, knowledge
         compiler=RecentReviewRuntimeRequestCompiler(root.skill_catalog, coach_contract=contract),
         runtime=runtime, receipt_writer=FileRunReceiptStore(runs_root),
         publication_sources=publication_sources, publication_writer=publication_writer,
-        publication_report_renderer=publication_renderer, report_renderer=render_deterministic_report)
+        publication_report_renderer=publication_renderer, report_renderer=report_renderer)

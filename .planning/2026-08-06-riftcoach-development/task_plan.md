@@ -43,7 +43,15 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 2026-11-03，P3/P4原文安全排版已实现（ADR0120）：CoachBrief和ObservationWorkbench共用react-markdown/remark-gfm受限React渲染，标题按宿主层级、列表和表格正常呈现；手机表格区域可左右滑动/键盘滚动，并有查看提示。HTML仍为文字，链接/图片不跳转、不加载；保留translate=no和未发布/拒绝/取消门槛。只改显示层，原已审正文不重写。328项前端单测全过；6项Workbench和2项Observation既有浏览器检查通过，3项原全文/恶意内容检查通过。实际5083字节原稿经fixture API和真实decoder送入CoachBrief，1440/320均核8标题、15列表条目、12数据单元格与全部段落/引用，axe无违规、页面无横向溢出、表格键盘可滚动、无页面异常或远端请求。唯一POST是模拟auth/session，无任务创建/恢复/生成/来源写入；此为前端证据，不冒充SQL或新模型语义验收。旧报告/DB/ZIP/冻结树/无关probe逐字未变，新增真实模型/来源/Key为0。构建通过，主JS 672.15KB、gzip203.71KB仍有大块提示；生产依赖官方npm audit为0漏洞。结果sol_product_report_markdown_offline_20261103.json及outputs/riftcoach-product-report-markdown-20261103。
 
-下一行动：合并来源范围CI终局与本次排版实质改动一次提交推送，核新HEAD全部12项CI；失败按具体日志局部修复，旧CI不再轮询，旧monitor已删除。随后沿P3/P4落实国服英雄/装备称呼、外号和自然玩家口吻，两项尚未实现，不以记录代替完成。按ID/版本/歧义确认名称，不把米利奥/米利欧差异直接判事实错或未经核实认证别名，风格不升级事实拒绝。无新付费授权，P3_not_accepted/Stage8E/默认准入不变。Docker未修复，被自动审批拒绝的停止/端点清理不绕过。
+2026-11-03 15:25 UTC，提交5e190303aea1c0530fd835b7e829b8136afc9255的CI41622256041全部12项completed/success，含四pytest分片及聚合、四SQL分片及迁移、web与packaging。原文安全Markdown工程包完成本地与同HEAD公共核验；结果sol_product_report_markdown_ci_completed_20261103.json，终局原证据Control/ci-terminal-41622256041.json。本机SQL未跑，无新增真实模型/来源/Key，不代表称呼/口吻或P3整体已验收。浏览器临时目录删除仍保留被自动审批拒绝记录，归档在Control/browser-report.zip，不绕过清理限制。
+
+2026-11-03，国服称呼与玩家表达已接入产品实际输入链路（ADR0121，Responses1.7.9/Chat1.7.10）：以173英雄/706装备标准名目录为基础，90英雄/19装备带114个精选叫法；按名称字典版本/语言、实体ID及原名称核对，仅投影本任务实际实体。未知/冲突/歧义不认证外号，不改原摘要或已审稿；生成、修订、双初审/双fresh共用称呼资料与自然中文表达指导。旧雏形未直接搬用，目录来源/版本/SHA及选择依据可查，名称资料不证明历史属性或事件。
+
+第一版完整输入65114超限，未发送；压缩重复说明并逐条保留来源范围、可信任务目的及事实边界后，四份真实旧输入由实际renderer重建，两接口request_bytes均通过：63810/59414/57536/53140，首份余量190，64000上限不变，报告/事实/来源/schema不裁。32项名称/目的/来源、10项追加断言与预算、21项Runtime/API/清单检查通过（含重复复验），12Runtime/2当前清单通过；旧15业务输入与请求摘要未变。SQL17项仅收集，本机未执行；8个两接口legacy/Evidence-bound正常与续接用例补了实际称呼断言，交同提交CI核验。
+
+旧报告/DB/ZIP/冻结树/无关probe未变。公开腾讯名称资料读取单列为研发研究，没有新模型、对局来源或Key调用。玩家口吻规则已接线，实际新模型文章自然度尚未验证；P3_not_accepted/Stage8E/默认准入不变。结果sol_product_player_language_offline_20261103.json；Control=C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103。
+
+下一行动：将安全Markdown终局、用户称呼澄清与本次实质实现合并提交推送；只核新HEAD的唯一CI全部12项，重点确认8个SQL称呼消费用例及迁移。失败按真实日志局部修复，不重跑旧15或旧CI。通过后整理本次称呼/口吻实际输出验收所需的具体自然任务与完整输入预算；当前没有新付费授权，不新建/恢复真实task或改旧报告。旧riftcoach-ci已删除，新提交若仍运行仅建一条新目标监控。
 
 以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
 
