@@ -75,7 +75,7 @@ test.describe("live owner-scoped workbench", () => {
     await expect(page.getByRole("heading", { name: "Recent form" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "Match tempo" })).toBeVisible()
     await expect(page.getByRole("button", { name: "27:44 · Baron Nashor secured", exact: true })).toBeVisible()
-    await expect(page.getByText(/## Verified brief/)).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Verified brief" })).toBeVisible()
     await expect(page.getByText("Early death control", { exact: true })).toBeVisible()
 
     const ledger = await requestLedger(page, testId)
@@ -89,7 +89,7 @@ test.describe("live owner-scoped workbench", () => {
     await page.goto(workbenchUrl())
     await expect(page.getByText("Degraded", { exact: true })).toBeVisible()
     await expect(page.getByText(/event details are unavailable for 1 of 2 matches/i)).toBeVisible()
-    await expect(page.getByText(/## Limited brief/)).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Limited brief" })).toBeVisible()
     expect(await page.locator(".safe-markdown a, .safe-markdown img, .safe-markdown script").count()).toBe(0)
 
     await useScenario(page, "rejected", uniqueTestId("rejected"))

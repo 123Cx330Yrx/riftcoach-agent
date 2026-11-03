@@ -22,6 +22,8 @@ test("observation import filters roles without account or training requests", as
   await page.goto("/?view=observation")
   await page.getByLabel("导入观摩资料", { exact: true }).setInputFiles({ name: "observation.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(archive)) })
   await expect(page.getByRole("heading", { name: "人工校订报告", exact: true })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Fixture observation", level: 3 })).toBeVisible()
+  await expect(page.locator(".safe-markdown")).toHaveAttribute("translate", "no")
   await expect(page.getByText("未重新自动评分", { exact: false })).toBeVisible()
   await expect(page.getByRole("table")).toContainText("FixtureSupport")
   await page.getByLabel("筛选位置").selectOption("mid")

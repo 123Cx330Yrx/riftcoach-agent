@@ -24,6 +24,9 @@ const allowedRuntimeDependencies = [
   "motion",
   "react",
   "react-dom",
+  // ADR0120: restricted report AST rendering and GFM tables.
+  "react-markdown",
+  "remark-gfm",
 ] as const;
 
 const forbiddenDependencyPattern =

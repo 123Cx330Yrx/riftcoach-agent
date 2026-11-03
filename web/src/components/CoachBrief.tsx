@@ -49,7 +49,7 @@ export function CoachBrief({ productState, report }: CoachBriefProps) {
       </div>
       <p className="original-content-disclosure">{t("coach.original_content")}</p>
       <div translate="no">
-        <SafeMarkdown markdown={report.markdown} />
+        <SafeMarkdown markdown={report.markdown} headingLevel={4} tableLabel={t("coach.report_table")} tableHint={t("coach.report_table_hint")} />
       </div>
     </section>
   )

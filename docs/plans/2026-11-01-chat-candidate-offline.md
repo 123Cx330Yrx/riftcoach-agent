@@ -236,4 +236,10 @@ a7045106 / CI41558836855十二项全绿，授权的4个新review均已完成：f
 
 2026-11-03 CI41598198839的339项SQL及迁移已通过，显式Evidence-bound两接口pass/repair续接四例均实跑通过；本机SQL仍未执行。pytest分片0另有3项失败，已由实际日志与有序复现定位：新增来源范围测试原地修改了cases()缓存摘要，导致后续完整请求和恢复父/子进程输入不一致。原3例单跑通过，先跑来源范围再跑3例则全部复现。仅在tests/test_product_source_scope.py复制本用例摘要并断言共享原件未变，保留生产身份guard。修后连续相关检查54项通过（含原3例）；另1项旧档案哈希检查因Windows末尾CRLF失败，Git原字节在独立目录核验通过，旧档案及断言不改。真实模型/来源/Key新增0，旧报告/DB/恢复ZIP/无关probe及冻结树未变。详见sol_product_source_scope_fixture_isolation_20261103.json；完整修复CI仍待验证，不称全绿。
 
-下一行动：核本次来源范围测试隔离修复提交对应HEAD的全部12项CI；已保存的SQL通过与pytest失败证据分别保留，不放宽生产边界。安全Markdown接线和真实全文只读准备已完成，复用Control/safe-markdown-preparation.json；待本包CI收口后实施原文安全排版，再落实国服称呼/外号与自然玩家口吻，三项均未完成。旧四审查许可已消费，无新付费授权，不改旧稿/冻结树。Docker未修复，已被审批拒绝的停止/端点清理操作不绕过。
+2026-11-03 10:26 UTC，提交3bc64c8a3eb9361df732aa2565d4592704dc5e09的CI41607282374全部12项completed/success：四pytest分片及聚合、四SQL分片及迁移、web与packaging均通过。来源范围及SQL模式/共享测试摘要隔离两项修复完成本包工程核验，旧失败与取消记录保留。终局证据见sol_product_source_scope_ci_completed_20261103.json及Control/ci-terminal-41607282374.json；本机SQL未执行，新增真实模型/来源/Key为0，不扩大P3或默认准入。
+
+### 2026-11-03 当前工作卡：原文安全排版
+
+2026-11-03，P3/P4原文安全排版已实现（ADR0120）：CoachBrief和ObservationWorkbench共用react-markdown/remark-gfm受限React渲染，标题按宿主层级、列表和表格正常呈现；手机表格区域可左右滑动/键盘滚动，并有查看提示。HTML仍为文字，链接/图片不跳转、不加载；保留translate=no和未发布/拒绝/取消门槛。只改显示层，原已审正文不重写。328项前端单测全过；6项Workbench和2项Observation既有浏览器检查通过，3项原全文/恶意内容检查通过。实际5083字节原稿经fixture API和真实decoder送入CoachBrief，1440/320均核8标题、15列表条目、12数据单元格与全部段落/引用，axe无违规、页面无横向溢出、表格键盘可滚动、无页面异常或远端请求。唯一POST是模拟auth/session，无任务创建/恢复/生成/来源写入；此为前端证据，不冒充SQL或新模型语义验收。旧报告/DB/ZIP/冻结树/无关probe逐字未变，新增真实模型/来源/Key为0。构建通过，主JS 672.15KB、gzip203.71KB仍有大块提示；生产依赖官方npm audit为0漏洞。结果sol_product_report_markdown_offline_20261103.json及outputs/riftcoach-product-report-markdown-20261103。
+
+下一行动：合并来源范围CI终局与本次排版实质改动一次提交推送，核新HEAD全部12项CI；失败按具体日志局部修复，旧CI不再轮询，旧monitor已删除。随后沿P3/P4落实国服英雄/装备称呼、外号和自然玩家口吻，两项尚未实现，不以记录代替完成。按ID/版本/歧义确认名称，不把米利奥/米利欧差异直接判事实错或未经核实认证别名，风格不升级事实拒绝。无新付费授权，P3_not_accepted/Stage8E/默认准入不变。Docker未修复，被自动审批拒绝的停止/端点清理不绕过。

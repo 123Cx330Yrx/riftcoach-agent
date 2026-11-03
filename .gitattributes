@@ -427,3 +427,6 @@
 /tests/test_completion_necessity_candidate.py text eol=lf
 /data/evaluation/results/natural_duty_qualification_inventory_format_recovery_20261024.json text eol=lf
 /data/evaluation/results/completion_necessity_offline_20261024.json text eol=lf
+
+# Exact sealed report copied only as a frontend read-only rendering fixture.
+/web/tests/fixtures/verified-report-20261103.md -text

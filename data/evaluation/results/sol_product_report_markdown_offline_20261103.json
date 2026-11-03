@@ -1,0 +1,170 @@
+{
+  "schema_version": "1.0",
+  "status": "implemented_local_verified_ci_pending",
+  "recorded_at": "2026-11-03T10:46:23.552273+00:00",
+  "base_head": "3bc64c8a3eb9361df732aa2565d4592704dc5e09",
+  "workcard": "docs/plans/2026-11-01-chat-candidate-offline.md",
+  "decision": "docs/adr/0120-safe-report-markdown.md",
+  "implementation": {
+    "shared_consumers": [
+      "CoachBrief",
+      "ObservationWorkbench"
+    ],
+    "runtime_dependencies": {
+      "react-markdown": "10.1.0",
+      "remark-gfm": "4.0.1"
+    },
+    "source_body_rewritten": false,
+    "active_html_links_images": false,
+    "translate_no": true,
+    "publication_gates_unchanged": true,
+    "heading_levels": "CoachBrief h4/h5; Observation h3/h4",
+    "mobile_table": "local horizontal scroll, keyboard focus, Chinese/English hint"
+  },
+  "validation": {
+    "unit": {
+      "files": 41,
+      "passed": 328,
+      "failed": 0,
+      "log": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-report-markdown-20261103\\unit-final.log"
+    },
+    "e2e": {
+      "existing_live_workbench": 6,
+      "existing_observation": 2,
+      "full_report_and_unsafe": 3,
+      "final_report_log": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-report-markdown-20261103\\e2e-desktop-final.log",
+      "fixture_api_only": true,
+      "real_sql_run_this_package": false,
+      "viewports": [
+        1440,
+        320
+      ],
+      "report_headings": 8,
+      "list_items": 15,
+      "table_data_cells": 12,
+      "all_source_paragraphs_preserved": true,
+      "axe_report_violations": 0,
+      "page_horizontal_overflow": false,
+      "page_errors": 0,
+      "external_requests": 0,
+      "only_mutation": "synthetic POST /auth/session; zero task/resume/model/source/memory/training writes"
+    },
+    "build": {
+      "passed": true,
+      "main_js_kb": 672.15,
+      "main_js_gzip_kb": 203.71,
+      "warnings": [
+        "main chunk above 500KB",
+        "two wallpaper assets resolved at runtime"
+      ],
+      "measured_size_is_total_not_delta": true
+    },
+    "npm_audit": {
+      "registry": "https://registry.npmjs.org",
+      "prod_vulnerabilities": 0,
+      "mirror_audit": "404 not implemented; not a vulnerability finding"
+    },
+    "governance": {
+      "passed": true,
+      "log": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/governance-final.log"
+    },
+    "diff_check_passed": true,
+    "dependency_lock": {
+      "added_packages": 98,
+      "removed_packages": 0,
+      "existing_package_versions_changed": 0
+    }
+  },
+  "immutable_pins": {
+    "report": {
+      "path": "D:/rc-chat-guard-recovery-20261103/verified-runs/review_ee91ab480ecf4c4992f82ec08cc4bbf4/output/final_report.md",
+      "sha256": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455",
+      "bytes": 5083
+    },
+    "db": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/latest-db.dump",
+      "sha256": "5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533",
+      "bytes": 147093
+    },
+    "zip": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/recovery-snapshot.zip",
+      "sha256": "38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f",
+      "bytes": 1353703
+    },
+    "probe": {
+      "path": "D:/riftcoach-review-route-diagnostics/scripts/reviewer_responses_nonstream_probe.py",
+      "sha256": "92927957d456eb38009b728c7f261e3a419077f392f7d03df391ab145a6946db",
+      "bytes": 12218
+    },
+    "fixture": {
+      "path": "D:/riftcoach-review-route-diagnostics/web/tests/fixtures/verified-report-20261103.md",
+      "sha256": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455",
+      "bytes": 5083
+    },
+    "frozen": {
+      "path": "D:/riftcoach-chat-guard-recovery-execution-20261103",
+      "head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+      "clean": true
+    }
+  },
+  "screenshots": [
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/report-full-1440.png",
+      "sha256": "453f49467d0b7b3cf533bd142b04d336f98dbcb9b858bd3f84e73d9ff1f917c9"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/report-full-320.png",
+      "sha256": "6cd67d26385265cd98b0800c7644400ab837164a6388fd65e0ada052eee1410d"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/report-table-1440.png",
+      "sha256": "ac55c081456a6d77e4566ef1f5951f153c4e2f716c265123557ad68ed033e623"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/report-table-320.png",
+      "sha256": "1ddc6c257a054063821d4516e9ada23c3fd7c304e4b46443c5a7cb767a5660bc"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-end-1440.png",
+      "sha256": "c44edcf9a7f7c50ce36f1a9f00b560be044212ca7c56ba5c8c5976a4c896afcb"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-end-320.png",
+      "sha256": "e5235eee6b21c4aaea32dc6312057f21479cc00c84708d155c72d042d80cb9c4"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-table-1440.png",
+      "sha256": "f68531bd4787a864a6c213c91a8d16d62795dde1d54b1bfcd9006db22aa7ccfc"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-table-320.png",
+      "sha256": "0b85e15b3daa99326bb541e705c5578f06876629f7cd56eb45067c5945b2eb90"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-top-1440.png",
+      "sha256": "0cecfe8b7ab0ef2e64b8da4174e3642da5b173c80ea84c8509f0639edf344cee"
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-report-markdown-20261103/screenshots/viewport-top-320.png",
+      "sha256": "4641582c816631ff8f84c5b1568ae7eed629d7d9a72f2bef6e9ff3557738c291"
+    }
+  ],
+  "engineering_failures_corrected": [
+    "Vitest file URL rewritten to HTTP: use raw import",
+    "exact dependency list updated only for ADR0120",
+    "read-only browser assertion now explicitly permits existing synthetic auth bootstrap",
+    "capture scroll uses instant behavior and accounts for document-end clamp"
+  ],
+  "limits": {
+    "new_real_model_requests": 0,
+    "new_real_source_requests": 0,
+    "new_real_key_reads": 0,
+    "docker_repaired": false,
+    "blocked_docker_action_retried": false,
+    "P3_status": "not_accepted",
+    "stage_default_admission_changed": false,
+    "names_aliases_and_player_tone": "pending next work; not implemented by this renderer",
+    "source_scope_ci_terminal": "data/evaluation/results/sol_product_source_scope_ci_completed_20261103.json",
+    "real_loading_time_measured": false
+  }
+}
