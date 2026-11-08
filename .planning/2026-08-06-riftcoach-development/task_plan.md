@@ -13,6 +13,26 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
+2026-11-04：国服称呼/玩家表达工程包已在 `59022e8c7de8aa125c7047af859287670b18e6f3` 完成 CI41669841138 的12/12终局核验；339项SQL、8个称呼消费用例及迁移由CI实跑，本机SQL未执行，monitor已删除，不再轮询。开发树仍为 `D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。
+
+沿现有P3/P4完成一项具体自然观摩任务的离线准备：只读复用DK ShowMaker封存5场，以Chat1.7.10新生成报告，再双初审，必要时唯一应用及同稿双fresh；不把双接口八次旧稿审查当新写作验收。当前编译首轮完整输入32976估算token单位、30829序列化字节，无来源省略，实际请求guard及ASCII归档还原通过。
+
+完整预算暴露限制：3轮生成校准32976/40516/47072，旧四审校准63810/59414/57536/53140；每次加16384输出，共469152，比401920多67232。首轮加四审全额预留370896可容纳，但多轮是否完成取决于实际新输出和已知/unknown用量；旧首审仅余190。8次/401920/900活动秒、单次16384/300/输入64000不扩。当前代码保留审查调用槽并核双fresh额度，尚未实现生成前完整四审tokens预留，不能称方案已可直接执行。
+
+工作卡：`docs/plans/2026-11-01-product-delivery-reset.md`。可读准备与完整预算：`C:\Users\33502\Documents\Agent\outputs\riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`、`natural-task-request-budget.json`；仓库结果：`data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json`。旧八审草案、错误单位/截短SHA和被前置正文破坏的YAML已更正，原字节在Control/preparation-correction-originals-20261104。新模型自然度尚未验证，tone-review.md仍为开发者示例。
+
+本轮模型/对局来源/Key/真实task均0；旧报告5083字节、DB、ZIP、冻结树与无关probe核验未变。旧7HTTP/100656known/243.406活动秒及32768历史配置违规保留；四审许可已用尽。Docker此前停止进程/删端点被自动审批blocked by policy拒绝，未执行且不重试；旧浏览器临时目录保留。P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、默认准入及原15完成结论不变。
+
+下一行动：沿P3/P4在既有预算/续接路径核验发送前完整审查尾段准入，并取得可用隔离SQL环境；这些条件满足后，才就一项具体新任务的费用/Key范围请求决定。当前只授权离线准备，不发送或恢复旧任务。 终局和本准备记录随下一实质工作提交，不为等待状态触发CI。
+
+## Next Step
+
+Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
+
+沿P3/P4在既有预算/续接路径核验发送前完整审查尾段准入，并取得可用隔离SQL环境；这些条件满足后，才就一项具体新任务的费用/Key范围请求决定。当前只授权离线准备，不发送或恢复旧任务。
+
+以下为历史记录；旧行动、旧CI等待和旧授权不构成当前队列。
+
 2026-11-03，已完成用户“确认并且开个任务等”授权的同一P3任务审查续接及终局核验。开发树`D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`；执行源码a70451060c9d0f5201bd0b154b96a85f2567c9ef，CI41558836855全部12项completed/success。闭环已实证，P3仍有产品收口项；P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、原15完成和默认准入不变。
 
 同task `04c9a865-db03-4edb-af9e-70cb8d719db0` / run `review_ee91ab480ecf4c4992f82ec08cc4bbf4`沿普通SQL resume/Worker完成4段，每段仅1次新review且manual_retry=false。双初审后只应用1次确定性修订，再由两项fresh审查相同修订稿。保留原3次生成、5场来源、102父原件/12操作及原标题拒绝；未新建任务、重发生成/来源或导入诊断意见。实际SQL任务succeeded，隔离验证任务内报告published、API与浏览器可读；这不代表默认生产准入。
@@ -51,7 +71,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 旧报告/DB/ZIP/冻结树/无关probe未变。公开腾讯名称资料读取单列为研发研究，没有新模型、对局来源或Key调用。玩家口吻规则已接线，实际新模型文章自然度尚未验证；P3_not_accepted/Stage8E/默认准入不变。结果sol_product_player_language_offline_20261103.json；Control=C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103。
 
-下一行动：将安全Markdown终局、用户称呼澄清与本次实质实现合并提交推送；只核新HEAD的唯一CI全部12项，重点确认8个SQL称呼消费用例及迁移。失败按真实日志局部修复，不重跑旧15或旧CI。通过后整理本次称呼/口吻实际输出验收所需的具体自然任务与完整输入预算；当前没有新付费授权，不新建/恢复真实task或改旧报告。旧riftcoach-ci已删除，新提交若仍运行仅建一条新目标监控。
+下一行动：已推送59022e8c7de8aa125c7047af859287670b18e6f3；唯一新CI41669841138初查in_progress，尚未12绿。Control/ci-handoff.json与ci-latest.json保存实际状态，riftcoach-ci仅监控此目标，旧监控已删除。 每次只做一次有界状态查询，核同HEAD全部12项，重点确认8个SQL称呼消费用例及迁移。失败按真实日志局部修复，不重跑旧15或旧CI；终局核验处理后删除monitor。通过后整理称呼/口吻实际输出验收所需的具体自然任务与完整输入预算；当前无新付费授权，不新建/恢复真实task或改旧报告。等待/终局记录合并下一实质提交，不为状态单独触发CI。
 
 以下为历史记录；旧单次授权、剩余请求槽与下列旧行动均不作为当前队列。
 
@@ -816,7 +836,7 @@ control-c新增1HTTP/20873已知tokens；模型唯一issue正确发现第21段�
 当前无新付费入口，无需Key；8份离线请求不是8次授权，不扩原grant期限/范围。预制全文不是实际应用/fresh，尚未产品或15项资格。
 证据：data/evaluation/results/completion_necessity_offline_20261024.json；方案和竞争解释见data/evaluation/fixtures/completion_necessity_20261024/README.md；工作卡沿用docs/plans/2026-10-24-sol-output-format-recovery.md。
 
-## Dependencies and Follow-through
+## 历史 Dependencies and Follow-through
 
 已解除工程回归：旧repair关闭批预览现回读封存；相关31项及后继公共检查均通过。
 tasks指纹遗漏发布模式、证据终态恢复载荷缺失已修复，公共真实DB218项通过。Docker与本机
@@ -831,7 +851,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 | Agent 产品与前端 | 自然请求、训练采用/反馈、四块联动、整体审美/必要重做/英雄头像，按原依赖推进；可独立部分不被单一评审阻断永久冻结 |
 | 完整退出 | 保留身份运维、两树整合、独立评估与学习；具体入口见 restart plan“全局后续”及 62 主题，不在此重排主阶段 |
 
-## Next Step
+## 历史 Next Step（已由当前行动替代）
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 

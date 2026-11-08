@@ -1,4 +1,22 @@
+## 2026-11-04 完整自然任务准备与错误草案更正（当前）
+
+2026-11-04：国服称呼/玩家表达工程包已在 `59022e8c7de8aa125c7047af859287670b18e6f3` 完成 CI41669841138 的12/12终局核验；339项SQL、8个称呼消费用例及迁移由CI实跑，本机SQL未执行，monitor已删除，不再轮询。开发树仍为 `D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。
+
+沿现有P3/P4完成一项具体自然观摩任务的离线准备：只读复用DK ShowMaker封存5场，以Chat1.7.10新生成报告，再双初审，必要时唯一应用及同稿双fresh；不把双接口八次旧稿审查当新写作验收。当前编译首轮完整输入32976估算token单位、30829序列化字节，无来源省略，实际请求guard及ASCII归档还原通过。
+
+完整预算暴露限制：3轮生成校准32976/40516/47072，旧四审校准63810/59414/57536/53140；每次加16384输出，共469152，比401920多67232。首轮加四审全额预留370896可容纳，但多轮是否完成取决于实际新输出和已知/unknown用量；旧首审仅余190。8次/401920/900活动秒、单次16384/300/输入64000不扩。当前代码保留审查调用槽并核双fresh额度，尚未实现生成前完整四审tokens预留，不能称方案已可直接执行。
+
+工作卡：`docs/plans/2026-11-01-product-delivery-reset.md`。可读准备与完整预算：`C:\Users\33502\Documents\Agent\outputs\riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`、`natural-task-request-budget.json`；仓库结果：`data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json`。旧八审草案、错误单位/截短SHA和被前置正文破坏的YAML已更正，原字节在Control/preparation-correction-originals-20261104。新模型自然度尚未验证，tone-review.md仍为开发者示例。
+
+本轮模型/对局来源/Key/真实task均0；旧报告5083字节、DB、ZIP、冻结树与无关probe核验未变。旧7HTTP/100656known/243.406活动秒及32768历史配置违规保留；四审许可已用尽。Docker此前停止进程/删端点被自动审批blocked by policy拒绝，未执行且不重试；旧浏览器临时目录保留。P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、默认准入及原15完成结论不变。
+
+下一行动：沿P3/P4在既有预算/续接路径核验发送前完整审查尾段准入，并取得可用隔离SQL环境；这些条件满足后，才就一项具体新任务的费用/Key范围请求决定。当前只授权离线准备，不发送或恢复旧任务。 终局和本准备记录随下一实质工作提交，不为等待状态触发CI。
+
+以下为历史记录；以下“当前”与下一行动只描述记录当时。
+
 ## 2026-11-03 国服称呼与玩家表达接线
+
+已推送59022e8c7de8aa125c7047af859287670b18e6f3；唯一新CI41669841138初查in_progress，尚未12绿。Control/ci-handoff.json与ci-latest.json保存实际状态，riftcoach-ci仅监控此目标，旧监控已删除。 此状态记录留待下一实质提交。
 
 2026-11-03，国服称呼与玩家表达已接入产品实际输入链路（ADR0121，Responses1.7.9/Chat1.7.10）：以173英雄/706装备标准名目录为基础，90英雄/19装备带114个精选叫法；按名称字典版本/语言、实体ID及原名称核对，仅投影本任务实际实体。未知/冲突/歧义不认证外号，不改原摘要或已审稿；生成、修订、双初审/双fresh共用称呼资料与自然中文表达指导。旧雏形未直接搬用，目录来源/版本/SHA及选择依据可查，名称资料不证明历史属性或事件。
 

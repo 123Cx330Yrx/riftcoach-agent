@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "recorded_at": "2026-11-03T15:57:54.479844+00:00",
-  "status": "offline_implementation_verified_ci_pending",
+  "status": "offline_implementation_verified_ci_completed",
   "base_head": "5e190303aea1c0530fd835b7e829b8136afc9255",
   "adr": "docs/adr/0121-product-cn-names-and-player-tone.md",
   "product_versions": {
@@ -153,7 +153,8 @@
     "models": 0,
     "game_source_requests": 0,
     "keys": 0,
-    "originals_modified": false
+    "originals_modified": false,
+    "input_ceiling_unit": "conservative estimated input-token units from complete request; not bytes or billed tokens"
   },
   "local_corrections": [
     "First additive draft estimated 65114 > 64000 and was never sent. Compact source/purpose policy preserves each obligation; omit repeated standard names already supplied. Final first request 63810, margin190.",
@@ -209,5 +210,28 @@
     "docker": "unrepaired; prior stop/endpoint deletion blocked by policy, no retry",
     "old_web_temporary_directories": "retained after prior cleanup approval denial"
   },
-  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103"
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103",
+  "ci": {
+    "run_id": 41669841138,
+    "head_sha": "59022e8c7de8aa125c7047af859287670b18e6f3",
+    "status": "completed",
+    "conclusion": "success",
+    "checked_at": "2026-11-03T23:08:57.844320+00:00",
+    "jobs": 12,
+    "sql_cases_passed": 339,
+    "naming_consumption_cases_passed": 8,
+    "local_sql_executed": false,
+    "terminal_control": "ci-terminal-41669841138.json"
+  },
+  "next_action": "\u6cbfP3/P4\u5728\u65e2\u6709\u9884\u7b97/\u7eed\u63a5\u8def\u5f84\u6838\u9a8c\u53d1\u9001\u524d\u5b8c\u6574\u5ba1\u67e5\u5c3e\u6bb5\u51c6\u5165\uff0c\u5e76\u53d6\u5f97\u53ef\u7528\u9694\u79bbSQL\u73af\u5883\uff1b\u8fd9\u4e9b\u6761\u4ef6\u6ee1\u8db3\u540e\uff0c\u624d\u5c31\u4e00\u9879\u5177\u4f53\u65b0\u4efb\u52a1\u7684\u8d39\u7528/Key\u8303\u56f4\u8bf7\u6c42\u51b3\u5b9a\u3002\u5f53\u524d\u53ea\u6388\u6743\u79bb\u7ebf\u51c6\u5907\uff0c\u4e0d\u53d1\u9001\u6216\u6062\u590d\u65e7\u4efb\u52a1\u3002",
+  "acceptance_preparation": {
+    "status": "offline_prepared_not_execution_ready",
+    "result": "data\\evaluation\\results\\sol_product_player_language_acceptance_prepared_20261104.json",
+    "first_generation_input_ceiling": 32976,
+    "calibrated_seven_call_reservation": 469152,
+    "product_token_limit": 401920,
+    "budget_gap": 67232,
+    "live_model_requests": 0,
+    "new_model_naturalness_verified": false
+  }
 }

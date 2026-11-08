@@ -3,7 +3,19 @@
 **Goal:** 先交付普通用户可发起、可恢复、可核源、可阅读的可信复盘，再按既有路线完成 Coach / Review / Training / Evidence 联动和整体体验。
 **Architecture:** 复用现有 API → SQL 任务 → Worker → 来源/Memory → Flash 生成 → Sol 双审 → 必要时唯一修订与同稿双 fresh → Evidence/报告查询路径。传输、任务执行、内容质量、界面消费分别验证；开发诊断不进入产品正常使用流程。
 **Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
-**Status:** P1_complete / P2_partial_verified / P3_not_accepted。2026-11-03同任务受控续接已完成双初审、唯一确定性应用、同稿双fresh及SQL/API/1440与320浏览器消费；累计7HTTP/100656known，unknown/retry/未决均0。四次审查许可已全部消费，进程/容器和monitor已收尾。原三次生成32768请求配置违规保留；正常生成请求16384/300上限已离线修复（151项定向/SQL检查、12Runtime/2清单通过，当前提交CI待核），随后按依赖处理来源范围表述与P4玩家阅读。国服称呼/外号和自然教练口吻是既有必做要求，本轮提醒不改变优先级。详细真实结果见sol_product_chat_review_continuation_completed_20261103.json及[Chat工作卡](2026-11-01-chat-candidate-offline.md)。代表性闭环已实证，不等于P3全部验收或日常使用准入；原15、Stage8E/默认准入不变。
+**Status:** P1_complete / P2_partial_verified / P3_not_accepted。旧7HTTP真实闭环已终局，四审许可已用尽；当前Responses1.7.9/Chat1.7.10的来源范围、原文安全排版、国服称呼及口吻输入接线已完成工程验证，HEAD59022e8c的CI41669841138全部12项通过。339项SQL/8个称呼消费用例及迁移由CI执行，本机SQL未执行。新模型自然度和整体P3仍未验收；原15、Stage8E及默认准入保持。
+
+## P3/P4当前工作卡：称呼与玩家口吻实际输出（2026-11-04）
+
+- **用户结果：** 对已封存DK ShowMaker五场排位新生成一份玩家可读的观摩报告，讲清关键判断、依据、下次观摩重点，名称可靠且不越过observed边界。熟悉旧材料用于当前输出验收，不算新取源或独立留出例。
+- **路径：** 既有conversation reviews/recent入口与普通SQL Worker，显式Chat1.7.10；Flash工具选择/生成→双初审→直接通过，或唯一确定性修订及同稿双fresh→Evidence/报告/用量/页面。首轮经真实编译器与renderer构造，归档还原及request_bytes通过；后续只用旧材料校准大小，没有伪造新输出。
+- **预算证据：** 首轮输入32976估算token单位/30829序列化字节；旧工具前缀的第2/3轮校准40516/47072，四审63810/59414/57536/53140。七请求加各16384输出预留469152，超401920共67232；首轮加四审全额370896可容纳，但不保证模型一轮完成。旧首审仅余190，新输入必须逐次核验。8次/401920/900活动秒、单次16384/300/输入64000不扩。
+- **依赖与失败：** 当前代码保留4审调用槽并核双fresh预留160768，尚无生成前完整四审tokens预留；在既有预算/续接路径核验这一准入，再准备真实启动。输入/尾段不足先停，不裁源；冲突或fresh失败沿既有状态保存，不自动付费重试。Docker未修，曾被自动审批拒绝的停止/删端点不重试；可用隔离SQL环境及新费用/Key授权仍缺。
+- **验收：** 全文核事实/数字/用途/版本；可靠国服称呼自然使用，未知回退标准名；风格不升级事实拒绝。发布稿与双审同稿，实际API/1440与320核报告、Evidence、费用；CI/model pass不代替人工内容判断。旧已审稿不改，tone-review.md仍是开发者示例。
+- **本包结果：** 完整任务、输入、预算、边界与失败选择已离线准备；尚非可直接启动包。本轮模型/对局来源/Key/真实task均0；旧报告/DB/ZIP/冻结树/probe核验未变。结果[data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json](../../data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json)；可读方案`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`。
+
+原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。当前下一行动是完整尾段预算准入与隔离SQL执行前提；不得把本卡当新付费许可。
+
 
 ## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）
 
