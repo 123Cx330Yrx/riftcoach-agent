@@ -24,12 +24,29 @@ class ProductBudget(SessionBudget):
     def _provider_for_request(self, request):
         from .generation_request import validate_new_request
         validate_new_request(self.contract_module, request)
-        if (self.session.root/'budget-supplement.json').exists() and self.contract_module.role_for_request(request) == 'generation':
+        role = self.contract_module.role_for_request(request)
+        if (self.session.root/'budget-supplement.json').exists() and role == 'generation':
             raise SessionPaused('product_supplement_generation_forbidden')
         # Leave the two initial duties and possible two fresh duties intact.
-        if (self.contract_module.role_for_request(request) == 'generation'
+        if (role == 'generation'
                 and self.calls + 1 + 4 > self.execution_limits()['max_calls']):
             raise ProviderResponseError(provider=self.provider_name, code='product_review_slots_reserved')
+        if role == 'generation':
+            # A generation may be followed by two initial reviews and, when
+            # repair is required, two fresh reviews. Reserve the full four
+            # review envelopes before sending the next generation request.
+            # Actual review requests still reserve and settle their own
+            # measured envelopes later.
+            from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
+            limits = self.execution_limits()
+            current_reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
+            review_tail_reservation = 4 * (
+                limits['max_input_tokens'] + limits['max_output_tokens'])
+            if (self.tokens + self.reserved_tokens + current_reservation
+                    + review_tail_reservation > limits['total_tokens']):
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code='product_review_tail_budget_reserved')
         return super()._provider_for_request(request)
 
     def chat(self, request):
@@ -37,7 +54,8 @@ class ProductBudget(SessionBudget):
             return super().chat(request)
         except ProviderResponseError as exc:
             if exc.code in {'external_call_budget_exhausted', 'token_budget_exhausted',
-                            'timeout', 'product_review_slots_reserved'}:
+                            'timeout', 'product_review_slots_reserved',
+                            'product_review_tail_budget_reserved'}:
                 raise SessionPaused('product_budget_exhausted') from exc
             raise
 

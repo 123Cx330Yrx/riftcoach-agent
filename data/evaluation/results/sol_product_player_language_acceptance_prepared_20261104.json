@@ -3,7 +3,7 @@
   "recorded_at": "2026-11-04T08:58:04.421953+00:00",
   "kind": "natural_player_language_acceptance_preparation",
   "status": "offline_prepared_not_execution_ready",
-  "head_sha": "59022e8c7de8aa125c7047af859287670b18e6f3",
+  "head_sha": "d131263d",
   "product_contract": "natural-flash-sol-product-chat-v1",
   "product_version": "1.7.10",
   "catalog_sha256": "9a4422397de1afb26a6db9e8cbe8a1bdb64c39dd438d1bd3bdfc521bd5ad3966",
@@ -147,7 +147,7 @@
     ],
     "future_tool_outputs_report_reviews_unknown": true,
     "calibrated_seven_call_all_output_caps_fit": false,
-    "runtime_guard_scope": "ProductBudget reserves four review call slots during generation; shared tokens per request and full fresh-pair token guard remain. It does not implement this preparation full-review-tail token admission rule.",
+    "runtime_guard_scope": "ProductBudget reserves four review call slots, shared per-request tokens, the 160768 dual-fresh reservation, and now the 321536 full four-review token envelope before generation transport.",
     "admission_before_send": "known tokens + unknown reservations + fully materialized next request input ceiling + output cap + reserved remaining mandatory reviews <= 401920; calls <=8 and cumulative active time <=900"
   },
   "limits": {
@@ -161,7 +161,7 @@
   "artifacts": {
     "readable_plan": {
       "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\natural-tone-acceptance-preparation.md",
-      "sha256": "0396e9433a8c8c49fbf5788743712f4a874047bc85d5cfbc4e05eda18ec0c4ca"
+      "sha256": "81cf52558db71865c6a09b706eb2af263f7af28c96636153891901bcbbb65403"
     },
     "full_first_generation": {
       "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\generation-first-request.json",
@@ -169,7 +169,7 @@
     },
     "complete_budget": {
       "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\natural-task-request-budget.json",
-      "sha256": "c9356222ab66cd40507c87ae3bf2fa7de8108a7a9b5f797ea14e64cd9c584c8f"
+      "sha256": "7490e9057afdd821044fa26ed0deb3b5be848bd43da1989af47af38e6cfcf4f5"
     },
     "reproducible_preparation": {
       "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\prepare_natural_task.py",
@@ -185,7 +185,7 @@
     "same reviewed report reaches Evidence, report API and mobile/desktop UI without post-review rewriting"
   ],
   "execution_dependencies": [
-    "Full required review-tail token admission before generation is a preparation requirement, not yet an installed ProductBudget guard.",
+    "Generation pre-send full review-tail token admission is implemented and covered by the targeted product-contract test; isolated SQL and new paid/model/Key authorization remain unavailable.",
     "Actual future tool outputs and report/revision requests must be materialized and validated again, especially the old initial review margin of 190.",
     "Isolated SQL environment remains unavailable; prior Docker stop/endpoint deletion was blocked by policy, not retried.",
     "New paid/model/key authorization is absent; old four review permits are exhausted.",
@@ -211,7 +211,7 @@
   "P3": "not_accepted",
   "Stage8E": "unchanged",
   "default_admission": "unchanged",
-  "next_action": "\u6cbfP3/P4\u5728\u65e2\u6709\u9884\u7b97/\u7eed\u63a5\u8def\u5f84\u6838\u9a8c\u53d1\u9001\u524d\u5b8c\u6574\u5ba1\u67e5\u5c3e\u6bb5\u51c6\u5165\uff0c\u5e76\u53d6\u5f97\u53ef\u7528\u9694\u79bbSQL\u73af\u5883\uff1b\u8fd9\u4e9b\u6761\u4ef6\u6ee1\u8db3\u540e\uff0c\u624d\u5c31\u4e00\u9879\u5177\u4f53\u65b0\u4efb\u52a1\u7684\u8d39\u7528/Key\u8303\u56f4\u8bf7\u6c42\u51b3\u5b9a\u3002\u5f53\u524d\u53ea\u6388\u6743\u79bb\u7ebf\u51c6\u5907\uff0c\u4e0d\u53d1\u9001\u6216\u6062\u590d\u65e7\u4efb\u52a1\u3002",
+  "next_action": "\u5148\u53d6\u5f97\u53ef\u7528\u9694\u79bbSQL\u73af\u5883\u5e76\u9010\u6b21\u91cd\u5efa/\u6838\u9a8c\u540e\u7eed\u8bf7\u6c42\uff1b\u8fd9\u4e9b\u6761\u4ef6\u6ee1\u8db3\u540e\uff0c\u624d\u5c31\u4e00\u9879\u5177\u4f53\u65b0\u4efb\u52a1\u7684\u8d39\u7528/Key\u8303\u56f4\u8bf7\u6c42\u51b3\u5b9a\u3002\u5f53\u524d\u53ea\u6388\u6743\u79bb\u7ebf\u51c6\u5907\uff0c\u4e0d\u53d1\u9001\u6216\u6062\u590d\u65e7\u4efb\u52a1\u3002",
   "ci": {
     "run_id": 41669841138,
     "head_sha": "59022e8c7de8aa125c7047af859287670b18e6f3",
@@ -243,6 +243,17 @@
     "local_corrections": [
       "Canonical YAML restored before validation; Next Step checkpoint label restored after the governance check identified its omission.",
       "No network request or source mutation during local preparation errors."
-    ]
+    ],
+    "budget_guard": "passed: 321536 full four-review envelope reserved before generation transport",
+    "targeted_product_contract_tests": "18 passed"
+  },
+  "budget_guard": {
+    "implemented": true,
+    "review_tail_reservation": 321536,
+    "formula": "4 * (64000 + 16384)",
+    "guard_location": "app/product/sol_workflow.py::ProductBudget._provider_for_request",
+    "failure_code": "product_review_tail_budget_reserved",
+    "targeted_test": "tests/test_sol_product_contract.py::test_generation_reserves_full_review_tail_before_transport",
+    "targeted_test_result": "18 passed"
   }
 }

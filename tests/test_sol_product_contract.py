@@ -154,6 +154,25 @@ def test_budget_stops_before_transport_and_preserves_cumulative_clock(tmp_path, 
             assert attempts == []
 
 
+def test_generation_reserves_full_review_tail_before_transport(tmp_path):
+    from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
+
+    with session_at(tmp_path) as session:
+        budget, attempts = isolated_budget(tmp_path, session)
+        request = generation_request()
+        limits = budget.execution_limits()
+        current_reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
+        review_tail = 4 * (limits['max_input_tokens'] + limits['max_output_tokens'])
+        # The generation envelope itself fits, while the complete mandatory
+        # review tail does not. The provider must be stopped before transport.
+        budget.tokens = limits['total_tokens'] - review_tail - current_reservation + 1
+        assert budget.tokens + current_reservation <= limits['total_tokens']
+        with pytest.raises(SessionPaused, match='product_budget_exhausted'):
+            budget.chat(request)
+        assert attempts == []
+        assert not list((tmp_path/'transport').rglob('http-request.json'))
+
+
 def test_only_two_explicit_same_item_retries_and_ordinary_resume_never_sends(tmp_path):
     from scripts import review_duty_composition as duty
     from tests.test_natural_duty_candidate import Responses

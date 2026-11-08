@@ -98,4 +98,4 @@
 
 当前交付卡是[产品推进与验收计划](2026-11-01-product-delivery-reset.md)。CI41669841138已12/12通过且monitor删除。本次准备是一项封存五场观摩材料上的新生成任务，走Chat1.7.10及双审/必要双fresh；原“四类审查×两接口”草案撤销，原字节在Control/preparation-correction-originals-20261104。
 
-首轮完整输入32976估算token单位；三生成加四审校准与满输出合计469152，超过401920共67232，真实新输出仍未知。保持产品上限，先解决完整尾段准入及隔离SQL环境，再形成新付费决定。可读方案为Control/natural-tone-acceptance-preparation.md；仓库结果sol_product_player_language_acceptance_prepared_20261104.json。P3_not_accepted、Stage8E、默认准入不变。
+首轮完整输入32976估算token单位；三生成加四审校准与满输出合计469152，超过401920共67232，真实新输出仍未知。`ProductBudget`现已在生成发送前保留四项审查完整包络321536，并由18项产品合同测试验证；保持产品上限，仍需隔离SQL环境后再形成新付费决定。可读方案为Control/natural-tone-acceptance-preparation.md；仓库结果sol_product_player_language_acceptance_prepared_20261104.json。P3_not_accepted、Stage8E、默认准入不变。

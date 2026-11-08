@@ -432,7 +432,7 @@
     {
       "component_id": "app.product.sol_workflow",
       "source": "app/product/sol_workflow.py",
-      "sha256": "17a3950a13b14be9c13c02fc72ba92785d185a6efe9c4fa4d6dc7682657378bc"
+      "sha256": "a99f0115be830c7a45569b334775900e20cbb9d8a5fd4131d8f207bad67f224a"
     },
     {
       "component_id": "app.product.generation_request",
@@ -545,5 +545,5 @@
       "sha256": "d83b353b50f6d70ff168f4cf0f50e8f48a4b0933213fa0f74fdc935b20cf7249"
     }
   ],
-  "program_sha256": "ef37eedee4c92837f9982da12119543c68ef8daaae4cefe556e14e75ad9efe94"
+  "program_sha256": "6ee38e8222ed2c4b88ec2c9f9ca2376ae35cac7444aec2ceaf9d79da66c5375f"
 }
