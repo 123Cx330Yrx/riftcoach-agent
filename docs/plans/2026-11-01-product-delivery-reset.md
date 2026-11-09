@@ -14,7 +14,7 @@
 - **验收：** 全文核事实/数字/用途/版本；可靠国服称呼自然使用，未知回退标准名；风格不升级事实拒绝。发布稿与双审同稿，实际API/1440与320核报告、Evidence、费用；CI/model pass不代替人工内容判断。旧已审稿不改，tone-review.md仍是开发者示例。
 - **本包结果：** 完整任务、输入、预算、边界与失败选择已离线准备；尚非可直接启动包。本轮模型/对局来源/Key/真实task均0；旧报告/DB/ZIP/冻结树/probe核验未变。结果[data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json](../../data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json)；可读方案`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`。
 
-原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。当前下一行动是取得具体新任务的费用/Key范围决定；不得把本卡当新付费许可。
+原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。当前下一行动是审阅并决定具体单任务的费用/Key范围；决策包已保存到`data/evaluation/results/sol_product_player_language_execution_decision_20261109.json`，不得把本卡当新付费许可。
 
 
 ## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）

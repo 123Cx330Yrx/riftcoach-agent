@@ -21,7 +21,7 @@ pause_reason: ""
 
 本轮模型/对局来源/Key/真实task均0；旧报告5083字节、DB、ZIP、冻结树与无关probe核验未变。旧7HTTP/100656known/243.406活动秒及32768历史配置违规保留；四审许可已用尽。Docker此前停止进程/删端点被自动审批blocked by policy拒绝，未执行且不重试；旧浏览器临时目录保留。P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、默认准入及原15完成结论不变。
 
-下一行动：独立隔离SQL已完成0015迁移及24项相关Worker/Entry/Budget测试，专用容器与volume已清理。预算尾段守卫仍由18项合同测试核验；下一道门是取得一项具体新任务的费用/Key范围决定。当前仍不发送模型或恢复旧任务。证据见`data/evaluation/results/sol_product_player_language_sql_local_20261109.json`。
+下一行动：独立隔离SQL已完成0015迁移及24项相关Worker/Entry/Budget测试，专用容器与volume已清理。预算尾段守卫仍由18项合同测试核验；具体单任务费用/Key决策包已准备，当前等待明确决定，不发送模型或恢复旧任务。证据见`data/evaluation/results/sol_product_player_language_sql_local_20261109.json`与`data/evaluation/results/sol_product_player_language_execution_decision_20261109.json`。
 
 以下为历史记录；旧行动、旧CI等待和旧授权不构成当前队列。
 

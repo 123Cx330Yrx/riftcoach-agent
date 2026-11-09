@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-09T06:02:00Z",
+  "kind": "natural_player_language_execution_decision_packet",
+  "authorization_state": "pending_explicit_user_decision",
+  "head_sha": "c96152b26bc38e714625550047d15387223c23ac",
+  "task": {
+    "id": "familiar_observed_recent5_language_acceptance",
+    "source_scope": "read-only replay of archived DK ShowMaker#KR1 five-match bundle; no new match acquisition and no holdout claim",
+    "relationship_role": "observed",
+    "count": 5,
+    "queue": 420,
+    "focus": "overall",
+    "dictionary": "16.21.1/zh_CN",
+    "contract": "natural-flash-sol-product-chat-v1",
+    "product_version": "Chat1.7.10"
+  },
+  "execution_path": [
+    "Flash tool selection and one fresh report generation",
+    "Sol facts and completion initial reviews",
+    "if required, one deterministic repair application",
+    "same-report Sol facts and completion fresh reviews",
+    "Evidence/report/API/UI consumption checks"
+  ],
+  "requested_scope": {
+    "new_product_task_count": 1,
+    "max_requests": 8,
+    "max_tokens": 401920,
+    "max_active_seconds": 900,
+    "per_request_max_output_tokens": 16384,
+    "per_request_timeout_seconds": 300,
+    "max_input_tokens": 64000,
+    "model_route": "existing Chat1.7.10 Flash-generation plus Sol-review route only",
+    "source_key": "no Riot/source acquisition key; only the provider credentials needed for this single product task",
+    "old_task_reuse": "false",
+    "automatic_retry": "false"
+  },
+  "budget_evidence": {
+    "first_generation_reservation": 49360,
+    "full_four_review_tail_reservation": 321536,
+    "first_generation_plus_full_tail": 370896,
+    "three_generation_plus_calibrated_four_reviews": 469152,
+    "over_limit_margin": -67232,
+    "guard_test": "tests/test_sol_product_contract.py::test_generation_reserves_full_review_tail_before_transport",
+    "guard_tests": "18 passed",
+    "sql_tests": "24 passed after migration 0015 in isolated local PostgreSQL"
+  },
+  "failure_decisions": [
+    "budget or input-tail guard: pause before provider transport and preserve source material",
+    "provider/auth/timeout/unknown usage: pause the affected task; no automatic paid retry",
+    "review conflict or fresh failure: retain report and receipts; do not rewrite after review",
+    "naturalness failure with factual correctness: keep P3 unaccepted and record the reading issue"
+  ],
+  "decision_needed": {
+    "approve_one_task_within_existing_hard_limits": true,
+    "confirm_provider_credential_scope": "Chat1.7.10 Flash generation + Sol reviews only",
+    "confirm_no_new_match_source_or_Riot_key": true,
+    "price_information": "not present in the current local policy artifact; obtain provider quote only after this scope decision"
+  },
+  "not_executed": true,
+  "effects": {
+    "model_requests": 0,
+    "source_requests": 0,
+    "key_reads": 0,
+    "sql_tasks_created": 0
+  },
+  "status_boundaries": {
+    "P3": "not_accepted",
+    "Stage8E": "unchanged",
+    "default_admission": "unchanged"
+  },
+  "control_artifact": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\execution-decision-20261109.json",
+    "sha256": "c55bfc12dcd66ca444b53baaf75e17a9e201268748c5cafcf058e0fce8e2a5af"
+  }
+}
