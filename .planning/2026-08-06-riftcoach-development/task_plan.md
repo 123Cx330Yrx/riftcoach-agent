@@ -29,7 +29,7 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-沿P3/P4在既有预算/续接路径核验发送前完整审查尾段准入，并取得可用隔离SQL环境；这些条件满足后，才就一项具体新任务的费用/Key范围请求决定。当前只授权离线准备，不发送或恢复旧任务。
+预算尾段准入已在 ProductBudget 接线并由18项合同测试核验；继续取得可用隔离SQL环境并逐次重建/核验后续请求。条件满足后，才就一项具体新任务的费用/Key范围请求决定。当前只授权离线准备，不发送或恢复旧任务。
 
 以下为历史记录；旧行动、旧CI等待和旧授权不构成当前队列。
 
