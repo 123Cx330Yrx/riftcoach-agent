@@ -10,11 +10,11 @@
 - **用户结果：** 对已封存DK ShowMaker五场排位新生成一份玩家可读的观摩报告，讲清关键判断、依据、下次观摩重点，名称可靠且不越过observed边界。熟悉旧材料用于当前输出验收，不算新取源或独立留出例。
 - **路径：** 既有conversation reviews/recent入口与普通SQL Worker，显式Chat1.7.10；Flash工具选择/生成→双初审→直接通过，或唯一确定性修订及同稿双fresh→Evidence/报告/用量/页面。首轮经真实编译器与renderer构造，归档还原及request_bytes通过；后续只用旧材料校准大小，没有伪造新输出。
 - **预算证据：** 首轮输入32976估算token单位/30829序列化字节；旧工具前缀的第2/3轮校准40516/47072，四审63810/59414/57536/53140。七请求加各16384输出预留469152，超401920共67232；首轮加四审全额370896可容纳，但不保证模型一轮完成。旧首审仅余190，新输入必须逐次核验。8次/401920/900活动秒、单次16384/300/输入64000不扩。
-- **依赖与失败：** 当前代码保留4审调用槽并核双fresh预留160768，且已在`ProductBudget`生成发送前保留四项审查完整包络321536；预算反例验证了当前请求能放下、完整尾段放不下时会先暂停。输入/尾段不足先停，不裁源；冲突或fresh失败沿既有状态保存，不自动付费重试。Docker未修，曾被自动审批拒绝的停止/删端点不重试；可用隔离SQL环境及新费用/Key授权仍缺。
+- **依赖与失败：** 当前代码保留4审调用槽并核双fresh预留160768，且已在`ProductBudget`生成发送前保留四项审查完整包络321536；预算反例验证了当前请求能放下、完整尾段放不下时会先暂停。输入/尾段不足先停，不裁源；冲突或fresh失败沿既有状态保存，不自动付费重试。独立隔离SQL已完成0015迁移并通过24项相关Worker/Entry/Budget测试，专用容器与volume已清理；新费用/Key授权仍缺。
 - **验收：** 全文核事实/数字/用途/版本；可靠国服称呼自然使用，未知回退标准名；风格不升级事实拒绝。发布稿与双审同稿，实际API/1440与320核报告、Evidence、费用；CI/model pass不代替人工内容判断。旧已审稿不改，tone-review.md仍是开发者示例。
 - **本包结果：** 完整任务、输入、预算、边界与失败选择已离线准备；尚非可直接启动包。本轮模型/对局来源/Key/真实task均0；旧报告/DB/ZIP/冻结树/probe核验未变。结果[data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json](../../data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json)；可读方案`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`。
 
-原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。当前下一行动是取得隔离SQL并逐次重建/核验后续请求；不得把本卡当新付费许可。
+原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。当前下一行动是取得具体新任务的费用/Key范围决定；不得把本卡当新付费许可。
 
 
 ## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）
