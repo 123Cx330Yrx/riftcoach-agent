@@ -1,0 +1,189 @@
+{
+  "kind": "host-workspace-repair-evidence-v1",
+  "at": "2026-10-12T12:16:23.611857+00:00",
+  "actual_project_provider_calls": 0,
+  "actual_project_http_requests": 0,
+  "actual_project_tokens": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "new_agents": 0,
+  "independent_native_tasks": 1,
+  "rehearsal_submissions": 1,
+  "synthetic_transport": true,
+  "synthetic_usage_is_not_actual_usage": true,
+  "native_event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a13005-ae8b-7211-9f5e-fe9599ec06ed/msg_0998f8ac4632b025016acccefb195081948ecd72cf0ac59078",
+  "checkpoint_sha256": "5638736ad25605ceedcc581f94510dfbfa1b10fa783917cd5f2dc7fcdfe158ef",
+  "plan_sha256": "ed0e47c01c787f905b71fded98fcd2a51cd81d74889c04a2bcbd996c169d18ea",
+  "author_answer_sha256": "747fec66d690f0138b3b71156ed5e2af4fbf5a5bd86f7f03c47fe5cee6cb9636",
+  "author_answer_outside_run": true,
+  "native_final_equals_author_json": true,
+  "native_public_turn_sha256": "25242cb4a410aeec8fc472e38c9a84d0ba69ccc5d0fe8685cbf880885f12ca44",
+  "native_commands": 14,
+  "native_commands_exit_zero": true,
+  "native_command_ids": [
+    "exec-b4387c5e-1195-4a0a-8294-0d71f183cb15",
+    "exec-cfe5a813-49b6-4837-ae24-76d8816092e4",
+    "exec-5199466d-ef69-4cf5-9170-76916793734f",
+    "exec-21f66f42-5ecc-4fea-a893-3525381f35f8",
+    "exec-34a4f246-216d-43a8-b4bb-d8ba1e647c80",
+    "exec-5bfdf93b-c399-4f69-8995-bebf9bf5bcdc",
+    "exec-cfc929d5-461d-481e-b414-4cac74deb543",
+    "exec-cd9945a0-00a8-4ec1-87a3-ed168824eceb",
+    "exec-4f7a9a7e-1fee-410d-81ea-47abdf496677",
+    "exec-da2c42c1-6387-411e-b542-c798630c133d",
+    "exec-59bae504-2e86-4e52-ac7e-683e397933da",
+    "exec-722461f9-f882-4dfa-b72f-5dc02d27ab75",
+    "exec-5c3a367a-2985-4a53-94c4-1aa0b0e36e17",
+    "exec-d72da12f-1845-49e2-b35b-03291a4b900b"
+  ],
+  "native_final_count": 1,
+  "native_reviews_verified": 1,
+  "strict_seal_sha256": "62530865bfbc1c14597d63fb3438f2a7c0812e54aefa1b39864eb0b5f99c5032",
+  "rehearsal_originals_unchanged": true,
+  "rehearsal_original_files": 26,
+  "historical_originals": [
+    {
+      "run": "document-full-report-remaining-initial-20261012",
+      "files": 47,
+      "matches_closed_inventory": true
+    },
+    {
+      "run": "document-full-report-network-followup-20261012",
+      "files": 26,
+      "matches_closed_inventory": true
+    },
+    {
+      "run": "document-full-report-initial-20261012",
+      "files": 14,
+      "matches_closed_inventory": true
+    },
+    {
+      "run": "document-sampling-screening-20261012-corrected-v2",
+      "files": 146,
+      "matches_closed_inventory": true
+    }
+  ],
+  "historical_sources_modified_by_this_change": false,
+  "tests": {
+    "passed": 30,
+    "groups": {
+      "workspace_and_old_full_report_entries": 29,
+      "native_rehearsal_fixture_prevalidation": 1
+    }
+  },
+  "local_setup_failures": [
+    {
+      "directory": "SYNTHETIC-workspace-native-rehearsal-20261012",
+      "result": {
+        "accounting": {
+          "attempted_calls": 0,
+          "http_send_unknown_calls": 0,
+          "known_tokens": 0,
+          "observed_http_requests": 0,
+          "receiptless_calls": 0,
+          "unknown_usage_calls": 0
+        },
+        "completed": [],
+        "first_deviation": {
+          "code": "semantic_request_time_reservation",
+          "key": "workspace-probe:initial",
+          "phase": "before_send"
+        },
+        "new_qualification": 0,
+        "plan_sha256": "a8892d34bf5fe9ed8ee1c237f1148f9aa912af0be96ce85afb55a5d3502b5aa9",
+        "scan_completed": false,
+        "timing": {
+          "active_elapsed_seconds": 0.01600000000325963,
+          "completed_host_waits": 0,
+          "host_elapsed_seconds": 0.0,
+          "mode": "separate-development-host-clock-v1",
+          "plan_sha256": "a8892d34bf5fe9ed8ee1c237f1148f9aa912af0be96ce85afb55a5d3502b5aa9",
+          "qualification_adopted": false,
+          "wall_elapsed_seconds": 0.01600000000325963
+        },
+        "unexecuted": [
+          "workspace-probe:initial"
+        ],
+        "version": "SYNTHETIC-workspace-native-rehearsal-v1"
+      },
+      "actual_project_provider_calls": 0,
+      "independent_dispatches": 0,
+      "original_file_sha256": {
+        "authorization.json": "412f429d674003d2f597c06476f8b831c81dbda6e9046700eb328b99620b3fee",
+        "execution-preflight.json": "40aaca1a5adf6e82fc0eae874b00730df62c53443d61f6c33d8412dfe895c429",
+        "failure.json": "99f4c7c5fe00170c3709af3232bfb2d9c261590b3a5907bb98ca3d264edb329a",
+        "plan.json": "ee09004783f0fd1857307177116fd91dfb44325fd64a60f3386b739954c46e5c",
+        "result.json": "7172efdf63a7654f5ec6709f50aec87a949ee02077302c1f08dd6df4cbc6a1a1",
+        "submission-close.lock": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "development-host-clock/policy.json": "0bbb7a8c79c45d66f83e2e0ae23666885c0f66efdd88c2d56f7ab1985d40a098"
+      }
+    },
+    {
+      "directory": "SYNTHETIC-workspace-native-rehearsal-20261012-ready",
+      "result": {
+        "accounting": {
+          "attempted_calls": 1,
+          "http_send_unknown_calls": 0,
+          "known_tokens": 30,
+          "observed_http_requests": 1,
+          "receiptless_calls": 0,
+          "unknown_usage_calls": 0
+        },
+        "completed": [],
+        "first_deviation": {
+          "code": "native_missing_knowledge_citation_unreported",
+          "key": "workspace-probe:initial",
+          "phase": "protocol"
+        },
+        "new_qualification": 0,
+        "plan_sha256": "cce2a4a33fa460871c4329627e45316651613ccb4d1ab7ca2be8f7b12df5afdb",
+        "scan_completed": false,
+        "timing": {
+          "active_elapsed_seconds": 0.235000000015134,
+          "completed_host_waits": 0,
+          "host_elapsed_seconds": 0.0,
+          "mode": "separate-development-host-clock-v1",
+          "plan_sha256": "cce2a4a33fa460871c4329627e45316651613ccb4d1ab7ca2be8f7b12df5afdb",
+          "qualification_adopted": false,
+          "wall_elapsed_seconds": 0.235000000015134
+        },
+        "unexecuted": [],
+        "version": "SYNTHETIC-workspace-native-rehearsal-v1"
+      },
+      "actual_project_provider_calls": 0,
+      "independent_dispatches": 0,
+      "original_file_sha256": {
+        "authorization.json": "138d46bcde24b5df79f6a3b8973ef222e217fa1a9cf3d318246f94db1dee962f",
+        "execution-preflight.json": "40aaca1a5adf6e82fc0eae874b00730df62c53443d61f6c33d8412dfe895c429",
+        "failure.json": "90b8d923354ee8c289034073a14f1b90b2b4f57e8345373c64e0c42c636d3061",
+        "plan.json": "95d1165b5385f2baade2ffaf0a87c49660f6d31d429cab09049aa80fdbe74ae9",
+        "result.json": "7408607fe7d40b5f57bec50fc102015b54e932880357e59fa33ae19117bb30cf",
+        "submission-close.lock": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "development-host-clock/policy.json": "9f28522b80c2ae06d3e0a04d670a8b0da1e5f88a4d04a860738d67d7d7b8e7b8",
+        "workspace-probe-initial/material.json": "b1c3b52a570df422882fbafa9901f5352ca47617cbc68e363fb92b04f084081f",
+        "workspace-probe-initial/started.json": "6f8daf8c2f75cf6ffdc771dc49740828e4ebd0e2fb3fd1b80253a458c9003675",
+        "workspace-probe-initial/transport/issued-request.json": "e28871fe9467cda8978efb6f58f09f41ed9295f319791b1139fffb2f39b1824d",
+        "workspace-probe-initial/transport/raw-response.json": "0d8c145381d394853163e0428de4b902ac44b9e58f008e073a9b426f3dc48c7d",
+        "workspace-probe-initial/transport/receipt.json": "a723cba9fcf8b59b9c569d4bfc81b266c6bb3c043e6cd734323fd3f4c33d86c2",
+        "workspace-probe-initial/transport/stream-001/progress.json": "fd94160b6ad3d4f2ac6dfa16197920b743e875a074923fa6333511aaf7b10309",
+        "workspace-probe-initial/transport/stream-001/reservation.json": "d15a0278d2be4e0b60bfa3f6639ca4a99c5cc15e8a64e824f302f3d139fed327",
+        "workspace-probe-initial/transport/stream-001/result.json": "cac9ec53116d84b7b14ee413edd7e874d3c8b9eca30ca45cd89ab8dfd4418271"
+      }
+    }
+  ],
+  "repaired_source_sha256": {
+    "scripts/host_review_workspace.py": "6a9a2098312ad7ff00559b577a0b78b678ae3d97b9dc904ebe62e6c48d56c307",
+    "scripts/document_full_report_workspace.py": "092b6fcdc01cb696a423e013b94dddfc362887e71edf77649620b9c7fb7e1ebb",
+    "tests/host_workspace_native_rehearsal.py": "baace3122ea875daa56dd27bd38b5827dafadd9f736db380ebd120e2b4d6b0a0",
+    "tests/test_host_review_workspace.py": "3f23053b23100a0810e91418461c85f8c84b41cde9b3419db1ce0786a18dc5ff"
+  },
+  "automation_status": "PAUSED",
+  "paid_entrypoint_enabled": false,
+  "limitations": [
+    "Synthetic transport is not a model response or a real request/usage receipt.",
+    "Real native review covers one new tiny local report, not stability, full15 or old business certification.",
+    "Future paid scope and authorization are not selected by the verification entrypoint.",
+    "Registered-root workspace checks are not an OS sandbox against hostile concurrent mutations.",
+    "Historical 47/26/14/146 original inventories and each prior certification gap remain separate."
+  ]
+}

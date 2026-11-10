@@ -1,0 +1,138 @@
+{
+  "kind": "coarse_catalog_optimization_and_document_view_offline_v1",
+  "provider_calls": 0,
+  "baseline_commit": "71ef386c",
+  "source_code_sha256": "22893275d79765bed5b444980c774870bd4953bf8c3a7ba43822dbc1bb9c7260",
+  "all15_resolved_values_equal": true,
+  "all15_request_bytes_equal_to_preoptimization": true,
+  "before_after_request_and_values_sha256": "2541c4a92dccaa75b52b386837459cb017872268472564df436ecfc02a63dc81",
+  "timing_scope": "15 resolve_refs calls per round, warmed, alternating order, same process; not total CI or model time",
+  "timings_seconds": {
+    "before": [
+      0.11479340000005323,
+      0.11516449999999168,
+      0.11449529999981678,
+      0.1164387000003444,
+      0.11625419999973019,
+      0.11597710000023653,
+      0.11579289999963294
+    ],
+    "after": [
+      0.06613490000017919,
+      0.06785829999989801,
+      0.06777529999999388,
+      0.06896559999995588,
+      0.06958789999998771,
+      0.0660502999999153,
+      0.06733559999975114
+    ]
+  },
+  "median_seconds": {
+    "before": 0.11579289999963294,
+    "after": 0.06777529999999388
+  },
+  "document_view": {
+    "cases": [
+      {
+        "key": "claim-scope:1",
+        "baseline_input_ceiling": 43880,
+        "document_input_ceiling": 43818,
+        "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498"
+      },
+      {
+        "key": "claim-scope:4",
+        "baseline_input_ceiling": 43932,
+        "document_input_ceiling": 43870,
+        "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2"
+      },
+      {
+        "key": "claim-scope:3",
+        "baseline_input_ceiling": 43926,
+        "document_input_ceiling": 43864,
+        "report_sha256": "792db98a3e9ad94c8e1aa18ab8bf5da12824ac2f74d30a59bee132a700142518"
+      },
+      {
+        "key": "attribution:1",
+        "baseline_input_ceiling": 43798,
+        "document_input_ceiling": 43738,
+        "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195"
+      },
+      {
+        "key": "scope:4",
+        "baseline_input_ceiling": 43876,
+        "document_input_ceiling": 43816,
+        "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4"
+      },
+      {
+        "key": "scope:3",
+        "baseline_input_ceiling": 43892,
+        "document_input_ceiling": 43832,
+        "report_sha256": "b37807a43c1a62d4eab39951d3136909c0e0a02e4925707e5955a9a7b6d0290c"
+      },
+      {
+        "key": "claim-scope:2",
+        "baseline_input_ceiling": 44104,
+        "document_input_ceiling": 44044,
+        "report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753"
+      },
+      {
+        "key": "claim-scope:5",
+        "baseline_input_ceiling": 43928,
+        "document_input_ceiling": 43866,
+        "report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6"
+      },
+      {
+        "key": "claim-scope:6",
+        "baseline_input_ceiling": 43798,
+        "document_input_ceiling": 43738,
+        "report_sha256": "a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14"
+      },
+      {
+        "key": "claim-scope:7",
+        "baseline_input_ceiling": 43920,
+        "document_input_ceiling": 43858,
+        "report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3"
+      },
+      {
+        "key": "observed:1",
+        "baseline_input_ceiling": 48094,
+        "document_input_ceiling": 47992,
+        "report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a"
+      },
+      {
+        "key": "observed:2",
+        "baseline_input_ceiling": 48168,
+        "document_input_ceiling": 48066,
+        "report_sha256": "440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a"
+      },
+      {
+        "key": "observed:3",
+        "baseline_input_ceiling": 48092,
+        "document_input_ceiling": 47990,
+        "report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a"
+      },
+      {
+        "key": "observed:4",
+        "baseline_input_ceiling": 48150,
+        "document_input_ceiling": 48046,
+        "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab"
+      },
+      {
+        "key": "observed:5",
+        "baseline_input_ceiling": 48136,
+        "document_input_ceiling": 48034,
+        "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d"
+      }
+    ],
+    "all15_lossless": true,
+    "model_offsets_required": false,
+    "output_tool_schema_unchanged": true,
+    "five_slot_capacity_preview": 361378,
+    "baseline_five_slot_reservation": 361506,
+    "task_limit": 401920,
+    "actual_projected_runtime": false,
+    "wall_clock_feasibility_proven": false,
+    "production_router_accepts": false,
+    "semantic_improvement_proven": false
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "version": "natural-review-repair-authorized-v1",
+  "recorded_at": "2026-10-29T11:33:59.240425+00:00",
+  "plan": {
+    "plan_sha256": "85cf605a9f700bc666da5a0ba85b9d8f21c119c1c3ce0ae16a7d45b291b4354b",
+    "head": "227a8373c8730c01fd61b73b0fac9dd05e09bd4c",
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029",
+    "cwd": "D:\\riftcoach-natural-review-repair-execution-20261029",
+    "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe"
+  },
+  "authorization_sha256": "6e3653a666126451d0b4978db821ef13e57109218a0ccbecb16cc3f1a28ba1bd",
+  "expires_at": "2026-10-30T06:42:44.447472+00:00",
+  "waiter": {
+    "pid": 63852,
+    "started_at": "2026-10-29T11:32:36.615559+00:00",
+    "plan_sha256": "85cf605a9f700bc666da5a0ba85b9d8f21c119c1c3ce0ae16a7d45b291b4354b",
+    "authorization_sha256": "6e3653a666126451d0b4978db821ef13e57109218a0ccbecb16cc3f1a28ba1bd",
+    "ci_run": "40864229481"
+  },
+  "launcher_pid": 19776,
+  "current_state": "waiting_for_same_head_ci",
+  "business_execution_created": false,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "original15_repeated": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control",
+  "automation": "ACTIVE",
+  "automation_record": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-continuation-20261029-control\\automation-resumed.json"
+}

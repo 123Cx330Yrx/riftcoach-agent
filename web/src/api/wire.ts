@@ -141,18 +141,12 @@ export interface TaskWire {
   readonly report_available: boolean
 }
 
-export type TaskEventKindWire =
-  | "created"
-  | "claimed"
-  | "execution_started"
-  | "heartbeat"
-  | "cancel_requested"
-  | "checkpoint_saved"
-  | "recovery_required"
-  | "requeued"
-  | "succeeded"
-  | "failed"
-  | "cancelled"
+export const TASK_EVENT_KINDS = [
+  "snapshot_imported", "created", "claimed", "heartbeat", "checkpointed",
+  "execution_started", "cancel_requested", "recovery_requeued", "continuation_resumed",
+  "recovery_required", "succeeded", "failed", "cancelled", "reconciled",
+] as const
+export type TaskEventKindWire = typeof TASK_EVENT_KINDS[number]
 
 export interface TaskEventWire {
   readonly event_schema_version: "1.0"
@@ -228,12 +222,30 @@ export interface RunWire {
   readonly report_available: boolean
 }
 
+export interface RunUsageWire {
+  readonly schema_version: "1.0"
+  readonly run_id: string
+  readonly task_status: "succeeded" | "failed" | "cancelled"
+  readonly usage: RuntimeUsageWire | null
+  readonly session_accounting?: SessionAccountingWire
+}
+
+export interface SessionAccountingWire {
+  readonly scope: "cumulative_session"
+  readonly requests_reserved: number
+  readonly requests_observed: number
+  readonly known_tokens: number
+  readonly unknown_token_reservation: number
+  readonly retries: number
+  readonly unresolved_intents: number
+}
+
 export interface RecentMetricRowWire {
   readonly cs_per_min: number
   readonly gold_per_min: number
   readonly damage_per_min: number
   readonly vision_score: number
-  readonly deaths_before_15: number
+  readonly deaths_before_15: number | null
 }
 
 export interface RecentAveragesWire extends RecentMetricRowWire {

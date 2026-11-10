@@ -1,0 +1,49 @@
+{
+  "kind": "necessity-natural-offline-preparation-v1",
+  "run_id": "necessity-natural-offline-20261024",
+  "contract": {
+    "contract_id": "natural-flash-sol-necessity-development-v1",
+    "version": "1.6.3",
+    "scope": "unadmitted_opt_in",
+    "sha256": "7d40caadb775eb06fbe8b875212fd3a0384ab3a2f8a54882a401f7a55b16b6b3"
+  },
+  "first_request_sha256": "bf6101f37adfa2faa7af1ab3d78368a3a4f593391e91d125b4055794f9880062",
+  "source_sha256": {
+    "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+    "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+  },
+  "relationship": "observed",
+  "memory_records": 0,
+  "preselected_knowledge": false,
+  "source_scope": "familiar_public_development_not_holdout",
+  "profile": {
+    "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+    "base_url": "https://yujianwudi.top/v1",
+    "model": "gpt-6.1-sol",
+    "route": "proxy-12000"
+  },
+  "group_independently_verified": false,
+  "logical_generation_calls": 2,
+  "logical_review_calls": 4,
+  "limits": {
+    "max_calls": 10,
+    "total_tokens": 739840,
+    "execution_timeout_s": 2400,
+    "transport_retries": 2
+  },
+  "estimated_uncached_cny": "0.8636416",
+  "hard_billing_cap": false,
+  "provider_requests": 0,
+  "key_read": false,
+  "paid_launcher_ready": false,
+  "execution_authorized": false,
+  "semantic_approval": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "remaining_before_paid": [
+    "Explicit new task authorization and frozen code/CI binding",
+    "Manual repeated-timeout continuation policy; current Runtime has one bounded automatic retry",
+    "Actual native author/check-answer/final/import preflight for the new task"
+  ]
+}

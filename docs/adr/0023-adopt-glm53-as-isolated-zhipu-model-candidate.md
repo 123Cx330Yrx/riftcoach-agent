@@ -79,3 +79,40 @@ reasoning、ToolCall 批次和 finish reason 上有不同合同，必须各自�
 - `docs/plans/2026-08-15-glm53-provider-adoption-design.md`
 - `docs/adr/0012-partially-admit-zhipu-provider-capabilities.md`
 - `docs/adr/0022-sequentially-consume-multi-tool-call-batches.md`
+
+## 后续执行记录：RQ-165（2026-08-31）
+
+公开资料已经确认普通 API 的 `glm-5.3-flash` 模型标识与标准端点，因此按本 ADR 的既定顺序完成了
+G53-1 本地离线适配档案 TDD。该实现只证明 profile/Provider/probe 的请求响应合同，仍未完成
+exact-SHA CI、三次协议门或新鲜领域门；默认模型、DeepSeek 证据和生产采用边界保持不变。
+
+## 后续执行记录：RQ-166（2026-08-31）
+
+G53-2 已以提交 `0f97b92683e4981842e745a695864deb611bb630` 完成 exact-SHA 公共验证，Actions run
+`33325222755` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三个 job 全部成功。该结果只证明
+离线适配合同在精确提交上可复现；没有真实 Provider 调用或 Key 读取，也不改变默认模型、DeepSeek 证据、
+Workbench 或生产采用边界。下一步为等待独立授权的 G53-3 最多三次真实协议门，随后才可讨论 G53-4 新鲜领域门。
+
+## 后续执行记录：RQ-167（2026-08-31）
+
+G53-3 首次有界协议尝试在 A1 结构化请求的第 1 次调用返回脱敏 `authentication_failed`，A2 按安全合同跳过，
+`calls_used=1/3`、`admitted=false`。没有重试、没有保存正文或 Key；该错误码不能区分凭证无效、权限不足或
+账户/endpoint 接缝。G53-3 未通过，G53-4 不启动；下一步需用户确认普通 API 接缝并重新明确授权。
+
+## 后续执行记录：RQ-168/169（2026-08-31）
+
+用户确认旧 Key 已删除，创建新的普通 API Key 并修正普通端点配置后，G53-3 重开通过：A1 结构化合同
+与 A2 Agent 工具往返均通过，严格 `3/3` 次调用、`admitted=true`。这只证明隔离候选的普通协议接缝，
+不改变 GLM-5.2 默认基线，也不跳过 G53-4 新鲜领域门。
+
+## 后续执行记录：RQ-170 G53-4 新鲜领域门（2026-08-31）
+
+用户在 G53-3 普通协议接缝通过后授权一次真实领域门。按 ADR 既定隔离规则，冻结全新匿名三案例、Dataset/Input
+Plan、Prompt/Context snapshot 和硬预算；no-I/O preflight 通过后才创建临时 Provider，输出路径先独占预留。
+首案第 1 次响应含并行 ToolCall，Zhipu Adapter 以 `unsupported_parallel_tool_calls` fail closed；没有工具执行、
+Evidence、Evaluation 或发布，后两案按首错跳过。领域 `1/12` calls、`0` normalized tokens，累计含 G53-3 为
+`4/15` calls、`1115` tokens，费用状态为 `unknown`。
+不可变脱敏结果 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_domain_adoption_v1.json` 的 SHA-256 为
+`ae4c54f421bd716f14d01e0fbf32a020f93b313d111b2ddb1832773ad53b7f45`。结论为 `admitted=false` /
+`completed-local-rejected`；该结果不具备 public CI 语义，不改变默认模型、DeepSeek、Workbench、Auth 或
+`production_media=0`，也不授权在同一考卷上重跑或放宽并行 ToolCall 合同。

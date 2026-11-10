@@ -37,3 +37,17 @@ Flash 的较长执行窗和较高输出上限允许它完成真实的思考与�
 
 本 ADR 不修改 Portal、Account、Broadcast Workbench、Auth/RSO、Riot routing、媒体采用，也不批准真实
 G53-7 调用；这些仍按 8E 既有顺序和独立质量闸门执行。
+
+## 后续观察：RQ-181 响应完成度诊断（2026-08-31）
+
+在 RQ-180 的一次 G53-7 尝试只留下 `incomplete_chat_response` 聚合码后，用户授权了一次独立、正文零留存的
+首案例诊断。实现基线 `7cb66d218389c0e7d7aa7b2b1969a4678402f857` 上，首个 `agent_initial` 回合记录到
+`finish_reason=length`、input/output `2220/2048`、空正文、非空 reasoning、0 ToolCall；适配器按本 ADR 所依赖的
+fail-closed 合同拒绝了未完成响应。脱敏结果文件
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_response_completion_diagnostic_v1.json`
+的 canonical-LF SHA-256 为 `050df3fc7afb2c2dc4e99fd2e731f8d9e6133d2806c65171f2dcdbd30834a000`。
+
+该观察只说明本案例中 2048 输出上限先被最大 reasoning 消耗，不改变本 ADR 的 Flash-only 路线，也不授权静默
+提高全局上限或放宽适配器。RQ-182 已提出并在本地完成版本化响应完成策略与离线 TDD：严格 Flash v1
+保持 2048/零额外调用，8192/一次 fresh-recovery 仅为未注册候选；候选要进入实现，仍须另建 runtime、
+attempt/Trace、预算合同并取得新 exact-SHA 证据和独立授权。在此之前不重跑领域门、不把诊断写成生产准入。

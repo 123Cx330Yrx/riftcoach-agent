@@ -1,0 +1,213 @@
+{
+  "experiment": "golden-contextual-bounded-review-v9",
+  "kind": "unaltered_recheck_response_offline_replay_not_live_pair_pass",
+  "original_receipt": {
+    "budget_admission": "each_request_reserved_against_remaining_actual_usage_no_completion_guarantee",
+    "case_counts": {
+      "finalized": 2,
+      "interrupted": 0,
+      "not_started": 0,
+      "planned": 2,
+      "started": 2
+    },
+    "cases": [
+      {
+        "attempted_calls": 2,
+        "automatic_path_pass": true,
+        "completed_calls": 2,
+        "expected_report": "accept",
+        "expected_target": "accept",
+        "final_score": 96,
+        "final_verdict": "pass",
+        "id": "contextual_01",
+        "initial_control": {
+          "expected_report": "accept",
+          "expected_target": "accept",
+          "id": "contextual_01",
+          "matched": true,
+          "report_matched": true,
+          "score": 96,
+          "target_accepted": true,
+          "target_clarified": false,
+          "target_matched": true,
+          "target_rejected": false,
+          "valid": true,
+          "verdict": "pass"
+        },
+        "input_tokens": 24849,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 20335,
+        "report_matched": true,
+        "reserved_calls": 2,
+        "revision_attempted": false,
+        "score": 96,
+        "target_accepted": true,
+        "target_clarified": false,
+        "target_matched": true,
+        "target_rejected": false,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "pass"
+      },
+      {
+        "attempted_calls": 5,
+        "completed_calls": 5,
+        "error_code": "contextual_patch_unexpected_scope_source",
+        "error_type": "ValueError",
+        "expected_report": "reject",
+        "expected_target": "reject",
+        "id": "contextual_02",
+        "initial_control": {
+          "expected_report": "reject",
+          "expected_target": "reject",
+          "id": "contextual_02",
+          "matched": true,
+          "report_matched": true,
+          "score": 80,
+          "target_accepted": false,
+          "target_clarified": false,
+          "target_matched": true,
+          "target_rejected": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 64934,
+        "interrupted": false,
+        "matched": false,
+        "output_tokens": 48770,
+        "report_matched": true,
+        "reserved_calls": 5,
+        "revision_attempted": true,
+        "score": 80,
+        "stop_reason": "protocol_or_execution_failure",
+        "target_accepted": false,
+        "target_clarified": false,
+        "target_matched": true,
+        "target_rejected": true,
+        "unknown_usage_calls": 0,
+        "valid": false,
+        "verdict": "needs_revision"
+      }
+    ],
+    "ci_run": "35005362095",
+    "completed_calls": 7,
+    "experiment_id": "golden-contextual-bounded-review-v8",
+    "first_review_input_ceilings": [
+      47540,
+      47612
+    ],
+    "head_sha": "68e8670a8d83999b002fb58c76836cff3c92cf77",
+    "implementation": {
+      "app/evaluation/golden_bounded_correction.py": "9591918a947c426d8b88465d2e080289f822cfdd07caeefcf5e0f8f4df9a03f6",
+      "app/evaluation/golden_bounded_correction_requests.py": "84f6953453abba4cdb300436de771808028e280a2abdf446bafacd746d29344a",
+      "app/evaluation/golden_bounded_workflow.py": "8c29be0dda4168e3ef19e7d599b1b76b3add3f7f394c65406286c70e5b157656",
+      "app/evaluation/golden_context_diagnostics.py": "c93fa92e5318d960441a807ec22264c75eae77cef1e944934a0d2607042385f6",
+      "app/evaluation/golden_context_review.py": "9aeddb1400525923ae147a5fb3a1b2e61363369bed0b0c97b9eba0f2d25e8ccd",
+      "app/evaluation/golden_contextual_correction.py": "3fbeaa31f447f522b77d78e2f18633d8ff9b85d9c725e8f4fd839f47fd7f4232",
+      "app/evaluation/golden_contextual_patch_wire.py": "c3395df1e2e37620268b646f5c61d3299a098c901231869210c3c3edb132e5c5",
+      "app/evaluation/golden_contextual_requests.py": "f66d8b3d0ae63c35e9d17e2b5aad24f1c55551e96562b0d81ef94075b5004a73",
+      "app/evaluation/golden_contextual_sources.py": "db891f59333ef8fb82fb0f8af4cd222eb9a0bdd34d828dba140376d9023621be",
+      "app/evaluation/golden_contextual_validation.py": "23b198edd5d75c0241f97ca61d08cfbfc56f40d0ab4e394e56695c7fb4f0887c",
+      "app/evaluation/golden_contextual_workflow.py": "227d1909aec323e7d2d320564db4f021540739c3c12a248ea12ed2d9ff8b9704",
+      "app/evaluation/golden_integrated_review.py": "c8af5c30a3aa7143d190683b57061ed0e94359bbdccee4cff85d5cbb9b967577",
+      "app/evaluation/golden_integrated_runtime.py": "182a01bf29236ad47c48d443cecd1d625901b9c0d9ef5a59bd46d069ca60a219",
+      "app/evaluation/golden_numeric_evidence_v4.py": "b85270a3c20ead6bac1dce632723c7b40907911756e0cafee90aedb0b82accf4",
+      "app/evaluation/golden_stream_bridge.py": "6ad2a4e005c483d60a2bc48f06a6a7ae8ab71cc828dbdc7e2b1cfe46b6855147",
+      "app/runtime/coach_budget.py": "3e8b8d2edd66e52f5a6e8556516824c37ea4dfe259d6e881f9c389d330ea46ac",
+      "data/evaluation/datasets/golden_contextual_reports_v2.json": "35892dc275b4b172edb3fa0a54af8625a59829a39002247b1cf59b0d10d34742",
+      "scripts/run_golden_bounded_review.py": "2e78acc9b3dda3a0988530ab6a2f225e8cfc22bef8a8ea5931b3c9c757031ba1",
+      "scripts/run_golden_contextual_review.py": "093eb47ac4b5bf183f31fb1cc7f0ccaab86e7353ee09ce1a378fdb55e7a36fde",
+      "scripts/run_golden_integrated_review.py": "a4d981ffe03a19ca1d73380c006f6d6f68d796a825d57a4add020414cad90d3d"
+    },
+    "input_tokens": 89783,
+    "labels_sent_to_model": false,
+    "manifest_sha256": "35892dc275b4b172edb3fa0a54af8625a59829a39002247b1cf59b0d10d34742",
+    "manual_semantic_acceptance": false,
+    "max_calls": 10,
+    "max_calls_per_report": 5,
+    "max_output_per_call": 32768,
+    "max_revisions_per_report": 1,
+    "max_seconds_per_call": 300,
+    "max_seconds_per_report": 900,
+    "max_tokens_per_report": 401920,
+    "output_tokens": 69105,
+    "reasoning_effort": "high",
+    "report_sha256": [
+      "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219",
+      "760519d806a5fd52ab97364653d29d1bb52d72b195f29b92ccb27028ab6d6153"
+    ],
+    "reserved_calls": 7,
+    "scope": "complete_report_development_candidate_not_production",
+    "sdk_retries": 0,
+    "selected_cases": [
+      "contextual_01",
+      "contextual_02"
+    ],
+    "source_case_ids": [
+      "stable_unbounded",
+      "future_with_disclaimer"
+    ],
+    "standard_id": "whole-context-acceptance-v1",
+    "stop_policy": "stop_pair_on_protocol_transport_or_semantic_failure; manual_review_required_for_acceptance",
+    "unknown_usage_calls": 0
+  },
+  "raw_hashes": {
+    "response-004.json": "62af1dbef31aa790b0ca8b77d102bdfed3f3ee5fe4066e8f86cab320b187e128",
+    "response-005.json": "7754565dca7517e9abec430b85fb0c70f61fd6016914b91997f6cf18909c0b3b",
+    "result.json": "d6e647a476d9e084c57a572e6bb91e3b70d60286c2d16b9c20de983fe5a088cc",
+    "revised-report.md": "ced6a2813ede8fd5e5c2e40ab9f8fa12da32b8bc9c92799f14754e453eca4bb7"
+  },
+  "replay_score": 95,
+  "replay_verdict": "pass",
+  "replay_issues": 0,
+  "supplemental_sources_retained": [
+    {
+      "decision": "direct_supported",
+      "evidence_refs": [
+        2,
+        3
+      ],
+      "explanation": "OP.GG中单快照（2026-09-10T12:15:25Z检索）：辛德拉T2第12名、上期第18（rank_previous 18），薇古丝T2第14名、胜率0.52→52%，数值与外部事实一致；报告标注来源、位置与「非本局版本/段位基准」的范围，仅作条件性验证问题，未当作玩家胜率。",
+      "quote_ref": {
+        "block": 19,
+        "head": "OP.GG 中单快照",
+        "tail": "胜率 52%"
+      },
+      "scope_source": {
+        "block": 19,
+        "head": "OP.GG 中单快照",
+        "tail": "而非结论"
+      },
+      "audit": "cohort_comparison"
+    },
+    {
+      "decision": "direct_supported",
+      "evidence_refs": [
+        5
+      ],
+      "explanation": "OP.GG辅助快照（2026-09-10T12:15:28Z检索）：卡蜜尔辅助T4、第35名、胜率0.46→46%，与外部事实一致；报告标注检索时间，并将其定位为「是否值得重复练习」的验证问题，未将外部胜率等同于玩家胜率或直接否定该英雄。",
+      "quote_ref": {
+        "block": 23,
+        "head": "显示卡蜜尔辅助 T4",
+        "tail": "胜率 46%"
+      },
+      "scope_source": {
+        "block": 23,
+        "head": "OP.GG 辅助快照",
+        "tail": "验证问题"
+      },
+      "audit": "cohort_comparison"
+    }
+  ],
+  "manual_findings": [
+    {
+      "case": "contextual_01",
+      "target": "经济和伤害是较稳定的差异项。",
+      "kind": "evaluator_subject_drift",
+      "detail": "Accepted selected-sample classification, but explanation substitutes all five mixed-role games for earlier explicitly scoped four mid games; do not accept pair quality."
+    }
+  ],
+  "provider_calls": 0,
+  "manual_semantic_acceptance": false
+}

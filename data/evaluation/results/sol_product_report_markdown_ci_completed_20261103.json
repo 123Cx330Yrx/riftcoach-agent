@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "status": "all_twelve_ci_jobs_success",
+  "recorded_at": "2026-11-03T15:25:42.158206+00:00",
+  "run": 41622256041,
+  "head": "5e190303aea1c0530fd835b7e829b8136afc9255",
+  "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41622256041",
+  "proof": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-report-markdown-20261103\\ci-terminal-41622256041.json",
+    "sha256": "fa4c0895d39c2af13e490778fa092fbfa91b16db1770d9486998003e0cff2b91"
+  },
+  "jobs": [
+    {
+      "name": "packaging-smoke",
+      "databaseId": 125870642657,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (0)",
+      "databaseId": 125870642979,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (0)",
+      "databaseId": 125870642994,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (2)",
+      "databaseId": 125870643002,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (3)",
+      "databaseId": 125870643004,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "web-checks",
+      "databaseId": 125870643070,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (1)",
+      "databaseId": 125870643073,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (1)",
+      "databaseId": 125870643114,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (2)",
+      "databaseId": 125870643234,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (3)",
+      "databaseId": 125870643385,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-migrations",
+      "databaseId": 125873843084,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest",
+      "databaseId": 125909982444,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "local_sql_executed": false,
+  "scope": "Safe Markdown engineering package complete; not new generation semantics or overall P3 acceptance",
+  "paid_requests": 0,
+  "source_requests": 0,
+  "real_key_reads": 0
+}

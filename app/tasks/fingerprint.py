@@ -7,6 +7,8 @@ import re
 from collections.abc import Mapping
 from typing import Any
 
+from app.tasks.models import TaskPublicationMode
+
 from app.tasks.models import ConversationReviewTaskBinding
 
 
@@ -19,6 +21,7 @@ def canonical_task_request_bytes(
     task_kind: str,
     schema_version: str,
     request_payload: Mapping[str, Any],
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY,
 ) -> bytes:
     if not isinstance(task_kind, str) or not _TASK_KIND_PATTERN.fullmatch(task_kind):
         raise ValueError("task_kind must be a safe canonical identifier")
@@ -36,6 +39,8 @@ def canonical_task_request_bytes(
         "schema_version": schema_version,
         "task_kind": task_kind,
     }
+    if publication_mode is not TaskPublicationMode.LEGACY:
+        envelope["publication_mode"] = publication_mode.value
     try:
         serialized = json.dumps(
             envelope,
@@ -54,12 +59,14 @@ def compute_task_request_fingerprint(
     task_kind: str,
     schema_version: str,
     request_payload: Mapping[str, Any],
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY,
 ) -> str:
     return hashlib.sha256(
         canonical_task_request_bytes(
             task_kind=task_kind,
             schema_version=schema_version,
             request_payload=request_payload,
+            publication_mode=publication_mode,
         )
     ).hexdigest()
 
@@ -69,6 +76,7 @@ def canonical_conversation_review_task_bytes(
     owner_id: str,
     binding: ConversationReviewTaskBinding,
     request_payload: Mapping[str, Any],
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY,
 ) -> bytes:
     if not isinstance(owner_id, str) or not owner_id:
         raise ValueError("owner_id must be a bounded identity")
@@ -86,6 +94,8 @@ def canonical_conversation_review_task_bytes(
         "schema_version": "2.0",
         "task_kind": "recent_review",
     }
+    if publication_mode is not TaskPublicationMode.LEGACY:
+        envelope["publication_mode"] = publication_mode.value
     try:
         serialized = json.dumps(
             envelope,
@@ -104,12 +114,14 @@ def compute_conversation_review_task_fingerprint(
     owner_id: str,
     binding: ConversationReviewTaskBinding,
     request_payload: Mapping[str, Any],
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY,
 ) -> str:
     return hashlib.sha256(
         canonical_conversation_review_task_bytes(
             owner_id=owner_id,
             binding=binding,
             request_payload=request_payload,
+            publication_mode=publication_mode,
         )
     ).hexdigest()
 

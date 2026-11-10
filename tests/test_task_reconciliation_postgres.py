@@ -15,6 +15,8 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.persistence.config import DatabaseSettings
 from app.persistence.database import build_engine, build_session_factory
+from app.persistence.evidence_snapshot_record import EvidenceBundleSnapshotRecord
+from app.persistence.task_event_record import ReviewTaskEventRecord
 from app.persistence.task_repository import PostgresTaskRepository
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
@@ -27,7 +29,11 @@ from app.tasks.models import (
     TaskStatus,
     TaskTerminal,
 )
+from app.tasks.recent_review_executor import RecentReviewTaskExecutor
+from app.tasks.reliable_runtime import TaskCheckpointPhase, TaskLifecycleEventKind
 from app.tasks.reconciliation import (
+    ExpiredReviewTaskRecovery,
+    TaskReconciliationError,
     ManualRecoveryStatus,
     ManualReviewTaskRecovery,
     RecentReviewTerminalEvidenceVerifier,
@@ -36,6 +42,8 @@ from app.tasks.reconciliation import (
 )
 from app.persistence.task_record import ReviewTaskRecord
 from tests.test_run_query_service import _create_terminal_run
+from tests.test_evidence_publication_store import prepared
+from tests.test_evidence_task_recovery import bound_task, publication_context
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -239,3 +247,141 @@ def test_reconciliation_does_not_change_a_task_without_valid_evidence(
             verifier=RecentReviewTerminalEvidenceVerifier(tmp_path),
         ).reconcile(claimed, now=claimed.lease.expires_at)
         assert result.status is ReconciliationStatus.RECOVERY_REQUIRED
+
+
+def ready_task(repository, tmp_path, *, rejected=False):
+    source = bound_task()
+    pending = PendingReviewTask(
+        task_id=source.task_id, run_id=source.run_id, owner_id=source.owner_id,
+        idempotency_key=source.idempotency_key,
+        publication_mode=source.publication_mode,
+        request_payload=source.request_payload,
+        request_fingerprint=source.request_fingerprint,
+        created_at=source.created_at,
+    )
+    claimed = create_and_claim(repository, pending)
+    assert repository.save_checkpoint(
+        task_id=claimed.task_id, worker_id=claimed.worker_id,
+        lease_generation=claimed.lease.generation,
+        lease_token=claimed.lease.private_token,
+        checkpoint_id="execution-started-1", phase=TaskCheckpointPhase.EXECUTION_STARTED,
+        now=claimed.claimed_at + timedelta(seconds=1),
+    )
+    claimed = repository.get_by_task_id(owner_id=claimed.owner_id, task_id=claimed.task_id)
+    app, deps, store, _ = prepared(tmp_path, rejected=rejected)
+    terminal = RecentReviewTaskExecutor(
+        application_service=app,
+        evidence_verifier=RecentReviewTerminalEvidenceVerifier(tmp_path),
+        runs_root=tmp_path,
+    ).execute(claimed)
+    # Simulate the crash after durable files and before the worker's SQL commit.
+    return claimed, deps, store, terminal
+
+
+def recover(repository, task, tmp_path, path="single"):
+    verifier = RecentReviewTerminalEvidenceVerifier(tmp_path)
+    if path == "single":
+        return ReviewTaskReconciler(repository=repository, verifier=verifier).reconcile(
+            task, now=task.lease.expires_at,
+        )
+    return ExpiredReviewTaskRecovery(repository=repository, verifier=verifier).recover_batch(
+        now=task.lease.expires_at,
+    )[0]
+
+
+def assert_unpublished(factory, task):
+    with factory() as session:
+        row = session.get(ReviewTaskRecord, task.task_id)
+        assert row.status == TaskStatus.RUNNING.value
+        assert row.publication_reference is None and row.summary_digest is None
+        assert row.first_snapshot_id is None and row.first_snapshot_digest is None
+        assert session.scalar(sa.select(sa.func.count()).select_from(
+            EvidenceBundleSnapshotRecord)) == 0
+        assert session.scalar(sa.select(sa.func.count()).select_from(
+            ReviewTaskEventRecord).where(
+                ReviewTaskEventRecord.event_kind == TaskLifecycleEventKind.RECONCILED.value,
+            )) == 0
+
+
+@pytest.mark.parametrize("path", ["single", "batch"])
+@pytest.mark.parametrize("rejected", [False, True])
+def test_real_file_recovery_commits_one_snapshot_terminal_and_event(tmp_path, path, rejected):
+    with migrated_repository() as (repository, factory):
+        task, deps, store, terminal = ready_task(repository, tmp_path, rejected=rejected)
+        calls = tuple(deps["provider"].requests)
+        assert_unpublished(factory, task)
+        assert recover(repository, task, tmp_path, path).status.value == "reconciled"
+        manifest = store.read(publication_context(task))
+        with factory() as session:
+            row = session.get(ReviewTaskRecord, task.task_id)
+            snapshots = session.scalars(sa.select(EvidenceBundleSnapshotRecord)).all()
+            events = session.scalars(sa.select(ReviewTaskEventRecord).where(
+                ReviewTaskEventRecord.event_kind == TaskLifecycleEventKind.RECONCILED.value,
+            )).all()
+            assert row.status == TaskStatus.SUCCEEDED.value
+            assert row.publication_status == ("rejected" if rejected else "published")
+            assert row.report_available is not rejected
+            assert row.summary_digest == manifest.summary_digest
+            assert row.publication_reference == terminal.publication_reference
+            assert len(snapshots) == len(events) == 1
+            snapshot = snapshots[0]
+            assert (snapshot.task_id, snapshot.owner_id, snapshot.run_id) == (
+                task.task_id, task.owner_id, task.run_id,
+            )
+            assert row.first_snapshot_id == snapshot.snapshot_id
+            assert row.first_snapshot_digest == snapshot.snapshot_digest
+            assert snapshot.bundle_digest == manifest.bundle.bundle_digest
+        # The same expired generation cannot publish a second snapshot/event.
+        assert recover(repository, task, tmp_path).status.value == "ownership_lost"
+        with factory() as session:
+            assert session.scalar(sa.select(sa.func.count()).select_from(
+                EvidenceBundleSnapshotRecord)) == 1
+            assert session.scalar(sa.select(sa.func.count()).select_from(
+                ReviewTaskEventRecord).where(
+                    ReviewTaskEventRecord.event_kind == TaskLifecycleEventKind.RECONCILED.value,
+                )) == 1
+        assert tuple(deps["provider"].requests) == calls
+
+
+def test_recovery_event_failure_rolls_back_snapshot_and_terminal(tmp_path, monkeypatch):
+    with migrated_repository() as (repository, factory):
+        task, deps, _, _ = ready_task(repository, tmp_path)
+        calls = tuple(deps["provider"].requests)
+        original = repository._append_event
+        def fail_event(*args, **kwargs):
+            if kwargs["event_kind"] is TaskLifecycleEventKind.RECONCILED:
+                raise RuntimeError("injected event transaction failure")
+            return original(*args, **kwargs)
+        monkeypatch.setattr(repository, "_append_event", fail_event)
+        with pytest.raises(TaskReconciliationError, match="task_terminal_update_failed"):
+            recover(repository, task, tmp_path)
+        assert_unpublished(factory, task)
+        monkeypatch.setattr(repository, "_append_event", original)
+        assert recover(repository, task, tmp_path).status.value == "reconciled"
+        assert tuple(deps["provider"].requests) == calls
+
+
+@pytest.mark.parametrize("fence", ["lease_token", "cancel"])
+def test_expired_recovery_fences_stale_owner_and_cancellation(tmp_path, fence):
+    with migrated_repository() as (repository, factory):
+        task, _, _, _ = ready_task(repository, tmp_path)
+        if fence == "lease_token":
+            task = task.model_copy(update={
+                "lease": task.lease.model_copy(update={"token": "0" * 64}),
+            })
+        else:
+            repository.request_cancel(
+                owner_id=task.owner_id, task_id=task.task_id,
+                request_id="cancel-before-recovery", reason="user_requested",
+                now=task.lease.expires_at,
+            )
+        assert recover(repository, task, tmp_path).status.value == "ownership_lost"
+        assert_unpublished(factory, task)
+
+
+def test_tampered_evidence_does_not_create_a_partial_database_publication(tmp_path):
+    with migrated_repository() as (repository, factory):
+        task, _, store, _ = ready_task(repository, tmp_path)
+        (tmp_path / task.run_id / store.filename).write_bytes(b"tampered")
+        assert recover(repository, task, tmp_path).status.value == "recovery_required"
+        assert_unpublished(factory, task)

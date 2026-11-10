@@ -1,0 +1,20 @@
+{
+  "kind": "branch-reconciliation-and-user-resume-v1",
+  "recorded_at": "2026-10-13T08:35:52.910754+00:00",
+  "head": "8f271698739b86c1197bb97a808a41cd35995d99",
+  "ci": {
+    "id": 38355387193,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "threads": {
+    "01a1338d-e117-7501-b5a9-2cc012f221e7": "closed prior batch, failure decision and proposal commits already present; idle",
+    "01a1337b-b095-71e3-918f-bf8809b43102": "post-fork turns failed at model capacity; inherited original turns are not independent work; idle"
+  },
+  "primary": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+  "calibration_task": "relation-joint-material-calibration-20261013",
+  "resume": "Administrative wake followed by MESSAGE; same original fixed material task; no second material dispatch",
+  "automation": "PAUSED",
+  "provider_calls": 0,
+  "new_paid_authorization": false
+}

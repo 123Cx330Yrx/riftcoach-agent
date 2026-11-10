@@ -1,0 +1,63 @@
+{
+  "version": "initial-review-repair-coverage-local-v1",
+  "recorded_at": "2026-10-29T10:15:21.398534+00:00",
+  "development_base": "d93c16c1764752dc91982324aa4d6e9fba651f57",
+  "scope": "prospective completion-initial missed-error coverage and normal tail continuation",
+  "provider_requests": 0,
+  "key_reads": 0,
+  "policy": "pause-initial-review-v1",
+  "original_review_remains_rejected": true,
+  "recovery_approval_implemented": true,
+  "offline_application_and_seal_verified": true,
+  "live_application_restored": false,
+  "formal_tail_completed": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "tests": {
+    "unique_passed": 17,
+    "application_approve_and_reject": "2 passed in 204.54 seconds",
+    "launcher_through_replay_and_seal": "1 passed in 343.27 seconds",
+    "pause_native_default_application_inventory": "11 passed in 168.09 seconds",
+    "default_rejection_seal_and_cli": "3 passed in 32.92 seconds",
+    "first_attempt": "1 component fingerprint drift failure before current manifest refresh; original test failure retained",
+    "network": "denied; HTTP and native event evidence synthetic",
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed"
+  },
+  "verified": [
+    "unresolved initial rejection pauses before credentials or new request",
+    "repair material rebuilt from both original full requests, sources, raw responses and original submissions",
+    "repair edit assessment retains original false submission and requires four report checks",
+    "rejected coverage remains pending without application or repeated submission",
+    "same task is create-only; changed coordination is rejected",
+    "approved coverage still requires compatibility/edit and exactly one application",
+    "both fresh inputs bind the actual approved report",
+    "read-only application replay and launcher seal preserve rejected original and all inventory",
+    "native event or approved report change is rejected",
+    "default old rejection and seal behavior preserved"
+  ],
+  "inventory_changed_fields": [
+    "component_fingerprints",
+    "program_sha256"
+  ],
+  "other_inventory_fields_unchanged": 28,
+  "original15_cases": 15,
+  "original15_repeated": false,
+  "limitations": [
+    "only completion-initial with accepted facts-initial full pair can recover",
+    "early facts-initial rejection stays pending",
+    "old frozen sealed diagnostics cannot be directly reopened",
+    "synthetic acceptance is not new live semantic or product qualification"
+  ],
+  "automation": "PAUSED",
+  "next_action": "prepare controlled inheritance of real sealed evidence and full old accounting without new paid IO",
+  "source_sha256": {
+    "app/evaluation/sol_session_review.py": "e98aa0ad7b0e3d0667ab47f1a7d0c97d050ba0a4fd6b1c856079444bb2787b27",
+    "app/runtime/sol_session_runtime.py": "bdcb73422df03e34397f603736d91a4be62b7e6ca8026f7f9098ab7695102d84",
+    "scripts/review_duty_host_gate.py": "172ea1acc7c232b0afb10d00bd552d1ed875a39fa2597c1740314ebfa23809b7",
+    "scripts/sol_natural_launch.py": "766f7e4cfcfb959a3ec614ae7fbb5e00cb7f26d14c4e7f55cebdd5cb1fc461c3",
+    "tests/test_sol_review_repair_continuation.py": "e7ccb1d151283618e2ee067f13c98e7c4c37891bf22d8eae027053b576683582",
+    "tests/test_sol_natural_repair_launch.py": "cb5ef0d29aefd6b23e6b2d30799ef95ce807c54d0f11794166c28599fe9b0a61"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "kind": "sol-necessity-manual-recovery-offline-v1",
+  "run_id": "sol-necessity-natural-20261024",
+  "contract": {
+    "contract_id": "natural-flash-sol-necessity-development-v1",
+    "version": "1.6.3",
+    "scope": "unadmitted_opt_in",
+    "sha256": "9df3be166e2fc82d923031a28bfedb51d0cd76a27cf9b81dcdcce43db1b009ca"
+  },
+  "first_request_sha256": "02df45a8ad4bf78baa5967d7daeb9ff9fbc290eee9cc411755babc3b521204ed",
+  "source_sha256": {
+    "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+    "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+  },
+  "relationship": "observed",
+  "memory_records": 0,
+  "preselected_knowledge": false,
+  "source_scope": "familiar_public_development_not_holdout",
+  "profile": {
+    "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+    "base_url": "https://yujianwudi.top/v1",
+    "model": "gpt-6.1-sol",
+    "route": "proxy-12000"
+  },
+  "group_independently_verified": false,
+  "logical_generation_calls": 2,
+  "logical_review_calls": 4,
+  "limits": {
+    "max_calls": 10,
+    "total_tokens": 739840,
+    "execution_timeout_s": 3600,
+    "transport_retries": 4
+  },
+  "estimated_uncached_cny": "1.0683904",
+  "hard_billing_cap": false,
+  "provider_requests": 0,
+  "key_read": false,
+  "paid_launcher_ready": false,
+  "execution_authorized": false,
+  "semantic_approval": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "remaining_before_paid": [
+    "Explicit new task authorization and frozen code/CI binding",
+    "Actual native author/check-answer/final/import preflight for the new task"
+  ],
+  "structural_checks": {
+    "session_candidate_launcher": 56,
+    "single_worker_fixture_fix": 13,
+    "new_candidate_launcher_manual_retry_and_seal": 1,
+    "owned_flash_deadline_manual_retry": 1,
+    "related_legacy_regression": {
+      "passed": 49,
+      "elapsed_s": 755.24
+    },
+    "total_distinct_passed": 120
+  },
+  "startup_profiles_verified": [
+    "sol_natural_v1",
+    "sol_necessity_v1"
+  ],
+  "governance_verified": true,
+  "compile_verified": true,
+  "old_public_ci": {
+    "run_id": "40069863769",
+    "conclusion": "failure",
+    "cause": "shared test child CONTRACT_MODULE argument omitted by single-request test",
+    "fix": "explicit baseline contract in that test child; all 13 file tests pass"
+  },
+  "native_route": {
+    "existing_principal": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+    "actual_followup_final": "ROUTE_AVAILABLE",
+    "new_agent_created": false,
+    "new_task_author_preflight_complete": false
+  },
+  "frozen_execution": "D:/riftcoach-sol-necessity-natural-execution",
+  "prospective_operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-necessity-natural-20261024",
+  "original_three_seal_sha256": "79afb6319bdfd7807531b9992cb2cd692c0f8960a535154e774732a76de82a98",
+  "source_sha256_by_path": {
+    "app/evaluation/sol_necessity_contract.py": "cf415e0c27b61dbd511a2d97eb0d856e2feee39499e249104d6ba666c1f77a7f",
+    "app/evaluation/sol_natural_session.py": "0038a0855f4f21e24764d69bf3f02804d00a6ccde37ec60a71ec82e1ff4ba76f",
+    "app/runtime/sol_natural_provider.py": "60715a4fab8415eed25947f74a8a697ea90662c7eb880b8be69c68cdaffc7c46",
+    "app/runtime/sol_session_runtime.py": "0073776bad4d6b8a9cd5369a7eba0c831147e0df3e8a75b0024b0ad11fbfb2ca",
+    "app/runtime/sol_session_receipts.py": "26fffd9fcf61d1a80cb94d1100b0695a566190992516bd20f29af4337a8b1fd3",
+    "scripts/sol_natural_launch.py": "be9b9fae30942a6bf14bf6fbd52a90ef734fdb2c8263a59022b131ae9b7fc487",
+    "scripts/prepare_sol_necessity_natural.py": "2562709d71209135c90e230aadf59e64f4375feeba19af4509ede92cf9c262d6"
+  }
+}

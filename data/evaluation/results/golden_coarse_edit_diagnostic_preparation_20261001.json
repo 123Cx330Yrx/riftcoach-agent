@@ -1,0 +1,84 @@
+{
+  "experiment": "coarse-necessary-edit-diagnostic-20261001",
+  "adapter": "coarse-source-explicit-revision-v1",
+  "cells": [
+    {
+      "key": "claim-scope:4",
+      "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+      "input_sha256": "39ab474693151b624560c80a26790d748c9279104efad8a8e598635a5641623f",
+      "historical_initial_raw_sha256": "71f7c4e493f6a3697e2c8689a5f44d994648fb6ea0d5a3bcb32a89ba0efdc652",
+      "request_sha256": "ddc56ef742de5d1d22b1b4b562e2df10247ef35c420e5353cd4f40917cf48169",
+      "input_reservation": 38972,
+      "output_cap": 32768
+    },
+    {
+      "key": "claim-scope:1",
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+      "historical_initial_raw_sha256": "06a5e9a550e13a6271100e77212b25fb5897b691337c2f274fa0b118c1fa3cab",
+      "request_sha256": "01b77c63433ade84ba8d00950ca7bcf22d51d039b82d5cd31ce9a7aaf3b38bea",
+      "input_reservation": 37896,
+      "output_cap": 32768
+    }
+  ],
+  "source_sha256": {
+    "scripts/run_coarse_edit_diagnostic.py": "bfaf65bf01e87c8ef11b9a4181ea80462ece3a0f6d50cf5a1b7027db2474b752",
+    "app/evaluation/coarse_revision_editor.py": "5776052f59c70358d7b6e248e2f6c4f9570c968e45ba6b6f3571d5ccc17e6364",
+    "app/evaluation/source_patch_editor.py": "2d1795029bb4e4473acd6695368523fa01cb7516ac91d0d8675487a4e0366f92",
+    "app/evaluation/golden_role_boundary_examples.py": "d3abe09b72572b52755f353e8ef53b37585f5979eb65b2df0f1f6c4b7ea7a4a4",
+    "app/evaluation/golden_role_correction_scope.py": "5ee4aede907082fbd3bddcd9d2e3a21dd37c5b207c09a2df93f93c730e779c0c",
+    "app/evaluation/golden_role_coarse.py": "740eee4a13147004dd59dd5ea604ce036c1d565ef74586baf4adc465a07a2f3e",
+    "app/evaluation/golden_coarse_source_projection.py": "3c1648e8b78990f10f735fe99be332760530314d1b2c6815726d13ae57c7ac1f",
+    "app/evaluation/golden_native_business_policy.py": "dc70edc303a614fb1133941f478a6179a53c48a1d513911a366abeb92a311f3f",
+    "app/evaluation/golden_semantic_review.py": "bfea0cc665a361050cbecbe00b2ba41622b58f6e26dbb5434597f4a709d0f305",
+    "app/runtime/coach_budget.py": "ef5511668aab64a78bc423d912ed86f0e5f7be67a782737d31229655866b9614",
+    "app/runtime/reviewer_roles.py": "425b25a27871a00aa9b9865c300d56c868016871dd6f42b37723607f57b194b5",
+    "app/runtime/review_sender.py": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56",
+    "scripts/review_independence_contract.py": "d3d2673618a4536552d5652db2343a0b61a2095a79629d082f79f9bcee7f481f",
+    "scripts/codex_review_event_source.py": "89192c147c3d23718d85c9ce81bda9e269e6c4429652ff40ce248ae6f2b0089c",
+    "scripts/role_development_host_clock.py": "9b9388e63e47d8092f180a1a1f4ac1e82e0f9aa7570df764932741ef22dc6d32",
+    "tests/fixtures/coarse_edit_initial_reviews_20261001.json": "0896a1830387fa46678d3bb14c935c605cb80557a5e2937be142bd79f7dab153"
+  },
+  "host_review_submission_mode": "independent-drafts-v2",
+  "host_review_evidence_policy": "native-final-attestation-v1",
+  "max_host_seconds": 86400,
+  "budget": {
+    "max_calls": 3,
+    "max_tokens": 290304,
+    "max_active_seconds": 900,
+    "per_request_output": 32768,
+    "per_request_seconds": 300,
+    "estimated_uncached_cny": "1.7154048",
+    "hard_billing_cap": false
+  },
+  "role_calls": {
+    "glm-5.3-flash": 2,
+    "glm-5.3": 1
+  },
+  "historical_initial_inputs": 2,
+  "sdk_retries": 0,
+  "product_contract_used_for_limits_only": true,
+  "product_admitted": false,
+  "original15_qualified": false,
+  "execution_authorized": false,
+  "sequence": [
+    "necessary-edit",
+    "conditional-fresh",
+    "correct-keep"
+  ],
+  "stop_rule": "First host, semantic, protocol, source, identity, transport or budget failure stops; no retry or restart.",
+  "acceptance": "Full source-supported repair and preserved correct content; current fresh pass with score>=85; correct keep is byte-identical.",
+  "diagnostic_scope": "Fixed accepted issues test editing; keep is a capability control, not a product edit-after-pass state.",
+  "success_decision": "Prepare prospective registration and same-identity coverage; no product or original15 admission.",
+  "failure_decision": "Preserve earliest divergence and charges; no automatic variant or new batch.",
+  "root_thread_id": "01a0c6c5-01d1-78d0-82fb-e567e0ab7150",
+  "review_event_provider": "codex-collaboration-host-v1",
+  "review_principals": {
+    "primary": {
+      "principal_id": "01a0c6c5-01d1-78d0-82fb-e567e0ab7150"
+    },
+    "independent": {
+      "principal_id": "01a0f093-d441-7fe2-9c68-99187920339c"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "version": "reviewer-semantic-materials-offline-result-v1",
+  "date": "2026-10-18",
+  "base_commit": "790f18d1",
+  "reports": 3,
+  "requests": 6,
+  "source_class": "authored-development-screen-familiar-source-not-holdout",
+  "checks": [
+    {
+      "command": "python -m pytest -q tests/test_reviewer_semantic_materials.py --tb=short --show-capture=no",
+      "passed": 11,
+      "duration_seconds": 17.39,
+      "network": "socket and create_connection forbidden"
+    },
+    {
+      "command": "python scripts/check_project_governance.py",
+      "status": "passed_after_state_update"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed_tracked_changes"
+    },
+    {
+      "check": "independent alternative repairs consumed by original validator/preview",
+      "cases": 2,
+      "status": "passed",
+      "model_calls": 0,
+      "wrapper_and_scores": "synthetic; original independent answer unchanged"
+    }
+  ],
+  "manifest_sha256": "e82638e0ca2ef0caa0de642592010c93d42d1a16a78046d2bd24414266343daf",
+  "independent_task_sha256": "d1b3ec83bdc9f9d485971dea202f694eb31ce3fbc2ce2fa418c2ead30f3adcaa",
+  "provider_calls": 0,
+  "keys_read": 0,
+  "primary_material_review": "authored_and_checked_by_primary",
+  "independent_material_review": "usable_for_limited_development_screen",
+  "execution_ready": false,
+  "execution_authorized": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "next_action": "Prepare one bounded execution proposal using the accepted materials: exact route/account quote, minimal existing-runner binding and frozen HEAD/CI; obtain new cost authorization before any send. No live trial started.",
+  "limitations": [
+    "Three related authored reports over familiar source, not holdout or reliability estimate.",
+    "Reference reviews and previews are synthetic feasibility witnesses, not live outputs.",
+    "No new public CI or account/price verification; six-call budget is a proposal, not renewal of old four-call authorization."
+  ],
+  "independent_dispatch": {
+    "agent_task_name": "/root/semantic_material_review",
+    "fork_turns": "none",
+    "explicit_user_authorization": "允许新建独立审查Agent",
+    "checkpoint_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-reviewer-semantic-materials-20261018/checkpoint.json",
+    "checkpoint_sha256": "0aaae705ff5db042d7329dfed84392dc3f0c1db00f9bca7155b06121fea69d3a",
+    "evidence_class": "ordinary-development-material-review-not-native-business-certification"
+  },
+  "independent_review_result": "data/evaluation/fixtures/reviewer_semantic_screen_20261018/material-review-result.json",
+  "independent_author_sha256": "9b54522af6dc017ad9a63b8d81bf4d6ce582d6be99a861d10b3d4d32bd4f1534",
+  "worktree_delivery": "saved locally; not committed or pushed in this work package"
+}

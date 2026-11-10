@@ -1,0 +1,47 @@
+{
+  "version": "original15-patch-recovery-launch-local-v1",
+  "created_at": "2026-10-28T06:49:27.662000+00:00",
+  "baseline_commit": "f5ea424499755da343bb8ca302860784fd5e952e",
+  "source_sha256": {
+    "scripts/original15_patch_recovery_launch.py": "9d297a1b975e4a9730434a60659e8e08f81ca3a0e7744d6ad7fa80cb092b7b53",
+    "app/evaluation/original15_patch_recovery.py": "491dacda6e6d704c36ff99a512cd54415041c8ce1d14c06af2cc6d72794bc43f",
+    "tests/test_original15_patch_recovery_launch.py": "c524824c00b4a352e61962b7540463d8152ddfb3cca90f72e4575b396abd64d0",
+    "tests/test_original15_patch_recovery.py": "27e49bdee146611d3a5dee74a0081d9f1c5bd357d520cf2b9561da8ef156fd9b"
+  },
+  "tests": [
+    {
+      "session": 85345,
+      "passed": 3,
+      "seconds": 543.03,
+      "coverage": [
+        "success",
+        "coordination_rejection",
+        "524_manual_retry"
+      ],
+      "before_final_author_path_fix": true
+    },
+    {
+      "session": 85181,
+      "passed": 1,
+      "seconds": 177.58,
+      "coverage": [
+        "success_after_final_author_outside_operator_fix",
+        "strict_replay_launch_controls"
+      ]
+    }
+  ],
+  "http_and_native": "synthetic; engineering evidence only",
+  "actual_authorization_verified": true,
+  "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
+  "new_provider_requests": 0,
+  "key_reads": 0,
+  "actual_recovery_session_created": false,
+  "original_completed_cases": 12,
+  "qualified": false,
+  "publication_allowed": false,
+  "failures_corrected": [
+    "fixture_router_recursion",
+    "owned_current_model_intent_misclassified_as_historical_unresolved"
+  ],
+  "limits": "original request/token/activity and batch history retained"
+}

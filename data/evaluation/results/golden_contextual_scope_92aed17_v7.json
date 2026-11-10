@@ -1,0 +1,107 @@
+{
+  "experiment": "golden-contextual-bounded-review-v7",
+  "kind": "unaltered_response_offline_replay_not_live_acceptance",
+  "original_result": {
+    "attempted_calls": 2,
+    "completed_calls": 2,
+    "error_code": "contextual_patch_sample_source_required",
+    "error_type": "ValueError",
+    "id": "contextual_01",
+    "input_tokens": 24624,
+    "interrupted": false,
+    "matched": false,
+    "output_tokens": 27816,
+    "reserved_calls": 2,
+    "revision_attempted": false,
+    "stop_reason": "protocol_or_execution_failure",
+    "unknown_usage_calls": 0,
+    "valid": false
+  },
+  "source_run": "contextual-review-92aed17-decision-v6",
+  "raw_hashes": {
+    "response-001.json": "d4e962106d572850fb99a620f5d3cc538623967c77e6b33fcc1f71415a81a317",
+    "response-002.json": "b15efaf7ac62bf73cc3d8a8f4f3d21176d5a7868affe3c19cd9e9efa27855d03",
+    "result.json": "af142aed1131465030799ed9e493965ddd677e9a64857e6549aa740babb2595a"
+  },
+  "replay_score": 95,
+  "replay_verdict": "pass",
+  "replay_issues": 0,
+  "source_locations": [
+    {
+      "target_id": "c006",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c007",
+      "decision": "sample_supported",
+      "scope_anchor": "所选",
+      "context": {
+        "quote_ref": {
+          "block": 3,
+          "head": "在所选四场中单中逐行方向一致",
+          "tail": "仅指本样本，不外推长期"
+        },
+        "relation": "defines_scope",
+        "explanation": "复算：中单赢局经济(482.76+527.82)/2=505.29，输局(435.77+429.86)/2=432.815→432.82；伤害(1143.4+1430.11)/2=1286.755→1286.76、(629.54+605.5)/2=617.52。逐行482.76>435.77、527.82>429.86、1143.4>629.54、1430.11>605.5，方向一致成立。属所选四场中单样本内推断，改判sample_supported并引用范围原文，修复旧scope字段错误。"
+      }
+    },
+    {
+      "target_id": "c008",
+      "decision": "sample_supported",
+      "scope_anchor": "5 局",
+      "context": {
+        "quote_ref": {
+          "block": 3
+        },
+        "relation": "defines_scope",
+        "explanation": "逐项核对来源：卡蜜尔辅助1.34（证据8）；中单输局(9.64+8.38)/2=9.01（证据9,10）；中单赢局(8.95+8.66)/2=8.805→8.81（证据7,11）；混合输局(1.34+9.64+8.38)/3=6.453→6.45。数值全部与原始行一致，'补刀差主要由辅助局拉低'的构成归因成立。"
+      }
+    },
+    {
+      "target_id": "c009",
+      "decision": "negated_supported",
+      "scope_anchor": "近 5 局（均为队列 420）2 胜 3",
+      "context": {
+        "quote_ref": {
+          "block": 3
+        },
+        "relation": "negates",
+        "explanation": "逐项核对：混合赢局(3+2)/2=2.5（证据7,11）、输局(7+0+1)/3=2.666→2.67（证据8,9,10），差0.17复算正确；按[K1]早期死亡差异很小时不作主要胜负分界点，报告的否定判断成立。"
+      }
+    },
+    {
+      "target_id": "c010",
+      "decision": "sample_supported",
+      "scope_anchor": "两局",
+      "context": {
+        "quote_ref": {
+          "block": 6
+        },
+        "relation": "defines_scope",
+        "explanation": "核对：辛德拉伤害1430.11、参团55.81%（证据11），薇古丝1143.4、77.5%（证据7），均高于整体均值869.5与50.4%（证据6）。原句明示'两局胜局'样本限定，为样本内比较，改判sample_supported并置空旧scope字段。"
+      }
+    },
+    {
+      "target_id": "c011",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c012",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c013",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    }
+  ],
+  "manual_semantic_acceptance": false,
+  "provider_calls": 0
+}

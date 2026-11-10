@@ -1,0 +1,239 @@
+{
+  "version": "original15-scope3-facts-fresh-accepted-v1",
+  "case": "scope:3",
+  "stage": "facts-fresh-accepted-awaiting-completion-fresh",
+  "cases_completed": 5,
+  "case_completed": false,
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "6ed891738644491aff5b14c874cca1fd23fcf57856b77ca606b32b7ddfcc66d6",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17bf8-b1eb-77b3-9d1b-2c0a615e9846/msg_0fdcb483ddf38b4a016ae04060fa0c819da0f2de2cf93c77f3",
+      "author_sha256": "98df5df52877e1f348dde22dd003992fea7ec16fec3fdf4d55ca665376cda38a",
+      "native_final_sha256": "7d3463c3e44300e869de4d732b9332b8a387820cea0d3553109c4ed20385c8a3",
+      "raw_event_sha256": "240cb2d92777daa7c11ffaa047a03347c0f192745a75c6b6826111d72017e8a8",
+      "author_text_equal": false,
+      "terminal_lf_exception": true,
+      "primary_sha256": "aa83feba339d78e839ca01982b2d997f135b90dea2aac06b358cdb8a295ce886",
+      "submission_sha256": "1c3a576a975864de1c5c56c89ab24b06c46e4c9df0c1a9d1ac28a8b0c8ae3754"
+    },
+    {
+      "stage": "completion-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "1ad2b170101dfc089a9787a3350c551b59d9f79e0559665809eb68c28a61b678",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17c78-c48d-7330-bef3-e7ac7569a66f/msg_0fdcb483ddf38b4a016ae06103b5c4819dbeaec872c2af7e8c",
+      "author_sha256": "9d82a45c7f83af7586d80836ba6694c112ed673aae9ac38825e206cae25ba148",
+      "native_final_sha256": "9d82a45c7f83af7586d80836ba6694c112ed673aae9ac38825e206cae25ba148",
+      "raw_event_sha256": "a96b74691038cc637012c17c484a8ea3327792fdfb4d2e3ed8a8a797dc5de7d8",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "0df66cd27f830c5ca9fd4b38e57b92911c69a3d3cc84911ed71a24fa8aad27e0",
+      "submission_sha256": "83eaf9f06e16f502228bbf7564708b0bf7021831ba73f40cdaa8bdb367b54915"
+    },
+    {
+      "stage": "compatibility",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "c3edeee8c71cf28489fc8f8a568ef2917d0f303b587a561ab7f4a550eb285650",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17c81-0459-72d1-9242-b659e3ca1b17/msg_0730884fbbcfc5f8016ae063e2fda08197a0f30ebb9bcfca09",
+      "author_sha256": "3809d1c05fd4fb1b8a8029d54e3730e658f06e2d577e6dbde9fcb33e2c25ef52",
+      "native_final_sha256": "3809d1c05fd4fb1b8a8029d54e3730e658f06e2d577e6dbde9fcb33e2c25ef52",
+      "raw_event_sha256": "faa4871d58ecf58df8401cee76908dafe0ef788beb64a4c39a9d68093e7382ab",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "385277346a9fa65ef9d66d77d9da47bcdac1fe510ddc7a0a4857fa2a177822c6",
+      "submission_sha256": "17d56d8ba36ffeb0b829cb988eb6306ec0594c3dbc2f58d33e163c857c203e76"
+    },
+    {
+      "stage": "edit",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "8c9cf836912a0588f66665f913c2057575083088adeae8a92eeb389f4342dc9c",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17c8c-6a77-77b0-a521-52f2dbcf10e1/msg_0730884fbbcfc5f8016ae06607b29881979d0f584b5a2261aa",
+      "author_sha256": "aeb0f91b36ad864eb2642a0fc2c835d853364470845704711c77afd33265bc27",
+      "native_final_sha256": "aeb0f91b36ad864eb2642a0fc2c835d853364470845704711c77afd33265bc27",
+      "raw_event_sha256": "a36447a0d0b2273eb07456f8449bdbbb28f752d498cf985dd34072642414e219",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "b8505d8d30ab713149ca6f984dfd7ef33e8557a97dbfcdc7a11ca1a49b5785ce",
+      "submission_sha256": "502929fa3ff8198e92572954bdc17367705834b5b013cd7fbe68da0cc17510a4"
+    },
+    {
+      "stage": "facts-fresh",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "b72803ac8e6ef747ab55189abe5380a7957a4a28fbdddf4c35ee2e538d251976",
+      "native_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17cac-eed5-7572-97ca-f2d6a77f5bd0/msg_0730884fbbcfc5f8016ae06e6ca80c8197942b301aa20a8858",
+      "author_sha256": "612597218361ebf130964a33264fbade7afd27a1fb7f9d0b88273072d0bd7f5a",
+      "native_final_sha256": "612597218361ebf130964a33264fbade7afd27a1fb7f9d0b88273072d0bd7f5a",
+      "raw_event_sha256": "7dfa801a119f8f5aec1c8496b16e8025ed1c4cb2a3caaf9d96fa8d408776541a",
+      "author_text_equal": true,
+      "terminal_lf_exception": false,
+      "primary_sha256": "d592a9fa383c2dca6d105460f9c9cb0df233e99084d4e191d6c0c5a5553af75c",
+      "submission_sha256": "80d0fa1fe8f8b399650e5d25c2837709dcbb506092a8bfa55a4e1e13b2d3e871"
+    }
+  ],
+  "facts_fresh": {
+    "response": {
+      "score": 100,
+      "verdict": "pass",
+      "issues": [],
+      "issue_resolutions": [],
+      "advisories": [
+        {
+          "block": 4
+        },
+        {
+          "block": 6
+        },
+        {
+          "block": 23
+        }
+      ]
+    },
+    "http_status": 200,
+    "provider_elapsed_s": 41.109,
+    "input_tokens": 17856,
+    "output_tokens": 783,
+    "known_tokens": 18639,
+    "receipt_sha256": "613225f5abe6f2515c986ae5b8b0565916b9c33dda176db3c685c3c2ca8028ad"
+  },
+  "actual_edit_performed": true,
+  "actual_report_sha256": "1aa311e28b89b17fd8cf6af06d5e0c9a235b67aaddb3f8c96956cd3a02b57986",
+  "application_sha256": "2d122986f13e99a5d461ab04c2ca35b78a8e180a02966245bd6647f350e856f0",
+  "patch_operations": 1,
+  "correct_other_blocks_preserved": 24,
+  "fresh_same_actual_report_verified": true,
+  "status": {
+    "checkpoint_sha256": "b6ec4a4415748422ee294bd6efe29162569a8b55274dd3aeadd7a5247fda226c",
+    "closed": false,
+    "format_waiting": false,
+    "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+    "operations": 23,
+    "production_admitted": false,
+    "publication_allowed": false,
+    "timeout_waiting": false,
+    "transport_waiting": false,
+    "unresolved": []
+  },
+  "transport": {
+    "actual_attempts": 5,
+    "completed_calls": 3,
+    "failed_calls": 2,
+    "http_requests_known": 5,
+    "http_requests_unknown": 0,
+    "known_tokens": 58785,
+    "known_usage_calls": 3,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "unknown_reserved_tokens": 137228,
+    "unknown_usage_calls": 2
+  },
+  "accounting": {
+    "calls": 5,
+    "reserved_tokens": 137228,
+    "retries": 2,
+    "tokens": 58785
+  },
+  "batch_accounting": {
+    "calls": 23,
+    "known_tokens": 394859,
+    "unknown_reserved_tokens": 137228,
+    "retries": 2,
+    "http_requests_known": 23,
+    "http_requests_unknown": 0,
+    "receiptless_calls": 0,
+    "not_sent": 0
+  },
+  "active_seconds": 3425.1110000000044,
+  "remaining_original_case_active_seconds": 174.88899999999558,
+  "remaining_effective_case_active_seconds": 3774.8889999999956,
+  "execution_time_allowance": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-execution-time-allowance.json",
+    "sha256": "34afd405cd8d1934e65c37fad45b212bbbf47a1538d55d1098af1178c5b87be9",
+    "module_sha256": "83231d3a2785f480a21a738e9aecde7ca10ae2886d4f16f7450813c2876b5430",
+    "original_case_active_seconds": 3600,
+    "additional_active_seconds": 3600,
+    "effective_case_active_seconds": 7200,
+    "original_batch_active_seconds": 54000,
+    "effective_batch_active_seconds": 57600,
+    "reset_accounting": false,
+    "additional_requests": 0,
+    "additional_tokens": 0,
+    "extend_authorization_expiry": false,
+    "original_envelope_unmodified_pass": false,
+    "request_preflight": {
+      "version": "original15-time-allowance-real-request-preflight-v1",
+      "manifest_sha256": "34afd405cd8d1934e65c37fad45b212bbbf47a1538d55d1098af1178c5b87be9",
+      "actual_next_request_sha256": "6fdcdfdbf2b79ced664397f46304af33dd863e9ef632243fbdadb66bcd5648aa",
+      "actual_report_sha256": "1aa311e28b89b17fd8cf6af06d5e0c9a235b67aaddb3f8c96956cd3a02b57986",
+      "effective_case_active_seconds": 7200,
+      "original_contract_unchanged": true,
+      "all_other_limits_unchanged": true,
+      "provider_requests": 0,
+      "key_reads": 0
+    }
+  },
+  "verification": {
+    "local_tests_passed": 11,
+    "actual_controller_check_passed": true,
+    "actual_host_only_stopped_at_model_boundary": true,
+    "read_only_audit_inventory_unchanged": true,
+    "frozen_head_unchanged": true
+  },
+  "original_stdout_roots": {
+    "checkpoint_sha256": "b6ec4a4415748422ee294bd6efe29162569a8b55274dd3aeadd7a5247fda226c",
+    "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
+  },
+  "last_exit": {
+    "case": "scope:3",
+    "exit_code": 0,
+    "operation": "run",
+    "stdout": "0096.stdout.txt",
+    "stdout_sha256": "2399e3ba6a2ff66ed3a76db1641822e327700d426b71e91880cdcb497006ad63"
+  },
+  "last_exit_sha256": "ff8e8b391aa94437bcd1f14a30e1450dd8ba0faea83e610e436a33fd423398b3",
+  "model_segment_0093": {
+    "operation": "run",
+    "case": "scope:3",
+    "exit_code": 0,
+    "stdout": "0093.stdout.txt",
+    "stdout_sha256": "1a5a6cf0d7fd0fde8d03490bc14c7862dd5a49f902ac6b85e1714dd0a3d7849b"
+  },
+  "model_segment_0093_exit_sha256": "233009c518570602f138ac23080ced1a73e7d73697de83bd9dec30ced0b0e976",
+  "audit_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-facts-fresh-frontier-0096.json",
+  "audit_sha256": "af6aa636c61f50bd5ebc93e2f2489ef14cf9191f52e44b35b2c17e7bd7a7256f",
+  "audit_script_sha256": "0f9ab54137da86851990561966c2e031d2a9c7db41304a4f75af43c7e81c71e5",
+  "original_inventory_files_preserved": 1012,
+  "old_two_http500_preserved": true,
+  "http500_root_cause": "unknown",
+  "old_facts_terminal_lf_exception_preserved": true,
+  "new_author_native_byte_equal": true,
+  "next_case": "scope:3",
+  "next_stage": "completion-fresh",
+  "next_stage_sent": false,
+  "next_request_sha256": "6fdcdfdbf2b79ced664397f46304af33dd863e9ef632243fbdadb66bcd5648aa",
+  "manual_retry_needed": false,
+  "batch_closed": false,
+  "outer_seal_exists": false,
+  "additional_host_provider_requests": 0,
+  "key_reads_this_host_resume": 0,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "frozen_status": "",
+  "operator_sha256": "ae1189d8e18d7f8c54677bf90e531d156cc1541596e8354a233862f5e36da63b",
+  "settings_sha256": "38490203c70dc473f0e3fe1acbded41d6387a7a31adea6bc9dadfb550571af57",
+  "operator_record": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-facts-fresh-accepted.json",
+  "operator_record_sha256": "4ff7d7694ff4bcd13fda55676c69b30a664cf60c58ce96096cfb926bd95844c1"
+}

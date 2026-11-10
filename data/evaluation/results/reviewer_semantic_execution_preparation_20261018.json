@@ -1,0 +1,68 @@
+{
+  "version": "reviewer-semantic-execution-preparation-v1",
+  "date": "2026-10-18",
+  "base_commit": "790f18d1",
+  "contract": "reviewer-semantic-batch-v1",
+  "provider_calls": 0,
+  "keys_read": 0,
+  "offline_controller_ready": true,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "live_entry_ready": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "quote": {
+    "source": "user confirmation in this conversation",
+    "group": "GPT-pro",
+    "input_cny_per_million": "0.4",
+    "output_cny_per_million": "2",
+    "reserved_estimate_cny": "0.350208",
+    "billing_hard_cap": false,
+    "account_key_group_verified": false
+  },
+  "budget": {
+    "requests": 6,
+    "input_per_request": 64000,
+    "output_per_request": 16384,
+    "total_tokens": 482304,
+    "active_seconds": 1800,
+    "retries": 0
+  },
+  "checks": [
+    {
+      "scope": "new six-call worker SDK mock-HTTP/controller, pair preview/review, closure, replay, binding",
+      "passed": 13,
+      "seconds": 197.18
+    },
+    {
+      "scope": "default ExactNativeGate schema with explicit native event fixtures; pair author-byte check and tamper rejection",
+      "passed": 1,
+      "seconds": 36.22
+    },
+    {
+      "scope": "legacy four-call exact count, read-only replay, preflight and wrong-binding regression after new pair changes",
+      "passed": 6,
+      "seconds": 62.74
+    },
+    {
+      "scope": "earlier combined run before fixes",
+      "passed": 87,
+      "failed": 2,
+      "seconds": 329.3,
+      "failures": "new nonstream calls rejected by old call-ID requirement; fixed and rechecked above"
+    },
+    {
+      "scope": "first pair-gate run",
+      "passed": 11,
+      "failed": 2,
+      "seconds": 124.64,
+      "failures": "new pair binding incorrectly used edit stage instead of existing revision; fixed and rechecked above"
+    }
+  ],
+  "evidence_limits": [
+    "HTTP and native events are fixtures, not real provider or independent semantic judgments.",
+    "Existing closed trials and familiar-source limitations unchanged; no model adoption or 8E completion.",
+    "No new public CI; controlled live launcher and exact authorization/head/CI/paths/native preflight binding still pending."
+  ],
+  "next_action": "Complete controlled live entry and clean-checkout public CI using this fixed contract; bind actual independent reviewer and account before requesting new paid authorization."
+}

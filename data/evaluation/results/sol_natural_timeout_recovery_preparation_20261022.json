@@ -1,0 +1,170 @@
+{
+  "version": "sol-natural-timeout-recovery-preparation-20261022-v1",
+  "checked_at": "2026-10-22T03:15:22.074950+00:00",
+  "execution_head": "08d1475461101d7ce8cc91b61a40cd7a72695eb6",
+  "execution_cwd": "D:\\riftcoach-sol-natural-timeout-ready-execution",
+  "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-timeout-recovery-v2-20261022",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-timeout-recovery-20261022-control",
+  "plan_sha256": "900fd9eca80c4e07efc70d60df37cc340392859bf6088bf1b51213394efc817b",
+  "parent_seal_sha256": "4b44688ef494debc8cdae8bd8b42dec67f0ea5a5c54c5c8bc4aa4474e40c7809",
+  "ci_run": "39714990765",
+  "ci_at_preparation": {
+    "conclusion": "",
+    "headSha": "08d1475461101d7ce8cc91b61a40cd7a72695eb6",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "packaging-smoke",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (3)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (0)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "name": "postgres-migrations",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (2)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "name": "web-checks",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "pytest-shards (1)",
+        "status": "in_progress"
+      }
+    ],
+    "status": "in_progress"
+  },
+  "technical_preparation_complete": true,
+  "paid_start_requires_exact_head_ci_success": true,
+  "startup_command": "& 'C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-timeout-recovery-20261022-control\\start-authorized.ps1'",
+  "entry_pins": {
+    "config_sha256": "7f37896a410d4c4094c4b10d1d2b326331e454d89c6252fe76d6e603283b5a8a",
+    "runner_sha256": "806beeacf56ea4f5e80f9d9743384ee44cfddad998367714649de4f95c75b379",
+    "ps1_sha256": "adba74e1cea080e49c8ec9b4066d1176cb51f3a82bae7475c08b9f56d1edd641",
+    "native_stdout_sha256": "5ff267365685e0ef904f31d8c521cdfde8fcc5becaa37fca569afdc6e8cbfc61",
+    "submit_stdout_sha256": "5e60d63bb57684df676fe99b835669bef68d988896149b1da15778cfe1b04506",
+    "native_guard_origin": "native-v2.stdout.txt first original emitted guard",
+    "native_checkpoint_origin": "submit-v2.stdout.txt last original emitted checkpoint"
+  },
+  "authorization_activated": false,
+  "authorization_activation": "manual start after exact-head CI and source/native checks; new scope only, valid 24h, never renew existing activation",
+  "user_budget_increase_authorized": true,
+  "additional_attempts": 5,
+  "additional_tokens": 401920,
+  "additional_estimated_uncached_cny": 0.29184,
+  "billing_hard_limit": false,
+  "cumulative_limits": {
+    "execution_timeout_s": 2400,
+    "max_calls": 10,
+    "request_timeout_s": 300,
+    "total_tokens": 739840,
+    "transport_retries": 2
+  },
+  "historical_accounting": {
+    "http_requests": 5,
+    "known_tokens": 52067,
+    "unknown_reserved_tokens": 145824,
+    "retries": 1,
+    "active_seconds": 472.672
+  },
+  "generation_requests": 0,
+  "reused_report_sha256": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+  "reused_frontier_request_sha256": "a639148f5208a1a2e19c62d82bbb80704e91b5684d2bea802269925c35664edc",
+  "native_preflight": {
+    "administrative_only": true,
+    "guard_sha256": "45400a9f71c1009c22a42f1105217e34bede18a00cdea10a059a0a5a7fbc19c2",
+    "checkpoint_sha256": "0729440cca4c6cb3bbfc1ad6d557616a104c78c514306d0f17ecfab4a12ddea0",
+    "event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a16196-77e7-7233-9a45-54942a3635b6/msg_0ec02a04ee77b13f016ad97ed592748193a71e354c9ea8e9ab",
+    "author_sha256": "225fcfe74144c6b7b94153fd16a3c51dc3b52275ae6a5cfe2f79de07cc980987",
+    "author_and_native_bytes_identical": true,
+    "author_create_check_answer_native_import": true,
+    "strict_read_only_verified": true,
+    "original_inventories_unchanged": true
+  },
+  "preparation_checks": {
+    "actual_wrapper_check_only_passed": true,
+    "powershell_parse_passed": true,
+    "frozen_source_and_recursive_parent_seals_verified": true,
+    "grants_or_execution_created": false,
+    "provider_requests": 0,
+    "key_read": false
+  },
+  "verification_groups": [
+    {
+      "scope": "original continuation suite",
+      "passed": 6,
+      "seconds": 539.59
+    },
+    {
+      "scope": "enhanced timeout-parent continuation plus structure/identity rejection",
+      "passed": 3,
+      "seconds": 466.82
+    },
+    {
+      "scope": "candidate/session/launcher/native-review",
+      "passed": 63,
+      "seconds": 468.21
+    },
+    {
+      "scope": "shared prompt resolver and coach contract",
+      "passed": 37,
+      "seconds": 8.35
+    },
+    {
+      "scope": "qualification inventory",
+      "passed": 5,
+      "seconds": 13.62
+    },
+    {
+      "scope": "boundary examples / natural duty / continuation source-change guard",
+      "passed": 57,
+      "seconds": 357.79
+    }
+  ],
+  "verification_groups_overlap": true,
+  "runtime_profiles_verified": 38,
+  "prior_ci_failure": {
+    "run_id": "39713331698",
+    "head": "01276a859b622f37c78667e081bb0779a7ed23cb",
+    "cause": "shared coach_contract/resolver fingerprints not refreshed in five other current manifests",
+    "fixed_in_head": "08d1475461101d7ce8cc91b61a40cd7a72695eb6",
+    "historical_inventories_changed": false
+  },
+  "discarded_preparations": [
+    {
+      "operator": "riftcoach-sol-natural-timeout-recovery-20261022",
+      "reason": "author terminal LF differed from native final; no import, no author rewrite"
+    },
+    {
+      "operator": "riftcoach-sol-natural-timeout-recovery-ready-20261022",
+      "reason": "native import passed, then superseded by corrected frozen source after CI fingerprint failure"
+    }
+  ],
+  "limits_of_evidence": [
+    "no paid request or key read in this preparation",
+    "remote HTTP524 recovery is not established by added budget or passing local tests",
+    "administrative preflight is not a business semantic review or future native guarantee",
+    "completed report and historical unknown costs remain preserved",
+    "product GLM/five-call boundary, same-version original15 and all downstream product work remain unchanged"
+  ],
+  "automation_status": "PAUSED",
+  "qualified": false,
+  "publication_allowed": false
+}

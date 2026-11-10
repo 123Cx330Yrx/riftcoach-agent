@@ -137,7 +137,7 @@ function playerLinkPayload(ledger) {
 
 function productMode(scenario, ledger) {
   if (scenario === "degraded") return "degraded"
-  if (scenario === "rejected") return "rejected"
+  if (scenario === "rejected" || scenario === "cancelled") return "rejected"
   if (scenario === "published" || scenario === "race") return "published"
   if (scenario === "active" && ledger.terminal) return "published"
   return "not_ready"
@@ -150,13 +150,13 @@ function taskPayload(scenario, ledger) {
     schema_version: "2.0",
     task_id: TASK,
     run_id: RUN,
-    status: terminal ? "succeeded" : "running",
+    status: scenario === "cancelled" ? "cancelled" : terminal ? "succeeded" : "running",
     created_at: NOW,
     updated_at: terminal ? "2026-08-23T11:00:04Z" : NOW,
     claimed_at: NOW,
     finished_at: terminal ? "2026-08-23T11:00:04Z" : null,
-    terminal_reason: terminal ? "quality_gate_complete" : null,
-    publication_status: mode === "published" ? "published" : mode === "degraded" ? "degraded" : mode === "rejected" ? "rejected" : null,
+    terminal_reason: scenario === "cancelled" ? "cancel_requested" : terminal ? "quality_gate_complete" : null,
+    publication_status: scenario === "cancelled" ? null : mode === "published" ? "published" : mode === "degraded" ? "degraded" : mode === "rejected" ? "rejected" : null,
     report_available: mode === "published" || mode === "degraded",
   }
 }
@@ -215,7 +215,7 @@ function lifecycleEvent(cursor, kind, status) {
 function eventPage(scenario, ledger) {
   const terminal = productMode(scenario, ledger) !== "not_ready"
   const events = terminal
-    ? [lifecycleEvent(1, "created", "queued"), lifecycleEvent(3, "succeeded", "succeeded")]
+    ? [lifecycleEvent(1, "created", "queued"), lifecycleEvent(3, scenario === "cancelled" ? "cancelled" : "succeeded", scenario === "cancelled" ? "cancelled" : "succeeded")]
     : [lifecycleEvent(1, "created", "queued")]
   return {
     schema_version: "1.0",
@@ -236,9 +236,9 @@ function productPayload(scenario, ledger) {
     task_id: TASK,
     run_id: RUN,
     state: mode,
-    reason_code: reason,
-    task_status: mode === "not_ready" ? "running" : "succeeded",
-    publication_status: mode === "not_ready" ? null : mode,
+    reason_code: scenario === "cancelled" ? "task_cancelled" : reason,
+    task_status: taskPayload(scenario, ledger).status,
+    publication_status: scenario === "cancelled" || mode === "not_ready" ? null : mode,
     report_available: mode === "published" || mode === "degraded",
     evidence_revision: mode === "not_ready" ? null : 1,
     evidence_bundle_digest: mode === "not_ready" ? null : DIGEST_A,
@@ -590,6 +590,16 @@ const server = createServer(async (request, response) => {
   if (url.pathname === `/tasks/${TASK}/events`) return sendJson(response, eventPage(scenario, ledger))
   if (url.pathname === `/tasks/${TASK}/events/stream`) return stream(response, scenario, ledger)
   if (url.pathname === `/runs/${RUN}/product-state`) return sendJson(response, productPayload(scenario, ledger))
+  if (url.pathname === `/runs/${RUN}/usage`) return sendJson(response, {
+    schema_version: "1.0", run_id: RUN, task_status: taskPayload(scenario, ledger).status,
+    usage: scenario !== "cancelled" ? null : {
+      provider_calls_attempted: 3, provider_responses_observed: 2,
+      observed_input_tokens: 100, observed_output_tokens: 40, input_tokens: null, output_tokens: null,
+      token_observation: "partial", tool_calls: 0, tool_attempts: 0, tool_latency_ms: 0,
+      cost: null, currency: null, pricing_profile_id: null, pricing_profile_version: null,
+      cost_observation: "not_configured",
+    },
+  })
   if (url.pathname === `/runs/${RUN}`) return sendJson(response, runPayload(scenario))
   if (url.pathname === `/runs/${RUN}/recent-summary`) return sendJson(response, summaryPayload(scenario))
   if (url.pathname === `/runs/${RUN}/timeline`) return sendJson(response, timelinePayload(scenario))

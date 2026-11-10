@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-30",
+  "status": "implemented_and_verified",
+  "work_package": "opt-in-sol-worker-persistent-continuation",
+  "base_head": "3d94f1b2eabce31815ab21f910fd98f79324dd5d",
+  "profile": "sol-dual-development-v1",
+  "default_profile": "legacy",
+  "candidate_contract": "natural-flash-sol-dual-necessity-development-v1",
+  "migration": "0015_task_continuation",
+  "product_database_migrated": false,
+  "real_model_requests": 0,
+  "real_credential_reads": 0,
+  "publication_admitted": false,
+  "stage8e_complete": false,
+  "original15_completed": true,
+  "original15_reexecuted": false,
+  "behavior": [
+    "live-lease-checkpoint-pins",
+    "owner-and-checkpoint-bound-idempotent-resume",
+    "manual-retry-once-per-claim",
+    "source-tool-model-and-memory-replay",
+    "successful-requests-not-resent",
+    "cancel-wins-pause-race",
+    "unsent-reservation-released",
+    "closed-session-projection-conflict-pauses",
+    "original-files-create-only",
+    "cumulative-known-and-unknown-usage",
+    "continuation-within-task-deletion-boundary"
+  ],
+  "checks": {
+    "postgres_unique_cases": 30,
+    "postgres_runs": [
+      {
+        "kind": "sol-current-continuation-postgres-v1",
+        "real_model_calls": 0,
+        "database": "new_disposable_container",
+        "image": "postgres:17-alpine",
+        "route": "latest-sol-dual-and-legacy-glm",
+        "default_worker_registered": false,
+        "opt_in_worker_route": true,
+        "ui_exercised": false,
+        "publication_admission_changed": false,
+        "exit_code": 0,
+        "elapsed_seconds": 92.0,
+        "command": [
+          "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+          "-m",
+          "pytest",
+          "tests/test_sol_worker_continuation_postgres.py",
+          "tests/test_reliable_task_repository_postgres.py",
+          "tests/test_reliable_task_migrations_postgres.py",
+          "-q",
+          "--tb=short",
+          "--show-capture=no"
+        ],
+        "disposable_container_removed": true
+      },
+      {
+        "kind": "sol-current-continuation-final-postgres-v1",
+        "real_model_calls": 0,
+        "database": "new_disposable_container",
+        "image": "postgres:17-alpine",
+        "route": "explicit-sol-dual-development-v1",
+        "default_worker_registered": false,
+        "opt_in_worker_route": true,
+        "ui_exercised": false,
+        "publication_admission_changed": false,
+        "exit_code": 0,
+        "elapsed_seconds": 75.547,
+        "command": [
+          "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+          "-m",
+          "pytest",
+          "tests/test_sol_worker_continuation_postgres.py",
+          "-q",
+          "--tb=short",
+          "--show-capture=no"
+        ],
+        "disposable_container_removed": true
+      },
+      {
+        "kind": "sol-current-continuation-projection-postgres-v1",
+        "real_model_calls": 0,
+        "database": "new_disposable_container",
+        "image": "postgres:17-alpine",
+        "route": "explicit-sol-dual-development-v1",
+        "default_worker_registered": false,
+        "opt_in_worker_route": true,
+        "ui_exercised": false,
+        "publication_admission_changed": false,
+        "exit_code": 0,
+        "elapsed_seconds": 20.625,
+        "command": [
+          "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+          "-m",
+          "pytest",
+          "tests/test_sol_worker_continuation_postgres.py",
+          "-k",
+          "projection_conflict or cancel_between",
+          "-q",
+          "--tb=short",
+          "--show-capture=no"
+        ],
+        "disposable_container_removed": true
+      }
+    ],
+    "runtime_session_worker_contract_tests": {
+      "passed": 89,
+      "elapsed_seconds": 320.24
+    },
+    "api_composition_usage_query_tests": {
+      "passed": 50,
+      "elapsed_seconds": 8.96
+    },
+    "post_injection_worker_task_tests": {
+      "passed": 50,
+      "elapsed_seconds": 5.81,
+      "subset_of_runtime_session_tests": true
+    },
+    "frontend": {
+      "unit_tests_passed": 27,
+      "typecheck": "passed",
+      "browser_e2e": false
+    },
+    "migration_metadata_offline": {
+      "passed": 4,
+      "elapsed_seconds": 2.58,
+      "explicit_node_selection": true,
+      "ambient_test_database_disabled": true
+    },
+    "governance": "passed",
+    "diff_check": "passed",
+    "compile": "passed"
+  },
+  "inventory": {
+    "path": "data/evaluation/results/sol_review_qualification_inventory_worker_continuation_20261030.json",
+    "changed_fields_only": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "other_fields_unchanged": 28,
+    "initial_request_count": 30
+  },
+  "boundaries": [
+    "explicit-development-route-only",
+    "original-diagnostic-native-gate-preserved",
+    "patch-conflicts-pause-no-new-automatic-coordinator",
+    "unconfirmed-intent-and-uncommitted-checkpoint-require-reconciliation",
+    "no-paid-product-run-or-browser-resume-journey",
+    "formal-product-budget-publication-adoption-still-pending"
+  ],
+  "cleanup": {
+    "temporary_dependency_junction_removed": true,
+    "shared_dependencies_untouched": true,
+    "docker_desktop_restored_stopped": true,
+    "test_containers_removed": true
+  }
+}

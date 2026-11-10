@@ -1,0 +1,11 @@
+{
+  "version": "historical-review-witness-v1",
+  "kind": "historical_public_tool_output_not_a_new_model_result",
+  "review_sha256": "11670e81c60447c9d2b0435801134629db09e0ddb11116a289723478d1e505d0",
+  "original_request_sha256": "1a03aeef48e2a9a84a56787894ebf0d8e250f23ba2a189ea29e2068af5013766",
+  "original_live_directory": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-full-r02-facts-live-20261017",
+  "purpose": "Offline repair-coverage, exact-anchor and category-consumption checks. Same report/source/schema as original r02; historical request included v1 prompt patch. This does not simulate a new model response to unpatched policy.",
+  "semantic_approval": false,
+  "qualified": false,
+  "historical_receipt_modified": false
+}

@@ -1,0 +1,113 @@
+{
+  "kind": "offline-business-real-host-close-audit-v1",
+  "closed_at": "2026-10-13T11:33:14.772142+00:00",
+  "run": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-full-chain-host-offline-20261013",
+  "plan_sha256": "0f4755e0711a195a0ddc7c4353825bccb29c93e960fea78cea9b095c40c79d96",
+  "seal_sha256": "63e009ffd6f03fe16aa033918a10b4e0bfbc9142b95c11d96b039f8f1ee8aa83",
+  "native_sha256": "4c8d70803c36c1fce73a9c030b9aac80ae1284a06fad06c730212de144e1b054",
+  "original_files": 28,
+  "original_file_sha256": {
+    "plan.json": "b9982668ebfb33d78df42bed73966d8071dce0725d95994e01a696ccc6db7ec0",
+    "result.json": "64d6b488ab56d7ade84acfdf7e5c3414d97f01cd6e51ecdd21d3a14330a5782a",
+    "submission-close.lock": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+    "claim-scope-4/case-budget-finished.json": "cefc4144e9f3d971b7986b9b5b75a237204716d4c6e33955cdeaa86d88367260",
+    "claim-scope-4/case-budget-start.json": "c54c58e206aecd16ee3d7a2c9e347c808a5cb4b377dceaffb1146f423631ef60",
+    "claim-scope-4/case-result.json": "d3a11356d3e57c871bbdeb52e1db673b81e00a7dd40da9f0a6bab1778f5a660d",
+    "claim-scope-4/source.json": "ca92308bb1a970f971650d596c7faced589145532d30d690dad6275bc65fcb4b",
+    "claim-scope-4/initial/dispatch.txt": "48ee76b97b8d1517e6c3bcf5be53026106544c0a58bb80418dd2eb614cb53b9a",
+    "claim-scope-4/initial/evidence-guard.json": "900d6d2873e8dad79e3dadd40f905fcdb21cc9be07c04d33b4e51b654d44d810",
+    "claim-scope-4/initial/host-reviews.json": "2ce195ba9ed1fd8be8a5f7b642184e648b0ab2a0d086bed115c0c3a514ccaaf9",
+    "claim-scope-4/initial/independent-task.json": "0afead3c1440c56705c83e281ce9b876ed68763cd484ee17018212b3fbf1a3c8",
+    "claim-scope-4/initial/issued-request.json": "053e62a20bcfa5250da8f47576d81783656f3cc0f1f91db3af04537888f749e8",
+    "claim-scope-4/initial/response.json": "cf51e6d89b33022b11718065a3ece78dcd65bbc9855afc0fdae69b4701b1c8dd",
+    "claim-scope-4/initial/review-required.json": "bd087a55ea3a6fed2b3f2c39dadccf5262f2ed7375bdfb499885b6982731102d",
+    "claim-scope-4/initial/review-submission.json": "2ce195ba9ed1fd8be8a5f7b642184e648b0ab2a0d086bed115c0c3a514ccaaf9",
+    "claim-scope-4/initial/send-finished.json": "f1e73434b746791643579d54516ed0cff540f03faa80be4fc571c74e1dc20fcd",
+    "claim-scope-4/initial/send-start.json": "2c7f7c030b31dcdff05f4a6152e28e465ba0fe14cebf8cdc97572cf7884de487",
+    "claim-scope-4/initial/stage.json": "8a14e4788e357966092e60f525cc90f0b6f81229127cc84cb9a7f68a83ca9849",
+    "claim-scope-4/initial/task-checkpoint.json": "5c0bed286fd60ce6c26e1bf658ac5797486dcb12f31839d58f6063b01e031e94",
+    "development-host-clock/0001-finished.json": "3479767c972fa976f5db989d886df7777c2fa9513e8e54c472ad18ef3dacb780",
+    "development-host-clock/0001-waiting.json": "d7667209601d7462748b0fd3808cf31a225f00effa0af7dc27f3664531825835",
+    "development-host-clock/policy.json": "148dead393fd67eb582e77a423a2329b3c825eb01b1c96ec259690ee7985b414",
+    "transport/claim-scope-4/call-001.json": "cf215384e261422c128736db461e3d134a0dfa251f8a8355711a9c1e7bea9f4b",
+    "transport/claim-scope-4/call-result-001.json": "e71e32276007f3e1c23050d12cbc61fe7dfc9715e859c6b76944eee74d8a3c79",
+    "transport/claim-scope-4/review/request-001.json": "053e62a20bcfa5250da8f47576d81783656f3cc0f1f91db3af04537888f749e8",
+    "transport/claim-scope-4/review/response-001.json": "5390b0203ea00225fb40e6c80e1335a75dc839b3270ce2c20a11117868e4e8f8",
+    "transport/claim-scope-4/review/stream-001/reservation.json": "f2af9592e9b80c726fcf65a938ffe78ae185b6b9c8e07e6bc915433802591e84",
+    "transport/claim-scope-4/review/stream-001/result.json": "e1b6e8848c6e1fe73603fc7148255130758d2fc4aa07f4f819ee664394bd92ca"
+  },
+  "source_files": 53,
+  "sources_unchanged": true,
+  "actual_external_provider_calls": 0,
+  "actual_external_http_requests": 0,
+  "actual_model_tokens": 0,
+  "synthetic_receipts": 1,
+  "synthetic_known_tokens": 30,
+  "native_reviews": 1,
+  "host_submits": 1,
+  "primary_accepted": true,
+  "independent_accepted": false,
+  "semantic_result": "initial_host_rejected",
+  "semantic_disagreement": "block 6 four-middle-games evidence / explicit five-games conclusion",
+  "first_hard_deviation": null,
+  "unissued_stages": [
+    "revision",
+    "final"
+  ],
+  "real_three_stage_success": false,
+  "unique_dispatch": true,
+  "native_commands": 9,
+  "all_native_commands_exit_zero": true,
+  "final_checkpoint_reread_and_check_answer": true,
+  "author_sha256": "79b1ef1f4d6818d0144ef95e404718011546d7a83bd7608a780e0d9b01303b56",
+  "author_json_equals_native": true,
+  "strict_replay": true,
+  "strict_seal": true,
+  "new_qualification": 0,
+  "originals_unchanged": true,
+  "restarted": false,
+  "history_before": [
+    {
+      "run": "document-relation-joint-20261013",
+      "files": 86,
+      "inventory_sha256": "43fa43147cebfd494d13446fa95e13c077a87413933473bb6c7986d453e50515",
+      "unchanged": true
+    },
+    {
+      "run": "document-relation-repair-20261013",
+      "files": 66,
+      "inventory_sha256": "291c4bf3fa0338078de87c8b03d8c7846630e50d9bc04a2973064b951d488dfb",
+      "unchanged": true
+    },
+    {
+      "run": "document-relation-initial-20261012",
+      "files": 73,
+      "inventory_sha256": "9b04b7fe7fd3bffce4153e03327cf213b4a61092c41973b478fbd6d8c2e74857",
+      "unchanged": true
+    },
+    {
+      "run": "document-full-report-remaining-initial-20261012",
+      "files": 47,
+      "inventory_sha256": "28715e5f8329d4ed8f3dc494ac359b3db3243a3acb6bfb7a4806cd377001329e",
+      "unchanged": true
+    },
+    {
+      "run": "document-full-report-network-followup-20261012",
+      "files": 26,
+      "inventory_sha256": "d68d06247973839b5470c1aa3dc40a7c709fcc049d2dd19fc0c6b282a3e57a17",
+      "unchanged": true
+    },
+    {
+      "run": "document-full-report-initial-20261012",
+      "files": 14,
+      "inventory_sha256": "c154f3029311ee79b4624f1e2ce27d10e9b936f4c785278019a7f7bda62a6532",
+      "unchanged": true
+    },
+    {
+      "run": "document-sampling-screening-20261012-corrected-v2",
+      "files": 146,
+      "inventory_sha256": "d385ae4926c79b073485594a45637962fb132c516b7115df626414ecf74d8fed",
+      "unchanged": true
+    }
+  ]
+}

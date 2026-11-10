@@ -1,0 +1,64 @@
+{
+  "kind": "primary-development-material-review-before-independent-final",
+  "material_sha256": "77f22cafa8f28ba3149b786f9bec6113a8a2ee857e85c0110cb9b85b0e82bac8",
+  "complete_material_read": true,
+  "current_inputs_difference": "only report-bound source index; source messages differ only binding digests; full facts and deterministic text checked equal",
+  "recomputed_middle_means": {
+    "deaths_before_15": {
+      "wins": "2.5",
+      "losses": "0.5"
+    },
+    "cs_per_min": {
+      "wins": "8.805",
+      "losses": "9.01"
+    },
+    "gold_per_min": {
+      "wins": "505.29",
+      "losses": "432.815"
+    },
+    "damage_per_min": {
+      "wins": "1286.755",
+      "losses": "617.52"
+    },
+    "vision_score": {
+      "wins": "33.5",
+      "losses": "34"
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "U1",
+      "decision": "no_material_error",
+      "issues": []
+    },
+    {
+      "case_id": "U2",
+      "decision": "requires_correction",
+      "issues": [
+        {
+          "block": 14,
+          "exact_quote": "仅这四局中单的早期死亡胜负组均值接近。",
+          "source_ids": [
+            31,
+            32
+          ],
+          "reason": "明确中单四局，胜3/2、负0/1，均值2.50/0.50相差2.0；全部五局2.50/2.67不能代替中单对象。邻句正确数字与无因果限制不能撤销该明确错误。",
+          "minimal_correction": "仅将该句改为中单早死胜负组均值并不接近；保留逐局数据、全样本比较、因果限制和其他段。不得新增未把四个观测分开或因果零效应结论。"
+        }
+      ]
+    }
+  ],
+  "full_report_checks": [
+    "观摩身份与阅读者、条件训练未代选、无OP.GG/录像因果或长期外推",
+    "段4混合补刀经济伤害受辅助较低值影响，明确不泛化视野和早死；段6四局中单对象清楚且只描述本样本",
+    "段7辛德拉KDA/补刀/伤害/占比和最高输出、段8艾尼维亚0早死9.64、段10卡蜜尔1/13/11及7早死均实核",
+    "段11及13的中单经济432.815和伤害1286.755按HALF_UP与原表一致，差约669；视野33.5/34.0",
+    "段15补刀区间重叠，混合差2.3516667与中单-0.205比较成立；伤害695.4183与669.235不能主要归辅助，正确保持",
+    "段17死亡时间、段18胜早死3/2及路线复盘假设有来源；段21的条件性选局和5分钟观察是建议不是新事实",
+    "K1早死解释边界、K2路线资源参团假设、K3缺基准不设数值门、K4可观察练习、K5时间线与录像层级逐项支持正文"
+  ],
+  "limitations": [
+    "作者开发材料和熟悉来源，非独立holdout",
+    "未读取独立答案；本笔记不含Provider审查或业务资格"
+  ]
+}

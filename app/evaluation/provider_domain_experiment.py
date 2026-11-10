@@ -30,6 +30,8 @@ from .domain_e2e import (
     DomainEvaluationDataset,
     DomainEvaluationResult,
     DomainCaseResult,
+    EvidenceDiagnostics,
+    EvaluationDiagnostics,
     evaluate_domain_candidate,
     validate_domain_dataset_usage,
 )
@@ -75,6 +77,7 @@ _DOMAIN_SCOPE = "domain"
 _PROTOCOL_SCOPE = "adapter_protocol"
 _CASE_MAX_CALLS = 4
 _CASE_MAX_TOKENS = 4000
+_SEMANTIC_MAX_CALLS = 9
 
 
 class DomainCaseExecutionPlan(BaseModel):
@@ -100,13 +103,20 @@ class DomainCaseSemanticObservation(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     case_id: NonBlankText
-    normalized_response_count: int = Field(ge=0, le=_CASE_MAX_CALLS)
+    normalized_response_count: int = Field(ge=0, le=_SEMANTIC_MAX_CALLS)
     safe_provider_error_code: SafeRuntimeCodeText | None = None
     agent_status: Literal["completed", "stopped", "failed"] | None = None
     agent_stop_reason: SafeRuntimeCodeText | None = None
     proposed_tool_names: tuple[SafeToolNameText, ...] = ()
     successful_tool_names: tuple[SafeToolNameText, ...] = ()
     evidence_source_ids: tuple[SafeEvidenceIdText, ...] = ()
+    evidence_diagnostics: EvidenceDiagnostics = Field(
+        default_factory=EvidenceDiagnostics
+    )
+    revision_count: int = Field(ge=0, le=3, default=0)
+    evaluation_diagnostics: EvaluationDiagnostics = Field(
+        default_factory=EvaluationDiagnostics
+    )
     fact_check_passed: bool | None = None
     citation_check_passed: bool | None = None
     injection_check_passed: bool | None = None
@@ -137,6 +147,14 @@ class DomainCaseSemanticObservation(BaseModel):
             )
         if self.terminal_status is None and self.terminal_reason is not None:
             raise ValueError("terminal reason requires a terminal status")
+        if (
+            self.evaluation_diagnostics.attempts
+            and self.evaluation_diagnostics.attempts[-1].attempt_id
+            != self.revision_count
+        ):
+            raise ValueError(
+                "evaluation diagnostics must end at the observed revision count"
+            )
         return self
 
 
@@ -790,6 +808,9 @@ def _candidate_case_from_semantics(
         proposed_tool_names=semantic.proposed_tool_names,
         successful_tool_names=semantic.successful_tool_names,
         evidence_source_ids=semantic.evidence_source_ids,
+        evidence_diagnostics=semantic.evidence_diagnostics,
+        revision_count=semantic.revision_count,
+        evaluation_diagnostics=semantic.evaluation_diagnostics,
         fact_check_passed=semantic.fact_check_passed,
         citation_check_passed=semantic.citation_check_passed,
         injection_check_passed=semantic.injection_check_passed,
@@ -911,6 +932,7 @@ __all__ = [
     "DomainCaseExecutionPlan",
     "DomainCaseExecutor",
     "DomainCaseSemanticObservation",
+    "EvidenceDiagnostics",
     "ImmutableDomainExperimentOutput",
     "LoadedProtocolArtifact",
     "PriorProtocolEvidence",

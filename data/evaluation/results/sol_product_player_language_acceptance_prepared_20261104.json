@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.1",
+  "recorded_at": "2026-11-04T08:58:04.421953+00:00",
+  "kind": "natural_player_language_acceptance_preparation",
+  "status": "offline_prepared_not_execution_ready",
+  "head_sha": "d131263d",
+  "product_contract": "natural-flash-sol-product-chat-v1",
+  "product_version": "1.7.10",
+  "catalog_sha256": "9a4422397de1afb26a6db9e8cbe8a1bdb64c39dd438d1bd3bdfc521bd5ad3966",
+  "task": {
+    "id": "familiar_observed_recent5_language_acceptance",
+    "natural_task": "\u5e2e\u6211\u590d\u76d8\u5df2\u5c01\u5b58\u7684DK ShowMaker\u8fd95\u573a\u6392\u4f4d\uff1a\u8bb2\u6e05\u5173\u952e\u5224\u65ad\u548c\u4f9d\u636e\uff0c\u518d\u7ed9\u4e0b\u6b21\u89c2\u6469\u53ef\u68c0\u67e5\u7684\u95ee\u9898\u3002\u4f7f\u7528\u81ea\u7136\u4e2d\u6587\u548c\u53ef\u9760\u56fd\u670d\u79f0\u547c\uff0c\u4e0d\u66ff\u9605\u8bfb\u8005\u5236\u5b9a\u4e2a\u4eba\u8bad\u7ec3\u8ba1\u5212\u3002",
+    "input": {
+      "player_label": "DK ShowMaker#KR1",
+      "count": 5,
+      "queue": 420,
+      "focus": "overall",
+      "relationship_role": "observed",
+      "match_ids": [
+        "KR_8419501041",
+        "KR_8419173644",
+        "KR_8418783037",
+        "KR_8418736265",
+        "KR_8417460158"
+      ],
+      "observed_game_versions": [
+        "16.20.824.8524"
+      ],
+      "dictionary_version": "16.21.1",
+      "dictionary_language": "zh_CN",
+      "summary_digest": "b14a6889228b0b26aaaab667bd952f2249d03d9a84f6e6db88bcd39fed1e167f",
+      "evidence_bundle_digest": "47fd796f8d2bbf8310fa02259a7f46246ac124213d70e608c78cd9e83f96a0b5",
+      "source_scope": "familiar archived matches, not new acquisition or a holdout"
+    },
+    "entry": "POST /conversations/{conversation_id}/reviews/recent",
+    "typed_body": {
+      "count": 5,
+      "queue": 420,
+      "focus": "overall"
+    },
+    "worker_profile": "sol-dual-product-chat-v1",
+    "semantic_scope": "new generation on familiar archived source; not new match acquisition or independent holdout",
+    "persisted_task_created": false
+  },
+  "workflow": [
+    "Flash tool selection and fresh generation",
+    "Sol facts and completion initial reviews",
+    "both pass: eligible for existing publication path",
+    "repair required: one deterministic patch application and two fresh reviews of the same report",
+    "Evidence/report/usage/API/browser consumption and independent full-text assessment"
+  ],
+  "budget": {
+    "input_unit": "deterministic full-message/tool/schema estimate times 2",
+    "not_wire_bytes": true,
+    "not_billed_tokens": true,
+    "input_ceiling_per_call": 64000,
+    "three_generation_plus_conditional_four_review_calls": 7,
+    "generation_reservation": 169716,
+    "calibrated_review_reservation": 299436,
+    "seven_call_conservative_reservation": 469152,
+    "total_limit": 401920,
+    "seven_call_margin": -67232,
+    "runtime_fresh_pair_reservation": 160768,
+    "initial_reviews_plus_runtime_fresh_reservation": 316760,
+    "generation_allowance_before_calibrated_initial_and_full_fresh": 85160,
+    "fully_bounded_four_review_tail": 321536,
+    "generation_allowance_before_fully_bounded_review_tail": 80384,
+    "one_generation_plus_fully_bounded_review_tail": 370896,
+    "one_generation_plus_calibrated_review_tail": 348796,
+    "full_request_cap": 80384,
+    "eight_calls_at_full_request_cap": 643072,
+    "generation_admission_examples": [
+      {
+        "next_generation": 1,
+        "calibrated_next_request_reservation": 49360,
+        "max_prior_known_plus_unknown_for_full_review_tail": 31024,
+        "note": "preparation rule; actual next request must be rebuilt, not replay this sample"
+      },
+      {
+        "next_generation": 2,
+        "calibrated_next_request_reservation": 56900,
+        "max_prior_known_plus_unknown_for_full_review_tail": 23484,
+        "note": "preparation rule; actual next request must be rebuilt, not replay this sample"
+      },
+      {
+        "next_generation": 3,
+        "calibrated_next_request_reservation": 63456,
+        "max_prior_known_plus_unknown_for_full_review_tail": 16928,
+        "note": "preparation rule; actual next request must be rebuilt, not replay this sample"
+      }
+    ],
+    "historical_actual": {
+      "calls": 7,
+      "generation_known_tokens": 29849,
+      "review_known_tokens": 70807,
+      "total_known_tokens": 100656,
+      "unknown_reserved_tokens": 0,
+      "active_seconds": 243.406,
+      "generation_historical_output_configuration": 32768,
+      "current_required_output_cap": 16384,
+      "use": "timing/cost reference only; historical configuration violation is preserved"
+    },
+    "time_limits_note": "900 cumulative active seconds shared by all calls; 300 is only the per-call cap",
+    "historical_usage_rows": [
+      {
+        "ordinal": 1,
+        "input_tokens": 7422,
+        "output_tokens": 327,
+        "total_tokens": 7749
+      },
+      {
+        "ordinal": 2,
+        "input_tokens": 9088,
+        "output_tokens": 115,
+        "total_tokens": 9203
+      },
+      {
+        "ordinal": 3,
+        "input_tokens": 10570,
+        "output_tokens": 2327,
+        "total_tokens": 12897
+      },
+      {
+        "ordinal": 4,
+        "input_tokens": 18966,
+        "output_tokens": 2368,
+        "total_tokens": 21334
+      },
+      {
+        "ordinal": 5,
+        "input_tokens": 17393,
+        "output_tokens": 269,
+        "total_tokens": 17662
+      },
+      {
+        "ordinal": 6,
+        "input_tokens": 16313,
+        "output_tokens": 560,
+        "total_tokens": 16873
+      },
+      {
+        "ordinal": 7,
+        "input_tokens": 14740,
+        "output_tokens": 198,
+        "total_tokens": 14938
+      }
+    ],
+    "future_tool_outputs_report_reviews_unknown": true,
+    "calibrated_seven_call_all_output_caps_fit": false,
+    "runtime_guard_scope": "ProductBudget reserves four review call slots, shared per-request tokens, the 160768 dual-fresh reservation, and now the 321536 full four-review token envelope before generation transport.",
+    "admission_before_send": "known tokens + unknown reservations + fully materialized next request input ceiling + output cap + reserved remaining mandatory reviews <= 401920; calls <=8 and cumulative active time <=900"
+  },
+  "limits": {
+    "max_calls": 8,
+    "total_tokens": 401920,
+    "execution_timeout_s": 900,
+    "generation_logical_calls": 4,
+    "max_output_tokens": 16384,
+    "request_timeout_s": 300
+  },
+  "artifacts": {
+    "readable_plan": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\natural-tone-acceptance-preparation.md",
+      "sha256": "e52f8924760f9d193bd6f2c2dd5792bf7d7a6fe971916c8a5e5d9d4c4f2378e9"
+    },
+    "full_first_generation": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\generation-first-request.json",
+      "sha256": "f5d3f057b9ca0c1dfd83e2ff4f915c682717baecc058f0339652dd3308547335"
+    },
+    "complete_budget": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\natural-task-request-budget.json",
+      "sha256": "75c62365f9ac9d978863fe0d56fe988d5d0a2e76d2d5da978f08bde63d806546"
+    },
+    "reproducible_preparation": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\prepare_natural_task.py",
+      "sha256": "66d55225cf1158274ebbea875ca342e84d9e591c02c70072df95293f284248e7"
+    }
+  },
+  "acceptance": [
+    "full-source factual and numerical review",
+    "observed subject is not the reader",
+    "catalog/name identity and historical game version scope remain distinct",
+    "reliable task-entity names used naturally; unknown or ambiguous names fall back to clear standard names",
+    "style preferences do not become factual rejection; no private implementation jargon in player prose",
+    "same reviewed report reaches Evidence, report API and mobile/desktop UI without post-review rewriting"
+  ],
+  "execution_dependencies": [
+    "Generation pre-send full review-tail token admission is implemented and covered by the targeted product-contract test; isolated SQL was restored and verified locally, while new paid/model/Key authorization remains unavailable.",
+    "Actual future tool outputs and report/revision requests must be materialized and validated again, especially the old initial review margin of 190.",
+    "New paid/model/Key authorization is absent; old four review permits are exhausted.",
+    "Bind immutable source replay through existing injection interfaces and verify actual new task identity without fetching matches."
+  ],
+  "corrections": [
+    "Supersedes eight-review-only draft: that omitted new writing and duplicated two transports.",
+    "Input ceilings are conservative estimated token units, not request bytes.",
+    "Eight old-review-only calls reserved 598872 including outputs, over 401920; not an executable plan.",
+    "Corrected truncated 63-character catalog digest; original draft bytes remain archived.",
+    "Restored canonical YAML to the file start and replaced stale current pointers; history is not a queue."
+  ],
+  "effects": {
+    "new_model_requests": 0,
+    "new_match_source_requests": 0,
+    "knowledge_retrievals": 0,
+    "key_reads": 0,
+    "sql_tasks_created": 0,
+    "old_report_edits": 0
+  },
+  "old_immutable_assets_unchanged": true,
+  "new_model_naturalness_verified": false,
+  "P3": "not_accepted",
+  "Stage8E": "unchanged",
+  "default_admission": "unchanged",
+  "next_action": "\u9694\u79bbSQL\u5df2\u5b8c\u6210\u672c\u5730\u9a8c\u8bc1\uff1b\u4e0b\u4e00\u6b65\u4ec5\u5728\u53d6\u5f97\u4e00\u9879\u5177\u4f53\u65b0\u4efb\u52a1\u7684\u8d39\u7528/Key\u8303\u56f4\u51b3\u5b9a\u540e\uff0c\u624d\u8003\u8651\u771f\u5b9e\u6a21\u578b\u6267\u884c\u3002\u5f53\u524d\u4e0d\u53d1\u9001\u6216\u6062\u590d\u65e7\u4efb\u52a1\u3002",
+  "ci": {
+    "run_id": 41669841138,
+    "head_sha": "59022e8c7de8aa125c7047af859287670b18e6f3",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": 12,
+    "sql_cases_passed": 339,
+    "naming_consumption_cases_passed": 8,
+    "local_sql_executed": false,
+    "monitor_deleted": true,
+    "evidence": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\ci-terminal-41669841138.json",
+      "sha256": "3914be6de093264acfda3278d66ad1564b4a55bf7e0f6fb6bfe0da52cf0ef4bc"
+    }
+  },
+  "validation": {
+    "current_first_request_guard": "passed",
+    "first_request_archive_roundtrip": "exact",
+    "generation_source_sections_omitted": 0,
+    "historical_generation_suffixes": "fully measured in memory; not exported",
+    "review_inputs": "reused four current-renderer checks, not rerun",
+    "source_and_old_asset_hashes": "passed",
+    "frozen_checkout": "same HEAD and clean",
+    "governance": "passed",
+    "diff_check": "passed",
+    "budget_arithmetic": "passed",
+    "ascii_json": "passed",
+    "private_reasoning_exported": false,
+    "local_corrections": [
+      "Canonical YAML restored before validation; Next Step checkpoint label restored after the governance check identified its omission.",
+      "No network request or source mutation during local preparation errors."
+    ],
+    "budget_guard": "passed: 321536 full four-review envelope reserved before generation transport",
+    "targeted_product_contract_tests": "18 passed"
+  },
+  "budget_guard": {
+    "implemented": true,
+    "review_tail_reservation": 321536,
+    "formula": "4 * (64000 + 16384)",
+    "guard_location": "app/product/sol_workflow.py::ProductBudget._provider_for_request",
+    "failure_code": "product_review_tail_budget_reserved",
+    "targeted_test": "tests/test_sol_product_contract.py::test_generation_reserves_full_review_tail_before_transport",
+    "targeted_test_result": "18 passed"
+  },
+  "sql_local_evidence": {
+    "artifact": "data/evaluation/results/sol_product_player_language_sql_local_20261109.json",
+    "migration_head": "0015_task_continuation",
+    "targeted_tests_passed": 24,
+    "temporary_project_cleaned": true
+  }
+}

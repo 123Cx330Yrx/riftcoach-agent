@@ -1,0 +1,55 @@
+{
+  "schema_version": "sol-necessity-natural-segment-v1",
+  "observed_at": "2026-10-24T09:32:36.582660+00:00",
+  "execution_started": true,
+  "execution_head": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+  "ci_run": "40073888400",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024",
+  "plan_sha256": "a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea",
+  "authorization_sha256": "125005b2b4d4e794c2a294e0a359f75916ddbfe69378b32d7a3eea48c4e40d26",
+  "guard_sha256": "5668400a86bcb148c4e19dac04ffc0d3d7c84db1ea14826d0e4c12167e09b0f7",
+  "checkpoint_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024\\execution\\session\\checkpoints\\0029.json",
+  "checkpoint_sha256": "c7fa485ae8b066e0b9533f1c144a06e714a7ccd8d36f7659b33792d978e5cec9",
+  "first_stdout_sha256": "c739bc293901dc0fbe798b6453f3fbc1276a67d71373abe0f1fe4c9117b1d201",
+  "first_exit": {
+    "exit_code": 0,
+    "stdout_sha256": "c739bc293901dc0fbe798b6453f3fbc1276a67d71373abe0f1fe4c9117b1d201"
+  },
+  "facts_submit_stdout_sha256": "cd740cc7cff36eef2eb1c13b7f336e5c71614eaa9f36b69e29b7bc9ce6f78454",
+  "facts_submit_exit": {
+    "exit_code": 0,
+    "stdout_sha256": "cd740cc7cff36eef2eb1c13b7f336e5c71614eaa9f36b69e29b7bc9ce6f78454"
+  },
+  "http_requests": 3,
+  "known_tokens": 45060,
+  "unknown_reserved_tokens": 0,
+  "transport_retries": 0,
+  "active_seconds": 194.81299999999464,
+  "facts_initial": {
+    "accepted_by_both": true,
+    "provider_verdict": "needs_revision",
+    "provider_score": 94,
+    "true_issues": 2,
+    "patch_applied": false,
+    "material_sha256": "728b82cac704de2d2aa594f80c98e55b907c399d5fe0eca81b39db3fca04d205",
+    "primary_notes_sha256": "0fa6c142e35c7db3cc434c5b9feda581726f8115dda5e482d08e4182d735c2b5",
+    "native_record_sha256": "2ea4a013ead66fce60f3df60132ff09e980659ed88faec6c8624adb3ff79ebec",
+    "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16d38-e732-7623-a0ed-ca588c371a00/msg_0370f309de022d70016adc7a886d508194a36c5fa2f8c19008",
+    "author_sha256": "82047e296ac7ba512acf7eb3679d7216bbb1dbb4dff998ec9feee364e4fcd862"
+  },
+  "resume": {
+    "entrypoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024-control\\resume-authorized.ps1",
+    "python_runner_sha256": "7d5c52752f3daad15fb5d3fc6eff22af6f750b13b097999b7e973d288481c3cc",
+    "powershell_sha256": "a52ddfbe4c6df3b063407877a1e4535725dff064c048896637cec730a28d306a",
+    "check_only_passed": true,
+    "key_read": false,
+    "provider_requests": 0,
+    "unchecked_task_blocked_before_key": true,
+    "manual_retry": false
+  },
+  "next_action": "Resume original session at completion-initial after local hidden enterprise key input; do not restart generation.",
+  "closed": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "full15_run": false
+}

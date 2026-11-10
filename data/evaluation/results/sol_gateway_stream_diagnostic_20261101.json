@@ -1,0 +1,149 @@
+{
+  "actual_request": {
+    "byte_length": 53772,
+    "exact_expected_wire": true,
+    "max_output_tokens": 16384,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "stream": true,
+    "tool_choice": {
+      "name": "submit_report_review",
+      "type": "function"
+    },
+    "wire_sha256": "c05b663a09e28e60c417b7130945dc9714c4e82a8e58db43019c8e1e2468417e"
+  },
+  "authorization_note": "User continued the already approved remaining comparison; cumulative diagnostic reservation reconciled to 102815, without changing old product budget or adding calls.",
+  "body_free_observation": {
+    "body_free": true,
+    "closed": true,
+    "eof": true,
+    "exception_type": null,
+    "first_bytes_ms": 3047,
+    "http_requests": 1,
+    "last_bytes_ms": 147234,
+    "observed_ms": 147344,
+    "pending_read_since_ms": null,
+    "phase": "closed",
+    "raw_bytes": 814343,
+    "raw_chunks": 985,
+    "read_calls": 986,
+    "request_started_ms": 1531,
+    "response_cf_ray": "a533ee60ec74a605-NRT",
+    "response_headers_ms": 3047,
+    "response_request_id": null,
+    "response_status": 200,
+    "schema_version": "stream-observation-v1",
+    "stack": [
+      {
+        "file": "stream_observation.py",
+        "function": "_save",
+        "line": 95
+      },
+      {
+        "file": "stream_observation.py",
+        "function": "close",
+        "line": 122
+      },
+      {
+        "file": "diagnostic.py",
+        "function": "collect",
+        "line": 181
+      },
+      {
+        "file": "stream_once.py",
+        "function": "observed_collect",
+        "line": 61
+      },
+      {
+        "file": "stream_once.py",
+        "function": "main",
+        "line": 73
+      },
+      {
+        "file": "stream_once.py",
+        "function": "<module>",
+        "line": 97
+      }
+    ],
+    "timeout": {
+      "connect": 300,
+      "pool": 300,
+      "read": 300,
+      "write": 300
+    }
+  },
+  "comparison_scope": "Exactly one additional request; actual full wire differs from prior nonstream only in stream=true.",
+  "diagnostic_total_http": 2,
+  "diagnostic_total_known_tokens": 72409,
+  "elapsed_s": 147.344,
+  "error_interpretation": "tool_arguments_mismatch also fires for absent or different name; it alone does not prove argument bytes differed.",
+  "event_type_counts": {
+    "response.completed": 1,
+    "response.created": 2,
+    "response.function_call_arguments.delta": 1465,
+    "response.function_call_arguments.done": 1,
+    "response.in_progress": 1,
+    "response.output_item.added": 17,
+    "response.output_item.done": 17,
+    "response.queued": 1,
+    "response.reasoning_summary_part.added": 1,
+    "response.reasoning_summary_part.done": 1,
+    "response.reasoning_summary_text.delta": 1,
+    "response.reasoning_summary_text.done": 1
+  },
+  "first_response_wait_s": 1.516,
+  "inference": "Early stream bytes and a completed 147.344-second response support streaming as mitigation for the observed nonstream gateway wait; time-varying upstream state remains a confounder.",
+  "known_usage": {
+    "cached_input_tokens": 0,
+    "input_tokens": 40083,
+    "output_tokens": 9895,
+    "reasoning_tokens": 8248,
+    "total_tokens": 49978
+  },
+  "new_unknown_reservation": 0,
+  "next_action": "Implement and verify a product-compatible streaming receiver with safe event metadata, terminal/tool consistency, usage preservation, cancellation and single-resume behavior; do not relaunch the original generation or repeat nonstream calls.",
+  "original15_completion_unchanged": true,
+  "original_product_files_verified": 199,
+  "original_product_http": 8,
+  "original_product_known_tokens": 29323,
+  "original_product_unchanged": true,
+  "original_product_unknown_reservation": 366910,
+  "outcome": "full_workload_stream_completed_with_protocol_acceptance_errors",
+  "process_exit": {
+    "elapsed_s": 149.75,
+    "exit_code": 0,
+    "pid": 36244,
+    "reaped": true,
+    "wall_timeout": false
+  },
+  "product_published": false,
+  "reasoning_echo": "high",
+  "recorded_at_utc": "2026-10-31T16:15:15.633554+00:00",
+  "replay_limit": "Raw stream envelopes and per-event identity/sequence/name metadata were not saved; exact cause of the protocol errors cannot be reconstructed from aggregate counts.",
+  "response_model_matches": true,
+  "sources": {
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-gateway-diagnosis-20261031\\stream-authorization-20261101.json": "52f21a7906694a90235aec5adeb04c4758f41fbaccb9fb5f576900c3d99aa4c2",
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-gateway-diagnosis-20261031\\stream-launch\\exit.json": "acd67f045d5a2809a7bb26eb0a1b63721022270bb2d4bea3ceb2f13f892e419f",
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-gateway-diagnosis-20261031\\stream\\actual-request.json": "b1d60f8b2342a2a72343c084f43666e19b311b9fe543d0ae6cbe453c158d1deb",
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-gateway-diagnosis-20261031\\stream\\observation\\observation.json": "95c693e9540d1851810db770dba96c27d8b1cbdbf1e229234795b85005b026ba",
+    "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-gateway-diagnosis-20261031\\stream\\result.json": "8aac0a048db8d18977d12b064658c34fb377c190e52006838b66a6ad5bc173d3"
+  },
+  "stage8e_complete": false,
+  "stream_errors": [
+    "response_identity",
+    "event_sequence",
+    "duplicate_response",
+    "tool_arguments_mismatch"
+  ],
+  "strict_stream_accepted": false,
+  "terminal_status": "completed",
+  "terminal_tool": {
+    "arguments_sha256": "ae6d782addc97107f9249ed2b092f57bd3bb3c3add149f15f0549d67b3853231",
+    "issues": 2,
+    "model_score": 88,
+    "model_verdict": "needs_revision",
+    "repair_groups": 2,
+    "schema_valid": true,
+    "semantic_acceptance": false
+  }
+}

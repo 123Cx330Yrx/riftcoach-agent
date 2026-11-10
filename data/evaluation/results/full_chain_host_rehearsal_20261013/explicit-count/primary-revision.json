@@ -1,0 +1,24 @@
+{
+  "stage_assessment": {
+    "stage": "revision",
+    "stage_sha256": "bbb2788de27b2fe6af57193196ccd5d71981efe26cf62935128cc4c96525bacb",
+    "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "source_review": "已核完整16段新成稿和原稿、全部事实与出处、generation_facts、确定性报告、知识K1–K5、用户原话、实际请求及编辑响应和完整journal。事实表/出处表显式地址复原与input_json一致，三个cohort共39项均值/中位数和全部role_contrasts已独立按Decimal复算。stage和request/response/report SHA绑定正确。唯一block_4连续锚点恰出现一次，拼接等于实际新成稿；其余字节不变。两胜来自薇古丝、辛德拉，三负为卡蜜尔、艾尼维亚、洛克，五局全部纳入无未知胜负，因此两胜三负/40%正确修复原错误。第6段四中单CS8.95/9.64/8.38/8.66和辛德拉14/5/10、1430.11正确；第8段辅助卡蜜尔单局1/13/11、早死7且不推长期能力，K1支持。第10段明确四中单两胜两负，CS均值8.805/9.01、伤害1286.755/617.52正确，未扩大五局或因果。第12段艾尼维亚25:35/29:27与原时间线一致，K5证据层次、K2待验假设符合知识，不把假设当原因。第14段保持未知个人目标和若选择中单的条件建议，K4支持观察方式，K3支持不设伪精确目标。第16段五局Riot及timeline、生成日期2026-09-10UTC、实际queue_id420、DataDragon静态映射与未提供OP.GG边界正确；知识在正文实际消费。全部标题、限定、否定、引用和正确分析保留，观摩对象与阅读者区分不变，不代选训练目标。成稿四项ReportAssessment均true，仅评价这份实际成稿，不代表整个编辑响应合格或模型质量。\n\n实际响应仅一次submit_block_edits，raw与operations保持响应，接受意见与初评原响应一致，所选来源31/32值与实际完整来源相等。但编辑操作reason明确声称 correcting the direction of the mixed-sample means，但实际before/after只把五局三胜两负/60%改为两胜三负/40%；没有改任何混合样本均值或方向。accepted_review唯一问题也是胜负计数及胜率。实际revision政策要求reason解释必要修改，因此这不是单纯可选措辞或省略，而是对实际编辑依据的错配说明。OFFLINE标记不免除该语义要求；正确after不能使错误reason正确。因此拒绝本revision阶段，归类unsupported_explanation。保留正确成稿判断，不改冻结材料、不补写理由、不强推final。",
+    "accepted": false,
+    "defects": [
+      {
+        "kind": "unsupported_explanation",
+        "detail": "编辑操作reason明确声称 correcting the direction of the mixed-sample means，但实际before/after只把五局三胜两负/60%改为两胜三负/40%；没有改任何混合样本均值或方向。accepted_review唯一问题也是胜负计数及胜率。实际revision政策要求reason解释必要修改，因此这不是单纯可选措辞或省略，而是对实际编辑依据的错配说明。OFFLINE标记不免除该语义要求；正确after不能使错误reason正确。"
+      }
+    ]
+  },
+  "report_assessment": {
+    "report_sha256": "6d22d9fd1e96520f4ddc33d66250e96fede78a7cb5a66168c1040c1b8eeb781d",
+    "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "source_review": "已核完整16段新成稿和原稿、全部事实与出处、generation_facts、确定性报告、知识K1–K5、用户原话、实际请求及编辑响应和完整journal。事实表/出处表显式地址复原与input_json一致，三个cohort共39项均值/中位数和全部role_contrasts已独立按Decimal复算。stage和request/response/report SHA绑定正确。唯一block_4连续锚点恰出现一次，拼接等于实际新成稿；其余字节不变。两胜来自薇古丝、辛德拉，三负为卡蜜尔、艾尼维亚、洛克，五局全部纳入无未知胜负，因此两胜三负/40%正确修复原错误。第6段四中单CS8.95/9.64/8.38/8.66和辛德拉14/5/10、1430.11正确；第8段辅助卡蜜尔单局1/13/11、早死7且不推长期能力，K1支持。第10段明确四中单两胜两负，CS均值8.805/9.01、伤害1286.755/617.52正确，未扩大五局或因果。第12段艾尼维亚25:35/29:27与原时间线一致，K5证据层次、K2待验假设符合知识，不把假设当原因。第14段保持未知个人目标和若选择中单的条件建议，K4支持观察方式，K3支持不设伪精确目标。第16段五局Riot及timeline、生成日期2026-09-10UTC、实际queue_id420、DataDragon静态映射与未提供OP.GG边界正确；知识在正文实际消费。全部标题、限定、否定、引用和正确分析保留，观摩对象与阅读者区分不变，不代选训练目标。成稿四项ReportAssessment均true，仅评价这份实际成稿，不代表整个编辑响应合格或模型质量。",
+    "facts_and_sources_correct": true,
+    "correct_content_preserved": true,
+    "identity_and_goal_preserved": true,
+    "true_errors_fixed": true
+  }
+}

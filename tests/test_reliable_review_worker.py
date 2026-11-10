@@ -10,6 +10,7 @@ from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.tasks.models import (
     ReviewTask,
+    TaskPublicationMode,
     TaskPublicationStatus,
     TaskStatus,
     TaskTerminal,
@@ -121,6 +122,7 @@ class Repository:
         self.succeed_result = succeed_result
         self.fail_result = fail_result
         self.cancel_result = cancel_result
+        self.succeed_with_evidence_calls = []
 
     def claim_next(self, **kwargs):
         self.claim_calls.append(kwargs)
@@ -152,6 +154,10 @@ class Repository:
         self.succeed_calls.append(kwargs)
         return self.succeed_result
 
+    def succeed_with_evidence(self, **kwargs):
+        self.succeed_with_evidence_calls.append(kwargs)
+        return self.succeed_result
+
     def fail(self, **kwargs):
         self.fail_calls.append(kwargs)
         return self.fail_result
@@ -174,6 +180,20 @@ class Executor:
         if self.error is not None:
             raise self.error
         return terminal()
+
+
+class EvidenceExecutor(Executor):
+    def execute(self, task):
+        result = super().execute(task)
+        # The worker only accepts this route when the executor has produced
+        # the complete evidence-bound publication payload.
+        return result.model_copy(
+            update={
+                "pending_snapshot": object(),
+                "publication_reference": {"context": {"mode": "evidence_bound_v1"}},
+                "summary_digest": "a" * 64,
+            }
+        )
 
 
 def worker(
@@ -218,6 +238,32 @@ def test_worker_checkpoints_then_heartbeats_and_fences_success() -> None:
     assert committed["lease_token"] == TOKEN
     assert repository.fail_calls == []
     assert repository.cancel_calls == []
+
+
+def test_evidence_bound_task_uses_atomic_publication_commit() -> None:
+    repository = Repository()
+    repository.claim = running_task().model_copy(
+        update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+    )
+    result = worker(repository, EvidenceExecutor()).run_once()
+
+    assert result.status is WorkerIterationStatus.SUCCEEDED
+    assert repository.succeed_calls == []
+    assert len(repository.succeed_with_evidence_calls) == 1
+    assert repository.succeed_with_evidence_calls[0]["summary_digest"] == "a" * 64
+
+
+def test_evidence_bound_task_never_falls_back_to_legacy_commit() -> None:
+    repository = Repository()
+    repository.claim = running_task().model_copy(
+        update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+    )
+
+    with pytest.raises(ReviewWorkerError) as raised:
+        worker(repository, Executor()).run_once()
+
+    assert raised.value.code == "task_terminal_update_failed"
+    assert repository.succeed_calls == []
 
 
 def test_cancel_observed_at_final_heartbeat_takes_precedence_over_success() -> None:

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-09T05:51:35Z",
+  "kind": "isolated_local_sql_environment_recovery",
+  "status": "completed_local_sql_smoke_only",
+  "head_sha": "4108d660518230d39a3becda585e4d5b31bb8b13",
+  "docker": {
+    "context": "desktop-linux",
+    "client_server_version": "29.7.2",
+    "compose_project": "riftcoach-p3p4-sql",
+    "image": "postgres:17-alpine",
+    "migration_head": "0015_task_continuation",
+    "isolated_volume": "riftcoach-p3p4-sql_riftcoach-postgres-data",
+    "isolated_network": "riftcoach-p3p4-sql_default",
+    "cleaned_after_run": true,
+    "existing_volumes_touched": false
+  },
+  "tests": {
+    "command": "pytest tests/test_sol_product_worker_postgres.py tests/test_sol_product_entry_postgres.py tests/test_product_budget_supplement_postgres.py -q --tb=short --show-capture=no",
+    "passed": 24,
+    "failed": 0,
+    "warnings": 1,
+    "duration_seconds": 457.22,
+    "database_url": "postgresql+psycopg://...@127.0.0.1:5432/riftcoach",
+    "external_model_requests": 0,
+    "external_source_requests": 0,
+    "key_reads": 0
+  },
+  "scope": "local isolated PostgreSQL/Worker/Entry/Budget contract verification; not a model or product naturalness acceptance",
+  "limitations": [
+    "No API, Worker, model, Riot/source or Key request was started.",
+    "This does not replace same-HEAD public CI or live player-language evidence.",
+    "The four-review budget guard remains locally verified by 18 product-contract tests."
+  ],
+  "P3": "not_accepted",
+  "Stage8E": "unchanged",
+  "default_admission": "unchanged",
+  "control_artifact": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-local-20261109.json",
+    "sha256": "e7c2539d69e9ccc30d6752c23820a6b222e0485393a9b3aa9912f3ff15dab7bf"
+  }
+}

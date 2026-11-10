@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "status": "ci_fixture_repaired_sql_verification_pending",
+  "recorded_at": "2026-11-03T07:42:49.643768+00:00",
+  "base_head": "422f92bb118a5c11573a8ddd9ccd3cf156141bf3",
+  "failed_run": 41596735646,
+  "failed_jobs": [
+    {
+      "job_id": 125785752150,
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-source-scope-20261103\\ci-125785752150.log",
+      "sha256": "bc7617fad05ce26f70e68159cc00c0e07c6f978d9b7b17a0c86e433ffa1976d9",
+      "summary": "2026-11-03T07:34:39.8160271Z ===== 1 failed, 83 passed, 253 deselected, 1 warning in 235.95s (0:03:55) ======"
+    },
+    {
+      "job_id": 125785752241,
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-source-scope-20261103\\ci-125785752241.log",
+      "sha256": "9ae5d30a3f969d19836d1a46d0a6e82d616d90a826c436460e3f1afcc43ba607",
+      "summary": "2026-11-03T07:36:06.2193793Z ===== 1 failed, 84 passed, 252 deselected, 1 warning in 309.43s (0:05:09) ======"
+    },
+    {
+      "job_id": 125785752344,
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-source-scope-20261103\\ci-125785752344.log",
+      "sha256": "89fcd8095e7d5be622e73f1ba6e30a69f05ed8264bd74b13eaca8accef7cc2b7",
+      "summary": "2026-11-03T07:33:31.4367222Z ===== 1 failed, 83 passed, 253 deselected, 1 warning in 170.19s (0:02:50) ======"
+    },
+    {
+      "job_id": 125785752223,
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-source-scope-20261103\\ci-125785752223.log",
+      "sha256": "ca439da394f599d7d6b4d6cbdc2b2f246b9988862046087959af47d2f11e3bf6",
+      "summary": "2026-11-03T07:36:46.1317681Z ===== 1 failed, 83 passed, 253 deselected, 1 warning in 354.31s (0:05:54) ======"
+    }
+  ],
+  "root_cause": "New source projection assertions were attached to legacy publication tasks. The Worker intentionally supplies Evidence sources only for evidence_bound_v1 tasks. Both pre-existing Evidence-bound product cases passed in the same CI.",
+  "repair": [
+    "Keep legacy accounting/publication cases without requiring an Evidence projection.",
+    "Move scope assertions to explicit evidence_bound_v1 tasks for Responses and Chat, covering pass and repair across Worker restart.",
+    "Keep cumulative accounting, one source acquisition, owner isolation, one application and identical fresh-report digest checks."
+  ],
+  "changed_production_code": false,
+  "checks": {
+    "pytest_collection": {
+      "count": 17,
+      "legacy_cases": 4,
+      "evidence_bound_scope_cases": 4,
+      "status": "passed_collection_only"
+    },
+    "compile": "passed",
+    "diff": "passed",
+    "governance": "passed",
+    "local_sql": "not_run_docker_unavailable",
+    "repaired_sql_cases": "pending_replacement_CI"
+  },
+  "docker": "Unrepaired. Stop-process and inaccessible socket deletion were rejected by automatic approval (blocked by policy); not executed or bypassed.",
+  "new_real_model_requests": 0,
+  "new_source_requests": 0,
+  "real_key_reads": 0,
+  "acceptance": {
+    "P3": "not_accepted",
+    "Stage8E": "unchanged",
+    "default_admission": "unchanged"
+  }
+}

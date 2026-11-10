@@ -1,0 +1,75 @@
+{
+  "kind": "original15-claim-scope6-facts-initial-accepted-v1",
+  "case": "claim-scope:6",
+  "cases_completed": 8,
+  "case_completed": false,
+  "accepted_stages": [
+    {
+      "stage": "facts-initial",
+      "primary_accepted": true,
+      "independent_accepted": true,
+      "native_submission_accepted": true,
+      "checkpoint_sha256": "6401aac80b5662d17ccb9239e4cc50038fdaa3f823203d2af1aa138e17c307e5",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17e6d-6dbc-7f00-bd82-330ab5b625c4/msg_0ecbd62c944c67ef016ae0e145e9048193a09a3356fae73e31",
+      "author_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
+      "native_final_sha256": "eb156b6b7b35079f8995bf51d565d4cd47c2242be9c7054a22f028ee70cf6820",
+      "raw_event_sha256": "d6efc3b6de3d665822c714f398cef9f65216a0c40551614ee55b5b7dcd0a2978",
+      "author_text_equal": true,
+      "primary_sha256": "acb5623b4be6a2932d0671e736be607c1e0125ed472a8f173aee2b50678a4c2a",
+      "submission_sha256": "c6f03ede1fe6655e3d24ea031e66a6a0efc55706b80355be39bc7bd0839f6828"
+    }
+  ],
+  "receipt": {
+    "version": "research-responses-single-call-v1",
+    "ok": true,
+    "code": "ok",
+    "worker_code": "ok",
+    "failure_category": null,
+    "request_sha256": "0157893376c95c44a7a5f474b912912041733c7118d2d045bb8dd5456b458b4b",
+    "wire_sha256": "a284f2172b6c5756afb872e0d1402568d9438285b0b401c9a3c0958f63754c80",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "usage": {
+      "input_tokens": 20079,
+      "output_tokens": 1218,
+      "total_tokens": 21297,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 868
+    },
+    "usage_state": "known",
+    "usage_conflict": false,
+    "conflicting_worker_usage": null,
+    "usage_basis": "channel_reported_unverified_upstream",
+    "http_requests": 1,
+    "reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 40.015,
+    "semantic_approval": false,
+    "group_verified": false,
+    "upstream_identity_verified": false,
+    "qualified": false,
+    "response_mode": "natural-sol-dual-necessity-v1",
+    "validation_context_sha256": "d4fa3d2272ec113e89ff1d6d925175f6e0bbb428ece32767afdaf55058b1f1e5"
+  },
+  "receipt_sha256": "e58fc06dbd24c7c8be47e69a49c788f76bf95a9eca4936ef4de3bc1babfa5591",
+  "source_check_sha256": "d279da754ad90ebb993932697915d9eda003642761af9b074f78dacc836680a9",
+  "batch_accounting": {
+    "calls": 29,
+    "http_requests_known": 29,
+    "http_requests_unknown": 0,
+    "known_tokens": 511875,
+    "not_sent": 0,
+    "receiptless_calls": 0,
+    "retries": 2,
+    "unknown_reserved_tokens": 137228
+  },
+  "next_stage": "completion-initial",
+  "continuation_segment": "0116.stdout.txt",
+  "qualified": false,
+  "publication_allowed": false,
+  "actual_edit_performed": false
+}

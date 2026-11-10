@@ -1,0 +1,276 @@
+{
+  "kind": "sol-product-chat-p3-prepared-v1",
+  "created_at": "2026-11-02T16:01:01.704106+00:00",
+  "status": "prepared_awaiting_new_task_cost_decision",
+  "execution_head": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e",
+  "ci": {
+    "kind": "ci-terminal-observation",
+    "recorded_at": "2026-11-02T16:01:01.704106+00:00",
+    "run_id": 41430754834,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41430754834",
+    "head_sha": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "web-checks",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (0)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (1)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (2)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (3)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-migrations",
+        "conclusion": "success"
+      },
+      {
+        "name": "packaging-smoke",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest",
+        "conclusion": "success"
+      }
+    ],
+    "provenance": "Compact transcription of the gh run view response verified earlier in this same turn; not a raw GitHub response. Terminal run was not polled again."
+  },
+  "contract": {
+    "contract_id": "natural-flash-sol-product-chat-v1",
+    "version": "1.7.4",
+    "scope": "unadmitted_opt_in",
+    "sha256": "07249021e8da53c7d830fe3bfde28c831750ffea334b56e8dd6d336343a98c8c"
+  },
+  "readiness": {
+    "kind": "chat-p3-environment-readiness-v1",
+    "head": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e",
+    "execution_cwd": "D:\\riftcoach-chat-product-validation-execution-20261102",
+    "checked_at": "2026-11-02T15:56:26.494222+00:00",
+    "api_ready": true,
+    "review_worker_check": "passed",
+    "player_link_worker_check": "passed",
+    "source_requests": 0,
+    "model_requests": 0,
+    "real_credentials_read": 0,
+    "unexpected_http_attempts": 0,
+    "task_conversation_counts": {
+      "player_link_tasks": 0,
+      "conversations": 0,
+      "conversation_messages": 0,
+      "review_tasks": 0,
+      "review_task_events": 0
+    },
+    "migration_head": "0015_task_continuation",
+    "required_routes": [
+      "/player-links",
+      "/player-links/{link_task_id}",
+      "/conversations",
+      "/conversations/{conversation_id}/reviews/recent",
+      "/tasks/{task_id}/continuation",
+      "/runs/{run_id}/report",
+      "/runs/{run_id}/evidence",
+      "/runs/{run_id}/usage"
+    ],
+    "contract": {
+      "contract_id": "natural-flash-sol-product-chat-v1",
+      "version": "1.7.4",
+      "scope": "unadmitted_opt_in",
+      "sha256": "07249021e8da53c7d830fe3bfde28c831750ffea334b56e8dd6d336343a98c8c"
+    },
+    "model_provider_credentials": "synthetic only",
+    "limitations": [
+      "No player resolved, no live sources fetched, no task created, no provider authenticated or invoked"
+    ]
+  },
+  "local_preflight_correction": {
+    "observed": "WorkerCompositionError -> RuntimeError in DataDragonService._get_json, caused by this preflight blocking all external HTTP",
+    "action": "Read the five unauthenticated official static catalog resources into an isolated startup cache, then rerun unchanged startup checks with external HTTP blocked",
+    "product_source_changed": false,
+    "runtime_test_failure": false,
+    "first_failure_preserved": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\readiness-failure-diagnosis.json",
+      "sha256": "bfaa49acb0a16c5e3bab0e8f9ee969ff4b9d893e2a59189600bf7184492e40a8",
+      "bytes": 2308
+    }
+  },
+  "public_static_requests": 5,
+  "player_source_requests": 0,
+  "real_credentials_read": 0,
+  "model_requests": 0,
+  "fresh_source_warning": "16.21.1 is startup catalog only, not evidence that the future match sample uses this version",
+  "cleanup": {
+    "checked_at": "2026-11-02T15:57:56.663330+00:00",
+    "owned_container": "rc-chat-p3-preparation-20261102",
+    "removed": true,
+    "preflight_business_rows": 0,
+    "other_containers_or_volumes_modified": false,
+    "docker_desktop_left_running": true,
+    "paid_executor_started": false,
+    "waiter_or_monitor_created": false
+  },
+  "proposal": {
+    "kind": "chat-product-p3-decision-ready-v1",
+    "prepared_at": "2026-11-02T16:01:01.704106+00:00",
+    "authorized": false,
+    "reason": "Prior paid grant expired; current continue instruction used for independent preparation. This file is a proposal, not a grant.",
+    "objective": "One fresh end-to-end observed recent-five-game product task through the ordinary Player/Conversation/Worker/Evidence/Report path",
+    "target": {
+      "riot_id": "DK ShowMaker#KR1",
+      "routing_region": "asia",
+      "relationship_role": "observed",
+      "selection_basis": "Previously selected project observation target; resolve current official identity at execution"
+    },
+    "review_body": {
+      "count": 5,
+      "queue": 420,
+      "focus": "overall"
+    },
+    "task_id": null,
+    "run_id": null,
+    "source_policy": {
+      "fresh_fetch_at_execution": true,
+      "record_match_dates_versions_actual_count_queue_fallback": true,
+      "old_success_or_diagnostic_import": false,
+      "insufficient_or_fallback_sample": "Record actual result; do not claim five-ranked-game acceptance"
+    },
+    "execution": {
+      "cwd": "D:\\riftcoach-chat-product-validation-execution-20261102",
+      "head": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e",
+      "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+      "worker_profile": "sol-dual-product-chat-v1",
+      "publication_mode": "evidence_bound_v1",
+      "new_isolated_database_and_queue": true,
+      "task_global_active_limit": 1,
+      "normal_worker_once": true
+    },
+    "contract": {
+      "contract_id": "natural-flash-sol-product-chat-v1",
+      "version": "1.7.4",
+      "scope": "unadmitted_opt_in",
+      "sha256": "07249021e8da53c7d830fe3bfde28c831750ffea334b56e8dd6d336343a98c8c"
+    },
+    "proposed_authorization": {
+      "tasks": 1,
+      "max_model_http_requests": 8,
+      "max_total_tokens_including_unknown_reserves": 401920,
+      "max_active_seconds": 900,
+      "per_request_timeout_seconds": 300,
+      "per_request_max_output_tokens": 16384,
+      "validity": "24 hours from a new explicit confirmation; no automatic extension",
+      "real_credentials": [
+        "Existing Riot source credential",
+        "Existing Zhipu Flash credential",
+        "Existing enterprise Sol review credential"
+      ],
+      "models": [
+        "glm-5.3-flash generation",
+        "gpt-6.1-sol/high Chat review"
+      ],
+      "normal_success_path": "Generation, two initial reviews, and if required one deterministic application plus two fresh reviews of the identical revised report",
+      "paid_retry_after_failure": false,
+      "extra_task": false,
+      "deployment": false,
+      "old_grant_reused": false
+    },
+    "cost_limits": {
+      "enforced_resource_boundary": "Existing contract request/token/active-time budgets; unknown usage stays reserved",
+      "historical_scenario": {
+        "model_requests": 7,
+        "tokens": 335183,
+        "not_a_prediction": true
+      },
+      "current_currency_price_verified": false,
+      "note": "Public pricing lookup did not succeed. No current CNY quote or billing cap is claimed. Token usage and provider charges are reported separately."
+    },
+    "acceptance": [
+      "Actual identity and observed scope; no personal training assignment or Training side effects",
+      "Complete actual request, source, report, reviews and public receipts read independently; no private reasoning output",
+      "Transport completeness, tool and business validity, actual HTTP/known/unknown/receiptless/not-sent accounting",
+      "Source-supported numbers, rounding, game-version scope, causal claims and requested purpose",
+      "At most one application; where revision occurs, two fresh reviews bind the same revised report",
+      "Actual SQL/API and desktop/mobile browser evidence for report, evidence, usage and refresh without extra paid calls",
+      "A model pass, CI success or worker succeeded alone never establishes product acceptance",
+      "All owned processes/containers cleaned and latest task/checkpoint/database evidence retained"
+    ],
+    "failure_action": "Preserve original evidence and costs, stop the affected paid step, diagnose offline; do not automatically retry, switch route, extend time or create another batch.",
+    "not_yet_verified": [
+      "Current official identity and five-match sample",
+      "Real credentials and provider authentication",
+      "Actual relay compatibility",
+      "End-to-end latency and semantic quality",
+      "Current currency pricing"
+    ],
+    "preparation_evidence": [
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\environment-readiness.json",
+        "sha256": "640045dacb6c69e1e483a53b465dea86466de807bc9647fff60e061befcdf1f1",
+        "bytes": 1380
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\readiness-failure-diagnosis.json",
+        "sha256": "bfaa49acb0a16c5e3bab0e8f9ee969ff4b9d893e2a59189600bf7184492e40a8",
+        "bytes": 2308
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\public-static-catalog.json",
+        "sha256": "e6b69ebfc45c884829d9daee89e1ffe18ae84a80e2da164cc44c095d877d2790",
+        "bytes": 1507
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\preparation-cleanup.json",
+        "sha256": "a8a8d36146623c40f641a8431696a8550878e25be9b10662817a99d94353dd4c",
+        "bytes": 330
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\prepare_readiness.py",
+        "sha256": "d3c2a41972cf9618d70fd7373e48525670f08b09937a799255acfbecc16c35e7",
+        "bytes": 5287
+      },
+      {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\ci-success.json",
+        "sha256": "7e695e4e7dc5d868da562b415d926fc2d0374d6743220e44166327f363e806fa",
+        "bytes": 1477
+      }
+    ]
+  },
+  "binding": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\binding.json",
+    "sha256": "af8635062bf22b3135104c78719343a4d4979036d8463b6d7d5e19280156e50b",
+    "bytes": 1574
+  },
+  "boundaries": {
+    "old_tasks_receipts_costs_changed": false,
+    "default_route_changed": false,
+    "old_15_completion_changed": false,
+    "stage8e_changed": false,
+    "live_quality_accepted": false
+  }
+}

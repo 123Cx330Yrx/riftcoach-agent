@@ -1,0 +1,52 @@
+{
+  "version": "natural-completion-continuation-ci-repair-v1",
+  "original_ci_run": "40829906402",
+  "failed_job_id": 123301471315,
+  "failed_job_name": "pytest-shards (3)",
+  "failed_at": "2026-10-29T07:37:41Z",
+  "log_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-completion-continuation-20261029-control\\ci-shard3-original.log",
+  "log_sha256": "cfbfb7115466cf9e2ac4c06771eccbad8c4ec9627443a16bb2ad809c20108534",
+  "summary": {
+    "failed": 1,
+    "passed": 1903,
+    "skipped": 49,
+    "deselected": 5860,
+    "subtests_passed": 36,
+    "seconds": 3777.35
+  },
+  "failed_test": "tests/test_sol_review_binding.py::test_inventory_preserves_original15_and_uses_runtime_contract",
+  "cause": "The runtime manifest includes the explicit completion continuation component, but the current-inventory test still compared the earlier observation-heading snapshot.",
+  "old_inventory": {
+    "path": "data/evaluation/results/sol_review_qualification_inventory_observation_heading_20261029.json",
+    "sha256": "153bbeeefd0c44170e3328892481d6e9a8bb47183fef8fa864a1c6722dd1c863",
+    "preserved": true
+  },
+  "new_inventory": {
+    "path": "data/evaluation/results/sol_review_qualification_inventory_completion_continuation_20261029.json",
+    "sha256": "942bf3c418cc6838cf32118fbde22ad3e484d45a30e2c8d436307a09f1aa293e"
+  },
+  "differences": [
+    "component_fingerprints",
+    "program_sha256"
+  ],
+  "all_other_28_fields_identical": true,
+  "business_requests_policies_labels_and_limits_changed": false,
+  "execution_head": "5cb629b5485f981200c1ed94031a2e94875f8e7e",
+  "plan_sha256": "1919fc9402e58eb4767c81e66a1bca20d8af9eaab7ebbae169ade9ea4c55ca31",
+  "authorization_sha256": "a6cf5aeb299b9a27aa0f5c1cba38dd1c82f33e109bd2e5e40878989fb4874068",
+  "authorization_deadline_or_scope_changed": false,
+  "checks": {
+    "passed": 2,
+    "seconds": 19.25,
+    "targets": [
+      "original failing inventory assertion",
+      "actual user entry zero-send capture"
+    ]
+  },
+  "public_ci": "Maintenance head remains to be bound after this test-and-record-only commit.",
+  "new_provider_requests": 0,
+  "new_business_key_reads": 0,
+  "old_ci_failure_preserved": true,
+  "computer_move_caused_github_assertion": false,
+  "qualification_granted": false
+}

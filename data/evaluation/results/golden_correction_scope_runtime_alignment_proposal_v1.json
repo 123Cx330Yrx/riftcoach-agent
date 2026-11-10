@@ -1,0 +1,37 @@
+{
+  "additional_over_original_authorization": {
+    "max_calls": 12,
+    "max_seconds": 2799.094,
+    "max_tokens": 169342
+  },
+  "archived_raw_files_verified": 239,
+  "disclosure": "No changes to model, high reasoning, prompt policy, report inputs or acceptance criteria. Fresh full fifteen under repaired runtime identity; old evidence and charges preserved. Estimate is not a bill.",
+  "execution_authorized": false,
+  "historical_budget": {
+    "max_calls": 12,
+    "max_seconds": 2799.094,
+    "max_tokens": 169342
+  },
+  "kind": "correction_scope_runtime_alignment_funding_proposal_v1",
+  "new_manifest_sha256": "6be60527f7a8f015737d5afb5a4d67c6151f844affa2be387e283373b93fdebf",
+  "old_manifest_sha256": "24a876ae985244f552a663147720fa0435bc49b53e1c41b857ff2f2aad6c4201",
+  "plan_sha256": "7a797831d4e029846bbe2773b85705237e16e293c5e4c5dbc443fe2adc9f322e",
+  "preparation": "data/evaluation/results/golden_correction_scope_runtime_alignment_preparation_v1.json",
+  "provider_requests": 0,
+  "qualification_before_fix": 3,
+  "qualification_transferred": 0,
+  "requested_fresh_budget": {
+    "estimated_uncached_cny": "50.03264",
+    "hard_billing_cap": false,
+    "max_calls": 35,
+    "max_seconds": 10500,
+    "max_tokens": 3386880
+  },
+  "run_directory": "data/runs/role_task_observation/correction-scope-runtime-alignment-v1",
+  "same_review_request_bytes": 15,
+  "worst_cumulative_budget": {
+    "max_calls": 47,
+    "max_seconds": 13299.094,
+    "max_tokens": 3556222
+  }
+}

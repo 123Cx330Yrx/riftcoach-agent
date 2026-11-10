@@ -1597,8 +1597,6 @@ def run_cli(
     allowed_output = (root / "data/evaluation/results/provider_capabilities").resolve()
     if not output.is_relative_to(allowed_output) or output.suffix.lower() != ".json":
         raise ValueError("output must be a JSON file in provider capability results")
-    if output.exists():
-        raise FileExistsError("GLM-5.3 domain evidence is immutable")
     if not options.preflight_only:
         _require_clean_worktree(root)
     current_head_sha = code_sha_reader(root)
@@ -1654,6 +1652,11 @@ def run_cli(
     )
     if options.preflight_only:
         return prepared.admission
+    # A preflight never writes output, so an existing immutable receipt must
+    # not mask the identity/admission errors that preflight is meant to
+    # surface.  Check immutability only immediately before a real write.
+    if output.exists():
+        raise FileExistsError("GLM-5.3 domain evidence is immutable")
     reservation = ImmutableDomainExperimentOutput.reserve(
         output,
         experiment_id=prepared.admission.experiment_id,

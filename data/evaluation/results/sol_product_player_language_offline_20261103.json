@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-03T15:57:54.479844+00:00",
+  "status": "offline_implementation_verified_ci_completed",
+  "base_head": "5e190303aea1c0530fd835b7e829b8136afc9255",
+  "adr": "docs/adr/0121-product-cn-names-and-player-tone.md",
+  "product_versions": {
+    "responses": "1.7.9",
+    "chat": "1.7.10"
+  },
+  "source_catalog": {
+    "path": "data/terminology/product_cn_names_v1.json",
+    "sha256": "9a4422397de1afb26a6db9e8cbe8a1bdb64c39dd438d1bd3bdfc521bd5ad3966",
+    "version": "16.21",
+    "locale": "zh_CN",
+    "sources": [
+      {
+        "id": "tencent_hero_search",
+        "url": "https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js",
+        "version": "16.21",
+        "file_time": "2026-10-21 15:57:56",
+        "sha256": "377940640e45ee455cf9d86a5a70a135522586c584a67036408308de44296d30"
+      },
+      {
+        "id": "tencent_item_search",
+        "url": "https://game.gtimg.cn/images/lol/act/img/js/items/items.js",
+        "version": "16.21",
+        "file_time": "2026-10-21 15:57:59",
+        "sha256": "fd9bfcaec871fc03119a4e88264fd9dbb0156e4af72aee9a906dc0335ef35942"
+      }
+    ],
+    "standard_names": {
+      "champions": 173,
+      "items": 706
+    },
+    "entities_with_selected_aliases": {
+      "champions": 90,
+      "items": 19
+    },
+    "selected_alias_count": 114,
+    "scope": "names only; not exhaustive community aliases or popularity ranking; not historical mechanics evidence"
+  },
+  "implementation": [
+    "pure task-specific ID/name/version/locale checked hints",
+    "no source summary or reviewed report rewrite",
+    "shared generation/revision/initial/fresh policies and inputs",
+    "deployment catalog digest and code bound in new contracts",
+    "standard CN names as fallback; unknown or conflicting identity does not acquire an alias",
+    "unlisted aliases and spelling/style differences do not automatically become factual rejections"
+  ],
+  "verification": {
+    "names_purpose_scope": {
+      "passed": 32,
+      "seconds": 188.59
+    },
+    "additional_assertions_and_budget": {
+      "passed": 10,
+      "seconds": 57.01,
+      "rechecks_existing_scope_cases": 2
+    },
+    "runtime_manifest_api_and_prompt_program": {
+      "passed": 21,
+      "seconds": 29.54
+    },
+    "runtime_profiles": 12,
+    "current_inventories": 2,
+    "original15_business_inputs_and_request_hashes_unchanged": true,
+    "sql_collection": 17,
+    "local_sql_executed": false,
+    "ci_sql_cases_requiring_execution": 8,
+    "compile": true,
+    "diff_check": true,
+    "governance": "passed"
+  },
+  "full_saved_input_preview": {
+    "mode": "offline_full_saved_review_input_preview",
+    "input_limit": 64000,
+    "summary_sha256": "b117764e293b28eb116d5d158da19ba0894764a5a41f00a687a57a68be9223ef",
+    "requests": [
+      {
+        "call": "call-004",
+        "contract": "natural-flash-sol-product-v1",
+        "original_context_sha256": "0007c3e9414b1422ff91c89f875d95bc746395f32613392864e3bf8e05d6f8ad",
+        "input_ceiling": 63810,
+        "request_sha256": "b2563a60bbcaa9a71c23ba37d6b346220a1e51f50e5a7ae585bd804c0a6b075f",
+        "duty": "facts",
+        "stage": "initial"
+      },
+      {
+        "call": "call-004",
+        "contract": "natural-flash-sol-product-chat-v1",
+        "original_context_sha256": "0007c3e9414b1422ff91c89f875d95bc746395f32613392864e3bf8e05d6f8ad",
+        "input_ceiling": 63810,
+        "request_sha256": "26066876c3e69aceeed9a3c97e113b0e568252f10f82201469c0d0820fc5e936",
+        "duty": "facts",
+        "stage": "initial"
+      },
+      {
+        "call": "call-005",
+        "contract": "natural-flash-sol-product-v1",
+        "original_context_sha256": "8d4389f6b3551350f81ad4b321efddaa86463e0a45f995c35feec96e1b781182",
+        "input_ceiling": 59414,
+        "request_sha256": "150be06da8c66e685f07c3935e6ef1065fc492d0080fe26b684b2eb14173b91b",
+        "duty": "completion",
+        "stage": "initial"
+      },
+      {
+        "call": "call-005",
+        "contract": "natural-flash-sol-product-chat-v1",
+        "original_context_sha256": "8d4389f6b3551350f81ad4b321efddaa86463e0a45f995c35feec96e1b781182",
+        "input_ceiling": 59414,
+        "request_sha256": "167bf57346a8a071e4b7ba9fe2784834ca9566350281aaf1823f1675275147ad",
+        "duty": "completion",
+        "stage": "initial"
+      },
+      {
+        "call": "call-006",
+        "contract": "natural-flash-sol-product-v1",
+        "original_context_sha256": "ea389f82536e1a0287094fabc8e6dfe1f5de14d68f746148eb825988b3348ee6",
+        "input_ceiling": 57536,
+        "request_sha256": "c5fa92417e7776998f14553b8e0ec48bcff94e00d51ceeede70b9d7dcadde0de",
+        "duty": "facts",
+        "stage": "fresh"
+      },
+      {
+        "call": "call-006",
+        "contract": "natural-flash-sol-product-chat-v1",
+        "original_context_sha256": "ea389f82536e1a0287094fabc8e6dfe1f5de14d68f746148eb825988b3348ee6",
+        "input_ceiling": 57536,
+        "request_sha256": "7663d7182ee3ed326b635e4967d3c2f04d65d5b3d28b1b6d688d58b5a847f102",
+        "duty": "facts",
+        "stage": "fresh"
+      },
+      {
+        "call": "call-007",
+        "contract": "natural-flash-sol-product-v1",
+        "original_context_sha256": "d0fcc5ca8725ff05c9baddfa6f4ee28d110c21d3e3069d1cd60787ef96ffe3e5",
+        "input_ceiling": 53140,
+        "request_sha256": "16c06962be3ad06e5f7ece15a62054255474b7d43f0dd319159142b7ef9541af",
+        "duty": "completion",
+        "stage": "fresh"
+      },
+      {
+        "call": "call-007",
+        "contract": "natural-flash-sol-product-chat-v1",
+        "original_context_sha256": "d0fcc5ca8725ff05c9baddfa6f4ee28d110c21d3e3069d1cd60787ef96ffe3e5",
+        "input_ceiling": 53140,
+        "request_sha256": "46674728c11cc0460cc207959c0f348602e9ad517afb4c2ffef6b96463152775",
+        "duty": "completion",
+        "stage": "fresh"
+      }
+    ],
+    "models": 0,
+    "game_source_requests": 0,
+    "keys": 0,
+    "originals_modified": false,
+    "input_ceiling_unit": "conservative estimated input-token units from complete request; not bytes or billed tokens"
+  },
+  "local_corrections": [
+    "First additive draft estimated 65114 > 64000 and was never sent. Compact source/purpose policy preserves each obligation; omit repeated standard names already supplied. Final first request 63810, margin190.",
+    "Updated explicit product contract version gates, resolver and their dependent manifests; no default admission or old-contract migration.",
+    "Use python -m for repository scripts because the shared venv editable installation points to the frozen backend checkout."
+  ],
+  "immutable": {
+    "checked_at": "2026-11-03T15:53:28.558965+00:00",
+    "pins": {
+      "report": {
+        "path": "D:/rc-chat-guard-recovery-20261103/verified-runs/review_ee91ab480ecf4c4992f82ec08cc4bbf4/output/final_report.md",
+        "sha256": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455",
+        "bytes": 5083
+      },
+      "db": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/latest-db.dump",
+        "sha256": "5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533",
+        "bytes": 147093
+      },
+      "zip": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/recovery-snapshot.zip",
+        "sha256": "38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f",
+        "bytes": 1353703
+      },
+      "probe": {
+        "path": "D:/riftcoach-review-route-diagnostics/scripts/reviewer_responses_nonstream_probe.py",
+        "sha256": "92927957d456eb38009b728c7f261e3a419077f392f7d03df391ab145a6946db",
+        "bytes": 12218
+      },
+      "fixture": {
+        "path": "D:/riftcoach-review-route-diagnostics/web/tests/fixtures/verified-report-20261103.md",
+        "sha256": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455",
+        "bytes": 5083
+      },
+      "frozen": {
+        "path": "D:/riftcoach-chat-guard-recovery-execution-20261103",
+        "head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+        "clean": true
+      }
+    },
+    "all_unchanged": true
+  },
+  "limits": {
+    "live_model_requests": 0,
+    "new_match_source_requests": 0,
+    "key_reads": 0,
+    "public_terminology_research": "read-only Tencent hero/item catalogs and referring page, separately recorded",
+    "new_model_style_verified": false,
+    "semantic_acceptance": false,
+    "P3": "not_accepted",
+    "Stage8E": "unchanged",
+    "default_admission": "unchanged",
+    "docker": "unrepaired; prior stop/endpoint deletion blocked by policy, no retry",
+    "old_web_temporary_directories": "retained after prior cleanup approval denial"
+  },
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103",
+  "ci": {
+    "run_id": 41669841138,
+    "head_sha": "59022e8c7de8aa125c7047af859287670b18e6f3",
+    "status": "completed",
+    "conclusion": "success",
+    "checked_at": "2026-11-03T23:08:57.844320+00:00",
+    "jobs": 12,
+    "sql_cases_passed": 339,
+    "naming_consumption_cases_passed": 8,
+    "local_sql_executed": false,
+    "terminal_control": "ci-terminal-41669841138.json"
+  },
+  "next_action": "\u6cbfP3/P4\u5728\u65e2\u6709\u9884\u7b97/\u7eed\u63a5\u8def\u5f84\u6838\u9a8c\u53d1\u9001\u524d\u5b8c\u6574\u5ba1\u67e5\u5c3e\u6bb5\u51c6\u5165\uff0c\u5e76\u53d6\u5f97\u53ef\u7528\u9694\u79bbSQL\u73af\u5883\uff1b\u8fd9\u4e9b\u6761\u4ef6\u6ee1\u8db3\u540e\uff0c\u624d\u5c31\u4e00\u9879\u5177\u4f53\u65b0\u4efb\u52a1\u7684\u8d39\u7528/Key\u8303\u56f4\u8bf7\u6c42\u51b3\u5b9a\u3002\u5f53\u524d\u53ea\u6388\u6743\u79bb\u7ebf\u51c6\u5907\uff0c\u4e0d\u53d1\u9001\u6216\u6062\u590d\u65e7\u4efb\u52a1\u3002",
+  "acceptance_preparation": {
+    "status": "offline_prepared_not_execution_ready",
+    "result": "data\\evaluation\\results\\sol_product_player_language_acceptance_prepared_20261104.json",
+    "first_generation_input_ceiling": 32976,
+    "calibrated_seven_call_reservation": 469152,
+    "product_token_limit": 401920,
+    "budget_gap": 67232,
+    "live_model_requests": 0,
+    "new_model_naturalness_verified": false
+  }
+}

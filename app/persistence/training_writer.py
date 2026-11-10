@@ -16,6 +16,7 @@ from app.memory.training_models import (
     TrainingPlanAction,
 )
 from app.memory.training_ports import TrainingTargetWriter
+from app.memory.training_measurement import METRICS, PRODUCER_ID, PRODUCER_VERSION, measurement_key
 from app.persistence.player_records import OwnerPlayerRelationshipRecord
 from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.training_records import TrainingPlanRecord, TrainingProgressRecord
@@ -175,7 +176,21 @@ class PostgresTrainingTargetWriter(TrainingTargetWriter):
         )
         if plan is None or not _plan_allows_metric(plan.payload, parsed.metric_key):
             raise TrainingContractError("training_plan_metric_invalid")
-        _require_complete_artifact(session, candidate)
+        task = _require_complete_artifact(session, candidate)
+        if parsed.metric_key in METRICS:
+            measurement = parsed.measurement
+            if (measurement is None
+                    or candidate.producer_id != PRODUCER_ID or candidate.producer_version != PRODUCER_VERSION
+                    or candidate.idempotency_key != measurement_key(
+                        owner_id=candidate.owner_id, relationship_id=candidate.relationship_id,
+                        plan_id=parsed.plan_id, metric_key=parsed.metric_key, match_id=measurement.match_id)
+                    or task.publication_mode != "evidence_bound_v1"
+                    or task.summary_digest != measurement.summary_projection_sha256
+                    or not plan.created_at <= parsed.observed_at <= task.created_at
+                    or not any(item.get("metric_key") == parsed.metric_key
+                               and item.get("unit") == METRICS[parsed.metric_key][1]
+                               for item in plan.payload["metrics"])):
+                raise TrainingContractError("training_measurement_evidence_invalid")
 
         corrected = None
         if parsed.supersedes_progress_id is not None:
@@ -269,7 +284,7 @@ def _require_active_self_relationship(
 def _require_complete_artifact(
     session: MaterializationSession,
     candidate: MemoryCandidate,
-) -> None:
+) -> ReviewTaskRecord:
     task = session.scalar(
         sa.select(ReviewTaskRecord).where(
             ReviewTaskRecord.task_id == candidate.source_task_id,
@@ -292,6 +307,7 @@ def _require_complete_artifact(
         or artifact.get("sha256") != candidate.source_artifact_sha256
     ):
         raise TrainingArtifactInvalid()
+    return task
 
 
 def _plan_allows_metric(payload: object, metric_key: str) -> bool:

@@ -1,0 +1,16 @@
+{
+  "user_instruction": "继续",
+  "scope_interpretation": "Continue the new full-report calibration using the existing completed independent agent; no new agent or project Provider call.",
+  "agent_path": "/root/host_scope_calibration",
+  "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+  "new_agents": 0,
+  "new_tasks": 1,
+  "previous_task_completed": true,
+  "primary_not_sent": true,
+  "primary_sha256": "37ede33ab8177252cf05e8eb396af88a76713b940c013b4055baabb2bca15478",
+  "materials_sha256": "d3930389e748dfe4fb326f19b335242fe95587203890802b9e18b5a7650ab39b",
+  "task_sha256": "44c116a6c09d3794b15c4b519b5eddaa812c6fb39a7f0b2a6beea250a28d6226",
+  "recorded_at": "2026-10-12T08:02:42.588130+00:00",
+  "native_event_id": null,
+  "status": "dispatch_prepared"
+}

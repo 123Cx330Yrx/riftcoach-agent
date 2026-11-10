@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "status": "all_twelve_ci_jobs_success",
+  "recorded_at": "2026-11-03T10:29:05.701980+00:00",
+  "run": 41607282374,
+  "head": "3bc64c8a3eb9361df732aa2565d4592704dc5e09",
+  "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41607282374",
+  "proof": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/ci-terminal-41607282374.json",
+    "sha256": "29657f2add5605014c13659fe3e8ec49cf63cb2cb299ccc3cce3b5eb184c3551"
+  },
+  "jobs": [
+    {
+      "name": "postgres-tests (0)",
+      "databaseId": 125820165637,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (0)",
+      "databaseId": 125820165797,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (3)",
+      "databaseId": 125820165850,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (2)",
+      "databaseId": 125820165908,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "packaging-smoke",
+      "databaseId": 125820165910,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "web-checks",
+      "databaseId": 125820165950,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (1)",
+      "databaseId": 125820166018,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (3)",
+      "databaseId": 125820166031,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (1)",
+      "databaseId": 125820166084,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-tests (2)",
+      "databaseId": 125820166219,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "postgres-migrations",
+      "databaseId": 125823096394,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest",
+      "databaseId": 125858729926,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "local_sql_executed": false,
+  "scope": "\u6765\u6e90\u8303\u56f4\u53ca\u4e24\u9879\u6d4b\u8bd5\u4fee\u590d\u5b8c\u6210\u5de5\u7a0b\u6838\u9a8c\uff1b\u4e0d\u4ee3\u8868\u65b0\u751f\u6210\u8d28\u91cf\u6216P3\u6574\u4f53\u9a8c\u6536\u3002",
+  "paid_requests": 0,
+  "source_requests": 0,
+  "real_key_reads": 0
+}

@@ -17,9 +17,10 @@ from app.providers.models import (
     TokenUsage,
 )
 from app.providers.structured import decode_structured_response
+from app.tools.errors import ToolError
 from app.tools.runtime import ToolRuntime
 
-from .knowledge import knowledge_evidence_from_search_payloads
+from .knowledge import knowledge_evidence_from_search_payloads, knowledge_projection
 from .steps import (
     CoachDraft,
     DraftPreparationRequest,
@@ -374,9 +375,17 @@ def _chat_response(
 def _require_success(result: Any, tool_name: str) -> dict[str, Any]:
     if not result.success:
         code = result.error.code if result.error is not None else "unknown"
-        raise RuntimeError(f"{tool_name} failed with safe code: {code}")
+        raise ToolError(
+            "tool execution failed",
+            tool_name=tool_name,
+            code=code,
+        )
     if result.data is None:
-        raise RuntimeError(f"{tool_name} returned no data")
+        raise ToolError(
+            "tool returned no data",
+            tool_name=tool_name,
+            code="missing_tool_data",
+        )
     return dict(result.data)
 
 
@@ -387,28 +396,11 @@ def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:
         "issues": [dict(issue) for issue in result.issues],
         "passed_checks": list(result.passed_checks),
         "summary": result.summary,
+        **({"audits": list(result.audits)} if getattr(result, "audits", ()) else {}),
+        **({"coverage": list(result.coverage)} if getattr(result, "coverage", ()) else {}),
     }
 
 
 def _knowledge_evaluation_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
     """Project only bounded, attributable evidence into the security prompt."""
-
-    return {
-        "context": knowledge.context,
-        "abstained": knowledge.abstained,
-        "source_ids": list(knowledge.source_ids),
-        "citations": [
-            {
-                "citation_id": citation.citation_id,
-                "chunk_id": citation.chunk_id,
-                "parent_id": citation.parent_id,
-                "source_id": citation.source_id,
-                "title": citation.title,
-                "content": citation.content,
-                "matched_content": citation.matched_content,
-                "version": citation.version,
-                "updated_at": citation.updated_at,
-            }
-            for citation in knowledge.citations
-        ],
-    }
+    return knowledge_projection(knowledge)

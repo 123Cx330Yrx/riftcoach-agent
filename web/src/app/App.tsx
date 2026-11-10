@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -20,6 +22,9 @@ import { CoachBrief } from "../components/CoachBrief"
 import { AccountAccess } from "../components/AccountAccess"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
+import { RunUsagePanel } from "../components/RunUsagePanel"
+import { TaskRecoveryPanel } from "../components/TaskRecoveryPanel"
+import { RecentReviewStart } from "../components/RecentReviewStart"
 import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
@@ -68,6 +73,7 @@ import {
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
+const ObservationWorkbench = lazy(() => import("../components/ObservationWorkbench").then(module => ({ default: module.ObservationWorkbench })))
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -321,11 +327,13 @@ function ReadyWorkbench({
   mode,
   liveUpdates,
   onSelect,
+  recovery,
 }: {
   readonly view: LiveWorkbenchView
   readonly mode: "fixture" | "live"
   readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
   readonly onSelect: (profileId: string) => void
+  readonly recovery?: { csrfToken: string; onChanged: () => void; onAuthFailure: (code: string) => void }
 }) {
   const { formatNumber, t } = useI18n()
   const selectedProfile = view.profiles.find((profile) => profile.playerProfileId === view.selectedProfileId)
@@ -344,6 +352,10 @@ function ReadyWorkbench({
         onSelect={onSelect}
       />
       <h2 className="profile-name-heading" translate="no">{selectedProfile.riotId}</h2>
+      {mode === "live" && recovery && (!view.task || ["succeeded", "failed", "cancelled"].includes(view.task.status)) &&
+        <RecentReviewStart key={`${selectedProfile.playerProfileId}:${view.task?.taskId ?? "empty"}`}
+          profileId={selectedProfile.playerProfileId} role={selectedProfile.relationshipRole}
+          previousTask={view.task?.taskId} {...recovery} />}
       {view.productState === undefined ? (
         <EmptyProfileView profile={selectedProfile} view={view} fixtureMode={mode === "fixture"} />
       ) : (
@@ -351,9 +363,11 @@ function ReadyWorkbench({
           <div className="command-layout__primary">
             <ProductStateBanner state={view.productState} />
             <EventStrip events={view.events} liveUpdates={liveUpdates} />
+            {view.task?.status === "recovery_required" && recovery && <TaskRecoveryPanel
+              key={`${view.task.taskId}:${view.task.updatedAt}`} taskId={view.task.taskId} runId={view.task.runId} {...recovery} />}
             {view.summary !== undefined ? <RecentFormPanel summary={view.summary} /> : null}
             {view.timeline !== undefined ? <TimelinePanel timeline={view.timeline} /> : null}
-            {view.summary === undefined && view.productState.state === "not_ready" ? (
+            {view.summary === undefined && view.productState.state === "not_ready" && view.task?.status !== "recovery_required" ? (
               <section className="analysis-pending panel" aria-labelledby="analysis-pending-title">
                 <span className="analysis-pending__route" aria-hidden="true" />
                 <p className="eyebrow">{t("analysis.running_kicker")}</p>
@@ -367,6 +381,7 @@ function ReadyWorkbench({
             <div className="context-rail__header"><span>{t("context.channel")}</span><small>{t("context.safe_projection")}</small></div>
             <TrainingPanel profile={selectedProfile} training={view.training} />
             <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
+            {view.usage !== undefined && <RunUsagePanel usage={view.usage} sessionAccounting={view.sessionAccounting} />}
             <section className="source-summary panel" aria-labelledby="source-summary-title">
               <p className="eyebrow">{t("common.source_posture")}</p>
               <h3 id="source-summary-title">{t("source.claim_title")}</h3>
@@ -412,11 +427,13 @@ function LiveWorkbench({
   initialProfileId,
   onAuthFailure,
   onSelectProfile,
+  csrfToken,
 }: {
   readonly createController: (initialProfileId: string) => LiveWorkbenchControllerLike
   readonly initialProfileId: string
   readonly onAuthFailure: (code: string) => void
   readonly onSelectProfile: (profileId: string) => void
+  readonly csrfToken: string
 }) {
   const [controller] = useState(() => createController(initialProfileId))
   const started = useRef(false)
@@ -454,6 +471,7 @@ function LiveWorkbench({
       mode="live"
       liveUpdates={snapshot.liveUpdates}
       onSelect={onSelectProfile}
+      recovery={{ csrfToken, onAuthFailure, onChanged: () => { void controller.selectProfile(snapshot.state.client === "ready" ? snapshot.state.data.selectedProfileId : initialProfileId) } }}
     />
   )
 }
@@ -533,6 +551,7 @@ function AuthenticatedProduct({
             key={journey.profileId}
             createController={createController}
             initialProfileId={journey.profileId}
+            csrfToken={session.csrf_token}
             onAuthFailure={onAuthFailure}
             onSelectProfile={(profileId) => onNavigate(journey.region === undefined ? { stage: "workbench", profileId } : { stage: "workbench", profileId, region: journey.region })}
           />
@@ -676,6 +695,7 @@ function AppFrame({
           </m.main>
           <footer className="app-footer">
             <span>{t("app.footer_product")}</span>
+            <a href="/?view=observation">ShowMaker 观摩归档</a>
             <span>{mode === "live" ? t("app.footer_live") : t("app.footer_fixture")}</span>
           </footer>
         </div>
@@ -685,6 +705,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
+  if (window.location.search === "?view=observation") return <Suspense fallback={<main role="status">正在载入观摩工作台…</main>}><ObservationWorkbench /></Suspense>
   if (getWallpaperLabSurface()) {
     return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
   }

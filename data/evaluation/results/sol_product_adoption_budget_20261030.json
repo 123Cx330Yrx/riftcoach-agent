@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "offline_contract_and_arithmetic_audit",
+  "status": "proposal_not_adopted",
+  "baseline_head": "788d0be791ec070a56f72f607746cf5323b8ab19",
+  "new_provider_http_requests": 0,
+  "key_reads": 0,
+  "original15_rerun": false,
+  "observed_contracts": {
+    "historical_role_1_5_5": {
+      "max_calls": 5,
+      "total_tokens": 401920,
+      "execution_timeout_s": 900,
+      "request_timeout_s": 300,
+      "max_input_tokens": 64000,
+      "max_output_tokens": 32768
+    },
+    "accepted_six_call_candidate": {
+      "max_calls": 6,
+      "total_tokens": 401920,
+      "execution_timeout_s": 900,
+      "request_timeout_s": 300,
+      "max_input_tokens": 64000,
+      "max_output_tokens": 32768
+    },
+    "current_sol_development": {
+      "max_calls": 10,
+      "total_tokens": 739840,
+      "execution_timeout_s": 3600,
+      "request_timeout_s": 300,
+      "max_input_tokens": 64000,
+      "max_output_tokens": 32768
+    }
+  },
+  "proposed_product": {
+    "max_calls": 8,
+    "total_tokens": 401920,
+    "execution_timeout_s": 900,
+    "time_basis": "cumulative_active_seconds_across_resumes",
+    "request_timeout_s": 300,
+    "max_manual_retries": 2,
+    "sdk_max_retries": 0,
+    "default_switch": false,
+    "publication_enabled": false,
+    "reason_for_8": "shortest_repair_6_plus_2_shared_retrieval_or_explicit_recovery_slots"
+  },
+  "arithmetic": {
+    "flash_envelope_ceiling": 96768,
+    "sol_envelope_ceiling": 80384,
+    "shortest_repair_max_envelopes": 515072,
+    "two_fresh_reservation": 160768,
+    "maximum_prior_accounting_before_two_fresh": 241152,
+    "all_maximum_envelopes_fit_total": false
+  },
+  "historical_natural_chain_comparison": {
+    "requests": 8,
+    "known_tokens": 122034,
+    "unknown_reserved_tokens": 73756,
+    "active_seconds": 1383.716999999997,
+    "fits_proposed_call_and_token_totals": true,
+    "fits_proposed_active_seconds": false,
+    "note": "Diagnostic inheritance and Host work included. Not a product latency measurement or a replay under the proposed contract."
+  },
+  "source_sha256": {
+    "app/evaluation/sol_review_contract.py": "f222b79015d812a55cf6f02b4e8d8da1cdf14866882ff11c96baddf8f8b1fbe3",
+    "app/evaluation/sol_necessity_contract.py": "6dc5b92a47b23f520c1186dc2c6af947bd54b5e6146efa6db9d1b6db0ac4d804",
+    "app/evaluation/natural_duty_contract.py": "fdd267f8d783a8e4600408cd9dba7eae5d2e025abd12b7d8edbf541eb4486019",
+    "app/runtime/coach_contract.py": "05c071845a9a1ea643c274cf7f2e47ba766735cdd36a81f110d0e8203e310b38",
+    "app/runtime/coach_budget.py": "e51f36e780f68a9777b0e9904adf9d54166f10f7a8a907df2a7e3e0de9b94f5c",
+    "app/runtime/sol_session_runtime.py": "daf15d97de398c2da1c8eca15316ac82495ff3c7c36525a0a1bbbf9d72f7d86b",
+    "data/evaluation/results/natural_review_repair_completed_20261029.json": "32c6d1e0c841f84adf335808a3f68f2511c0e631e1f933fbbcc6d1fd976ab959"
+  },
+  "limitations": [
+    "No provider execution or semantic validation in this arithmetic audit.",
+    "Do not infer guaranteed completion, upstream identity, current price, product admission or same-version 15 qualification."
+  ]
+}

@@ -1,0 +1,636 @@
+{
+  "kind": "full15-time600-closed-operator-and-historical-reference-v1",
+  "seal_path": "data/evaluation/results/golden_document_full15_time600_result_20261010.json",
+  "seal_sha256": "30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576",
+  "operator_original_sha256": {
+    "authorization.json": "761e3528a89764d4db96046c285610823c6a2abce4c91712e29a944b93bc8342",
+    "execution-target.json": "8835e88cae76c67580b33536ca2c02ba247c1fa896f1cebac1708755c4ee3523",
+    "recovery-readiness.json": "7bddad0fc1517f27c5361547900d7e54e2c0644263beffa47a729613a393acd7",
+    "execution-preflight.json": "ebdf9f826a6a6f1d74cc823680b5d52819b79f7eefddefad2ca058ae528b1532",
+    "launch-once.json": "c6373d6aa87ad4c19ea60a790a6877b23e5c749fe718f09361e752f4e6c34a1a",
+    "preexecution-network-recovery/process.json": "91751a8d366b78099022548ff3c4060844641cf56594cd20381a4f33ef64d62f",
+    "preexecution-network-recovery/exit.json": "e3310e952a6a65888eab4d7c5f21158a405b69606551183485c053d7818d97a1",
+    "branch-recovery-routing-hard-stop.json": "b1be14fc089f12f1b0eb74c8a8d89818cfc9131d61a5c2f9ace0bdf4b6fc49b3",
+    "claim-scope-4-two-historical-comparison.json": "0b0954b35608c33e17e19abe9e17ead423e3918ccf78ddfca56506cd15d7490c",
+    "remaining11-historical-reference.json": "c70473f4d426150b43f48b6fc1ecc141ed42c2e769394c87904d12a682885fe5",
+    "remaining11-current-frozen-source-comparison.json": "b2b84f016cf190ad21307efef025be1e12b6be8483cc1a5b7f7c40111aa97348",
+    "scope-4-remaining11-output-comparison.json": "fbd999c176377d0c39c8a4d555a861c78df6aa7a6e0ad91d66c0b0235f3bdaaf"
+  },
+  "operator_public_whitelist": {
+    "authorization.json": {
+      "kind": "full15-time600-specific-first-execution-authorization-v1",
+      "authorized": true,
+      "user_authorization_quote": "授权",
+      "authorized_at_utc": "2026-10-10T12:09:55.173248+00:00",
+      "host_deadline_utc": "2026-10-11T12:09:55.173248+00:00",
+      "execution_head": "febe2e7f6dcbefa9fda0df73983fb95c0f3474ce",
+      "ci_run": "38048400763",
+      "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+      "preparation_file_sha256": "608beea34b4eb0b1243cb2b7bec29e8ce58ee8dc207d9bcb011d86652c127d9b",
+      "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "independent_thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+      "run_id": "document-full15-resumption-candidate-20261009-time600",
+      "sequence": [
+        "claim-scope:1",
+        "claim-scope:4",
+        "claim-scope:3",
+        "attribution:1",
+        "scope:4",
+        "scope:3",
+        "claim-scope:2",
+        "claim-scope:5",
+        "claim-scope:6",
+        "claim-scope:7",
+        "observed:1",
+        "observed:2",
+        "observed:3",
+        "observed:4",
+        "observed:5"
+      ],
+      "budget": {
+        "max_calls": 45,
+        "role_calls": {
+          "glm-5.3": 30,
+          "glm-5.3-flash": 15
+        },
+        "max_tokens": 4354560,
+        "max_active_seconds": 13500,
+        "max_host_seconds": 86400,
+        "per_request_output": 32768,
+        "per_request_seconds": {
+          "review": 600,
+          "generation": 300,
+          "revision": 300
+        },
+        "estimated_uncached_cny": "45.029376",
+        "hard_billing_cap": false
+      },
+      "per_case_budget": {
+        "max_calls": 5,
+        "max_tokens": 401920,
+        "max_active_seconds": 900
+      },
+      "semantic_failure_rule": "A semantic rejection ends that case dependency and the next independent case may continue. Identity/source/native/checkpoint/protocol/transport/budget/availability failure stops the batch.",
+      "stop_rule": "No retry, reassessment, restart, old-review reuse, or qualification credit.",
+      "old_authorizations_reused": false,
+      "automatic_qualification": false
+    },
+    "execution-target.json": {
+      "kind": "full15-time600-ready-for-specific-authorization-v1",
+      "execution_head": "febe2e7f6dcbefa9fda0df73983fb95c0f3474ce",
+      "ci_run": "38048400763",
+      "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+      "preparation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-full15-time600-20261010\\switch-recovery-routing-probe\\preparation-plan.json",
+      "native_readiness_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-full15-time600-20261010\\switch-recovery-routing-probe\\recovery-readiness.json",
+      "native_readiness_sha256": "7bddad0fc1517f27c5361547900d7e54e2c0644263beffa47a729613a393acd7",
+      "run_id": "document-full15-resumption-candidate-20261009-time600",
+      "sequence": [
+        "claim-scope:1",
+        "claim-scope:4",
+        "claim-scope:3",
+        "attribution:1",
+        "scope:4",
+        "scope:3",
+        "claim-scope:2",
+        "claim-scope:5",
+        "claim-scope:6",
+        "claim-scope:7",
+        "observed:1",
+        "observed:2",
+        "observed:3",
+        "observed:4",
+        "observed:5"
+      ],
+      "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "review_principals": {
+        "primary": {
+          "principal_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4"
+        },
+        "independent": {
+          "principal_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6"
+        }
+      },
+      "budget": {
+        "max_calls": 45,
+        "role_calls": {
+          "glm-5.3": 30,
+          "glm-5.3-flash": 15
+        },
+        "max_tokens": 4354560,
+        "max_active_seconds": 13500,
+        "max_host_seconds": 86400,
+        "per_request_output": 32768,
+        "per_request_seconds": {
+          "review": 600,
+          "generation": 300,
+          "revision": 300
+        },
+        "estimated_uncached_cny": "45.029376",
+        "hard_billing_cap": false
+      },
+      "per_case_budget": {
+        "max_calls": 5,
+        "max_tokens": 401920,
+        "max_active_seconds": 900
+      },
+      "semantic_failure_rule": "A semantic rejection ends that case dependency and the next independent case may continue. Identity/source/native/checkpoint/protocol/transport/budget/availability failure stops the batch.",
+      "stop_rule": "No retry, reassessment, restart, old-review reuse, or qualification credit.",
+      "acceptance": "Real full-source native primary and independent review for every completed stage. Initial assesses the opinion with report_assessment=null; accepted revision/final stages require four true ReportAssessment flags; fresh requires pass>=85 without material false or missed findings.",
+      "execution_authorized": false,
+      "provider_calls": 0,
+      "business_run_created": false,
+      "qualification_automatic": false,
+      "old_authorizations_reused": false
+    },
+    "recovery-readiness.json": {
+      "kind": "full15-time600-switch-recovery-readiness-v1",
+      "execution_head": "febe2e7f6dcbefa9fda0df73983fb95c0f3474ce",
+      "ci_run": "38048400763",
+      "ci_conclusion": "success",
+      "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+      "preparation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-full15-time600-20261010\\switch-recovery-routing-probe\\preparation-plan.json",
+      "preparation_file_sha256": "608beea34b4eb0b1243cb2b7bec29e8ce58ee8dc207d9bcb011d86652c127d9b",
+      "principals": {
+        "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent_thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+        "verified": true,
+        "independent_agent_path": "/root/full15_independent",
+        "input_readability": {
+          "thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+          "turn_id": "01a125b2-ecb6-7c41-b5fa-a72c7ad9e767",
+          "dispatch_id": "amsg_01a125b2-ed20-7151-8dc5-baa075baf05f",
+          "current_input_readable": false,
+          "future_input_guaranteed": false,
+          "current_route_and_final_available": true,
+          "host_review_evidence_policy": "native-final-attestation-v1"
+        }
+      },
+      "checkpoint_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-full15-time600-20261010\\switch-recovery-routing-probe\\checkpoint.json",
+      "checkpoint_sha256": "0676daf4f34010450ff1fbb0f9a8cbc56512ed5a7a9618a24eab14ed8be993e2",
+      "native_event_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125b2-ecb6-7c41-b5fa-a72c7ad9e767/msg_0c4dcf617fe489a9016aca29fa154c8190b4fcc00e49b6b8c4",
+      "native_final_phase": "final_answer",
+      "native_tool_item_count": 8,
+      "author_answer_matches": true,
+      "checkpoint_check_answer_passed": true,
+      "all_material_hashes_match": true,
+      "material_case_count": 15,
+      "material_artifact_count": 30,
+      "provider_calls": 0,
+      "business_run_created": false,
+      "execution_authorized": false,
+      "paid_plan_frozen": false,
+      "new_qualification": 0,
+      "review_performed": false,
+      "future_host_availability_guaranteed": false,
+      "relay_causality_proven": false,
+      "budget": {
+        "max_calls": 45,
+        "role_calls": {
+          "glm-5.3": 30,
+          "glm-5.3-flash": 15
+        },
+        "max_tokens": 4354560,
+        "max_active_seconds": 13500,
+        "max_host_seconds": 86400,
+        "per_request_output": 32768,
+        "per_request_seconds": {
+          "review": 600,
+          "generation": 300,
+          "revision": 300
+        },
+        "estimated_uncached_cny": "45.029376",
+        "hard_billing_cap": false
+      }
+    },
+    "execution-preflight.json": {
+      "execution_head": "febe2e7f6dcbefa9fda0df73983fb95c0f3474ce",
+      "ci_run": "38048400763",
+      "native": {
+        "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+        "independent_thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+        "verified": true,
+        "independent_agent_path": "/root/full15_independent",
+        "input_readability": {
+          "thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+          "turn_id": "01a125b2-ecb6-7c41-b5fa-a72c7ad9e767",
+          "dispatch_id": "amsg_01a125b2-ed20-7151-8dc5-baa075baf05f",
+          "current_input_readable": false,
+          "future_input_guaranteed": false,
+          "current_route_and_final_available": true,
+          "host_review_evidence_policy": "native-final-attestation-v1"
+        }
+      },
+      "provider_calls": 0,
+      "checked_at_utc": "2026-10-10T12:10:19.136533+00:00"
+    },
+    "launch-once.json": {
+      "wrapper_pid": 67804,
+      "started_at_utc": "2026-10-10T12:10:10.112571+00:00"
+    },
+    "preexecution-network-recovery/process.json": {
+      "runner_pid": 88932,
+      "wrapper_pid": 84884,
+      "started_at_utc": "2026-10-10T12:12:00.638510+00:00",
+      "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb"
+    },
+    "preexecution-network-recovery/exit.json": {
+      "exit_code": 1,
+      "ended_at_utc": "2026-10-10T14:05:43.132274+00:00"
+    },
+    "branch-recovery-routing-hard-stop.json": {
+      "kind": "branch-recovery-native-routing-hard-stop-v1",
+      "observed_at_utc": "2026-10-10T14:06:05.621412+00:00",
+      "frozen_root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "recovery_branch_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+      "frozen_independent_thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+      "original_root_terminal_status": "systemError",
+      "original_root_turn_status": "failed",
+      "original_root_error": "exceeded retry limit, last status: 429 Too Many Requests",
+      "last_completed_independent_stage": "scope:3 final",
+      "last_completed_independent_turn": "01a12617-ff5f-7142-a50c-e280940766e0",
+      "last_completed_independent_native_event": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a12617-ff5f-7142-a50c-e280940766e0/msg_02c89ec9b1d6e542016aca44bba1708193a59a4b7be9829d0d",
+      "branch_collaboration_inventory": [
+        "/root"
+      ],
+      "followup_task_error": "live agent path `/root/full15_independent` not found",
+      "same_existing_thread_direct_send_error": "direct app-server input is not allowed for multi-agent v2 sub-agents",
+      "new_independent_created": false,
+      "root_or_plan_identity_changed": false,
+      "provider_retries": 0,
+      "stopped_at_key": "claim-scope:2",
+      "stopped_at_stage": "initial",
+      "paid_response_complete": true,
+      "paid_response_score": 96,
+      "paid_response_verdict": "pass",
+      "new_independent_review_dispatched": false,
+      "unreviewed_response_not_credited": true,
+      "abort_reason": "routing_failure",
+      "operator_abort_path": "D:/riftcoach-agent-rq192-pr/data/runs/model_comparison/document-full15-resumption-candidate-20261009-time600/claim-scope-2/initial/operator-abort.json",
+      "classification": "Codex root 429 followed by branch-owned collaboration routing unavailable; not RiftCoach Provider timeout or semantic failure",
+      "cause_limit": "429 error alone does not prove account exhaustion; no claim that the model or relay is degraded."
+    },
+    "claim-scope-4-two-historical-comparison.json": {
+      "kind": "claim-scope-4-two-historical-successes-current-regression-v1",
+      "historical_2of15": {
+        "seal_path": "D:\\riftcoach-agent-rq192-pr\\data\\evaluation\\results\\golden_review_bound_original15_result_20261008.json",
+        "seal_sha256": "c1c3bfdab165fb106522f82008f950283aca18ed27b66af9aaf31d726d3ed525",
+        "initial_score": 84,
+        "fresh_score": 96,
+        "full_chain_accepted": true,
+        "input_json_equal": true,
+        "report_equal": true,
+        "business_messages_equal": false,
+        "tools_equal": true,
+        "policy_sha256": "b96095fc80d78a1594c7a5b70ebf8f44751a26464b4824539bef28d4ecc76bc7"
+      },
+      "historical_3of15_comparison": "claim-scope-4-historical-comparison.json",
+      "current_score": 70,
+      "current_host_accepted": false,
+      "additional_false_positive": "early-death context resolved in block14 but forced middle-cohort issue",
+      "mechanism_not_proven": [
+        "teaching expansion causality",
+        "randomness causality",
+        "relay causality"
+      ],
+      "provider_calls": 0,
+      "qualification_credit_transferred": false
+    },
+    "remaining11-historical-reference.json": {
+      "kind": "historical-remaining11-reference-for-current-full15-v1",
+      "historical_seal": "D:\\riftcoach-agent-rq192-pr\\data\\evaluation\\results\\golden_document_remaining11_scan_result_20261009.json",
+      "historical_seal_sha256": "8adfa5cea9b56c063ffb0340b726c55d4c3effbfe86c54738d492f48b00c6baa",
+      "prior_scan_only": true,
+      "historical_calls": 11,
+      "historical_glm_calls": 11,
+      "historical_flash_calls": 0,
+      "historical_edit_calls": 0,
+      "historical_fresh_calls": 0,
+      "historical_new_qualification": 0,
+      "actual_current_run": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-full15-resumption-candidate-20261009-time600",
+      "current_plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+      "source_reference_items": [
+        {
+          "key": "scope:4",
+          "score": 70,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+          "source_artifact_sha256": "0cf69b89a8e69270e35411b4f264da01445153ae140b396b2755c32f47cb9f25",
+          "current_original_report_equal": true,
+          "current_input_json_equal": true
+        },
+        {
+          "key": "scope:3",
+          "score": 72,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": false,
+          "semantic_accepted": false,
+          "report_sha256": "b37807a43c1a62d4eab39951d3136909c0e0a02e4925707e5955a9a7b6d0290c",
+          "source_artifact_sha256": "62019cf14826ce219bb494083e4f9ae4ac57892337d663049aaf9d1fc44e2eec"
+        },
+        {
+          "key": "claim-scope:2",
+          "score": 96,
+          "verdict": "pass",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753",
+          "source_artifact_sha256": "c016c5b2820354be08d2edd4b7a82974ec7c94e15689593c8c604f94ea196805"
+        },
+        {
+          "key": "claim-scope:5",
+          "score": 95,
+          "verdict": "pass",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6",
+          "source_artifact_sha256": "f6a767d626e268af33b62dd35280e31e24e59a6ada9a3d116bb3a87bedcad876"
+        },
+        {
+          "key": "claim-scope:6",
+          "score": 80,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14",
+          "source_artifact_sha256": "f14c74e8762ae6b128a955e4a791dfc3395a71b1925e6349e059493baf400d7b"
+        },
+        {
+          "key": "claim-scope:7",
+          "score": 96,
+          "verdict": "pass",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3",
+          "source_artifact_sha256": "31099af026e3a07d324aa8e046dbbeb768ea7785571aa1605a39bf487291049f"
+        },
+        {
+          "key": "observed:1",
+          "score": 96,
+          "verdict": "pass",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+          "source_artifact_sha256": "c85011e08f59e8c279748f227c3d716337c799c884a9c38ba83bd019dd88f2cc"
+        },
+        {
+          "key": "observed:2",
+          "score": 72,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a",
+          "source_artifact_sha256": "8ffe328d36ead4647bc4ef83f49fa783fdb728af2d9462eefc879692d5cb4010"
+        },
+        {
+          "key": "observed:3",
+          "score": 72,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+          "source_artifact_sha256": "4dacdca2e63405cd52039493f316ce38a348b6d0a92c4db32f53d59cd355347d"
+        },
+        {
+          "key": "observed:4",
+          "score": 88,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+          "source_artifact_sha256": "3f9bfde8d0dc7d13ee8ecb85fb20f0c9201e4cb143c4db4f1311d6c6ff3fb52b"
+        },
+        {
+          "key": "observed:5",
+          "score": 88,
+          "verdict": "needs_revision",
+          "primary_accepted": true,
+          "independent_accepted": true,
+          "semantic_accepted": true,
+          "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+          "source_artifact_sha256": "ac9b2b48bf0df39f72baac59fdbc5416ca8397ca0b8125afee2538c5d8b2629b"
+        }
+      ],
+      "decision_use": "旧2/15和3/15第二例成功、本轮第二例初评回退、剩余11完整初评及修法分歧共同组成回归/失败证据；旧初评成功不作当前编辑或fresh成功，不能拼资格。运行结束后按完整实际输入输出与机制审查策略，不只修最新案例，不由时间/教学/中转变化猜因果。",
+      "provider_calls_from_reference_check": 0
+    },
+    "remaining11-current-frozen-source-comparison.json": {
+      "kind": "remaining11-current-controls-source-comparison-v1",
+      "historical_seal_sha256": "8adfa5cea9b56c063ffb0340b726c55d4c3effbfe86c54738d492f48b00c6baa",
+      "current_plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+      "comparisons": [
+        {
+          "key": "scope:4",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "scope:3",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "claim-scope:2",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "claim-scope:5",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "claim-scope:6",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "claim-scope:7",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "observed:1",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "observed:2",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "observed:3",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "observed:4",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        },
+        {
+          "key": "observed:5",
+          "original_report_equal": true,
+          "complete_input_equal": true
+        }
+      ],
+      "provider_calls": 0,
+      "qualification_migration": false
+    },
+    "scope-4-remaining11-output-comparison.json": {
+      "kind": "scope4-historical-and-current-actual-output-comparison-v1",
+      "source_and_report_equal": true,
+      "historical_seal_sha256": "8adfa5cea9b56c063ffb0340b726c55d4c3effbfe86c54738d492f48b00c6baa",
+      "historical_binding": {
+        "key": "scope:4",
+        "plan_sha256": "d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf",
+        "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+        "request_sha256": "6de1f0e22bf01bd9bcca5faeb6606012e988b751fec7089f6368b48f11f11780",
+        "response_sha256": "b15cd1482e4e438f917c5a020d9e23353cc4ee89b14e3bb04999c2e076fd5101",
+        "stage": "initial"
+      },
+      "current_binding": {
+        "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+        "key": "scope:4",
+        "stage": "initial",
+        "response_sha256": "4995247243d752299349a22ebe58178a5dba63c1e7b528bcc981b871ba8a01e4",
+        "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+        "request_sha256": "bce8dad56a47fb735300cc8f128f3b3ec76a997cc077937ba75f6d269cecb30d"
+      },
+      "historical_actual_review": {
+        "advisories": [
+          {
+            "block": 4
+          }
+        ],
+        "issue_resolutions": [],
+        "issues": [
+          {
+            "block": 14,
+            "category": "fact_error",
+            "explanation": "原文实际断言“中单口径下早期死亡胜局2.5、败局2.67，差异很小”。但2.67是全样本（含辅助卡蜜尔局7次早期死亡）的败局均值，不是中单败局均值。中单败局只有两场（艾尼维亚0次、洛克1次），中单口径败局均值为0.5（computed_evidence cohorts.MIDDLE loss_mean 的 deaths_before_15=0.50；role_contrasts 该指标中单胜败差为2.0而非-0.17）。因此在中单口径下，早期死亡差异并不“很小”，且方向相反：败局的早期死亡反而远少于胜局。该错误使报告对中单口径早期死亡这一指标的特征描述与来源事实冲突。",
+            "severity": "high",
+            "source_ids": [
+              22,
+              31
+            ],
+            "suggested_correction": "将第14段该句改为区分口径：全样本（混合位置）口径下早期死亡胜局2.5、败局2.67，差异很小，不应作为主要胜负分界点；中单口径下败局早期死亡均值为0.5、胜局为2.5，即败局早期死亡反而更少，同样不能作为胜局的原因解释。后续表述按此口径区分修正。"
+          }
+        ],
+        "score": 70,
+        "verdict": "needs_revision"
+      },
+      "current_actual_review": {
+        "advisories": [
+          {
+            "block": 4
+          },
+          {
+            "block": 6
+          }
+        ],
+        "issue_resolutions": [],
+        "issues": [
+          {
+            "block": 14,
+            "category": "fact_error",
+            "explanation": "该段明确写“中单口径下早期死亡胜局 2.5、败局 2.67，差异很小”。但按 computed_evidence 的 MIDDLE cohort，两场中单败局（艾尼维亚 0 次、洛克 1 次）的 deaths_before_15 均值为 0.5，胜局均值为 2.5，差为 2.0 且方向为胜局早期死亡更多；2.67 是包含卡蜜尔辅助局的混合口径败局均值（来源正文第 3 节）。报告把混合口径数值标注为中单口径，导致“差异很小、不应作为主要胜负分界点”这一结论在报告自己主张的分位置口径下不成立，且方向与实际相反。",
+            "severity": "medium",
+            "source_ids": [
+              31,
+              22
+            ],
+            "suggested_correction": "将中单口径数值改为：胜局 2.5、败局 0.5（艾尼维亚 0 次、洛克 1 次），说明中单败局前 15 分钟死亡反而更少，与混合口径（2.5 对 2.67）不同；删除“差异很小”的判断，仅按 K1 保留描述性表述：样本仅 4 局中单，不能据此把早期死亡列为胜负分界点，也不得据此推断早期死亡更少有利或有害。"
+          }
+        ],
+        "score": 84,
+        "verdict": "needs_revision"
+      },
+      "historical_stage_summary": {
+        "binding": {
+          "key": "scope:4",
+          "plan_sha256": "d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf",
+          "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+          "request_sha256": "6de1f0e22bf01bd9bcca5faeb6606012e988b751fec7089f6368b48f11f11780",
+          "response_sha256": "b15cd1482e4e438f917c5a020d9e23353cc4ee89b14e3bb04999c2e076fd5101",
+          "stage": "initial"
+        },
+        "host_accepted": true,
+        "independent_accepted": true,
+        "key": "scope:4",
+        "primary_accepted": true,
+        "score": 70,
+        "semantic_accepted": true,
+        "semantic_failures": [],
+        "verdict": "needs_revision",
+        "verdict_valid": true
+      },
+      "current_case_result": {
+        "key": "scope:4",
+        "stages": [
+          {
+            "stage": "initial",
+            "binding": {
+              "plan_sha256": "cd737c2b191ce494260c90fbd1f48b0e65766cdd6aaeec6f6febbc34544f75cb",
+              "key": "scope:4",
+              "stage": "initial",
+              "response_sha256": "4995247243d752299349a22ebe58178a5dba63c1e7b528bcc981b871ba8a01e4",
+              "report_sha256": "a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4",
+              "request_sha256": "bce8dad56a47fb735300cc8f128f3b3ec76a997cc077937ba75f6d269cecb30d"
+            },
+            "host_accepted": false
+          }
+        ],
+        "semantic_accepted": false,
+        "initial_verdict": "needs_revision",
+        "initial_score": 84,
+        "semantic_failure": "initial_host_rejected"
+      },
+      "comparison_limit": "两次均仅issue block14、advisory block4，旧修法显式保留全样本和中单两口径且要求后续相应区分；当前修法改中单值并提及混合比较。当前Host分歧原样保留，不把旧接受自动套到新输出，也不重审求一致；不能由policy/time/措辞变化认定因果根因。收尾需同时分析总结与正文修复的一致性和Host裁决边界，避免只对最新词语加例。",
+      "provider_calls": 0
+    }
+  },
+  "completed_native_event_ids": [
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125bc-5764-7cd3-a371-70d6d57fc73f/msg_0c4dcf617fe489a9016aca2d0385fc8190868895199b1e3f98",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125c8-6de8-7f81-92cf-5ac8332ed640/msg_0c4dcf617fe489a9016aca300dc8948190b56dadc5f5c4f5bd",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125cf-83c2-7323-9a84-dd87912bd2eb/msg_0c4dcf617fe489a9016aca31b33f748190a3dd57f216f268d1",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125d5-0fb3-7d32-856d-31760deb4951/msg_0f289afb1ea2ef1e016aca340442988195ad8d21a44c553d22",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125de-a929-7040-8484-61b5ae706f42/msg_0f289afb1ea2ef1e016aca35a4e4348195848b63ec2b60cb21",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125e5-f633-7b32-b6fc-4676cad551dd/msg_0f289afb1ea2ef1e016aca37927fa88195b3198897ab5c2104",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125eb-b6c6-70b3-baf0-a018dace2ee0/msg_0f289afb1ea2ef1e016aca390a6b8c8195a09f877b20023cb4",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a125f2-1ccd-76e1-a4aa-c9ff0d0a1c68/msg_05f9c120da23090f016aca3bd8a1bc8190b7aeb2d8ea061f4b",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a12602-f47b-7741-b2a0-d6d0b1b2cfe6/msg_05f9c120da23090f016aca3f00a5b08190816fcd6ec496e897",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a12609-970a-7e21-b185-fd979cbe178c/msg_05f9c120da23090f016aca40ce0fa08190aad43614f929df60",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a12610-7092-7d01-b729-2562d014ee2c/msg_05f9c120da23090f016aca427cac28819099d42909cb69da55",
+    "01a1257a-2c8b-7f11-9a86-da3e0b6068b6/01a12617-ff5f-7142-a50c-e280940766e0/msg_02c89ec9b1d6e542016aca44bba1708193a59a4b7be9829d0d"
+  ],
+  "first_semantic_deviation": {
+    "key": "claim-scope:4",
+    "stage": "initial",
+    "defect": "false_positive",
+    "comparison": "两份历史第二例均完成编辑并96/pass，本轮新增错误的早死issue；原稿与来源相同，归因未证。"
+  },
+  "first_hard_stop": {
+    "key": "claim-scope:2",
+    "stage": "initial",
+    "reason": "routing_failure",
+    "provider_response_complete": true,
+    "host_review_not_completed": true
+  },
+  "provider_calls_during_close": 0,
+  "new_qualification": 0,
+  "history_not_combined": true,
+  "original_receipts_not_modified": true
+}

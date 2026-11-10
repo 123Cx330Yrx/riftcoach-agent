@@ -1,0 +1,57 @@
+{
+  "experiment": "golden-contextual-bounded-review-v5",
+  "kind": "unaltered_response_offline_replay_not_live_acceptance",
+  "source_run": "contextual-review-769d651-diagnostics",
+  "raw_hashes": {
+    "response-001.json": "9a284814a0442dbbc204ed0a7d05cc7fd57a3c34362600c78a7ef21c1fb14832",
+    "response-002.json": "34e4353105521abf00816db73f9c90f072133c11c2b345a65324a1e67be467c6",
+    "result.json": "eaa80c19239be79bc558b648b725bf0444ddb0d96b1d2f3a4e8b3c727d4ff926"
+  },
+  "original_result": {
+    "attempted_calls": 2,
+    "completed_calls": 2,
+    "error_code": "direct_result_number_not_in_evidence",
+    "error_type": "ValueError",
+    "id": "contextual_01",
+    "input_tokens": 25215,
+    "interrupted": false,
+    "matched": false,
+    "output_tokens": 28492,
+    "reserved_calls": 2,
+    "revision_attempted": false,
+    "stop_reason": "protocol_or_execution_failure",
+    "unknown_usage_calls": 0,
+    "valid": false
+  },
+  "replay_verdict": "pass",
+  "replay_score": 94,
+  "replay_issues": 0,
+  "model_edits": [
+    "c001",
+    "c005",
+    "c006",
+    "c008",
+    "c009",
+    "c011",
+    "c012",
+    "c013"
+  ],
+  "anchor_resolutions": [],
+  "provider_calls": 0,
+  "manual_semantic_acceptance": false,
+  "correction_input_ceiling": 59214,
+  "manual_findings": [
+    {
+      "target": "c004",
+      "kind": "evaluator_explanation_wrong_cohort",
+      "observed_gold_difference": 115.88,
+      "observed_damage_difference": 695.42,
+      "expected_gold_difference": 72.48,
+      "expected_damage_difference": 669.24,
+      "reason": "Mixed-role differences were described as selected four mid games; original explanation survives review notes.",
+      "expected_gold_difference_unrounded": "72.475",
+      "expected_damage_difference_unrounded": "669.235",
+      "rounding": "Compute from original row precision, then ROUND_HALF_UP to 2dp."
+    }
+  ]
+}

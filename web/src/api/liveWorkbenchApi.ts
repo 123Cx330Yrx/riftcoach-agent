@@ -6,6 +6,7 @@ import {
   decodeRecentSummary,
   decodeReport,
   decodeRun,
+  decodeRunUsage,
   decodeRunTimeline,
   decodeTask,
   decodeTaskEventPage,
@@ -62,6 +63,14 @@ export class LiveWorkbenchHttpApi implements LiveWorkbenchDataApi {
     return this.client.getJson(
       `/runs/${segment(runId)}`,
       (value) => decodeRun(value, runId),
+      signal,
+    )
+  }
+
+  getUsage(runId: string, signal: AbortSignal) {
+    return this.client.getJson(
+      `/runs/${segment(runId)}/usage`,
+      (value) => decodeRunUsage(value, runId),
       signal,
     )
   }

@@ -1,0 +1,11 @@
+这是一次新的开发材料全文校准，不是业务stage、旧报告重评、Provider输出、Host工作区演练或资格认证。无项目Provider调用，不创建Agent。
+只读本task和指定materials文件；不要读取构造代码、plan、manifest、主审意见、旧run或其他主体意见。逐篇完整读取报告、current_input_json、source_message、deterministic_source_message与全部full_policy_text；只根据实际全文命题和完整来源审查，不能猜测预期正确/错误篇数。policy中业务工具调用要求不是本任务输出接口，本任务返回普通JSON。
+报告block为实际一基段号；恢复及final前重新读取相同task/materials并核SHA。泛指不补全称；风格偏好不升级事实错误；全文明确消歧要纳入，但别处正确不能抵消明确错误。编号存在不等于来源支持；核查实际逐行、分组、引用和修法。不能补造外部快照。新材料使用熟悉的历史来源，不能称独立holdout。
+本任务文件及摘要仅固定开发材料路由，不能调用业务check-answer、submit或seal，不能构造虚假的stage/receipt/journal。
+输出唯一多行JSON，字段material_sha256、material_read_complete、case_results、limitations。每项case_results含case_id、decision(no_material_error/requires_correction/undetermined)、issues、advisories。issue包括block、exact_quote、actual_proposition、related_full_text、source_ids、source_rows_and_means、conflict_or_ambiguity_effect、minimal_correction。advisories不作事实门。对全文其他真错、修法和应保留内容一并核查，不强制issue数量。
+仅在下面指定的run外作者路径create-only写自己的完整JSON；用json.load检查自己的原文件，并重新核对task/materials的SHA；将该文件原样作为唯一native final。不先交第二份摘要或生成第二次终答。
+精确材料路径：D:/riftcoach-agent-rq192-pr/data/evaluation/fixtures/host_relation_repair_calibration_20261012/materials.json
+材料SHA256：77f22cafa8f28ba3149b786f9bec6113a8a2ee857e85c0110cb9b85b0e82bac8
+作者答案：C:/Users/33502/Documents/Agent/outputs/riftcoach-relation-repair-calibration-20261012/author-answer.json
+绝对cwd：D:/riftcoach-agent-rq192-pr
+绝对Python：D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe

@@ -1,0 +1,10 @@
+{
+  "strict_adapter_status": "rejected_no_qualified_case",
+  "error_code": "role_observation_continuous_completion_missing",
+  "validated_inputs": 0,
+  "provider_requests": 0,
+  "review_controls_qualified": false,
+  "actual_product_task_qualified": false,
+  "production_admitted": false,
+  "closed_export_sha256": "12f38fdac658644c7fc29d86012d57f82965f7116482ca950ee0b285593b6965"
+}

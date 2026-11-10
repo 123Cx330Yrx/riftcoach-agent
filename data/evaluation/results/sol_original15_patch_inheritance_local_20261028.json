@@ -1,0 +1,111 @@
+{
+  "version": "original15-patch-prefix-inheritance-local-v1",
+  "created_at": "2026-10-28T06:09:52.471929+00:00",
+  "checkout": "D:\\riftcoach-review-route-diagnostics",
+  "baseline_commit": "70d7d08713bbfa6ba6813021e536a2329f0a95b8",
+  "case": "observed:3",
+  "source_sha256": {
+    "app/evaluation/original15_patch_recovery.py": "3e999314a46041eef9ef5bb6622b4b8142fbe542aa47967f8cd8196477f2e3db",
+    "scripts/prepare_original15_patch_recovery.py": "5ca9715162a78dc1e106742c7e70940001509b9600e1d6fa9ca3cacfe6261cd0",
+    "tests/test_original15_patch_recovery.py": "9559cdf6377c474255190518abba35e79687a2a7e8a4b0ea3cba54f4c54bcfb4"
+  },
+  "preparation_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-inheritance-preparation-20261028\\preparation.json",
+  "preparation_sha256": "a79630b1030424ddb8b2b76811e5ceaa04052bd47d67e9522dcf744f26a16f8f",
+  "parent_proof_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-inheritance-preparation-20261028\\parent-proof.json",
+  "parent_proof_sha256": "693137059c51344dad6ed37350946b38f490a22bc2e19a4f7a25f2bde1d709e4",
+  "parent_seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "inherited_files": 38,
+  "imported_operations": 8,
+  "old_failed_operation_retained_at_original": 9,
+  "original_native_reviews_replayed": true,
+  "author_original_bytes_verified": true,
+  "original_successful_receipts_replayed": true,
+  "current_workflow_consumed_exact_prefix": true,
+  "original_inventory_unchanged": true,
+  "original_author_inventory_unchanged": true,
+  "preflight_guard_stdout_sha256": "95150cbe2e73de713226e6150d19317b3958421481703937374b375f768cc1a5",
+  "preflight_exit_checkpoint_stdout_sha256": "b07694c55cbaefb41efbffc411811188ae474247072a77734c3524cc82009f72",
+  "actual_preflight_cwd": "D:\\riftcoach-review-route-diagnostics",
+  "actual_preflight_python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe",
+  "historical_case_budget": {
+    "attempts": [
+      {
+        "input_tokens": 21835,
+        "model": "gpt-6.1-sol",
+        "ordinal": 1,
+        "output_tokens": 824,
+        "phase": "native_business_review",
+        "profile": "sol-high-nonstream-v1",
+        "request_sha256": "e3a81c21abeb549c6228daf60379b80e0ec249cbb2907741d5b004338e1a4884",
+        "role": "review",
+        "status": "completed",
+        "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+      },
+      {
+        "input_tokens": 20262,
+        "model": "gpt-6.1-sol",
+        "ordinal": 2,
+        "output_tokens": 821,
+        "phase": "native_business_review",
+        "profile": "sol-high-nonstream-v1",
+        "request_sha256": "eb194531eddff209551728cfc75adcf8267eee8f4b6201be215b8cd319480a5b",
+        "role": "review",
+        "status": "completed",
+        "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+      }
+    ],
+    "calls": 2,
+    "failed": false,
+    "logical": {
+      "generation": 0,
+      "review": 2
+    },
+    "reserved_tokens": 0,
+    "retries": 0,
+    "router_calls": 2,
+    "stopped": false,
+    "tokens": 43742
+  },
+  "historical_batch_accounting": {
+    "calls": 43,
+    "reserved_tokens": 195578,
+    "retries": 3,
+    "tokens": 773045
+  },
+  "inherited_active_seconds": 2727.217999999981,
+  "original_per_case_seconds": 3600,
+  "remaining_original_active_seconds": 872.7820000000188,
+  "tests": [
+    {
+      "file": "tests/test_original15_patch_recovery.py",
+      "passed": 2,
+      "seconds": 99.58,
+      "coverage": "accepted and rejected coordination; preserve raw old prefix/receipts/native/author; new fresh only; cumulative budget; read-only full replay/transport audit; malformed proof"
+    },
+    {
+      "node": "tests/test_original15_patch_recovery.py::test_sealed_accepted_prefix_is_inherited_without_resending_or_resetting[None]",
+      "passed": 1,
+      "seconds": 87.24,
+      "coverage": "additional actual preparation entry; missing send authorization fails before model intent; parent inventory mutation rejection"
+    }
+  ],
+  "synthetic_tests_not_semantic_proof": true,
+  "development_failure": {
+    "kind": "local_preflight_boundary_shape",
+    "detail": "First synthetic run read terminal.reason instead of terminal.value.reason; corrected after inspecting actual original terminal, then both final paths passed."
+  },
+  "provider_requests": 0,
+  "key_reads": 0,
+  "new_http_requests": 0,
+  "new_native_tasks": 0,
+  "real_recovery_session_created": false,
+  "paid_launcher_ready": false,
+  "actual_application_count": 0,
+  "fresh_calls": 0,
+  "original15_cases_completed": 12,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "next_action": "Integrate versioned recovery launcher using pinned proof, exact frozen source/CI and existing authorization/remaining accounting; publish coordination then compatibility/edit native tasks without reissuing initial reviews. Paid fresh only after launch authorization and time budget verification."
+}

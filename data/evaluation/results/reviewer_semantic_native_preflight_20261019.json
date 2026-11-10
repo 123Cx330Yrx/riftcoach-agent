@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-19",
+  "execution_checkout": "D:/riftcoach-semantic-execution",
+  "execution_head": "8cdc9d2c285f903059cc0b8b3090b80743aef834",
+  "ci_run": 39189896488,
+  "ci_conclusion": "success",
+  "independent": "01a15237-eee1-7f01-889f-e54a3ea1fa0a",
+  "native_preflight": {
+    "status": "administrative_preflight_passed",
+    "event_id": "01a15237-eee1-7f01-889f-e54a3ea1fa0a/01a15245-19ac-7e91-98d2-a3ca6c79be17/msg_01042119cc3cf4ce016ad592ed742081938b4d456229d58074",
+    "author_sha256": "0d24a831902221545c7a6a1e619061f4f323484fac7a31d5cf33a7924fcdba60",
+    "checkpoint_sha256": "73b43912d10d833ebfd404723c8c6551ea1c26f60451545d7c907da50708775d",
+    "exact_native_bytes": true,
+    "readonly_replay": true,
+    "original_inventory_valid": true,
+    "provider_calls": 0,
+    "qualified": false,
+    "publication_allowed": false
+  },
+  "prior_failure_preserved": "riftcoach-semantic-native-preflight-20261019/seal.json",
+  "delivery_rule": "Author creates UTF-8 multiline JSON without BOM or appended newline. Relay entire generated dispatch and this byte-delivery instruction for each future task. Never alter saved author/native content.",
+  "proposal_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-semantic-native-preflight-20261019/execution-proposal.json",
+  "proposal_file_sha256": "7881e15106537a4296ed1fb8ee16a780fe22321875ab431399818c291ffe39d8",
+  "provider_calls": 0,
+  "keys_read": 0,
+  "paid_authorization": false,
+  "next_action": "Obtain explicit new six-call cost authorization and confirm entered key belongs to GPT-pro; recheck all bindings immediately before first send."
+}

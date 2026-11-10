@@ -1,0 +1,83 @@
+{
+  "material_sha256": "77f22cafa8f28ba3149b786f9bec6113a8a2ee857e85c0110cb9b85b0e82bac8",
+  "material_read_complete": true,
+  "case_results": [
+    {
+      "case_id": "U1",
+      "decision": "no_material_error",
+      "issues": [],
+      "advisories": []
+    },
+    {
+      "case_id": "U2",
+      "decision": "requires_correction",
+      "issues": [
+        {
+          "block": 14,
+          "exact_quote": "仅这四局中单的早期死亡胜负组均值接近。",
+          "actual_proposition": "明确断言所选四局中单比赛的15分钟前死亡次数在胜组与负组之间均值接近；对象不是全部五局，也不是对早死因果作用的判断。",
+          "related_full_text": "第14段全文：全部五局15分钟前死亡的胜组均值为2.50次，负组约2.67次。仅中单时，胜场逐局为3、2次，负场为0、1次，均值分别2.50与0.50。仅这四局中单的早期死亡胜负组均值接近。这些历史记录不能据以确定早死对胜负的因果作用。[K1][K5] 第4段明确把全部五局与仅中单的比较分开；第18段也列出薇古丝、辛德拉胜局的早死次数为3、2。第24段限制为五局历史样本，不推断长期水平或胜因。这些上下文没有撤回或改变第14段明确的中单均值比较。",
+          "source_ids": [
+            32,
+            31,
+            25
+          ],
+          "source_rows_and_means": {
+            "metric": "deaths_before_15",
+            "unit": "次/局",
+            "middle_win_rows": [
+              {
+                "fact_key": "facts:recent_match:00",
+                "match_id": "KR_8371867671",
+                "champion": "薇古丝",
+                "value": 3
+              },
+              {
+                "fact_key": "facts:recent_match:04",
+                "match_id": "KR_8366083389",
+                "champion": "辛德拉",
+                "value": 2
+              }
+            ],
+            "middle_loss_rows": [
+              {
+                "fact_key": "facts:recent_match:02",
+                "match_id": "KR_8370206038",
+                "champion": "艾尼维亚",
+                "value": 0
+              },
+              {
+                "fact_key": "facts:recent_match:03",
+                "match_id": "KR_8367293977",
+                "champion": "洛克",
+                "value": 1
+              }
+            ],
+            "middle_win_mean": 2.5,
+            "middle_loss_mean": 0.5,
+            "middle_win_minus_loss": 2.0,
+            "middle_all_pairs": "greater",
+            "selected_loss_additional_row": {
+              "fact_key": "facts:recent_match:01",
+              "match_id": "KR_8370293236",
+              "role": "UTILITY",
+              "value": 7
+            },
+            "selected_win_mean": 2.5,
+            "selected_loss_mean_exact": "8/3",
+            "selected_loss_mean_rounded": 2.67,
+            "completeness": "所选五局及四局中单的该指标均完整，无缺失。",
+            "knowledge_boundary": "K1的小差异条件不能替代中单实际比较；K5要求将事实、相关性和复盘假设分开。"
+          },
+          "conflict_or_ambiguity_effect": "中单胜组均值2.50、负组0.50，相差2.00次，且每个中单胜场的早死次数都高于每个中单负场，不能表述为均值接近。这与本段已列出的正确数值形成内部矛盾，错误弱化了同位置分组差异。全部五局的2.50与约2.67属于另一组比较；它们接近以及末句不确定因果，都不能抵消该错误。",
+          "minimal_correction": "只将“仅这四局中单的早期死亡胜负组均值接近。”替换为“仅这四局中单的早期死亡胜负组均值并不接近。”保留同段全部五局均值、中单逐局数值及2.50与0.50均值，保留不能确定早死对胜负因果作用的限制。此修正不推出减少早死会造成失败、对获胜无效或任何未来效果，也不改动其他正确指标及条件建议。"
+        }
+      ],
+      "advisories": []
+    }
+  ],
+  "limitations": [
+    "本次是使用熟悉历史来源的新开发材料全文校准，不是独立holdout、业务stage审查或资格认证。",
+    "判断限于指定材料及其完整来源；未联网核验历史API数据，未调用项目Provider或业务提交接口。小样本描述不提供干预、反事实或未来效果证据。"
+  ]
+}

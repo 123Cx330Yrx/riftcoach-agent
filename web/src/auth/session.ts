@@ -47,17 +47,32 @@ async function boundedErrorCode(response: Response): Promise<string> {
 
 export class BrowserAuthSessionClient implements AuthSessionClient {
   private readonly fetcher: Fetcher
+  private pending: Promise<AuthSessionWire> | undefined
 
   constructor(fetcher: Fetcher = globalThis.fetch.bind(globalThis)) {
     this.fetcher = fetcher
   }
 
-  async issue(signal?: AbortSignal): Promise<AuthSessionWire> {
+  issue(signal?: AbortSignal): Promise<AuthSessionWire> {
+    if (signal?.aborted) return Promise.reject(new DOMException("Aborted", "AbortError"))
+    // A session POST sets a cookie even if its caller stops listening. Share an
+    // in-flight issuance so StrictMode cleanup cannot race two cookie/CSRF pairs.
+    this.pending ??= this.issueRequest().finally(() => { this.pending = undefined })
+    const pending = this.pending
+    if (!signal) return pending
+    return new Promise((resolve, reject) => {
+      const abort = () => reject(new DOMException("Aborted", "AbortError"))
+      signal.addEventListener("abort", abort, { once: true })
+      void pending.then(value => { if (!signal.aborted) resolve(value) }, reject)
+        .finally(() => signal.removeEventListener("abort", abort))
+    })
+  }
+
+  private async issueRequest(): Promise<AuthSessionWire> {
     const response = await this.fetcher("/api/auth/session", {
       method: "POST",
       credentials: "same-origin",
       headers: { Accept: "application/json" },
-      ...(signal === undefined ? {} : { signal }),
     })
     if (!response.ok) throw new AuthSessionError(await boundedErrorCode(response), response.status)
     const contentType = response.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase()

@@ -1,0 +1,76 @@
+{
+  "kind": "sol-necessity-natural-offline-integration-v1",
+  "date": "2026-10-24",
+  "semantic_recheck": "data/evaluation/results/review_necessity_three_recheck_20261024.json",
+  "preparation": "data/evaluation/results/sol_necessity_natural_offline_20261024.json",
+  "contract": {
+    "contract_id": "natural-flash-sol-necessity-development-v1",
+    "version": "1.6.3",
+    "scope": "unadmitted_opt_in",
+    "sha256": "7d40caadb775eb06fbe8b875212fd3a0384ab3a2f8a54882a401f7a55b16b6b3"
+  },
+  "covered": [
+    "Same tested necessity-policy bytes in dynamic facts initial and fresh",
+    "Unchanged completion policy; separate request/receipt versions; enterprise profile on parent and worker",
+    "Actual application Runtime, deterministic single application and same-report two-duty fresh",
+    "Known/unknown settlement, hard identity/protocol refusal, bounded same-stage timeout recovery",
+    "Receipt-only reconciliation after interruption and zero-send closed replay",
+    "Actual observed-user entrypoint first-send capture without Key or provider IO"
+  ],
+  "tests": [
+    {
+      "selection": "tests/test_sol_necessity_natural.py",
+      "passed": 20,
+      "seconds": 127.0
+    },
+    {
+      "selection": "Sol natural candidate/session, necessity candidate, role runtime trace and runtime models",
+      "passed": 103,
+      "first_run": {
+        "passed": 96,
+        "failed": 7,
+        "seconds": 194.95,
+        "reason": "Source changed during suite; manifest drift correctly rejected startup"
+      },
+      "failed_cases_rerun": {
+        "passed": 7,
+        "deselected": 39,
+        "seconds": 139.72
+      }
+    },
+    {
+      "selection": "tests/test_natural_duty_candidate.py",
+      "passed": 26,
+      "seconds": 34.91
+    },
+    {
+      "selection": "tests/test_natural_duty_qualification_inventory.py",
+      "passed": 6,
+      "seconds": 14.45
+    }
+  ],
+  "runtime_profiles_verified": 39,
+  "shared_manifests_refreshed": 6,
+  "historical_inventory_unchanged": true,
+  "historical_operator_inventory_rechecked": true,
+  "local_issues_fixed": [
+    "Consistent pricing schedule ID across Flash/Sol roles",
+    "Observed-provider wrapper preserved when checking explicit candidate contract",
+    "Snapshot/resolver/trace/budget consumers recognize the exact new contract",
+    "Recovery ordinal follows the selected contract limit instead of hardcoded seven"
+  ],
+  "real_provider_requests": 0,
+  "key_reads": 0,
+  "new_host_reviews": 0,
+  "model_semantics_proven_by_mock": false,
+  "paid_launcher_ready": false,
+  "execution_authorized": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "remaining_before_paid": [
+    "Explicit new task authorization and frozen code/CI binding",
+    "Manual repeated-timeout continuation policy; current Runtime has one bounded automatic retry",
+    "Actual native author/check-answer/final/import preflight for the new task"
+  ],
+  "next_action": "Prepare explicit manual timeout continuation and new natural launch binding; retain all completed reviews and unknown reservations. No automatic paid execution."
+}

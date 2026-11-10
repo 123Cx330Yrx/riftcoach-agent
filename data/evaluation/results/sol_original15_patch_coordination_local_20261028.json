@@ -1,0 +1,91 @@
+{
+  "version": "sol-original15-patch-coordination-local-v1",
+  "created_at": "2026-10-28T05:39:10.883825+00:00",
+  "checkout": "D:\\riftcoach-review-route-diagnostics",
+  "branch": "codex/reviewer-route-diagnostics",
+  "baseline_commit": "4a43e515",
+  "scope": "Local explicit original-patch coordination and resumable session/launcher integration; no sealed-parent import or paid execution",
+  "source_sha256": {
+    "app/evaluation/natural_duty_workflow.py": "af8812a1c06200372f91ee302846c0ee8f037b1d7eb550c89c8c239b28e43662",
+    "app/evaluation/sol_original15_session.py": "77f11f3fadcc0b3e9de58eda1541ea03b038d669e9a517987d6e8959d45547bc",
+    "app/runtime/sol_session_runtime.py": "5b9d3b49f9ff3147197050dc680d8e155ccc4cfb8e2c9ec0e0c9504f867ae933",
+    "scripts/review_duty_direct_patch.py": "0146bd2653f89011a0f052cbb16561a7ff9acbb38d7933983bc0fb639e3b0a0a",
+    "scripts/review_duty_host_gate.py": "b18349488d4ed51bf4a8d63b014af2ce12508a1e56b402cf7e1b88c3a1e1fe8a",
+    "scripts/sol_original15_launch.py": "26ba28a2a3d95c683103aa29d700b956a3ffa248650e0b1561f01d7c2ddccb19",
+    "tests/test_patch_coordination.py": "c5a4a3bcf7e12c03eb13f29964799adc0bd32c3d68149dc1194157e336ee2c5a",
+    "tests/test_patch_coordination_session.py": "13b4770606771d6e8a216272261dfc0340d61712113143205c9bbcd769b2e7dc",
+    "tests/test_sol_original15_session.py": "a2eed18c7ce75eff81d34c1e25ec14d69768f79a1d2287cba165ddc58b2d89da",
+    "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json": "36e3e9ea1daa20f47501bd8e820645cdc37e3be94edbe0e862cc332614e39602",
+    "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json": "7e45112efb9ef694eeec3ef0112d2ae248a22d648be5b0843b2120f8b4ebed3f",
+    "examples/runtime_profiles/sol_necessity_v1/prompt_programs/recent-form-review/manifest.json": "e3dbd147e8beacb76a337bb8ab3ff5c52de2c2bdb7c4ab0718c92557998a2e46",
+    "examples/runtime_profiles/sol_review_v1/prompt_programs/recent-form-review/manifest.json": "ff5cf7516e2e14d093aa6aef038c7d6e27d2c98b7733f63ed4b1e9b4003d933b"
+  },
+  "case": "observed:3",
+  "parent_seal_sha256": "7dc3afe931af746ee8b693e569704fa33d159ea1ad709b71d406e6d5f3e5a371",
+  "preparation_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-original15-overlap-preparation-20261028\\preparation.json",
+  "preparation_sha256": "80eef3751b5c5cd7f21bfd5a10f6058b3590164be1d7ef59f72e54846addfe29",
+  "actual_preview_sha256": "eae9605e45cb6b1f02ee37ae76f255232a528ec414ac8c1b012af9b7688fb21d",
+  "unchanged_blocks": 27,
+  "selected_original_operation": "op_2",
+  "both_original_opinions_retained": true,
+  "proof_binding": "Original material/submission/checkpoint/author SHA and current parent sealed inventory checked; historical native acceptance retained, no new native coordination acceptance claimed",
+  "tests": [
+    {
+      "files": [
+        "tests/test_patch_coordination.py",
+        "tests/test_patch_coordination_session.py",
+        "tests/test_review_duty_direct_patch.py",
+        "tests/test_natural_duty_candidate.py",
+        "tests/test_sol_natural_candidate.py"
+      ],
+      "passed": 124,
+      "seconds": 571.33,
+      "synthetic_http_and_native_only": true
+    },
+    {
+      "files": [
+        "tests/test_sol_session_review.py",
+        "tests/test_sol_original15_session.py"
+      ],
+      "passed": 14,
+      "seconds": 737.54,
+      "synthetic_http_and_native_only": true
+    },
+    {
+      "node": "tests/test_patch_coordination_session.py::test_coordination_file_is_pinned_before_any_runtime_or_credentials",
+      "passed": 1,
+      "seconds": 4.06,
+      "reason": "Rechecked after adding null-object and unpublished-choice rejection assertions"
+    }
+  ],
+  "unique_test_cases": 138,
+  "development_failures": [
+    "First integration omitted FixedReportWorkflow argument and left manifest fingerprints stale; fixed before final regression.",
+    "New test helper accidentally used facts request context for completion; corrected to use context duty.",
+    "Original coordination inventory SHA depended on JSON key order; changed to stable sorted-object hashing while retaining raw opinion strings. The old in-flight suite retained 12 pass/5 failures for stale hash/manifests; current targeted and full regression pass.",
+    "Two one-off real-preview preparation assertion/hash errors retained in preparation notes; original evidence and four partial preview files were preserved and verified exactly before final preparation."
+  ],
+  "compile_passed": true,
+  "governance_passed": true,
+  "diff_check_passed": true,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "new_http_requests": 0,
+  "parent_inventory_unchanged": true,
+  "real_recovery_session_created": false,
+  "current_native_coordination_accepted": false,
+  "actual_application_count": 0,
+  "fresh_calls": 0,
+  "paid_launcher_ready": false,
+  "original_cases_completed": 12,
+  "unrun_cases": [
+    "observed:4",
+    "observed:5"
+  ],
+  "next_action": "Implement explicit sealed-prefix inheritance of the original first eight operations into a separate versioned recovery session, preserve accounting/failure/time and author/native evidence, verify zero-send boundary before any paid fresh call.",
+  "authorization_expires_at": "2026-10-28T16:25:43.295847+00:00",
+  "automation_status": "PAUSED",
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false
+}

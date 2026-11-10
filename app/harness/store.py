@@ -41,8 +41,11 @@ class FileRunStore:
         if manifest.run_id != self.run_id:
             raise ValueError("manifest run_id does not match this store.")
 
+        serialized = asdict(manifest)
+        if manifest.failure_code is None:
+            serialized.pop("failure_code")
         payload = json.dumps(
-            asdict(manifest),
+            serialized,
             ensure_ascii=False,
             indent=2,
         ).encode("utf-8") + b"\n"
@@ -61,6 +64,7 @@ class FileRunStore:
             artifacts=raw.get("artifacts", []),
             transitions=raw.get("transitions", []),
             final_decision=raw.get("final_decision"),
+            failure_code=raw.get("failure_code"),
         )
 
     def write_artifact(
@@ -138,7 +142,9 @@ class FileRunStore:
             with tempfile.NamedTemporaryFile(
                 mode="wb",
                 dir=target.parent,
-                prefix=prefix,
+                # A full artifact name plus tempfile's random suffix can exceed
+                # Windows' path limit even when the final artifact fits.
+                prefix=prefix[:4],
                 suffix=".tmp",
                 delete=False,
             ) as temporary_file:
