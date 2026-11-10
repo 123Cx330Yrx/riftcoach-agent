@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-09T07:03:39.390678+00:00",
+  "kind": "natural_player_language_execution_preflight",
+  "status": "blocked_missing_configured_provider_credentials",
+  "head_sha256": "df29e8ce2651e65dbc0c9b1471b264d9a94b6613",
+  "branch": "codex/reviewer-route-diagnostics",
+  "approval_artifact_sha256": "474b0b7fd7e279c2449b193fcc4445b57ab20170d76138f1f6bb91851008c143",
+  "task": {
+    "id": "familiar_observed_recent5_language_acceptance",
+    "proposed_run_id": "product-language-acceptance-20261109-01",
+    "contract": "natural-flash-sol-product-chat-v1",
+    "product_version": "Chat1.7.10",
+    "relationship_role": "observed",
+    "count": 5,
+    "queue": 420,
+    "focus": "overall"
+  },
+  "checks": {
+    "head_current": true,
+    "known_untracked_only": [
+      "scripts/reviewer_responses_nonstream_probe.py"
+    ],
+    "old_task_reuse": false,
+    "new_match_source": false,
+    "riot_key_read": false,
+    "sql_migration": "0015_task_continuation",
+    "sql_related_tests": "24 passed in isolated Compose project; cleaned",
+    "budget_guard": "18 passed",
+    "catalog_sha256": "9a4422397de1afb26a6db9e8cbe8a1bdb64c39dd438d1bd3bdfc521bd5ad3966",
+    "source_sha256": {
+      "player_summary": "b117764e293b28eb116d5d158da19ba0894764a5a41f00a687a57a68be9223ef",
+      "evidence_bundle": "e64240536d45910b13d05f4cc9dde45dc455d710e7d436a421d57a16d2a944a8",
+      "publication_manifest": "bf133142feff085823a10fb4f56e6dff9d377545af8676ec862766f96ef64a96",
+      "memory_manifest": "0fd3a7fbeb6492fe3f2d365135c87f06b9f9bf7eb4ace97f0b9a8df22ecea61f",
+      "old_report": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455"
+    },
+    "credential_presence": {
+      "LLM_API_KEY": false,
+      "RIFTCOACH_SOL_REVIEW_API_KEY": false,
+      "RIOT_API_KEY": false,
+      "GLM_API_KEY": true
+    },
+    "credential_loader_requirements": {
+      "generation": "LLM_API_KEY or explicit approved env-file accepted by current loader",
+      "review": "RIFTCOACH_SOL_REVIEW_API_KEY or explicit approved provider credential"
+    }
+  },
+  "stop_reason": "\u5f53\u524dshell\u6ca1\u6709\u53ef\u4f9b\u73b0\u6709\u4ea7\u54c1\u5165\u53e3\u8bfb\u53d6\u7684LLM_API_KEY\u6216RIFTCOACH_SOL_REVIEW_API_KEY\uff1bGLM_API_KEY\u867d\u5b58\u5728\uff0c\u4f46\u4e0d\u80fd\u672a\u7ecf\u6388\u6743\u6620\u5c04\u4e3a\u4ea7\u54c1\u751f\u6210\u6216Sol\u5ba1\u67e5\u51ed\u636e\u3002\u4e3a\u907f\u514d\u8bef\u53d1\u6216\u628a\u4e0d\u540c\u4f9b\u5e94\u5546\u51ed\u636e\u6df7\u7528\uff0c\u672a\u521b\u5efa\u4efb\u52a1\u3001\u672a\u8bfb\u53d6Key\u503c\u3001\u672a\u53d1\u9001\u6a21\u578b\u8bf7\u6c42\u3002",
+  "next_required": "\u5728\u672c\u673a\u4e3a\u8fd9\u4e00\u4e2a\u4efb\u52a1\u914d\u7f6e\u73b0\u6709\u5165\u53e3\u53ef\u8bfb\u53d6\u7684\u751f\u6210\u4e0eSol\u5ba1\u67e5\u51ed\u636e\uff08\u5efa\u8bae\u8bbe\u7f6eLLM_API_KEY\u548cRIFTCOACH_SOL_REVIEW_API_KEY\uff0c\u6216\u63d0\u4f9b\u4e0d\u5165\u5e93\u7684\u660e\u786eenv-file\u8def\u5f84\uff09\uff0c\u7136\u540e\u56de\u590d\u5df2\u914d\u7f6e\uff1b\u4e0d\u9700\u8981\u7c98\u8d34Key\u3002",
+  "effects": {
+    "model_requests": 0,
+    "source_requests": 0,
+    "key_reads": 0,
+    "sql_tasks_created": 0
+  },
+  "control_artifact_sha256": "54ebebbd0e6473a82ee172425572e32815f37a1e154dbc3fcbfca4ce2a95e173"
+}

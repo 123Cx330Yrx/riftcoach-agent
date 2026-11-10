@@ -98,4 +98,4 @@
 
 当前交付卡是[产品推进与验收计划](2026-11-01-product-delivery-reset.md)。CI41669841138已12/12通过且monitor删除。本次准备是一项封存五场观摩材料上的新生成任务，走Chat1.7.10及双审/必要双fresh；原“四类审查×两接口”草案撤销，原字节在Control/preparation-correction-originals-20261104。
 
-首轮完整输入32976估算token单位；三生成加四审校准与满输出合计469152，超过401920共67232，真实新输出仍未知。`ProductBudget`现已在生成发送前保留四项审查完整包络321536，并由18项产品合同测试验证；保持产品上限，仍需隔离SQL环境后再形成新付费决定。可读方案为Control/natural-tone-acceptance-preparation.md；仓库结果sol_product_player_language_acceptance_prepared_20261104.json。P3_not_accepted、Stage8E、默认准入不变。
+首轮完整输入32976估算token单位；三生成加四审校准与满输出合计469152，超过401920共67232，真实新输出仍未知。`ProductBudget`现已在生成发送前保留四项审查完整包络321536，并由18项产品合同测试验证；保持产品上限，11-09 隔离 SQL 验证完成，用户已批准单任务。已确认两项既有凭据可从本机读取。智谱沿用主仓库被 Git 忽略的本机 .env，天机阁企业专线沿用 Windows Credential Manager。11-09 只查了进程变量，没有运行新任务的 Worker，旧预检“缺少已配置凭据”的结论由本次复核替代。 用既有 Worker 依赖注入接入封存来源和两项凭据读取器，以替身传输验证该任务的普通入口、首请求和零新取源。公共 CI 须覆盖准备实际执行的提交。11-10 当前 Docker Linux daemon 不可达，复验隔离 SQL 时先确认正常启动。可读方案为Control/natural-tone-acceptance-preparation.md；仓库结果sol_product_player_language_acceptance_prepared_20261104.json。P3_not_accepted、Stage8E、默认准入不变。

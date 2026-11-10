@@ -1,3 +1,13 @@
+## 2026-11-10 封存输入与既有凭据零发送预检（当前）
+
+11-10 已完成封存来源的 Worker 执行器零发送预检：仅注入 Flash/Sol 两项既有凭据，完整首请求32976估算token/30829字节，含四审预留370896，模型/新取源/SQL任务均0。摘要、Evidence、manifest和完整身份来源参数均按哈希及交叉引用核对，旧观察时间不刷新；9项本地检查通过。预检使用易失continuation存储及空Memory替身，未验证SQL/API生命周期。新增普通conversation API→PostgreSQL→Worker消费用例已收集1项，本机未执行。结果见`data/evaluation/results/sol_product_player_language_worker_preflight_20261110.json`。
+
+下一行动：推送本包并核验同提交公共CI，保留预算守卫与新增封存来源SQL用例的实际结果。11-10正常启动Desktop再次在sailor-ingest.sock访问/rename处失败并退出backend；Control/docker-normal-start-20261110.json保存当日日志。未尝试停止失败backend、删除端点或重置。Docker恢复后，用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。
+
+旧报告、DB dump、恢复ZIP、fixture、无关probe及冻结执行树的固定SHA均复核未变。既有批准、旧错误预检原件保留，错误结论由11-10复核及本次预检替代；P3_not_accepted、Stage8E与默认准入不变。
+
+以下为历史记录；以下当前状态与下一行动只描述记录当时。
+
 ## 2026-11-04 完整输入与尾段预算的新发现（当前）
 
 上一轮八审准备只有旧稿审查，没有新报告生成；输入467800加输出131072为598872，超过401920，且把估算token单位写成字节，目录SHA少一位。该草案已撤出当前队列并按原字节存档，不将CI通过扩大成口吻验收。
@@ -8861,3 +8871,14 @@ scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接�
 ## 2026-10-28 剩两例CI时限故障
 
 新入口e7a7ab0b的CI40673377624，web/migrations/packaging及shard0/2/3成功；shard1被GitHub明确标注超过1h0m0s取消，末次完整进度87%，此前日志无失败标记，不等于余项通过。汇总失败与缺完成库存保留。唯一waiter按失败退出，没有读取Key或发送Provider；observed:4仍0003模型边界，计划/guard/原余量不变。仅将pytest-shards job时限60改90分钟，全部用例、分片数量、完整覆盖汇总及其他mandatory gate保持。该CI维护不改冻结e7执行源码/输入/plan，沿用先前显式测试维护续接模式逐件固定Git差异；新CI全绿后才能首发，原cancelled不改称绿。证据Control/ci-timeout-diagnosis.json及原日志SHA。
+
+
+## 2026-11-09 预检结论（凭据结论见 11-10 更正）
+
+用户批准的一项新 Chat1.7.10 产品任务已完成范围与预算绑定。Docker/SQL 不是当前阻塞：独立项目已迁移 0015，24 项 Worker/Entry/Budget 测试通过并清理。当前唯一发送前阻塞是现有入口缺少生成与 Sol 审查凭据；GLM_API_KEY 不按名称推断为 LLM_API_KEY 或 RIFTCOACH_SOL_REVIEW_API_KEY。未创建 task、未读取 Key 值、未发送模型或来源请求。
+
+## 2026-11-10 工作复核
+
+已确认两项既有凭据可从本机读取。智谱沿用主仓库被 Git 忽略的本机 .env，天机阁企业专线沿用 Windows Credential Manager。11-09 只查了进程变量，没有运行新任务的 Worker，旧预检“缺少已配置凭据”的结论由本次复核替代。 复核证据见 Control/work-audit-20261110.md，批准原件见 data/evaluation/results/sol_product_player_language_execution_approval_20261109.json。P3 尚未验收。
+
+用既有 Worker 依赖注入接入封存来源和两项凭据读取器，以替身传输验证该任务的普通入口、首请求和零新取源。公共 CI 须覆盖准备实际执行的提交。11-10 当前 Docker Linux daemon 不可达，复验隔离 SQL 时先确认正常启动。

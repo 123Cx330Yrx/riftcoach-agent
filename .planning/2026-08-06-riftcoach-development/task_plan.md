@@ -13,23 +13,21 @@ ShowMaker观摩任务不是整个产品；自然Coach、本人Training、四块�
 
 ## Active Work Package
 
-2026-11-04：国服称呼/玩家表达工程包已在 `59022e8c7de8aa125c7047af859287670b18e6f3` 完成 CI41669841138 的12/12终局核验；339项SQL、8个称呼消费用例及迁移由CI实跑，本机SQL未执行，monitor已删除，不再轮询。开发树仍为 `D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。
+用户 11-09 批准一项 Chat1.7.10 观摩任务，复用封存的 DK ShowMaker 五场，生成一份新报告并双初审，必要时唯一修订及同稿双 fresh。范围仍按已批准决策包。
 
-沿现有P3/P4完成一项具体自然观摩任务的离线准备：只读复用DK ShowMaker封存5场，以Chat1.7.10新生成报告，再双初审，必要时唯一应用及同稿双fresh；不把双接口八次旧稿审查当新写作验收。当前编译首轮完整输入32976估算token单位、30829序列化字节，无来源省略，实际请求guard及ASCII归档还原通过。
+已确认两项既有凭据可从本机读取。智谱沿用主仓库被 Git 忽略的本机 .env，天机阁企业专线沿用 Windows Credential Manager。11-09 只查了进程变量，没有运行新任务的 Worker，旧预检“缺少已配置凭据”的结论由本次复核替代。
 
-完整预算暴露限制：3轮生成校准32976/40516/47072，旧四审校准63810/59414/57536/53140；每次加16384输出，共469152，比401920多67232。首轮加四审全额预留370896可容纳，但多轮是否完成取决于实际新输出和已知/unknown用量；旧首审仅余190。8次/401920/900活动秒、单次16384/300/输入64000不扩。`ProductBudget`已接入生成发送前四项审查完整包络321536的准入守卫，18项产品合同测试通过；隔离SQL已独立恢复并完成相关本地验证，但不因此放行模型执行。
+首轮完整输入 32976 估算 token 单位、30829 字节，四审预留 321536。11-09 的隔离 PostgreSQL 0015 迁移及 24 项相关测试有效。12 项公共 CI 成功对应 59022e8c；后续预算守卫及本包封存输入适配仍须同提交公共CI。
 
-工作卡：`docs/plans/2026-11-01-product-delivery-reset.md`。可读准备与完整预算：`C:\Users\33502\Documents\Agent\outputs\riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`、`natural-task-request-budget.json`；仓库结果：`data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json`。旧八审草案、错误单位/截短SHA和被前置正文破坏的YAML已更正，原字节在Control/preparation-correction-originals-20261104。新模型自然度尚未验证，tone-review.md仍为开发者示例。
-
-本轮模型/对局来源/Key/真实task均0；旧报告5083字节、DB、ZIP、冻结树与无关probe核验未变。旧7HTTP/100656known/243.406活动秒及32768历史配置违规保留；四审许可已用尽。Docker此前停止进程/删端点被自动审批blocked by policy拒绝，未执行且不重试；旧浏览器临时目录保留。P1_complete / P2_partial_verified / P3_not_accepted、Stage8E、默认准入及原15完成结论不变。
-
-下一行动：独立隔离SQL已完成0015迁移及24项相关Worker/Entry/Budget测试，专用容器与volume已清理。预算尾段守卫仍由18项合同测试核验；具体单任务费用/Key决策包已准备，当前等待明确决定，不发送模型或恢复旧任务。证据见`data/evaluation/results/sol_product_player_language_sql_local_20261109.json`与`data/evaluation/results/sol_product_player_language_execution_decision_20261109.json`。终局和本准备记录随下一实质工作提交，不为等待状态触发CI。
+复核证据见 Control/work-audit-20261110.md，批准原件见 data/evaluation/results/sol_product_player_language_execution_approval_20261109.json。P3 尚未验收。
 
 ## Next Step
 
-Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
+Canonical checkpoint: 8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption.
 
-独立隔离SQL已完成0015迁移及24项相关Worker/Entry/Budget测试，专用容器与volume已清理。预算尾段准入由18项合同测试核验；具体单任务费用/Key决策包已准备，当前等待明确决定，不发送模型或恢复旧任务。
+11-10 已完成封存来源的 Worker 执行器零发送预检：仅注入 Flash/Sol 两项既有凭据，完整首请求32976估算token/30829字节，含四审预留370896，模型/新取源/SQL任务均0。摘要、Evidence、manifest和完整身份来源参数均按哈希及交叉引用核对，旧观察时间不刷新；9项本地检查通过。预检使用易失continuation存储及空Memory替身，未验证SQL/API生命周期。新增普通conversation API→PostgreSQL→Worker消费用例已收集1项，本机未执行。结果见`data/evaluation/results/sol_product_player_language_worker_preflight_20261110.json`。
+
+下一行动：推送本包并核验同提交公共CI，保留预算守卫与新增封存来源SQL用例的实际结果。11-10正常启动Desktop再次在sailor-ingest.sock访问/rename处失败并退出backend；Control/docker-normal-start-20261110.json保存当日日志。未尝试停止失败backend、删除端点或重置。Docker恢复后，用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。
 
 以下为历史记录；旧行动、旧CI等待和旧授权不构成当前队列。
 

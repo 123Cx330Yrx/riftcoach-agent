@@ -1,3 +1,13 @@
+## 2026-11-10 封存输入与既有凭据零发送预检（当前）
+
+11-10 已完成封存来源的 Worker 执行器零发送预检：仅注入 Flash/Sol 两项既有凭据，完整首请求32976估算token/30829字节，含四审预留370896，模型/新取源/SQL任务均0。摘要、Evidence、manifest和完整身份来源参数均按哈希及交叉引用核对，旧观察时间不刷新；9项本地检查通过。预检使用易失continuation存储及空Memory替身，未验证SQL/API生命周期。新增普通conversation API→PostgreSQL→Worker消费用例已收集1项，本机未执行。结果见`data/evaluation/results/sol_product_player_language_worker_preflight_20261110.json`。
+
+下一行动：推送本包并核验同提交公共CI，保留预算守卫与新增封存来源SQL用例的实际结果。11-10正常启动Desktop再次在sailor-ingest.sock访问/rename处失败并退出backend；Control/docker-normal-start-20261110.json保存当日日志。未尝试停止失败backend、删除端点或重置。Docker恢复后，用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。
+
+旧报告、DB dump、恢复ZIP、fixture、无关probe及冻结执行树的固定SHA均复核未变。既有批准、旧错误预检原件保留，错误结论由11-10复核及本次预检替代；P3_not_accepted、Stage8E与默认准入不变。
+
+以下为历史记录；以下当前状态与下一行动只描述记录当时。
+
 ## 2026-11-04 完整自然任务准备与错误草案更正（当前）
 
 2026-11-04：国服称呼/玩家表达工程包已在 `59022e8c7de8aa125c7047af859287670b18e6f3` 完成 CI41669841138 的12/12终局核验；339项SQL、8个称呼消费用例及迁移由CI实跑，本机SQL未执行，monitor已删除，不再轮询。开发树仍为 `D:/riftcoach-review-route-diagnostics` / `codex/reviewer-route-diagnostics`。
@@ -11808,3 +11818,16 @@ scripts/original15_remaining_launch.py只允许observed:4→observed:5，直接�
 CI40864229481八项success。唯一waiter-v2首启一次后exit0，execution-0001原stdout固定guard3f1c2b35，继承14步并按预期session_review_repair_required暂停，新增Provider/Key0。execution-0002发布修稿7fb7e784的completion-initial-repair任务，checkpoint ef8acfdf；原独立作者唯一NEW_TASK已派，主审先独立create-only写repair-completion-initial-primary.json，十项操作复现新稿、Decimal/HALF_UP及原用途/OP.GG争议逐项核验。目前尚未提交覆盖判断、没有application或fresh，heartbeat ACTIVE。
 
 覆盖阶段已双审接受，原件/native bytes一致SHA656714d7，execution-0004正式导入。0003主审提交包装多一层导致ValidationError，未写submission；原失败与原主审notes保留，0004仅使用相同decision正确外层，无重派/重写作者final。Host-only 0005核库存并推进到compatibility，0006只读取dispatch；checkpoint dbd025fc唯一NEW_TASK，主审独立写compatibility-primary-decision.json后等待原独立作者。当前新增Provider/Key0，尚无application/fresh。
+
+
+## 2026-11-09 单项产品任务批准与启动预检（凭据结论见 11-10 更正）
+
+用户批准决策包中的一项新 Chat1.7.10 观摩任务。当前 HEAD df29e8ce2651e65dbc0c9b1471b264d9a94b6613、封存五场来源、名称目录、预算守卫、0015 迁移与 24 项隔离 SQL 测试均核验通过；Docker Desktop 手动启动后 SQL 阻塞已解除并清理专用容器/volume。预检在发送边界发现现有入口缺少 LLM_API_KEY 和 RIFTCOACH_SOL_REVIEW_API_KEY，未把 GLM_API_KEY 静默映射，故真实 task/Key/model/source 均 0。凭据配置后沿同一批准范围继续，不恢复旧 task、不自动重试。
+
+证据：data/evaluation/results/sol_product_player_language_execution_approval_20261109.json、sol_product_player_language_execution_preflight_20261109.json；Control 同名文件。P3_not_accepted、Stage8E、默认准入不变。
+
+## 2026-11-10 工作复核
+
+已确认两项既有凭据可从本机读取。智谱沿用主仓库被 Git 忽略的本机 .env，天机阁企业专线沿用 Windows Credential Manager。11-09 只查了进程变量，没有运行新任务的 Worker，旧预检“缺少已配置凭据”的结论由本次复核替代。 复核证据见 Control/work-audit-20261110.md，批准原件见 data/evaluation/results/sol_product_player_language_execution_approval_20261109.json。P3 尚未验收。
+
+用既有 Worker 依赖注入接入封存来源和两项凭据读取器，以替身传输验证该任务的普通入口、首请求和零新取源。公共 CI 须覆盖准备实际执行的提交。11-10 当前 Docker Linux daemon 不可达，复验隔离 SQL 时先确认正常启动。
