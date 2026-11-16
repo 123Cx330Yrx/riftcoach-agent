@@ -49,3 +49,4 @@ tests/test_training_progress_producer_postgres.py
 tests/test_owner_data_lifecycle_records.py
 tests/test_owner_data_lifecycle_migrations_postgres.py
 tests/test_owner_data_lifecycle_repository_postgres.py
+tests/test_archived_product_worker_postgres.py

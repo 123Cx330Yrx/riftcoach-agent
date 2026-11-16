@@ -151,13 +151,19 @@ class FileEvidencePublicationStore:
         manifest = self.read(context)
         raw = self._path(context.run_id, manifest.bundle.relative_path).read_bytes()
         bundle = bundle_from_storage_projection(json.loads(raw))
+        receipt, reference = FileRunReceiptStore(self.runs_root).read_receipt_with_reference(context.run_id)
+        if reference != manifest.receipt:
+            raise EvidencePublicationIntegrityError()
         return PendingEvidenceBundleSnapshot(
             task_id=context.task_id,
             run_id=context.run_id,
             owner_id=context.owner_id,
             refresh_id="publication-1",
             bundle=bundle,
-            stored_at=bundle.created_at,
+            # Archived Evidence keeps its original observation/creation times.
+            # Storage belongs to this task's verified terminal receipt, which
+            # also supplies a stable timestamp when recovery rebuilds it.
+            stored_at=receipt.created_at_utc,
         )
 
     @staticmethod

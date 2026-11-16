@@ -75,4 +75,17 @@ def test_pinned_archive_consumed_through_observed_conversation_worker(continued_
         accounting = owner.get(f'/runs/{run}/usage').json()['session_accounting']
         assert accounting['requests_reserved'] == 4 and accounting['unknown_token_reservation'] == 0
         assert inputs.reads == 1 and secrets.read_names == ['llm-api', 'sol-review-api']
+        from app.evidence.publication import EvidencePublicationContext
+        from app.evidence.publication_store import FileEvidencePublicationStore
+        from app.product.run_receipts import FileRunReceiptStore
+        from uuid import UUID
+        stored_task = repository.get_by_task_id(owner_id='owner-1', task_id=UUID(task))
+        snapshot = FileEvidencePublicationStore(root).read_pending_snapshot(EvidencePublicationContext(
+            owner_id='owner-1', task_id=UUID(task), run_id=run,
+            request_fingerprint=stored_task.request_fingerprint))
+        receipt, _ = FileRunReceiptStore(root).read_receipt_with_reference(run)
+        assert snapshot.stored_at == receipt.created_at_utc >= stored_task.created_at
+        assert snapshot.bundle.created_at == inputs.sources.now < stored_task.created_at
+        assert snapshot.bundle.digest == inputs.sources.project(
+            inputs._summary, routing_region=args['routing_region']).bundle.digest
         assert worker.run_once().status.value == 'idle'

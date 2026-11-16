@@ -68,6 +68,12 @@ def test_read_pending_snapshot_rebuilds_verified_task_payload(tmp_path):
     assert pending.owner_id == context().owner_id
     assert pending.refresh_id == "publication-1"
     assert pending.bundle.digest == projection.bundle.digest
+    from app.product.run_receipts import FileRunReceiptStore
+    receipt, _ = FileRunReceiptStore(tmp_path).read_receipt_with_reference(context().run_id)
+    assert pending.stored_at == receipt.created_at_utc
+    assert pending.stored_at > pending.bundle.created_at
+    assert pending.bundle == projection.bundle
+    assert store.read_pending_snapshot(context()) == pending
 
 
 @pytest.mark.parametrize("filename", ["evidence_publication_manifest.json", "evidence_bundle.json",

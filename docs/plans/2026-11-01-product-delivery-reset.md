@@ -5,6 +5,12 @@
 **Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
 **Status:** P1_complete / P2_partial_verified / P3_not_accepted。旧7HTTP真实闭环已终局，四审许可已用尽；当前Responses1.7.9/Chat1.7.10的来源范围、原文安全排版、国服称呼及口吻输入接线已完成工程验证，HEAD59022e8c的CI41669841138全部12项通过。339项SQL、8个称呼消费用例及迁移由该次CI执行。11-09 另有本机隔离 SQL 记录。新模型自然度和整体P3仍未验收；原15、Stage8E及默认准入保持。
 
+2026-11-16：Docker4.99.0/Engine29.9.3正常启动。CI42765141272首轮10/12成功，pytest分片3在Ubuntu依赖下载时超时、测试未开始，汇总随之失败；已仅重跑失败项，原失败保留。本机实跑封存来源SQL用例发现evidence_snapshot_time_invalid：旧bundle.created_at被误用作新任务stored_at。该用例遗漏于postgres_ci_files.txt，之前四SQL分片成功不证明该用例通过；已更正此前覆盖判断。修复改用同任务经manifest校验的终态回执created_at_utc，保留原bundle和观察时间，并将用例加入SQL清单。11项真实PostgreSQL及107项相关离线检查通过，12Runtime/2清单通过。
+
+2026-11-16真实SQL/API零发送预检已通过：普通conversation reviews/recent创建唯一新task6392ac98-db41-431c-b101-53b1e0925481 / run review_132979adce0546e9a9ac2bcaf6386eee，真实Postgres Memory和continuation落库，Worker停在session_model_boundary。完整首请求32976估算token/30838字节，含四审预留370896；llm-api/sol-review-api既有凭据读取成功，模型/新取源/Riot Key均0。checkpoint0010 SHA587e266eabe0218626af4c5579bcfad1ac024c74bdf92f03ba567dd88f468fe7，DB dump已保存。后续只resume该task，不再创建第二项。
+
+下一行动：推送Evidence时间/SQL清单修复并核同提交12项CI；通过后沿Control/run_sql_language_task.py的step入口逐次执行上述已批准任务，每段最多一个新模型操作、manual_retry=false，原8请求/401920token/900活动秒不扩。失败或unknown先保留现场并依证处理，不自动重试。当前未启动付费执行者或monitor。
+
 ## P3/P4 当前工作卡：称呼与玩家口吻实际输出（2026-11-10 核对）
 
 - **用户结果：** 对已封存DK ShowMaker五场排位新生成一份玩家可读的观摩报告，讲清关键判断、依据、下次观摩重点，名称可靠且不越过observed边界。熟悉旧材料用于当前输出验收，不算新取源或独立留出例。
@@ -14,7 +20,7 @@
 - **验收：** 全文核事实/数字/用途/版本；可靠国服称呼自然使用，未知回退标准名；风格不升级事实拒绝。发布稿与双审同稿，实际API/1440与320核报告、Evidence、费用；CI/model pass不代替人工内容判断。旧已审稿不改，tone-review.md仍是开发者示例。
 - **本包结果：** 完整任务、输入、预算、边界与失败选择已离线准备；尚非可直接启动包。本轮模型/对局来源/Key/真实task均0；旧报告/DB/ZIP/冻结树/probe核验未变。结果[data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json](../../data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json)；可读方案`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`。
 
-原八审草案未覆盖新写作且误标预算单位，已被本卡替代，原字节保存在Control/preparation-correction-originals-20261104。终局记录和本准备随下一实质工作提交，不为状态重跑CI。用户已批准这项任务，原决策包见`data/evaluation/results/sol_product_player_language_execution_decision_20261109.json`。11-10 已完成封存来源的 Worker 执行器零发送预检：仅注入 Flash/Sol 两项既有凭据，完整首请求32976估算token/30829字节，含四审预留370896，模型/新取源/SQL任务均0。摘要、Evidence、manifest和完整身份来源参数均按哈希及交叉引用核对，旧观察时间不刷新；9项本地检查通过。预检使用易失continuation存储及空Memory替身，未验证SQL/API生命周期。新增普通conversation API→PostgreSQL→Worker消费用例已收集1项，本机未执行。结果见`data/evaluation/results/sol_product_player_language_worker_preflight_20261110.json`。 下一行动：推送本包并核验同提交公共CI，保留预算守卫与新增封存来源SQL用例的实际结果。11-10正常启动Desktop再次在sailor-ingest.sock访问/rename处失败并退出backend；Control/docker-normal-start-20261110.json保存当日日志。未尝试停止失败backend、删除端点或重置。Docker恢复后，用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。 复核证据见 Control/work-audit-20261110.md，批准原件见 data/evaluation/results/sol_product_player_language_execution_approval_20261109.json。P3 尚未验收。
+原八审草案、11-09错误凭据判断与11-10无SQL预检保留在既有历史证据中，不作为当前执行状态。用户批准原件见data/evaluation/results/sol_product_player_language_execution_approval_20261109.json；当前状态与下一动作以上述11-16记录为准。P3尚未验收。
 
 
 ## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）

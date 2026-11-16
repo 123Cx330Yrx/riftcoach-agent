@@ -1,8 +1,18 @@
+## 2026-11-16 封存Evidence存储时间与SQL覆盖修复（当前）
+
+2026-11-16：Docker4.99.0/Engine29.9.3正常启动。CI42765141272首轮10/12成功，pytest分片3在Ubuntu依赖下载时超时、测试未开始，汇总随之失败；已仅重跑失败项，原失败保留。本机实跑封存来源SQL用例发现evidence_snapshot_time_invalid：旧bundle.created_at被误用作新任务stored_at。该用例遗漏于postgres_ci_files.txt，之前四SQL分片成功不证明该用例通过；已更正此前覆盖判断。修复改用同任务经manifest校验的终态回执created_at_utc，保留原bundle和观察时间，并将用例加入SQL清单。11项真实PostgreSQL及107项相关离线检查通过，12Runtime/2清单通过。
+
+2026-11-16真实SQL/API零发送预检已通过：普通conversation reviews/recent创建唯一新task6392ac98-db41-431c-b101-53b1e0925481 / run review_132979adce0546e9a9ac2bcaf6386eee，真实Postgres Memory和continuation落库，Worker停在session_model_boundary。完整首请求32976估算token/30838字节，含四审预留370896；llm-api/sol-review-api既有凭据读取成功，模型/新取源/Riot Key均0。checkpoint0010 SHA587e266eabe0218626af4c5579bcfad1ac024c74bdf92f03ba567dd88f468fe7，DB dump已保存。后续只resume该task，不再创建第二项。
+
+下一行动：推送Evidence时间/SQL清单修复并核同提交12项CI；通过后沿Control/run_sql_language_task.py的step入口逐次执行上述已批准任务，每段最多一个新模型操作、manual_retry=false，原8请求/401920token/900活动秒不扩。失败或unknown先保留现场并依证处理，不自动重试。当前未启动付费执行者或monitor。
+
+以下为历史记录；旧行动不作为当前队列。
+
 ## 2026-11-10 封存输入与既有凭据零发送预检（当前）
 
 11-10 已完成封存来源的 Worker 执行器零发送预检：仅注入 Flash/Sol 两项既有凭据，完整首请求32976估算token/30829字节，含四审预留370896，模型/新取源/SQL任务均0。摘要、Evidence、manifest和完整身份来源参数均按哈希及交叉引用核对，旧观察时间不刷新；9项本地检查通过。预检使用易失continuation存储及空Memory替身，未验证SQL/API生命周期。新增普通conversation API→PostgreSQL→Worker消费用例已收集1项，本机未执行。结果见`data/evaluation/results/sol_product_player_language_worker_preflight_20261110.json`。
 
-下一行动：推送本包并核验同提交公共CI，保留预算守卫与新增封存来源SQL用例的实际结果。11-10正常启动Desktop再次在sailor-ingest.sock访问/rename处失败并退出backend；Control/docker-normal-start-20261110.json保存当日日志。未尝试停止失败backend、删除端点或重置。Docker恢复后，用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。
+11-10 Docker修复与官方更新已完成：在Docker退出时备份仅含零字节端点的run与docker-secrets-engine目录后重建，原件保留。官方第二轮管理员安装成功，Desktop4.99.0.245822 / Engine29.9.3已running；缓存postgres:17-alpine在无网络、只读、移除capabilities的容器内运行PostgreSQL17.11成功。更新前后容器ID/名称、10个volume名称和全部镜像ID逐项一致；未恢复出厂或删除既有数据。首轮UAC取消错误保留。终局见Control/docker-repair-update-verified-20261110.json与docker-install-admin-completed-20261110.log；这不证明未来端点故障不会复发，也不代替SQL/API业务预检。已推送7a4cda0122e85cb7ad65ab7fea4698bdddf60579，唯一当前CI42765141272的同HEAD和SQL/迁移成功已核，全部12项终局仍待核；本轮不重复查询。Docker阻断已解除；下一步核同提交公共CI终局，并用真实SQL/API和Postgres Memory完成入口预检，再执行已批准的一项Chat1.7.10任务；已有Key和相同范围无需重新批准。
 
 旧报告、DB dump、恢复ZIP、fixture、无关probe及冻结执行树的固定SHA均复核未变。既有批准、旧错误预检原件保留，错误结论由11-10复核及本次预检替代；P3_not_accepted、Stage8E与默认准入不变。
 
