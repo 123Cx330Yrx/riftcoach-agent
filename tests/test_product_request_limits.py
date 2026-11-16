@@ -9,6 +9,7 @@ import pytest
 
 from app.evaluation.sol_natural_session import SessionBlocked
 from app.product import sol_chat_contract, sol_contract
+from app.providers.errors import ProviderError
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from tests.test_sol_product_contract import session_at
 from tests.test_sol_natural_candidate import offline
@@ -158,3 +159,55 @@ def test_actual_flash_worker_checks_before_settings_and_sdk_wire(tmp_path, monke
         assert wires[0]['max_tokens'] == 16384
         assert wires[0]['model'] == 'glm-5.3-flash' and wires[0]['stream'] is True
         assert bridge.RESPONSE.validate_json(output.getvalue()).content == 'offline report'
+
+
+@pytest.mark.parametrize('candidate', CANDIDATES)
+def test_product_generation_through_real_factory_and_receipted_transport(tmp_path, monkeypatch, candidate):
+    from app.evaluation import golden_stream_bridge as bridge
+    from app.runtime.coach_budget import CoachBudgetedProvider
+    from app.runtime.sol_natural_provider import SolNaturalProviderFactory
+    from tests.test_natural_duty_transport import scripted_child
+
+    sent = []
+    monkeypatch.setattr(bridge, 'run_child', scripted_child(sent))
+    router = SolNaturalProviderFactory(generator_settings=SimpleNamespace(
+        model='glm-5.3-flash', api_key='OFFLINE_SENTINEL',
+        base_url='https://open.bigmodel.cn/api/paas/v4'), api_key='OFFLINE_SENTINEL',
+        transport_root=tmp_path, contract_module=candidate)('product-generation')
+    budget = CoachBudgetedProvider(router, coach_contract=candidate.CONTRACT)
+    response = budget.chat(generation(candidate))
+    assert len(sent) == budget.calls == 1
+    assert response.content == 'Synthetic' and budget.tokens == 30 and budget.reserved_tokens == 0
+    raw = json.loads(sent[0])
+    assert raw['max_tokens'] == 16384 and 0 < raw['timeout_s'] <= 300
+    assert raw['metadata']['evaluation_policy_id'] == candidate.CONTRACT.request_policy.policy_id
+    folder = tmp_path / 'product-generation'
+    assert (folder / 'call-result-001.json').exists()
+    assert (folder / 'generation/request-001.json').read_bytes() == sent[0]
+    assert router.last_exchange.response is response
+
+
+@pytest.mark.parametrize('defect', ['role', 'policy', 'cap', 'transport'])
+def test_product_concrete_role_guard_rejects_invalid_requests_before_files(tmp_path, monkeypatch, defect):
+    from app.evaluation import golden_stream_bridge as bridge
+    from app.runtime.sol_natural_provider import SolNaturalProviderFactory
+
+    sent = []
+    monkeypatch.setattr(bridge, 'run_child', lambda *a, **k: sent.append(True))
+    router = SolNaturalProviderFactory(generator_settings=SimpleNamespace(
+        model='glm-5.3-flash', api_key='OFFLINE_SENTINEL',
+        base_url='https://open.bigmodel.cn/api/paas/v4'), api_key='OFFLINE_SENTINEL',
+        transport_root=tmp_path, contract_module=sol_chat_contract)('invalid')
+    req = generation(sol_chat_contract)
+    role = 'generation'
+    if defect == 'role':
+        role = 'review'
+    elif defect == 'policy':
+        req = replace(req, metadata={**req.metadata, 'evaluation_policy_id': 'unknown'})
+    elif defect == 'cap':
+        req = replace(req, max_tokens=32768)
+    else:
+        router.generator.transport_id = bridge.NATURAL_REVIEW_TRANSPORT_ID
+    with pytest.raises((ValueError, ProviderError)):
+        router.generator.chat_at_ordinal(req, ordinal=1, role=role)
+    assert sent == [] and not (tmp_path / 'invalid').exists()

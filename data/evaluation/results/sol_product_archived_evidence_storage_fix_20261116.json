@@ -72,5 +72,10 @@
     "real_postgres_memory": true,
     "real_api_worker": true,
     "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-execution-20261116\\preflight"
+  },
+  "terminal_ci": {
+    "run": 43814573385,
+    "all_12_completed_success": true,
+    "proof": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\ci-terminal-43814573385.json"
   }
 }

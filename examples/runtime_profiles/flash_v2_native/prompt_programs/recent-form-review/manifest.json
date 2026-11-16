@@ -82,7 +82,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "a1d38d03eeb5fd79d1111b728c2b0627228342b2b0360bfa45221415df5b6b51"
+      "sha256": "48c925a8cb07adfb235fc7ee3f214f016c8a410a2aa379e3f002fd7718d848bf"
     },
     {
       "component_id": "app.runtime.native_coach_contract",
@@ -150,5 +150,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "5c42faa5f6554e602669e2b5af6154d64649d3b2add0b9beacd277aa68bb2e44"
+  "program_sha256": "1cb432c187a3958f37bc5a34f4b7789c5708177bc17db1e949bc41386bdc5953"
 }

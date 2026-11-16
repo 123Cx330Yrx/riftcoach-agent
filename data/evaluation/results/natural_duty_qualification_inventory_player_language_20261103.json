@@ -14,7 +14,7 @@
     "scope": "unadmitted_opt_in",
     "sha256": "e3827ae6a1ea022bfc8711d65ff35efe31df293ceec5647553e61796bf44c7c3"
   },
-  "program_sha256": "3989ef16e704e97bc059439b01ff91c47daa9f14d35ad6664272ad3d24d71104",
+  "program_sha256": "53364ccc3226bbbe2c897fc3a1f8d8d7757aec1ecc028bc265016fe483319921",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
@@ -89,7 +89,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "a1d38d03eeb5fd79d1111b728c2b0627228342b2b0360bfa45221415df5b6b51"
+      "sha256": "48c925a8cb07adfb235fc7ee3f214f016c8a410a2aa379e3f002fd7718d848bf"
     },
     {
       "component_id": "app.runtime.native_coach_contract",

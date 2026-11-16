@@ -98,7 +98,11 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
                 if role_for_request(request) != role:
                     raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
             if self.transport_id in NATURAL_TRANSPORTS:
-                from app.evaluation.natural_duty_contract import role_for_request
+                from app.product import generation_request
+                if request.metadata.get('evaluation_policy_id') == generation_request.POLICY_ID:
+                    role_for_request = generation_request.role_for_request
+                else:
+                    from app.evaluation.natural_duty_contract import role_for_request
                 if role_for_request(request) != role:
                     raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
             if self._failed:

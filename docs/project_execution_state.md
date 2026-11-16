@@ -23,7 +23,13 @@ pause_reason: ""
 
 2026-11-16真实SQL/API零发送预检已通过：普通conversation reviews/recent创建唯一新task6392ac98-db41-431c-b101-53b1e0925481 / run review_132979adce0546e9a9ac2bcaf6386eee，真实Postgres Memory和continuation落库，Worker停在session_model_boundary。完整首请求32976估算token/30838字节，含四审预留370896；llm-api/sol-review-api既有凭据读取成功，模型/新取源/Riot Key均0。checkpoint0010 SHA587e266eabe0218626af4c5579bcfad1ac024c74bdf92f03ba567dd88f468fe7，DB dump已保存。后续只resume该task，不再创建第二项。
 
-下一行动：推送Evidence时间/SQL清单修复并核同提交12项CI；通过后沿Control/run_sql_language_task.py的step入口逐次执行上述已批准任务，每段最多一个新模型操作、manual_retry=false，原8请求/401920token/900活动秒不扩。失败或unknown先保留现场并依证处理，不自动重试。当前未启动付费执行者或monitor。
+2026-11-16 最新：3a99ccd0 的 CI43814573385 已实核同 HEAD 全部12项 completed/success，不再轮询。step-01 的普通 resume 实为200，外置执行器错误期待202；已修正，原失败保留，零请求 queued 前缀未再次 resume。step-02 随后在真实适配器进入 transport 前因 natural_duty_generation_identity 拒绝：产品请求新策略已被底层序列化器接受，但具体角色适配器仍套用旧身份 guard。此为已证本地接线缺陷，不是 Docker、缺 Key 或模型输出问题。已使角色 guard 按同一精确策略选择，旧合同/事实/来源/输出上限不改。
+
+真实任务仍为6392ac98-db41-431c-b101-53b1e0925481 / review_132979adce0546e9a9ac2bcaf6386eee；原 checkpoint0014、失败回执和未决账目保留：reserved1/observed0/known0/unknown49360/retries0/unresolved1。固定旧源码哈希、原实际请求和离线拒绝复现、空 transport、失败 trace 均支持未到 subprocess/HTTP。完整原件ZIP与DB dump已保存，派生恢复只导入4项已提交来源/Memory操作；原父目录逐字不变。恢复在独立数据库副本与独立执行目录经过真实 Worker 零发送演练，同 task/run 回到 session_model_boundary，来源读取/模型/真实Key/新任务0；实际任务尚未采用恢复，原 unknown 未被静默清除。
+
+本包已通过70项真实工厂/传输与限额离线回归、18项真实PostgreSQL Worker/API回归、12Runtime/2当前清单及governance；另32项产品合同/Chat回归已通过，合计102项相关离线检查。11份当前manifest与2份当前inventory只同步组件哈希，原15业务输入/报告/请求哈希逐项未变，没有重跑真实15。结果data/evaluation/results/sol_product_generation_transport_role_fix_20261116.json；Control/sql-execution-20261116/pretransport-recovery保存恢复证明，exercise目录是数据库副本演练，不冒充实际任务成功。
+
+下一行动：提交推送已完成本地核验的角色适配修复，只核新HEAD的公共CI；通过后按固定恢复证明采用同task的派生执行目录，再沿普通resume/Worker入口继续首个实际模型请求。每段最多1新模型操作、manual_retry=false，原8请求/401920tokens/900活动秒及16384输出/300秒不扩。称呼/口吻真实新输出仍未验证；P3_not_accepted、Stage8E和默认准入不变。
 
 复核证据见 Control/work-audit-20261110.md，批准原件见 data/evaluation/results/sol_product_player_language_execution_approval_20261109.json。P3 尚未验收。
 
