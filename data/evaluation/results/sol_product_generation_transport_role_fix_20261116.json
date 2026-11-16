@@ -60,5 +60,6 @@
   "p3_status": "P3_not_accepted",
   "stage": "8E",
   "default_admission_changed": false,
-  "public_ci_status": "pending_new_commit"
+  "public_ci_status": "blocked_by_failed_web_inventory_job",
+  "ci_failure_followup": "data/evaluation/results/sol_product_generation_transport_ci_repair_20261116.json"
 }

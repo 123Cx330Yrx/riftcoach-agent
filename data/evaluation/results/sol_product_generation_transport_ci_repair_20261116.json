@@ -1,0 +1,50 @@
+{
+  "kind": "product-generation-transport-ci-exact-inventory-repair-v1",
+  "date": "2026-11-16",
+  "head_with_failure": "30510f400d40556f3754a72fe64b1fc59c65c7a0",
+  "ci_run": 43825503495,
+  "observed_run_status": "in_progress",
+  "failed_job": {
+    "name": "web-checks",
+    "id": 133158272465,
+    "status": "completed",
+    "conclusion": "failure",
+    "failed_step": "Verify current inventory snapshots and exact API paths early"
+  },
+  "root_cause": "Two exact changed-component assertions omitted app.runtime.receipted_provider_factory after its intended role-guard repair; current inventory rebuilds themselves matched.",
+  "correction": "Include only that one actually changed component in both exact sets; preserve all frozen business/request/label and historical-boundary assertions.",
+  "local_before": {
+    "failed": 2,
+    "passed": 9
+  },
+  "local_after": {
+    "passed": 11,
+    "failed": 0
+  },
+  "verified_scope": "Exact complete web-checks early pytest command; production code, profiles and original15 requests unchanged by this repair.",
+  "sql_evidence_from_same_run": {
+    "all_four_shards_success": true,
+    "migration_success": true
+  },
+  "logs": {
+    "job_metadata": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\job.json",
+    "annotations": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\annotations.json",
+    "local_fixed_output": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\local-fixed-web-early.stdout.txt",
+    "full_job_log": "unavailable_while_overall_workflow_in_progress",
+    "cli_error_record": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\job-log-command.stderr"
+  },
+  "known_previous_checks": {
+    "related_offline": 102,
+    "local_postgres": 18,
+    "runtime_profiles": 12,
+    "inventories": 2
+  },
+  "new_model_requests": 0,
+  "new_sources": 0,
+  "real_key_reads": 0,
+  "new_tasks": 0,
+  "actual_recovery_adopted": false,
+  "original_unresolved_accounting_preserved": true,
+  "p3_status": "P3_not_accepted",
+  "default_admission_changed": false
+}

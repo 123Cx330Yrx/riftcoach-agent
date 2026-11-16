@@ -37,7 +37,9 @@ Canonical checkpoint: 8e-productization / candidate-real-golden-slice / in-progr
 
 本包已通过70项真实工厂/传输与限额离线回归、18项真实PostgreSQL Worker/API回归、12Runtime/2当前清单及governance；另32项产品合同/Chat回归已通过，合计102项相关离线检查。11份当前manifest与2份当前inventory只同步组件哈希，原15业务输入/报告/请求哈希逐项未变，没有重跑真实15。结果data/evaluation/results/sol_product_generation_transport_role_fix_20261116.json；Control/sql-execution-20261116/pretransport-recovery保存恢复证明，exercise目录是数据库副本演练，不冒充实际任务成功。
 
-下一行动：提交推送已完成本地核验的角色适配修复，只核新HEAD的公共CI；通过后按固定恢复证明采用同task的派生执行目录，再沿普通resume/Worker入口继续首个实际模型请求。每段最多1新模型操作、manual_retry=false，原8请求/401920tokens/900活动秒及16384输出/300秒不扩。称呼/口吻真实新输出仍未验证；P3_not_accepted、Stage8E和默认准入不变。
+2026-11-16 本轮CI局部修复：30510f40 / CI43825503495的web-checks在前置精确清单检查失败，前端构建/浏览器尚未启动；四个PostgreSQL分片及迁移已成功，其余pytest仍在执行。完整job日志因整轮尚未完成暂不可下载，已保存具体job133158272465、失败步骤、annotations及CLI限制回执。本地按同一完整前置命令复现2失败/9通过：两个精确组件差异断言漏列本包实际修改的app.runtime.receipted_provider_factory；inventory重建本身匹配。仅补这一个真实变更组件到两处精确集合，不弱化成子集/忽略检查，不改历史边界、原15输入或生产代码。修后完整前置11项全过；旧102离线/18本机SQL及恢复演练继续有效，本次不重复整套前端/SQL或发模型。结果sol_product_generation_transport_ci_repair_20261116.json。
+
+下一行动：提交推送这两处清单断言同步及本轮证据，只跟新HEAD的CI；保留43825503495失败，不将当前其他绿项当全绿。新CI全部12项completed/success后，才采用既有固定零发送恢复证明并沿普通resume/Worker续接唯一task6392ac98-db41-431c-b101-53b1e0925481。实际任务尚未采用恢复、原unknown49360及未决intent保持；本轮模型/来源/Key/新任务0，预算和P3/Stage8E/默认准入不变。
 
 以下为历史记录；旧行动、旧CI等待和旧授权不构成当前队列。
 

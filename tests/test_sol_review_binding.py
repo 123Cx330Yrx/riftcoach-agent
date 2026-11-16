@@ -159,7 +159,7 @@ def test_inventory_preserves_original15_and_uses_runtime_contract():
             if r != prior_components[r['component_id']]} == {
         'app.runtime.coach_contract', 'app.runtime.coach_budget', 'app.runtime.models', 'app.product.natural_duty_candidate',
         'app.runtime.sol_natural_provider', 'app.evaluation.sol_natural_session', 'scripts.reviewer_responses_process',
-        'app.model_runtime', 'app.evaluation.golden_stream_bridge'}
+        'app.model_runtime', 'app.evaluation.golden_stream_bridge', 'app.runtime.receipted_provider_factory'}
     assert value['contract'] == candidate.CONTRACT.snapshot().model_dump(mode='json')
     assert value['label_counts'] == dict(accept=5, reject=10)
     assert value['initial_request_count'] == 30
