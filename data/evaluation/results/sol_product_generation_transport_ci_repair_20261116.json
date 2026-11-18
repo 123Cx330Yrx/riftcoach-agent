@@ -30,8 +30,11 @@
     "job_metadata": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\job.json",
     "annotations": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\annotations.json",
     "local_fixed_output": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\local-fixed-web-early.stdout.txt",
-    "full_job_log": "unavailable_while_overall_workflow_in_progress",
-    "cli_error_record": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\job-log-command.stderr"
+    "full_job_log": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\web-checks-133158272465.log",
+    "cli_error_record": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\webchecks-failure-43825503495\\job-log-command.stderr",
+    "full_job_log_sha256": "c3e405151522263d02009679691e235afd2e8968ac84f4f39bf2ab92a43bea55",
+    "full_job_log_bytes": 60586,
+    "ci_failures_match_local_reproduction": true
   },
   "known_previous_checks": {
     "related_offline": 102,
@@ -46,5 +49,14 @@
   "actual_recovery_adopted": false,
   "original_unresolved_accounting_preserved": true,
   "p3_status": "P3_not_accepted",
-  "default_admission_changed": false
+  "default_admission_changed": false,
+  "fix_head": "f19769de71bb0792c924df40a409542f49f15135",
+  "next_ci_run": 43829159227,
+  "followup": {
+    "fix_ci_status": "completed",
+    "fix_ci_conclusion": "success",
+    "successful_jobs": 12,
+    "actual_recovery_adopted_after_fix_ci": true,
+    "closeout": "sol_product_player_language_observed_closeout_20261118.json"
+  }
 }

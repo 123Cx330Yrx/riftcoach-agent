@@ -1,0 +1,160 @@
+{
+  "kind": "observed-product-player-language-single-task-closeout",
+  "closed_on": "2026-11-18",
+  "execution_head": "f19769de71bb0792c924df40a409542f49f15135",
+  "execution_ci": {
+    "run_id": 43829159227,
+    "jobs": {
+      "packaging-smoke": "success",
+      "postgres-tests (1)": "success",
+      "postgres-tests (2)": "success",
+      "pytest-shards (0)": "success",
+      "postgres-tests (3)": "success",
+      "pytest-shards (2)": "success",
+      "web-checks": "success",
+      "postgres-tests (0)": "success",
+      "pytest-shards (1)": "success",
+      "pytest-shards (3)": "success",
+      "postgres-migrations": "success",
+      "pytest": "success"
+    }
+  },
+  "sql": {
+    "counts": {
+      "review_tasks": 1,
+      "conversations": 1,
+      "conversation_messages": 1,
+      "evidence_bundle_snapshots": 1,
+      "training_plans": 0,
+      "training_progress_events": 0,
+      "player_link_tasks": 0
+    },
+    "task": {
+      "task_id": "6392ac98-db41-431c-b101-53b1e0925481",
+      "run_id": "review_132979adce0546e9a9ac2bcaf6386eee",
+      "owner_id": "language-acceptance-20261116",
+      "conversation_id": "3474b677-dacb-4519-b4b6-63b537328fdf",
+      "relationship_id": "e45f66ad-d3aa-41ed-8268-ce9a32bcf27f",
+      "player_subject_id": "fccef17a-7ee9-4e41-b68d-cecb058767d7",
+      "relationship_role": "observed",
+      "status": "succeeded",
+      "terminal_reason": "quality_gate_passed",
+      "publication_status": "published",
+      "report_available": true
+    },
+    "messages": [
+      {
+        "role": "assistant",
+        "count": 1,
+        "source_task_id": "6392ac98-db41-431c-b101-53b1e0925481",
+        "source_run_id": "review_132979adce0546e9a9ac2bcaf6386eee"
+      }
+    ],
+    "bound_conversations": 1,
+    "bound_snapshots": 1
+  },
+  "session_accounting": {
+    "scope": "cumulative_session",
+    "requests_reserved": 7,
+    "requests_observed": 7,
+    "known_tokens": 100063,
+    "unknown_token_reservation": 0,
+    "retries": 0,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 293.796,
+  "recoveries": [
+    "Pretransport guard: retained original unresolved parent; no first request replay.",
+    "Third generation before sending: output cap 16384 to 15135; retained budget-rejected parent and first two successful requests."
+  ],
+  "new_match_fetches": 0,
+  "riot_key_reads": 0,
+  "reviews": {
+    "facts-initial": {
+      "score": 86,
+      "verdict": "needs_revision",
+      "issue_count": 2,
+      "advisory_count": 0,
+      "report_sha256": "82d94ea2981e96f3f323a312cb01efb5f1d97f3263851a9aef797385eccb795c"
+    },
+    "completion-initial": {
+      "score": 100,
+      "verdict": "pass",
+      "issue_count": 0,
+      "advisory_count": 0,
+      "report_sha256": "82d94ea2981e96f3f323a312cb01efb5f1d97f3263851a9aef797385eccb795c"
+    },
+    "facts-fresh": {
+      "score": 100,
+      "verdict": "pass",
+      "issue_count": 0,
+      "advisory_count": 0,
+      "report_sha256": "0eb3aef62d8349368f715f28790a2ef4345aae44c1fb57f22cc1e89ad3795165"
+    },
+    "completion-fresh": {
+      "score": 100,
+      "verdict": "pass",
+      "issue_count": 0,
+      "advisory_count": 0,
+      "report_sha256": "0eb3aef62d8349368f715f28790a2ef4345aae44c1fb57f22cc1e89ad3795165"
+    }
+  },
+  "host_review": {
+    "scope": "One observed five-game sample. No personal baseline or independent holdout.",
+    "factual_review": "Both corrections supported: restricting analysis to mid changes win-minus-loss CS/min from 2.75167 to -0.135 and gold/min from 121.19 to 55.645, but damage/min increases from 745.15 to 918.02. Four pre-15 deaths alone do not establish a weak early and strong late game.",
+    "language": "Names are identifiable. Formal phrasing and untranslated data_dragon/degraded remain; natural player tone is not accepted.",
+    "journal_host_semantics_verified": false,
+    "independent_initial_record": "host-initial-review.json",
+    "final_report_sha256": "0eb3aef62d8349368f715f28790a2ef4345aae44c1fb57f22cc1e89ad3795165"
+  },
+  "integrity": {
+    "parent_file_counts": {
+      "pretransport-recovery": 38,
+      "output-budget-recovery": 84
+    },
+    "immutable_pins_verified": true,
+    "archive_files": 221,
+    "archive_all_member_sha256_match": true,
+    "zip_crc_ok": true,
+    "zip_sha256": "a73fa1a0842e05b9194aeea6bb157bfb12cba627598663997d0f55c3a2e99833",
+    "dump_sha256": "6fd7fbd44a28402f6a7ea188831aa4f8bb27ca1eee002f3d02e0324ae54b7804",
+    "checkpoint_sha256": "6661fa1eccdd50785b1397ef7799258fef2d07aabffeee63574f1a94d390161c",
+    "report_sha256": "0eb3aef62d8349368f715f28790a2ef4345aae44c1fb57f22cc1e89ad3795165",
+    "ui": {
+      "v4/desktop-after-fix": {
+        "viewport": 1440,
+        "client_and_scroll_px": 1425,
+        "full_text_matches": true
+      },
+      "v4/mobile-after-fix": {
+        "viewport": 320,
+        "client_and_scroll_px": 305,
+        "full_text_matches": true
+      },
+      "v5/mobile-report-smoke": {
+        "viewport": 320,
+        "client_and_scroll_px": 305,
+        "full_text_matches": true
+      }
+    },
+    "closed_v5": {
+      "web_exit": 1,
+      "api_stopped": true,
+      "task_write_requests": []
+    }
+  },
+  "ui": {
+    "report_full_text": "Matched whitespace-normalized rendered Markdown with a single table-scroll UI hint accounted for.",
+    "evidence_each_viewport": {
+      "matches": 5,
+      "gaps": 15,
+      "browser_errors": 0
+    },
+    "discovery": "Standard archive profiles empty and latest 404; local read-only projection scoped to this owner and task. Standard task/report/evidence/usage HTTP 200. Default profile discovery remains unverified.",
+    "local_changes": "Fixed 320px document overflow and duplicate Evidence React keys. Focused tests: 3 passed; production build succeeded. These edits postdate execution CI."
+  },
+  "local_artifacts": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-execution-20261116",
+  "p3_status": "P3_not_accepted",
+  "stage": "8E",
+  "default_admission_changed": false
+}

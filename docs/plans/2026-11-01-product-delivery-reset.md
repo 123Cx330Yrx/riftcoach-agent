@@ -1,5 +1,13 @@
 # RiftCoach 产品推进与验收计划
 
+2026-11-18：唯一获批的 DK ShowMaker 五场观摩任务在隔离 SQL 中发布。执行提交 f19769de 的 CI 43829159227 全部 12 项成功。两次派生恢复保留原现场，累计 7 次 HTTP、100063 已知 tokens、293.796 活动秒，重试及未决请求均为 0。
+
+结果：`data/evaluation/results/sol_product_player_language_observed_closeout_20261118.json`。两次终审与发布稿字节一致；1440/320 两端正文完整，Evidence 各保留 5 条匹配、15 条缺口。
+
+下一行动：沿 P3/P4 卡核对普通用户从档案找到已发布报告的条件，并用本次终稿定位玩家口吻的改进点。正文和 Evidence 消费已验；默认档案发现与自然口吻尚未验收。只读复用本例，不重开任务。P3_not_accepted、Stage8E 和默认准入保持。
+
+以下为历史记录（截至 11-16 的准备与等待状态）。
+
 **Goal:** 先交付普通用户可发起、可恢复、可核源、可阅读的可信复盘，再按既有路线完成 Coach / Review / Training / Evidence 联动和整体体验。
 **Architecture:** 复用现有 API → SQL 任务 → Worker → 来源/Memory → Flash 生成 → Sol 双审 → 必要时唯一修订与同稿双 fresh → Evidence/报告查询路径。传输、任务执行、内容质量、界面消费分别验证；开发诊断不进入产品正常使用流程。
 **Tech Stack:** 现有 Python Runtime、PostgreSQL、Responses及显式Chat接收器、React/TypeScript、pytest 与 Playwright；本计划不引入框架或新 Agent 栈。
@@ -15,20 +23,20 @@
 
 本包已通过70项真实工厂/传输与限额离线回归、18项真实PostgreSQL Worker/API回归、12Runtime/2当前清单及governance；另32项产品合同/Chat回归已通过，合计102项相关离线检查。11份当前manifest与2份当前inventory只同步组件哈希，原15业务输入/报告/请求哈希逐项未变，没有重跑真实15。结果data/evaluation/results/sol_product_generation_transport_role_fix_20261116.json；Control/sql-execution-20261116/pretransport-recovery保存恢复证明，exercise目录是数据库副本演练，不冒充实际任务成功。
 
-2026-11-16 本轮CI局部修复：30510f40 / CI43825503495的web-checks在前置精确清单检查失败，前端构建/浏览器尚未启动；四个PostgreSQL分片及迁移已成功，其余pytest仍在执行。完整job日志因整轮尚未完成暂不可下载，已保存具体job133158272465、失败步骤、annotations及CLI限制回执。本地按同一完整前置命令复现2失败/9通过：两个精确组件差异断言漏列本包实际修改的app.runtime.receipted_provider_factory；inventory重建本身匹配。仅补这一个真实变更组件到两处精确集合，不弱化成子集/忽略检查，不改历史边界、原15输入或生产代码。修后完整前置11项全过；旧102离线/18本机SQL及恢复演练继续有效，本次不重复整套前端/SQL或发模型。结果sol_product_generation_transport_ci_repair_20261116.json。
+2026-11-16 本轮CI局部修复：30510f40 / CI43825503495的web-checks在前置精确清单检查失败，前端构建/浏览器尚未启动；首次查询时四个PostgreSQL分片及迁移已成功、其余pytest仍在执行，不再轮询旧目标。现已下载并保存具体失败job133158272465的60586字节完整日志，实核与本地同样的2失败/9通过及唯一漏项；初始日志不可下载的限制回执也保留。本地按同一完整前置命令复现2失败/9通过：两个精确组件差异断言漏列本包实际修改的app.runtime.receipted_provider_factory；inventory重建本身匹配。仅补这一个真实变更组件到两处精确集合，不弱化成子集/忽略检查，不改历史边界、原15输入或生产代码。修后完整前置11项全过；旧102离线/18本机SQL及恢复演练继续有效，本次不重复整套前端/SQL或发模型。结果sol_product_generation_transport_ci_repair_20261116.json。
 
-下一行动：提交推送这两处清单断言同步及本轮证据，只跟新HEAD的CI；保留43825503495失败，不将当前其他绿项当全绿。新CI全部12项completed/success后，才采用既有固定零发送恢复证明并沿普通resume/Worker续接唯一task6392ac98-db41-431c-b101-53b1e0925481。实际任务尚未采用恢复、原unknown49360及未决intent保持；本轮模型/来源/Key/新任务0，预算和P3/Stage8E/默认准入不变。
+当时等待 CI 43829159227，任务尚未采用恢复。该等待已结束，终局见 11-18 记录。
 
-## P3/P4 当前工作卡：称呼与玩家口吻实际输出（2026-11-10 核对）
+## P3/P4 当前工作卡：称呼与玩家口吻实际输出（2026-11-18 收尾）
 
 - **用户结果：** 对已封存DK ShowMaker五场排位新生成一份玩家可读的观摩报告，讲清关键判断、依据、下次观摩重点，名称可靠且不越过observed边界。熟悉旧材料用于当前输出验收，不算新取源或独立留出例。
 - **路径：** 既有conversation reviews/recent入口与普通SQL Worker，显式Chat1.7.10；Flash工具选择/生成→双初审→直接通过，或唯一确定性修订及同稿双fresh→Evidence/报告/用量/页面。首轮经真实编译器与renderer构造，归档还原及request_bytes通过；后续只用旧材料校准大小，没有伪造新输出。
 - **预算证据：** 首轮输入32976估算token单位/30829序列化字节；旧工具前缀的第2/3轮校准40516/47072，四审63810/59414/57536/53140。七请求加各16384输出预留469152，超401920共67232；首轮加四审全额370896可容纳，但不保证模型一轮完成。旧首审仅余190，新输入必须逐次核验。8次/401920/900活动秒、单次16384/300/输入64000不扩。
 - **依赖与失败：** 当前代码保留4审调用槽并核双fresh预留160768，且已在`ProductBudget`生成发送前保留四项审查完整包络321536；预算反例验证了当前请求能放下、完整尾段放不下时会先暂停。输入/尾段不足先停，不裁源；冲突或fresh失败沿既有状态保存，不自动付费重试。独立隔离SQL已完成0015迁移并通过24项相关Worker/Entry/Budget测试，专用容器与 volume 已清理。已确认两项既有凭据可从本机读取。智谱沿用主仓库被 Git 忽略的本机 .env，天机阁企业专线沿用 Windows Credential Manager。11-09 只查了进程变量，没有运行新任务的 Worker，旧预检“缺少已配置凭据”的结论由本次复核替代。
 - **验收：** 全文核事实/数字/用途/版本；可靠国服称呼自然使用，未知回退标准名；风格不升级事实拒绝。发布稿与双审同稿，实际API/1440与320核报告、Evidence、费用；CI/model pass不代替人工内容判断。旧已审稿不改，tone-review.md仍是开发者示例。
-- **本包结果：** 完整任务、输入、预算、边界与失败选择已离线准备；尚非可直接启动包。本轮模型/对局来源/Key/真实task均0；旧报告/DB/ZIP/冻结树/probe核验未变。结果[data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json](../../data/evaluation/results/sol_product_player_language_acceptance_prepared_20261104.json)；可读方案`C:/Users/33502/Documents/Agent/outputs/riftcoach-product-naming-tone-20261103/natural-tone-acceptance-preparation.md`。
+- **本包结果：** 结果：`data/evaluation/results/sol_product_player_language_observed_closeout_20261118.json`。两次终审与发布稿字节一致；1440/320 两端正文完整，Evidence 各保留 5 条匹配、15 条缺口。 下一行动：沿 P3/P4 卡核对普通用户从档案找到已发布报告的条件，并用本次终稿定位玩家口吻的改进点。正文和 Evidence 消费已验；默认档案发现与自然口吻尚未验收。只读复用本例，不重开任务。P3_not_accepted、Stage8E 和默认准入保持。
 
-原八审草案、11-09错误凭据判断与11-10无SQL预检保留在既有历史证据中，不作为当前执行状态。用户批准原件见data/evaluation/results/sol_product_player_language_execution_approval_20261109.json；当前状态与下一动作以上述11-16记录为准。P3尚未验收。
+原八审草案、11-09错误凭据判断与11-10无SQL预检保留在既有历史证据中，不作为当前执行状态。用户批准原件见data/evaluation/results/sol_product_player_language_execution_approval_20261109.json；当前状态与下一动作以 11-18 收尾记录为准。P3尚未验收。
 
 
 ## 1. 起点与目标层次（11月1日历史基线，当前状态以上节为准）
