@@ -61,6 +61,9 @@ def check() -> int:
     if failures:
         raise ValueError('\n'.join(failures))
     check_inventories(repository)
+    from app.product.player_wording_contract import MANIFEST, descriptor
+    if json.loads(MANIFEST.read_bytes()) != descriptor():
+        raise ValueError('generation wording manifest differs from current source')
     return len(consumers)
 
 
