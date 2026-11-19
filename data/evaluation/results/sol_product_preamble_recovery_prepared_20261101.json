@@ -1,0 +1,92 @@
+{
+  "kind": "sol-product-preamble-recovery-prepared-v1",
+  "at_utc": "2026-11-01T03:57:19.268225+00:00",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101",
+  "runs_root": "D:\\rc-preamble-recovery-20261101\\verified-runs",
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "parent_checkpoint_sha256": "74fe7e6e449dae50e636ea08b952a01fa0fc0f9356f8991dd561aa062e649b1c",
+  "parent_database_sha256": "5e1c160673bfad632bc39f7ff237113f37e17266b8d481d76941ea8e5dd02489",
+  "parent_files": 183,
+  "original_operations": 26,
+  "successful_generations_preserved": 3,
+  "old_524_preserved": 5,
+  "rejected_http200_preserved": 2,
+  "original_parent_unchanged": true,
+  "cumulative_accounting": {
+    "scope": "cumulative_session",
+    "retries": 6,
+    "known_tokens": 97298,
+    "requests_observed": 10,
+    "requests_reserved": 10,
+    "unresolved_intents": 0,
+    "unknown_token_reservation": 366910
+  },
+  "active_seconds": 1100.2809999999881,
+  "checkpoint_path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\session\\checkpoints\\0005.json",
+  "checkpoint_sha256": "8a50f2d95b35222a4c2edbe7185e8f9b0ce292dd718684b8041c4ce2c0f179d1",
+  "recovered_database_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101\\preflight-v3\\recovered-db.dump",
+  "recovered_database_sha256": "2a22578c63e159a8eba5ffb8a8239477c0133f17da0950957422292cebc20639",
+  "proof_path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\protocol-recovery-proof.json",
+  "proof_sha256": "e4c89f915a9067ead336ad51935377474851ebd01736e507d1b6d1cb16558c91",
+  "snapshot_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101\\paused-run-snapshot.zip",
+  "snapshot_sha256": "3d3994f717d04f768cb77c804ae5138fb089272ee97737849c29836fd2d756f1",
+  "pause_reason": "session_protocol_awaiting_manual_retry",
+  "new_model_requests": 0,
+  "real_key_reads": 0,
+  "new_manual_retries": 0,
+  "accepted_reviews": 0,
+  "applications": 0,
+  "fresh_reviews": 0,
+  "publication_allowed": false,
+  "temporary_container_removed": true,
+  "paid_execution_started": false,
+  "new_paid_authorization": false,
+  "changes": [
+    "Only exact queued empty-ID created(0)/queued(1) then bound created(0), with empty output/usage/error and contract echo checks.",
+    "Body-free nested envelope shapes; historical failed results remain failed.",
+    "At most one additional archived protocol recovery; prior marker, archive, operations, snapshots and consumed grant retained.",
+    "Archived checkpoint chain validates replay of committed retry grants; ordinary resume pauses without a new grant."
+  ],
+  "checks": {
+    "stream_tests_passed": 47,
+    "budget_grant_guard_tests_passed": 25,
+    "sql_tests_passed": 30,
+    "product_contract_tests_passed": 17,
+    "runtime_entries_verified": 11,
+    "compile_passed": true,
+    "diff_check_passed": true,
+    "verification_kind": "synthetic-models-and-actual-task-zero-send",
+    "source_sha256": {
+      "app/product/protocol_failure_recovery.py": "e601b261035450fc61d036b49f872aaa8598a46b8915a0ffc7da4e3537fb1650",
+      "app/product/manual_retry_grant.py": "6003ab6c6e4bafb937aadf4934a8c4aad8222be88f7db0e74e5c4195de043a85",
+      "app/persistence/task_continuations.py": "15b7cd8b8a8cb60ad7cceb871f73c908583af9d73eb9fc07ecb6ebfc01716a6d",
+      "scripts/reviewer_responses_stream.py": "57535515d1725c8e1d9b7629c257aa7b5fa0ce9323280a88973747e63ff11b1e",
+      "examples/runtime_profiles/sol_product_v1/prompt_programs/recent-form-review/manifest.json": "31234ca9e9b1cefe685cc2d32ce9b9b1a8c0f964d405752165bed082baddb04a"
+    },
+    "sql_evidence": {
+      "sql-tests-1793505005658873700.log": "d8c88414ab2154f0621a447a7144b78ab9bc5db9df17776425f2cb19a45e1418",
+      "sql-tests-1793505224833470200.log": "7ce55b1a276ad7b4f0edb88ab393c25d1012066f0392f871a7d3fa2e878d5833"
+    },
+    "sql_note": "22 unaffected checks passed in the first complete run; after fixing the prior-request lookup and fixture resume order, the 8 new cases passed. No real model sends."
+  },
+  "decision_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101\\decision-ready.json",
+  "decision_sha256": "594e441533e8925ba32c4b3669f3d921851754981c9608ebba54d09da9446298",
+  "limitations": [
+    "Captured old envelopes lack nested fields; synthetic compatibility is not verified upstream compatibility.",
+    "Two remaining requests cannot cover two initial and two fresh reviews if a repair is required.",
+    "No new paid driver or waiter has been started; no paid authorization file has been created."
+  ],
+  "preparation_failures": [
+    {
+      "reason": "Missing issued_raw in prior failed result; use and bind original attempt.",
+      "new_model_requests": 0
+    },
+    {
+      "reason": "Old preflight idempotency key reused; use distinct recovery request identity.",
+      "new_model_requests": 0
+    }
+  ],
+  "original15_completed_unchanged": true,
+  "stage8e_default_admission_unchanged": true
+}

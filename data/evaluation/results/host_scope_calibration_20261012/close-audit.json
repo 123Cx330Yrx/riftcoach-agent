@@ -1,0 +1,141 @@
+{
+  "kind": "synthetic-host-scope-calibration-close-audit-v1",
+  "recorded_at": "2026-10-12T07:49:24.533762+00:00",
+  "status": "completed_synthetic_calibration",
+  "authorization": "允许，新建并完成这次独立校准",
+  "new_agents": 1,
+  "independent_tasks": 1,
+  "project_provider_calls": 0,
+  "business_submissions": 0,
+  "new_product_qualifications": 0,
+  "material_sha256": "100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b",
+  "task_sha256": "f8b2460420c55bbec847d360db660a9db8a9b798f267a45c70ba627771b9a93a",
+  "primary_pre_dispatch_sha256": "d795e518bfb1d41b8599f31f453bdf1fa301d00c34d90888fd9fc8d5c09dae6a",
+  "native": {
+    "session": {
+      "id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+      "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "agent_path": "/root/host_scope_calibration",
+      "timestamp": "2026-10-12T07:38:46.398Z"
+    },
+    "turn_id": "01a12f0c-c8ba-72d3-83b5-b420b6d179b4",
+    "message_id": "msg_0998f8ac4632b025016acc8f3c0b80819482ac748bfd37fbab",
+    "phase": "final_answer",
+    "source_log_name": "rollout-2026-10-12T15-38-46-01a12f0c-bb7c-74e3-ad92-775eefbe399a.jsonl",
+    "source_line": 67,
+    "completion": {
+      "type": "task_complete",
+      "turn_id": "01a12f0c-c8ba-72d3-83b5-b420b6d179b4",
+      "duration_ms": 247863,
+      "completed_at": 1791790977
+    },
+    "final_text_sha256": "90dcfdc9d7db044fdfcd9ba43e7e542789214ef8385eeea755f295a0e66f35d5",
+    "only_public_message_and_tool_records_exported": true
+  },
+  "mechanical_checks": {
+    "unique_six_cases": true,
+    "quotes_found_in_exact_blocks": 11,
+    "source_ids_exist": true,
+    "all_means_recomputed_with_fraction": true,
+    "fixed_inputs_and_pre_dispatch_primary_unchanged": true
+  },
+  "visible_read_audit": {
+    "tool_calls": 10,
+    "log_lines": [
+      11,
+      16,
+      24,
+      29,
+      34,
+      39,
+      46,
+      51,
+      56,
+      61
+    ],
+    "reviewed_by_primary": true,
+    "only_task_and_material_read": true,
+    "hashes_checked_initially_and_before_final": true,
+    "full_policy_and_six_sources_reports_reread_before_final": true,
+    "initial_truncation_recovered_by_complete_segmented_reads": true,
+    "os_file_permission_isolation_proven": false
+  },
+  "primary_post_review": {
+    "comparisons": [
+      {
+        "case_id": "K6",
+        "primary_decision": "no_material_error",
+        "independent_decision": "no_material_error",
+        "decision_agrees": true
+      },
+      {
+        "case_id": "B4",
+        "primary_decision": "requires_correction",
+        "independent_decision": "requires_correction",
+        "decision_agrees": true
+      },
+      {
+        "case_id": "Q7",
+        "primary_decision": "no_material_error",
+        "independent_decision": "no_material_error",
+        "decision_agrees": true
+      },
+      {
+        "case_id": "T9",
+        "primary_decision": "requires_correction",
+        "independent_decision": "requires_correction",
+        "decision_agrees": true
+      },
+      {
+        "case_id": "N2",
+        "primary_decision": "requires_correction",
+        "independent_decision": "requires_correction",
+        "decision_agrees": true
+      },
+      {
+        "case_id": "R3",
+        "primary_decision": "requires_correction",
+        "independent_decision": "requires_correction",
+        "decision_agrees": true
+      }
+    ],
+    "reasoning_and_minimal_corrections_checked_against_full_source_and_policy": true,
+    "material_false_positives_found": 0,
+    "material_omissions_found": 0,
+    "independent_increment": "B4明确指出第8段声称第4段采用全样本的自指也须同步修正；这是主审预先意见未充分列出的直接影响，接受该增量，主审原件不改。T9亦须同步更新第8段。",
+    "basis": "K6为样本观察且拒因果；Q7后文消歧且泛指不补全称；B4明确中单3/1不能称相同；T9共同基线跨两套口径影响行动；N2标题未来因果零效应无证据；R3视野35>25、早死3>2与全称拉低冲突。"
+  },
+  "decision": "完成该组合成材料校准；准备完整游戏报告输入负担下的有区分力方案，不原样重买温度筛查。",
+  "limitations": [
+    "一次六例、有意受控的合成材料，且规则内已有同类示例；不是盲测总体准确率或稳定性证明。",
+    "不是项目GLM/Flash测试、业务ReportAssessment、旧案例重评或正式15资格。",
+    "工具日志只能证明可见行为，不构成操作系统权限隔离。",
+    "旧批7调用/6原生双审/strict seal缺口及资格0保持；旧回执与裁决不回填。"
+  ],
+  "artifacts": {
+    "independent-final.txt": {
+      "sha256": "90dcfdc9d7db044fdfcd9ba43e7e542789214ef8385eeea755f295a0e66f35d5",
+      "bytes": 9089
+    },
+    "native-final-message.jsonl": {
+      "sha256": "375311bf97d4c77dac35e07b562cad5cbeb73d6cbbee0548cace67e3c36c9e45",
+      "bytes": 10231
+    },
+    "public-tool-calls.jsonl": {
+      "sha256": "d6a00bfb15f6c991bfbecdd06db0312bb705a7510aa98d0f9cfe4801cd6f6849",
+      "bytes": 7902
+    },
+    "primary-assessment-pre-dispatch.json": {
+      "sha256": "d795e518bfb1d41b8599f31f453bdf1fa301d00c34d90888fd9fc8d5c09dae6a",
+      "bytes": 1663
+    },
+    "authorized-dispatch-snapshot.json": {
+      "sha256": "99f091e62323da75f8da152328c578a104b4a948510813e4e60c1f75db33fa33",
+      "bytes": 617
+    },
+    "preparation-audit-snapshot.json": {
+      "sha256": "c30e6fe14d1c61b47985303b4210aa3cb09598b76ca1ba489f5cbe610995a46e",
+      "bytes": 2056
+    }
+  }
+}

@@ -125,14 +125,17 @@ def test_ci_blocks_on_conversation_review_migration_and_repository_contracts() -
     workflow = yaml.safe_load(
         (ROOT / ".github/workflows/tests.yml").read_text(encoding="utf-8")
     )
-    job = workflow["jobs"]["postgres-migrations"]
-    steps = "\n".join(str(step) for step in job["steps"])
+    jobs = workflow["jobs"]
+    assert "postgres-tests" in jobs["postgres-migrations"]["needs"]
+    commands = "\n".join(step.get("run", "") for step in jobs["postgres-tests"]["steps"])
+    assert "--test-list tests/postgres_ci_files.txt" in commands
+    files = (ROOT / "tests/postgres_ci_files.txt").read_text(encoding="utf-8").splitlines()
 
-    assert "tests/test_conversation_review_migrations_postgres.py" in steps
-    assert "tests/test_conversation_review_repository_postgres.py" in steps
-    assert "tests/test_memory_candidate_migrations_postgres.py" in steps
-    assert "tests/test_memory_candidate_repository_postgres.py" in steps
-    assert "tests/test_memory_candidate_materialization_postgres.py" in steps
+    assert "tests/test_conversation_review_migrations_postgres.py" in files
+    assert "tests/test_conversation_review_repository_postgres.py" in files
+    assert "tests/test_memory_candidate_migrations_postgres.py" in files
+    assert "tests/test_memory_candidate_repository_postgres.py" in files
+    assert "tests/test_memory_candidate_materialization_postgres.py" in files
 
 
 def test_exit_review_assets_name_evidence_and_deferred_boundaries() -> None:

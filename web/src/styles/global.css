@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--obsidian-1000); }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--obsidian-1000); color: var(--ink-200); font-family: var(--font-body); font-optical-sizing: auto; text-rendering: optimizeLegibility; }
+body { margin: 0; min-width: 0; min-height: 100vh; background: var(--obsidian-1000); color: var(--ink-200); font-family: var(--font-body); font-optical-sizing: auto; text-rendering: optimizeLegibility; }
 button, select { font: inherit; }
 button, a, select { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }

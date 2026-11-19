@@ -1,0 +1,21 @@
+{
+  "kind": "host-full-report-calibration-prepared-v1",
+  "materials_sha256": "d3930389e748dfe4fb326f19b335242fe95587203890802b9e18b5a7650ab39b",
+  "task_sha256": "44c116a6c09d3794b15c4b519b5eddaa812c6fb39a7f0b2a6beea250a28d6226",
+  "source_message_sha256": {
+    "policy": "0faece18a3e5885682842ec6d66dc17e2b7f7b2f0dca3a93a830d8a8f2b84f90",
+    "source_message": "233aeb527d8f60111f80c850270185128f06820070a03ce05351148d213c30dd",
+    "deterministic_source_message": "5cc2603a4c1c9a0c4c2de705274d60048699653661aa3f0e2321c784882d4395"
+  },
+  "report_sha256": {
+    "S8": "133873f1deba4e32a9cab3b1e6190e98ac52983f9b61ffa0de98b6e5d20913f1",
+    "V2": "682e911b0c74764ebc8b57488b9579f652d4d6618f28de6fb6de5fe2c2bb9f8d",
+    "H5": "2d19905589593e4ac2020e0bee9e804e485190ff43c8c94028fb4e1664ccadef"
+  },
+  "source_request_sha256": "a3189d955a3b02283e61f400c50be442be8f7c0e5a02ebc2ddbb7fae50d53c13",
+  "independent_dispatches": 0,
+  "provider_calls": 0,
+  "business_submissions": 0,
+  "product_qualifications": 0,
+  "status": "prepared_not_dispatched"
+}

@@ -1,0 +1,108 @@
+{
+  "console_blocker": "Existing Edge tab control timed out; native window remained minimized",
+  "diagnostic_conservative_budget": 82944,
+  "diagnostic_http": 1,
+  "diagnostic_reported_known_tokens": 22431,
+  "diagnostic_unknown_reservation": 0,
+  "endpoint": "https://yujianwudi.top/v1",
+  "full_comparison_exceeds_remaining": true,
+  "full_comparison_reservation": 80384,
+  "known_rejection_reason": "22431 reported total tokens exceeds the minimal-control 2560 reservation",
+  "minimal": {
+    "code": "minimal_not_completed",
+    "elapsed_s": 5.594,
+    "http_requests": 1,
+    "kind": "minimal",
+    "known_tokens": 22431,
+    "ok": false,
+    "output_type_counts": {
+      "message": 1
+    },
+    "product_session_modified": false,
+    "semantic_approval": false,
+    "unknown_token_reservation": 0,
+    "usage": {
+      "cached_input_tokens": 22415,
+      "input_tokens": 22426,
+      "output_tokens": 5,
+      "reasoning_tokens": 0,
+      "total_tokens": 22431
+    },
+    "wire_sha256": "8b5459aa5a0358b29e06d4b8fb43596c45d610b38a625fc8791eb8230cefd7ac"
+  },
+  "minimal_input": "Reply with hello.",
+  "minimal_not_completed_code_is_generic_acceptance_rejection_not_http_failure": true,
+  "minimal_transport_200_eof_closed": true,
+  "next_action": "Read provider log for this request ID and explain tiny-input usage; then reconcile remaining diagnostic scope before full stream comparison.",
+  "no_provider_message_sent": true,
+  "observation": {
+    "body_free": true,
+    "closed": true,
+    "eof": true,
+    "exception_type": null,
+    "first_bytes_ms": 5516,
+    "http_requests": 1,
+    "last_bytes_ms": 5516,
+    "observed_ms": 5594,
+    "pending_read_since_ms": null,
+    "phase": "closed",
+    "raw_bytes": 769,
+    "raw_chunks": 2,
+    "read_calls": 3,
+    "request_started_ms": 1250,
+    "response_cf_ray": "a533c9bc4ef755be-NRT",
+    "response_headers_ms": 5516,
+    "response_request_id": "d6330bda-4b86-4a1a-bb19-d150224cdab3",
+    "response_status": 200,
+    "schema_version": "stream-observation-v1",
+    "stack": [
+      {
+        "file": "stream_observation.py",
+        "function": "_save",
+        "line": 95
+      },
+      {
+        "file": "stream_observation.py",
+        "function": "close",
+        "line": 122
+      },
+      {
+        "file": "diagnostic.py",
+        "function": "collect",
+        "line": 181
+      },
+      {
+        "file": "diagnostic.py",
+        "function": "main",
+        "line": 204
+      },
+      {
+        "file": "diagnostic.py",
+        "function": "<module>",
+        "line": 210
+      }
+    ],
+    "timeout": {
+      "connect": 300,
+      "pool": 300,
+      "read": 300,
+      "write": 300
+    }
+  },
+  "old_product_http": 8,
+  "old_product_known_tokens": 29323,
+  "old_product_unchanged": true,
+  "old_product_unknown_reservation": 366910,
+  "original15_complete_unchanged": true,
+  "provider_console_read": false,
+  "raw_live_outbound_body_captured": false,
+  "remaining": 60513,
+  "request_at_utc": "2026-10-31T15:45:37.564074+00:00",
+  "response_status_model_echo_not_retained": true,
+  "review_model_identity_authenticated": false,
+  "sdk_mock_exact_wire_confirmed": true,
+  "selected_group": "GPT-enterprise-0.25",
+  "status": "minimal_route_reachable_usage_anomaly_pending_provider_logs",
+  "streaming_comparison_sent": false,
+  "upstream_injected_context_or_usage_translation_are_hypotheses_only": true
+}

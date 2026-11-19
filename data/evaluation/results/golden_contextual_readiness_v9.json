@@ -1,0 +1,132 @@
+{
+  "experiment": "golden-contextual-bounded-review-v9",
+  "standard_id": "whole-context-acceptance-v1",
+  "first_requests": [
+    {
+      "case_id": "contextual_01",
+      "input_ceiling": 47540
+    },
+    {
+      "case_id": "contextual_02",
+      "input_ceiling": 47612
+    }
+  ],
+  "historical_correction_shapes": [
+    {
+      "source": "data\\runs\\inference_development\\bounded-review-96c2c3a-definitions\\stable_unbounded\\response-001.json",
+      "input_ceiling": 58520
+    },
+    {
+      "source": "data\\runs\\inference_development\\context-controls-9c5aad9-critical\\pair-01\\response-001.json",
+      "input_ceiling": 58418
+    },
+    {
+      "source": "data\\runs\\inference_development\\context-controls-9c5aad9-critical\\pair-01\\response-003.json",
+      "input_ceiling": 56922
+    }
+  ],
+  "historical_revision_input_ceiling": 50540,
+  "latest_failure_shape": {
+    "source": "data\\runs\\inference_development\\contextual-review-68e8670-source-v8\\contextual_01\\response-001.json",
+    "source_sha256": "2c5b5d2058e749fc5d8d5a8070ebe3ad8fd20a8a2e92c631f6a02d00c85fe795",
+    "input_ceiling": 57570,
+    "mutable_claims": 13,
+    "required_reviews": 22,
+    "indexed_external_facts": 5,
+    "projection_only": true,
+    "original_bytes_unchanged": true
+  },
+  "provider_calls": 0,
+  "historical_results_regraded": false,
+  "admission": "settled_actual_tokens + next_request_input_ceiling + next_output_cap <= 401920",
+  "max_calls": 5,
+  "max_output_per_call": 32768,
+  "max_seconds_per_call": 300,
+  "max_seconds_per_report": 900,
+  "measured_requests_fit": true,
+  "completion_guaranteed": false,
+  "semantic_quality_verified": false,
+  "recent_failure_shapes": [
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-206a4c3-owner-standard\\contextual_01\\response-001.json",
+      "source_sha256": "8fd881580800208d7de1cb3381d3df1be8b2cc8d01e58373917eae37242746cc",
+      "input_ceiling": 62994,
+      "mutable_claims": 21,
+      "required_reviews": 30,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-ad1003d-recovery-v3\\contextual_01\\response-001.json",
+      "source_sha256": "99703603cabac88a99c72008508fb0edd6995900fb2f55a6bc323b839b242732",
+      "input_ceiling": 59650,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-5645afc-recovery-v4\\contextual_01\\response-001.json",
+      "source_sha256": "5a01d8221eee627fc7cc35f31a960bf8a75dabfeaae16fdd3f7ba2d4324ec151",
+      "input_ceiling": 58322,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-769d651-diagnostics\\contextual_01\\response-001.json",
+      "source_sha256": "9a284814a0442dbbc204ed0a7d05cc7fd57a3c34362600c78a7ef21c1fb14832",
+      "input_ceiling": 58072,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-c453088-explanation-v5\\contextual_01\\response-001.json",
+      "source_sha256": "2987be5bae384dbee8f6da5f1beb2268ae4a73ef9d09693e932063fec0ef7e6d",
+      "input_ceiling": 58512,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-92aed17-decision-v6\\contextual_01\\response-001.json",
+      "source_sha256": "d4e962106d572850fb99a620f5d3cc538623967c77e6b33fcc1f71415a81a317",
+      "input_ceiling": 57218,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-c7e7322-paragraph-v7\\contextual_01\\response-001.json",
+      "source_sha256": "e2217fcea38543d27f000cc81219bda29e66407ae0a74fef8f5c853f4afcd89f",
+      "input_ceiling": 61474,
+      "mutable_claims": 22,
+      "required_reviews": 31,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "source": "data\\runs\\inference_development\\contextual-review-68e8670-source-v8\\contextual_01\\response-001.json",
+      "source_sha256": "2c5b5d2058e749fc5d8d5a8070ebe3ad8fd20a8a2e92c631f6a02d00c85fe795",
+      "input_ceiling": 57570,
+      "mutable_claims": 13,
+      "required_reviews": 22,
+      "indexed_external_facts": 5,
+      "projection_only": true,
+      "original_bytes_unchanged": true
+    }
+  ],
+  "actual_recheck_correction_shape": 59660
+}

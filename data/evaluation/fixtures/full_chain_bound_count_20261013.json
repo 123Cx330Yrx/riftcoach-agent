@@ -1,0 +1,103 @@
+{
+  "kind": "offline-complete-response-binding-v1",
+  "synthetic": true,
+  "input_sha256": "66d9230607d4bb52074f5dae4a92228e5d4f6cc7055a1f96ef7e740036f79645",
+  "report_sha256": "6effb524a1b486b6c56a3f69c42f3f6eb59f0cef27f26580689070892bc590ea",
+  "revised_report_sha256": "6d22d9fd1e96520f4ddc33d66250e96fede78a7cb5a66168c1040c1b8eeb781d",
+  "responses": {
+    "initial": {
+      "content": null,
+      "model": "glm-5.3",
+      "provider": "zhipu",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 10,
+        "cached_input_tokens": 0
+      },
+      "tool_calls": [
+        {
+          "id": "OFFLINE-BOUND-FIXTURE",
+          "name": "submit_report_review",
+          "arguments": {
+            "score": 80,
+            "verdict": "needs_revision",
+            "issues": [
+              {
+                "block": 4,
+                "severity": "medium",
+                "category": "fact_error",
+                "source_ids": [
+                  31,
+                  32
+                ],
+                "explanation": "总体结论把五局写成三胜两负、胜率60%。本次全部五局实际只有薇古丝与辛德拉两场获胜，卡蜜尔、艾尼维亚和洛克三场失败，胜率应为2/5=40%。",
+                "suggested_correction": "只将本段的三胜两负、60%修为两胜三负、40%，保留观摩对象、阅读者身份区分及本次五局的范围。"
+              }
+            ],
+            "issue_resolutions": [],
+            "advisories": []
+          }
+        }
+      ],
+      "finish_reason": "tool_calls",
+      "request_id": null,
+      "reasoning_content": null
+    },
+    "revision": {
+      "content": null,
+      "model": "glm-5.3-flash",
+      "provider": "zhipu",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 10,
+        "cached_input_tokens": 0
+      },
+      "tool_calls": [
+        {
+          "id": "OFFLINE-BOUND-FIXTURE",
+          "name": "submit_block_edits",
+          "arguments": {
+            "edits": {
+              "block_4": [
+                {
+                  "before": "本报告复核 DK ShowMaker#KR1 的五局排位观摩样本，不把观摩对象当作阅读者本人。五局中有三胜两负，胜率为60%。所有描述仅针对这五局。",
+                  "after": "本报告复核 DK ShowMaker#KR1 的五局排位观摩样本，不把观摩对象当作阅读者本人。五局中有两胜三负，胜率为40%。所有描述仅针对这五局。",
+                  "reason": "本次五局只有薇古丝与辛德拉获胜，其余三局失败，因此胜负应为两胜三负，胜率为2/5=40%；保留观摩对象、读者身份区别及五局样本范围。"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "finish_reason": "tool_calls",
+      "request_id": null,
+      "reasoning_content": null
+    },
+    "final": {
+      "content": null,
+      "model": "glm-5.3",
+      "provider": "zhipu",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 10,
+        "cached_input_tokens": 0
+      },
+      "tool_calls": [
+        {
+          "id": "OFFLINE-BOUND-FIXTURE",
+          "name": "submit_report_review",
+          "arguments": {
+            "score": 96,
+            "verdict": "pass",
+            "issues": [],
+            "issue_resolutions": [],
+            "advisories": []
+          }
+        }
+      ],
+      "finish_reason": "tool_calls",
+      "request_id": null,
+      "reasoning_content": null
+    }
+  }
+}

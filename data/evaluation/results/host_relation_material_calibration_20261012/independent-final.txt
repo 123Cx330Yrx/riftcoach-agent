@@ -1,0 +1,134 @@
+{
+  "material_sha256": "53bea63165bc5eebfdbd8793c56e801b741f852b5f6738fea9b34a7fb6025f85",
+  "material_read_complete": true,
+  "case_results": [
+    {
+      "case_id": "R4",
+      "decision": "no_material_error",
+      "issues": [],
+      "advisories": [
+        {
+          "block": 6
+        }
+      ]
+    },
+    {
+      "case_id": "T9",
+      "decision": "requires_correction",
+      "issues": [
+        {
+          "block": 14,
+          "exact_quote": "这些数值说明中单早死的胜负组均值相同。",
+          "actual_proposition": "仅中单四局的15分钟前死亡次数，胜组与负组的均值相同。",
+          "related_full_text": "本段先区分全部五局的胜组2.50次、负组约2.67次，再明确仅中单的逐局值为胜场3、2次、负场0、1次，均值2.50与0.50。段末还说明较少早死出现在本次中单负场，并保留不能确定因果的限制。明确的中单均值相同断言不能被改读为混合五局比较，也不能被同段正确数字或因果限制抵消。",
+          "source_ids": [
+            31,
+            32
+          ],
+          "source_rows_and_means": {
+            "metric": "deaths_before_15",
+            "middle_win_rows": [
+              {
+                "row": 2,
+                "match_id": "KR_8371867671",
+                "value": 3
+              },
+              {
+                "row": 6,
+                "match_id": "KR_8366083389",
+                "value": 2
+              }
+            ],
+            "middle_loss_rows": [
+              {
+                "row": 4,
+                "match_id": "KR_8370206038",
+                "value": 0
+              },
+              {
+                "row": 5,
+                "match_id": "KR_8367293977",
+                "value": 1
+              }
+            ],
+            "middle_win_mean": 2.5,
+            "middle_loss_mean": 0.5,
+            "middle_win_minus_loss": 2,
+            "middle_all_pairs": "greater",
+            "selected_loss_rows": [
+              3,
+              4,
+              5
+            ],
+            "selected_loss_values": [
+              7,
+              0,
+              1
+            ],
+            "selected_loss_mean": "8/3，约2.67",
+            "completeness": "中单胜负组各2局，成员完整，该指标无缺失。表行编号为来源地址；可引用来源根为31与32。"
+          },
+          "conflict_or_ambiguity_effect": "2.50与0.50不相同。这一错误关系抹去了本次中单胜负组实际存在的均值差异，并与本段列出的逐局值和均值形成内部矛盾；它不是因果证据不足或可选措辞问题。",
+          "minimal_correction": "仅将该句替换为“这些数值说明中单早死的胜组均值为2.50次，高于负组的0.50次。”保留全部五局比较、中单逐局值、较少早死出现在中单负场的观察及不能确定因果作用的限制；不增加减少早死无效或导致失败的推断。"
+        },
+        {
+          "block": 15,
+          "exact_quote": "这些补刀数值说明每个中单胜场都高于每个中单负场。",
+          "actual_proposition": "对中单补刀/分钟作逐行全称比较，每一胜场的数值均高于每一负场。",
+          "related_full_text": "本段明确给出补刀/分钟胜场8.95、8.66，负场9.64、8.38，均值8.805与9.01；第4段也写明中单补刀胜均值略低，第13段表格一致。本段后续分别讨论全样本补刀差距受辅助局影响、伤害差距已存在于中单内部，并要求区分均值、逐行比较与胜负原因。这些正确内容不撤销明确的补刀逐行全称错误，伤害指标的逐行关系也不能代替补刀关系。",
+          "source_ids": [
+            31,
+            32
+          ],
+          "source_rows_and_means": {
+            "metric": "cs_per_min",
+            "middle_win_rows": [
+              {
+                "row": 2,
+                "match_id": "KR_8371867671",
+                "value": 8.95
+              },
+              {
+                "row": 6,
+                "match_id": "KR_8366083389",
+                "value": 8.66
+              }
+            ],
+            "middle_loss_rows": [
+              {
+                "row": 4,
+                "match_id": "KR_8370206038",
+                "value": 9.64
+              },
+              {
+                "row": 5,
+                "match_id": "KR_8367293977",
+                "value": 8.38
+              }
+            ],
+            "middle_win_mean": 8.805,
+            "middle_loss_mean": 9.01,
+            "middle_win_minus_loss": -0.205,
+            "middle_all_pairs": "overlap",
+            "pairwise_comparison": "8.95和8.66均小于负场9.64，也均大于另一负场8.38。",
+            "preserved_contrasts": "补刀胜均值减负均值：全部五局约2.351667，仅中单-0.205；伤害/分钟同一差值：全部五局约695.418333，仅中单669.235。辅助局明显影响补刀差距，但不能主要解释伤害差距。",
+            "completeness": "中单胜负组各2局，成员完整，补刀与伤害指标均无缺失。表行编号为来源地址；可引用来源根为31与32。"
+          },
+          "conflict_or_ambiguity_effect": "负场9.64同时高于两场胜局，直接反驳“每个胜场都高于每个负场”。两组区间重叠且胜均值略低，不能把均值比较或其他指标的方向升级、替换为补刀逐行一致。",
+          "minimal_correction": "仅将该句替换为“中单补刀/分钟的两组取值区间重叠，不能说每个中单胜场都高于每个中单负场。”保留原有逐局值与均值、辅助局对补刀差距的影响、伤害差距不能主要归因于辅助局的判断，以及均值、逐行比较和胜负原因应分别核对的要求。"
+        }
+      ],
+      "advisories": [
+        {
+          "block": 6
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "本次为使用熟悉历史来源的新开发材料全文校准，不是独立holdout、业务stage、Provider输出审查或资格认证。",
+    "结论仅依据指定task、两篇完整report、各自完整current_input_json、source_message、deterministic_source_message及全部full_policy_text；未读取其他主体意见或额外来源，未联网、调用项目Provider或业务提交工具。",
+    "第6段按全文明确的中单补刀对象理解为五局样本中四局中单的描述，不补成全部五局所有位置、所有发育指标或长期能力的全称断言；可读性标记不作为事实错误或事实通过的替代。",
+    "未提供外部快照或录像，不能据此补充外部英雄池结论或确定胜负因果。"
+  ]
+}

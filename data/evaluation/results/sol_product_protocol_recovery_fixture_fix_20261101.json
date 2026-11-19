@@ -1,0 +1,129 @@
+{
+  "kind": "protocol-recovery-sql-fixture-ci-fix-v1",
+  "created_at": "2026-11-01T10:24:16.673698+00:00",
+  "base_commit": "84e0f55f9b4ac271d83c28d518367477a32959b7",
+  "ci": [
+    {
+      "run_id": 41292199945,
+      "head": "dfe601fe268bd64bc6a67da2fdb048e088626d51",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41292199945",
+      "sql_job": {
+        "databaseId": 124805558108,
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "startedAt": "2026-11-01T09:13:53Z",
+        "completedAt": "2026-11-01T09:34:08Z",
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41292199945/job/124805558108"
+      },
+      "annotations": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-job-124805558108-annotations.json",
+        "sha256": "5879f08d7a28f46b553594e015c5672b72945d9eb37e3d7a1f96c78e4288b952"
+      },
+      "log": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-job-124805558108.log",
+        "sha256": "5b39d28bd8c6411278dfc047b59d988e84cfd1abb7dfe648e634c871a9bda43c"
+      },
+      "snapshot": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-41292199945-status-after-sql-diagnosis.json",
+        "sha256": "b42684c43789defe49566d52efd4bcdec7b7a78eeb15e02e6e30fca63124640c"
+      }
+    },
+    {
+      "run_id": 41293639744,
+      "head": "84e0f55f9b4ac271d83c28d518367477a32959b7",
+      "status": "in_progress",
+      "conclusion": "",
+      "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41293639744",
+      "sql_job": {
+        "databaseId": 124809856840,
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-11-01T09:33:26Z",
+        "completedAt": "2026-11-01T09:51:01Z",
+        "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41293639744/job/124809856840"
+      },
+      "annotations": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-job-124809856840-annotations.json",
+        "sha256": "70064966c306345c215cc6416d80ddc18eb7a12dfcf880c49af71b6a9bf99ad1"
+      },
+      "log": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-job-124809856840.log",
+        "sha256": "d798d008d717a465e9174d1d7202a7fb06b36a106aa59572c7d1de08f28e02d3"
+      },
+      "snapshot": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\ci-41293639744-status-after-sql-diagnosis.json",
+        "sha256": "638c71dbe0874dcd974f4515be0f585d4abe58c460c4ca99d353c042ca1b6e2e"
+      }
+    }
+  ],
+  "observed_failure": {
+    "latest_sql_passed": 297,
+    "latest_sql_setup_errors": 18,
+    "shared_assertion": "tests/test_protocol_failure_recovery_postgres.py:36",
+    "expected_scripted_calls": [
+      [
+        200
+      ]
+    ],
+    "observed_scripted_calls": [
+      [
+        200,
+        200,
+        200,
+        200
+      ]
+    ],
+    "previous_cancel_reason": "The job has exceeded the maximum execution time of 20m0s",
+    "previous_timeout_cause_beyond_job_limit": "unproven"
+  },
+  "cause": "The shared SQL recovery fixture still used metadata-only ping/keepalive as invalid protocol after product 1.7.3 intentionally accepted it. The local verification selection omitted this SQL consumer.",
+  "fix": "Use deliberately unsupported synthetic.unknown.before/after in a renamed test mode. Preserve one rejected call, known usage and current positive heartbeat compatibility; no production receiver or recovery logic changed.",
+  "validation": [
+    {
+      "suite": "two SQL parent-failure producers through owned subprocess, without DB",
+      "passed": 2,
+      "elapsed_seconds": 11.76,
+      "network": "blocked, MockTransport only"
+    },
+    {
+      "suite": "valid heartbeat/anonymous envelope compatibility and payload conflicts",
+      "passed": 17,
+      "elapsed_seconds": 4.14,
+      "network": "blocked, MockTransport only"
+    },
+    {
+      "suite": "real PostgreSQL protocol recovery (18) and normal publish/repair flows (2)",
+      "passed": 20,
+      "elapsed_seconds": 290.18,
+      "warnings": 1,
+      "warning_kind": "existing StarletteDeprecationWarning",
+      "log": {
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-route-adjudication-20261101\\protocol-fixture-sql-tests.log",
+        "sha256": "f601395d8506b71e4975deadc5af630b3580be8cc5f80974a897e17bcd1870b8"
+      }
+    }
+  ],
+  "preserved": [
+    "all 18 recovery cases and one-call rejection assertion",
+    "legacy and evidence_bound_v1 recovery paths",
+    "normal resume sends zero; explicit retry alone sends; costs and parent originals preserved",
+    "current metadata-only heartbeat acceptance",
+    "production sources/contracts/old frozen evidence",
+    "CI 20-minute limit and all CI checks",
+    "old 15 completion and Stage8E/default admission boundaries"
+  ],
+  "new_real_model_http": 0,
+  "real_model_credentials_read": 0,
+  "disposable_postgres_removed": true,
+  "replacement_ci_at_local_verification": "not yet pushed",
+  "local_required_checks": {
+    "governance": "passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed",
+    "total_targeted_tests_passed": 39
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "kind": "role_remaining_interruption_time_brackets_v1",
+  "evidence_type": "derived_wall_clock_bracket",
+  "execution_head": "6bc3470fcea8584af900ff0544d2698af3991967",
+  "plan_sha256": "4f9d9b77aec2f0bb583a2cba3686ffd403653c64b7863b6fb9f78a6b63ba0ce2",
+  "ci_run": "35972161945",
+  "run_directory": "data/runs/role_task_observation/role-remaining-qualification-v1",
+  "run_plan_file_sha256": "2dab9e048244691569fcc5ce5abc4abde8f72ef67122b3042ad5092720243d64",
+  "session_id": 68562,
+  "clock_consistency_assumption": "These external UTC transcript brackets bound the original Python monotonic interval only if the transcript event clock remains consistent with elapsed time throughout each bracket. Absence of a recorded Windows time change supports but does not establish this assumption; the transcript logger clock and Python monotonic clock are not proven to be the same clock.",
+  "clock_consistency_established": false,
+  "known_clock_contradiction": false,
+  "clock_contradiction_scope": "No contradiction was found in the inspected public event ordering or the bounded Windows System time-change query. This is not proof that no unrecorded clock change occurred.",
+  "brackets": [
+    {
+      "key": "claim-scope:3",
+      "upper_bound_seconds": 868.102,
+      "max_case_seconds": 900,
+      "start_event": {
+        "log_basename": "rollout-2026-09-22T09-39-55-01a0c6c5-01d1-78d0-82fb-e567e0ab7150.jsonl",
+        "line": 21169,
+        "event_sha256": "2607e425726c1877994901aeea6a9b451f4632294d0c81f8f9c3a90708456a50",
+        "event_sha256_scope": "Exact original JSONL event bytes including the line terminator.",
+        "timestamp": "2026-09-24T08:05:31.604Z",
+        "event_type": "custom_tool_call",
+        "call_id": "call_frExvADvOl5CH2G4h4DQXSFa",
+        "public_content": "text(await tools.exec_command({cmd:\".venv/Scripts/python.exe -X utf8 -m scripts.run_role_remaining_qualification --execute --plan-sha 4f9d9b77aec2f0bb583a2cba3686ffd403653c64b7863b6fb9f78a6b63ba0ce2 --ci-run 35972161945 --env-file D:/riftcoach-agent/.env\",workdir:\"D:/riftcoach-agent-rq192-pr\",tty:true,yield_time_ms:1000,max_output_tokens:1800}));\n"
+      },
+      "end_event": {
+        "log_basename": "rollout-2026-09-22T09-39-55-01a0c6c5-01d1-78d0-82fb-e567e0ab7150.jsonl",
+        "line": 21504,
+        "event_sha256": "9bd05749908f1428f9309c55367f0c958f204aa8a4a16f108edd8da4beca075e",
+        "event_sha256_scope": "Exact original JSONL event bytes including the line terminator.",
+        "timestamp": "2026-09-24T08:19:59.706Z",
+        "event_type": "function_call_output",
+        "call_id": "call_RZzXs08929W3BIUt6G7E2W5F",
+        "public_content": "{\"chunk_id\":\"4c2d13\",\"wall_time_seconds\":45.0074834,\"session_id\":68562,\"original_token_count\":80,\"output\":\"{\\\"host_task_assessment_required\\\":\\\"D:/riftcoach-agent-rq192-pr/data/runs/role_task_observation/role-remaining-qualification-v1/scope-4/initial.json\\\",\\\"response_sha256\\\":\\\"c6b3936eda5126e79859196e32219fdfa32c11c28d9026f5f12795fc0a190c44\\\",\\\"remaining_seconds\\\":821.531,\\\"reply\\\":\\\"decision <path-to-bound-stage-decision.json>\\\"}\\r\\n\"}"
+      },
+      "successor_key": "scope:4",
+      "successor_stage_sha256": "c6b3936eda5126e79859196e32219fdfa32c11c28d9026f5f12795fc0a190c44",
+      "successor_stage_file": "data/runs/role_task_observation/role-remaining-qualification-v1/scope-4/initial.json",
+      "boundary_basis": "The execution launch is issued before this case starts; the next case initial review stdout follows this case completion and its original elapsed sampling.",
+      "precision": "Conservative external wall-clock bracket, not the original measured monotonic elapsed value."
+    },
+    {
+      "key": "scope:4",
+      "upper_bound_seconds": 653.464,
+      "max_case_seconds": 900,
+      "start_event": {
+        "log_basename": "rollout-2026-09-22T09-39-55-01a0c6c5-01d1-78d0-82fb-e567e0ab7150.jsonl",
+        "line": 21456,
+        "event_sha256": "324f1edf6119a7cc18168e1c2b38fc540080ca376b393f273021f00d90e3e87f",
+        "event_sha256_scope": "Exact original JSONL event bytes including the line terminator.",
+        "timestamp": "2026-09-24T08:17:57.662Z",
+        "event_type": "custom_tool_call",
+        "call_id": "call_7mrh31GeOwts9GinudFkeB2J",
+        "public_content": "const r=await tools.exec_command({cmd:\".venv/Scripts/python.exe -X utf8 tmp/record_task_stage.py data/runs/role_task_observation/role-remaining-qualification-v1/claim-scope-3/final.json tmp/rem-cs3-final-notes.json\",workdir:\"D:/riftcoach-agent-rq192-pr\",max_output_tokens:600});text(r);if(r.exit_code===0){const line=r.output.trim();if(!line.startsWith(\"decision \"))throw Error(\"Unexpected decision output\");text(await tools.write_stdin({session_id:68562,chars:line+\"\\n\",yield_time_ms:1000,max_output_tokens:1000}));}\n"
+      },
+      "end_event": {
+        "log_basename": "rollout-2026-09-22T09-39-55-01a0c6c5-01d1-78d0-82fb-e567e0ab7150.jsonl",
+        "line": 21718,
+        "event_sha256": "cd884f1b44fdc89396021a69acb860c0d47f77982c1b80fad5470ad46c781c94",
+        "event_sha256_scope": "Exact original JSONL event bytes including the line terminator.",
+        "timestamp": "2026-09-24T08:28:51.126Z",
+        "event_type": "function_call_output",
+        "call_id": "call_5LZnzQrMxZDqhkr1p2CwB7ZZ",
+        "public_content": "{\"chunk_id\":\"f7ceba\",\"wall_time_seconds\":45.0133241,\"session_id\":68562,\"original_token_count\":89,\"output\":\"{\\\"host_task_assessment_required\\\":\\\"D:/riftcoach-agent-rq192-pr/data/runs/role_tas\\r\\n\\u001b[23;80Hsk_observation/role-remaining-qualification-v1/scope-3/initial.json\\\",\\\"response_sh\\r\\n\\u001b[23;80Hha256\\\":\\\"0a78d3916296838af3336d09b97aa8f3663116781391fb9052c53de7741aef81\\\",\\\"remain\\r\\n\\u001b[23;80Hning_seconds\\\":853.281,\\\"reply\\\":\\\"decision <path-to-bound-stage-decision.json>\\\"}    \\r\\n\"}"
+      },
+      "successor_key": "scope:3",
+      "successor_stage_sha256": "0a78d3916296838af3336d09b97aa8f3663116781391fb9052c53de7741aef81",
+      "successor_stage_file": "data/runs/role_task_observation/role-remaining-qualification-v1/scope-3/initial.json",
+      "boundary_basis": "The preceding case final decision command is issued before this case starts; the next case initial review stdout follows this case completion and its original elapsed sampling.",
+      "precision": "Conservative external wall-clock bracket, not the original measured monotonic elapsed value."
+    }
+  ],
+  "windows_time_change_audit": {
+    "query_utc_start": "2026-09-24T08:00:00Z",
+    "query_utc_end": "2026-09-24T08:35:00Z",
+    "log_name": "System",
+    "provider": "Microsoft-Windows-Kernel-General",
+    "event_id": 1,
+    "matched_events": 0,
+    "oldest_retained_event": {
+      "timestamp": "2026-09-23T02:26:00.8807613+08:00",
+      "record_id": 1786754
+    },
+    "newest_retained_event": {
+      "timestamp": "2026-09-24T16:51:51.9929091+08:00",
+      "record_id": 1849292
+    },
+    "limitations": [
+      "The retained log covers the bracket period, but zero matching events is not proof of no unrecorded or unlogged time change.",
+      "The host Windows wall clock is not independently established as the clock used for Codex JSONL timestamps.",
+      "Neither event ordering nor this query reconstructs the original monotonic elapsed value."
+    ]
+  },
+  "consumption_constraints": [
+    "Retain this as a separately named conditional timing evidence type; never populate the missing original elapsed_seconds or result.json from it.",
+    "Verify the sealed original HEAD, executor source fingerprints, preparation plan, exact successor stage hashes and complete primary/independent source-approved workflows before considering either bound.",
+    "Reject any known clock inconsistency, incorrect event/session/stage binding, reversed causal ordering, reopened execution, changed original artifact or bound outside the original case budget.",
+    "This evidence applies only to claim-scope:3 and scope:4; scope:3 remains incomplete and is not accepted by these brackets.",
+    "The original fifteen-case validator and all model, input, label, source, quality and product budgets remain unchanged."
+  ],
+  "original_result_present": false,
+  "original_artifacts_modified": false,
+  "provider_requests": 0,
+  "review_controls_qualified": false,
+  "actual_product_task_qualified": false,
+  "production_admitted": false,
+  "execution_enabled": false,
+  "privacy_scope": "Only the four named public tool call/output fragments are retained. No analysis messages, credential values, private model reasoning or full transcript are included. Environment-file paths in the launch command identify the authorized source but expose no contents."
+}

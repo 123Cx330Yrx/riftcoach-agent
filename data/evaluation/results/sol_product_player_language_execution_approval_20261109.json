@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-09T07:03:39.388174+00:00",
+  "kind": "natural_player_language_execution_user_approval",
+  "authorization_state": "approved_for_one_bounded_task_pending_provider_preflight",
+  "approval_evidence": "\u7528\u6237\u660e\u786e\u6279\u51c6\u7ee7\u7eed\u6267\u884c\u6b64\u524d\u5df2\u5f62\u6210\u7684\u5355\u9879 Chat1.7.10 \u4ea7\u54c1\u4efb\u52a1\uff1b\u8303\u56f4\u4ecd\u9650\u4e00\u9879\u65b0\u4efb\u52a1\uff0c\u4e0d\u6062\u590d\u65e7\u4efb\u52a1\u3001\u4e0d\u65b0\u589e\u5bf9\u5c40\u6765\u6e90\u3001\u4e0d\u8bfb\u53d6 Riot Key\u3001\u4e0d\u81ea\u52a8\u91cd\u8bd5\u3002",
+  "decision_packet_sha256": "8f63da0331ce0320a1630302a9887591e79d0de61950a6019873ff654a286c77",
+  "decision_packet_head_sha256": "c96152b26bc38e714625550047d15387223c23ac",
+  "execution_head_sha256": "df29e8ce2651e65dbc0c9b1471b264d9a94b6613",
+  "scope": {
+    "task_id": "familiar_observed_recent5_language_acceptance",
+    "contract": "natural-flash-sol-product-chat-v1",
+    "product_version": "Chat1.7.10",
+    "source_scope": "read-only replay of archived DK ShowMaker#KR1 five-match bundle; no new match acquisition and no holdout claim",
+    "max_requests": 8,
+    "max_tokens": 401920,
+    "max_active_seconds": 900,
+    "automatic_retry": false,
+    "new_match_source": false,
+    "riot_key": false
+  },
+  "not_executed": true,
+  "effects": {
+    "model_requests": 0,
+    "source_requests": 0,
+    "key_reads": 0,
+    "sql_tasks_created": 0
+  },
+  "control_artifact_sha256": "474b0b7fd7e279c2449b193fcc4445b57ab20170d76138f1f6bb91851008c143"
+}

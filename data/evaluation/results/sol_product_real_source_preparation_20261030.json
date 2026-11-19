@@ -1,0 +1,74 @@
+{
+  "ci": {
+    "all_green_verified": false,
+    "head": "2715ae400129d2d8846d429b3c7e4a51bc0998e4",
+    "run_id": 41011784904,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41011784904"
+  },
+  "clean_execution_head_verified": true,
+  "code_head": "2715ae400129d2d8846d429b3c7e4a51bc0998e4",
+  "default_route_changed": false,
+  "execution_cwd": "D:\\riftcoach-sol-product-execution-20261030",
+  "input": {
+    "count": 5,
+    "focus": "overall",
+    "queue": 420,
+    "region": "asia",
+    "riot_id": "DK ShowMaker#KR1",
+    "role": "observed"
+  },
+  "io": {
+    "all_http_200": true,
+    "automatic_retries": 0,
+    "ddragon_official_requests": 5,
+    "model_credentials_used": false,
+    "model_requests": 0,
+    "product_database_touched": false,
+    "riot_credential_used": true,
+    "riot_official_requests": 12
+  },
+  "kind": "sol_product_real_source_preparation",
+  "local_preparation_failure": {
+    "cause": "original account recorder hashed LF string before CRLF write on Windows",
+    "code": "account_digest_mismatch",
+    "corrected_byte_binding": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\source-preflight\\recent-v2\\account-byte-binding.json",
+    "external_requests": 0,
+    "originals_retained": true
+  },
+  "original15_rerun": false,
+  "paid_authorization": null,
+  "publication_mode": "evidence_bound_v1",
+  "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+  "python_contract_import_verified": true,
+  "recorded_at_utc": "2026-10-30T06:10:04.955953+00:00",
+  "remaining_before_paid_execution": [
+    "same-head CI result",
+    "ordinary task and frozen source/input binding in runnable launch manifest",
+    "specific authorization and cutoff; no old grant reuse"
+  ],
+  "sources": {
+    "analyzed_matches": 5,
+    "failed_matches": 0,
+    "inventory_sha256": "328342fb593cf410d72f766926190926a6567452b158cf3f9129616843c36a09",
+    "match_ended_at_utc": [
+      "2026-10-14T16:46:27.171000+00:00",
+      "2026-10-14T13:01:33.538000+00:00",
+      "2026-10-14T06:43:59.683000+00:00",
+      "2026-10-14T05:43:26.042000+00:00",
+      "2026-10-12T18:00:04.594000+00:00"
+    ],
+    "match_game_versions": [
+      "16.20.824.8524"
+    ],
+    "queue_fallback": false,
+    "received_matches": 5,
+    "root": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-browser-preflight-20261030\\source-preflight\\recent-v2",
+    "static_catalog_use": "existing builder localization only; not evidence that older matches used current mechanics",
+    "static_catalog_version": "16.21.1",
+    "summary_sha256": "2b8861aee11491569996e8a659a40692db6c8756b2aa78f268a3b6c17932f02a",
+    "timelines": 5
+  },
+  "stage8e_completed": false,
+  "status": "real_sources_ready_execution_manifest_pending",
+  "worker_profile": "sol-dual-product-v1"
+}

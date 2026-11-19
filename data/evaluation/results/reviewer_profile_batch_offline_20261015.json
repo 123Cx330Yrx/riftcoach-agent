@@ -1,0 +1,123 @@
+{
+  "version": "reviewer-profile-batch-offline-v1",
+  "date": "2026-10-15",
+  "base_head": "760f7a83b75ea57fa1792a76862825138bf512d0",
+  "evidence_class": "offline-controller-and-native-schema-fixtures-not-model-quality",
+  "code_and_tests": {
+    "scripts/reviewer_profile_batch.py": "7ada4d55be46d187cb22e4d197ffccdb22818f7b4b0dcb3b4814be428e88ef89",
+    "tests/test_reviewer_profile_batch.py": "5842d099aebd9cf8e08ef96e11d0a1daf2f9e57ca75e3cd290aa839f511c545a",
+    "tests/test_reviewer_profile_native.py": "0e61257033ca2efd7d23f7f2cab3f70b493eadc025f0e8cf9cf16632257a365b"
+  },
+  "prepared_artifacts_unchanged_from_base": {
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/channel-check.json": "6fe02c528f3cb59e7c6972454f23592084352cd4cec862e5a46f379e70488082",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/evaluation.json": "002852f42c24b627e83a7d593c17fe4f27dab5383d901155e23295103da5bc95",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/independent-material-review.md": "40350d15a99bbe27d2289de7f50ecf5a9943011ae593f827edd42ad989ff9445",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/manifest.json": "76d8ca809825d89108c4832c7bcb27692a6d1da5f32b19cf698c2e6b11e4db09",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/material-review-task.json": "021b7a7d45351fdde88c17094946f506b670ae2a1929a8ff2af8dcd5e8afdb7c",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/primary-material-review.md": "7927ae23b18a714282147f6a87959f1fdf48c7118cc5ad024dcf09c922ccc37b",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/r01.md": "0a4c073e282beca5cbb3e1226e628e0a033ff8a43b0a210a1a0e1816dc85bcb6",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/r02.md": "c3e944095a41b00303b6a7f86fc413c120b009b884a8cd5c5025d9a42a2385d0",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-completion.json": "fc408e9e182cec2234439957f1c83d720154d0403519354bec74427f10a6bf9d",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-facts.json": "abaa7cebd116b496a7c94b63c7464981ab8ecb83e35d4108e3cddb5c1857b674",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-completion.json": "aeb497a870a5a080ee8a5ed9c1faac46055ce2fc4fc39002cc1d0565b5a0efb1",
+    "data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-facts.json": "f9df23ed4183d3478ce1c1e13a5cfd609025b00f3ee6d3c6e680077faf697110"
+  },
+  "source_inventory_count": 875,
+  "runtime": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "packages": {
+      "openai": "2.54.0",
+      "httpx": "0.28.1",
+      "pydantic": "2.13.5",
+      "jsonschema": "4.26.0"
+    }
+  },
+  "verification": {
+    "unique_related_tests_passed": 130,
+    "batch": {
+      "passed": 32,
+      "failed": 0,
+      "seconds": 153.48,
+      "command": "python -m pytest -q tests/test_reviewer_profile_batch.py --tb=short --show-capture=no"
+    },
+    "native_and_wiring": {
+      "passed": 13,
+      "failed": 0,
+      "seconds": 61.99,
+      "command": "python -m pytest -q tests/test_reviewer_profile_native.py --tb=short --show-capture=no"
+    },
+    "related_transport_screen_supervisor": {
+      "passed": 85,
+      "failed": 0,
+      "executed_with_native_tests": true
+    },
+    "intermediate_run": {
+      "passed": 97,
+      "failed": 1,
+      "seconds": 82.91,
+      "reason": "native test rejected source modification while tests were running; source freeze failed closed",
+      "resolved_by": "all 13 native tests rerun against stable final source and passed"
+    },
+    "network": "HTTP replaced by MockTransport and socket blocked; native history fixtures explicit; no real credentials",
+    "governance_passed": true,
+    "compile_passed": true,
+    "diff_check_passed": true
+  },
+  "independent_engineering_review": {
+    "agent": "/root/host_scope_calibration",
+    "business_native_review": false,
+    "final_blocking_findings": 0,
+    "context_read_expected_labels": true,
+    "eligible_for_blind_business_review": false,
+    "fixes": [
+      "preflight closes without claim",
+      "source and fixed-plan binding",
+      "usage recovery requires request/profile identity and consistent surviving totals",
+      "phase-scoped evidence additions; never re-seal changed prior artifacts",
+      "original native and author bytes replayed before seal"
+    ]
+  },
+  "implemented": {
+    "fixed_four_slots": true,
+    "per_result_native_gate": true,
+    "create_only_claim": true,
+    "append_checkpoint_chain": true,
+    "readonly_recovery": true,
+    "exact_author_native_bytes": true,
+    "shared_budget": true,
+    "known_unknown_not_sent_distinct": true,
+    "create_only_seal": true
+  },
+  "limits": {
+    "requests": 4,
+    "retries": 0,
+    "input_per_request": 64000,
+    "output_per_request": 32768,
+    "total_tokens": 387072,
+    "per_request_seconds": 300,
+    "shared_supervisor_seconds": 1200,
+    "time_basis": "conservative supervisor elapsed including cleanup; excludes human review waits; not model billing time"
+  },
+  "provider_calls": 0,
+  "real_credentials_used": 0,
+  "new_dependencies": 0,
+  "selected_execution_profile": null,
+  "actual_channel_estimate": null,
+  "paid_launcher_implemented": false,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "qualified": false,
+  "semantic_detection_proven": false,
+  "public_ci_verified": false,
+  "production_changed": false,
+  "automation_resumed": false,
+  "remaining": [
+    "fixed account group and safe credential access",
+    "current network and actual channel conditions",
+    "new explicit four-call cost authorization",
+    "exact clean execution HEAD and public CI binding",
+    "independent native review context not exposed to expected labels",
+    "trusted live preflight and sender entry; callbacks alone do not authorize paid execution",
+    "real per-result full-source judgments"
+  ]
+}

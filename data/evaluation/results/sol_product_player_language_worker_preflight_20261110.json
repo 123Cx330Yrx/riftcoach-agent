@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-10T05:53:49.955176+00:00",
+  "kind": "archived_product_worker_executor_zero_send_preflight",
+  "status": "local_preflight_passed_sql_and_public_ci_pending",
+  "code_base_head": "df29e8ce2651e65dbc0c9b1471b264d9a94b6613",
+  "preflight": {
+    "status": "worker_executor_preflight_passed_no_sql",
+    "contract": "natural-flash-sol-product-chat-v1",
+    "product_version": "1.7.10",
+    "source_reads": 1,
+    "secret_names": [
+      "llm-api",
+      "sol-review-api"
+    ],
+    "first_request": {
+      "estimated_input_token_ceiling": 32976,
+      "serialized_bytes": 30829,
+      "sha256": "00fddfa64fbdafe5c088b618a6c91e6301d90747095b7f90d19157d765b8760f",
+      "max_output_tokens": 16384,
+      "timeout_seconds": 300.0,
+      "first_plus_full_review_tail": 370896
+    },
+    "stop_reason": "session_model_boundary",
+    "accounting": {
+      "scope": "cumulative_session",
+      "requests_reserved": 0,
+      "requests_observed": 0,
+      "known_tokens": 0,
+      "unknown_token_reservation": 0,
+      "retries": 0,
+      "unresolved_intents": 0
+    },
+    "effects": {
+      "model_requests": 0,
+      "new_source_requests": 0,
+      "persisted_sql_tasks": 0
+    },
+    "limits": {
+      "sql_lifecycle_verified": false,
+      "live_execution_started": false,
+      "empty_memory_substitute": true,
+      "volatile_continuation_store": true
+    }
+  },
+  "checks": {
+    "unit_tests_passed": 9,
+    "new_sql_test_collected": 1,
+    "new_sql_test_executed_locally": false,
+    "immutable_pins_unchanged": {
+      "report": true,
+      "db": true,
+      "zip": true,
+      "probe": true,
+      "fixture": true,
+      "frozen_head": true,
+      "frozen_clean": true
+    }
+  },
+  "docker": {
+    "normal_start_failed": true,
+    "same_observed_sailor_ingest_error": true,
+    "control_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\docker-normal-start-20261110.json"
+  },
+  "boundaries": {
+    "approved_task_count": 1,
+    "live_tasks_created": 0,
+    "model_requests": 0,
+    "new_match_requests": 0,
+    "riot_key_loaded": false,
+    "P3": "not_accepted",
+    "Stage8E": "unchanged",
+    "default_admission": "unchanged"
+  },
+  "supersedes_only_conclusion_of": "sol_product_player_language_execution_preflight_20261109.json",
+  "development_corrections": [
+    "Strict JSON Evidence deserialization and enum constructors corrected before preflight passed.",
+    "Summary PUUID display prefix follows original first-16-plus-ellipsis format; full source arguments remain pinned."
+  ],
+  "next_action": "Same-commit public CI; real SQL/API lifecycle preflight and one approved task after Docker is available."
+}

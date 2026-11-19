@@ -247,6 +247,14 @@ class ProviderCallFailedSignal(RuntimeSignalModel):
         return _validate_safe_code(value, field_name=info.field_name)
 
 
+class ProviderCallFailedUsageSignal(ProviderCallFailedSignal):
+    """A rejected response with identity-bound usage, never a completion."""
+
+    kind: Literal["provider_call_failed_usage"] = "provider_call_failed_usage"
+    input_tokens: int = Field(ge=0, strict=True)
+    output_tokens: int = Field(ge=0, strict=True)
+
+
 class ToolCallStartedSignal(RuntimeSignalModel):
     kind: Literal["tool_call_started"] = "tool_call_started"
     tool_name: str
@@ -429,6 +437,7 @@ RuntimeSignal = Annotated[
         ProviderCallStartedSignal,
         ProviderCallCompletedSignal,
         ProviderCallFailedSignal,
+        ProviderCallFailedUsageSignal,
         ToolCallStartedSignal,
         ToolCallCompletedSignal,
         AgentRunTerminatedSignal,
@@ -449,6 +458,7 @@ RUNTIME_SIGNAL_TYPES = (
     ProviderCallStartedSignal,
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
+    ProviderCallFailedUsageSignal,
     ToolCallStartedSignal,
     ToolCallCompletedSignal,
     AgentRunTerminatedSignal,

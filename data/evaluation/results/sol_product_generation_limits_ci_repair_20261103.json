@@ -1,0 +1,56 @@
+{
+  "kind": "product-generation-limits-ci-assertion-repair-v1",
+  "date": "2026-11-03",
+  "parent_head": "360c1652d4e627f398f1274e736cc491d18e7d77",
+  "observed_ci": 41573136399,
+  "observed_run_status": "in_progress_with_failed_jobs",
+  "failures": [
+    {
+      "job": "web-checks",
+      "job_id": 125710442000,
+      "failed": 2,
+      "passed": 9,
+      "cause": "current inventory exact changed-component assertions omitted app.model_runtime and app.evaluation.golden_stream_bridge"
+    },
+    {
+      "job": "postgres-tests (2)",
+      "job_id": 125710442316,
+      "failed": 1,
+      "passed": 83,
+      "cause": "cap mutation was correctly blocked by earlier generic product limit guard; test expected recovery-scope code"
+    },
+    {
+      "job": "postgres-migrations",
+      "cause": "upstream PostgreSQL shard failure; migration steps not executed"
+    }
+  ],
+  "logs": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-generation-limits-20261103\\ci-125710442000.log",
+      "sha256": "87962d83466caaca9b63d8c59f18b4091b3a9754ae84af7238cf5cbc1efa2aa7"
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-generation-limits-20261103\\ci-125710442316.log",
+      "sha256": "e782a089b108bcaefa51d87bd181e01a7b9925405d4bd239753a5a434034e14b"
+    }
+  ],
+  "correction": "update only the three affected tests; keep exact fingerprint allowlist, unchanged business inventory, zero-send and no-new-intent assertions; apply earlier guard code to cap and same-mechanism timeout",
+  "verification": {
+    "full_failed_web_entry_cases_passed": 11,
+    "actual_postgres_recovery_scope_cases_passed": 5,
+    "temporary_container_removed": true,
+    "related_assertions_searched": true
+  },
+  "production_source_changed": false,
+  "historic_evidence_changed": false,
+  "new_model_http": 0,
+  "new_source_calls": 0,
+  "real_key_reads": 0,
+  "limits": {
+    "new_ci_pending": true,
+    "P3_accepted": false,
+    "Stage8E_changed": false,
+    "default_admission_changed": false,
+    "paid_authorization_added": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "natural-duty-preservation-ci-recovery-v1",
+  "date": "2026-10-15",
+  "failed_head": "4d37e344cf89844e890daf833f75645b705fd74f",
+  "failed_ci_run": 38685915747,
+  "failed_test": "tests/test_natural_duty_preservation_diagnostic.py::test_saved_proposal_rebuilds_without_execution_or_quality_credit",
+  "cause": "Closed proposal source inventory was compared with the later live NaturalDutyProvider source. Only source_sha256 differed; requests and budgets matched.",
+  "before_fix": {
+    "failed": 1,
+    "elapsed_seconds": 6.08
+  },
+  "fix": "Reconstruct only the historical source inventory in a temporary test directory from SHA-checked original LF text; current request construction must still reproduce the full saved proposal.",
+  "historical_source_commit": "452972e781d16b2e716b51c067f19443b28344cf",
+  "historical_source_sha256": "0e05e465628b8b92b408d96f0e45db4b17c55c5cffb88423d6cf603c6d3949f6",
+  "checks": {
+    "preservation_tests": 24,
+    "elapsed_seconds": 38.02,
+    "network": "denied",
+    "preparation_rebuilt_equal": true,
+    "old_proposal_unchanged": true
+  },
+  "preparation_sha256": "3c7a650191d17f0412955a4d1fd63d6d967624f54b12b46458666abe6c09fa0b",
+  "runtime_changes": false,
+  "model_requests": 0,
+  "real_run_created": false,
+  "execution_authorized": false,
+  "production_admitted": false,
+  "automation_status": "PAUSED",
+  "next_action": "Push the repair and verify public CI for the new exact HEAD before requesting specific paid execution authorization."
+}

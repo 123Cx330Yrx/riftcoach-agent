@@ -1,0 +1,25 @@
+{
+  "schema_version": "golden-contextual-reports-v2",
+  "standard_id": "whole-context-acceptance-v1",
+  "owner_decision": "2026-09-15 采用完整上下文标准（推荐）",
+  "held_out": false,
+  "boundary": "Independent development labels under the owner-approved standard. Original strict manifests, reports and observations remain unchanged. Labels are not sent to the model.",
+  "cases": [
+    {
+      "id": "contextual_01",
+      "source_case_id": "stable_unbounded",
+      "report_sha256": "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219",
+      "expected_target": "accept",
+      "expected_report": "accept",
+      "rationale": "完整报告开头已明确所选四场中单、逐行方向一致、仅指本样本不外推长期；后文同一经济和伤害比较无冲突，不要求专门词义定义。"
+    },
+    {
+      "id": "contextual_02",
+      "source_case_id": "future_with_disclaimer",
+      "report_sha256": "760519d806a5fd52ab97364653d29d1bb52d72b195f29b92ccb27028ab6d6153",
+      "expected_target": "reject",
+      "expected_report": "reject",
+      "rationale": "即使有四场限定，后文所有未来输局预测仍是独立无依据外推，必须检出并完成一次修订复评。"
+    }
+  ]
+}

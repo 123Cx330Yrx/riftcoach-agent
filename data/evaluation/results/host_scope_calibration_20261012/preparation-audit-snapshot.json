@@ -1,0 +1,90 @@
+{
+  "source_request_path": "D:\\riftcoach-agent-rq192-pr\\data\\runs\\model_comparison\\document-sampling-screening-20261012-corrected-v2\\sample-1-baseline\\issued-request.json",
+  "source_request_sha256": "a3189d955a3b02283e61f400c50be442be8f7c0e5a02ebc2ddbb7fae50d53c13",
+  "full_policy_copied_exactly": true,
+  "calculations": {
+    "all": {
+      "members": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "means": {
+        "cs": "180",
+        "damage_per_minute": "680",
+        "vision_score": "35",
+        "deaths_before_15": "3"
+      }
+    },
+    "middle": {
+      "members": [
+        "M1",
+        "M2",
+        "M3",
+        "M4"
+      ],
+      "means": {
+        "cs": "215",
+        "damage_per_minute": "800",
+        "vision_score": "25",
+        "deaths_before_15": "2"
+      }
+    },
+    "all_win": {
+      "members": [
+        "M1",
+        "M2"
+      ],
+      "means": {
+        "cs": "220",
+        "damage_per_minute": "1000",
+        "vision_score": "25",
+        "deaths_before_15": "3"
+      }
+    },
+    "all_loss": {
+      "members": [
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "means": {
+        "cs": "460/3",
+        "damage_per_minute": "1400/3",
+        "vision_score": "125/3",
+        "deaths_before_15": "3"
+      }
+    },
+    "middle_win": {
+      "members": [
+        "M1",
+        "M2"
+      ],
+      "means": {
+        "cs": "220",
+        "damage_per_minute": "1000",
+        "vision_score": "25",
+        "deaths_before_15": "3"
+      }
+    },
+    "middle_loss": {
+      "members": [
+        "M3",
+        "M4"
+      ],
+      "means": {
+        "cs": "210",
+        "damage_per_minute": "600",
+        "vision_score": "25",
+        "deaths_before_15": "1"
+      }
+    }
+  },
+  "materials_sha256": "100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b",
+  "task_sha256": "f8b2460420c55bbec847d360db660a9db8a9b798f267a45c70ba627771b9a93a",
+  "historical_batch_files_modified": 0,
+  "new_provider_calls": 0,
+  "independent_review_performed": false
+}

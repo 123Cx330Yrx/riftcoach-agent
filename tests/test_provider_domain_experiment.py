@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from app.evaluation.domain_e2e import (
     ContractSnapshot,
@@ -14,6 +15,8 @@ from app.evaluation.domain_e2e import (
     DomainDatasetRole,
     DomainEvaluationCase,
     DomainEvaluationDataset,
+    EvaluationAttemptDiagnostics,
+    EvaluationDiagnostics,
 )
 from app.evaluation.provider_adoption import (
     ExperimentFailureCode,
@@ -275,6 +278,47 @@ def test_three_cases_continue_from_protocol_and_use_exact_domain_budget():
     assert record.candidate is not None
     assert record.evaluation is not None
     assert record.evaluation.task_outcome_accuracy == 1.0
+
+
+def test_semantic_observation_supports_v3_ceiling_without_changing_v2_budget():
+    semantic = DomainCaseSemanticObservation(
+        case_id="case_normal",
+        normalized_response_count=9,
+        evaluation_validated=False,
+        terminal_status="degraded",
+        provenance_sha256="a" * 64,
+        revision_count=1,
+        evaluation_diagnostics=EvaluationDiagnostics(
+            attempts=(
+                EvaluationAttemptDiagnostics(
+                    attempt_id=0,
+                    score=80,
+                    verdict="needs_revision",
+                    passed_check_count=1,
+                ),
+                EvaluationAttemptDiagnostics(
+                    attempt_id=1,
+                    score=80,
+                    verdict="fail",
+                    passed_check_count=1,
+                ),
+            )
+        ),
+    )
+
+    assert semantic.normalized_response_count == 9
+    assert semantic.revision_count == 1
+    with pytest.raises(ValidationError):
+        DomainCaseSemanticObservation(
+            case_id="case_normal",
+            normalized_response_count=10,
+            evaluation_validated=False,
+            terminal_status="degraded",
+            provenance_sha256="a" * 64,
+        )
+
+    assert requirements().maximum_provider_calls == 4
+    assert preparation(dataset()).domain_max_calls == 12
 
 
 def test_fifth_case_call_stops_before_io_and_skips_remaining_cases():

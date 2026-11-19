@@ -1,0 +1,44 @@
+{
+  "kind": "natural-duty-ci-recovery-v1",
+  "date": "2026-10-15",
+  "failed_ci_run": 38590893161,
+  "failed_head": "8d06f4428e34b68436e5c7085fd2579e44fc969d",
+  "cause": "Historical prior fixture fell back to changed current code for three files; all four fail-fast shards stopped at setup.",
+  "fix": "Add byte-exact LF source text from the existing pinned commit to test-only archive; no digest or production gate changes.",
+  "historical_source_commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4",
+  "added_source_sha256": {
+    "app/model_runtime.py": "11172402ee1e934e35dcacbf396ac5ffb259f2bda1f9e8e41f53f4f1afd10931",
+    "app/runtime/coach_contract.py": "6703eef81f8dbc2d9c2e1bf6c001346831aac33190ab681c47c797d4b89271df",
+    "app/runtime/reviewer_roles.py": "86ff1e4d610ad88c43d70416ae2896fd8c290498c3cc8a541971ec8fe515bd77"
+  },
+  "historical_manifest_sha256": {
+    "document_remaining4_frozen_newlines.json": "99e70694da168d9e5335976a5a10a5e69ae4c8903ebef5288837f90a16099be5",
+    "document_remaining8_frozen_newlines.json": "3d9d1ce2d6020195158a96ea6a6bfe628d2522b9079e9abfd6d4bb08f394c59d"
+  },
+  "old_archive_entries_unchanged": true,
+  "production_source_changed": false,
+  "frozen_originals_verified": {
+    "source_files": 854,
+    "package_files": 3,
+    "run_originals": 103,
+    "seal_unchanged": true
+  },
+  "automation_status": "PAUSED",
+  "paid_calls": 0,
+  "local_regression": {
+    "suites": [
+      "tests/test_document_remaining4_adapter.py",
+      "tests/test_document_remaining8_adapter.py"
+    ],
+    "passed": 17,
+    "duration_seconds": 141.08,
+    "historical_snapshot_source_counts": [
+      47,
+      46
+    ],
+    "production_rejects_changed_current_code": true,
+    "governance": "passed",
+    "diff_check": "passed"
+  },
+  "public_ci_status": "failed at 8d06f442; follow-up required"
+}

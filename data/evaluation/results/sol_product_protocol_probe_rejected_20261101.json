@@ -1,0 +1,328 @@
+{
+  "schema_version": "sol-product-protocol-probe-terminal-v1",
+  "at_utc": "2026-11-01T03:09:17.924064+00:00",
+  "execution_head": "093ee6154d05764c39fb962ef21f038387b9e5f0",
+  "ci_id": 41263056973,
+  "ci_all_eight_success": true,
+  "control": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-protocol-ci-recovery-20261101",
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "outcome": "protocol_rejected_not_published",
+  "worker_status": "succeeded",
+  "terminal_reason": "evaluation_failed",
+  "publication_allowed": false,
+  "new_actual_http": 1,
+  "request_status": 200,
+  "new_known_tokens": 46503,
+  "new_unknown_reservation": 0,
+  "receiptless_requests": 0,
+  "unresolved_intents": 0,
+  "new_generation_requests": 0,
+  "completion_requests": 0,
+  "fresh_requests": 0,
+  "accepted_reviews": 0,
+  "applications": 0,
+  "accounting": {
+    "known_tokens": 97298,
+    "requests_observed": 10,
+    "requests_reserved": 10,
+    "retries": 6,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 366910,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 1092.249999999971,
+  "elapsed_s": 103.969,
+  "first_bytes_after_request_ms": 1531,
+  "response_eof": true,
+  "response_completed": true,
+  "protocol_errors": [
+    "response_identity",
+    "event_sequence"
+  ],
+  "first_rejection": {
+    "code": "response_identity",
+    "event": {
+      "ordinal": 1,
+      "type": "response.created",
+      "type_sha256": "90a13e4133e07ec1e734505e4b18e469923f88651444fa65922ee7e805a54c8c",
+      "sequence": 0,
+      "previous_sequence": -1,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer",
+        "response": "object"
+      },
+      "extra_field_count": 0
+    }
+  },
+  "first_four_events": [
+    {
+      "ordinal": 1,
+      "type": "response.created",
+      "type_sha256": "90a13e4133e07ec1e734505e4b18e469923f88651444fa65922ee7e805a54c8c",
+      "sequence": 0,
+      "previous_sequence": -1,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer",
+        "response": "object"
+      },
+      "extra_field_count": 0
+    },
+    {
+      "ordinal": 2,
+      "type": "response.queued",
+      "type_sha256": "c81f5e9635505832bee42777568de2547158719feec4a9d4f6f534d68623b016",
+      "sequence": 1,
+      "previous_sequence": 0,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer",
+        "response": "object"
+      },
+      "extra_field_count": 0
+    },
+    {
+      "ordinal": 3,
+      "type": "response.created",
+      "type_sha256": "90a13e4133e07ec1e734505e4b18e469923f88651444fa65922ee7e805a54c8c",
+      "sequence": 0,
+      "previous_sequence": 1,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer",
+        "response": "object"
+      },
+      "extra_field_count": 0
+    },
+    {
+      "ordinal": 4,
+      "type": "response.in_progress",
+      "type_sha256": "a8da98a47d766786d28a94471a027fff93b06db9dd7e41179323b2a46eb33164",
+      "sequence": 1,
+      "previous_sequence": 0,
+      "created_count": 1,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer",
+        "response": "object"
+      },
+      "extra_field_count": 0
+    }
+  ],
+  "lifecycle_metadata": [
+    {
+      "type": "response.created",
+      "sequence": 0,
+      "response_id_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "item_id_sha256": null,
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.queued",
+      "sequence": 1,
+      "response_id_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "item_id_sha256": null,
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.created",
+      "sequence": 0,
+      "response_id_sha256": "f5cd5f5f57402fab0b144ba80b45dcef20acb15e529b65a69b080ba8652bfbdf",
+      "item_id_sha256": null,
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.in_progress",
+      "sequence": 1,
+      "response_id_sha256": "f5cd5f5f57402fab0b144ba80b45dcef20acb15e529b65a69b080ba8652bfbdf",
+      "item_id_sha256": null,
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.function_call_arguments.done",
+      "sequence": 1605,
+      "response_id_sha256": null,
+      "item_id_sha256": "92f091ed82f3a77ab4a162777dbad160a33ff7fc5b8d1f132c2125f944577344",
+      "arguments_sha256": "51f9604c6ee8bb4d90f6c2609ac21a15f39631aa61754707919f5c4765eaf2be",
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1606,
+      "response_id_sha256": null,
+      "item_id_sha256": "92f091ed82f3a77ab4a162777dbad160a33ff7fc5b8d1f132c2125f944577344",
+      "arguments_sha256": "51f9604c6ee8bb4d90f6c2609ac21a15f39631aa61754707919f5c4765eaf2be",
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1620,
+      "response_id_sha256": null,
+      "item_id_sha256": "de1af235f5fc96ea218377d7e329d7a0479d6a7da81e12b9483396a0e7133191",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1622,
+      "response_id_sha256": null,
+      "item_id_sha256": "3dc233abfed1d2d68af6aab4451f38bed861ac7d920b21c1fddf023aab3d8201",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1624,
+      "response_id_sha256": null,
+      "item_id_sha256": "2a4709ef2142e399785b1b45605541d0aa90c868bfa02cac01d8da4baa1b941e",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1626,
+      "response_id_sha256": null,
+      "item_id_sha256": "7d382e08ee8df9322a6cbae7ad967d556900ef5f98fd895f04601a4152131389",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1628,
+      "response_id_sha256": null,
+      "item_id_sha256": "b8faab111fb3a1a92aef031cafe087777a1d49a81502c3397805e8e1a835115e",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1630,
+      "response_id_sha256": null,
+      "item_id_sha256": "cf603e29d4d09677ee8d7316f28c3d062b72a76574931887a0c6aba5c54593d7",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1632,
+      "response_id_sha256": null,
+      "item_id_sha256": "8fd99cc96fbfabe88c553558afdef4c005cc23fc1b2d82fa734b1ecfd8c58a8f",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1634,
+      "response_id_sha256": null,
+      "item_id_sha256": "d682c132a46b03ce997dda5677097b463b59d65c15892ee6bdfa2726d513aee4",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.output_item.done",
+      "sequence": 1636,
+      "response_id_sha256": null,
+      "item_id_sha256": "fc9ff3f143b998d48798619ec29bed8a1d76d0700aea9af95b7e495ff82ec12a",
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    },
+    {
+      "type": "response.completed",
+      "sequence": 1637,
+      "response_id_sha256": "f5cd5f5f57402fab0b144ba80b45dcef20acb15e529b65a69b080ba8652bfbdf",
+      "item_id_sha256": null,
+      "arguments_sha256": null,
+      "name_present": false,
+      "name_matches": null
+    }
+  ],
+  "verified_finding": "Empty-string response id in created/queued preamble; valid-id created restarts sequence at zero. safe_id rejects before created count increments, so the existing replacement branch cannot accept the restart.",
+  "evidence_limits": "Producer of the preamble is not established. Nested preamble payload fields were not retained, so no claim that it is a safe ignorable envelope. Attempt-11 event identities remain unknown; this run does not reconstruct that run.",
+  "diagnostic_verdict": "needs_revision",
+  "diagnostic_score": 85,
+  "diagnostic_issue_count": 2,
+  "diagnostic_opinion_imported": false,
+  "semantic_read": "Read complete report, source projection, original request, diagnostic opinion and repair text. User observation-only restriction is contradicted by personal training instructions; diagnostic repair addresses this. HALF_UP recomputation yields 8.14 and 1280.92 from displayed per-game inputs. This is analysis of rejected evidence, not formal review acceptance or application.",
+  "inherited_files_unchanged": 140,
+  "successful_generation_prefix": 3,
+  "prior_524_preserved": 5,
+  "request_identical_to_previous_failed_call": true,
+  "latest_checkpoint": "D:/rc-protocol-recovery-20261101/verified-runs/review_1a568160d5aa44b5a2acd2f72fb679f8/.continuation/session/checkpoints/0013.json",
+  "checkpoint_sha256": "74fe7e6e449dae50e636ea08b952a01fa0fc0f9356f8991dd561aa062e649b1c",
+  "database_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-protocol-ci-recovery-20261101/attempt-12/terminal-db.dump",
+  "database_sha256": "5e1c160673bfad632bc39f7ff237113f37e17266b8d481d76941ea8e5dd02489",
+  "snapshot_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-protocol-ci-recovery-20261101/attempt-12/terminal-run-snapshot.zip",
+  "snapshot_sha256": "ce903d3ab56214b498d5189d52bd4fb740127e4d1416827ce4fabff68f7fb1f1",
+  "browser": {
+    "verified": true,
+    "widths": [
+      {
+        "width": 1440,
+        "noHorizontalOverflow": true
+      },
+      {
+        "width": 320,
+        "noHorizontalOverflow": true
+      }
+    ],
+    "report_visible": false,
+    "task_resume_posts": 0
+  },
+  "remaining_total_request_slots": 2,
+  "remaining_total_token_capacity": 259248,
+  "remaining_active_seconds": 1007.7500000000291,
+  "deadline_utc": "2026-11-01T07:50:40.024669+00:00",
+  "single_probe_authorization_consumed": true,
+  "next_paid_request_authorized": false,
+  "next_action": "Preserve this rejection and latest DB. No automatic paid retry. A future repair must verify a narrow relay-preamble contract and same-task recovery before proposing any further paid request; two remaining slots cannot cover two initial and two fresh reviews.",
+  "evidence_sha256": {
+    "request.json": "d0d15081db4d99ef2f593cab40a83854fe329c8a68b17c8be99abba347efe409",
+    "validation-context.json": "75ffe209551adbb68175d074921f8fa6ad2affdf1098d419474ff84adfee7ed3",
+    "receipt.json": "33faa272cad57859b869e46fd06d0650e571ae98fec54bbb98af7c577b407836",
+    "usage.json": "d2f87d7d14e62cd9bca075b21ce48edf14dbe85ab01f98f29ab222a0c9b5a5bd",
+    "worker-result.json": "96d10bf543fe6693efdbb580e77542a87702223eada906949a214fe1f5d0dc81",
+    "observation/observation.json": "893da2555b4a686e7a0fcf2d190a23a37611cf9989b0afcf46abf41807734c1b"
+  },
+  "temporary_container_removed": true,
+  "waiter_exited": true,
+  "driver_exited": true,
+  "cleanup_evidence_sha256": {
+    "attempt-12/exit.json": "0a1edd5c972d3fada2014e0e77b9f5da9c9e7e87a7df7688b3a406edf3a6fd27",
+    "waiter-protocol-exit.json": "eb357914beb0b22e8f062b58c36b5fa2d5c44732c91162c0d3168ddf61e3b5fe"
+  }
+}

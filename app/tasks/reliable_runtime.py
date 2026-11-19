@@ -217,6 +217,7 @@ class TaskLifecycleEventKind(StrEnum):
     EXECUTION_STARTED = "execution_started"
     CANCEL_REQUESTED = "cancel_requested"
     RECOVERY_REQUEUED = "recovery_requeued"
+    CONTINUATION_RESUMED = "continuation_resumed"
     RECOVERY_REQUIRED = "recovery_required"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
@@ -240,6 +241,7 @@ _EXPECTED_STATUS: dict[TaskLifecycleEventKind, frozenset[TaskStatus]] = {
     TaskLifecycleEventKind.EXECUTION_STARTED: frozenset({TaskStatus.RUNNING}),
     TaskLifecycleEventKind.CANCEL_REQUESTED: frozenset({TaskStatus.RUNNING}),
     TaskLifecycleEventKind.RECOVERY_REQUEUED: frozenset({TaskStatus.QUEUED}),
+    TaskLifecycleEventKind.CONTINUATION_RESUMED: frozenset({TaskStatus.QUEUED}),
     TaskLifecycleEventKind.RECOVERY_REQUIRED: frozenset(
         {TaskStatus.RECOVERY_REQUIRED}
     ),
@@ -294,6 +296,7 @@ class TaskLifecycleEvent(ReliableTaskModel):
             TaskLifecycleEventKind.EXECUTION_STARTED,
             TaskLifecycleEventKind.CANCEL_REQUESTED,
             TaskLifecycleEventKind.RECOVERY_REQUEUED,
+            TaskLifecycleEventKind.CONTINUATION_RESUMED,
             TaskLifecycleEventKind.RECOVERY_REQUIRED,
             TaskLifecycleEventKind.SUCCEEDED,
             TaskLifecycleEventKind.FAILED,
@@ -546,6 +549,7 @@ def _validate_transition(
         TaskLifecycleEventKind.RECOVERY_REQUEUED: frozenset(
             {TaskStatus.RUNNING}
         ),
+        TaskLifecycleEventKind.CONTINUATION_RESUMED: frozenset({TaskStatus.RECOVERY_REQUIRED}),
         TaskLifecycleEventKind.RECOVERY_REQUIRED: frozenset(
             {TaskStatus.RUNNING}
         ),

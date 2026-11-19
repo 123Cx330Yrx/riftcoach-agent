@@ -1,0 +1,469 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-02T16:56:34.951178+00:00",
+  "outcome": "p3_draft_rejected_local_heading_false_negative",
+  "product_accepted": false,
+  "execution_head": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e",
+  "execution_cwd": "D:/riftcoach-chat-product-validation-execution-20261102",
+  "ci": {
+    "run_id": 41430754834,
+    "required_jobs": 12,
+    "all_success": true,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41430754834",
+    "applies_to": "original execution; not the later local heading fix"
+  },
+  "authorization": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/authorization.json",
+    "sha256": "e04215bfc3c294214c11df5f7e063f672bc31fd95c081956e76d8b1415fe6580",
+    "bytes": 1735
+  },
+  "identity": {
+    "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+    "run_id": "review_ee91ab480ecf4c4992f82ec08cc4bbf4",
+    "conversation_id": "ef28c8fe-4c40-477b-ad1a-fc008595217c",
+    "player_profile_id": "44226700-b9df-4eb8-a909-7608eb7085c4",
+    "runs_root": "D:\\rc-chat-product-20261103\\runs",
+    "head": "0a99c28a9594a012cc8e72ff5bbe68c72d358f4e"
+  },
+  "actual_execution": {
+    "at": "2026-11-02T16:37:41.304506+00:00",
+    "worker_exit_code": 0,
+    "worker_wall_seconds": 64.094,
+    "task": {
+      "schema_version": "2.0",
+      "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+      "run_id": "review_ee91ab480ecf4c4992f82ec08cc4bbf4",
+      "status": "succeeded",
+      "created_at": "2026-11-02T16:36:37.043679Z",
+      "updated_at": "2026-11-02T16:37:41.230169Z",
+      "claimed_at": "2026-11-02T16:36:40.105219Z",
+      "finished_at": "2026-11-02T16:37:41.230169Z",
+      "terminal_reason": "draft_safety_failed",
+      "publication_status": "rejected",
+      "report_available": false
+    },
+    "continuation_status": 200,
+    "continuation": {
+      "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+      "run_id": "review_ee91ab480ecf4c4992f82ec08cc4bbf4",
+      "status": "succeeded",
+      "profile": "sol-dual-product-chat-v1",
+      "checkpoint_sha256": "c4217d1e3fc8e8da8020d054e955f065210c116cb5ac2db9838f0e7ab5caa010",
+      "reason": null,
+      "session_accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 3,
+        "requests_observed": 3,
+        "known_tokens": 29849,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "publication_allowed": false
+    }
+  },
+  "accounting": {
+    "model_http_requests": 3,
+    "generation_successes": 3,
+    "review_requests": 0,
+    "known_input_tokens": 27080,
+    "known_output_tokens": 2769,
+    "known_total_tokens": 29849,
+    "unknown_token_reservation": 0,
+    "receiptless": 0,
+    "unresolved_intents": 0,
+    "retries": 0,
+    "active_seconds": 61.04700000000048,
+    "worker_wall_seconds": 64.094,
+    "calls": [
+      {
+        "input_tokens": 7422,
+        "model": "glm-5.3-flash",
+        "ordinal": 1,
+        "output_tokens": 327,
+        "provider": "zhipu",
+        "raw_directory": "generation",
+        "request_sha256": "e67c47de016192154a91f4f081f52b91733922efd8efd0ff2cd17dfae85dd8cc",
+        "response_sha256": "21c43344dbdf05db233d9fc6f02d3f4bb99c57a1f4c1189d68c2be24379aea62",
+        "role": "generation",
+        "state": "complete",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+      },
+      {
+        "input_tokens": 9088,
+        "model": "glm-5.3-flash",
+        "ordinal": 2,
+        "output_tokens": 115,
+        "provider": "zhipu",
+        "raw_directory": "generation",
+        "request_sha256": "d3b4f6a055d28f97c215e973f74c52a74ccc62fe8b1118cc34541f421b41bb05",
+        "response_sha256": "cd3c0a2c20167a5ff62e74f5c70aaf20f8a66a33e6fa6077f2f132dea0d8620f",
+        "role": "generation",
+        "state": "complete",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+      },
+      {
+        "input_tokens": 10570,
+        "model": "glm-5.3-flash",
+        "ordinal": 3,
+        "output_tokens": 2327,
+        "provider": "zhipu",
+        "raw_directory": "generation",
+        "request_sha256": "6b7dfdac5a77eb20ddbdbe20fbb20c9635584d09f4c0f4f05e05336bef2a58b4",
+        "response_sha256": "4c333234274ebcf2ae6265530d6303b744a1bb33d48f5414afa99c79b0420f2b",
+        "role": "generation",
+        "state": "complete",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "transport_id": "natural-duty-direct-patch-time300-v1:generation"
+      }
+    ],
+    "local_knowledge_search_calls": 5,
+    "trace_price_estimate": {
+      "amount": "0.0294172",
+      "currency": "CNY",
+      "profile": "necessity-enterprise-prices-20261024",
+      "current_price_verified": false,
+      "actual_charge_verified": false
+    }
+  },
+  "authorization_limit_audit": {
+    "at": "2026-11-02T16:52:05.224484+00:00",
+    "status": "failed",
+    "operator_preflight_error": "Proposal used the Sol review cap for every role; actual Flash generation cap was not compared to the authorization before credential use and dispatch.",
+    "requests": [
+      {
+        "ordinal": 1,
+        "role": "generation",
+        "request_sha256": "e67c47de016192154a91f4f081f52b91733922efd8efd0ff2cd17dfae85dd8cc",
+        "configured_output_cap": 32768,
+        "authorized_output_cap": 16384,
+        "actual_output_tokens": 327,
+        "input_tokens": 7422,
+        "configured_timeout_s": 300,
+        "cap_within_authorization": false,
+        "actual_usage_within_cap": true
+      },
+      {
+        "ordinal": 2,
+        "role": "generation",
+        "request_sha256": "d3b4f6a055d28f97c215e973f74c52a74ccc62fe8b1118cc34541f421b41bb05",
+        "configured_output_cap": 32768,
+        "authorized_output_cap": 16384,
+        "actual_output_tokens": 115,
+        "input_tokens": 9088,
+        "configured_timeout_s": 300,
+        "cap_within_authorization": false,
+        "actual_usage_within_cap": true
+      },
+      {
+        "ordinal": 3,
+        "role": "generation",
+        "request_sha256": "6b7dfdac5a77eb20ddbdbe20fbb20c9635584d09f4c0f4f05e05336bef2a58b4",
+        "configured_output_cap": 32768,
+        "authorized_output_cap": 16384,
+        "actual_output_tokens": 2327,
+        "input_tokens": 10570,
+        "configured_timeout_s": 300,
+        "cap_within_authorization": false,
+        "actual_usage_within_cap": true
+      }
+    ],
+    "actual_roles": {
+      "generation": {
+        "model": "glm-5.3-flash",
+        "max_output_tokens": null,
+        "request_timeout_s": 300
+      },
+      "review": {
+        "model": "gpt-6.1-sol",
+        "max_output_tokens": 16384,
+        "request_timeout_s": 300
+      }
+    },
+    "actual_usage_known_tokens": 29849,
+    "requests_with_overbroad_cap": 3,
+    "no_actual_output_exceeded_authorized_cap": true,
+    "original_authorization_unchanged": true,
+    "next_launch_permitted": false,
+    "required_next_check": "Compare role-specific contract limits AND actual issued request fields to the exact scope before secret read and again before send. Reject mismatch; do not infer authorization from low actual usage or unused total budget."
+  },
+  "source": {
+    "official_identity_resolved": true,
+    "fetched_at": "2026-11-02T16:36:44.855902+00:00",
+    "requested": 5,
+    "received": 5,
+    "analyzed": 5,
+    "excluded": 0,
+    "failed": 0,
+    "queue": 420,
+    "queue_fallback": false,
+    "match_dates_beijing": "2026-10-13 to 2026-10-15",
+    "game_versions": [
+      "16.20.824.8524"
+    ],
+    "startup_name_mapping_version": "16.21.1",
+    "historical_mapping_alignment_verified": false,
+    "external_evidence_gaps": [
+      "data_dragon_missing",
+      "meta_join_missing",
+      "official_patch_missing"
+    ],
+    "note": "Fresh official fetch, not a claim that matches occurred in the last few days. Runtime static name mapping and missing version-bound external evidence are distinct."
+  },
+  "rejection": {
+    "terminal_reason": "draft_safety_failed",
+    "persisted_failure_code": "report_missing_headings",
+    "reproduction": {
+      "source_sha256": "4c333234274ebcf2ae6265530d6303b744a1bb33d48f5414afa99c79b0420f2b",
+      "report_sha256": "f35293607ba9f0a12779e74faf25b328025fdf2779220e0fb9f8ac447ac07acf",
+      "atx_headings": [
+        "# RiftCoach \u6559\u7ec3\u5f0f\u590d\u76d8\u62a5\u544a",
+        "## 1. \u603b\u4f53\u7ed3\u8bba",
+        "## 2. \u5f53\u524d\u8868\u73b0\u4eae\u70b9",
+        "## 3. \u4e3b\u8981\u98ce\u9669\u70b9",
+        "## 4. \u8d62\u5c40\u4e0e\u8f93\u5c40\u5dee\u5f02",
+        "## 5. \u4e0b\u4e00\u6b65\u590d\u76d8\u5efa\u8bae",
+        "## 6. \u8bad\u7ec3\u8ba1\u5212\uff08\u89c2\u6469\u6027\u8d28\uff09",
+        "## 7. \u6570\u636e\u8fb9\u754c\u4e0e\u77e5\u8bc6\u6765\u6e90"
+      ],
+      "identities": [
+        "# RiftCoach \u6559\u7ec3\u5f0f\u590d\u76d8\u62a5\u544a",
+        "## 1. \u603b\u4f53\u7ed3\u8bba",
+        "## 2. \u5f53\u524d\u8868\u73b0\u4eae\u70b9",
+        "## 3. \u4e3b\u8981\u98ce\u9669\u70b9",
+        "## 4. \u8d62\u5c40\u4e0e\u8f93\u5c40\u5dee\u5f02",
+        "## 5. \u4e0b\u4e00\u6b65\u590d\u76d8\u5efa\u8bae",
+        null,
+        "## 7. \u6570\u636e\u8fb9\u754c\u4e0e\u77e5\u8bc6\u6765\u6e90"
+      ],
+      "reproduction": {
+        "type": "ReportValidationError",
+        "code": "report_missing_headings",
+        "message": "Revised report is missing headings: ['## 6. \u8bad\u7ec3\u8ba1\u5212']"
+      }
+    },
+    "conclusion": "The complete section 6 title has a fullwidth parenthetical qualifier. The recognizer treated it as missing. This is a local structural false negative before any Sol review.",
+    "original_exception_stack_saved": false,
+    "same_draft_same_frozen_guard_reproduced": true
+  },
+  "offline_fix": {
+    "at": "2026-11-02T16:47:51.125467+00:00",
+    "guard_passes_actual_report_unchanged": true,
+    "section6_extracted_unchanged": true,
+    "report_sha256": "f35293607ba9f0a12779e74faf25b328025fdf2779220e0fb9f8ac447ac07acf",
+    "fixed_source_sha256": "3132569802be38d2f0f33a2d322bb42ef342326ceede32b974065a29eac55c2f",
+    "original_files_unchanged": 102,
+    "network_calls": 0,
+    "semantic_acceptance": false
+  },
+  "semantic_review": {
+    "status": "not_accepted",
+    "model_review_performed": false,
+    "reviewed": [
+      "all unique public request messages and full source data",
+      "deterministic report",
+      "full generated draft",
+      "five retrieved knowledge chunks and metadata",
+      "all 3 transport/usage receipts"
+    ],
+    "private_reasoning_not_output": true,
+    "report_unchanged": true,
+    "findings": [
+      {
+        "kind": "material_scope_problem",
+        "quote": "\u8f93\u5c40\u8d44\u6e90\u4e0e\u8f93\u51fa\u540c\u6b65\u584c\u9677",
+        "evidence": "The loss set includes a support game (0.76 CS/min). In the middle-role subset, two losses average 7.695 CS/min, above the one win at 7.56. Calling all three losses a farming problem obscures position composition.",
+        "required": "Separate the support role and metric-specific within-role comparisons before drawing a problem conclusion."
+      },
+      {
+        "kind": "source_context_problem",
+        "quote": "Data Dragon \u540d\u79f0\u6620\u5c04\u3001\u5b98\u65b9\u8865\u4e01\u4fe1\u606f\u7f3a\u5931",
+        "evidence": "The deterministic input explicitly contains static mappings/version 16.21.1; the separate version-bound external source bundle has data_dragon=null. The report conflates these distinct layers.",
+        "required": "Distinguish names already mapped from missing historical-version validation; clarify the source input as well as the report."
+      },
+      {
+        "kind": "not_separately_blocking",
+        "quote": "\u53d1\u80b2\u4e0b\u9650\u76f8\u5bf9\u7a33\u5b9a",
+        "evidence": "Read in context it explicitly refers to the three supplied middle-role matches. Do not manufacture a long-term extrapolation violation from this phrase alone."
+      }
+    ],
+    "checked_correct": [
+      "8.14 and 1280.92 win means",
+      "three comparison differences",
+      "observed purpose remains observation exercises; no reader personal training assignment"
+    ],
+    "formal_reviews": 0,
+    "applications": 0,
+    "fresh_reviews": 0,
+    "publication_allowed": false
+  },
+  "browser": {
+    "at": "2026-11-02T16:44:18.979Z",
+    "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+    "mutations": [],
+    "errors": [],
+    "views": [
+      {
+        "width": 1440,
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "reportElements": 0,
+        "bodyFile": "browser-1440.txt"
+      },
+      {
+        "width": 320,
+        "viewport": 320,
+        "documentWidth": 320,
+        "reportElements": 0,
+        "bodyFile": "browser-320.txt"
+      }
+    ],
+    "refresh_completed": true,
+    "final_url": "http://127.0.0.1:2835/?stage=workbench&player_profile_id=44226700-b9df-4eb8-a909-7608eb7085c4"
+  },
+  "inspection": {
+    "at": "2026-11-02T16:45:46.650982+00:00",
+    "browser_read_only": true,
+    "screenshots_visually_reviewed": [
+      1440,
+      320
+    ],
+    "overflow": false,
+    "javascript_errors": 0,
+    "blocked_mutations": 0,
+    "rejected_report_visible": false,
+    "known_tokens_shown": 29849,
+    "unknown_tokens_shown": 0,
+    "refresh_no_new_model_requests": true,
+    "model_call_intents": 3,
+    "model_call_receipts": 3,
+    "database_counts": {
+      "review_tasks": 1,
+      "conversations": 1,
+      "messages": 0,
+      "training_plans": 0,
+      "training_progress_events": 0,
+      "evidence_bundle_snapshots": 1
+    },
+    "business_accepted": false,
+    "reason": "draft_safety_failed",
+    "no_paid_retry": true,
+    "original_inventory_files": 102
+  },
+  "database": {
+    "at": "2026-11-02T16:45:46.650375+00:00",
+    "counts": {
+      "review_tasks": 1,
+      "conversations": 1,
+      "messages": 0,
+      "training_plans": 0,
+      "training_progress_events": 0,
+      "evidence_bundle_snapshots": 1
+    },
+    "query": "SELECT 'review_tasks',count(*) FROM review_tasks UNION ALL SELECT 'conversations',count(*) FROM conversations UNION ALL SELECT 'messages',count(*) FROM conversation_messages UNION ALL SELECT 'training_plans',count(*) FROM training_plans UNION ALL SELECT 'training_progress_events',count(*) FROM training_progress_events UNION ALL SELECT 'evidence_bundle_snapshots',count(*) FROM evidence_bundle_snapshots;"
+  },
+  "snapshot": {
+    "at": "2026-11-02T16:47:51.125467+00:00",
+    "guard_passes_actual_report_unchanged": true,
+    "section6_extracted_unchanged": true,
+    "report_sha256": "f35293607ba9f0a12779e74faf25b328025fdf2779220e0fb9f8ac447ac07acf",
+    "fixed_source_sha256": "3132569802be38d2f0f33a2d322bb42ef342326ceede32b974065a29eac55c2f",
+    "original_files_unchanged": 102,
+    "network_calls": 0,
+    "semantic_acceptance": false,
+    "snapshot": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\execution-1\\terminal-snapshot.zip",
+      "sha256": "142bf9de10e6765cd84ffeb0d0d9380f097244276d6a2a4552d81dd61e6c69a3",
+      "entries": 103,
+      "all_bytes_verified": true
+    },
+    "container_absent": true
+  },
+  "latest_checkpoint": {
+    "path": "D:/rc-chat-product-20261103/runs/review_ee91ab480ecf4c4992f82ec08cc4bbf4/.continuation/session/checkpoints/0033.json",
+    "sha256": "c4217d1e3fc8e8da8020d054e955f065210c116cb5ac2db9838f0e7ab5caa010",
+    "bytes": 5145
+  },
+  "latest_database": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/latest-db.dump",
+    "sha256": "fb970618cd63bcc9227c91274ac422f3411e45f8263b5f8b67ced28430717643",
+    "bytes": 138989
+  },
+  "cleanup": {
+    "at": "2026-11-02T16:45:47.918893+00:00",
+    "pid": 4100,
+    "failure": false,
+    "owned_container_removed": true,
+    "api_stopped": true,
+    "web_stopped": true,
+    "no_paid_retry_started": true
+  },
+  "local_validation": {
+    "command": "python -X utf8 -m pytest tests/test_report_heading_consumption.py tests/test_review_duty_direct_patch.py tests/test_source_bound_report.py --tb=short --show-capture=no -q",
+    "passed": 111,
+    "elapsed_seconds": 36.99,
+    "coverage": "actual guard, exact section extraction, lookalikes/fences/duplicates/order, direct patch and both fresh inputs, harness revision/publication byte preservation",
+    "runtime_profiles": 12,
+    "current_inventories": 2,
+    "all_verified": true,
+    "wire_scope_preflight": "expected rejection: generation 32768 > authorized 16384; zero secret/model IO",
+    "evidence_note": "Command completion transcribed from tool results; not claimed as a raw log or remote CI.",
+    "governance": "passed",
+    "diff_check": "passed",
+    "original_execution_frozen_tree": "clean and unchanged",
+    "current_fix_remote_ci": "not yet run at record time"
+  },
+  "recovery": {
+    "prepared": false,
+    "ordinary_resume_available": false,
+    "reason": "Session is closed. Existing local_failure_recovery requires pre-knowledge nonterminal Responses failure; zero_send_recovery requires the old manual-retry evaluation-failure frontier. Neither applies to this Chat draft-guard rejection.",
+    "required": "Keep this terminal/database/102 original files and 3 successful calls; prepare a verifiable same-task continuation with no generation replay sends and exact next-review limits. Do not delete terminal, alter original report or clone a new task to reset costs."
+  },
+  "next_action": "Offline same-task recovery and request-scope alignment, with a real SQL/Worker zero-send proof at the first review boundary. No new paid request is approved by unused budget; no automatic retry.",
+  "unchanged": [
+    "old 15 completed cases",
+    "Stage8E status",
+    "default admission",
+    "old task evidence and costs",
+    "unrelated reviewer_responses_nonstream_probe.py"
+  ],
+  "artifact_pins": {
+    "guard-reproduction.json": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/guard-reproduction.json",
+      "sha256": "e9213ade9fe1a9fa8e69cbf44dd10c4a9a6019a59a2e819f1e7a0569a7541165",
+      "bytes": 1273
+    },
+    "offline-fix-proof.json": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/offline-fix-proof.json",
+      "sha256": "fe7452d253328a56198fcb22d77be38b4529676c8f04176913876ab76a665f8a",
+      "bytes": 414
+    },
+    "authorization-limit-audit.json": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/authorization-limit-audit.json",
+      "sha256": "3c28444b48894bea8f78f703272335c326d32ef87375da44593e196552bfe862",
+      "bytes": 2273
+    },
+    "snapshot-verification.json": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/snapshot-verification.json",
+      "sha256": "12e0742391ea3404aa3b6d35bec252ac7c633df1191a21c4e26d52ade2805ae1",
+      "bytes": 742
+    },
+    "browser-1440.png": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/browser-1440.png",
+      "sha256": "76191d5ecda8328b19264207d8278f3910818e3fc709dc0a4bd9eb93eb37be3e",
+      "bytes": 892115
+    },
+    "browser-320.png": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/execution-1/browser-320.png",
+      "sha256": "29cb7e7258429447f1b216cd33bbec2bcb815b52fa46ed44d26b6d364de9951e",
+      "bytes": 418764
+    },
+    "check_next_execution_scope.py": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-product-validation-20261102/check_next_execution_scope.py",
+      "sha256": "b498e49a56c7727c009f38ebdb808d9fba8ec3e2fc5fd1970b86f3d7f034ccdc",
+      "bytes": 1997
+    }
+  }
+}

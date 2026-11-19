@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-10-30T05:28:25.904778+00:00",
+  "baseline": "0add355f98f3b1fe153a262b715b513579028482",
+  "failed_ci": {
+    "run": 41003259222,
+    "job": 123892292083,
+    "passed": 1911,
+    "failed": 1,
+    "skipped": 55,
+    "subtests_passed": 30,
+    "test": "tests/test_natural_duty_qualification_inventory.py::test_current_inventory_rebuilds_without_changing_historical_qualification",
+    "failure": "current audit compared to stale GLM snapshot from 2026-10-29",
+    "original_log_sha256": "437aa4ac7819ee901d909198c1c87d14e07f02607ccb21e1b099a9164e2900c2"
+  },
+  "maintenance": {
+    "old_path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\natural_duty_qualification_inventory_observation_heading_20261029.json",
+    "old_sha256": "715d58c7b4b478677310d54b439c9cd59774473b5eed1f9086d00a38b7ca9496",
+    "new_path": "D:\\riftcoach-review-route-diagnostics\\data\\evaluation\\results\\natural_duty_qualification_inventory_product_contract_20261030.json",
+    "new_sha256": "582f501c6b984d2facc5b3d4d5aa3fe38e06203ca5e40d3e0420020aa12f2ed9",
+    "changed_fields": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "unchanged_top_level_fields": 20,
+    "changed_sources": [
+      "app/runtime/coach_contract.py",
+      "app/runtime/coach_budget.py",
+      "app/runtime/models.py",
+      "app/product/natural_duty_candidate.py"
+    ],
+    "cases_unchanged": 15,
+    "requests_unchanged": 30,
+    "provider_calls": 0,
+    "old_bytes_preserved": true
+  },
+  "scope": {
+    "product_source_changed": false,
+    "real_model_calls": 0,
+    "original15_rerun": false,
+    "historical_snapshot_modified": false
+  },
+  "ci_change": "run 6 natural inventory checks plus current Sol inventory and 2 exact API-path checks before expensive jobs in web-checks",
+  "verification": {
+    "passed": 9,
+    "elapsed_seconds": 36.3,
+    "model_calls": 0,
+    "log_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preflight-20261030\\inventory-and-api-preflight.stdout.txt",
+    "log_sha256": "2e3b88faf5b47f7269d4de5ebc7d2794e69abcefacc607f700b3467fd2503c91"
+  },
+  "remaining_remote_jobs": [
+    "pytest-shards (0)",
+    "pytest-shards (1)"
+  ]
+}

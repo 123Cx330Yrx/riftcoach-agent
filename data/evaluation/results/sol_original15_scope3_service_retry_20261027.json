@@ -1,0 +1,201 @@
+{
+  "kind": "sol-original15-scope3-service-retry-20261027",
+  "audit_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-retry-0079-audit.json",
+  "audit_sha256": "b08180931bd158f72577e5da7d1ec299e0ff3ea4f85309bf416109904a301ec6",
+  "audit": {
+    "accounting": {
+      "calls": 2,
+      "reserved_tokens": 137228,
+      "retries": 1,
+      "tokens": 0
+    },
+    "automatic_retry": false,
+    "batch_accounting": {
+      "calls": 20,
+      "http_requests_known": 20,
+      "http_requests_unknown": 0,
+      "known_tokens": 336074,
+      "retries": 1,
+      "unknown_reserved_tokens": 137228
+    },
+    "batch_closed": false,
+    "case": "scope:3",
+    "exit": {
+      "case": "scope:3",
+      "exit_code": 0,
+      "operation": "run",
+      "stdout": "0079.stdout.txt",
+      "stdout_sha256": "d1a8af9d07f43f2e55ed02ba676f95270d4a642e7203fca3547e5282a85700ab"
+    },
+    "exit_sha256": "819283da020e553de30baccad12523ec38cc2bbe56a7f90c99866d3807e3110e",
+    "key_reads": 0,
+    "local_seconds_after_key_before_attempt": 595.3899999999994,
+    "manual_retry_required": true,
+    "new_provider_requests": 0,
+    "observation": {
+      "body_free": true,
+      "closed": true,
+      "eof": true,
+      "exception_type": null,
+      "http_requests": 1,
+      "last_bytes_ms": 47906,
+      "observed_ms": 47906,
+      "pending_read_since_ms": null,
+      "phase": "closed",
+      "raw_bytes": 141,
+      "raw_chunks": 1,
+      "read_calls": 2,
+      "response_request_id": null,
+      "response_status": 500,
+      "schema_version": "stream-observation-v1",
+      "stack": [
+        {
+          "file": "stream_observation.py",
+          "function": "_save",
+          "line": 88
+        },
+        {
+          "file": "stream_observation.py",
+          "function": "close",
+          "line": 115
+        },
+        {
+          "file": "reviewer_responses_nonstream.py",
+          "function": "collect",
+          "line": 287
+        },
+        {
+          "file": "reviewer_responses_process.py",
+          "function": "worker",
+          "line": 283
+        },
+        {
+          "file": "reviewer_responses_process.py",
+          "function": "<module>",
+          "line": 302
+        },
+        {
+          "file": "<frozen runpy>",
+          "function": "_run_code",
+          "line": 88
+        },
+        {
+          "file": "<frozen runpy>",
+          "function": "_run_module_as_main",
+          "line": 198
+        }
+      ],
+      "timeout": {
+        "connect": 300,
+        "pool": 300,
+        "read": 300,
+        "write": 300
+      }
+    },
+    "observation_sha256": "87d24b81dc0e69b85d6dbfbc26bf6815e33e998a59fe0341ad27de7348ec9f58",
+    "old_inventory_preserved": true,
+    "original_stdout_roots": {
+      "checkpoint_sha256": "ee90c7b07b7e8259f01620d1cd2d7017567f7311c8313ea9ea3ec176030041c7",
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427"
+    },
+    "provider_elapsed_s": 49.703,
+    "publication_allowed": false,
+    "qualified": false,
+    "read_only_inventory_unchanged": true,
+    "receipt": {
+      "code": "worker_rejected",
+      "conflicting_worker_usage": null,
+      "elapsed_s": 49.703,
+      "failure_category": "sdk_error",
+      "group_verified": false,
+      "http_requests": 1,
+      "ok": false,
+      "profile": {
+        "base_url": "https://yujianwudi.top/v1",
+        "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+        "model": "gpt-6.1-sol",
+        "route": "proxy-12000"
+      },
+      "qualified": false,
+      "reaped": true,
+      "request_sha256": "a0443f9f06af4b7fa49610945297a71a8ee61175db23c825b92c04fe6a6cd5a3",
+      "response_mode": "natural-sol-dual-necessity-v1",
+      "semantic_approval": false,
+      "upstream_identity_verified": false,
+      "usage": null,
+      "usage_basis": "channel_reported_unverified_upstream",
+      "usage_conflict": false,
+      "usage_state": "unknown",
+      "validation_context_sha256": "e6e76bc91af2c7c1f1632d99bc47af6b5d25473892d825f383107d07f92c1661",
+      "version": "research-responses-single-call-v1",
+      "wire_sha256": "5552530e9672e0a275206ba37d62255a77689f15eb84b624e8781d6f6d1e0cb7",
+      "worker_code": "http_status_500",
+      "worker_exit": 0
+    },
+    "receipt_sha256": "29bf3b46d29ac2d63aee52b1445d7e063853d6178f8c006e6cc07623875fe31d",
+    "replay_stop": "session_service_awaiting_manual_retry",
+    "request_context_profile_equal": {
+      "profile.json": true,
+      "request.json": true,
+      "validation-context.json": true
+    },
+    "retry_paused_without_new_terminal": true,
+    "semantic_output_available": false,
+    "stage": "facts-initial",
+    "status": {
+      "checkpoint_sha256": "ee90c7b07b7e8259f01620d1cd2d7017567f7311c8313ea9ea3ec176030041c7",
+      "closed": false,
+      "format_waiting": false,
+      "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+      "operations": 4,
+      "production_admitted": false,
+      "publication_allowed": false,
+      "timeout_waiting": false,
+      "transport_waiting": true,
+      "unresolved": []
+    },
+    "successful_cases_preserved": 5,
+    "third_attempt_exists": false,
+    "transport": {
+      "actual_attempts": 2,
+      "completed_calls": 0,
+      "failed_calls": 2,
+      "http_requests_known": 2,
+      "http_requests_unknown": 0,
+      "known_tokens": 0,
+      "known_usage_calls": 0,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 137228,
+      "unknown_usage_calls": 2
+    },
+    "version": "original15-scope3-service-retry-0079-v1"
+  },
+  "wire_check_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-500-wire-check.json",
+  "wire_check_sha256": "784247096ed30ff8564eab0858b33cf59e200747bbd72c7a3a01e76997002e72",
+  "wire_check": {
+    "method": "POST",
+    "url": "https://yujianwudi.top/v1/responses",
+    "content_type": "application/json",
+    "first_nonspace_character": "{",
+    "serialized_json_valid": true,
+    "serialized_body_sha256": "4356a55012654c99b18fbe89b97f8c0fb085c20d9db3f5ca7d981f41141edc93",
+    "stream": false,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "wire_matches_receipt": true,
+    "message_count": 4,
+    "tool_count": 1,
+    "simulated_sdk_status": 500,
+    "version": "original15-scope3-offline-wire-check-v1",
+    "real_http_requests": 0,
+    "key_reads": 0,
+    "user_reported_console_error": "status_code=500, invalid character ':' looking for beginning of value",
+    "console_error_source": "user_reported_not_locally_saved_response_body",
+    "raw_error_body_saved": false,
+    "conclusion": "The exact reconstructed wire is valid JSON and explicitly nonstream. Channel parsing location and upstream cause remain unverified.",
+    "upstream_sse_parse_hypothesis": "possible_not_proven",
+    "qualified": false,
+    "publication_allowed": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "binding": {
+    "key": "workspace-probe:initial",
+    "plan_sha256": "ed0e47c01c787f905b71fded98fcd2a51cd81d74889c04a2bcbd996c169d18ea",
+    "report_sha256": "f75db68f80d057e0e40811e7abdd346a6e7f12ef99eff13ef6ff3876ec0efcc4",
+    "request_sha256": "feebdc95a0dfd593f913dac4a5966c719ae7143b7550c187ed979924354cb2ff",
+    "response_sha256": "40d1ab8aff1daf1f69ef703099975fdf605443f252ea6d76f5577ff49fe0be1a",
+    "stage": "initial"
+  },
+  "review": {
+    "binding": {
+      "key": "workspace-probe:initial",
+      "plan_sha256": "ed0e47c01c787f905b71fded98fcd2a51cd81d74889c04a2bcbd996c169d18ea",
+      "report_sha256": "f75db68f80d057e0e40811e7abdd346a6e7f12ef99eff13ef6ff3876ec0efcc4",
+      "request_sha256": "feebdc95a0dfd593f913dac4a5966c719ae7143b7550c187ed979924354cb2ff",
+      "response_sha256": "40d1ab8aff1daf1f69ef703099975fdf605443f252ea6d76f5577ff49fe0be1a",
+      "stage": "initial"
+    },
+    "stage_assessment": {
+      "stage": "initial",
+      "stage_sha256": "47db78498c4fe701874e44ddc9222fbc6775ecccdc4a12287da5192ab36d81d7",
+      "reviewer": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+      "source_review": "本次审查仅针对当前checkpoint绑定的本地工作区演练。任务明确response.json由确定性离线fixture生成，传输与用量计数为合成值；文件中provider/model名称及工具调用形状不证明发生过真实Provider请求。本结论不认证付费调用、旧业务报告或产品资格。\n已完整读取当前任务、material.json的current_input_json、三段report、全部来源消息、全文policy及知识引用；calibrated_blocks为空。已读取实际issued-request.json、response.json及stage.json，issued request中的policy和两份来源消息与material逐字一致。独立文件验证器确认绑定摘要及stage摘要匹配。首次合并显示发生截断后，已分字段和连续片段补读完整材料，没有用截断部分替代全文。事实表按columns及table_rows_by_id恢复，generation_view、provenance、sample_boundaries、cohorts和role_contrasts均已读取。\n按当前HOST_BLOCK，第一段只是“工作区链路演练报告”标题。第二段的实际命题限定为所给来源中这五场比赛的实际queue_id均为420。source_roots编号32的facts:recent_match:00至04，对应表行2至6，比赛分别为KR_8371867671、KR_8370293236、KR_8370206038、KR_8367293977、KR_8366083389，每行queue_id均为420；sample_boundaries显示五行完整、无排除或失败，scope也为纳入五场。因此该全称覆盖有逐行证据，而不是仅从request.queue=420筛选条件推断实际队列。来源的player为DK ShowMaker#KR1，编号23的user_utterance明确观摩对象不是阅读者；第二段保留这一边界，并未代选位置、英雄或训练目标。\n第三段“报告应把事实、相关性和复盘假设分开表达。[K5]”是报告中的方法建议，与source_roots编号25所含K5“证据分层”的原文直接一致，知识引用实际支持该建议，并非只列来源名或随机挂号。该句没有要求审查者改变规则或输出，不构成提示注入。全文没有把统计外推为胜负原因、稳定能力、未来表现或个人胜率，也没有断言补刀、经济、伤害、早死等组间关系；不能把来源中的其他统计自动补成报告命题。external_fact_paths为空，来源标记没有可用外部快照，报告没有外部梯度、排名、补丁或录像解释，因而不存在必须消费OP.GG事实而未使用的问题。\n合成意见为score=96、verdict=pass，issues、issue_resolutions、advisories均为空，与当前短报告未发现实质问题相容。没有实际issue、explanation、correction或advisory需要逐项驳回，没有遗漏的事实冲突、无依据外推、内部矛盾或影响结论的未决歧义；也没有根据措辞偏好增加错误。stage的parsed_review和raw内容均表达同一意见，selected_sources为空与无issue一致；保留的三段报告与material相同，没有正确内容丢失或身份、目标改变。接受的是本次合成审查意见，report_assessment按任务要求保持null。",
+      "accepted": true,
+      "defects": []
+    },
+    "report_assessment": null
+  }
+}

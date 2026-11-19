@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "source_commit": "92fa3ea3359a073b003076568f455a3c4b4e1551",
+  "failed_ci": 41284579341,
+  "failed_job": 124783171312,
+  "failed_step": "Verify current inventory snapshots and exact API paths early",
+  "cause": "Current Runtime manifests were refreshed without refreshing two active qualification inventory snapshots. Local verification omitted this existing CI consumer.",
+  "ci_failure_log": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/ci-41284579341-web.log",
+    "sha256": "9f8bb13b51f3e190e2dcfa7bd864528625f97f70072b66072d2c2991d91bb449"
+  },
+  "inventories": [
+    {
+      "name": "natural-duty",
+      "parent_snapshot": "natural_duty_qualification_inventory_budget_supplement_20261101.json",
+      "parent_sha256": "8fa9949870c431e1200bb48f46e1c86e5f515a74cc1183f0ca5f0013723ab968",
+      "current_snapshot": "natural_duty_qualification_inventory_product_purpose_20261101.json",
+      "current_sha256": "fe9d90e1ce151ff2dd98d31ebc40ae6b32a513800798e4742b19e7dc98666725",
+      "changed_fields": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "changed_components": [
+        "app.product.natural_duty_candidate",
+        "app.runtime.coach_contract"
+      ],
+      "business_requests_labels_contract_unchanged": true
+    },
+    {
+      "name": "sol-review",
+      "parent_snapshot": "sol_review_qualification_inventory_protocol_recovery_20261101.json",
+      "parent_sha256": "158a78e78fa67ec00089800941062e9e076076767a98dd0f3a930a1b191259db",
+      "current_snapshot": "sol_review_qualification_inventory_product_purpose_20261101.json",
+      "current_sha256": "db304658bf2b5233df6e60ec518b25391fc4249de6da418df5276519d382235f",
+      "changed_fields": [
+        "component_fingerprints",
+        "program_sha256"
+      ],
+      "changed_components": [
+        "app.product.natural_duty_candidate",
+        "app.runtime.coach_contract",
+        "scripts.reviewer_responses_process"
+      ],
+      "business_requests_labels_contract_unchanged": true
+    }
+  ],
+  "historical_snapshots_modified": false,
+  "business_source_changed": false,
+  "local_preflight_change": "Existing check_runtime_profile_manifests now checks both current inventory snapshots using a shared pointer registry.",
+  "verification": {
+    "ci_preflight_and_historical_boundary_tests_passed": 12,
+    "runtime_profiles": 11,
+    "current_inventories": 2,
+    "previous_stale_snapshot_rejected": true,
+    "governance": "passed",
+    "diff_check": "passed",
+    "replacement_ci": "pending"
+  },
+  "public_document_followup": {
+    "url": "https://doc.yujianwudi.top/",
+    "evidence": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/provider-documentation-followup.json",
+    "sha256": "d01fee3a9e6dca5e6ccbbb07c5adf6f3858f2b75ad686941cafcf850bc9f1687",
+    "responses_event_contract_found": false,
+    "provider_contacted": false
+  },
+  "new_model_http": 0,
+  "model_credential_reads": 0,
+  "product_status": "P1_complete_P2_partial_verified; route contract and full-path resource evidence still required"
+}

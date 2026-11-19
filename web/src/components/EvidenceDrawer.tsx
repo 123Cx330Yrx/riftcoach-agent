@@ -226,7 +226,7 @@ export function EvidenceDrawer({ evidence, events, run }: EvidenceDrawerProps) {
                             : t(joinLabelKeys[join.labelCode])
                           const sources = join.sourcesPresent.map((source) => t(sourceNameKeys[source])).join(", ")
                           return (
-                            <article key={`${join.labelCode}-${join.championName ?? index}`}>
+                            <article key={`${join.labelCode}-${index}`}>
                               <small>{t(joinStatusKeys[join.status])}</small>
                               <strong>{label}</strong>
                               <p>{sources === "" ? t("evidence.join.no_sources") : t("evidence.join.sources", { sources })}</p>
@@ -239,11 +239,11 @@ export function EvidenceDrawer({ evidence, events, run }: EvidenceDrawerProps) {
                     {evidence.gaps.length > 0 && (
                       <section aria-labelledby="gaps-title">
                         <div className="drawer-section-title"><span>04</span><h3 id="gaps-title">{t("evidence.section.gaps")}</h3></div>
-                        {evidence.gaps.map((gap) => {
+                        {evidence.gaps.map((gap, index) => {
                           const known = knownGapKeys[gap.code]
                           const source = gap.sourceKind === undefined ? t("common.unknown") : t(sourceNameKeys[gap.sourceKind])
                           return (
-                            <article className="evidence-gap" key={gap.code}>
+                            <article className="evidence-gap" key={`${gap.code}-${index}`}>
                               <strong>{known === undefined ? t("evidence.gap.generic.title") : t(known.title)}</strong>
                               <p>{known === undefined ? t("evidence.gap.generic.body", { source }) : t(known.body)}</p>
                             </article>

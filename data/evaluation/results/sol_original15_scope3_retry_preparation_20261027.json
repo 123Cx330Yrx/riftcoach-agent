@@ -1,0 +1,117 @@
+{
+  "kind": "original15-scope3-retry-preparation-20261027-v1",
+  "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-retry-preparation-20261027.json",
+  "evidence_sha256": "08b7207a3a31d6e913efcd4a0cf177ea3421dbf670cbe4de4251764dbb52d4ca",
+  "preparation": {
+    "version": "original15-scope3-retry-preparation-20261027-v1",
+    "created_at": "2026-10-27T05:48:13.090849+00:00",
+    "case": "scope:3",
+    "stage": "facts-initial",
+    "root_cause_500": "unresolved",
+    "upstream_general_outage_proven": false,
+    "client_request_format_error_found": false,
+    "request_recheck_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-request-recheck-20261027.json",
+    "request_recheck_sha256": "08a7228b1f6e9dba8fdfa3f8a3ea08c37dac4a66cba848fe0943cb0cb6dff1b1",
+    "performance": {
+      "before": {
+        "total_profile_seconds": 355.67714160000156,
+        "native_client_requests": 996,
+        "native_gate_validations": 230,
+        "collaboration_log_reads": 515,
+        "prefix_replay_seconds": 343.9197191,
+        "exit": {
+          "operation": "run",
+          "case": "scope:3",
+          "exit_code": 0,
+          "stdout": "0080.stdout.txt",
+          "stdout_sha256": "7d2c84a71a966b62a03bdb86e3ef4ad60d3594d47c3814fbadbdac7d0d0d96ae"
+        },
+        "exit_sha256": "3bc7cbb1e8d8a5ccf198c4800a0e91ba3abe9eddea72b9a567c200f263ee9f26",
+        "original_stdout_roots": {
+          "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+          "checkpoint_sha256": "185a4119d162965cd0c527947e8777a4bf9c8367a8bbd820d85a08debc3d0763",
+          "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\scope-3\\session\\checkpoints\\0020.json",
+          "phase": "paused"
+        },
+        "profile_sha256": "981710b3ae3864e31e38e63550d49ec935e3dc0b33bf5d840c35863478de3e6a",
+        "stop_reason": "original15_awaiting_manual_retry"
+      },
+      "after": {
+        "total_profile_seconds": 269.9922103000011,
+        "native_client_requests": 464,
+        "native_gate_validations": 230,
+        "collaboration_log_reads": 515,
+        "prefix_replay_seconds": 258.9061275,
+        "exit": {
+          "operation": "run",
+          "case": "scope:3",
+          "exit_code": 0,
+          "stdout": "0081.stdout.txt",
+          "stdout_sha256": "69f0b838f59fcda98a54e556648898ec61fe779da282085d4c4fddf4144a42db"
+        },
+        "exit_sha256": "d176fd4f6ea9b9a64f08729e2a717242697aea74c32cbdccb34fb09384bc012a",
+        "original_stdout_roots": {
+          "guard_sha256": "38d6f040738b9b15190c3f33f15b99c7691a8abe5644006c2474e472de582427",
+          "checkpoint_sha256": "9c01fcbcb497f9ad1529dd2717bef2db3fd618d1bee127e45c647f107fdd4cd5",
+          "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025\\cases\\scope-3\\session\\checkpoints\\0021.json",
+          "phase": "paused"
+        },
+        "profile_sha256": "44305df2f2d880aced80fa64878eef5cf824d50169126bfa7d2575fdeca752ba",
+        "stop_reason": "original15_awaiting_manual_retry"
+      },
+      "reduction_percent": 24.09064887176885,
+      "comparison_limit": "Two sequential real host-only runs under the same cProfile instrumentation; local and native-service load varies; not a guaranteed future latency.",
+      "mechanism": "Share identical live RPC reads only within a single native validation; all original provenance, byte and source checks still execute; next validation reads live again; collaboration logs remain uncached."
+    },
+    "installed_controls": {
+      "module_sha256": "a00cafc869448153dbe7600364705fc77c021977cb6bd1b03f0c8a5731838d5d",
+      "manifest_sha256": "2078684b804a04373e0bf5ee8d276cc3e9dfafc42a65dbd12eaf77a299b4a989",
+      "operator_sha256": "2fca7aa87c023d4f54a654c65f7c9e5c3b123a52f3d5947b6e1097f810652089",
+      "settings_sha256": "da03b68a4a6ee56fbfd8b0eaf3fb2b6554dad9fdb2a55e1589c00b291d368bdf",
+      "provider_requests": 0,
+      "key_reads": 0,
+      "focused_tests_passed": 21
+    },
+    "tests": {
+      "nonstream_and_transport_recovery_passed": 103,
+      "snapshot_passed": 7,
+      "newline_recovery_passed": 16,
+      "evidence_basis": "Completed focused test runs in this preparation session; separate runs, not one combined suite; simulated coverage is not paid model evidence."
+    },
+    "original_inventory_files_verified": 1012,
+    "original_inventory_preserved": true,
+    "original_inventory_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-3-service-failure.json",
+    "original_inventory_evidence_sha256": "93fe70f14567e3e59fe0aa39b69c8c396479475a086d1fd388e541ca92d6b89e",
+    "successful_cases_preserved": 5,
+    "successful_prefix_native_source_author_validation_passed": true,
+    "batch_accounting": {
+      "calls": 20,
+      "http_requests_known": 20,
+      "http_requests_unknown": 0,
+      "known_tokens": 336074,
+      "unknown_reserved_tokens": 137228,
+      "retries": 1
+    },
+    "new_provider_requests": 0,
+    "key_reads": 0,
+    "third_attempt_exists": false,
+    "batch_closed": false,
+    "qualified": false,
+    "publication_allowed": false,
+    "production_admitted": false,
+    "execution_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+    "execution_clean": true,
+    "ci_run": "40188299016",
+    "ci_relaunch_required": false,
+    "authorization_expires_at": "2026-10-27T16:21:46.567089+00:00",
+    "ready_for_manual_retry": true,
+    "automatic_retry": false,
+    "next_command": "& 'C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\start-authorized.ps1' -Case 'scope:3' -ManualRetry",
+    "limitations": [
+      "500 root cause not located; local performance improvement does not fix or explain 500",
+      "No new console log obtained; public status endpoint does not establish model route health",
+      "Historical closed failure and raw stdout/exit roots remain unchanged",
+      "Unknown token reserves are not an actual bill; cumulative cost accounting is not reset"
+    ]
+  }
+}

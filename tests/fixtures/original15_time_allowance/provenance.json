@@ -1,0 +1,22 @@
+{
+  "commit": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+  "purpose": "Archived original15 time-only adapter regression; never current product execution. Exact dedented methods from the frozen remaining-two execution version. Imports are supplied by current module globals only for offline test execution.",
+  "methods": {
+    "chat": {
+      "source_path": "app/runtime/coach_budget.py",
+      "source_blob_sha256": "dad3a44a3e50589d678839cbaaebc6c21466d01dbb78e928858ae6812d32b83a",
+      "class": "CoachBudgetedProvider",
+      "method": "_chat_once",
+      "file": "chat.py",
+      "sha256": "6d2d39350cb7e30b39161bda42c3953dfcd5cfb75fa954f0ffaddc15d757883a"
+    },
+    "retry": {
+      "source_path": "app/runtime/sol_session_runtime.py",
+      "source_blob_sha256": "5b9d3b49f9ff3147197050dc680d8e155ccc4cfb8e2c9ec0e0c9504f867ae933",
+      "class": "SessionBudget",
+      "method": "_manual_retry",
+      "file": "retry.py",
+      "sha256": "25f3e0545050c182a4a2a850e631cf0f9d0b912564e947dd663fe121db8ffe01"
+    }
+  }
+}

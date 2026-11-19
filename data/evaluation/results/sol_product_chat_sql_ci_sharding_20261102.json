@@ -1,0 +1,172 @@
+{
+  "kind": "sol-product-chat-postgres-ci-sharding-v1",
+  "created_at": "2026-11-02T07:39:27.192899+00:00",
+  "base_commit": "e84e3a3ebda3f92a8ba2217f3b9c2ca4ba8a12fa",
+  "diagnosis": {
+    "kind": "postgres-ci-timeout-diagnosis-v1",
+    "checked_at": "2026-11-02T07:31:08.866950+00:00",
+    "head": "e84e3a3ebda3f92a8ba2217f3b9c2ca4ba8a12fa",
+    "run_id": 41402912392,
+    "job_id": 125138442882,
+    "job_conclusion": "cancelled",
+    "annotation": "The job has exceeded the maximum execution time of 20m0s",
+    "job_started_at": "2026-11-02T06:54:50Z",
+    "job_completed_at": "2026-11-02T07:15:05Z",
+    "test_step_started_at": "2026-11-02T06:55:19Z",
+    "test_step_cancelled_at": "2026-11-02T07:15:02Z",
+    "migration_roundtrip": "success",
+    "progress_lines": [
+      "2026-11-02T06:56:13.3395263Z ........................................................................ [ 22%]",
+      "2026-11-02T07:07:45.8675121Z ........................................................................ [ 44%]",
+      "2026-11-02T07:14:05.5767937Z ........................................................................ [ 66%]",
+      "2026-11-02T07:14:56.3342765Z ........................................................................ [ 88%]"
+    ],
+    "completed_pass_markers_at_least": 288,
+    "pytest_assertion_failure_observed": false,
+    "exact_last_test_identified": false,
+    "interpretation": "The suite was advancing through 88 percent; evidence supports a serial job duration limit, not a proven stuck test or product assertion failure.",
+    "log": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/postgres-job.log",
+      "sha256": "29d3a96eb48c0570e663e2a1181bc56bfe5d0a40258eff976740e13707498919",
+      "bytes": 87816
+    }
+  },
+  "repair": {
+    "scope": "CI workflow, shard runner and its tests; no product source changes",
+    "sql_files": 51,
+    "file_list_exactly_preserves_previous_selection": true,
+    "sql_shards": 4,
+    "per_job_timeout_minutes": 20,
+    "fail_fast": false,
+    "isolation": "Each CI shard owns a runner and PostgreSQL service; local validation used four separate databases in one owned container",
+    "required_gate": "postgres-migrations retains migration roundtrip and metadata checks, requires all shards successful and same-HEAD exact coverage with zero skips",
+    "other_jobs_unchanged": true,
+    "required_checks": "all checks, including four SQL shards and their aggregate; 12 jobs in the current workflow"
+  },
+  "local_verification": {
+    "inventory": {
+      "head_sha": "e84e3a3ebda3f92a8ba2217f3b9c2ca4ba8a12fa",
+      "shard_count": 4,
+      "collected": 326,
+      "completed": 326,
+      "skipped": 0,
+      "subtest_reports": 0,
+      "exact_full_coverage": true
+    },
+    "shard_pass_counts": [
+      82,
+      82,
+      81,
+      81
+    ],
+    "shard_seconds": [
+      390.5,
+      479.95,
+      425.2,
+      452.48
+    ],
+    "shard_tool_tests_passed": 17,
+    "migration_roundtrip": "passed",
+    "metadata_check": "passed",
+    "candidate_identity": "Dirty candidate tree on base_commit; not remote CI for a new committed HEAD",
+    "container_removed": "rc-chat-ci-sql-20261102"
+  },
+  "boundaries": {
+    "new_head_ci": "pending commit and push",
+    "local_duration_is_not_hosted_runner_guarantee": true,
+    "paid_model_http": 0,
+    "real_model_credential_reads": 0,
+    "old_tasks_and_costs_unchanged": true,
+    "stage_8e_and_default_admission_unchanged": true,
+    "business_semantic_acceptance": false
+  },
+  "evidence": [
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/diagnosis.json",
+      "sha256": "8b2d33f017d9411e065aca55797621b0a05cb4c05d4e463a0ebc2e05034fadf9",
+      "bytes": 1581
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/postgres-job.log",
+      "sha256": "29d3a96eb48c0570e663e2a1181bc56bfe5d0a40258eff976740e13707498919",
+      "bytes": 87816
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/shard-tool-tests.log",
+      "sha256": "7ab8f6aef46c073a1bea1ce761e60970b812866634c66d83c65077805168d4dc",
+      "bytes": 101
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/migrations.log",
+      "sha256": "0ce4309a28984dab45c54c0391b46f0f7bba5d533a6212ed0303452453a96945",
+      "bytes": 8636
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/sql-shard-0.log",
+      "sha256": "3d251c730bfbddf86b5bf4526ae0d1a40d63cd28bb8bd7cb353a7105dd469f2b",
+      "bytes": 14110
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/sql-shard-1.log",
+      "sha256": "06a7243f0cd22dc4ed8ea2f661128255c4b92a4cbd6824245a45c4a653bcee38",
+      "bytes": 14426
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/sql-shard-2.log",
+      "sha256": "6553af212379d20b06fa5dd119d459d0402ace338e0e7741611adfeb2ce407ae",
+      "bytes": 14069
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/sql-shard-3.log",
+      "sha256": "feff56c8802d1542eb59272a6ed7a58438d007b17189d305d44c1d44d0d79935",
+      "bytes": 14164
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/inventory/shard-0.json",
+      "sha256": "a02dd9978ef289641a06179babcf192a344fc1cf2b9b6ed5195fde7003d6cd0f",
+      "bytes": 59351
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/inventory/shard-1.json",
+      "sha256": "fc6eacf4cf18a7bc1cfcb29f5561994b858d463269e12bca7a85d835f8f42d53",
+      "bytes": 59837
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/inventory/shard-2.json",
+      "sha256": "1bdd22c60c6bf88975d63d1c6407bd5256e6a77bf2151f1ae991f85fbdc9fdb8",
+      "bytes": 59321
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-recovery-20261102/inventory/shard-3.json",
+      "sha256": "b3e793c2704ff27dc9e5bd05f9d0d6f9265c7d2d958bdfa6fe7f6615348f1cbf",
+      "bytes": 59533
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "D:/riftcoach-review-route-diagnostics/.github/workflows/tests.yml",
+      "sha256": "3c605ff6af592d1038b7a8689a98264f0a6aa1aa4265beacf5b14ff8251ff91c",
+      "bytes": 16163
+    },
+    {
+      "path": "D:/riftcoach-review-route-diagnostics/scripts/ci_test_shards.py",
+      "sha256": "03fabf298f68693bc58507dbd08432efaa1bbcc23b527f9d9bfaf51e393ef87e",
+      "bytes": 5735
+    },
+    {
+      "path": "D:/riftcoach-review-route-diagnostics/tests/postgres_ci_files.txt",
+      "sha256": "6884e60295790b4440c3841049f7b4b1324ea45fdfad80f2ba0eb259293ec707",
+      "bytes": 2349
+    },
+    {
+      "path": "D:/riftcoach-review-route-diagnostics/tests/test_ci_test_shards.py",
+      "sha256": "dea4b9dd7173ebd961f42012e5211e072b16ad2b00eb523903e225e57b072de7",
+      "bytes": 5969
+    },
+    {
+      "path": "D:/riftcoach-review-route-diagnostics/tests/test_database_config.py",
+      "sha256": "2e7234dca06b7dd1913e07f5324b11975a22614ed19158553e4fabde9a5540f8",
+      "bytes": 7806
+    }
+  ]
+}

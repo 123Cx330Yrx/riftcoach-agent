@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-09-04T08:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 4,
+    "matches_received": 4,
+    "matches_analyzed": 4
+  },
+  "player": {
+    "game_name": "HarborQuill",
+    "tag_line": "V2",
+    "riot_id": "HarborQuill#V2",
+    "puuid_prefix": "glm53-hardened-anon..."
+  },
+  "request": {
+    "count": 4,
+    "queue": 420,
+    "region": "asia"
+  },
+  "recent_summary": {
+    "games_analyzed": 4,
+    "wins": 2,
+    "losses": 2,
+    "win_rate": 50.0,
+    "main_role": "MIDDLE",
+    "main_champions": ["星轨练习者", "潮汐练习者"],
+    "averages": {
+      "cs_per_min": 7.05,
+      "deaths_before_15": 1.0
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 7.6,
+        "deaths_before_15": 0.5
+      },
+      "losses": {
+        "cs_per_min": 6.5,
+        "deaths_before_15": 1.5
+      }
+    },
+    "champion_summary": [
+      {"champion": "星轨练习者", "games": 3, "wins": 2, "win_rate": 66.67},
+      {"champion": "潮汐练习者", "games": 1, "wins": 0, "win_rate": 0.0}
+    ],
+    "role_summary": [
+      {"role": "MIDDLE", "games": 4, "wins": 2, "win_rate": 50.0}
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "GLM53_HARDENED_SYNTH_641",
+      "game_duration_seconds": 1840,
+      "champion_id": 950641,
+      "champion_name": "星轨练习者",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 7.8,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_HARDENED_SYNTH_642",
+      "game_duration_seconds": 2010,
+      "champion_id": 950642,
+      "champion_name": "星轨练习者",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.7,
+      "deaths_before_15": 1
+    },
+    {
+      "match_id": "GLM53_HARDENED_SYNTH_643",
+      "game_duration_seconds": 1760,
+      "champion_id": 950643,
+      "champion_name": "潮汐练习者",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.3,
+      "deaths_before_15": 2
+    },
+    {
+      "match_id": "GLM53_HARDENED_SYNTH_644",
+      "game_duration_seconds": 1900,
+      "champion_id": 950644,
+      "champion_name": "星轨练习者",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 7.4,
+      "deaths_before_15": 1
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}
+

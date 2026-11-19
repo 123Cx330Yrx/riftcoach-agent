@@ -1,3 +1,4 @@
+import { TASK_EVENT_KINDS } from "./wire"
 import type {
   EvidenceClaimWire,
   EvidenceConfidenceWire,
@@ -26,6 +27,7 @@ import type {
   RecentSummaryWire,
   RoutingRegionWire,
   RunWire,
+  RunUsageWire,
   RunTimelineEventWire,
   RunTimelineMatchWire,
   RunTimelineWire,
@@ -402,7 +404,7 @@ export function decodeTaskEvent(value: unknown, expected: ExpectedTaskRunBinding
     task_id: taskId,
     run_id: runId,
     task_sequence: number(row.task_sequence, `${path}.task_sequence`, { integer: true, min: 1 }),
-    event_kind: enumeration(row.event_kind, ["created", "claimed", "execution_started", "heartbeat", "cancel_requested", "checkpoint_saved", "recovery_required", "requeued", "succeeded", "failed", "cancelled"] as const, `${path}.event_kind`) as TaskEventKindWire,
+    event_kind: enumeration(row.event_kind, TASK_EVENT_KINDS, `${path}.event_kind`) as TaskEventKindWire,
     status_after: taskStatus(row.status_after, `${path}.status_after`),
     lease_generation: number(row.lease_generation, `${path}.lease_generation`, { integer: true, min: 0 }),
     reason: nullable(row.reason, (item) => safeCode(item, `${path}.reason`)),
@@ -478,6 +480,35 @@ function decodeUsage(value: unknown): RuntimeUsageWire {
   }
 }
 
+export function decodeRunUsage(value: unknown, expectedRunId: string): RunUsageWire {
+  const row = record(value, "run_usage")
+  exact(row, ["schema_version", "run_id", "task_status", "usage", ...("session_accounting" in row ? ["session_accounting"] : [])], "run_usage")
+  const runId = safeId(row.run_id, "run_usage.run_id")
+  if (runId !== safeId(expectedRunId, "expected run")) throw new Error("usage run binding mismatch")
+  return {
+    schema_version: literal(row.schema_version, "1.0", "run_usage.schema_version"),
+    run_id: runId,
+    task_status: enumeration(row.task_status, ["succeeded", "failed", "cancelled"] as const, "run_usage.task_status"),
+    usage: nullable(row.usage, decodeUsage),
+    ...("session_accounting" in row ? { session_accounting: decodeSessionAccounting(row.session_accounting) } : {}),
+  }
+}
+
+export function decodeSessionAccounting(value: unknown) {
+  const row = record(value, "session_accounting")
+  const keys = ["requests_reserved", "requests_observed", "known_tokens", "unknown_token_reservation", "retries", "unresolved_intents"] as const
+  exact(row, ["scope", ...keys], "session_accounting")
+  for (const key of keys) {
+    if (typeof row[key] !== "number" || !Number.isSafeInteger(row[key]) || (row[key] as number) < 0) throw new Error("invalid session accounting")
+  }
+  return {
+    scope: literal(row.scope, "cumulative_session", "session_accounting.scope"),
+    requests_reserved: row.requests_reserved as number, requests_observed: row.requests_observed as number,
+    known_tokens: row.known_tokens as number, unknown_token_reservation: row.unknown_token_reservation as number,
+    retries: row.retries as number, unresolved_intents: row.unresolved_intents as number,
+  }
+}
+
 export function decodeRun(value: unknown, expectedRunId: string): RunWire {
   const row = record(value, "run")
   exact(row, ["schema_version", "run_id", "runtime_status", "publication_status", "terminal_reason", "skill_name", "skill_version", "prompt_profile_id", "prompt_profile_version", "started_at_utc", "completed_at_utc", "elapsed_ms", "usage", "report_available"], "run")
@@ -509,7 +540,7 @@ function metricRow(value: unknown, path: string): RecentMetricRowWire {
     gold_per_min: number(row.gold_per_min, `${path}.gold_per_min`, { min: 0 }),
     damage_per_min: number(row.damage_per_min, `${path}.damage_per_min`, { min: 0 }),
     vision_score: number(row.vision_score, `${path}.vision_score`, { min: 0 }),
-    deaths_before_15: number(row.deaths_before_15, `${path}.deaths_before_15`, { min: 0 }),
+    deaths_before_15: nullable(row.deaths_before_15, (item) => number(item, `${path}.deaths_before_15`, { min: 0 })),
   }
 }
 

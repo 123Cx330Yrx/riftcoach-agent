@@ -1,0 +1,127 @@
+{
+  "kind": "chat-product-draft-guard-recovery-prepared-v1",
+  "at": "2026-11-03T01:15:35.340502+00:00",
+  "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+  "run_id": "review_ee91ab480ecf4c4992f82ec08cc4bbf4",
+  "runs_root": "D:\\rc-chat-guard-recovery-20261103\\verified-runs",
+  "proof_path": "D:\\rc-chat-guard-recovery-20261103\\verified-runs\\review_ee91ab480ecf4c4992f82ec08cc4bbf4-recovery.json",
+  "proof_sha256": "06fcf4b902db3ad481a69802ff3e636f5d918736de30a60d5354c62ab5244f9c",
+  "parent_originals": 102,
+  "operations": 12,
+  "parent_db_sha256": "fb970618cd63bcc9227c91274ac422f3411e45f8263b5f8b67ced28430717643",
+  "database": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-guard-recovery-20261103\\recovered-db.dump",
+  "database_sha256": "8e720688c06832f23c71c97a6eafce9039ab9ec659130b7b2c6986df9ef38076",
+  "checkpoint": "D:\\rc-chat-guard-recovery-20261103\\verified-runs\\review_ee91ab480ecf4c4992f82ec08cc4bbf4\\.continuation\\session\\checkpoints\\0004.json",
+  "checkpoint_sha256": "a7f34dc7deed3f4a6757ece025a608eae4230d3d7a9a68a641f4754585d351b8",
+  "active_seconds": 62.07800000000316,
+  "accounting": {
+    "scope": "cumulative_session",
+    "retries": 0,
+    "known_tokens": 29849,
+    "requests_observed": 3,
+    "requests_reserved": 3,
+    "unresolved_intents": 0,
+    "unknown_token_reservation": 0
+  },
+  "pending_request": {
+    "role": "review",
+    "duty": "facts",
+    "stage": "initial",
+    "max_tokens": 16384,
+    "timeout_s": 300.0,
+    "input_token_ceiling": 62540,
+    "reservation_tokens": 78924,
+    "request_sha256": "b9d22eda8d670017a7739e9c007b082f5015d46c4b56b3e73eb54abc8fc259cd"
+  },
+  "report_sha256": "f35293607ba9f0a12779e74faf25b328025fdf2779220e0fb9f8ac447ac07acf",
+  "snapshot_sha256": "696b05904ee4b60d88cceefb0581f1e6175b791070b042bd40ff6ef6d83b9365",
+  "snapshot_entries": 64,
+  "source_requests": 0,
+  "model_requests": 0,
+  "real_credentials_read": 0,
+  "originals_unchanged": true,
+  "publication_allowed": false,
+  "paid_authorized": false,
+  "source_base_head": "afe24661d60a34a4a034dfab3a8a429856989d45",
+  "previous_fix_ci": {
+    "run": 41486674481,
+    "conclusion": "success",
+    "jobs": 12
+  },
+  "new_commit_ci": "pending_after_grouped_push",
+  "authorization": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-product-validation-20261102\\authorization.json",
+    "sha256": "e04215bfc3c294214c11df5f7e063f672bc31fd95c081956e76d8b1415fe6580",
+    "paid_retry_after_failure": false,
+    "expires_at": "2026-11-03T16:30:06+00:00",
+    "new_paid_authorization": false
+  },
+  "preserved": {
+    "generation_successes": 3,
+    "model_http": 3,
+    "known_tokens": 29849,
+    "unknown_reserve": 0,
+    "receiptless": 0,
+    "retries": 0,
+    "parent_active_seconds": 61.047,
+    "parent_terminal": "draft_safety_failed",
+    "parent_failure_code": "report_missing_headings",
+    "original_request_cap": 32768,
+    "original_authorized_cap": 16384,
+    "original_cap_mismatch_not_rewritten": true
+  },
+  "limits": {
+    "max_calls": 8,
+    "total_tokens": 401920,
+    "active_seconds": 900,
+    "timeout_per_request": 300,
+    "new_review_output_cap": 16384
+  },
+  "remaining": {
+    "calls": 5,
+    "tokens_including_unknown": 372071,
+    "active_seconds": 837.922
+  },
+  "verification": {
+    "sql_recovery_cases": 47,
+    "sql_evidence": "44 cases passed before adding evidence-bound/cancellation/read-error coverage; final 11 new cases verified (10 plus corrected cancellation case). Old 36 cases reused.",
+    "chat_product_binding_cases": 38,
+    "chat_evidence": "32 initially passed; six failures subsequently passed on fixed source (two resume and five identity/usage cases; one overlaps prior success).",
+    "runtime_profiles": 12,
+    "current_inventories": 2,
+    "actual_sql_worker_zero_send": true,
+    "unchanged_report": true,
+    "old_and_new_snapshot_publication": "scripted models only",
+    "new_report_quality_accepted": false,
+    "governance": "passed"
+  },
+  "verification_failures": [
+    "Initial current-manifest and sol-review inventory checks correctly detected source drift; regenerated current manifests and a new inventory, preserving old snapshots.",
+    "Source was edited while a Chat regression batch ran: four concrete fingerprint-drift failures and one service_configuration_invalid; corrected execution ordering, fixed-source checks passed.",
+    "One scripted read_error usage assertion returned None once; focused rerun passed, original cause not established. Not evidence of a real provider failure.",
+    "New cancellation test violated SQL cancellation shape. Replaced direct UPDATE with normal service cancellation, then verified cancellation blocks resume."
+  ],
+  "scope_guard": {
+    "location": "CandidateSession.operation before new model intent and provider IO",
+    "new_only": true,
+    "historical_replay_unchanged": true,
+    "allowed_role": "review",
+    "safe_read_failure": "SessionBlocked",
+    "new_key_reads": 0
+  },
+  "limitations": [
+    "No real Sol review, patch, fresh or publication has happened.",
+    "The unchanged draft still needs full source-grounded semantic review; local findings are not imported opinions.",
+    "Recovery is explicit administration followed by ordinary resume/Worker; no automatic recovery UI is claimed.",
+    "Future fresh tasks still need generation-cap authorization/configuration alignment; this recovery forbids new generation.",
+    "No new paid retry authorization and no new default admission or Stage8E completion."
+  ],
+  "cleanup": {
+    "at": "2026-11-03T01:17:03.811035+00:00",
+    "owned_container_id": "6c640743218b9283a3dbcad1a1d806e627827177f22e88891ac4454f2311c03d",
+    "owned_container_removed": true,
+    "actual_worker_exited": true,
+    "no_api_or_web_started": true,
+    "no_live_model_runner": true
+  }
+}

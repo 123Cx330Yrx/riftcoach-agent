@@ -1,0 +1,192 @@
+{
+  "kind": "sol-product-chat-ci-contract-followup-v1",
+  "created_at": "2026-11-02T10:40:19.672410+00:00",
+  "base_commit": "ed1ad9c069225d3fc76dd168a6528b49d57cd70f",
+  "ci": {
+    "id": 41407947133,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41407947133",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "name": "packaging-smoke",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (2)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (0)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "conclusion": "failure"
+      },
+      {
+        "name": "web-checks",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (1)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-tests (3)",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "conclusion": "success"
+      },
+      {
+        "name": "postgres-migrations",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  "failure": {
+    "job": "pytest-shards (2)",
+    "job_id": 125154160654,
+    "nodeid": "tests/test_packaging_contract.py::test_ci_blocks_on_conversation_review_migration_and_repository_contracts",
+    "summary": {
+      "failed": 1,
+      "passed": 1972,
+      "skipped": 69,
+      "deselected": 6126,
+      "subtests_passed": 47,
+      "seconds": 4825.44
+    },
+    "cause": "Previous SQL sharding change moved file selection into a manifest but missed the packaging test that asserted inline filenames in the old job",
+    "local_reproduction": "same assertion failed once before repair, 0.32 seconds",
+    "aggregate_failure_is_consequence": true,
+    "responsibility": "CI configuration consumer audit omitted test_packaging_contract.py; not evidence of a new product or provider failure"
+  },
+  "sql_remote_verification": {
+    "collected": 326,
+    "completed": 326,
+    "skipped": 0,
+    "exact_full_coverage": true,
+    "pass_counts": [
+      82,
+      82,
+      81,
+      81
+    ],
+    "test_seconds": [
+      246.51,
+      356.92,
+      224.95,
+      277.36
+    ],
+    "migration_and_metadata": "success",
+    "evidence": [
+      {
+        "name": "sql-0",
+        "job_id": 125154160634,
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-ci-followup-20261102\\sql-0.log",
+        "sha256": "a85c519fdcdb516fa9345d7118b018bb8bc026cf7e1375fe45d08a410aaacc97",
+        "summary": [
+          "2026-11-02T07:46:33.3544820Z ========== 82 passed, 244 deselected, 1 warning in 246.51s (0:04:06) ==========="
+        ]
+      },
+      {
+        "name": "sql-1",
+        "job_id": 125154160735,
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-ci-followup-20261102\\sql-1.log",
+        "sha256": "022a93b1d934830864f83720c8ad12fd62cd18f73fed2c5a060c07cbbc5fe09f",
+        "summary": [
+          "2026-11-02T07:48:13.1140372Z ========== 82 passed, 244 deselected, 1 warning in 356.92s (0:05:56) ==========="
+        ]
+      },
+      {
+        "name": "sql-2",
+        "job_id": 125154160618,
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-ci-followup-20261102\\sql-2.log",
+        "sha256": "261b13585f8950211ad2e720716569f803c1390d4a33e7da9e2ab1381bd5fa4e",
+        "summary": [
+          "2026-11-02T07:45:58.3111003Z ========== 81 passed, 245 deselected, 1 warning in 224.95s (0:03:44) ==========="
+        ]
+      },
+      {
+        "name": "sql-3",
+        "job_id": 125154160796,
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-ci-followup-20261102\\sql-3.log",
+        "sha256": "13b68aedc45090a4908814c568e96b1f3cc2dd208dac6f01957eb8dfeb4e707e",
+        "summary": [
+          "2026-11-02T07:46:59.3527613Z ========== 81 passed, 245 deselected, 1 warning in 277.36s (0:04:37) ==========="
+        ]
+      },
+      {
+        "name": "sql-aggregate",
+        "job_id": 125156388754,
+        "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-ci-followup-20261102\\sql-aggregate.log",
+        "sha256": "eaabf151ae88373a6219fbb243b1a387e1b963bd9fe6ad116dfe3e89e98e2fa6",
+        "summary": [
+          "2026-11-02T07:49:02.4652718Z {\"head_sha\": \"ed1ad9c069225d3fc76dd168a6528b49d57cd70f\", \"shard_count\": 4, \"collected\": 326, \"completed\": 326, \"skipped\": 0, \"subtest_reports\": 0, \"exact_full_coverage\": true}",
+          "2026-11-02T07:49:03.7987098Z No new upgrade operations detected."
+        ]
+      }
+    ]
+  },
+  "repair": {
+    "changed_test": "tests/test_packaging_contract.py::test_ci_blocks_on_conversation_review_migration_and_repository_contracts",
+    "assertion": "Follow migration dependency to SQL shard and actual file list; preserve all five required conversation-review and memory-candidate test files",
+    "ci_workflow_unchanged": true,
+    "sql_test_list_unchanged": true,
+    "product_sources_unchanged": true
+  },
+  "validation": {
+    "direct_workflow_consumers": [
+      "tests/test_database_config.py",
+      "tests/test_frontend_package_contract.py",
+      "tests/test_packaging_contract.py"
+    ],
+    "tests_passed": 28,
+    "seconds": 1.03,
+    "command": "python -X utf8 -m pytest tests/test_packaging_contract.py tests/test_database_config.py tests/test_frontend_package_contract.py -q --tb=short --show-capture=no",
+    "no_local_sql_or_browser_rerun": "Unchanged implementations have terminal remote success in the failed run",
+    "replacement_ci": "pending commit and push"
+  },
+  "scope": {
+    "paid_model_http": 0,
+    "real_model_credentials_read": 0,
+    "docker_changes": false,
+    "old_tasks_or_budgets_changed": false,
+    "stage8e_or_default_admission_changed": false
+  },
+  "evidence": [
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-followup-20261102/run.json",
+      "sha256": "7dbe434afc80b88b2ee3b0888689bc97678a6da7bdda1637410e1bd90735d944",
+      "bytes": 51417
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-followup-20261102/pytest-shard-2.log",
+      "sha256": "84ddf4abf56292628ee25c64b3ce4d6eb9083bac02d01a0f3f03390a59ba647a",
+      "bytes": 133589
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-followup-20261102/ci-consumer-tests.log",
+      "sha256": "64d07ab5d6114a351c30e8bf36389ede9b08c04ac10f28bce2c608b1fe9afab0",
+      "bytes": 101
+    },
+    {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-ci-followup-20261102/sql-remote-verification.json",
+      "sha256": "a814fd4b3e73dd035aff6dd2f8c1d588c1822115f460da24707ed75fc0308e3e",
+      "bytes": 2192
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "sol-original15-session-offline-preparation-v1",
+  "date": "2026-10-25",
+  "candidate_contract": "natural-flash-sol-dual-necessity-development-v1",
+  "contract_version": "1.6.6",
+  "fixed_cases": 15,
+  "expected_labels": {
+    "accept": 5,
+    "reject": 10
+  },
+  "expected_logical_reviews_if_labels_match": 50,
+  "envelope": {
+    "max_requests": 120,
+    "max_reserved_tokens": 9646080,
+    "manual_retries_per_case": 4
+  },
+  "estimated_maximum_uncached_cny": "8.7552",
+  "hard_billing_cap": false,
+  "checks": [
+    {
+      "tests": "tests/test_sol_original15_session.py",
+      "passed": 10,
+      "seconds": 341.42
+    },
+    {
+      "tests": "tests/test_sol_session_review.py tests/test_sol_review_binding.py",
+      "passed": 27,
+      "seconds": 254.25
+    },
+    {
+      "check": "changed_python_compile",
+      "files": 3,
+      "passed": true
+    },
+    {
+      "check": "project_governance_and_diff",
+      "passed": true
+    },
+    {
+      "check": "external_controller_preserved_stdout_and_tamper_rejection_powershell_parse",
+      "passed": true
+    },
+    {
+      "check": "final_frozen_powershell_native_ci_and_unauthorized_refusal",
+      "passed": true
+    }
+  ],
+  "retained_offline_failures": [
+    "Windows held session.lock read during previous-case inventory: fixed by excluding only protocol lock paths",
+    "Failure classification replay used a different Windows inventory key format: fixed by reusing provider inventory",
+    "Synthetic cross-case stage turn IDs were duplicated: test fixture now emits unique turn IDs",
+    "One test run detected source edits made during its pinned run: source freeze preserved and final suite rerun",
+    "External PowerShell wrapper initially swallowed Python refusal exit status; wrapper only fixed and actual check exit0/refusal exit1 verified, frozen source unchanged."
+  ],
+  "new_real_provider_requests": 0,
+  "key_reads": 0,
+  "synthetic_http_and_native_business_events_only": true,
+  "execution_ready": true,
+  "execution_authorized": true,
+  "live_original15_results": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "next_action": "User runs the existing start-authorized.ps1 and enters the enterprise key locally for the first request; actual output requires primary and independent review before continuation.",
+  "runbook": "docs/runbooks/sol-original15-session.md",
+  "product_dependencies_unchanged": true,
+  "execution_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "execution_cwd": "D:/riftcoach-original15-execution-20261025",
+  "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-original15-20261025",
+  "plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
+  "ci_run": "40188299016",
+  "ci_verified": true,
+  "real_administrative_native_preflight": true,
+  "real_business_semantic_review": false,
+  "native_checkpoint_sha256": "4cf9c57d1ace270a1368fd4b1db019eb8fa94c0a8da22ec63dfdcffca4deff3d",
+  "independent_author_sha256": "bd7153d2258a130cb69d15be3accc5099fe6e7755b688bfd8e28a94a9bb05f69",
+  "original_guard_sha256": "eca79f71ede8e25bf24dec6175b8b84ba5757b166584da9f4a2a5c5a22484cbf",
+  "latest_stdout_checkpoint_sha256": "6764fa0a3cdca9545755d8bb060e28fb17776d17591b0ec0ffc02ba99a6a02fc",
+  "unauthorized_refusal_before_key_or_execution": true,
+  "ci_conclusion": "success",
+  "ci_completed_at": "2026-10-25T12:05:59Z",
+  "preparation_complete": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\preparation-complete-v2.json",
+  "preparation_complete_sha256": "acc65e7b29ef27643ff2fabcec3b703d9af21543f5f21546fab1c21c6a5e2e03",
+  "final_powershell_check_exit": 0,
+  "final_unauthorized_exit": 1,
+  "powershell_exit_propagation_verified": true,
+  "evidence_and_author_inventory_unchanged": true,
+  "automation_status": "PAUSED",
+  "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+  "authorization_issued_at": "2026-10-25T15:46:27.795344+00:00",
+  "authorization_expires_at": "2026-10-26T15:46:27.795344+00:00",
+  "activation_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization-activation.json",
+  "activation_check": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\activation-check.json",
+  "activation_verified": true
+}

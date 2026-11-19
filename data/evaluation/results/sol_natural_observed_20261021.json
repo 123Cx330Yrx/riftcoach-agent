@@ -1,0 +1,101 @@
+{
+  "version": "sol-natural-observed-20261021-result-v1",
+  "observed_at": "2026-10-21T14:42:08.920639+00:00",
+  "execution_head": "084c415cbcfac173f1a075983260aa9d694b430c",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-stored-key-20261021",
+  "run_id": "sol-natural-observed-20261021",
+  "outcome": "candidate_execution_failed",
+  "earliest_failed_stage": "first Sol initial review, response reasoning identity validation before tool schema/business review",
+  "worker_code": "reasoning_identity",
+  "runtime_status": "completed",
+  "publication_status": "rejected",
+  "publication_allowed": false,
+  "production_admitted": false,
+  "qualified": false,
+  "calls": 3,
+  "generation_calls_completed": 2,
+  "review_calls_failed": 1,
+  "known_tokens": 52067,
+  "unknown_reserved_tokens": 0,
+  "retries": 0,
+  "active_seconds": 190.09399999999732,
+  "http_requests": 3,
+  "review_http_status": 200,
+  "review_eof": true,
+  "review_closed": true,
+  "review_usage": {
+    "input_tokens": 21758,
+    "output_tokens": 8659,
+    "total_tokens": 30417,
+    "cached_input_tokens": 0,
+    "reasoning_tokens": 8135
+  },
+  "response_observation": {
+    "response_received": true,
+    "terminal_status": "completed",
+    "reported_completed": true,
+    "output_items": 17,
+    "function_calls": 1,
+    "output_type_counts": {
+      "function_call": 1,
+      "reasoning": 16,
+      "message": 0,
+      "other": 0
+    },
+    "model_matches": true
+  },
+  "native_business_reviews": 0,
+  "application_count": 0,
+  "fresh_reviews": 0,
+  "guard_sha256": "634902341ba3508c329465e303ba69f9a1221d9aade52d701bb42f6f49bcd686",
+  "checkpoint_sha256": "0b5672b137d9b3a215871d59d10912306172051d93abf3d2e8cab5a6ab03ef98",
+  "original_stdout_sha256": "10df42137f8b54c55a3fc925d2dba2c9339f43736719ae1dbc1273a82e557bdf",
+  "seal_sha256": "b29b05e0b76de086d3f60f1da85804476edff333d6cf2960fe69905bf03f5f55",
+  "strict_replay": true,
+  "originals_unchanged_before_seal": true,
+  "diagnosis": {
+    "request_effort": "high",
+    "actual_effort": "unknown; old sanitized receipt cannot distinguish missing/null field from explicit non-high effort",
+    "first_tool_count": 1,
+    "tool_schema_and_semantics": "not reached; response body not retained after rejection",
+    "not_a_timeout": true,
+    "upstream_identity_verified": false,
+    "model_quality_conclusion": null
+  },
+  "next_action": "Define recovery using saved report/tool results and explicit remaining cost scope. Do not reopen sealed run or automatically resend/regenerate; prospective receiver fix passed offline checks.",
+  "prospective_receiver_fix": {
+    "scope": "future nonstream candidate only; sealed execution and original verdict unchanged",
+    "previous_six_and_natural_receiver_identical": true,
+    "old_receiver_sha256": "9a6899cfaba4f43cd688c0d5d199bf8178672097a8083d970e0a730231af6369",
+    "frozen_wire_matches_original_receipt": true,
+    "request_effort": "high",
+    "accepted_unverified_echo": [
+      "absent",
+      "null",
+      "effort_missing",
+      "effort_null"
+    ],
+    "explicit_high_echo": "channel metadata only; does not authenticate upstream effort",
+    "rejected_echo": [
+      "conflict",
+      "malformed"
+    ],
+    "observation": "fixed enum only; no arbitrary field values, reasoning or body",
+    "sdk_serialization_field_value_warnings": false,
+    "old_actual_echo": "unknown; cannot reconstruct or approve the sealed failed response",
+    "new_paid_requests": 0,
+    "original_failed_run_reopened": false,
+    "verification": {
+      "kind": "offline only; real SDK/mock HTTP and owned subprocesses",
+      "command": "python -m pytest tests/test_reviewer_responses_nonstream.py tests/test_reviewer_responses_supervisor.py tests/test_sol_natural_candidate.py -q --tb=short --show-capture=no",
+      "passed": 128,
+      "failed": 0,
+      "seconds": 181.62,
+      "governance": "passed",
+      "compile": "passed",
+      "diff_check": "passed",
+      "candidate_manifest": "refreshed only sol_natural_v1",
+      "quality_or_upstream_identity_proof": false
+    }
+  }
+}

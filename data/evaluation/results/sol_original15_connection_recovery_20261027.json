@@ -1,0 +1,118 @@
+{
+  "version": "original15-ci-network-and-native-route-recovery-v1",
+  "observed_at": "2026-10-26T16:02:31.380762+00:00",
+  "failed_segment": {
+    "stdout_sha256": "0559c7d53289b2719c08ccb8e51a8744adc66cd54a26c231e8dfd07fb5a247c8",
+    "exit_sha256": "cca6a11e41d9fbd2f73657f8d9390011afdcdad9af45ed26803d287a4b7c4748",
+    "failure_at_local": "2026-10-26T23:25:10+08:00",
+    "stage": "github_ci_query_before_credentials",
+    "reported_error": "net/http: TLS handshake timeout",
+    "authorization_valid_at_failure": true,
+    "provider_requests": 0
+  },
+  "ci": {
+    "run_id": "40188299016",
+    "head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+    "status": "completed",
+    "conclusion": "success",
+    "exact_job_gate_verified": true,
+    "process_proxy": "http://127.0.0.1:12000"
+  },
+  "native_route": {
+    "thread_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+    "provider": "custom",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "observed_request_url": "https://api.mmcapi.cn/responses",
+    "turn_id": "01a178ed-3ce4-7282-8036-26377cafd085",
+    "final_id": "msg_0fdcb483ddf38b4a016adf7861aa50819dabcbdb4893400209",
+    "final_text": "\u884c\u653f\u8fde\u63a5\u68c0\u67e5\u5df2\u5b8c\u6210\uff1b\u672a\u6267\u884c\u4e1a\u52a1\u5ba1\u67e5\u3002",
+    "status": "completed",
+    "business_review": false,
+    "configuration_changed": false,
+    "author_changed": false,
+    "universal_account_entitlement_claimed": false,
+    "app_send_rejected": "direct app-server input is not allowed for multi-agent v2 sub-agents",
+    "successful_dispatch": "collaboration.followup_task /root/necessity_independent"
+  },
+  "fix": {
+    "scope": "external_control_only",
+    "maximum_ci_query_attempts": 3,
+    "paid_model_retry_added": false,
+    "frozen_code_changed": false,
+    "network_configuration_changed": false,
+    "operator_before_sha256": "4412fc6780906cbee223e1d77058ecf7fc6efc841d89069c733ddb2ccdb2276e",
+    "operator_after_sha256": "8f5518f6bfc91d82070145859ee8e9d8df2601a5bb3e1f1bc7fc87954b738661",
+    "ci_query_module_sha256": "7be27a0e87b82fb0390576fe1842c65e43dbd4282167818b170463792d2ed5da",
+    "checks_sha256": "62c0ca830e4cd14b88310a6437521859492dd260ea2ccc2f9d290ea8dcda2beb",
+    "checks_passed": 8,
+    "check_only_passed": true
+  },
+  "post_fix_state": {
+    "at": "2026-10-26T16:01:39.385373+00:00",
+    "status": {
+      "operations": 14,
+      "unresolved": [],
+      "timeout_waiting": false,
+      "format_waiting": false,
+      "closed": false,
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+      "checkpoint_sha256": "87482a909d875791d4f8bd10533e038dadd8bddd356b167ecf00c9b4c40e122c",
+      "publication_allowed": false,
+      "production_admitted": false
+    },
+    "transport": {
+      "actual_attempts": 2,
+      "completed_calls": 2,
+      "failed_calls": 0,
+      "known_usage_calls": 2,
+      "unknown_usage_calls": 0,
+      "known_tokens": 40499,
+      "unknown_reserved_tokens": 0,
+      "http_requests_known": 2,
+      "http_requests_unknown": 0,
+      "receiptless_calls": 0,
+      "not_sent": 0
+    },
+    "native_prior_decisions": [
+      {
+        "key": "facts-initial",
+        "accepted": true
+      },
+      {
+        "key": "completion-initial",
+        "accepted": true
+      },
+      {
+        "key": "compatibility",
+        "accepted": true
+      },
+      {
+        "key": "edit",
+        "accepted": true
+      }
+    ],
+    "run_files_unchanged": 893,
+    "author_files_unchanged": 25,
+    "new_evaluation_requests": 0,
+    "key_reads": 0,
+    "authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+    "authorization_state": "expired",
+    "old_authorization_unchanged": true,
+    "original_stdout_roots": {
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+      "checkpoint_sha256": "87482a909d875791d4f8bd10533e038dadd8bddd356b167ecf00c9b4c40e122c"
+    }
+  },
+  "authorization": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\authorization.json",
+    "sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+    "expired_at": "2026-10-26T15:46:27.795344+00:00",
+    "current_state": "expired",
+    "silently_extended": false,
+    "continuation_requirement": "New additive authorization must preserve original session and launch bindings, all successful requests, accounting and remaining scope. No old authorization or run evidence rewrite."
+  },
+  "next_business_step": "scope:4/facts-fresh",
+  "qualified": false,
+  "publication_allowed": false
+}

@@ -1,0 +1,66 @@
+{
+  "stage": "initial",
+  "source_tables_match": true,
+  "generation_matches": true,
+  "knowledge_matches": true,
+  "deterministic_matches": true,
+  "all_numeric_metrics_verified": 39,
+  "role_contrasts_verified": true,
+  "source_sha256": "c66e0e2ccc8e7ea8997d138dd4331ee12d9f75f515013bb65a1928a0678d2cf4",
+  "stage_sha256": "f2cf3c864b4f23975bdbb19565a6fbcdc03b34150ce1427db81540ca0fd2ff25",
+  "binding": {
+    "plan_sha256": "297dd0e06031ea71d3e356c6469cc182e6c6b931daddf9b22c8f4a34e9c5ecb4",
+    "key": "host-io-count:1",
+    "stage": "initial",
+    "response_sha256": "596e74ef66952c614cd9b855e43b3a5cc9fc8bece2a243d77b14540f08f511ab",
+    "report_sha256": "6effb524a1b486b6c56a3f69c42f3f6eb59f0cef27f26580689070892bc590ea",
+    "request_sha256": "ccfa0b05fd4453887ee41de56cb410a4593b08cb0fb69cf2a14be83e5be90091"
+  },
+  "means": {
+    "selected": {
+      "kills": "6.8",
+      "deaths": "6",
+      "assists": "10.2",
+      "kda": "3.704",
+      "cs_per_min": "7.394",
+      "gold_per_min": "435.76",
+      "damage_per_min": "869.504",
+      "vision_score": "45",
+      "deaths_before_10": "1.8",
+      "deaths_before_15": "2.6",
+      "kill_participation": "0.5040",
+      "damage_share": "0.21054",
+      "gold_share": "0.19962"
+    },
+    "MIDDLE": {
+      "kills": "8.25",
+      "deaths": "4.25",
+      "assists": "10",
+      "kda": "4.4",
+      "cs_per_min": "8.9075",
+      "gold_per_min": "469.0525",
+      "damage_per_min": "952.1375",
+      "vision_score": "33.75",
+      "deaths_before_10": "1",
+      "deaths_before_15": "1.5",
+      "kill_participation": "0.493625",
+      "damage_share": "0.220375",
+      "gold_share": "0.211925"
+    },
+    "UTILITY": {
+      "kills": "1",
+      "deaths": "13",
+      "assists": "11",
+      "kda": "0.92",
+      "cs_per_min": "1.34",
+      "gold_per_min": "302.59",
+      "damage_per_min": "538.97",
+      "vision_score": "90",
+      "deaths_before_10": "5",
+      "deaths_before_15": "7",
+      "kill_participation": "0.5455",
+      "damage_share": "0.1712",
+      "gold_share": "0.1504"
+    }
+  }
+}

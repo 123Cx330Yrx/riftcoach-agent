@@ -1,0 +1,69 @@
+{
+  "kind": "primary-development-material-review",
+  "material_sha256": "53bea63165bc5eebfdbd8793c56e801b741f852b5f6738fea9b34a7fb6025f85",
+  "provider_calls": 0,
+  "business_reviews": 0,
+  "new_qualification": 0,
+  "independent_opinion_read": false,
+  "source_facts_equal": true,
+  "report_blocks": 26,
+  "changed_blocks": [
+    14,
+    15
+  ],
+  "exact_row_checks": {
+    "deaths_before_15": {
+      "win_mean": "5/2",
+      "loss_mean": "1/2",
+      "all_pairs_greater": true
+    },
+    "cs_per_min": {
+      "win_mean": "1761/200",
+      "loss_mean": "901/100",
+      "all_pairs_greater": false
+    },
+    "gold_per_min": {
+      "win_mean": "50529/100",
+      "loss_mean": "86563/200",
+      "all_pairs_greater": true
+    },
+    "damage_per_min": {
+      "win_mean": "257351/200",
+      "loss_mean": "15438/25",
+      "all_pairs_greater": true
+    },
+    "vision_score": {
+      "win_mean": "67/2",
+      "loss_mean": "34",
+      "all_pairs_greater": false
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "R4",
+      "decision": "no_material_error",
+      "issues": [],
+      "rationale": "完整报告所述五局2胜3负、中单2胜2负与单辅助负场、全部逐行数值/时间线/身份/知识来源一致。第6段以中单四局和均值比较限定发育描述，第4及13段进一步消歧；不将这五局内补成包括辅助的全称。第14段反向全对比较3/2>0/1真实，不能补成因果。第15段补刀区间重叠真实，伤害同位置差669.235远大于混入辅助增加的26.18333，故否定主要归因有据。K1..K5实际支持知识用途；条件观摩未代选训练。"
+    },
+    {
+      "case_id": "T9",
+      "decision": "requires_correction",
+      "issues": [
+        {
+          "block": 14,
+          "quote": "这些数值说明中单早死的胜负组均值相同。",
+          "correction": "均值分别为2.50和0.50，每个中单胜场的早死值均高于每个中单负场。保留后文样本与因果限制。"
+        },
+        {
+          "block": 15,
+          "quote": "这些补刀数值说明每个中单胜场都高于每个中单负场。",
+          "correction": "中单补刀两组区间重叠；胜场8.95和8.66均小于负场9.64、大于负场8.38，不能概括所有胜场高于所有负场。保留均值、其他指标和身份内容。"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "熟悉来源上的新开发材料；主审意见允许独立反证推翻。",
+    "全文校准不是Provider答复认证、业务stage或质量资格。"
+  ]
+}

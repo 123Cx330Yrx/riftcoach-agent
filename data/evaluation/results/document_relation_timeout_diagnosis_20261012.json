@@ -1,0 +1,1451 @@
+{
+  "schema": "document-relation-timeout-diagnosis-v1",
+  "historical_root_cause": "undetermined",
+  "proven_termination": "parent_subprocess_communicate_deadline",
+  "historical_last_progress_is_last_saved_not_wire_time": true,
+  "run": "document-relation-initial-20261012",
+  "original_files_checked": 73,
+  "original_sha256_unchanged": true,
+  "run_extra_files_after_original_manifest": [],
+  "source_sha256": {
+    "app/evaluation/golden_stream_bridge.py": "9648b2d90b10706a67f470957f87b74199c25e381429f57b3f0755aba413012b",
+    "app/providers/zhipu.py": "a9422438e2e7a1779513510ca3146cf7cdbb74b4ab0c7a23a8ea421d40d172b9",
+    "app/providers/zhipu_stream_adapter.py": "6c5c597fce6ee5ab53249ba2d87c88150954c1405adb9ce35df6e302aa92e73f",
+    "scripts/document_relation_request.py": "4a88ffd6fc22e947d03488166a40e53135dce085f3ad78103961ad257bdf2c6d",
+    "scripts/document_sampling_screening.py": "25339d546bfe5c9fe822fa7cd037d9aac980a90cec8b44b4f5b20ba4aa0cf8c5",
+    "scripts/diagnose_block_review_route.py": "f7a1c57997ee4d08ed55e41ed15a5c12167e88996c9831579582333954abd929"
+  },
+  "frozen_sources_unchanged": true,
+  "progress": {
+    "schema_version": "1.4",
+    "state": "reading",
+    "first_event_ms": 9797,
+    "first_reasoning_ms": 9797,
+    "first_visible_content_ms": null,
+    "terminal_ms": null,
+    "eof_ms": null,
+    "close_ms": null,
+    "elapsed_ms": 30672,
+    "events": 768,
+    "content_chars": 0,
+    "reasoning_chars": 2190,
+    "input_tokens": null,
+    "output_tokens": null,
+    "finish_reason": null,
+    "http_requests": 1,
+    "last_http_event": "http11.receive_response_body.started",
+    "close_state": "unknown",
+    "error": null,
+    "observed_elapsed_ms": 30672,
+    "last_event_ms": 30672,
+    "last_reasoning_ms": 30672,
+    "last_content_ms": null,
+    "first_tool_ms": null,
+    "last_tool_ms": null,
+    "tool_delta_count": 0,
+    "tool_argument_chars": 0,
+    "max_inter_event_gap_ms": 5156,
+    "open_duration_ms": 6562,
+    "advance_duration_ms": 20765,
+    "max_advance_duration_ms": 5156,
+    "processing_duration_ms": 94,
+    "close_duration_ms": 0,
+    "progress_write_duration_ms": 108,
+    "progress_writes": 25
+  },
+  "result": {
+    "body_free": true,
+    "elapsed_ms": 600079,
+    "state": "deadline",
+    "transport_id": "golden-glm53-document-relation-time600-high-32768-v1"
+  },
+  "system_logs": {
+    "window_utc": [
+      "2026-10-12T14:45:00Z",
+      "2026-10-12T14:59:00Z"
+    ],
+    "wlan": [
+      {
+        "utc": "2026-10-12T14:48:42.5234538Z",
+        "id": 11005,
+        "record_id": 36596,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u6210\u529f\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:48:42.5232681Z",
+        "id": 11010,
+        "record_id": 36595,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u542f\u52a8\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:48:42.4882455Z",
+        "id": 11004,
+        "record_id": 36594,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u505c\u6b62\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:47:22.4628535Z",
+        "id": 11005,
+        "record_id": 36593,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u6210\u529f\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:47:22.4622410Z",
+        "id": 11010,
+        "record_id": 36592,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u542f\u52a8\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:47:22.3990730Z",
+        "id": 11004,
+        "record_id": 36591,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u505c\u6b62\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:45:58.7544426Z",
+        "id": 11005,
+        "record_id": 36590,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u6210\u529f\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:45:58.7536425Z",
+        "id": 11010,
+        "record_id": 36589,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u542f\u52a8\u3002"
+      },
+      {
+        "utc": "2026-10-12T14:45:58.7007748Z",
+        "id": 11004,
+        "record_id": 36588,
+        "event": "\u65e0\u7ebf\u5b89\u5168\u529f\u80fd\u5df2\u505c\u6b62\u3002"
+      }
+    ],
+    "system_warning_error_count": 340,
+    "system_groups": [
+      {
+        "Count": 340,
+        "Name": "Service Control Manager, 7031"
+      }
+    ],
+    "system_services": [
+      {
+        "Count": 340,
+        "Name": "ROG Live Service"
+      }
+    ],
+    "vpn_log": "C:/Users/33502/AppData/Roaming/org.ikuuu/ikuuuvpn/logs/2026-10-12T21-02-19-659+08-00.log",
+    "vpn_window_lines": 12,
+    "vpn_protected_lines_not_inspected": 9,
+    "vpn_plaintext_bigmodel_matches": 0,
+    "limitation": "No packet capture or historical worker stack; protected application log contents not decoded; no link to this request."
+  },
+  "offline_baseline": {
+    "scope": "offline loopback only; no provider quality or historical root-cause proof",
+    "external_http_requests": 0,
+    "versions": {
+      "openai": "2.54.0",
+      "httpx": "0.28.1",
+      "httpcore": "1.0.9",
+      "h11": "0.16.0"
+    },
+    "cases": [
+      {
+        "mode": "silent",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 0,
+          "bytes": 11765
+        },
+        "error_type": "ProviderTimeoutError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "reading",
+          "first_event_ms": 6500,
+          "first_reasoning_ms": 6500,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": null,
+          "close_ms": null,
+          "elapsed_ms": 6500,
+          "events": 64,
+          "content_chars": 0,
+          "reasoning_chars": 64,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.receive_response_body.started",
+          "close_state": "unknown",
+          "error": null,
+          "observed_elapsed_ms": 6500,
+          "last_event_ms": 6500,
+          "last_reasoning_ms": 6500,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 0,
+          "open_duration_ms": 4625,
+          "advance_duration_ms": 15,
+          "max_advance_duration_ms": 15,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 32,
+          "progress_writes": 12
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 15032,
+          "state": "deadline",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": null,
+        "sdk_timeout": {
+          "connect": 13.139999999984866,
+          "read": 13.139999999984866,
+          "write": 13.139999999984866,
+          "pool": 13.139999999984866
+        },
+        "stack": {
+          "frames": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 62
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 179
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      },
+      {
+        "mode": "comments",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 80,
+          "bytes": 13605
+        },
+        "error_type": "ProviderTimeoutError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "reading",
+          "first_event_ms": 6344,
+          "first_reasoning_ms": 6344,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": null,
+          "close_ms": null,
+          "elapsed_ms": 6344,
+          "events": 64,
+          "content_chars": 0,
+          "reasoning_chars": 64,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.receive_response_body.started",
+          "close_state": "unknown",
+          "error": null,
+          "observed_elapsed_ms": 6344,
+          "last_event_ms": 6344,
+          "last_reasoning_ms": 6344,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 0,
+          "open_duration_ms": 4547,
+          "advance_duration_ms": 16,
+          "max_advance_duration_ms": 16,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 16,
+          "progress_writes": 12
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 15015,
+          "state": "deadline",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": null,
+        "sdk_timeout": {
+          "connect": 13.21899999998277,
+          "read": 13.21899999998277,
+          "write": 13.21899999998277,
+          "pool": 13.21899999998277
+        },
+        "stack": {
+          "frames": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 62
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 179
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      },
+      {
+        "mode": "eof_without_terminal",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 0,
+          "bytes": 11765
+        },
+        "error_type": "ProviderResponseError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "failed",
+          "first_event_ms": 6531,
+          "first_reasoning_ms": 6531,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": 6562,
+          "close_ms": 6562,
+          "elapsed_ms": 6562,
+          "events": 65,
+          "content_chars": 0,
+          "reasoning_chars": 65,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.response_closed.complete",
+          "close_state": "closed",
+          "error": "provider_error",
+          "observed_elapsed_ms": 6562,
+          "last_event_ms": 6547,
+          "last_reasoning_ms": 6547,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 16,
+          "open_duration_ms": 4656,
+          "advance_duration_ms": 15,
+          "max_advance_duration_ms": 15,
+          "processing_duration_ms": 16,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 62,
+          "progress_writes": 18
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 6797,
+          "state": "failed",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": {
+          "category": "assembly_rejected",
+          "assembly_code": "missing_terminal",
+          "provider_code": null
+        },
+        "sdk_timeout": {
+          "connect": 13.125,
+          "read": 13.125,
+          "write": 13.125,
+          "pool": 13.125
+        },
+        "stack": null
+      }
+    ]
+  },
+  "offline_with_observer": {
+    "scope": "offline loopback only; no provider quality or historical root-cause proof",
+    "external_http_requests": 0,
+    "observer_enabled": true,
+    "versions": {
+      "openai": "2.54.0",
+      "httpx": "0.28.1",
+      "httpcore": "1.0.9",
+      "h11": "0.16.0"
+    },
+    "cases": [
+      {
+        "mode": "silent",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 0,
+          "bytes": 11765
+        },
+        "error_type": "ProviderTimeoutError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "reading",
+          "first_event_ms": 6234,
+          "first_reasoning_ms": 6234,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": null,
+          "close_ms": null,
+          "elapsed_ms": 6250,
+          "events": 64,
+          "content_chars": 0,
+          "reasoning_chars": 64,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.receive_response_body.started",
+          "close_state": "unknown",
+          "error": null,
+          "observed_elapsed_ms": 6250,
+          "last_event_ms": 6250,
+          "last_reasoning_ms": 6250,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 16,
+          "open_duration_ms": 4469,
+          "advance_duration_ms": 31,
+          "max_advance_duration_ms": 16,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 16,
+          "progress_writes": 12
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 15000,
+          "state": "deadline",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": null,
+        "sdk_timeout": {
+          "connect": 13.25,
+          "read": 13.25,
+          "write": 13.25,
+          "pool": 13.25
+        },
+        "stack": {
+          "frames": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "__iter__",
+              "line": 120
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 68
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        },
+        "observation": {
+          "schema_version": "stream-observation-v1",
+          "body_free": true,
+          "http_requests": 1,
+          "response_status": 200,
+          "response_request_id": null,
+          "read_calls": 66,
+          "raw_chunks": 65,
+          "raw_bytes": 11765,
+          "last_bytes_ms": 4562,
+          "pending_read_since_ms": 4562,
+          "eof": false,
+          "closed": false,
+          "phase": "waiting_for_raw_bytes",
+          "exception_type": null,
+          "timeout": {
+            "connect": 13.25,
+            "read": 13.25,
+            "write": 13.25,
+            "pool": 13.25
+          },
+          "observed_ms": 12875,
+          "stack": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "__iter__",
+              "line": 120
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 68
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      },
+      {
+        "mode": "comments",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 81,
+          "bytes": 13628
+        },
+        "error_type": "ProviderTimeoutError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "reading",
+          "first_event_ms": 6156,
+          "first_reasoning_ms": 6156,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": null,
+          "close_ms": null,
+          "elapsed_ms": 6156,
+          "events": 64,
+          "content_chars": 0,
+          "reasoning_chars": 64,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.receive_response_body.started",
+          "close_state": "unknown",
+          "error": null,
+          "observed_elapsed_ms": 6156,
+          "last_event_ms": 6156,
+          "last_reasoning_ms": 6156,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 0,
+          "open_duration_ms": 4422,
+          "advance_duration_ms": 15,
+          "max_advance_duration_ms": 15,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 16,
+          "progress_writes": 12
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 15016,
+          "state": "deadline",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": null,
+        "sdk_timeout": {
+          "connect": 13.28100000001723,
+          "read": 13.28100000001723,
+          "write": 13.28100000001723,
+          "pool": 13.28100000001723
+        },
+        "stack": {
+          "frames": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "__iter__",
+              "line": 120
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 68
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        },
+        "observation": {
+          "schema_version": "stream-observation-v1",
+          "body_free": true,
+          "http_requests": 1,
+          "response_status": 200,
+          "response_request_id": null,
+          "read_calls": 143,
+          "raw_chunks": 142,
+          "raw_bytes": 13536,
+          "last_bytes_ms": 12829,
+          "pending_read_since_ms": 12829,
+          "eof": false,
+          "closed": false,
+          "phase": "waiting_for_raw_bytes",
+          "exception_type": null,
+          "timeout": {
+            "connect": 13.28100000001723,
+            "read": 13.28100000001723,
+            "write": 13.28100000001723,
+            "pool": 13.28100000001723
+          },
+          "observed_ms": 12891,
+          "stack": [
+            {
+              "file": "sync.py",
+              "function": "read",
+              "line": 128
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_event",
+              "line": 217
+            },
+            {
+              "file": "http11.py",
+              "function": "_receive_response_body",
+              "line": 203
+            },
+            {
+              "file": "http11.py",
+              "function": "__iter__",
+              "line": 334
+            },
+            {
+              "file": "connection_pool.py",
+              "function": "__iter__",
+              "line": 403
+            },
+            {
+              "file": "default.py",
+              "function": "__iter__",
+              "line": 127
+            },
+            {
+              "file": "_client.py",
+              "function": "__iter__",
+              "line": 153
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "__iter__",
+              "line": 120
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_raw",
+              "line": 951
+            },
+            {
+              "file": "_models.py",
+              "function": "iter_bytes",
+              "line": 897
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_chunks",
+              "line": 308
+            },
+            {
+              "file": "_streaming.py",
+              "function": "iter_bytes",
+              "line": 297
+            },
+            {
+              "file": "_streaming.py",
+              "function": "_iter_events",
+              "line": 53
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__stream__",
+              "line": 62
+            },
+            {
+              "file": "_streaming.py",
+              "function": "__iter__",
+              "line": 49
+            },
+            {
+              "file": "zhipu_stream_adapter.py",
+              "function": "__next__",
+              "line": 195
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "collect",
+              "line": 254
+            },
+            {
+              "file": "golden_stream_bridge.py",
+              "function": "worker",
+              "line": 494
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 68
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      },
+      {
+        "mode": "eof_without_terminal",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 0,
+          "bytes": 11765
+        },
+        "error_type": "ProviderResponseError",
+        "progress": {
+          "schema_version": "1.4",
+          "state": "failed",
+          "first_event_ms": 7203,
+          "first_reasoning_ms": 7203,
+          "first_visible_content_ms": null,
+          "terminal_ms": null,
+          "eof_ms": 7235,
+          "close_ms": 7235,
+          "elapsed_ms": 7235,
+          "events": 65,
+          "content_chars": 0,
+          "reasoning_chars": 65,
+          "input_tokens": null,
+          "output_tokens": null,
+          "finish_reason": null,
+          "http_requests": 1,
+          "last_http_event": "http11.response_closed.complete",
+          "close_state": "closed",
+          "error": "provider_error",
+          "observed_elapsed_ms": 7235,
+          "last_event_ms": 7219,
+          "last_reasoning_ms": 7219,
+          "last_content_ms": null,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 16,
+          "open_duration_ms": 4859,
+          "advance_duration_ms": 32,
+          "max_advance_duration_ms": 16,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 32,
+          "progress_writes": 18
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 7516,
+          "state": "failed",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": {
+          "category": "assembly_rejected",
+          "assembly_code": "missing_terminal",
+          "provider_code": null
+        },
+        "sdk_timeout": {
+          "connect": 12.655999999988126,
+          "read": 12.655999999988126,
+          "write": 12.655999999988126,
+          "pool": 12.655999999988126
+        },
+        "stack": null,
+        "observation": {
+          "schema_version": "stream-observation-v1",
+          "body_free": true,
+          "http_requests": 1,
+          "response_status": 200,
+          "response_request_id": null,
+          "read_calls": 66,
+          "raw_chunks": 65,
+          "raw_bytes": 11765,
+          "last_bytes_ms": 4937,
+          "pending_read_since_ms": null,
+          "eof": true,
+          "closed": true,
+          "phase": "closed",
+          "exception_type": null,
+          "timeout": {
+            "connect": 12.655999999988126,
+            "read": 12.655999999988126,
+            "write": 12.655999999988126,
+            "pool": 12.655999999988126
+          },
+          "observed_ms": 4953,
+          "stack": [
+            {
+              "file": "stream_observation.py",
+              "function": "_save",
+              "line": 76
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "close",
+              "line": 103
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 80
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      },
+      {
+        "mode": "complete",
+        "synthetic": true,
+        "server": {
+          "http_requests": 1,
+          "events": 65,
+          "comments": 0,
+          "bytes": 12148
+        },
+        "error_type": null,
+        "progress": {
+          "schema_version": "1.4",
+          "state": "complete",
+          "first_event_ms": 8000,
+          "first_reasoning_ms": 8000,
+          "first_visible_content_ms": 8016,
+          "terminal_ms": 8016,
+          "eof_ms": 8031,
+          "close_ms": 8031,
+          "elapsed_ms": 8031,
+          "events": 67,
+          "content_chars": 14,
+          "reasoning_chars": 65,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "finish_reason": "stop",
+          "http_requests": 1,
+          "last_http_event": "http11.receive_response_body.failed",
+          "close_state": "closed",
+          "error": null,
+          "observed_elapsed_ms": 8031,
+          "last_event_ms": 8016,
+          "last_reasoning_ms": 8016,
+          "last_content_ms": 8016,
+          "first_tool_ms": null,
+          "last_tool_ms": null,
+          "tool_delta_count": 0,
+          "tool_argument_chars": 0,
+          "max_inter_event_gap_ms": 16,
+          "open_duration_ms": 5531,
+          "advance_duration_ms": 31,
+          "max_advance_duration_ms": 16,
+          "processing_duration_ms": 0,
+          "close_duration_ms": 0,
+          "progress_write_duration_ms": 77,
+          "progress_writes": 20
+        },
+        "result": {
+          "body_free": true,
+          "elapsed_ms": 8281,
+          "state": "complete",
+          "transport_id": "golden-glm53-review-time600-high-32768-v1"
+        },
+        "failure": null,
+        "sdk_timeout": {
+          "connect": 12.546999999991385,
+          "read": 12.546999999991385,
+          "write": 12.546999999991385,
+          "pool": 12.546999999991385
+        },
+        "stack": null,
+        "observation": {
+          "schema_version": "stream-observation-v1",
+          "body_free": true,
+          "http_requests": 1,
+          "response_status": 200,
+          "response_request_id": null,
+          "read_calls": 68,
+          "raw_chunks": 68,
+          "raw_bytes": 12148,
+          "last_bytes_ms": 5657,
+          "pending_read_since_ms": null,
+          "eof": false,
+          "closed": true,
+          "phase": "closed",
+          "exception_type": null,
+          "timeout": {
+            "connect": 12.546999999991385,
+            "read": 12.546999999991385,
+            "write": 12.546999999991385,
+            "pool": 12.546999999991385
+          },
+          "observed_ms": 5672,
+          "stack": [
+            {
+              "file": "stream_observation.py",
+              "function": "_save",
+              "line": 76
+            },
+            {
+              "file": "stream_observation.py",
+              "function": "close",
+              "line": 103
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "child",
+              "line": 80
+            },
+            {
+              "file": "diagnose_stream_stall_offline.py",
+              "function": "<module>",
+              "line": 213
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_code",
+              "line": 88
+            },
+            {
+              "file": "<frozen runpy>",
+              "function": "_run_module_as_main",
+              "line": 198
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "offline_initial_fixture_failure": "8-second deadline sampled SDK lazy import before stream; retained outside run; rerun at 15 seconds passed",
+  "focused_tests": {
+    "command": "python -m pytest tests/test_stream_observation.py -q",
+    "passed": 6
+  },
+  "new_project_model_requests": 0,
+  "production_worker_changed": false,
+  "observer_live_adopted": false,
+  "automation_status": "PAUSED",
+  "new_qualification": 0,
+  "implementation_sha256": {
+    "scripts/stream_observation.py": "ca8a1f00973dffe7542120d8d1d555a43ebddba8675826a3d72ecbef0c3f0d62",
+    "scripts/diagnose_stream_stall_offline.py": "fec4de1cad2aa51141cc791cc4c49da96e3326ef4cbc0f7c198aa3d29f530022"
+  },
+  "limitations": [
+    "No historical worker stack or byte-arrival timeline",
+    "No request-correlated provider or packet logs",
+    "Loopback HTTP synthetic outputs do not establish TLS/network/provider cause",
+    "Observer not yet bound to a paid plan or production default"
+  ]
+}

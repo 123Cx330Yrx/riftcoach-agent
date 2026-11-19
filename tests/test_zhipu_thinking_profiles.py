@@ -20,8 +20,10 @@ from app.providers.zhipu import ZhipuProvider
 from app.providers.zhipu_profiles import (
     ZHIPU_GLM52_MODEL,
     ZHIPU_GLM53_FLASH_MODEL,
+    ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
     ZHIPU_GLM53_MODEL,
     ZhipuThinkingProfile,
+    resolve_zhipu_candidate_profile,
     resolve_zhipu_thinking_profile,
 )
 
@@ -153,6 +155,67 @@ def test_flash_request_uses_profile_and_retains_reasoning_for_internal_replay() 
         "thinking": {"type": "enabled", "clear_thinking": False},
         "reasoning_effort": "max",
     }
+
+
+def test_flash_low_candidate_profile_is_separate_from_default_resolution() -> None:
+    candidate = resolve_zhipu_candidate_profile(
+        "glm-5.3-flash-candidate-enabled-low-replay"
+    )
+
+    assert candidate == ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE
+    assert candidate.reasoning_effort == "low"
+    assert candidate.preserves_reasoning_content is True
+    assert candidate.extra_body() == {
+        "thinking": {"type": "enabled", "clear_thinking": False},
+        "reasoning_effort": "low",
+    }
+    # The product resolver remains pinned to max-replay; this candidate is
+    # never selected by model name alone.
+    assert (
+        resolve_zhipu_thinking_profile(ZHIPU_GLM53_FLASH_MODEL).profile_id
+        == "glm-5.3-flash-enabled-max-replay"
+    )
+
+
+def test_candidate_profile_requires_explicit_provider_constructor_path() -> None:
+    client = FakeClient(sdk_response(reasoning_content="candidate reasoning"))
+
+    with pytest.raises(ValueError, match="profile"):
+        ZhipuProvider(
+            client=client,
+            model=ZHIPU_GLM53_FLASH_MODEL,
+            profile=ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
+        )
+
+    provider = ZhipuProvider.from_candidate_profile(
+        client=client,
+        model=ZHIPU_GLM53_FLASH_MODEL,
+        profile=ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
+    )
+    response = provider.chat(
+        ChatRequest(messages=(ChatMessage(MessageRole.USER, "回答。"),))
+    )
+
+    assert response.content == "回答"
+    assert provider.thinking_profile_id == (
+        "glm-5.3-flash-candidate-enabled-low-replay"
+    )
+    assert client.completions.calls[0]["extra_body"]["reasoning_effort"] == "low"
+
+
+def test_candidate_constructor_cannot_attach_registered_runtime_budget() -> None:
+    from app.model_runtime import GLM53_FLASH_RUNTIME_PROFILE
+
+    with pytest.raises(TypeError):
+        # The candidate constructor intentionally has no runtime_profile
+        # parameter; a candidate thinking profile cannot masquerade as the
+        # registered product runtime.
+        ZhipuProvider.from_candidate_profile(  # type: ignore[call-arg]
+            client=FakeClient(sdk_response()),
+            model=ZHIPU_GLM53_FLASH_MODEL,
+            profile=ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
+            runtime_profile=GLM53_FLASH_RUNTIME_PROFILE,
+        )
 
 
 def test_flash_rejects_non_string_reasoning() -> None:

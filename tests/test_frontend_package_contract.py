@@ -61,7 +61,24 @@ def _docker_copy_sources(dockerfile: str) -> tuple[str, ...]:
 
 
 def test_pytest_job_blocks_on_all_frontend_quality_gates() -> None:
-    job = _workflow()["jobs"]["pytest"]
+    jobs = _workflow()["jobs"]
+    aggregate = jobs["pytest"]
+    # The required pytest check now aggregates isolated Python shards and
+    # unchanged web checks. A skipped/failed prerequisite must fail this gate.
+    assert set(aggregate["needs"]) == {"web-checks", "pytest-shards"}
+    assert aggregate["if"] == "always()"
+    require_success = aggregate["steps"][0]
+    assert require_success["env"] == {
+        "WEB_RESULT": "${{ needs.web-checks.result }}",
+        "SHARD_RESULT": "${{ needs.pytest-shards.result }}",
+    }
+    assert require_success["run"] == (
+        'test "$WEB_RESULT" = success && test "$SHARD_RESULT" = success'
+    )
+    assert "scripts.ci_test_shards verify" in " ".join(
+        str(step.get("run", "")) for step in aggregate["steps"]
+    )
+    job = jobs["web-checks"]
     setup_node = next(
         step
         for step in job["steps"]

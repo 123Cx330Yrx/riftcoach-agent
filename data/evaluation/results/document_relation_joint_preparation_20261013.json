@@ -1,0 +1,158 @@
+{
+  "kind": "document-relation-joint-preparation-v1",
+  "recorded_at": "2026-10-13T08:47:56.090163+00:00",
+  "basis_head": "8f271698739b86c1197bb97a808a41cd35995d99",
+  "basis_ci": {
+    "id": 38355387193,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "package": "data\\evaluation\\fixtures\\document_relation_joint_20261013",
+  "plan_sha256": "e890e28f41a35586fb589fac62bf2fb05b1cf01833613a5d858012d07b2a7d6c",
+  "package_files": {
+    "plan.json": "1d09baadb0c8a08a02d49ecd988a23386537b3b15f2016b0c89d7d72ae3e2f70",
+    "J1-baseline-initial/material.json": "48b3af6c81f93b6310c8cc7a1ca2b2904f6b80ef71063abc1681629889c5e0c5",
+    "J1-baseline-initial/prepared-request.json": "d527f884211b69353d09bb8540f80a23767395323d5d84764fecd666d3464bdb",
+    "J1-relation-contrast-initial/material.json": "c11e3e3f007e5be5e32a6419289139cd39c7bb7e60b5b19769f511f25d67fa04",
+    "J1-relation-contrast-initial/prepared-request.json": "777f2e93d9348d2959af18852582c0ae92f8bf9e9b21c141f98e0eaef1a3e5c4",
+    "J2-baseline-initial/material.json": "c48a69771aa2fa782ece0d1668b41f07b86002b3b1dd7081b1442de4f2060ed7",
+    "J2-baseline-initial/prepared-request.json": "24a6243fb0eee03fe3f163f3e478e5ca4ccf03f146e31453c3f4f650840e91d9",
+    "J2-relation-contrast-initial/material.json": "b4a5ffa5298dd49b314a8c20c19428578110b9a56c02a36b4cf36f9de1fd73af",
+    "J2-relation-contrast-initial/prepared-request.json": "1831a827d37d5d8207ddb187d39d2c3ac574b9792c05e1b2125bb5f5f249c054"
+  },
+  "calibration_audit": "data/evaluation/results/host_relation_joint_calibration_20261013/close-audit.json",
+  "calibration_audit_sha256": "a6ab735486310f22bfcc62f55f5963771db81235cdd3129f5f1a506bdd181e75",
+  "current_native_paths_preflight": {
+    "kind": "joint-preparation-paths-native-preflight-v1",
+    "recorded_at": "2026-10-13T08:44:50.524677+00:00",
+    "package": {
+      "verified": true,
+      "requests": 4,
+      "plan_sha256": "e890e28f41a35586fb589fac62bf2fb05b1cf01833613a5d858012d07b2a7d6c",
+      "provider_calls": 0
+    },
+    "startup": {
+      "cwd": "D:\\riftcoach-agent-rq192-pr",
+      "python": "D:\\riftcoach-agent-rq192-pr\\.venv\\Scripts\\python.exe"
+    },
+    "native": {
+      "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "independent_thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+      "verified": true,
+      "independent_agent_path": "/root/host_scope_calibration",
+      "input_readability": {
+        "thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+        "turn_id": "01a13462-fba7-7821-860c-03b51332bbd2",
+        "dispatch_id": "amsg_01a13463-037c-7e80-9f41-9ebfd499d542",
+        "current_input_readable": false,
+        "future_input_guaranteed": false,
+        "current_route_and_final_available": true,
+        "host_review_evidence_policy": "native-final-attestation-v1"
+      }
+    },
+    "authorization_created": false,
+    "execution_created": false,
+    "provider_calls": 0,
+    "limitation": "Current read-only preparation preflight, not execution authorization or future native availability; repeat immediately before paid execution."
+  },
+  "independent_calibration": true,
+  "offline_implementation_ready": true,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "clean_execution_head": null,
+  "same_head_public_ci_required": true,
+  "validation": {
+    "test_command": "python -B -m pytest tests/test_document_relation_joint_diagnostic.py tests/test_document_relation_repair_diagnostic.py tests/test_document_relation_diagnostic.py tests/test_relation_joint_review.py -q --tb=short",
+    "passed": 69,
+    "duration_seconds": 218.71,
+    "actual_loopback_sdk_worker_scenarios": [
+      "complete",
+      "silent",
+      "comments",
+      "eof"
+    ],
+    "package_cli_prepare_verify": true
+  },
+  "historical_original_checks": [
+    {
+      "run": "document-relation-repair-20261013",
+      "files": 66,
+      "manifest": "document_relation_repair_result_20261013.json",
+      "inventory_and_sha256_unchanged": true
+    },
+    {
+      "run": "document-relation-initial-20261012",
+      "files": 73,
+      "manifest": "document_relation_initial_result_20261012.json",
+      "inventory_and_sha256_unchanged": true
+    },
+    {
+      "run": "document-full-report-remaining-initial-20261012",
+      "files": 47,
+      "manifest": "document_full_report_remaining_close_audit_20261012.json",
+      "inventory_and_sha256_unchanged": true
+    },
+    {
+      "run": "document-full-report-network-followup-20261012",
+      "files": 26,
+      "manifest": "document_full_report_network_close_audit_20261012.json",
+      "inventory_and_sha256_unchanged": true
+    },
+    {
+      "run": "document-full-report-initial-20261012",
+      "files": 14,
+      "manifest": "document_full_report_initial_close_audit_20261012.json",
+      "inventory_and_sha256_unchanged": true
+    },
+    {
+      "run": "document-sampling-screening-20261012-corrected-v2",
+      "files": 146,
+      "manifest": "corrected_temperature_screening_close_audit_20261012.json",
+      "inventory_and_sha256_unchanged": true
+    }
+  ],
+  "historical_frozen_source_checks": [
+    {
+      "package": "document_relation_initial_20261012",
+      "files": 69,
+      "all_unchanged": true
+    },
+    {
+      "package": "document_relation_repair_20261013",
+      "files": 73,
+      "all_unchanged": true
+    }
+  ],
+  "budget": {
+    "estimated_uncached_cny": "5.718016",
+    "hard_billing_cap": false,
+    "max_active_seconds": 2400,
+    "max_calls": 4,
+    "max_host_seconds": 86400,
+    "max_tokens": 387072,
+    "per_request_output": 32768,
+    "per_request_seconds": 600,
+    "role_calls": {
+      "glm-5.3": 4,
+      "glm-5.3-flash": 0
+    }
+  },
+  "sequence": [
+    "J1-baseline:initial",
+    "J1-relation-contrast:initial",
+    "J2-baseline:initial",
+    "J2-relation-contrast:initial"
+  ],
+  "project_provider_calls": 0,
+  "project_http_calls": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "automation_status": "PAUSED",
+  "next_action": "Commit preparation, bind exact new HEAD and its public CI, obtain explicit cost authorization for this four-initial scope; only then run after immediate preflight.",
+  "limitations": [
+    "Offline transports and native fixtures are engineering checks, not model semantic evidence.",
+    "One real independent material calibration uses familiar sources, not a holdout or production qualification.",
+    "Administrative wake envelopes and original interrupted task remain separately visible; no old business review was signed.",
+    "Current native availability is a snapshot; no future availability guarantee."
+  ]
+}

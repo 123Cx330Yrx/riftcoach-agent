@@ -1,0 +1,175 @@
+{
+  "kind": "sol-necessity-format-recovery-and-completion-diagnostic-v1",
+  "recorded_at": "2026-10-24T10:05:03.153868+00:00",
+  "base_head": "e593b1c645d7b219a69007fa65c38b7afa0c6f43",
+  "original_operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024",
+  "original": {
+    "plan_sha256": "a9ccbca159a216daec8ce8cbccec44d98d2dde293fd3812d8fa346d22e7817ea",
+    "roots": {
+      "authorization_sha": "125005b2b4d4e794c2a294e0a359f75916ddbfe69378b32d7a3eea48c4e40d26",
+      "checkpoint": "aa3c2816b9767561554a4bc6e4324c807d2ce70ab81d5a28989eef788b221285",
+      "guard": "5668400a86bcb148c4e19dac04ffc0d3d7c84db1ea14826d0e4c12167e09b0f7"
+    },
+    "seal_sha256": "24172c4f903d050bc819f260a81f3333a37902bf0b2ee2b38e2d1fd1355aa7a9",
+    "strict_replay_previously_completed": true,
+    "sealed_inventory_verified_unchanged": true,
+    "sealed_file_count": 144,
+    "original_stdout_exit": {
+      "exit_code": 0,
+      "stdout_sha256": "ee7d7dd02f51b5551708a11066459f7d69ce577d4e50d4dfd40a4a68ee1441dd"
+    },
+    "accounting": {
+      "calls": 4,
+      "reserved_tokens": 0,
+      "retries": 0,
+      "tokens": 66591
+    },
+    "native_reviews": 1,
+    "first_stop_stage": "completion-initial",
+    "first_stop_code": "non_tool_output",
+    "original_closed": true,
+    "rewritten": false,
+    "successful_prefix_reissued": false
+  },
+  "fourth_attempt": {
+    "receipt_sha256": "3d5230b46142406f26b022ee356aad54fc252b3dcde85d9370fd7806fd659287",
+    "worker_sha256": "182f00f154021d7971c204bd459a7d2d941ad6fdfc698d0869135f0c22c48a8c",
+    "worker_code": "non_tool_output",
+    "receipt_elapsed_s": 54.766,
+    "usage": {
+      "input_tokens": 19497,
+      "output_tokens": 2034,
+      "total_tokens": 21531,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 891
+    },
+    "observation": {
+      "response_received": true,
+      "terminal_status": "completed",
+      "reported_completed": true,
+      "output_items": 4,
+      "function_calls": 1,
+      "output_type_counts": {
+        "function_call": 1,
+        "reasoning": 2,
+        "message": 1,
+        "other": 0
+      },
+      "model_matches": true,
+      "reasoning_echo": "high",
+      "reasoning_effort_detail": {
+        "category": "known",
+        "value": "high"
+      },
+      "decode": {
+        "raw_object": true,
+        "sdk_object": true,
+        "identity_fields_equal": true,
+        "raw_reasoning_echo": "high",
+        "raw_reasoning_effort_detail": {
+          "category": "known",
+          "value": "high"
+        }
+      },
+      "response_body_sha256": "b67988bbd39429c9ad170d0dadb7f8f2e958a5e405331b57813af8ff1f864fd2"
+    },
+    "diagnostic_arguments_sha256": "f3188a5e5a9dcc15b2f1d721c8f5d2b33629827935d67a0fc016cdac18b0bced",
+    "retained_business_structure_revalidated": true,
+    "message_body_available": false,
+    "semantic_approval": false
+  },
+  "diagnostic": {
+    "diagnostic_only": true,
+    "closed_run_submission": false,
+    "handle": {
+      "folder": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024-control\\completion-protocol-diagnostic",
+      "binding": {
+        "plan_sha256": "4ec449ca567d1e0d4c339bfbada14ebfc8bab952aa3dbcc57a4aba66e367df04",
+        "key": "completion-protocol-diagnostic",
+        "stage": "initial",
+        "response_sha256": "488870b85bcf5b43c4fb8f66ad628f87d7e9600844f739bc939fabb9b9e023d0",
+        "report_sha256": "1b3b991358e59216e0d8ebf490ee1cfa498609a947f150b746ba70f6f1d7105c",
+        "request_sha256": "3e48284bd76213513a86fd589e1f20ddbc928c1e4880ca1dabab56847cc228ef"
+      },
+      "kind": "opinion",
+      "material_sha256": "21752ecc9bb5a351a4a958726ddb399d1a1e53dc47556be4e45a0f388861fce0",
+      "checkpoint_sha256": "1dde19a4bf748b3fc2a430892f1532c723bde2e2dfa9a20bf2ec45f4e39ff3f4",
+      "task_sha256": "c9059ba8bede78751da19e509df02c2bf1e31c0403d83c8a677ce57d5a3d830c"
+    },
+    "submission_sha256": "0089c5cc4718f8b56e6e765ba0d601222b2b2ac0d753a4a40d6ee07d077ffc51",
+    "primary_sha256": "4773a68b14b61b57a9c7dd2963aef3df2dd47f96276c0cb2ff7659274cd3952a",
+    "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16d47-2be3-7e82-9cb1-15379fae7bb1/msg_0370f309de022d70016adc7d7e15c08194b556ab174e0a8d90",
+    "author_sha256": "169cd603f1a91ab5d5f2c9dd157a6ef97d9257647181480d6ae2bf87a74581a0",
+    "native_final_exact_author_bytes_checked": true,
+    "accepted": false,
+    "valid_issue_ids": [
+      2
+    ],
+    "defects": [
+      "false_positive",
+      "correct_content_lost"
+    ],
+    "facts_initial_acceptance_preserved": true,
+    "application_count": 0,
+    "fresh_requests": 0
+  },
+  "repair": {
+    "contract": {
+      "contract_id": "natural-flash-sol-necessity-development-v1",
+      "version": "1.6.4",
+      "scope": "unadmitted_opt_in",
+      "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
+    },
+    "response_mode": "natural-sol-necessity-v2",
+    "legacy_receiver_default_unchanged": true,
+    "only_tool_arguments_consumed": true,
+    "message_text_retained": false,
+    "known_format_failures_pause": true,
+    "ordinary_resume_does_not_send": true,
+    "manual_retry_same_stage_once": true,
+    "successful_operations_replayed": true,
+    "cumulative_usage_and_shared_retry_budget_preserved": true,
+    "semantic_identity_source_and_observation_gates_preserved": true,
+    "existing_closed_run_not_reopened": true,
+    "source_sha256_utf8_normalized": {
+      "scripts/reviewer_responses_nonstream.py": "de3c883703007be0d7a693626f1f45dbf95030d33975db1cdb9018ba246c18dd",
+      "scripts/reviewer_responses_process.py": "9f29300587b58e35945019ebf39ea7f0f388d64436ddbca2cebcea51de661fc0",
+      "scripts/sol_natural_launch.py": "6566ef23f3a569100b14555366c523024a8d4e219c63cc3c243e81f0f0df7bd7",
+      "app/runtime/sol_natural_provider.py": "afc0b539cd65008371eae28a9d11b7fbdaf670c0f99a9f93a91fc52e6360c183",
+      "app/runtime/sol_session_runtime.py": "484a667ca916e5ecbab06c3bd11b2ce71c5cbeedc00a48587b931cd3a7d962e1",
+      "app/evaluation/sol_natural_session.py": "dd3c2506f97080d9935fe8826c8fcbf84d4c945b8643f0917f6949ea23bd2285",
+      "app/evaluation/sol_necessity_contract.py": "6dc5b92a47b23f520c1186dc2c6af947bd54b5e6146efa6db9d1b6db0ac4d804",
+      "app/runtime/coach_contract.py": "56c5bd00b90a83a0b93f854af1ea40ef21b07951753885822fec7013e0d37ccd",
+      "app/prompt_program/resolver.py": "3bafec3868e6d6d99567ff550deec664d1c55fd0197339a9026d31de2702e44a"
+    }
+  },
+  "checks": [
+    {
+      "command": "pytest tests/test_sol_format_recovery.py --tb=short --show-capture=no -q",
+      "passed": 15,
+      "seconds": 139.37
+    },
+    {
+      "command": "pytest tests/test_reviewer_responses_nonstream.py tests/test_sol_necessity_natural.py tests/test_sol_natural_launch.py --tb=short --show-capture=no -q",
+      "passed": 132,
+      "seconds": 464.38
+    },
+    {
+      "affected_profile_startups": 7,
+      "passed": true
+    },
+    {
+      "compile_changed_modules": true,
+      "diff_check": true
+    }
+  ],
+  "development_failure_fixed": "Initial integration rejected contract 1.6.4 until snapshot allowlist, contract registry, resolver and affected manifests were updated; final affected checks passed.",
+  "current_paid_resume_ready": false,
+  "new_provider_requests": 0,
+  "key_read": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "next_action": "Offline completion-duty necessity comparison using the retained false positive and valid source-use gap; no repurchase of the successful prefix and no paid semantic retry before a supported repair decision."
+}

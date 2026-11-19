@@ -1,0 +1,61 @@
+{
+  "version": "sol-keywait-recovery-preparation-20261022-v1",
+  "head": "dadb73ebae7f3a147911d890826bb048d56cfde7",
+  "cwd": "D:\\riftcoach-sol-natural-keywait-execution",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-keywait-fix-20261022",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-natural-keywait-fix-20261022-control",
+  "plan_sha256": "c85ec413e96b3287a89f7248e0ac842a9aca01afdde760bbb6effc8ccd7f73e5",
+  "ci_run": "39730401796",
+  "ci_status_at_preparation": "in_progress",
+  "entry_pins": {
+    "config_sha256": "c426a8ec498fa5fbd6bcd8c21392f1a294e35b52fcd28c6443a9709177660a9c",
+    "runner_sha256": "25e15d21fbce2c88e9a6d1cd4481c85b50013ba7cf73f0c938dcf5f5977a7381",
+    "ps1_sha256": "d60687074cf90b587872a66af0da1f8c52b774a74148bfead5b0a2a1b287b2ee",
+    "native_stdout_sha256": "607d2532481f6cdd7afec2810b7c0348bc8aca69214ee7ed2352064ec2579a55",
+    "submit_stdout_sha256": "7669bed3a7179b1cccf0e7a7d2e70c4d33434c031be1e96eb4cc8254cbf59ae6",
+    "native_guard_origin": "native.stdout.txt first original emitted guard",
+    "native_checkpoint_origin": "submit.stdout.txt last original emitted checkpoint"
+  },
+  "preflight": {
+    "guard_sha256": "6cb867f3624f253044ef70624709719a72f7fb005e7a02386e58fb7e8edf0f03",
+    "checkpoint_sha256": "9e972393bbd3532e6621c56bfb4b608676a1c322bf7faa22655d3a18675100f2"
+  },
+  "native_event_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a/01a1622b-bed8-7d92-a86f-6bfd29f99f9d/msg_0ec02a04ee77b13f016ad9a51adf648193bc2a4d30b7631756",
+  "author_sha256": "ec2762a5c165b7dc8812c2d5b2ba967372d0fe2aee76fb3e0394ab1e7823a0e6",
+  "author_native_byte_identical": true,
+  "strict_read_only_verified": true,
+  "no_send_predecessor": {
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-natural-timeout-recovery-v2-20261022",
+    "seal_sha256": "64a0e24412cd62ec1d5069cb3411c1185de528e9678286dbe7f7b15c1617ee8a"
+  },
+  "authorization_issued_at": "2026-10-22T03:54:18.433261+00:00",
+  "authorization_expires_at": "2026-10-23T03:54:18.433261+00:00",
+  "old_expiry_extended": false,
+  "budget_changed": false,
+  "additional_attempts": 5,
+  "additional_tokens": 401920,
+  "additional_estimated_cny": 0.29184,
+  "tests": [
+    {
+      "group": "session and launcher including two-hour initial prompts and Ctrl+C clock recovery",
+      "passed": 31,
+      "seconds": 216.75
+    },
+    {
+      "group": "actual continuation all four reviews with two-hour prompts, original prefix retained",
+      "passed": 1,
+      "seconds": 162.86
+    },
+    {
+      "group": "UTC authorization expiry after credential prompt blocks before factory",
+      "passed": 1,
+      "seconds": 2.86
+    }
+  ],
+  "provider_requests_this_preparation": 0,
+  "key_read_this_preparation": false,
+  "execution_created": false,
+  "automation_status": "PAUSED",
+  "qualified": false,
+  "publication_allowed": false
+}

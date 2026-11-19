@@ -1,0 +1,30 @@
+{
+  "production_admitted": false,
+  "public_evidence": "golden_native_partitioned_tool_public_8014a56.json",
+  "cases": [
+    {
+      "id": "original_topic_window",
+      "result_sha256": "faf3c9015a20f184630e53fcb0a155589123d4ef3352c838429dfd1a8931d9d4",
+      "decision": "accept_this_development_control",
+      "reviewer": "current_primary_agent",
+      "basis": "Correct full report accepted without inventing a merged denominator.",
+      "scope": "selected_control_only_not_holdout_or_product_admission"
+    },
+    {
+      "id": "explicit_universal_metrics",
+      "result_sha256": "e0ab7139fcaf02da27decd846cb04bab0f5afbf39a41584129385f9e1d8ee60f",
+      "decision": "accept_this_development_control",
+      "reviewer": "current_primary_agent",
+      "basis": "Revised universal claim distinguishes lowered CS/gold/damage from increased vision/early-death averages; other substantive text preserved.",
+      "scope": "selected_control_only_not_holdout_or_product_admission"
+    },
+    {
+      "id": "explicit_combined_population",
+      "result_sha256": "b2319b65fbff01fe8424d3edf77e526f752cc50244326ef4fcd2bb0d2e3c64e9",
+      "decision": "accept_this_development_control",
+      "reviewer": "current_primary_agent",
+      "basis": "Revised only combined-five-game CS claim (wins8.81/losses6.45); other substantive text preserved. Recovery also rewrote advisory explanations and source selections; not a format-only repair.",
+      "scope": "selected_control_only_not_holdout_or_product_admission"
+    }
+  ]
+}

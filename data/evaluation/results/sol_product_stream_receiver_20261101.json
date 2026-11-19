@@ -1,0 +1,59 @@
+{
+  "kind": "sol-product-stream-receiver-offline-v1",
+  "contract_version": "1.7.1",
+  "response_mode": "natural-sol-product-stream-v1",
+  "new_paid_requests": 0,
+  "business_request_changes": [],
+  "wire_changes": {
+    "stream": [
+      false,
+      true
+    ]
+  },
+  "max_output_tokens": 16384,
+  "reasoning": "high",
+  "forced_tool": "submit_report_review",
+  "tests": {
+    "sdk_and_legacy_protocol_supervisor": 197,
+    "product_contract": 17,
+    "product_stream_recovery": 6,
+    "real_sql_and_browser_scripted_external_io": 10,
+    "original15_inventory_and_legacy_candidate": 5,
+    "unique_total": 235,
+    "final_diagnostic_wire_pin_recheck": 25
+  },
+  "runtime_profiles": 11,
+  "temporary_database_container_removed": true,
+  "original15_inventory": "sol_review_qualification_inventory_product_stream_20261101.json",
+  "original15_changed_fields": [
+    "component_fingerprints",
+    "program_sha256"
+  ],
+  "product_old_task_resumed": false,
+  "product_old_snapshot_migrated": false,
+  "live_stream_receiver_verified": false,
+  "prior_diagnostic_rejection_preserved": true,
+  "original_product_accounting": {
+    "http_requests": 8,
+    "known_tokens": 29323,
+    "unknown_token_reservation": 366910,
+    "retries": 4,
+    "active_seconds": 824.281
+  },
+  "limitations": [
+    "SSE compatibility events are synthetic, not a replay of uncaptured upstream events.",
+    "External model/source IO scripted in SQL and browser verification.",
+    "Prior real stream terminal opinion was not imported.",
+    "Existing task contract migration and explicit additional token/time budget remain before live resumption."
+  ],
+  "code_sha256": {
+    "app/product/sol_contract.py": "b2b1cf4e041cdc08c9e4c4415331b3c67e5e7f9a3176e350652814f6030d4e6a",
+    "app/runtime/sol_natural_provider.py": "204d89b5e09728ea9e098c75109d1af1d99a5bf60ea7636b2773cf39a1130300",
+    "app/runtime/coach_contract.py": "0b952c71a93206d20be037883aa4dde59d58860d3de201c7264ea15f351900c4",
+    "app/prompt_program/resolver.py": "7f11ee011169bba660093d096c30de3603cc1e9ba770568c19a2b5c4c8625a41",
+    "scripts/reviewer_responses_process.py": "a7964b8de8583705d3b7add309435c0840bbfd3d240c540a5c82a4b2e1d72ce7",
+    "scripts/reviewer_responses_stream.py": "3606600b3771686a98b540c49ab06486c2aef346a5564d3ee2556576f6e697c9"
+  },
+  "stage_8e_completed": false,
+  "default_product_admitted": false
+}

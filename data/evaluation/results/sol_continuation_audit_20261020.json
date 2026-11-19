@@ -1,0 +1,145 @@
+{
+  "version": "sol-continuation-audit-v1",
+  "checked_at": "2026-10-20T09:34:14.815450+00:00",
+  "base_head": "cca038f3ab094977f154c76c756b041a2180aae3",
+  "old_ci": {
+    "run_id": 39221139700,
+    "head": "cca038f3ab094977f154c76c756b041a2180aae3",
+    "conclusion": "failure",
+    "related_first_failure": "Prompt Program component fingerprint drift detected",
+    "new_exact_head_ci": "pending"
+  },
+  "fixes": [
+    "six_current_profile_fingerprints",
+    "persisted_hard_failure_precedes_deadline",
+    "valid_observation_required_for_retry",
+    "http_200_eof_forbids_timeout_retry",
+    "failed_usage_trace_and_budget_consistency",
+    "actual_model_bound_failed_usage",
+    "acceptance_counts_only_completed",
+    "historical_git_lf_bytes_preserved"
+  ],
+  "tests": {
+    "sol-continuation-audit-tests.xml": {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tmp\\sol-continuation-audit-tests.xml",
+      "sha256": "38fea9f2ffab599c1016520a7b91e08d351d78de34c0ec794dda24d03ac075f6",
+      "tests": 172,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 838.6
+    },
+    "sol-identity-usage-tests.xml": {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tmp\\sol-identity-usage-tests.xml",
+      "sha256": "dcdbdd653d46bf95306b7f1319877db33713a80edd2a3e02a2cd65fa46f33d17",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 152.556
+    },
+    "sol-failed-usage-consumers-tests.xml": {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tmp\\sol-failed-usage-consumers-tests.xml",
+      "sha256": "f41dd69336fc9eb1e2c138ac58bd9436e75d2b6d3105275009df186108b79180",
+      "tests": 130,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 15.322
+    },
+    "sol-retry-observation-tests.xml": {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tmp\\sol-retry-observation-tests.xml",
+      "sha256": "fbb87f61da64a8058b92e692c7b872cb8f0f1cc65576e8928f88f93091fef72e",
+      "tests": 18,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 73.404,
+      "disposition": "17 pass; body_complete fixture initially failed before SDK startup; replaced by final five observation tests after timeout and ByteStream corrections"
+    },
+    "sol-observation-final-tests.xml": {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tmp\\sol-observation-final-tests.xml",
+      "sha256": "bb87fd6e4523b6649a51d05285b4c57c816cd01b27b2fa65029d3c52e919c77b",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 14.799
+    }
+  },
+  "test_counts_overlap": true,
+  "postgres": {
+    "result_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-runtime-postgres-regression-20261020-172309-d22d38\\result.json",
+    "result_sha256": "2d2dbd6bce3ccbc8b0eb06a73009c634ffdc8ea40300d51e176d2102ad7a7511",
+    "xml_sha256": "fa811d5ea90c0e5851251c3c8fca7dec5d6c65883cbc4ca0465d3ea7e9af11ca",
+    "counts": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 16
+    },
+    "product_database_used": false,
+    "temporary_container_removed": true,
+    "scope": "shared_runtime_worker_api_with_scripted_models_not_sol_product_qualification"
+  },
+  "profiles": {
+    "result_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-runtime-postgres-regression-20261020-172309-d22d38\\profile-resolver-final.json",
+    "sha256": "c161d7f647bd4bd25dd37a57447b92bd84198df79cf623c0e83103e38a45a6fc",
+    "total": 38,
+    "passed": 38,
+    "failed": 0,
+    "final_sol_recheck": "RuntimeCompositionRoot actual resolver passed after final Sol-only retry guard",
+    "final_sol_program_sha256": "c5d80b95329501fb26f6e9dfda9c3ea6eaed49ecdd33105223e37fc865dd1316"
+  },
+  "frozen_execution_tree": {
+    "path": "D:\\riftcoach-semantic-execution",
+    "head": "8cdc9d2c285f903059cc0b8b3090b80743aef834",
+    "porcelain_status": "",
+    "branch_status": "## HEAD (no branch)"
+  },
+  "current_text_sha256": {
+    ".gitattributes": "c42dcbc61e79b6209a53604ec00fb435e115037beffd72695c04cfa06c0f58bb",
+    "app/evaluation/coach_product_acceptance_runner.py": "695f3a89a5914e81dd7f156979a7d3dc2b31ae563387465fb19555e52fb6d069",
+    "app/runtime/models.py": "b454ec05635cb9d4ad959f41ca85566c61dfe848a127aa473e2579d6a4021c6b",
+    "app/runtime/observed_provider.py": "695b8f439d7732dc609085235482fbfc64d2fa1617d77fcb762a9bccd44a68dc",
+    "app/runtime/recorder.py": "4c50b6c3db81e4aee3be2ed9cb34e332857c4ad0c2071abc84980017c7bcdafc",
+    "app/runtime/signals.py": "b1e2d637e90b53e3304f66744a2973eb69f943b0d91ca90dc789f89bb0391dde",
+    "app/runtime/sol_natural_provider.py": "772e6797f28774bc0c3dd10d691e9dbd9fb5fcedc858008f6a166660f9f074dd",
+    "tests/test_runtime_failed_usage.py": "1b6e5cb4a91c669ec76c4f5cb191814568162c4a39f1c7e3aa9abcaae862d02a",
+    "tests/test_coach_product_acceptance.py": "ea63398150b8c0edbb1034342c079eed5e23630470c54d1a08763634953ef3d2",
+    "tests/test_sol_natural_candidate.py": "73f9e10ac67b3c9ce30a5c8abd534a1dee8c3d735137cdb12637af70ea11ef5d",
+    "examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json": "504447424b6dd2527f2e80fdc8858105aeadb70b596909c436af25532511527f",
+    "examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json": "fd80fa5ff579cb83a46a4f7f71683f1ebfd8017703064cab71f40803b9a31616",
+    "examples/runtime_profiles/flash_glm_correction_scope_v1/prompt_programs/recent-form-review/manifest.json": "7aa15922733e231b5760c25f581891cdc92a0506022ceab8889b62735c670fbb",
+    "examples/runtime_profiles/flash_glm_boundary_examples_v1/prompt_programs/recent-form-review/manifest.json": "e72a3894a1fedf1de3a6d812efee9d9389b9608b48c76fb22a0ca6f8d9fce869",
+    "examples/runtime_profiles/natural_duty_v1/prompt_programs/recent-form-review/manifest.json": "b3d62f5463c0a56fc3ea7bd558b48c56d66103ead857aeb1d73cd22de4f02c03",
+    "examples/runtime_profiles/sol_natural_v1/prompt_programs/recent-form-review/manifest.json": "b8b6da217ecff2c01a195fa3a32bc04af584bfa0c59b12381e0cb96c7c51de2c"
+  },
+  "historical_result": {
+    "path": "data/evaluation/results/golden_coarse_file_handoff_result_v1.json",
+    "sha256": "d509d516f40739963ed9ac11679fea757ccd83a902e049cefb5e4110c947b69e",
+    "git_blob_equal": true
+  },
+  "docker": {
+    "record": "C:/Users/33502/Documents/Agent/outputs/riftcoach-docker-recovery-20261015/recovery-restart-20261020-171742.json",
+    "status": "verified",
+    "permanent_fix_proven": false,
+    "original_volume_preserved": true
+  },
+  "excluded_unrelated_file": "scripts/reviewer_responses_nonstream_probe.py",
+  "external_model_calls": 0,
+  "secret_reads": 0,
+  "paid_execution_authorized": false,
+  "paid_launcher_ready": false,
+  "restart_resume_implemented": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "remaining": [
+    "exact_repair_head_public_ci",
+    "persistent_mixed_session_and_restart_resume",
+    "independent_native_review_replay_binding",
+    "frozen_preparation_and_specific_cost_authorization"
+  ]
+}

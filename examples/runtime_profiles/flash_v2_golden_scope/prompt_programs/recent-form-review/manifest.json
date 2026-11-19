@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "2.3.11",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.5.11",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "1.6.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "332b888938b56f6bc4876d7b619b4f5e722b3dd9883dc09147b9a277b09fa229"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "app.evaluation.golden_inference_scope:evaluation_schema",
+      "sha256": "117ebc40c00ee7e6dc48feced11b5406b60aa77052ec45d8205e2aad8966bae3"
+    },
+    {
+      "component_id": "evaluation_fact_pack_probe",
+      "source": "app.evaluation.coach_report:build_fact_pack",
+      "sha256": "3543f202fd5f835220d41f44689717a576aa2b678eef2478f7d32594dfbf3f47"
+    },
+    {
+      "component_id": "evaluator_system",
+      "source": "app.evaluation.coach_report:EVALUATOR_SYSTEM_PROMPT",
+      "sha256": "89fd896882cf7c843fa7d6eea12e19cbbf3a42872526cb4952366166632b48a2"
+    },
+    {
+      "component_id": "evaluation_prompt_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_evaluation_prompt",
+      "sha256": "33231a75a65588e3cf1df2466dd7765d1f86cab6f587b20f6544914ce659e13b"
+    },
+    {
+      "component_id": "evaluation_repair_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_repair_prompt",
+      "sha256": "9eb1a1d41c34f43d4ad98b544fc6119f1de97788b2990706c8d0179eb18d4308"
+    },
+    {
+      "component_id": "reviser_system",
+      "source": "app.evaluation.coach_report:REVISER_SYSTEM_PROMPT",
+      "sha256": "c4cad848b17c8231b413e3ed0deb8be0eb0e0049323ac57701c542a15290c872"
+    },
+    {
+      "component_id": "revision_prompt_probe",
+      "source": "app.evaluation.coach_grounded_contract:build_grounded_revision_prompt",
+      "sha256": "49a33b0445c63e4a0af5e4dd66e8906c360009b337eec306b78f2dfdcd1e1de6"
+    },
+    {
+      "component_id": "inference_implementation",
+      "source": "app.evaluation.golden_inference_audit:inference_implementation",
+      "sha256": "686d64b508235d19222e9b1186fa513bb374892fcd6004e45595a2ea1de35cf4"
+    },
+    {
+      "component_id": "inference_v2_implementation",
+      "source": "app.evaluation.golden_inference_audit_v2:inference_v2_implementation",
+      "sha256": "6a8db4b17ff62a1b33a37d92ccdc8118675f0bb5ff1b9f029afdb3fa538fb673"
+    },
+    {
+      "component_id": "inference_v3_implementation",
+      "source": "app.evaluation.golden_inference_audit_v3:inference_v3_implementation",
+      "sha256": "cadab248fac3437f6f0f72f93e9227c201f73898f93e3d8607577faca232605c"
+    },
+    {
+      "component_id": "contextual_decoder",
+      "source": "app.evaluation.golden_inference_audit_v3:contextual_decoder",
+      "sha256": "0c128d0694cc3888637df34479b025bc44fd38fdec60a0855c882eb05fa8cfeb"
+    },
+    {
+      "component_id": "coverage_implementation",
+      "source": "app.evaluation.golden_inference_coverage:coverage_implementation",
+      "sha256": "3d706c6960fd531d324d0e318697325a2d8b855554ca42c07c2e25864c5d7eb1"
+    },
+    {
+      "component_id": "scope_implementation",
+      "source": "app.evaluation.golden_inference_scope:scope_implementation",
+      "sha256": "be6f1420735aa6976b4ed5c7ca8c2642a8ce019449fac82acd9fc808f9a5eee4"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.coach_contract:v1.3.11",
+      "sha256": "dbbfa3bed83e7ed9e55f9b863d996352ab46f1f97fbaef256da7c24563b43f43"
+    }
+  ],
+  "program_sha256": "9260684110f07e82ebd206a7612129b8189e7cdaad3d1553e203833019e383f8"
+}

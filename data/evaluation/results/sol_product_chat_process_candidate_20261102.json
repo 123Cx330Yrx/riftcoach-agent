@@ -1,0 +1,236 @@
+{
+  "kind": "sol-product-chat-owned-process-offline-candidate-v1",
+  "created_at": "2026-11-02T01:59:55.474022+00:00",
+  "base_commit": "4ca90c6b80361a957f4df1bcf5d6f11fcebda273",
+  "baseline_ci": {
+    "id": 41297485491,
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41297485491",
+    "head": "4ca90c6b80361a957f4df1bcf5d6f11fcebda273",
+    "conclusion": "success",
+    "jobs": 8,
+    "sql_passed": 315,
+    "sql_test_seconds": 692.68,
+    "evidence": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\baseline-ci-success.json",
+      "sha256": "250aca2f7fb3b0dc3cf7ac284570bd8a2b47c241476f04cdf1438c54a7fbc43a",
+      "bytes": 37237
+    }
+  },
+  "scope": {
+    "selected_candidate": "chat.completions",
+    "selection": "engineering and evidence candidate only",
+    "mode": "natural-sol-product-chat-candidate-v1",
+    "current_default": "natural-sol-product-stream-v1",
+    "product_contract_changed": false,
+    "provider_registered": false,
+    "task_db_changed": false,
+    "old_run_resumed": false,
+    "old_originals_changed": false,
+    "new_framework": false
+  },
+  "implementation": {
+    "entry": "scripts.reviewer_responses_process.run_once",
+    "transport": "scripts.reviewer_chat_stream.collect",
+    "decoder": "scripts.reviewer_chat_contract.Decoder",
+    "business_validator": "app.product.sol_contract.validate_business",
+    "explicit_caller_credential_only": true,
+    "incremental_usage": true,
+    "durable_usage_conflict": true,
+    "hard_deadline_and_cancellation": true,
+    "create_only_call_directory": true,
+    "default_mode_unchanged": true
+  },
+  "verification": {
+    "candidate_pytest": 68,
+    "shared_regression_pytest": 85,
+    "total_pytest": 153,
+    "complete_input_calls": 2,
+    "mock_http_requests_for_complete_inputs": 2,
+    "current_runtime_profiles": 11,
+    "current_inventories": 2,
+    "compile_passed": true,
+    "governance": "passed",
+    "diff_check": "passed",
+    "sockets_blocked": true,
+    "cases": [
+      "both duties initial/fresh",
+      "context/business/profile drift before claim",
+      "schema and business rejection",
+      "read/close/tail/HTTP errors",
+      "known and unknown usage on cancellation",
+      "conflicting usage before killed child",
+      "hard deadline after usage",
+      "before-send cancellation",
+      "duplicate directory cannot resend",
+      "usage checkpoint write failure"
+    ],
+    "regression_scope": [
+      "owned supervisor",
+      "Responses product stream recovery",
+      "qualification bindings and historical inventories",
+      "existing direct publish, revision and same-report fresh",
+      "existing cumulative budgets and manual recovery"
+    ]
+  },
+  "complete_inputs": {
+    "kind": "chat-candidate-complete-input-owned-process-offline-v1",
+    "source": {
+      "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\session\\operations\\0028-intent.json",
+      "sha256": "cbba6f9373ea2406787b71f366b63543f5846c6076e43c4b3cc9b71e17443079"
+    },
+    "source_unchanged": true,
+    "results": [
+      {
+        "duty": "facts",
+        "business_sha256": "5a3f6dad221de1b359a3be6a609d86566f8785898daee8a3e923d39734ecb5f6",
+        "wire_sha256": "8f8e77750377a9dbe8d1caad1aba7703705f1b18f38bb34113c97d9bf96fdb14",
+        "context_sha256": "02dfa84b8d7b60acd9571094f4591ce3076cfe1461ac947f8c069ce9fa569ac0",
+        "receipt_sha256": "767781c0726be939fe7e3bfa18ad3c4e6dc6824aab5ce0fa3cd1ffa2ada1c563",
+        "receipt_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\complete-inputs\\facts\\receipt.json",
+        "exact_prepared_input": true,
+        "mock_http_requests": 1,
+        "mock_usage_tokens": 20,
+        "reaped": true,
+        "business_binding_validated": true,
+        "semantic_approval": false,
+        "publication_allowed": false
+      },
+      {
+        "duty": "completion",
+        "business_sha256": "6fb078b0e51ba7ba5120888c5a335259ba897a0feedb0fb5f47104a1129767bc",
+        "wire_sha256": "310c73b50f66edc7ab61990974c3f3507ca1269208b8fb9788e375f1f6e99d47",
+        "context_sha256": "8dcadc1bce8b5dffcbf194f011f521651009b617449f24fe8cc9542310cbca96",
+        "receipt_sha256": "d4c9ac783d5858cae0ca52d26631fa6c2589c0ab4b3614f7e75a0b94ff65b758",
+        "receipt_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\complete-inputs\\completion\\receipt.json",
+        "exact_prepared_input": true,
+        "mock_http_requests": 1,
+        "mock_usage_tokens": 20,
+        "reaped": true,
+        "business_binding_validated": true,
+        "semantic_approval": false,
+        "publication_allowed": false
+      }
+    ],
+    "sockets_blocked": true,
+    "real_credentials_read": 0,
+    "new_model_http": 0,
+    "fixture_opinions_only": true,
+    "original_task_changed": false,
+    "semantic_approval": false,
+    "live_qualified": false,
+    "product_execution_ready": false
+  },
+  "manifest_change": {
+    "profiles": [
+      "sol_natural_v1",
+      "sol_necessity_v1",
+      "sol_review_v1",
+      "sol_product_v1"
+    ],
+    "component": "scripts.reviewer_responses_process",
+    "only_source_and_derived_program_digest": true,
+    "current_sol_inventory": "data/evaluation/results/sol_review_qualification_inventory_chat_process_20261102.json",
+    "natural_inventory_unchanged": true,
+    "business_requests_labels_contracts_unchanged": true,
+    "historical_snapshots_unchanged": true
+  },
+  "initial_failures": {
+    "candidate_tests": {
+      "passed": 15,
+      "failed": 7,
+      "real_model_calls": 0,
+      "causes": [
+        "credential fixture outside schema",
+        "wrong expected usage error code",
+        "four cancellation assertions assumed durable HTTP count",
+        "SDK iteration can raise while closing; collector now preserves close_failed"
+      ]
+    },
+    "complete_inputs_preflight": "historical context key corrected before process/network; same prepared digests verified"
+  },
+  "source_pins": [
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\scripts\\reviewer_chat_contract.py",
+      "sha256": "e18432ad766bfc979e9f2c28a0df687964d7d89e27a3bf5da2d5211938927de1",
+      "bytes": 10175
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\scripts\\reviewer_chat_stream.py",
+      "sha256": "f8508b4255ff2a08b508f405268117e05536ad8895e8685593c3f5952fd0580b",
+      "bytes": 4038
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\scripts\\reviewer_responses_process.py",
+      "sha256": "84008b0f1ac0f9e53b112379e3f4e0dd77987b6043b59a3f52aed357064df3b4",
+      "bytes": 17822
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\scripts\\check_runtime_profile_manifests.py",
+      "sha256": "0263a2683325698f7f14c45b57ac215fb5c28e8d450684aa79f417274c3e826c",
+      "bytes": 2901
+    },
+    {
+      "path": "D:\\riftcoach-review-route-diagnostics\\tests\\test_reviewer_chat_process.py",
+      "sha256": "68b194b37c61433483379d05b198f80934410b97d5f42a15ab998f67574f1dea",
+      "bytes": 9676
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\chat-process-tests-initial.log",
+      "sha256": "858250d7c5d8758fe98bfbee7f3be7ee315bbc70b22135ad8648c69d295449de",
+      "bytes": 4838
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\chat-candidate-tests.log",
+      "sha256": "59966d1166b1239b980a54d0ddb7d5df60b723dbd299f3fa5a2c22e98e3d83e8",
+      "bytes": 566
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\shared-process-regressions.log",
+      "sha256": "302a6a89f5bfd94c5deea6c6495402845dcd6d9b165a3f1c2b756ff371bc62de",
+      "bytes": 194
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\baseline-sql.log",
+      "sha256": "75ef6125787fc005773c3ce43815ca51833b05db2d36f5e0b1486f40086c180e",
+      "bytes": 93239
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\complete-inputs-result.json",
+      "sha256": "a7e5ac673f4a9e10abe89dfdb75629c751b25285c8bbc3bc92716ac790f4b7c3",
+      "bytes": 2189
+    },
+    {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-chat-process-20261102\\verify_complete_inputs.py",
+      "sha256": "d98c0d1b9fb8e0b471f51f6d7a7bc1b9a7a5e4fdc6df59d2e8b786d7e4bedb8a",
+      "bytes": 3614
+    }
+  ],
+  "new_model_http": 0,
+  "real_credentials_read": 0,
+  "new_paid_tokens": 0,
+  "semantic_approval": false,
+  "publication_allowed": false,
+  "live_qualified": false,
+  "product_execution_ready": false,
+  "remaining": [
+    "opt-in product contract and frozen task transport binding",
+    "SolReviewProvider saved profile/receipt API and recovery classification",
+    "Worker/SQL/API/browser Chat consumer verification with substitutes",
+    "actual relay tools/usage and end-to-end latency evidence",
+    "full P3 workload and scoped execution preparation"
+  ],
+  "budget": {
+    "default_calls": 8,
+    "default_tokens": 401920,
+    "default_active_seconds": 900,
+    "scenario_calls": 7,
+    "scenario_tokens": 335183,
+    "historical_scenario_seconds": 785.203,
+    "four_full_timeout_scenario_seconds": 1343.891,
+    "old_authorization_expired": true,
+    "budget_extended": false
+  },
+  "next_action": "Finish this grouped commit and verify CI; integrate the same candidate through existing opt-in product consumers, with no live requests."
+}

@@ -1,0 +1,154 @@
+{
+  "kind": "completion-necessity-offline-contrast-and-inventory-fix-v1",
+  "recorded_at": "2026-10-24T10:45:02.448729+00:00",
+  "base_head": "bb35f996ecd2e83e6976659b7374ef9173416b12",
+  "ci_defect": {
+    "run_id": "40084544939",
+    "job_id": "120844662221",
+    "failed_test": "test_current_inventory_rebuilds_without_changing_historical_qualification",
+    "cause": "current inventory omitted shared component/program fingerprint refresh",
+    "new_snapshot": "data/evaluation/results/natural_duty_qualification_inventory_format_recovery_20261024.json",
+    "changed_top_level": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "historical_snapshots_rewritten": false,
+    "original15_inputs_requests_budget_and_qualification_unchanged": true,
+    "previous_run_completed": true,
+    "other_substantive_jobs_success": true
+  },
+  "material": {
+    "package": "data/evaluation/fixtures/completion_necessity_20261024",
+    "fixture_sha256": {
+      "a.md": "1b3b991358e59216e0d8ebf490ee1cfa498609a947f150b746ba70f6f1d7105c",
+      "b.md": "2d09a0cc64273ce32223e1d370f878d8b225933fec9f3267bae7d2d3db75d1fb",
+      "c.md": "e33f9410fc1cc369c8c7cbd0c58290fbee07bed1ccc9b68ed3180fdb5010f085",
+      "context.json": "e31bc3a830814022c5ecf426ac20222db12fffa958c1ab2bd5cd40e23d0c6b60",
+      "d.md": "34b11dd4e01b10a27e64b7326114b39a4b23b91989c3be9b82965f34d487898e",
+      "evaluation.json": "896fdb94eb0085cfd1be73976db080ca5de5086abcd3ea286fa4fc12082cdccf",
+      "independent-material-review.json": "978d18a4bf7ffe0fa78471582794b79315a8b0f256192e05c2aef6ad0edf1442",
+      "primary-material-review.json": "5b9e994883b488fe7770edcc879b32d18f9b6454f5d8ac3d1db89b61c08dde40",
+      "README.md": "0623dca5c0eea8c125f05ec5fc8e7ec4f9cd74069e4267f5d65c0a4b327556fb",
+      "retained-public-review.json": "f3188a5e5a9dcc15b2f1d721c8f5d2b33629827935d67a0fc016cdac18b0bced"
+    },
+    "case_count": 4,
+    "paired_requests": 8,
+    "prepared_directory": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-necessity-20261024-offline",
+    "prepared_manifest_sha256": "2e56a31cb285137b074e344321395e1b05c7413d06b787b78633a23b9e0cfb2b",
+    "historical_request_reconstructed_exactly": true,
+    "full_sources_shared": true,
+    "labels_excluded_from_preparation": true,
+    "new_labels_primary_only": false,
+    "new_independent_material_review": true,
+    "known_facts_errors_deliberately_preserved": true,
+    "counterfactuals_are_not_application_or_fresh": true,
+    "input_ceiling_range": [
+      50468,
+      52312
+    ],
+    "output_reservation": 16384,
+    "independent_review": {
+      "author_sha256": "978d18a4bf7ffe0fa78471582794b79315a8b0f256192e05c2aef6ad0edf1442",
+      "checkpoint_sha256": "a982f23cee52fc29e9c728e5117bd84ecd361809942819ded0b2c9be1d244d00",
+      "diagnostic_only": true,
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16d86-917f-76b2-a8f4-d8b14d97e788/msg_0370f309de022d70016adc8dc80bc481948d7a2e810836d63e",
+      "material_sha256": "26ca777e0ab472b5396d4e588d1708073cb4c7ac92564acb44136e004aa91f62",
+      "model_semantic_approval": false,
+      "native_final_exact_author_bytes": true,
+      "offline_material_accepted": true,
+      "provider_requests": 0,
+      "readonly_replay": true,
+      "submission_sha256": "433e3ed32b20b75d085927de82cb19fd1867f7113ac599b1cf1a1b22a1fc60f3"
+    },
+    "offline_material_closure_sha256": "625b7621e46dd27e496606e180ff8878a10fbeccda9904bbb4e242a177152f16"
+  },
+  "policy_hypothesis": {
+    "source": "scripts/review_completion_necessity_candidate.py",
+    "policy_sha256": "8439c3b393dfd0f0a93e15fe632f46010a0c8ad635504dbb5dd5f20c34fd3222",
+    "live_contract_changed": false,
+    "root_cause_proven": false,
+    "semantic_improvement_proven": false,
+    "decision": "Prepare a falsifiable contrast, do not install candidate in live contract or retry the failed opinion as a format fault."
+  },
+  "checks": [
+    {
+      "command": "pytest tests/test_natural_duty_qualification_inventory.py --tb=short --show-capture=no -q",
+      "passed": 6,
+      "seconds": 12.25
+    },
+    {
+      "command": "pytest tests/test_completion_necessity_candidate.py --tb=short --show-capture=no -q",
+      "passed": 7,
+      "seconds": 7.45,
+      "initial_seconds": 7.31,
+      "final_after_native_material_import": true
+    },
+    {
+      "cli_preparation_files": 9,
+      "provider_requests": 0
+    },
+    {
+      "governance": true,
+      "compile": true,
+      "diff_check": true
+    }
+  ],
+  "original": {
+    "operator": "C:/Users/33502/Documents/Agent/outputs/riftcoach-sol-necessity-natural-20261024",
+    "seal_sha256": "24172c4f903d050bc819f260a81f3333a37902bf0b2ee2b38e2d1fd1355aa7a9",
+    "sealed_inventory_entries": 144,
+    "seal_files": 1,
+    "all_unchanged": true,
+    "calls": 4,
+    "known_tokens": 66591,
+    "unknown_reserved_tokens": 0,
+    "retries": 0,
+    "facts_initial_accepted": true,
+    "application_count": 0,
+    "fresh_requests": 0,
+    "frozen_execution_head": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+    "frozen_execution_clean": true
+  },
+  "new_provider_requests": 0,
+  "key_reads": 0,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "automation_status": "PAUSED",
+  "next_action": "Implement and offline-verify completion-frontier continuation that inherits accepted facts/native, successful generation/tool results and all historical cost; freeze a concrete bounded diagnostic scope before paid execution. Controls b/c/d precede a; the actual accepted a result is consumed once by the natural task, not reissued.",
+  "prospective_diagnosis_design": {
+    "implemented": false,
+    "authorized": false,
+    "control_cases": [
+      "b",
+      "c",
+      "d"
+    ],
+    "a_is_actual_continuation_completion": true,
+    "a_success_reissued": false,
+    "next_natural_stages": [
+      "completion-initial",
+      "compatibility",
+      "edit",
+      "application",
+      "facts-fresh",
+      "completion-fresh"
+    ],
+    "new_first_requests": 6,
+    "new_first_tokens_envelope": 482304,
+    "new_first_estimated_cny": "0.43776",
+    "with_four_manual_retry_reservations": {
+      "new_attempts": 10,
+      "cumulative_attempts": 14,
+      "new_tokens_envelope": 803840,
+      "cumulative_tokens_including_known_history": 870431,
+      "new_estimated_cny": "0.7296"
+    },
+    "price_cny_per_million": {
+      "input": "0.5",
+      "output": "2.5"
+    },
+    "billing_hard_cap": false,
+    "old_grant_extended": false
+  }
+}

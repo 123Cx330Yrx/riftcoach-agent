@@ -1,0 +1,284 @@
+{
+  "version": "sol-session-recovery-20261020-v1",
+  "source_head_before_commit": "7444cd887d91e82fc1f91c3bee0694695a0ca646",
+  "public_ci_before_commit": {
+    "run_id": 39401813306,
+    "head_sha": "7444cd887d91e82fc1f91c3bee0694695a0ca646",
+    "status": "completed",
+    "conclusion": "failure",
+    "first_related_failures": [
+      "tests/test_document_review_diagnostic.py::test_real_budget_gate_and_first_failure_stop[receipt-1]",
+      "tests/test_document_review_scan.py::test_hard_failures_stop_never_become_semantics[receipt-1]",
+      "tests/test_document_review_timed_transport.py::test_actual_factory_failures_keep_usage_and_poison_shared_task[unknown]",
+      "tests/test_document_review_timed_budget.py::test_unknown_failure_keeps_reservation_and_prevents_retry"
+    ]
+  },
+  "implemented": [
+    "shared budget checks the exact Sol contract object and preserves legacy contracts",
+    "candidate session guard, create-only operation intents/results, checkpoint chain and process lock",
+    "complete tool results are replayed without retrieval or model IO",
+    "complete original Flash/Sol receipts can be reconciled read-only after parent loss",
+    "pending intents remain blocked and unknown reservations are retained",
+    "native independent review gate reuses ExactNativeGate and checks author final bytes",
+    "candidate runtime requires native review gate outside fixture-only tests",
+    "historical original15 bytes remain unchanged"
+  ],
+  "verification": {
+    "focused_tests": "96 passed",
+    "focused_tests_xml": "tmp/sol-session-final-regression-20261020.xml",
+    "profile_resolver": "38 profiles verified",
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed",
+    "network_requests": 0,
+    "keys_read": false,
+    "paid_launcher_ready": false,
+    "production_admitted": false,
+    "publication_allowed": false
+  },
+  "remaining": [
+    "new exact-head public CI must be green",
+    "operator must bind final native review principals and real event source",
+    "paid launcher and authorization are still separate work",
+    "offline tests do not prove model semantic quality or upstream identity"
+  ],
+  "public_ci_after_implementation": {
+    "run_id": 39451570923,
+    "head_sha": "469da8ecd5a8c3e92c676a05d7e2c5a6f842234d",
+    "status": "completed",
+    "conclusion": "failure",
+    "first_failure_all_four_shards": "tests/test_document_remaining4_adapter.py setup: missing archived app/runtime/runtime.py; historical lf_sha256 mismatch"
+  },
+  "historical_fixture_repair": {
+    "date": "2026-10-21",
+    "source_commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4",
+    "added_source": "app/runtime/runtime.py",
+    "lf_sha256": "30d18b7499da443dca0b10e8515d9510b778bfb8eb1a8a22076eaa65ba04ffbe",
+    "existing_archived_sources_unchanged": 9,
+    "manifest_files_verified": {
+      "remaining4": 47,
+      "remaining8": 46
+    },
+    "frozen_hashes_changed": false,
+    "historical_seals_changed": false,
+    "verification": {
+      "tests": "17 passed in 195.09s",
+      "command": "python -m pytest tests/test_document_remaining4_adapter.py tests/test_document_remaining8_adapter.py -q --tb=short --show-capture=no",
+      "governance": "passed",
+      "diff_check": "passed",
+      "provider_requests": 0,
+      "keys_read": false
+    }
+  },
+  "inventory_continuation_20261021": {
+    "failed_ci": {
+      "run_id": 39454231178,
+      "head_sha": "6906d16978b56c81b000636e3956fcb6cbf386f1",
+      "conclusion": "failure",
+      "passed_jobs": [
+        "pytest-shards (0)",
+        "pytest-shards (2)",
+        "pytest-shards (3)",
+        "postgres-migrations",
+        "packaging-smoke",
+        "web-checks"
+      ],
+      "first_failure": "tests/test_natural_duty_qualification_inventory.py::test_saved_inventory_rebuilds_without_fresh_or_qualification_credit"
+    },
+    "current_inventory": "data/evaluation/results/natural_duty_qualification_inventory_session_20261021.json",
+    "changed_fields": [
+      "component_fingerprints",
+      "program_sha256"
+    ],
+    "changed_components": [
+      "app.runtime.models",
+      "app.runtime.recorder",
+      "app.runtime.observed_provider",
+      "app.runtime.runtime",
+      "app.runtime.coach_budget",
+      "app.runtime.coach_contract",
+      "app.model_runtime",
+      "app.evaluation.natural_duty_workflow",
+      "app.product.natural_duty_candidate"
+    ],
+    "original_15_cases_30_requests_labels_and_budget_unchanged": true,
+    "coverage_original_git_sha256": "299422980911671b7ba10b6935f62ebff095972fd389f4d0fc841458e10fea2d",
+    "historical_inventory_unchanged": true,
+    "targeted_tests": "5 passed in 14.04s",
+    "local_tail_environment": {
+      "inherited_loopback_test_database_port": 54329,
+      "database_tcp": "timeout",
+      "aborted_attempt_not_counted_as_pass": true,
+      "retry_test_process_database_unset": true,
+      "pi_dependencies_initially_absent": true,
+      "pi_lockfile_install": "npm ci --ignore-scripts --no-audit --no-fund",
+      "pi_tests_after_install": "30 passed in 13.95s"
+    },
+    "offline_startup": {
+      "version": "sol-natural-offline-preparation-v1",
+      "run_id": "sol-natural-preflight-20261021",
+      "first_request_sha256": "c8788587f094bfee72460a87c7e4dd50c83ee762763fec0abe9dba67e13188f0",
+      "source_sha256": {
+        "evidence_bundle.json": "6d5ab97ba85f92cf650f05740956b8033e0b8a5093f846268f71ae3c5243dab8",
+        "player_summary.json": "13cb231e905c5a7fd2e4edbaa7a6a18be6fb47fbbc6ea7601d7b4d9519ed2132"
+      },
+      "source_projection_time": "2026-09-10T12:15:28.980990+00:00",
+      "relationship": "observed",
+      "memory_records": 0,
+      "source_scope": "frozen_public_development_not_holdout",
+      "preselected_knowledge": false,
+      "contract": {
+        "contract_id": "natural-flash-sol-development-v1",
+        "version": "1.6.1",
+        "scope": "unadmitted_opt_in",
+        "sha256": "89dbc7379328bb00cf4510e63e399d3989ffaa35bacca361a06fe8028f90fd65"
+      },
+      "limits": {
+        "max_calls": 7,
+        "total_tokens": 498688,
+        "execution_timeout_s": 1200,
+        "transport_retries": 1
+      },
+      "estimated_uncached_cny": "0.6170624",
+      "hard_billing_cap": false,
+      "provider_requests": 0,
+      "key_read": false,
+      "semantic_approval": false,
+      "execution_authorized": false,
+      "paid_launcher_ready": false,
+      "production_admitted": false
+    },
+    "provider_requests": 0,
+    "keys_read": false,
+    "paid_launcher_ready": false,
+    "local_ci_tail": {
+      "selected": 800,
+      "passed": 744,
+      "skipped": 35,
+      "failed": 9,
+      "errors": 12,
+      "subtests_passed": 14,
+      "seconds": 905.04,
+      "first_run_not_all_passed": true,
+      "failures": [
+        {
+          "class": "tests.test_pi_runtime_harness_parity",
+          "name": "test_pi_draft_can_publish_only_through_existing_review_harness",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_harness_parity",
+          "name": "test_char_guard_is_not_claimed_as_token_unit_parity",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_harness_parity",
+          "name": "test_successful_pi_harness_path_builds_existing_body_free_runtime_trace",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_sidecar",
+          "name": "test_sidecar_can_finish_direct_final_without_provider_io",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_sidecar",
+          "name": "test_sidecar_rejects_duplicate_batch_and_cross_turn_before_second_execution",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_sidecar",
+          "name": "test_sidecar_provider_failures_are_safe_and_usage_is_unknown[failure0-failed-provider_error]",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_pi_runtime_sidecar",
+          "name": "test_sidecar_uses_real_local_knowledge_provider_without_network",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_role_review_containment",
+          "name": "test_only_tail_is_billed_and_final_is_fresh[None]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_review_containment",
+          "name": "test_time_used_by_before_send_cannot_leak_a_request",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_final_success_cannot_erase_different_initial_defects[missed_error]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_final_success_cannot_erase_different_initial_defects[internal_contradiction]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_propagation_or_bad_final_review_blocks_outcome[final-missed_error]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_final_score_cannot_hide_report_failure[identity_and_goal_preserved]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_actual_replay_rejects_semantic_and_control_path_counterexamples[missing_edit]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_host_cannot_rebind_omit_or_silence_checks[candidate]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_host_cannot_rebind_omit_or_silence_checks[order]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_unknown_usage_and_excessive_replay_budget_are_not_success",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_diagnostic_continuation_is_limited_to_safe_target_and_incidental_explanation[reject-False-unsupported_explanation-False]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_task_outcome",
+          "name": "test_diagnostic_continuation_is_limited_to_safe_target_and_incidental_explanation[reject-True-unsupported_source-False]",
+          "kind": "error"
+        },
+        {
+          "class": "tests.test_role_unexecuted_qualification",
+          "name": "test_continuation_only_covers_untouched_inputs_and_charges_parent",
+          "kind": "failure"
+        },
+        {
+          "class": "tests.test_role_unexecuted_qualification",
+          "name": "test_parent_constraints_cannot_be_bypassed[started_key]",
+          "kind": "failure"
+        }
+      ]
+    },
+    "historical_receipt_followup": {
+      "tests": "57 passed in 24.99s",
+      "files_restored_from_git": [
+        "golden_role_containment_result_v1.json",
+        "golden_role_unexecuted_result_v1.json",
+        "golden_role_remaining_interruption_v1.json"
+      ],
+      "expected_hashes_changed": false,
+      "git_content_changed": false
+    },
+    "governance": "passed",
+    "diff_check": "passed"
+  }
+}

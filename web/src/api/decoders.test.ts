@@ -372,6 +372,24 @@ const progressPage = () => ({
 })
 
 describe("exact API decoders", () => {
+  it("keeps unavailable early-death measurements distinct from measured zero", () => {
+    const payload = summary()
+    const missing = {
+      ...payload,
+      averages: { ...payload.averages, deaths_before_15: null },
+      win_loss_comparison: {
+        wins: { ...payload.win_loss_comparison.wins, deaths_before_15: 0 },
+        losses: { ...payload.win_loss_comparison.losses, deaths_before_15: null },
+      },
+    }
+    const decoded = decodeRecentSummary(missing, RUN_ID)
+    expect(decoded.averages.deaths_before_15).toBeNull()
+    expect(decoded.win_loss_comparison.wins.deaths_before_15).toBe(0)
+    expect(decoded.win_loss_comparison.losses.deaths_before_15).toBeNull()
+    expect(() => decodeRecentSummary({ ...missing, averages: { ...missing.averages, deaths_before_15: -1 } }, RUN_ID)).toThrow()
+    expect(() => decodeRecentSummary({ ...missing, averages: { ...missing.averages, deaths_before_15: undefined } }, RUN_ID)).toThrow()
+  })
+
   it("decodes every live workbench resource and keeps snake_case wire truth", () => {
     expect(decodePlayerProfilePage(profilePage()).profiles[0]?.player_profile_id).toBe(PROFILE_ID)
     expect(decodeLatestProfileReview(latest(), PROFILE_ID).latest_review?.task_id).toBe(TASK_ID)

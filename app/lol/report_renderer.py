@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from decimal import Decimal, ROUND_HALF_UP
+
 
 def percent(value):
     if value is None:
@@ -16,121 +18,50 @@ def fmt(value):
 
 
 def build_findings(recent_summary: dict) -> list[str]:
-    findings = []
+    """Describe supplied sample aggregates without inventing skill or cause.
 
+    This text is also consumed as evidence by Coach. Arithmetic over displayed
+    aggregates is an observation, not a measure of stability or player ability.
+    """
     games = recent_summary.get("games_analyzed", 0)
-    wins_count = recent_summary.get("wins", 0)
-    losses_count = recent_summary.get("losses", 0)
-    win_rate = recent_summary.get("win_rate", 0)
+    findings = [f"以下仅描述本次纳入的 {games} 局，不能据此推断长期水平或胜负原因。"]
+    rate = recent_summary.get("win_rate")
+    if rate is not None:
+        findings.append(f"本样本胜率为 {rate}%；胜率记录本次结果，不单独评价打法或能力。")
 
-    averages = recent_summary.get("averages", {})
-    comparison = recent_summary.get("win_loss_comparison", {})
-    wins = comparison.get("wins", {})
-    losses = comparison.get("losses", {})
-
-    role_summary = recent_summary.get("role_summary", [])
-    champion_summary = recent_summary.get("champion_summary", [])
-
-    def diff(key: str):
-        win_value = wins.get(key)
-        loss_value = losses.get(key)
-        if win_value is None or loss_value is None:
-            return None
-        return round(loss_value - win_value, 2)
-
-    def has_both_win_loss_sample():
-        return wins_count >= 2 and losses_count >= 2
-
-    if games < 10:
-        findings.append(
-            f"当前只分析了 {games} 局，样本偏小，适合做初步观察，不适合下稳定结论。"
-        )
+    roles = recent_summary.get("role_summary", [])
+    if len(roles) >= 2:
+        role_text = "、".join(f"{r['role']} {r['games']} 局" for r in roles)
+        findings.append(f"样本包含多个位置：{role_text}。混合位置均值受位置构成影响，应按位置核对原始对局；不能将混合差异解释为某一位置的表现差距。")
+        scope = "本次全部纳入比赛（混合位置）"
+    elif roles:
+        scope = f"本次 {roles[0]['role']} 样本"
     else:
-        findings.append(
-            f"当前样本为 {games} 局，可以用于初步复盘，但英雄池和单个英雄胜率仍需要更多样本验证。"
-        )
+        scope = "本次全部纳入比赛（位置资料缺失）"
+        findings.append("位置资料缺失，不能将整体均值视为同位置对比。")
 
-    if win_rate >= 65:
-        findings.append(
-            f"最近样本胜率为 {win_rate}%，整体表现较好，复盘重点不应只找问题，也应总结当前有效打法。"
-        )
-    elif win_rate < 45:
-        findings.append(
-            f"最近样本胜率为 {win_rate}%，整体结果偏低，需要重点排查输局中反复出现的指标差异。"
-        )
-    else:
-        findings.append(
-            f"最近样本胜率为 {win_rate}%，整体表现处于中间区间，建议重点比较赢局和输局的发育、视野与死亡节奏差异。"
-        )
+    champions = recent_summary.get("champion_summary", [])
+    if champions and sum(r.get("games") == 1 for r in champions) >= len(champions) * 0.7:
+        findings.append("本样本多数英雄仅出现 1 局，单英雄胜率不足以判断英雄强弱或英雄池能力。")
 
-    if len(role_summary) >= 2:
-        role_text = "、".join(
-            f"{row['role']} {row['games']} 局" for row in role_summary
-        )
-        findings.append(
-            f"样本包含多个位置：{role_text}。由于不同位置的 CS、视野、伤害职责不同，后续更适合增加按位置过滤的复盘。"
-        )
+    deaths = recent_summary.get("averages", {}).get("deaths_before_15")
+    if deaths is not None:
+        findings.append(f"{scope}前 15 分钟平均死亡 {deaths} 次；具体原因需逐局核对。")
 
-    one_game_champions = [
-        row["champion"] for row in champion_summary if row.get("games") == 1
-    ]
-    if champion_summary and len(one_game_champions) >= len(champion_summary) * 0.7:
-        findings.append(
-            "当前大多数英雄都只出现 1 局，单个英雄胜率没有统计稳定性，暂时不建议根据单英雄胜率判断英雄池强弱。"
-        )
-
-    avg_deaths_15 = averages.get("deaths_before_15")
-    death_diff = diff("deaths_before_15")
-
-    if avg_deaths_15 is not None and avg_deaths_15 >= 1:
-        findings.append(
-            f"前 15 分钟平均死亡 {avg_deaths_15} 次，说明样本中前中期确实存在较多死亡事件，值得在单局复盘中继续追踪。"
-        )
-
-    if has_both_win_loss_sample() and death_diff is not None:
-        if death_diff >= 0.5:
-            findings.append(
-                f"输局前 15 分钟死亡比赢局高 {death_diff} 次，早期死亡可能是输局的重要区分因素。"
-            )
-        elif abs(death_diff) < 0.2:
-            findings.append(
-                f"输局与赢局的前 15 分钟死亡差异只有 {abs(death_diff)} 次，当前不能把早期死亡直接判定为胜负的主要分界点。"
-            )
-
-    cs_diff = diff("cs_per_min")
-    if has_both_win_loss_sample() and cs_diff is not None:
-        if cs_diff <= -0.5:
-            findings.append(
-                f"输局补刀/分钟比赢局低 {abs(cs_diff)}，发育稳定性在输局中有所下降。"
-            )
-        elif abs(cs_diff) < 0.3:
-            findings.append(
-                "赢局和输局补刀/分钟差异较小，补刀本身可能不是当前样本最主要的胜负分界点。"
-            )
-
-    gpm_diff = diff("gold_per_min")
-    if has_both_win_loss_sample() and gpm_diff is not None:
-        if gpm_diff <= -40:
-            findings.append(
-                f"输局经济/分钟比赢局低 {abs(gpm_diff)}，经济获取效率是当前输赢差异中比较明显的一项。"
-            )
-        elif abs(gpm_diff) < 25:
-            findings.append(
-                "赢局和输局的经济/分钟差异不大，经济获取效率暂时不是最突出的分界点。"
-            )
-
-    dpm_diff = diff("damage_per_min")
-    if has_both_win_loss_sample() and dpm_diff is not None and dpm_diff <= -100:
-        findings.append(
-            f"输局伤害/分钟比赢局低 {abs(dpm_diff)}，说明输局中输出转化能力或参团环境明显变差。"
-        )
-
-    vision_diff = diff("vision_score")
-    if has_both_win_loss_sample() and vision_diff is not None and vision_diff <= -8:
-        findings.append(
-            f"输局视野分比赢局低 {abs(vision_diff)}，目标前布控、边线保护和信息获取可能是需要重点分析的方向。"
-        )
-
+    if recent_summary.get("wins", 0) >= 2 and recent_summary.get("losses", 0) >= 2:
+        comparison = recent_summary.get("win_loss_comparison", {})
+        wins, losses = comparison.get("wins", {}), comparison.get("losses", {})
+        for key, label in (("cs_per_min", "补刀/分钟"), ("gold_per_min", "经济/分钟"),
+                           ("damage_per_min", "伤害/分钟"), ("vision_score", "视野分"),
+                           ("deaths_before_15", "前 15 分钟死亡次数")):
+            w, l = wins.get(key), losses.get(key)
+            if w is None or l is None:
+                continue
+            difference = (Decimal(str(l)) - Decimal(str(w))).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            relation = (f"输局均值比赢局{'高' if difference > 0 else '低'} {abs(difference):f}"
+                        if difference else "两组均值相同")
+            findings.append(f"{scope}{label}的赢局均值为 {w}、输局均值为 {l}，{relation}（按展示均值计算）。")
+        findings.append("均值差异不代表逐局方向一致、表现稳定性、能力变化或因果关系；这些判断需要另行核对证据。")
     return findings
 
 
@@ -163,8 +94,8 @@ def render_deterministic_report(data: dict) -> str:
     lines.append(f"- Data Dragon 版本：{request.get('data_dragon_version')}")
     lines.append(f"- 胜场 / 负场：{recent.get('wins')} / {recent.get('losses')}")
     lines.append(f"- 胜率：{percent(recent.get('win_rate'))}")
-    lines.append(f"- 主要位置：{recent.get('main_role')}")
-    lines.append(f"- 常用英雄：{', '.join(recent.get('main_champions', []))}")
+    lines.append(f"- 本样本出现最多的位置：{recent.get('main_role')}")
+    lines.append(f"- 本样本出现较多的英雄：{', '.join(recent.get('main_champions', []))}")
     lines.append("")
 
     lines.append("## 2. 平均表现")
@@ -220,7 +151,7 @@ def render_deterministic_report(data: dict) -> str:
         )
     lines.append("")
 
-    lines.append("## 6. 初步问题判断")
+    lines.append("## 6. 样本统计观察")
     lines.append("")
     for item in findings:
         lines.append(f"- {item}")

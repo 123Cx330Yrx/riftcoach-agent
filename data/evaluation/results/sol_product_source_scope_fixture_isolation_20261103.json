@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-03T08:56:31.181144+00:00",
+  "status": "fixture_isolation_repaired_replacement_ci_pending",
+  "base_head": "8436d89e0b3620f1ef2d7c0367c2731f85f24bd6",
+  "failed_run": 41598198839,
+  "failed_job": 125790440489,
+  "failed_job_log": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/ci-125790440489.log",
+    "sha256": "52e87d6afb5abde8dd5fcdb6b6ac0fbe962cb69224cf0556ee00bdaba6118020"
+  },
+  "ci_failed_tests": [
+    "test_real_workflow_shared_five_call_budget_and_exact_complete_fresh[pass]",
+    "test_contrast_initial_keyed_edit_and_contrast_fresh_share_existing_budget[empty_edit]",
+    "test_abrupt_process_exit_recovers_uncommitted_complete_transport"
+  ],
+  "cause": "\u65b0\u589e\u6765\u6e90\u8303\u56f4\u6d4b\u8bd5\u539f\u5730\u4fee\u6539SummaryBuilder\u5f15\u7528\u7684cases()\u7f13\u5b58player_summary\u3002\u540e\u7eed\u5b8c\u6574\u8bf7\u6c42\u4e0e\u9884\u5148\u6784\u5efainputs\u4e0d\u4e00\u81f4\uff0c\u6062\u590d\u6d4b\u8bd5\u7236\u8fdb\u7a0b\u7684\u88ab\u6539\u8f93\u5165\u4e0e\u65b0\u5b50\u8fdb\u7a0b\u539f\u8f93\u5165\u4e0d\u4e00\u81f4\u3002\u8bf7\u6c42\u8eab\u4efdguard\u6b63\u786e\u62d2\u7edd\uff0c\u6ca1\u6709\u8bc1\u636e\u8981\u6c42\u653e\u5bbd\u751f\u4ea7\u6821\u9a8c\u3002",
+  "change": "\u4ec5\u5728\u6765\u6e90\u8303\u56f4\u6d4b\u8bd5\u6df1\u62f7\u8d1d\u672c\u7528\u4f8b\u8f93\u5165\uff0c\u65ad\u8a00\u5171\u4eab\u6458\u8981\u672a\u53d8\uff1b\u4e0d\u6e05\u7f13\u5b58\u3001\u4e0d\u6539\u51bb\u7ed3\u8d44\u6599\u6216\u751f\u4ea7\u4ee3\u7801\u3002",
+  "local_verification": {
+    "isolated_original_failures": {
+      "passed": 3,
+      "log": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/pytest-shard0-failure-reproduction.log",
+        "sha256": "30594b8f6a905a7487fa45d9d36ad1d4f91c69bae48eee4c9d59a79f7e564030"
+      }
+    },
+    "ordered_before": {
+      "passed": 8,
+      "failed": 3,
+      "log": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/pytest-scope-order-before.log",
+        "sha256": "20772780681d3ad1cecc870d705f06d7a388d0c6a1f6183e5d386dd264d4c1a3"
+      }
+    },
+    "ordered_after": {
+      "files": [
+        "tests/test_product_source_scope.py",
+        "tests/test_report_block_keyed_editor.py",
+        "tests/test_report_contrast_review.py",
+        "tests/test_sol_natural_session.py"
+      ],
+      "passed": 54,
+      "failed": 1,
+      "original_three_passed": true,
+      "log": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/pytest-scope-order-after.log",
+        "sha256": "dedb17b9c2bb62120db2554b47e97a91d0d70d9ed497be6aa131e3c1d6393f82"
+      }
+    },
+    "unrelated_archive_check": {
+      "reason": "Windows\u68c0\u51fa\u5c06\u672b\u5c3eLF\u8f6c\u4e3aCRLF\uff0c\u5de5\u4f5c\u6811\u5185\u5bb9\u4e0eGit blob\u4ec5\u6b64\u5dee\u5f02\u3002\u72ec\u7acb\u76ee\u5f55\u4f7f\u7528Git\u539f\u5b57\u8282\u6838\u9a8c\uff1b\u5c01\u5b58\u6587\u4ef6\u548c\u65ad\u8a00\u4e0d\u4fee\u6539\u3002",
+      "worktree_sha256": "309b9a6a372ef6b8b549fda30ac2a41fec310a6c47d1e34c8937510bb3c2e1c2",
+      "git_blob_sha256": "4628e972c6b2b0015e31454a38724f73319e660ed807a62611fd613ddfbad0c5",
+      "isolated_original_bytes_passed": 1,
+      "log": {
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/pytest-archive-original-bytes.log",
+        "sha256": "58625b1ecd52202299085e2ded08192abe9965263e9dd5131894971f642622a9"
+      }
+    }
+  },
+  "existing_ci_sql": {
+    "run": 41598198839,
+    "passed": 339,
+    "explicit_evidence_scope_cases_passed": 4,
+    "migrations": "completed/success",
+    "evidence": {
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-source-scope-20261103/ci-sql-verified.json",
+      "sha256": "49b3c000b10fb90fcd4974810444df13ee4d72416e21ee3ecd68cb8ff73297ff"
+    },
+    "local_sql_executed": false
+  },
+  "preservation": {
+    "files": [
+      {
+        "label": "final_report",
+        "path": "D:/rc-chat-guard-recovery-20261103/verified-runs/review_ee91ab480ecf4c4992f82ec08cc4bbf4/output/final_report.md",
+        "sha256": "e714e552dcb46285c4dbf58f866b12763378590fabfa03a599147a8f5b6e0455",
+        "unchanged": true
+      },
+      {
+        "label": "latest_database",
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/latest-db.dump",
+        "sha256": "5b98b57cd697d3b54fe4a6d263c76ab7ff67a420256aaaa94c1cbdd95b33d533",
+        "unchanged": true
+      },
+      {
+        "label": "recovery_snapshot",
+        "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-chat-guard-recovery-20261103/execution-1/segment-04/recovery-snapshot.zip",
+        "sha256": "38b92f5932779651a3529012bad03bb40d362b78fdab393d4a8ed1aef988632f",
+        "unchanged": true
+      },
+      {
+        "label": "unrelated_probe",
+        "path": "scripts/reviewer_responses_nonstream_probe.py",
+        "sha256": "92927957d456eb38009b728c7f261e3a419077f392f7d03df391ab145a6946db",
+        "unchanged": true
+      }
+    ],
+    "frozen_head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+    "frozen_clean": true
+  },
+  "production_changed": false,
+  "paid_requests": 0,
+  "source_requests": 0,
+  "real_key_reads": 0,
+  "product_acceptance": "P3_not_accepted; Stage8E and default admission unchanged",
+  "checks": {
+    "governance": "passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed"
+  }
+}

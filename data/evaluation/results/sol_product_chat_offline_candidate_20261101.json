@@ -1,0 +1,111 @@
+{
+  "kind": "offline-relay-chat-candidate-v1",
+  "created_at": "2026-11-01T09:28:12.263034+00:00",
+  "base_commit": "dfe601fe268bd64bc6a67da2fdb048e088626d51",
+  "source": {
+    "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\session\\operations\\0028-intent.json",
+    "sha256": "cbba6f9373ea2406787b71f366b63543f5846c6076e43c4b3cc9b71e17443079"
+  },
+  "scope": "Pure request/chunk mapping only; no registered provider, sender, supervisor integration, task migration or publication",
+  "current_requests": [
+    {
+      "duty": "facts",
+      "business_sha256": "5a3f6dad221de1b359a3be6a609d86566f8785898daee8a3e923d39734ecb5f6",
+      "wire_sha256": "8f8e77750377a9dbe8d1caad1aba7703705f1b18f38bb34113c97d9bf96fdb14",
+      "messages": 4,
+      "message_sha256": [
+        "e22a96707c8c3be8456dc2cd3b53bf277828a0c00faa8182f2105773ef8a866c",
+        "b973bf06bcbd0d47859c6a677125a9a8038de77b829ec0a5e86145eea4bc3480",
+        "0d13c8264c62907a197a35e7583298d99c94cb870d73274477433f13a877f9f4",
+        "1fae3c0266a27389cd8ea4ab2e868e8b89058b741bc6c9cb0888289ae3e5967a"
+      ],
+      "schema_sha256": "dc3e4ea48e66498a69157b3467191f3d5d225b3b82f3619b30dcf4f12cfbfe97",
+      "wire_utf8_bytes": 55405,
+      "business_input_ceiling": 58360,
+      "serialized_wire_local_input_estimate": 69374,
+      "output_reservation": 16384,
+      "scenario_input_reservation": 58360,
+      "exact_business_roundtrip": true,
+      "trusted_context_binding": true,
+      "responses_wire_utf8_bytes": 55336,
+      "responses_serialized_wire_local_input_estimate": 69298
+    },
+    {
+      "duty": "completion",
+      "business_sha256": "6fb078b0e51ba7ba5120888c5a335259ba897a0feedb0fb5f47104a1129767bc",
+      "wire_sha256": "310c73b50f66edc7ab61990974c3f3507ca1269208b8fb9788e375f1f6e99d47",
+      "messages": 4,
+      "message_sha256": [
+        "675eccd50b885416ce2a43a8eb90531e0990aea49fad283dfa4e67863b2a2baa",
+        "b973bf06bcbd0d47859c6a677125a9a8038de77b829ec0a5e86145eea4bc3480",
+        "0d13c8264c62907a197a35e7583298d99c94cb870d73274477433f13a877f9f4",
+        "1fae3c0266a27389cd8ea4ab2e868e8b89058b741bc6c9cb0888289ae3e5967a"
+      ],
+      "schema_sha256": "dc3e4ea48e66498a69157b3467191f3d5d225b3b82f3619b30dcf4f12cfbfe97",
+      "wire_utf8_bytes": 49726,
+      "business_input_ceiling": 53964,
+      "serialized_wire_local_input_estimate": 64916,
+      "output_reservation": 16384,
+      "scenario_input_reservation": 53964,
+      "exact_business_roundtrip": true,
+      "trusted_context_binding": true,
+      "responses_wire_utf8_bytes": 49657,
+      "responses_serialized_wire_local_input_estimate": 64838
+    }
+  ],
+  "budget": {
+    "contract_version": "1.7.3",
+    "default_calls": 8,
+    "default_tokens": 401920,
+    "default_active_seconds": 900,
+    "generation_basis": "Historical 3 calls / 29323 tokens / 143.891 transport seconds; not a new task measurement or ledger reset",
+    "initial_pair_reservation": 145092,
+    "fresh_pair_max_reservation": 160768,
+    "full_repair_path_calls": 7,
+    "scenario_total_tokens": 335183,
+    "scenario_token_headroom": 66737,
+    "input_estimator_is_provider_tokenizer": false,
+    "wire_estimate_is_only_local_heuristic": true,
+    "all_initials_within_64000": true,
+    "four_reviews_at_old_observed_max_seconds": 785.203,
+    "four_reviews_at_300s_seconds": 1343.891,
+    "transport_headroom_at_old_observed_max": 114.797,
+    "per_review_average_time_available": [
+      {
+        "other_active_seconds": 0,
+        "review_average_s": 189.027
+      },
+      {
+        "other_active_seconds": 30,
+        "review_average_s": 181.527
+      },
+      {
+        "other_active_seconds": 60,
+        "review_average_s": 174.027
+      }
+    ],
+    "time_guarantee": false,
+    "chat_latency_measured": false,
+    "old_authorization_expired": true,
+    "serialized_wire_stress_total_tokens": 357149,
+    "serialized_wire_stress_is_not_contract_or_actual_tokens": true,
+    "reservation_basis": "Existing provider-neutral product estimator on the identical complete business request; serialize-as-text stress figures are sensitivity checks, not a new gate or tokenizer calibration."
+  },
+  "verification": {
+    "offlined_network_blocked_tests_passed": 42,
+    "current_product_binding_tests_passed": 4,
+    "sdk": "2.54.0; actual chat.completions.create over httpx.MockTransport",
+    "sdk_done_requires_tail_draining": true,
+    "first_sdk_fixture_run": "39 pass / 1 fail because SDK DONE did not establish HTTP EOF; reused existing TailCheckedStream, no acceptance condition removed",
+    "governance": "passed",
+    "compile": "passed",
+    "diff": "passed",
+    "source_sha_and_budget_arithmetic": "passed",
+    "default_product_code_changed": false,
+    "combined_ci": "pending; predecessor dfe601fe CI41292199945 still running"
+  },
+  "new_model_http": 0,
+  "real_credentials_read": 0,
+  "execution_ready": false,
+  "live_qualified": false
+}
