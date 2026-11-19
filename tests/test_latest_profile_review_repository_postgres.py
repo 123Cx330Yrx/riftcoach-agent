@@ -22,6 +22,7 @@ from app.persistence.player_records import (
     PlayerLinkTaskRecord,
     PlayerSubjectRecord,
 )
+from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_record import ReviewTaskRecord
 from app.product.latest_review import LatestProfileReviewRepositoryError
 from app.tasks.models import TaskPublicationStatus, TaskStatus
@@ -247,6 +248,25 @@ def test_cross_owner_hidden_and_unresolved_profiles_are_not_found(database) -> N
                 player_profile_id=profile_id,
             )
         assert caught.value.code == "player_profile_not_found"
+
+
+def test_discovery_of_published_observed_review_requires_its_own_successful_link(database) -> None:
+    _, factory = database
+    owner = "observer"
+    linked = seed_profile(factory, owner_id=owner, role="observed")
+    archive = seed_profile(factory, owner_id=owner, role="observed", successful_link=False)
+    published = insert_review(factory, linked, status="succeeded")
+    insert_review(factory, archive, status="succeeded")
+
+    profiles = PostgresPlayerRepository(factory).list_profiles(owner_id=owner, limit=50)
+    assert [profile.player_profile_id for profile in profiles] == [linked["profile_id"]]
+    locator = PostgresLatestProfileReviewRepository(factory)
+    latest = locator.get_latest(owner_id=owner, player_profile_id=profiles[0].player_profile_id)
+    assert latest is not None and latest.task_id == published
+    assert latest.report_available and latest.publication_status is TaskPublicationStatus.PUBLISHED
+    with pytest.raises(LatestProfileReviewRepositoryError) as caught:
+        locator.get_latest(owner_id=owner, player_profile_id=archive["profile_id"])
+    assert caught.value.code == "player_profile_not_found"
 
 
 def test_latest_failed_task_is_not_skipped_for_older_success(database) -> None:
