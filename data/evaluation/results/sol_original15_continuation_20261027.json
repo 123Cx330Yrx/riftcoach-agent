@@ -1,0 +1,76 @@
+{
+  "version": "original15-additive-continuation-prepared-v1",
+  "at": "2026-10-26T16:26:34.978162+00:00",
+  "activation": {
+    "activated": true,
+    "authorization_continuation": {
+      "file": "authorization-continuation-20261027.json",
+      "sha256": "8f69421caaa404aac53988a28fbc9ada93872c4fd7d961f2e0cd1a723ac82b2d",
+      "module_sha256": "320d3029bf7ef5411f68871b854e4c8ba4782f60e496b9e12900b284bdb3a7ff"
+    },
+    "issued_at": "2026-10-26T16:21:46.567089+00:00",
+    "expires_at": "2026-10-27T16:21:46.567089+00:00",
+    "original_authorization_sha256": "87a471553eb541616ac58df79e9124e219f33c579eb49695ec1b1782463d31cc",
+    "current_calls": 16,
+    "current_known_tokens": 301243,
+    "current_unknown_reserved_tokens": 0,
+    "remaining_request_capacity": 104,
+    "remaining_token_capacity": 9344837,
+    "original_maximum_requests": 120,
+    "original_maximum_tokens": 9646080,
+    "budget_reset": false,
+    "provider_requests": 0,
+    "key_reads": 0,
+    "next_case": "scope:4",
+    "next_stage": "facts-fresh"
+  },
+  "current_case": "scope:4",
+  "next_stage": "facts-fresh",
+  "completed_cases": 4,
+  "case_closed": false,
+  "batch_closed": false,
+  "source_module_sha256": "320d3029bf7ef5411f68871b854e4c8ba4782f60e496b9e12900b284bdb3a7ff",
+  "operator_sha256": "809bd8a46e39d9e9b6003e00bad60b89192f5cd9a0107d4b3ef6b6429cbbf9bf",
+  "entry_sha256": "455f5df9f6aa287323b925b91e1c36c4ec611d04c976424e012a86df06b3e00e",
+  "old_business_files_preserved": 893,
+  "author_files_preserved": 25,
+  "new_run_files": [
+    "cases\\scope-4\\session\\checkpoints\\0051.json"
+  ],
+  "original_stdout_roots": {
+    "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+    "checkpoint_sha256": "fc231733664f38530ba76c04f9e7eb73dbb7b0e50c0877c438d2e650cec0cf3c"
+  },
+  "stdout_segment": "0069",
+  "stdout_sha256": "4caa190cd4928ed8b49bebe9902e40a4dabd4576126fe00e1461c8a05eb27355",
+  "exit_sha256": "f38ef6e07d40e609c3f5969542addaa4f17dbf06bf3a064e68fcb74a9162427f",
+  "host_only_return": "session_model_boundary",
+  "native_preflight_verified": true,
+  "ci_verified": true,
+  "authorization_active": true,
+  "local_checks_passed": 24,
+  "known_requests": 16,
+  "known_tokens": 301243,
+  "unknown_reserved_tokens": 0,
+  "new_evaluation_requests": 0,
+  "key_reads": 0,
+  "original_authorization_unchanged": true,
+  "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "ci_run": "40188299016",
+  "frozen_source_changed": false,
+  "automatic_retries": false,
+  "qualified": false,
+  "publication_allowed": false,
+  "local_preparation_corrections": [
+    "First test assumed directory enumeration order; corrected to an unordered comparison.",
+    "One zero-request check began before activation finished and observed old expired state; subsequent sequential check reported additive_continuation active."
+  ],
+  "remaining_capacity_interpretation": {
+    "activation_capacity_fields": "Global envelope minus cumulative usage, not transferable slots from completed cases.",
+    "remaining_global_request_ceiling": 104,
+    "remaining_global_token_ceiling": 9344837,
+    "remaining_open_cases": 11,
+    "maximum_remaining_requests_under_original_per_case_limits": 86,
+    "closed_cases_cannot_be_reopened_to_use_unused_capacity": true
+  }
+}

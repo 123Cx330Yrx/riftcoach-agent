@@ -1,0 +1,162 @@
+{
+  "schema_version": "sol-product-preamble-probe-terminal-v1",
+  "at_utc": "2026-11-01T06:25:33.459282+00:00",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101",
+  "execution_head": "1eb9eb43170d2635cffde8a926a01d25329c9155",
+  "ci_id": 41271213029,
+  "ci_all_eight_success": true,
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "authorization_sha256": "756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae",
+  "outcome": "protocol_rejected_not_published",
+  "worker_status": "succeeded",
+  "terminal_reason": "evaluation_failed",
+  "publication_allowed": false,
+  "new_actual_http": 1,
+  "request_status": 200,
+  "new_known_tokens": 22409,
+  "new_unknown_reservation": 0,
+  "receiptless_requests": 0,
+  "unresolved_intents": 0,
+  "new_generation_requests": 0,
+  "completion_requests": 0,
+  "fresh_requests": 0,
+  "accepted_reviews": 0,
+  "applications": 0,
+  "accounting": {
+    "known_tokens": 119707,
+    "requests_observed": 11,
+    "requests_reserved": 11,
+    "retries": 7,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 366910,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 1273.249999999971,
+  "elapsed_s": 160.328,
+  "first_bytes_after_request_ms": 1907,
+  "response_eof": true,
+  "response_completed": true,
+  "protocol_errors": [
+    "event_sequence",
+    "response_not_created",
+    "unexpected_event"
+  ],
+  "first_rejection": {
+    "code": "event_sequence",
+    "event": {
+      "ordinal": 1,
+      "type": "unrecognized",
+      "type_sha256": "037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441",
+      "sequence": null,
+      "previous_sequence": -1,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string"
+      },
+      "extra_field_count": 1,
+      "response_shape": null
+    }
+  },
+  "unrecognized_events": [
+    {
+      "ordinal": 1,
+      "type": "unrecognized",
+      "type_sha256": "037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441",
+      "sequence": null,
+      "previous_sequence": -1,
+      "created_count": 0,
+      "output_items": 0,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string"
+      },
+      "extra_field_count": 1,
+      "response_shape": null
+    },
+    {
+      "ordinal": 1409,
+      "type": "unrecognized",
+      "type_sha256": "037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441",
+      "sequence": 1407,
+      "previous_sequence": 1406,
+      "created_count": 1,
+      "output_items": 8,
+      "terminal_seen": false,
+      "fields": {
+        "type": "string",
+        "sequence_number": "integer"
+      },
+      "extra_field_count": 1,
+      "response_shape": null
+    }
+  ],
+  "anonymous_preamble_seen": false,
+  "context_truncated": false,
+  "verified_finding": "Two equal unknown type digests. First event lacks sequence and precedes valid-id created(0); second unknown follows output and precedes completed. Strict decoder rejects sequence, before-created and unsupported event paths. Anonymous-ID compatibility not exercised.",
+  "evidence_limits": "Unknown event type text and its extra field content are not retained. Cannot identify producer or declare envelope safe; do not equate it with synthetic ping/keepalive or reconstruct earlier runs. output_limit_matches=false does not distinguish absent/null from a different value.",
+  "diagnostic_score": 88,
+  "diagnostic_verdict": "needs_revision",
+  "diagnostic_issue_count": 2,
+  "diagnostic_opinion_imported": false,
+  "semantic_read": "Read all four request messages, full report, source/provenance/computed evidence, tool schema and complete diagnostic issues/repairs. HALF_UP 8.14/1280.92 confirmed; observation-only user constraint conflicts with personal training sections. Diagnostic repairs address these two findings but remain rejected evidence, not accepted review/application/publication.",
+  "independently_recomputed_means": [
+    "8.14",
+    "1280.92"
+  ],
+  "inherited_files_unchanged": 154,
+  "successful_generation_prefix": 3,
+  "prior_524_preserved": 5,
+  "prior_http200_rejections_preserved": 2,
+  "request_identical_to_previous_failed_call": true,
+  "latest_checkpoint": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\session\\checkpoints\\0013.json",
+  "checkpoint_sha256": "d6a74f8ad751369a6776304de711886ff0c3cefd7b1865fe412e16cbac57e5f1",
+  "database_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101\\attempt-13\\terminal-db.dump",
+  "database_sha256": "f96d4a854ab7151d5b72c12310b8471533c4b671e6dc3ce8f6b3a8ee6ebc4e39",
+  "snapshot_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101\\attempt-13\\terminal-run-snapshot.zip",
+  "snapshot_sha256": "1207172d746e945bb280371e114cf54088ccd2b3abb5835710087a99a7842f63",
+  "browser": {
+    "verified": true,
+    "widths": [
+      {
+        "width": 1440,
+        "noHorizontalOverflow": true
+      },
+      {
+        "width": 320,
+        "noHorizontalOverflow": true
+      }
+    ],
+    "report_visible": false,
+    "task_resume_posts": 0
+  },
+  "remaining_total_request_slots": 1,
+  "remaining_total_token_capacity": 236839,
+  "remaining_active_seconds": 826.7500000000291,
+  "deadline_utc": "2026-11-01T07:50:40.024669+00:00",
+  "single_probe_authorization_consumed": true,
+  "next_paid_request_authorized": false,
+  "next_action": "No automatic retry. This probe did not exercise anonymous preamble. Preserve latest terminal and resolve unknown event contract from existing/offline evidence before proposing any further paid action. One remaining slot cannot cover outstanding two initial plus two fresh reviews.",
+  "evidence_sha256": {
+    "request.json": "d0d15081db4d99ef2f593cab40a83854fe329c8a68b17c8be99abba347efe409",
+    "validation-context.json": "75ffe209551adbb68175d074921f8fa6ad2affdf1098d419474ff84adfee7ed3",
+    "receipt.json": "5a67fb8c0609b87215e6ee82b0e9967ab5ea9ddabb35f71ce329f3b016364be7",
+    "usage.json": "8283e398e6467396a79951723db6628f963f476df3ed7049b4b4d9d808f53d52",
+    "worker-result.json": "91bd874e4c4cbfe25313d3f238733ead40a8f4daf9616573c095f0cf7a14dc73",
+    "observation/observation.json": "30e01044e96811eb842e3489b5229d30cdb20bfef34669b89113908996a3d361"
+  },
+  "driver_exit_code": 0,
+  "temporary_container_removed": true,
+  "active_driver_count": 0,
+  "waiter_started": false,
+  "monitor_deleted_or_absent": true,
+  "monitor_delete_status": "not_found",
+  "offline_type_lookup": {
+    "installed_sdk_response_tokens_checked": 55,
+    "matching_tokens": [],
+    "limitation": "No match within installed SDK only; unknown identity remains unresolved."
+  },
+  "local_audit_correction": "Assertion spelling manual_retry corrected to actual manual-retry; no execution or evidence changes."
+}

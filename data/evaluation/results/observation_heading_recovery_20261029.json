@@ -1,0 +1,133 @@
+{
+  "kind": "observation-heading-strict-local-recovery-v1",
+  "verifier_sha256": "d5a4d3c43bbad8655172e555e04098cd3e46cb02d02fb63661f263f2084e6ef0",
+  "development_base": "095a241840ae02ee4fb1cc775d9066cec0a887b4",
+  "source_code_sha256": {
+    "app/report_validation.py": "7ac5c4da8bb075be74c4853aadd4afed9c6d9bd6ad299fe2025a9a7e1b7fbeb7",
+    "app/evaluation/coach_report.py": "4a87821154a3e09c11f24a45af21360b141562761a33fc9b773c5ece9129a0f8",
+    "app/evaluation/source_patch_editor.py": "1da291ec374844b9bb6736b6abf3cd19695d45a8d2e10e317afe379381b23805",
+    "app/evaluation/source_bound_report.py": "7355a105175fb08002df40fadb591c6167e2b21eb941d7ab12717786d0e51929",
+    "app/evaluation/coach_grounded_development.py": "a19eabb78b25da6636fdaac4386f073683b7b90f6d4e461b6e4d086a8011be8f"
+  },
+  "original_seal_sha256": "e723a554d852a776cf2eaf30492def52d36a4514bf762931d033199fc8e6c646",
+  "original_report_sha256": "e30e37a3c715557734331f6c0c1ee9f8a3cde9556526862a8d2f2becc38f769e",
+  "facts_response_sha256": "6fc508a2bd9079da103181fa09120328e94ce3788e5dd9da3ceb7ddd7870678c",
+  "completion_response_sha256": "bdfb3d02ab82c720350fb0cae8f4a7593412b2f28620ca3f1dd8a10c528919d3",
+  "strict_preview_passed": true,
+  "source_section_unchanged": true,
+  "source_bound_slot_prototype": "not used by actual natural workflow; separate offline regression coverage",
+  "preview_report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+  "changed_blocks": [
+    11,
+    13,
+    14,
+    15,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "preserved_blocks": 18,
+  "operations": 10,
+  "complete_sources_preserved": true,
+  "fresh_requests": {
+    "facts": {
+      "request_sha256": "e425932c03e8d55008772fa2585bc048f1b9df968ddc8d462e399d70029f2818",
+      "candidate_request_sha256": "8be9a2e0d69c79a35061aa556f83c960b7838bdcf3da83b5544dbbc84c70bc74",
+      "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+      "sent": false
+    },
+    "completion": {
+      "request_sha256": "f77051a644356b02468a0fdb33be2ec48738c42ed0e5a217d99e94aa6782f119",
+      "candidate_request_sha256": "956ce3eb6a9ae6253908c40f6e25c90ca134525ef24405cf88d67de635e2dd7a",
+      "report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51",
+      "sent": false
+    }
+  },
+  "immutable_inventories": {
+    "operator": {
+      "count": 181,
+      "sha256": "fd67e2ed7895e23a2f800c0018c526203a8e0baf96458bbd2fd5cfcd9e75f835",
+      "unchanged": true
+    },
+    "control": {
+      "count": 64,
+      "sha256": "66bffec99388b0a0e386d6e312e871c4cacd17738654cd362afb732da92f0dba",
+      "unchanged": true
+    },
+    "authors": {
+      "count": 3,
+      "sha256": "806eafcacd6a479ddd31323707956c3ea5db3099309b99d330386a6cf4df8607",
+      "unchanged": true
+    }
+  },
+  "frozen_head": "1ac2388d58da37762d66ed1fd862d0129ae66f88",
+  "frozen_tree_clean": true,
+  "new_provider_requests": 0,
+  "key_reads": 0,
+  "completion_false_pass_retained": true,
+  "formal_application": false,
+  "formal_compatibility": false,
+  "independent_whole_report_review": false,
+  "fresh_completed": false,
+  "semantic_approval": false,
+  "production_admitted": false,
+  "local_evidence_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-observation-heading-recovery-20261029\\evidence.json",
+  "local_verifier_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-observation-heading-recovery-20261029\\verify_local.py",
+  "changes": {
+    "shared_structural_identity": true,
+    "allowed_observation_title": "## 6. \u89c2\u6469\u7ec3\u4e60\u8ba1\u5212",
+    "review_policies_changed": false,
+    "four_current_candidate_manifests_refreshed": true,
+    "historical_audit_snapshot_overwritten": false
+  },
+  "verification_development_failures": [
+    {
+      "code": "historical_implementation_hash_drift",
+      "resolution": "Preserved old audit JSON; compare all old reports and rejections unchanged, verifying current implementation hash separately."
+    },
+    {
+      "code": "local_verifier_citation_projection_field",
+      "resolution": "Local helper projection reconstruction corrected; no product or old evidence changes."
+    },
+    {
+      "code": "local_verifier_wrong_slot_prototype_consumer",
+      "resolution": "Traced actual NaturalDutyWorkflow; verify its real source section and candidate fresh binding. Slot prototype covered only by offline regression."
+    }
+  ],
+  "remaining": [
+    "completion-initial false pass remains rejected",
+    "no formal compatibility or whole-report independent acceptance",
+    "no application or model fresh result",
+    "no production or same-version 15 qualification"
+  ],
+  "next_action": "Zero-paid full-source whole-report review of retained revised report; assess union coverage separately from duty failure before considering a fresh-only diagnostic. No generation/initial replay or sealed-run mutation.",
+  "verification": {
+    "main_regression": {
+      "passed": 202,
+      "failed_before_inventory_refresh": 1,
+      "seconds": 262.14,
+      "subtests_passed": 4,
+      "failure": "Current candidate inventory still pinned old assembly source hash; resolved by separate new inventories, old files retained."
+    },
+    "resolved_inventory_and_related_regression": {
+      "passed": 7,
+      "seconds": 27.9
+    },
+    "default_application_regression": {
+      "passed": 46,
+      "seconds": 8.59
+    },
+    "distinct_tests_passed_after_resolution": 255,
+    "governance": "passed",
+    "compile": "passed",
+    "diff_check": "passed"
+  },
+  "new_inventory_sha256": {
+    "data/evaluation/results/natural_duty_qualification_inventory_observation_heading_20261029.json": "715d58c7b4b478677310d54b439c9cd59774473b5eed1f9086d00a38b7ca9496",
+    "data/evaluation/results/sol_review_qualification_inventory_observation_heading_20261029.json": "153bbeeefd0c44170e3328892481d6e9a8bb47183fef8fa864a1c6722dd1c863"
+  },
+  "inventory_change_boundary": "Only source_patch_editor component fingerprint and derived program digest changed; all old reports, source data, requests, policies, labels and budgets equal."
+}

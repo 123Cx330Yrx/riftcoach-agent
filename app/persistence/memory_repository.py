@@ -42,7 +42,8 @@ from app.memory.ports import (
 )
 from app.memory.typed_models import TypedMemoryContractError
 from app.memory.training_materializers import TrainingMaterializerError
-from app.memory.training_models import TrainingContractError
+from app.memory.training_models import TrainingContractError, parse_training_progress_write
+from app.memory.training_measurement import PRODUCER_ID, PRODUCER_VERSION, measurement_key
 from app.persistence.conversation_records import ConversationMessageRecord, ConversationRecord
 from app.persistence.memory_records import MemoryCandidateRecord
 from app.persistence.player_records import OwnerPlayerRelationshipRecord
@@ -123,115 +124,14 @@ class PostgresMemoryCandidateRepository:
             raise TypeError("pending must be a PendingMemoryCandidate")
         if not isinstance(identity, MemoryConversationIdentity):
             raise TypeError("identity must be a MemoryConversationIdentity")
-        fingerprint = compute_candidate_fingerprint(pending)
-        payload_sha = compute_payload_sha256(pending.proposal_payload)
         try:
             with self._session_factory() as session:
                 with session.begin():
-                    locked = _lock_conversation_identity(
-                        session,
-                        owner_id=pending.owner_id,
-                        conversation_id=pending.conversation_id,
-                        require_active=True,
-                    )
-                    if locked is None or locked != identity:
-                        return CandidateCreateResult(
-                            disposition=CandidateCreateDisposition.IDENTITY_UNAVAILABLE
-                        )
-
-                    gate = evaluate_candidate_gate(
-                        target_scope=pending.target_scope,
-                        candidate_kind=pending.candidate_kind,
-                        memory_key=pending.memory_key,
-                        operation=pending.operation,
-                        provenance_kind=pending.provenance_kind,
-                        relationship_role=locked.relationship_role,
-                        proposal_confidence=pending.proposal_confidence,
-                    )
-                    if (
-                        not gate.allowed
-                        or gate.requires_confirmation is not requires_confirmation
-                        or gate.policy_version != gate_policy_version
-                    ):
-                        return CandidateCreateResult(
-                            disposition=CandidateCreateDisposition.SOURCE_INVALID
-                        )
-
-                    session.execute(
-                        sa.text("SELECT pg_advisory_xact_lock(:lock_id)"),
-                        {"lock_id": _candidate_create_lock_id(pending.owner_id, pending.idempotency_key)},
-                    )
-                    existing = session.scalar(
-                        sa.select(MemoryCandidateRecord).where(
-                            MemoryCandidateRecord.owner_id == pending.owner_id,
-                            MemoryCandidateRecord.idempotency_key == pending.idempotency_key,
-                            MemoryCandidateRecord.hidden_at.is_(None),
-                        )
-                    )
-                    if existing is not None:
-                        if existing.request_fingerprint != fingerprint:
-                            return CandidateCreateResult(
-                                disposition=CandidateCreateDisposition.IDEMPOTENCY_CONFLICT
-                            )
-                        return CandidateCreateResult(
-                            disposition=CandidateCreateDisposition.REPLAYED,
-                            candidate=_record_to_candidate(existing),
-                        )
-
-                    if not _source_is_valid(session, pending=pending, identity=locked):
-                        return CandidateCreateResult(
-                            disposition=CandidateCreateDisposition.SOURCE_INVALID
-                        )
-
-                    record = MemoryCandidateRecord(
-                        candidate_id=pending.candidate_id,
-                        schema_version="1.0",
-                        owner_id=locked.owner_id,
-                        conversation_id=locked.conversation_id,
-                        relationship_id=locked.relationship_id,
-                        player_subject_id=locked.player_subject_id,
-                        relationship_role=locked.relationship_role.value,
-                        idempotency_key=pending.idempotency_key,
-                        request_fingerprint=fingerprint,
-                        source_message_id=pending.source_message_id,
-                        source_task_id=pending.source_task_id,
-                        source_run_id=pending.source_run_id,
-                        source_artifact_sha256=pending.source_artifact_sha256,
-                        target_scope=pending.target_scope.value,
-                        candidate_kind=pending.candidate_kind.value,
-                        memory_key=pending.memory_key,
-                        operation=pending.operation.value,
-                        proposal_payload=pending.proposal_payload,
-                        proposal_payload_sha256=payload_sha,
-                        provenance_kind=pending.provenance_kind.value,
-                        producer_id=pending.producer_id,
-                        producer_version=pending.producer_version,
-                        proposal_confidence=(
-                            None
-                            if pending.proposal_confidence is None
-                            else Decimal(str(pending.proposal_confidence))
-                        ),
-                        gate_policy_version=gate_policy_version,
+                    return self._create_in_session(
+                        session, pending=pending, identity=identity,
                         requires_confirmation=requires_confirmation,
-                        status=CandidateStatus.PENDING.value,
-                        decision_actor_kind=None,
-                        decision_actor_id=None,
-                        decision_reason_code=None,
-                        decided_at=None,
-                        materialized_target_kind=None,
-                        materialized_target_id=None,
-                        materializer_version=None,
-                        created_at=pending.created_at,
-                        updated_at=pending.created_at,
-                        expires_at=pending.expires_at,
+                        gate_policy_version=gate_policy_version,
                     )
-                    session.add(record)
-                    session.flush()
-                    created = _record_to_candidate(record)
-                return CandidateCreateResult(
-                    disposition=CandidateCreateDisposition.CREATED,
-                    candidate=created,
-                )
         except IntegrityError:
             raise MemoryCandidateRepositoryError("memory_candidate_repository_integrity_failed") from None
         except SQLAlchemyError:
@@ -240,6 +140,152 @@ class PostgresMemoryCandidateRepository:
             raise
         except (TypeError, ValueError, ValidationError):
             raise MemoryCandidateRepositoryError("memory_candidate_repository_integrity_failed") from None
+
+    def create_measurement_in_session(
+        self, session: Session, *, pending: PendingMemoryCandidate,
+        identity: MemoryConversationIdentity,
+    ) -> CandidateCreateResult:
+        """Server-only first offer, atomic with terminal message projection."""
+        # Reuse the same acceptance parser; never trust a caller-supplied dedup key.
+        parsed = parse_training_progress_write(
+            target_scope=pending.target_scope, candidate_kind=pending.candidate_kind,
+            operation=pending.operation, relationship_role=identity.relationship_role,
+            proposal_payload=pending.proposal_payload,
+        )
+        if (parsed.measurement is None or pending.producer_id != PRODUCER_ID
+                or pending.producer_version != PRODUCER_VERSION
+                or pending.provenance_kind is not ProvenanceKind.DETERMINISTIC_RUN_FACT
+                or pending.source_task_id is None or pending.source_artifact_sha256 is None
+                or pending.memory_key != parsed.metric_key
+                or pending.idempotency_key != measurement_key(
+                    owner_id=pending.owner_id, relationship_id=identity.relationship_id,
+                    plan_id=parsed.plan_id, metric_key=parsed.metric_key,
+                    match_id=parsed.measurement.match_id)):
+            raise ValueError("training_measurement_candidate_invalid")
+        gate = evaluate_candidate_gate(
+            target_scope=pending.target_scope, candidate_kind=pending.candidate_kind,
+            memory_key=pending.memory_key, operation=pending.operation,
+            provenance_kind=pending.provenance_kind, relationship_role=identity.relationship_role,
+            proposal_confidence=pending.proposal_confidence,
+        )
+        return self._create_in_session(
+            session, pending=pending, identity=identity,
+            requires_confirmation=gate.requires_confirmation, gate_policy_version=gate.policy_version,
+            measurement_dedup=True,
+        )
+
+    def _create_in_session(
+        self, session: Session, *, pending: PendingMemoryCandidate,
+        identity: MemoryConversationIdentity, requires_confirmation: bool,
+        gate_policy_version: str, measurement_dedup: bool = False,
+    ) -> CandidateCreateResult:
+        fingerprint = compute_candidate_fingerprint(pending)
+        payload_sha = compute_payload_sha256(pending.proposal_payload)
+        locked = _lock_conversation_identity(
+            session,
+            owner_id=pending.owner_id,
+            conversation_id=pending.conversation_id,
+            require_active=True,
+        )
+        if locked is None or locked != identity:
+            return CandidateCreateResult(
+                disposition=CandidateCreateDisposition.IDENTITY_UNAVAILABLE
+            )
+
+        gate = evaluate_candidate_gate(
+            target_scope=pending.target_scope,
+            candidate_kind=pending.candidate_kind,
+            memory_key=pending.memory_key,
+            operation=pending.operation,
+            provenance_kind=pending.provenance_kind,
+            relationship_role=locked.relationship_role,
+            proposal_confidence=pending.proposal_confidence,
+        )
+        if (
+            not gate.allowed
+            or gate.requires_confirmation is not requires_confirmation
+            or gate.policy_version != gate_policy_version
+        ):
+            return CandidateCreateResult(
+                disposition=CandidateCreateDisposition.SOURCE_INVALID
+            )
+
+        session.execute(
+            sa.text("SELECT pg_advisory_xact_lock(:lock_id)"),
+            {"lock_id": _candidate_create_lock_id(pending.owner_id, pending.idempotency_key)},
+        )
+        existing = session.scalar(
+            sa.select(MemoryCandidateRecord).where(
+                MemoryCandidateRecord.owner_id == pending.owner_id,
+                MemoryCandidateRecord.idempotency_key == pending.idempotency_key,
+                sa.true() if measurement_dedup else MemoryCandidateRecord.hidden_at.is_(None),
+            )
+        )
+        if existing is not None:
+            if measurement_dedup:
+                return CandidateCreateResult(disposition=CandidateCreateDisposition.MEASUREMENT_ALREADY_OFFERED)
+            if existing.request_fingerprint != fingerprint:
+                return CandidateCreateResult(
+                    disposition=CandidateCreateDisposition.IDEMPOTENCY_CONFLICT
+                )
+            return CandidateCreateResult(
+                disposition=CandidateCreateDisposition.REPLAYED,
+                candidate=_record_to_candidate(existing),
+            )
+
+        if not _source_is_valid(session, pending=pending, identity=locked):
+            return CandidateCreateResult(
+                disposition=CandidateCreateDisposition.SOURCE_INVALID
+            )
+
+        record = MemoryCandidateRecord(
+            candidate_id=pending.candidate_id,
+            schema_version="1.0",
+            owner_id=locked.owner_id,
+            conversation_id=locked.conversation_id,
+            relationship_id=locked.relationship_id,
+            player_subject_id=locked.player_subject_id,
+            relationship_role=locked.relationship_role.value,
+            idempotency_key=pending.idempotency_key,
+            request_fingerprint=fingerprint,
+            source_message_id=pending.source_message_id,
+            source_task_id=pending.source_task_id,
+            source_run_id=pending.source_run_id,
+            source_artifact_sha256=pending.source_artifact_sha256,
+            target_scope=pending.target_scope.value,
+            candidate_kind=pending.candidate_kind.value,
+            memory_key=pending.memory_key,
+            operation=pending.operation.value,
+            proposal_payload=pending.proposal_payload,
+            proposal_payload_sha256=payload_sha,
+            provenance_kind=pending.provenance_kind.value,
+            producer_id=pending.producer_id,
+            producer_version=pending.producer_version,
+            proposal_confidence=(
+                None
+                if pending.proposal_confidence is None
+                else Decimal(str(pending.proposal_confidence))
+            ),
+            gate_policy_version=gate_policy_version,
+            requires_confirmation=requires_confirmation,
+            status=CandidateStatus.PENDING.value,
+            decision_actor_kind=None,
+            decision_actor_id=None,
+            decision_reason_code=None,
+            decided_at=None,
+            materialized_target_kind=None,
+            materialized_target_id=None,
+            materializer_version=None,
+            created_at=pending.created_at,
+            updated_at=pending.created_at,
+            expires_at=pending.expires_at,
+        )
+        session.add(record)
+        session.flush()
+        created = _record_to_candidate(record)
+        return CandidateCreateResult(
+            disposition=CandidateCreateDisposition.CREATED, candidate=created,
+        )
 
     def get_candidate(self, *, owner_id: str, candidate_id: UUID) -> MemoryCandidate | None:
         owner = _validate_owner(owner_id)
@@ -361,6 +407,10 @@ class PostgresMemoryCandidateRepository:
                         return CandidateMutationResult(
                             disposition=CandidateMutationDisposition.TERMINAL_CONFLICT
                         )
+                    if (actor_kind is DecisionActorKind.SYSTEM
+                            and current.candidate_kind is CandidateKind.TRAINING_PROGRESS
+                            and current.proposal_payload.get("measurement") is not None):
+                        return CandidateMutationResult(disposition=CandidateMutationDisposition.TERMINAL_CONFLICT)
                     materializer = registry.get(current.candidate_kind)
                     if materializer is None:
                         return CandidateMutationResult(

@@ -1,0 +1,63 @@
+{
+  "kind": "offline-natural-review-duty-budget-audit-v1",
+  "external_calls": 0,
+  "scripted_model_responses": true,
+  "production_admitted": false,
+  "loop_probes": {
+    "no_tool": {
+      "model_calls": 1,
+      "tool_executions": 0,
+      "source_count": 0,
+      "meets_existing_minimum_evidence": false,
+      "candidate_initial_pass_calls": 3,
+      "candidate_repair_and_two_fresh_calls": 5
+    },
+    "batched_tools": {
+      "model_calls": 2,
+      "tool_executions": 2,
+      "source_count": 1,
+      "meets_existing_minimum_evidence": true,
+      "candidate_initial_pass_calls": 4,
+      "candidate_repair_and_two_fresh_calls": 6
+    },
+    "sequential_tools": {
+      "model_calls": 3,
+      "tool_executions": 2,
+      "source_count": 1,
+      "meets_existing_minimum_evidence": true,
+      "candidate_initial_pass_calls": 5,
+      "candidate_repair_and_two_fresh_calls": 7
+    }
+  },
+  "budget_probe": {
+    "limits": {
+      "max_calls": 5,
+      "total_tokens": 401920,
+      "execution_timeout_s": 900,
+      "max_input_tokens": 64000,
+      "max_output_tokens": 32768
+    },
+    "sixth_call_error": "external_call_budget_exhausted",
+    "delegate_calls_before_stop": 5,
+    "remaining_50s_issued_timeout": 50,
+    "expired_task_stops_before_send": true,
+    "insufficient_tokens_stop_before_send": true,
+    "probe_scope": "synthetic requests under actual shared gate; no candidate routing or quality proof"
+  },
+  "source_sha256": {
+    "scripts/audit_natural_review_duty_budget.py": "c089c5b455d9990d9fb77bda35f8014962b33c099183e6df75c54cf4c31f8898",
+    "app/agent/loop.py": "af938a52d44f9b84dd1c373d3ca817bcd6830988213c978e3e742d87f00f27be",
+    "app/agent/draft.py": "b4ef18288a9bc3c57b69e7171915d53c061f6c7da806f4fe41b97c8744096d04",
+    "app/runtime/runtime.py": "be2999404b5275afd5110db02ff6ac6da9e3e673223a43188cc02d850233da2c",
+    "app/runtime/coach_budget.py": "ef5511668aab64a78bc423d912ed86f0e5f7be67a782737d31229655866b9614",
+    "app/runtime/coach_contract.py": "9bb09bcd61b7865c980edb0015c35e1c0dc86c2346853c7f64f377d42c2c4763",
+    "app/harness/runtime.py": "d0b7ce9555ee725f11e0105fe139d93f173999fd750e91636c57f015613981c8",
+    "app/harness/adapters.py": "f458bf38a3bf5406fe113ead9b302f5ac0d60de2bd2f493206bc40807595955d",
+    "app/product/native_coach_composition.py": "33a89cc1669b7339877dd655e5796c8c3071c0295192081e7c1c893d6c03f7ff",
+    "app/product/recent_review.py": "6b50d432547d7ed1f659ad9224c24b90f26fc672236a63dc70a827dd0f395193",
+    "app/product/recent_review_service.py": "407d3292ac8c4b16f022ccd3257fc585ce2f77804f0a8c87465287afbcc6de70",
+    "app/rag/coaching_query.py": "cac68d414484930187ea0700d97ddf5a9f46b633076dc3807cd03e1fe23b68cd",
+    "scripts/review_duty_patch_execution.py": "2527e73817e6bc7998f9b65212a20291e67b19a4b9b37552d56894e1133a03f1",
+    "app/runtime/reviewer_roles.py": "ead525a5dce6d02e6c4533b2812ef37719fe5739ab1c0bce8c751a75918c569c"
+  }
+}

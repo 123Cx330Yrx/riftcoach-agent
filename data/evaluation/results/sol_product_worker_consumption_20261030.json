@@ -1,0 +1,39 @@
+{
+  "kind": "sol-current-worker-postgres-v1",
+  "real_model_calls": 0,
+  "database": "new_disposable_container",
+  "image": "postgres:17-alpine",
+  "route": "latest-sol-dual-and-legacy-glm",
+  "default_worker_registered": false,
+  "ui_exercised": false,
+  "publication_admission_changed": false,
+  "exit_code": 0,
+  "elapsed_seconds": 166.297,
+  "command": [
+    "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "tests/test_natural_duty_worker_postgres.py",
+    "-q",
+    "--tb=short",
+    "--show-capture=no"
+  ],
+  "disposable_container_removed": true,
+  "date": "2026-10-30",
+  "passed": 14,
+  "sol_cases": 7,
+  "legacy_glm_cases": 7,
+  "pytest_seconds": 162.39,
+  "base_head": "b5a99545ecb95c693d774303a32a0ff9f39e44ba",
+  "scenarios": [
+    "initial_pass",
+    "single_application_same_report_fresh",
+    "cancel_after_generation",
+    "cancel_after_initial_pair",
+    "cancel_after_fresh_facts",
+    "cancel_after_final_response",
+    "foreign_cancel_rejected"
+  ],
+  "evidence_scope": "real_disposable_postgres_worker_api_with_scripted_model_and_riot",
+  "stdout_sha256": "5f87f2d77df5a17bf84ac8cee12b87f15d10ec323d78d21144c75aaa61ab443a"
+}

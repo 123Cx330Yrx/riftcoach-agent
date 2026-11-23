@@ -45,8 +45,9 @@ export function AuthGate({
       return () => controller.abort()
     }
     void client.issue(controller.signal).then(
-      (session) => setState({ status: "authenticated", session }),
+      (session) => { if (!controller.signal.aborted) setState({ status: "authenticated", session }) },
       (error: unknown) => {
+        if (controller.signal.aborted) return
         if (error instanceof DOMException && error.name === "AbortError") return
         const code = error instanceof AuthSessionError ? error.code : "auth_unavailable"
         setState({ status: failureStatus(code), code })

@@ -1,0 +1,38 @@
+{
+  "kind": "OFFLINE-joint-material-preparation-and-routing-result-v1",
+  "file_sha256": {
+    "data/evaluation/fixtures/host_relation_joint_calibration_20261013/materials.json": "7997f6d571f72b2e47bb49803e57f11cca02b00205d299ca568a57f2bb17c927",
+    "data/evaluation/fixtures/host_relation_joint_calibration_20261013/task.txt": "738ecd4647a8b83711a257d923eeebb669091d1e06d1b55ee5499e615eced077",
+    "data/evaluation/fixtures/document_relation_joint_proposal_20261013/proposal.json": "446e32a77871fc5369fa2836da0be3f6540edb1a0dbf3d0e3a10627129019d0d",
+    "data/evaluation/fixtures/document_relation_joint_proposal_20261013/operator-expectations.json": "c61e3910536e7182b452a63e6501ac8ff913639fa637386b37d08b0920fdc5c5",
+    "scripts/prepare_relation_joint_review.py": "b2af69b0acf5b518ea3f776c1d5cec1e5628972c8a7d775efe774b38b8b5dcfd",
+    "tests/test_relation_joint_review.py": "74ba47e6a91fe8a1018f2e8c206405a4982d675bffdf6c972e095786d473fc33"
+  },
+  "parent_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+  "independent_thread_id": "01a12f0c-bb7c-74e3-ad92-775eefbe399a",
+  "existing_thread_readable": true,
+  "prior_task_status": "failed: workspace out of credits; historical, not a current balance check",
+  "dispatch_attempt_count": 1,
+  "dispatch_delivered": false,
+  "dispatch_result": "cannot resume an unloaded multi-agent v2 sub-agent through its parent; resume the parent first, or use thread/read to inspect it",
+  "dispatch_path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-relation-joint-calibration-20261013/dispatch.txt",
+  "dispatch_sha256": "4d0d8328aaf3518ac30436b176346311c3dc104501b5b113007d9e71ac752cf9",
+  "provider_calls": 0,
+  "http_calls": 0,
+  "native_tasks_started": 0,
+  "independent_final_count": 0,
+  "business_submissions": 0,
+  "new_qualification": 0,
+  "execution_ready": false,
+  "independent_calibration": false,
+  "validation": {
+    "offline_tests_passed": 3,
+    "proposal_files_rebuilt_identically": 10,
+    "old_original_hashes_verified": 5
+  },
+  "next_action": "Resume the original parent session and reuse its existing independent agent for this exact new task; never complete the closed U2 task.",
+  "limitations": [
+    "No independent semantic calibration or Provider quality evidence.",
+    "No alternative agent created and no current quota condition inferred from old failure."
+  ]
+}

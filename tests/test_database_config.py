@@ -194,8 +194,22 @@ def test_compose_and_ci_define_a_real_postgresql_migration_gate() -> None:
         "postgresql+psycopg://"
     )
 
-    serialized_job = yaml.safe_dump(migration_job)
-    assert "tests/test_latest_profile_review_repository_postgres.py" in serialized_job
+    sql_job = jobs['postgres-tests']
+    assert migration_job['needs'] == ['postgres-tests']
+    assert migration_job['if'] == 'always()'
+    assert sql_job['strategy'] == {'fail-fast': False, 'matrix': {'shard': [0, 1, 2, 3]}}
+    assert sql_job['timeout-minutes'] == migration_job['timeout-minutes'] == 20
+    assert sql_job['services'] == migration_job['services']
+    assert sql_job['env'] == migration_job['env']
+    commands = '\n'.join(step.get('run','') for step in sql_job['steps'])
+    assert '--test-list tests/postgres_ci_files.txt' in commands
+    files = (ROOT/'tests/postgres_ci_files.txt').read_text(encoding='utf-8').splitlines()
+    assert 'tests/test_latest_profile_review_repository_postgres.py' in files
+    assert len(files) == len(set(files)) and all((ROOT/name).is_file() for name in files)
+    gate = '\n'.join(step.get('run','') for step in migration_job['steps'])
+    assert 'test "$POSTGRES_RESULT" = success' in gate
+    assert '--require-no-skips' in gate
+    serialized_job = yaml.safe_dump([migration_job, sql_job])
     assert "sqlite" not in serialized_job.lower()
     assert "RIOT_API_KEY" not in serialized_job
     assert "LLM_API_KEY" not in serialized_job

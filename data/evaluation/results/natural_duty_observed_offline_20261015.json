@@ -1,0 +1,94 @@
+{
+  "kind": "natural-duty-observed-offline-preparation-v1",
+  "date": "2026-10-15",
+  "provider_requests": 0,
+  "credentials_loaded": false,
+  "real_run_created": false,
+  "execution_authorized": false,
+  "production_admitted": false,
+  "semantic_approval": false,
+  "original_15_qualified": false,
+  "automation_status": "PAUSED",
+  "preparation_file": "data/evaluation/results/natural_duty_observed_preparation_20261015.json",
+  "preparation_sha256": "3c7a650191d17f0412955a4d1fd63d6d967624f54b12b46458666abe6c09fa0b",
+  "plan_sha256": "5849dac91ff0b4df6bdaa8ff9b874042547b383f974d2734644fbbf73ee8aaac",
+  "first_request_sha256": "830a9b8a09024ba81d4f652971dab5392df4f66b3a553ea0f5e40ff8fe9f10a8",
+  "source_file_count": 771,
+  "shared_budget": {
+    "execution_timeout_s": 900,
+    "max_calls": 6,
+    "max_input_tokens": 64000,
+    "max_output_tokens": 32768,
+    "request_timeout_s": 300,
+    "sdk_retries": 0,
+    "total_tokens": 401920
+  },
+  "reservation_estimate": {
+    "estimated_uncached_cny": "5.7595904",
+    "hard_billing_cap": false,
+    "max_glm_reviews": 4,
+    "price_snapshot": "ADR0108/2026-09-22",
+    "scope": "Conservative shared-token reservation, not a bill or current-price guarantee.",
+    "shared_generation_and_review_calls": 6
+  },
+  "last_confirmed_public_ci": {
+    "head": "452972e781d16b2e716b51c067f19443b28344cf",
+    "run_id": "38680020527",
+    "conclusion": "success",
+    "scope": "previous cancellation repair; new preparation commit requires its own CI"
+  },
+  "checks": [
+    {
+      "name": "natural development entry",
+      "passed": 24,
+      "elapsed_seconds": 18.74,
+      "network": "denied"
+    },
+    {
+      "name": "natural process transport final",
+      "passed": 23,
+      "network": "denied",
+      "actual_child_processes": true
+    },
+    {
+      "name": "candidate and current original15 inventory",
+      "passed": 30,
+      "network": "denied"
+    },
+    {
+      "name": "existing preview and closed comparison focused recovery",
+      "passed": 32,
+      "elapsed_seconds": 27.46,
+      "overlaps_entry_and_inventory": true
+    },
+    {
+      "name": "historical remaining8 and remaining4 replay",
+      "passed": 17,
+      "elapsed_seconds": 164.78,
+      "network": "denied"
+    }
+  ],
+  "independent_engineering_review": {
+    "agent": "/root/host_scope_calibration",
+    "remaining_actionable_findings": 0,
+    "fixed_findings": [
+      "archived input root binding before closure and read-only replay",
+      "shared deadline recheck and timeout clamp after pre-send guard"
+    ],
+    "business_semantic_certification": false
+  },
+  "counterexamples": [
+    "post-call-four mutation of first request, authorization or plan is rejected",
+    "shared clock 899 to 901 during preflight sends zero and releases unsent reservation",
+    "shared clock 899 to 899.5 sends timeout 0.5, not stale timeout 1",
+    "missing complete-response observation remains invalid_receipts in read-only replay"
+  ],
+  "history": {
+    "original15_inputs_labels_and_requests_unchanged": true,
+    "old_inventories_preserved": true,
+    "closed_decisions_and_seals_unchanged": true,
+    "canonical_history_preserved": true,
+    "appended_source_archive_commit": "51923f4b95e0e17f6bec9aea8d622fd65e2fbce4"
+  },
+  "next_action": "Commit and verify exact-HEAD public CI before a fresh specific cost authorization."
+}

@@ -1,0 +1,13 @@
+{
+  "version": "product-generation-player-wording-v2",
+  "scope": "offline_generation_only",
+  "parent_contract": {
+    "contract_id": "natural-flash-sol-product-chat-v1",
+    "version": "1.7.10",
+    "scope": "unadmitted_opt_in",
+    "sha256": "d83b353b50f6d70ff168f4cf0f50e8f48a4b0933213fa0f74fdc935b20cf7249"
+  },
+  "parent_program_sha256": "30e6bb3174d7e9b437ef882dd07327b4be3c674b3fbfb145999bd68503745a37",
+  "implementation_sha256": "ce568d6f29d28f854090144c3102b79db6b6569865091b3512fc949a37c09a28",
+  "generation_policy_sha256": "c3c63f5a7e687cb6d2edd3e8fa4b3f68179ba1469195ac920cf0bbee3729b2a4"
+}

@@ -28,6 +28,8 @@ class FileRunStoreTests(unittest.TestCase):
         self.assertEqual(self.manifest.status, loaded.status)
         self.assertEqual(self.manifest.config, loaded.config)
         self.assertTrue((self.runs_root / "review_example" / "manifest.json").is_file())
+        self.assertIsNone(loaded.failure_code)
+        self.assertNotIn("failure_code", json.loads(self.store.manifest_path.read_text(encoding="utf-8")))
 
     def test_write_artifact_registers_sha256_and_can_be_verified(self):
         self.store.create_run(self.manifest)
@@ -62,6 +64,20 @@ class FileRunStoreTests(unittest.TestCase):
 
         with self.assertRaises(ArtifactIntegrityError):
             self.store.read_artifact(record)
+
+    def test_retrieval_evidence_at_long_windows_path_roundtrips(self):
+        relative = Path("knowledge/retrieval_evidence.json")
+        padding = 247 - len(str(self.runs_root / "review_long" / relative)) - 1
+        self.assertGreater(padding, 0)
+        store = FileRunStore(self.runs_root / ("x" * padding), "review_long")
+        self.assertEqual(len(str(store.run_directory / relative)), 247)
+        store.create_run(RunManifest.new(run_id="review_long", config=HarnessConfig()))
+        record = store.write_artifact(kind=ArtifactKind.RETRIEVAL_EVIDENCE,
+            relative_path=relative, content='{"source_ids":["verified-source"]}',
+            schema_version="2.0", producer="draft_preparer")
+        self.assertEqual(store.read_artifact(record), b'{"source_ids":["verified-source"]}')
+        self.assertEqual(len(store.read_manifest().artifacts), 1)
+        self.assertEqual(list((store.run_directory / "knowledge").glob("*.tmp")), [])
 
     def test_paths_cannot_escape_the_run_directory(self):
         self.store.create_run(self.manifest)

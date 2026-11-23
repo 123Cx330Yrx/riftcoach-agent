@@ -1,0 +1,104 @@
+{
+  "kind": "completion-continuation-offline-readback-v1",
+  "recorded_at": "2026-10-24T11:58:36.524466+00:00",
+  "base_head": "3902e1ee057b43711b40aa4d5817b7a1a860d22f",
+  "implementation": {
+    "scripts/prepare_completion_continuation.py": "d866c43d3b22c7994bf373dca39b7d9c459de44ad4537faddc7a7f57a81458cb",
+    "tests/test_completion_continuation_preparation.py": "bf46a627ff2ef27376942031236ce43ef29934c9fb06b8ad1fc6f096537a4ade"
+  },
+  "output": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-completion-continuation-20261024-offline",
+  "output_inventory": {
+    "a-candidate.json": "88348aa68023408b523cd104cededf5bb2fe3c25347aa8c1773a6c168563c198",
+    "b-candidate.json": "2b00d26f9b771be59f5ca40d9ee09c6a81d6429fe5b0806e698a88171cf5359e",
+    "c-candidate.json": "3f2c5eb2d6bec4c2a9d3696a83d9e7b746d5096367a32efb12c5e1a77fd5ca68",
+    "continuation.json": "b516ab0329a5b366b96e13326a14745783a0473faa24413e84a1591fb36e432b",
+    "d-candidate.json": "c20f7182cd50917c8d658ca442beabb9be6fcb62db79e14eb0080150f7ea14ef",
+    "parent-proof.json": "d59d0fea061b78ac12a7729f42abff95f716c988de06d83358a30c7e0b32802c"
+  },
+  "parent": {
+    "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-necessity-natural-20261024",
+    "frozen_head": "2b14583e8e5f03cde8496e9ad6faa9354de8a201",
+    "frozen_contract": {
+      "contract_id": "natural-flash-sol-necessity-development-v1",
+      "version": "1.6.3",
+      "scope": "unadmitted_opt_in",
+      "sha256": "9df3be166e2fc82d923031a28bfedb51d0cd76a27cf9b81dcdcce43db1b009ca"
+    },
+    "seal_sha256": "24172c4f903d050bc819f260a81f3333a37902bf0b2ee2b38e2d1fd1355aa7a9",
+    "roots": {
+      "authorization_sha": "125005b2b4d4e794c2a294e0a359f75916ddbfe69378b32d7a3eea48c4e40d26",
+      "checkpoint": "aa3c2816b9767561554a4bc6e4324c807d2ce70ab81d5a28989eef788b221285",
+      "guard": "5668400a86bcb148c4e19dac04ffc0d3d7c84db1ea14826d0e4c12167e09b0f7"
+    },
+    "strict_replay": true,
+    "original_files_including_seal": 145,
+    "original_author_files": 3,
+    "original_and_author_inventory_unchanged": true
+  },
+  "continuation": {
+    "imported_successful_operations": 9,
+    "original_native_and_author_bytes_replayed": true,
+    "original_facts_response_unchanged": true,
+    "frontier_sha256": "5eb7cb7a95e09137a6f1b12a5179dc0df21479b10983948d7efa2ad054bfe204",
+    "historical_accounting": {
+      "calls": 4,
+      "tokens": 66591,
+      "reserved_tokens": 0,
+      "retries": 0
+    },
+    "historical_active_seconds": 255.65699999999197,
+    "derived_logical": {
+      "generation": 2,
+      "review": 1
+    },
+    "failed_attempt_retained": true,
+    "failed_output_adopted": false,
+    "actual_runtime_stopped_before_completion": true,
+    "repeat_searches": 0,
+    "repeat_generation": 0
+  },
+  "validation": {
+    "new_unique_checks": 13,
+    "commands": [
+      {
+        "command": "pytest tests/test_completion_continuation_preparation.py -x -q --tb=short --show-capture=no",
+        "passed": 10,
+        "seconds": 146.68,
+        "note": "before the three additional startup-control cases were added"
+      },
+      {
+        "command": "pytest tests/test_completion_continuation_preparation.py -k 'controls_and_output or unpinned' -q --tb=short --show-capture=no",
+        "passed": 4,
+        "seconds": 2.04,
+        "note": "three additional cases; unpinned case repeated"
+      },
+      {
+        "command": "pytest tests/test_natural_duty_qualification_inventory.py -q --tb=short --show-capture=no",
+        "passed": 6,
+        "seconds": 14.61
+      }
+    ],
+    "synthetic_tests_are_not_semantic_acceptance": true,
+    "previous_ci": {
+      "run_id": "40087866246",
+      "head": "3902e1ee057b43711b40aa4d5817b7a1a860d22f",
+      "conclusion": "success"
+    },
+    "new_commit_ci_not_yet_confirmed": true
+  },
+  "provider_requests": 0,
+  "key_reads": 0,
+  "execution_ready": false,
+  "execution_authorized": false,
+  "semantic_improvement_proven": false,
+  "qualified": false,
+  "production_admitted": false,
+  "publication_allowed": false,
+  "next_action": "Wire explicit candidate contract/receiver, inherited native routing and one cumulative controls/natural budget; simulate the full chain before a concrete new grant and frozen native/CI preflight.",
+  "limits": [
+    "Offline preparation only; no paid run action or candidate contract registration.",
+    "No current model result for the policy hypothesis.",
+    "Do not reopen old trials or extend their grants; automation remains paused.",
+    "The first accepted a result must be consumed directly, never bought twice."
+  ]
+}

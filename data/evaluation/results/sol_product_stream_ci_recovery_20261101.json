@@ -1,0 +1,59 @@
+{
+  "status": "ci_failure_repaired_offline_pending_new_ci",
+  "failed_ci": 41223907574,
+  "failed_head": "cfcbb6d1cd427b72097e34f598a6eac9ca719658",
+  "jobs": [
+    {
+      "name": "packaging-smoke",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (1)",
+      "conclusion": "failure"
+    },
+    {
+      "name": "postgres-migrations",
+      "conclusion": "success"
+    },
+    {
+      "name": "web-checks",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (3)",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (0)",
+      "conclusion": "success"
+    },
+    {
+      "name": "pytest-shards (2)",
+      "conclusion": "failure"
+    },
+    {
+      "name": "pytest",
+      "conclusion": "failure"
+    }
+  ],
+  "cause": "Historical time-only adapter tests patched current product functions after their limit read changed to execution_limits(); strict source-shape checks rejected two tests.",
+  "repair": "Pin exact dedented methods from frozen original15 remaining-two commit; retain adapter unchanged and assert rejection of current product limit hooks.",
+  "fixture_commit": "e7a7ab0b95c2011ea7a0c3f3e1c6855b0480629a",
+  "verification": {
+    "targeted_tests_passed": 23,
+    "frozen_method_bytes_verified": true,
+    "governance": "passed",
+    "diff_check": "passed"
+  },
+  "business_source_changed": false,
+  "new_model_requests": 0,
+  "old_waiter": "exited ci_not_success",
+  "accounting": {
+    "http": 8,
+    "known_tokens": 29323,
+    "unknown_reserved_tokens": 366910,
+    "retries": 4
+  },
+  "next": "Freeze a separate test-maintenance checkout and bind its exact-head CI; retain original checkpoint, DB, authorization and deadline.",
+  "logs": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-stream-authorized-20261101\\ci-failure-41223907574"
+}

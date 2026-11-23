@@ -1,0 +1,132 @@
+{
+  "preparation_plan": {
+    "experiment": "knowledge-time-citation-review-pair-v2",
+    "candidate": {
+      "composition": "flash-generation-glm53-review-v1",
+      "contract": {
+        "contract_id": "recent-form-review-roles-v1",
+        "version": "1.5.0",
+        "scope": "unadmitted_opt_in",
+        "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
+      },
+      "program_sha256": "6cd52188905afc8c106e81a262fd598ef1634a8390c7ac8c66f02c2298513d0a",
+      "manifest_sha256": "e1b5e84aaf389779a1023acc179514488be1335d6071b9c0c7a117d47fbd8bb9",
+      "asset_sha256": {
+        "skills/recent-form-review/SKILL.md": "a06cc50f56bf3581580626532b1d6d39aaedb7dca098ae0624a9965af5875117",
+        "skills/recent-form-review/manifest.yaml": "c9409933c3e4069749f59dd582887656055f9450b30ab84014ec5018a8cce7a0"
+      },
+      "source_projection": "native-explicit-source-projection-v1",
+      "roles": {
+        "generation": {
+          "provider": "zhipu",
+          "model": "glm-5.3-flash",
+          "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-process-stream-high-32768-v1",
+          "sdk_max_retries": 0
+        },
+        "revision": {
+          "provider": "zhipu",
+          "model": "glm-5.3-flash",
+          "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-process-stream-high-32768-v1",
+          "sdk_max_retries": 0
+        },
+        "review": {
+          "provider": "zhipu",
+          "model": "glm-5.3",
+          "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-glm53-review-high-32768-v1",
+          "sdk_max_retries": 0
+        }
+      },
+      "policy_sha256": "0cdd9f43897443721993986d2bd049eae31a3c916e33f978a92c3554c50243f4",
+      "schema_sha256": "5c12ede6b731265942f4ee020911c3db2b1bda0868e3cbd0a49802949188b70f"
+    },
+    "source_evidence_sha256": "02e8a82c65d1b706a32431c2effc93d1b549f05d67c3b8e57eaf7481953f7e1a",
+    "predecessor_result_sha256": "8aa023c3518325efcd47e7a4b58ea48b86e59314c31c39ed5dac488ee4b09ad3",
+    "local_retrievals_sha256": "4e550d799293e5b22ca5ecfb1d8866f4b5dcdd9edbac4e52dfe2ae87cd0e492c",
+    "model": "glm-5.3",
+    "reasoning_effort": "high",
+    "sdk_retries": 0,
+    "transport_id": "golden-glm53-review-high-32768-v1",
+    "retrievals": [
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.148777Z",
+        "chunk_ids": [
+          "01_metric_interpretation.md:child:06f0f96b44e7d8e4"
+        ]
+      },
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.150776Z",
+        "chunk_ids": [
+          "01_metric_interpretation.md:child:4b78a4d331bef05d",
+          "03_training_plan.md:child:7d93df91676caf94"
+        ]
+      },
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.151777Z",
+        "chunk_ids": [
+          "03_training_plan.md:child:a4757e98d9e86cc0",
+          "02_review_method.md:child:96b81776eb6c78e0"
+        ]
+      }
+    ],
+    "cells": [
+      {
+        "id": "original-date-error",
+        "report_sha256": "4335abe19f9162f2c00a3ee3f2c0b507a08dfe1d477cd8395e8701dba007a4ca",
+        "input_sha256": "08603973671b8b7df412c1adc16e5b2b288226cf99b148a537fda18aa1cb69bf",
+        "request_sha256": "c20cfc05b02a097cbfca75dad643c38934f0d3dba7de961069ea586c674b4813",
+        "input_reservation": 49334,
+        "output_cap": 32768,
+        "expected_host_only": "needs_revision: unsupported knowledge retrieval date"
+      },
+      {
+        "id": "date-removed-reference",
+        "report_sha256": "9ce30980724d226cda0d1e984875d6a62d0ac42e15dacb137e183dd0378b056e",
+        "input_sha256": "07f3790c3cbe27833ff04114555e7eb02402f859b392f758be1704b292d35434",
+        "request_sha256": "2a6195fbd7010b71103fd4dfe0af7f0683a01745ae91afc3c9133a080d3f466f",
+        "input_reservation": 49312,
+        "output_cap": 32768,
+        "expected_host_only": "pass: optional wording stays advisory"
+      }
+    ],
+    "proposed_diagnostic_budget": {
+      "max_calls": 2,
+      "max_seconds_total": 600,
+      "max_seconds_per_call": 300,
+      "total_token_reservation": 164182,
+      "estimated_uncached_cny": "2.624176"
+    },
+    "provider_requests": 0,
+    "production_admitted": false,
+    "labels_sent_to_model": false,
+    "evidence_scope": "Fresh local retrievals, original full report and host reference; not model revision or original-15 qualification.",
+    "stop_rule": "Stop after any rejected protocol, source or full-context host review. No retries."
+  },
+  "preparation_plan_sha256": "8a4b189416a7fede2c7690f9a7dde1c993504d00294739135e4bfb7d48a8dde2"
+}

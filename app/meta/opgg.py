@@ -97,6 +97,7 @@ _SAFE_MESSAGES = {
     "opgg_meta_call_failed": "OP.GG Meta tool call failed.",
     "opgg_meta_result_invalid": "OP.GG Meta result is invalid.",
     "opgg_meta_result_too_large": "OP.GG Meta result exceeds configured limits.",
+    "opgg_meta_target_not_in_response": "Requested champions were not found in this lane response.",
 }
 
 
@@ -200,6 +201,7 @@ def _parse_lane_meta_text(
     *,
     position: str,
     top_n: int,
+    target_champions: tuple[str, ...] | None = None,
 ) -> tuple[LaneMetaChampionFact, ...]:
     row_name = _ROW_NAMES[position]
     expected_header = (
@@ -344,6 +346,11 @@ def _parse_lane_meta_text(
                 observed_node_type="duplicate_rank",
             ),
         )
+    if target_champions is not None:
+        targets = {name.casefold() for name in target_champions}
+        # Selection happens AFTER validating the entire bounded response.
+        # A target below the first ten must not disappear behind a rank cap.
+        return tuple(fact for fact in facts if fact.champion.casefold() in targets)
     return tuple(facts[:top_n])
 
 
@@ -433,11 +440,19 @@ class OPGGLaneMetaAdapter:
         position: str,
         top_n: int = 10,
         timeout_s: float = 15.0,
+        target_champions: tuple[str, ...] | None = None,
     ) -> MetaEvidence:
         if position not in _POSITIONS:
             raise ValueError("position is invalid")
         if isinstance(top_n, bool) or not isinstance(top_n, int) or not 1 <= top_n <= 10:
             raise ValueError("top_n must be between one and ten")
+        if target_champions is not None:
+            if (not isinstance(target_champions, tuple)
+                    or not 1 <= len(target_champions) <= top_n
+                    or any(not isinstance(name, str) or not name.strip()
+                           or name != name.strip() or len(name) > 80 for name in target_champions)
+                    or len({name.casefold() for name in target_champions}) != len(target_champions)):
+                raise ValueError("target_champions_invalid")
         if (
             isinstance(timeout_s, bool)
             or not isinstance(timeout_s, (int, float))
@@ -476,7 +491,11 @@ class OPGGLaneMetaAdapter:
         text = item["text"]
         if len(text) > self._max_content_chars:
             raise OPGGMetaError("opgg_meta_result_too_large")
-        facts = _parse_lane_meta_text(text, position=position, top_n=top_n)
+        facts = _parse_lane_meta_text(
+            text, position=position, top_n=top_n, target_champions=target_champions,
+        )
+        if not facts and target_champions is not None:
+            raise OPGGMetaError("opgg_meta_target_not_in_response")
         retrieved_at = self._clock()
         if not isinstance(retrieved_at, datetime) or retrieved_at.tzinfo is None:
             raise ValueError("clock must return a timezone-aware datetime")

@@ -1,0 +1,11 @@
+{
+  "stage_assessment": {
+    "stage": "initial",
+    "stage_sha256": "47db78498c4fe701874e44ddc9222fbc6775ecccdc4a12287da5192ab36d81d7",
+    "reviewer": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+    "source_review": "这是本地新短报告工作区演练。响应由明确标注的离线固定替身生成，不能据此认证GLM质量、真实HTTP或真实用量；不复审V2/H5/S8。已读实际三段完整报告、current_input_json的事实与来源/生成投影/知识/用户原话、实际request的四份消息和完整policy、source_message全部事实表/出处表/计算数组/根目录及deterministic_source_message、实际response与stage。request中的policy和两份来源消息与material逐项相同，工具输出为固定96/pass，issues/issue_resolutions/advisories均空；初审无历史意见，report_assessment为null。逐项判断：标题仅说明演练；第2段明确仅这五场实际queue_id均420，fact table第2至6行的queue_id逐项为420，current_input原始逐局值一致，五场全部纳入、无失败或排除，故并非把request.queue筛选当作实际队列。第2段不判断胜负原因、不把观摩对象当阅读者，符合user_utterance的ShowMaker观摩身份边界；没有主位置/补位意图、长期能力或未来外推。第3段要求事实、相关性和复盘假设分开表达，K5证据分层原文明确支持该建议，引用有实际依据。其余K1至K4没有被报告挪用，来源没有可用OP.GG/official_patch/external_bundle；没有额外外部事实消费义务。本短报告不承诺完整教练分析，没有错误数字、伪引、错误修法或需要升级为issue的歧义。没有issue解释/修法/advisory额外断言可构成错误；pass及空issues与此材料一致。接受仅表示这项合成意见在本地演练中合规，不表示真实Provider或旧报告通过。",
+    "accepted": true,
+    "defects": []
+  },
+  "report_assessment": null
+}

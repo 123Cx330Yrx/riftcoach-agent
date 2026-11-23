@@ -1,0 +1,145 @@
+{
+  "kind": "provider-reply-and-local-protocol-assessment-v1",
+  "checked_at": "2026-11-01T09:01:35.444238+00:00",
+  "user_direction": [
+    "Complete offline closeout first",
+    "Do not require administrator investigation",
+    "Do not impose official endpoint limitations on the relay",
+    "Audit local rejection rules and loosen unnecessary restrictions where safe"
+  ],
+  "provider_public_evidence": {
+    "url": "https://yujianwudi.top/api/pricing",
+    "model": "gpt-6.1-sol",
+    "listed_endpoints": {
+      "openai": "/v1/chat/completions",
+      "openai-response": "/v1/responses",
+      "openai-response-compact": "/v1/responses/compact",
+      "anthropic": "/v1/messages",
+      "gemini": "/v1beta/models/{model}:generateContent",
+      "openai-alpha-search": "/v1/alpha/search"
+    },
+    "enterprise_group_listed": true,
+    "one_model_and_group_price_entry": true,
+    "actual_billing_equality_verified": false,
+    "snapshot_sha256": "de1da8c554ce40d7346922a40fa0f0d73c3a7efb1b5e75c0c8dc68b187ad712f"
+  },
+  "group_reply_assessment": {
+    "origin": "User relayed group AI response, not independently authenticated provider specification",
+    "chat_streaming_recommendation": "Candidate supported by public model configuration, not live tool-call evidence",
+    "private_responses_spec": "Not found in public docs; no requirement for user to obtain it",
+    "backend_no_error": "User reports administrator saw no problem; consistent with HTTP200 rejected locally",
+    "official_reference_scope": "Official Sol tool support cannot establish or disprove relay protocol translation"
+  },
+  "local_implementation": {
+    "sdk_version": "2.54.0",
+    "sol_transport_currently_responses_only": true,
+    "chat_adapter_switched": false,
+    "reusable_assembly": "app/providers/stream_adapter_contract.py",
+    "unverified_chat_items": [
+      "Actual forced function tool result for this model/group",
+      "High-effort and output budget enforcement",
+      "Complete usage tail and interrupted usage",
+      "End-to-end task time and billing"
+    ]
+  },
+  "local_protocol": {
+    "original_receipts": [
+      {
+        "ordinal": 9,
+        "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\review\\call-009\\receipt.json",
+        "sha256": "80e0c574806695aee6d30e896eb14460df7da20a0f7fa00aa940e3043c4c0a30",
+        "http_status": 200,
+        "eof": true,
+        "closed": true,
+        "errors": [
+          "event_sequence",
+          "response_not_created",
+          "unexpected_event"
+        ],
+        "known_usage": 21472,
+        "nonempty_response_id_hashes_consistent": true,
+        "recorded_argument_hashes_agree_with_terminal_diagnostic": true,
+        "semantic_accepted": false
+      },
+      {
+        "ordinal": 10,
+        "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\review\\call-010\\receipt.json",
+        "sha256": "33faa272cad57859b869e46fd06d0650e571ae98fec54bbb98af7c577b407836",
+        "http_status": 200,
+        "eof": true,
+        "closed": true,
+        "errors": [
+          "response_identity",
+          "event_sequence"
+        ],
+        "known_usage": 46503,
+        "nonempty_response_id_hashes_consistent": true,
+        "recorded_argument_hashes_agree_with_terminal_diagnostic": true,
+        "semantic_accepted": false
+      },
+      {
+        "ordinal": 11,
+        "path": "D:\\rc-preamble-recovery-20261101\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8\\.continuation\\transport\\review_1a568160d5aa44b5a2acd2f72fb679f8\\review\\call-011\\receipt.json",
+        "sha256": "5a67fb8c0609b87215e6ee82b0e9967ab5ea9ddabb35f71ce329f3b016364be7",
+        "http_status": 200,
+        "eof": true,
+        "closed": true,
+        "errors": [
+          "event_sequence",
+          "response_not_created",
+          "unexpected_event"
+        ],
+        "known_usage": 22409,
+        "nonempty_response_id_hashes_consistent": true,
+        "recorded_argument_hashes_agree_with_terminal_diagnostic": true,
+        "semantic_accepted": false
+      }
+    ],
+    "confirmed_unnecessarily_specific_rule": "Anonymous empty queue prefix fixed to exactly created(0)/queued(1) before a third created(0); known metadata-only keepalives required model sequence",
+    "prospective_adjustment": "Bounded empty queue envelopes may vary in count/order and absent/null/empty identity before a real created binds identity; known keepalive names with metadata only do not participate in model sequence",
+    "still_required": [
+      "Bound response identity",
+      "One expected tool and exact argument agreement",
+      "Valid completed terminal, usage, EOF, close",
+      "No error or business payload in discarded keepalives",
+      "Unknown types remain rejected and original failures remain unchanged"
+    ],
+    "historical_unknown_event_cause": "Unresolved: type text and one extra field were not retained; cannot call it heartbeat or clear old receipts",
+    "product_version": "1.7.3",
+    "verification": {
+      "compatibility_positive_cases_before_fix": {
+        "passed": 0,
+        "failed": 10
+      },
+      "protocol_process_recovery_and_product_suite": {
+        "passed": 217,
+        "failed": 2,
+        "failure_cause": "Current candidate manifests still referenced the previous shared coach_contract fingerprint during the run."
+      },
+      "failed_cases_after_manifest_refresh": {
+        "passed": 2,
+        "failed": 0
+      },
+      "qualification_inventory_and_binding_tests": {
+        "passed": 31,
+        "failed": 0
+      },
+      "runtime_profiles_passed": 11,
+      "current_inventory_snapshots_passed": 2,
+      "final_receiver_regression": {
+        "passed": 66,
+        "failed": 0
+      },
+      "governance": "passed",
+      "compile": "passed",
+      "diff_check": "passed",
+      "replacement_ci": "pending for grouped closeout commit",
+      "original_receipt_digests_reverified": 3,
+      "inventory_changes_limited_to_shared_code_pins": true
+    }
+  },
+  "new_model_requests": 0,
+  "real_credentials_read": 0,
+  "administrator_contacted": false,
+  "historical_evidence_rewritten": false
+}

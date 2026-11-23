@@ -1,0 +1,49 @@
+{
+  "kind": "sol-product-single-protocol-retry-authorized-v1",
+  "at_utc": "2026-11-01T00:26:53.107480+00:00",
+  "user_confirmation": "\u6388\u6743",
+  "authorization_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-protocol-recovery-20261101\\retry-authorization.json",
+  "authorization_sha256": "a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31",
+  "proposal_sha256": "21d43ddab08b2cad23d467fed27911d9711932aca176a150c3306fe90972f577",
+  "binding_sha256": "fb24b72ef68ccd1e50f3696cb8492235953f98b73deee851ead77c6033132d16",
+  "head": "ed1c1e8a0f3b789d1b7601a50738406e5c1559ae",
+  "ci_id": 41256378646,
+  "ci_status": "in_progress",
+  "execution_cwd": "D:/riftcoach-sol-product-protocol-recovery-execution-20261101",
+  "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+  "waiter_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-protocol-recovery-20261101\\wait_protocol_ci.py",
+  "waiter_sha256": "5c1b8e7534428091ecd07a3a9e763b97b38ea7067cfde9d91acf8c2bc28145bb",
+  "waiter_start": {
+    "pid": 23244,
+    "at_utc": "2026-11-01T00:25:47.949295+00:00",
+    "binding_sha256": "fb24b72ef68ccd1e50f3696cb8492235953f98b73deee851ead77c6033132d16",
+    "authorization_sha256": "a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31",
+    "ci_id": 41256378646
+  },
+  "max_new_requests": 1,
+  "attempt": "attempt-12",
+  "cumulative_limits": {
+    "max_calls": 12,
+    "total_tokens": 723456,
+    "execution_timeout_s": 2100
+  },
+  "expires_at_utc": "2026-11-01T07:50:40.024669+00:00",
+  "actual_authorized_driver_preflight": {
+    "status": "passed",
+    "driver_sha256": "848e98d2aaa2d4522e795e0e21b6a1d274c91c6004099ac1f767018bd9927001",
+    "retry_authorization_sha256": "a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31",
+    "binding_sha256": "fb24b72ef68ccd1e50f3696cb8492235953f98b73deee851ead77c6033132d16",
+    "new_model_requests": 0,
+    "real_key_reads": 0,
+    "manual_retry_consumed": false,
+    "expected_next_retry": 6,
+    "head": "ed1c1e8a0f3b789d1b7601a50738406e5c1559ae",
+    "ci_id": 41256378646
+  },
+  "no_new_request_at_recording": true,
+  "automatic_retry": false,
+  "diagnostic_opinion_imported": false,
+  "old15_completion_changed": false,
+  "stage8e_changed": false,
+  "default_admission_changed": false
+}

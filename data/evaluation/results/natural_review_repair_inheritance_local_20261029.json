@@ -1,0 +1,138 @@
+{
+  "version": "sealed-initial-pair-repair-inheritance-local-v1",
+  "recorded_at": "2026-10-29T11:16:28.313509+00:00",
+  "development_base": "710ecee573952b604333eed7d3f92c54eab39850",
+  "provider_requests": 0,
+  "key_reads": 0,
+  "original_review_remains_rejected": true,
+  "live_application_restored": false,
+  "formal_tail_completed": false,
+  "publication_allowed": false,
+  "production_admitted": false,
+  "parent_proof": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-natural-review-repair-ready-20261029\\parent-proof.json",
+    "sha256": "4bfd825c65d11a8b077121aea1094a9e1c33687027803c96a04885c3adcd8a46",
+    "seal_sha256": "d738c54d0b23d4f198525e78b5de2ca608988b65fec6949366e308a519d9cddf",
+    "operations": 14,
+    "accounting": {
+      "calls": 6,
+      "reserved_tokens": 73756,
+      "retries": 1,
+      "tokens": 88111
+    },
+    "assembly": {
+      "original_report_sha256": "e30e37a3c715557734331f6c0c1ee9f8a3cde9556526862a8d2f2becc38f769e",
+      "patch_journal_sha256": "3dab0bd5e2dcd1559271bf34253b70942f70e78d812e53eb7c2829edd079fba8",
+      "preview_report_sha256": "7fb7e784b3822a8e0ad7d502342a339d853ea59ad09de3715ab65ae4de59ce51"
+    },
+    "active_seconds": 402.32999999999447,
+    "original_native_pair_replayed": true
+  },
+  "tests": {
+    "related_regression": "16 passed in 126.88 seconds; inventory refreshed afterwards",
+    "current_inventory": "1 passed in 19.31 seconds",
+    "complete_inheritance_without_timeout": "1 passed in 585.79 seconds; preceding test variant",
+    "complete_inheritance_with_524": "1 passed in 624.53 seconds; current source",
+    "network": "denied; HTTP and native events synthetic",
+    "synthetic_parent_result": {
+      "accounting": {
+        "calls": 5,
+        "reserved_tokens": 75064,
+        "retries": 1,
+        "tokens": 80
+      },
+      "native_reviews": 2,
+      "phase": "closed",
+      "production_admitted": false,
+      "publication_allowed": false,
+      "reason": "semantic_rejected",
+      "strict_replay": true
+    },
+    "synthetic_child_result": {
+      "accounting": {
+        "calls": 7,
+        "reserved_tokens": 75064,
+        "retries": 1,
+        "tokens": 120
+      },
+      "candidate_outcome": {
+        "calls": 7,
+        "host_semantics_verified": false,
+        "known_tokens": 120,
+        "outcome": "candidate_repaired_pass_unqualified",
+        "production_admitted": false,
+        "publication_allowed": false,
+        "unknown_reserved_tokens": 75064,
+        "version": "natural-flash-sol-dual-necessity-development-v1"
+      },
+      "continuation": {
+        "historical_failure_retained": true,
+        "imported_generation_calls": 2,
+        "new_calls": 2,
+        "new_known_tokens": 40,
+        "parent_seal_sha256": "4052c99bd246d469f2785f0dc1b3aaa1893097970b2f60aa408b2b8b9c523933"
+      },
+      "native_repair_reviews": 1,
+      "native_reviews": 6,
+      "phase": "closed",
+      "production_admitted": false,
+      "publication_allowed": false,
+      "rejected_initial_reviews_retained": 1,
+      "strict_replay": true
+    },
+    "compile": "passed",
+    "diff_check": "passed",
+    "governance": "passed"
+  },
+  "additional_scope": {
+    "normal_new_fresh": 2,
+    "max_new_requests": 4,
+    "max_new_tokens": 321536,
+    "manual_same_item_recovery_reservations": 2,
+    "generation_requests": 0,
+    "initial_review_requests": 0,
+    "parent_total_active_seconds_limit": 3600,
+    "model": "gpt-6.1-sol",
+    "reasoning": "high",
+    "group": "GPT-enterprise-dedicated",
+    "price_multiplier": "0.25",
+    "estimated_uncached_cny": "0.29184",
+    "estimate_is_bill": false,
+    "new_grant_required": true,
+    "previous_grant_not_reused": true
+  },
+  "verified": [
+    "original operation intents/results copied byte-for-byte",
+    "both original host-task folders and business bindings retained",
+    "facts may belong to an earlier ancestor; native readers use original plans",
+    "initial false opinion retained separately from accepted repair coverage",
+    "pending repair pauses before key or new HTTP",
+    "coverage acceptance still requires compatibility/edit and unique application",
+    "exactly two new fresh HTTP requests share the actual applied report",
+    "nonzero unknown reservation and prior manual retry survive strict seal",
+    "original Operator and author inventories unchanged"
+  ],
+  "inventory_changed_fields": [
+    "component_fingerprints",
+    "program_sha256"
+  ],
+  "other_inventory_fields_unchanged": 28,
+  "original15_cases": 15,
+  "original15_repeated": false,
+  "automation": "PAUSED",
+  "limitations": [
+    "only accepted facts plus missed-error completion complete pair; no overlapping patch selection",
+    "synthetic tail is not new live semantic evidence",
+    "original frozen checkout/seal/opinions and prior costs unchanged",
+    "no same-version 15, Stage8E, product or learning admission"
+  ],
+  "next_action": "prepare new clean frozen plan and actual native administrative preflight; use external control readiness; do not send without new plan-bound grant",
+  "source_sha256": {
+    "scripts/natural_review_repair_continuation.py": "1489d750bcd3c496d0744a7d1d05a4cdf66c19c07b6fc1a1b57b5a106909ed82",
+    "scripts/prepare_natural_review_repair.py": "caea518fb551b88d300249ba0c538967c2690bb49d7c6852e9238d5ad0ec2d10",
+    "scripts/sol_natural_launch.py": "e59f8eff9dc48ec5d5cfc4ac9a18edd061e7d3327561080ac7bb6ab4a13ec7ef",
+    "scripts/sol_natural_continuation.py": "c12687812f69e5dd04807efe027248dfac2bed1b161c6af0e4db280bb6c3c217",
+    "app/evaluation/sol_session_review.py": "3155726d1d7ce9964a62bf8908e7f99e5e1fa6e010eba3c6fb4565fd7595c400",
+    "tests/test_natural_review_repair_inheritance.py": "31f3d12212f5f0d3365eb5f9ab9bb173f7ab6688bb78895451dde57553d3e4a7"
+  }
+}

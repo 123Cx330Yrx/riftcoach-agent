@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "source_commit": "5c71706ed1206bb48c7cbf69ae73ae79155b66d8",
+  "ci": {
+    "headSha": "5c71706ed1206bb48c7cbf69ae73ae79155b66d8",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41285265709",
+    "jobs": [
+      {
+        "name": "packaging-smoke",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "web-checks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "pytest",
+        "status": "completed",
+        "conclusion": "failure"
+      }
+    ],
+    "observed_at": "2026-11-01T08:41:22.164163+00:00"
+  },
+  "failure_logs": [
+    {
+      "shard": 0,
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/ci-41285265709-shard-0.log",
+      "sha256": "cceb56ae60b1809288425403c1a4ab86cfc98ec9859c92196793628c5d608e33",
+      "failure_count": 6,
+      "failures": [
+        "FAILED tests/test_coach_product_acceptance.py::test_first_failure_stops_later_cases[missing_source] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_default_cli_does_not_touch_git_network_or_credentials - AssertionError: assert 1 == 0",
+        "FAILED tests/test_coach_product_acceptance.py::test_fresh_inputs_fit_nine_call_full_usage_path[1] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_corrupt_product_artifacts_cannot_become_acceptance[final_report] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_safe_diagnostics_explain_legacy_failure_without_bodies[revision_without_issues] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_new_diagnostics_reject_body_fields_and_inconsistent_metadata[unsafe_code] - ValueError: acceptance_asset_drift"
+      ]
+    },
+    {
+      "shard": 1,
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/ci-41285265709-shard-1.log",
+      "sha256": "93e0d3994d29f9152c5d147ef4e0aa819d00ab04977a55d5d883401d669c0680",
+      "failure_count": 8,
+      "failures": [
+        "FAILED tests/test_coach_product_acceptance.py::test_frozen_assets_rebuild_and_synthetic_facts_are_consistent - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_four_actual_product_runs_and_safe_receipt - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_first_failure_stops_later_cases[provider] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_receipt_tampering_is_rejected - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_fresh_inputs_fit_nine_call_full_usage_path[2] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_corrupt_product_artifacts_cannot_become_acceptance[evaluation_result] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_safe_diagnostics_explain_legacy_failure_without_bodies[missing_citation] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_new_diagnostics_reject_body_fields_and_inconsistent_metadata[unparsed_verdict] - ValueError: acceptance_asset_drift"
+      ]
+    },
+    {
+      "shard": 2,
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/ci-41285265709-shard-2.log",
+      "sha256": "087dc68772b5c95ef7c571a452c7ca921140035b05a26fd8e1f309781c6dba3d",
+      "failure_count": 8,
+      "failures": [
+        "FAILED tests/test_coach_product_acceptance.py::test_first_failure_stops_later_cases[quality] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_memory_attack_is_detected_even_when_fake_evaluator_returns_high_score - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_runtime_context_drift_never_calls_provider - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_fresh_inputs_fit_nine_call_full_usage_path[3] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_interruption_preserves_partial_results_and_call_count - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_legacy_receipt_remains_readable_without_backfilled_diagnostics - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_new_diagnostics_reject_body_fields_and_inconsistent_metadata[wrong_consistency] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_deterministic_report_evidence.py::test_historical_acceptance_snapshot_is_bound_and_new_renderer_does_not_regrade_it - ValueError: acceptance_asset_drift"
+      ]
+    },
+    {
+      "shard": 3,
+      "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/ci-41285265709-shard-3.log",
+      "sha256": "2054b354253a9e6425030d701db598acd12ad4d88147e9d6eca631afa2a6c564",
+      "failure_count": 8,
+      "failures": [
+        "FAILED tests/test_coach_product_acceptance.py::test_first_failure_stops_later_cases[citation] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_known_failed_usage_is_accounted_without_a_normalized_success - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_reservation_precedes_factory_and_is_not_reusable_after_failure - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_fresh_inputs_fit_nine_call_full_usage_path[0] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_corrupt_product_artifacts_cannot_become_acceptance[retrieval_evidence] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_safe_diagnostics_explain_legacy_failure_without_bodies[pass_with_issues] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_new_diagnostics_reject_body_fields_and_inconsistent_metadata[body] - ValueError: acceptance_asset_drift",
+        "FAILED tests/test_coach_product_acceptance.py::test_new_diagnostics_reject_body_fields_and_inconsistent_metadata[ordinal] - ValueError: acceptance_asset_drift"
+      ]
+    }
+  ],
+  "cause": "The HALF_UP fix also converted exact integer-derived averages to float; six equal-valued fields changed JSON serialization and therefore the historical compiled request digest.",
+  "changed_type_paths": [
+    "recent_summary.averages.damage_per_min",
+    "recent_summary.averages.deaths_before_15",
+    "recent_summary.win_loss_comparison.wins.gold_per_min",
+    "recent_summary.win_loss_comparison.wins.vision_score",
+    "recent_summary.win_loss_comparison.wins.deaths_before_15",
+    "recent_summary.win_loss_comparison.losses.damage_per_min"
+  ],
+  "fix": "Keep integer type only for exact integer-derived averages before quantization; fractional averages and float inputs remain floats. Decimal HALF_UP remains in force.",
+  "proof": {
+    "historical_summary_sha256": "c7acf965968dc3512f36564a5ded0249eabeb250a4f0aaa047dc336551d4fde1",
+    "matches_existing_frozen_pin": true,
+    "historical_acceptance_manifest_sha256": "142c871a6e699aaeff50d90c7d8df8a822940ff9552d9de2081d8baf9d6550f9",
+    "existing_assets_unchanged": [
+      {
+        "path": "examples/evaluation/coach_product_rq246_v1/inputs.json",
+        "sha256": "1b00fe4594dc5cf91228767b39a880327ba8f8c8e9c0e35864927e9b4b6d3b9b",
+        "git_blob": "75ec04792efb55e26a63924888adb6f6a1c8a03e"
+      },
+      {
+        "path": "examples/evaluation/coach_product_rq246_v1/manifest.json",
+        "sha256": "18039bc4136ce8ca650df08440dab39f5190e5dddc21484a684740674e4368bd",
+        "git_blob": "effe1aa07755c5003fbf10b2c63b54760f49d18b"
+      },
+      {
+        "path": "examples/evaluation/coach_product_rq246_v1/deterministic_report_snapshot.json",
+        "sha256": "08ccff457c44c257959b99a080abb5c9d969c3086422b4fb61d135daf6245ce5",
+        "git_blob": "a2de1ab44be9b0784e17f90ef82bea837593d1cf"
+      }
+    ],
+    "source_of_drift": "Six numeric values were equal but changed JSON int to float.",
+    "new_model_http": 0,
+    "model_credential_reads": 0
+  },
+  "verification": {
+    "new_type_cases_before_fix": {
+      "failed": 2,
+      "passed": 5
+    },
+    "rounding_consumers_historical_acceptance_and_renderer_passed": 120,
+    "all_30_ci_failures_covered_by_run": true,
+    "governance": "passed",
+    "diff_check": "passed",
+    "replacement_ci": "pending"
+  },
+  "user_decision": "Complete offline closeout; subsequently supplied group AI response and requested independent relay and local validation review without administrator follow-up.",
+  "provider_question": {
+    "path": "C:/Users/33502/Documents/Agent/outputs/riftcoach-product-route-adjudication-20261101/provider-question-20261101.md",
+    "sha256": "4e3c816242220474cce078115ee62258c16068107dbb37dfa607b347bf0cd637",
+    "sent_by_agent": false
+  },
+  "new_model_http": 0,
+  "model_credential_reads": 0,
+  "historical_evidence_rewritten": false,
+  "new_live_qualification": false,
+  "provider_followup": "data/evaluation/results/sol_product_provider_reply_assessment_20261101.json"
+}

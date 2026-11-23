@@ -1,0 +1,132 @@
+{
+  "kind": "review-necessity-enterprise-a-reviewed-v1",
+  "date": "2026-10-24",
+  "source_head": "2bd7e08e260542246db33b445499081088a72291",
+  "cwd": "D:/riftcoach-review-necessity-enterprise-execution",
+  "ci_run": "40057680511",
+  "ci_live_verified": {
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": 8
+  },
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control",
+  "original_plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+  "execution_stdout": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control\\20261024T032632161Z-6ab8df210a8947d791bddd367d88c040.stdout.txt",
+  "execution_stdout_sha256": "f39bd9482ab8536b4757b212395f89436f7c1784c11343442d4b2cc35f90f38c",
+  "first_claim_checkpoint_sha256": "681381e44cd7391d67ad5ce8f47ac8df9e5985784575166a77f95a7151eb85a5",
+  "response_checkpoint_sha256": "b9861441bfe97d2e5dde36a67e4dbc0f9f98651370cec76f1415456281badd8f",
+  "receipt": {
+    "version": "research-responses-single-call-v1",
+    "ok": true,
+    "code": "ok",
+    "worker_code": "ok",
+    "failure_category": null,
+    "request_sha256": "8b2597e00c5c195fc8ffd963d2a9d64f0ad928a8d28abc5096be74c0c7c6f7ef",
+    "wire_sha256": "8ff6d437449a5861514044c969ee7679fdbb5b4c8f7b7293fb4e9e223ead1363",
+    "profile": {
+      "group": "GPT-\u4f01\u4e1a\u4e13\u7ebf",
+      "base_url": "https://yujianwudi.top/v1",
+      "model": "gpt-6.1-sol",
+      "route": "proxy-12000"
+    },
+    "usage": {
+      "input_tokens": 22066,
+      "output_tokens": 1333,
+      "total_tokens": 23399,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1034
+    },
+    "usage_state": "known",
+    "usage_conflict": false,
+    "conflicting_worker_usage": null,
+    "usage_basis": "channel_reported_unverified_upstream",
+    "http_requests": 1,
+    "reaped": true,
+    "worker_exit": 0,
+    "elapsed_s": 46.797,
+    "semantic_approval": false,
+    "group_verified": false,
+    "upstream_identity_verified": false,
+    "qualified": false,
+    "response_mode": "necessity-candidate-v1",
+    "validation_context_sha256": "f926eb9d9ccc08f7e4de732d3c2bb4b3c530bffbfb0b45ad285eb8b2e58cf0c9"
+  },
+  "http_observation": {
+    "http_requests": 1,
+    "response_status": 200,
+    "response_request_id": "56eb3228-26b4-4a31-94ee-b1d02243912f",
+    "eof": true,
+    "closed": true,
+    "observed_ms": 44875,
+    "response_decode": {
+      "raw_object": true,
+      "sdk_object": true,
+      "identity_fields_equal": true,
+      "raw_reasoning_echo": "high",
+      "raw_reasoning_effort_detail": {
+        "category": "known",
+        "value": "high"
+      }
+    },
+    "response_body_sha256": "fd68cbaeb2c36d4501429d47805118db928fed1f7dd9d7dcf04c1bf7490d0f27"
+  },
+  "response_reasoning_echo": "high",
+  "requested_reasoning_effort": "high",
+  "upstream_identity_independently_verified": false,
+  "provider_opinion": {
+    "verdict": "needs_revision",
+    "score": 94,
+    "issue_blocks": [
+      21
+    ],
+    "repair_groups": 1,
+    "summary": "Only the unsupported 7.5 CS/min threshold was reported. The existing hypothesis paragraph was not reported as an error."
+  },
+  "primary_accepted": true,
+  "independent_accepted": true,
+  "independent_event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a16c2d-6bf9-7043-b85e-4145d0068524/msg_0ab71b1ed75fb434016adc352e570c819597a9d0490c3dc5a2",
+  "independent_author_sha256": "9ae33b04e574995ffff409339b68f35d770e5a4e2d3fd2c2a4fa32dd0091a270",
+  "submission_sha256": "6b765b299849e707508770cff0b470d23af67bca21ebf46ee864124d9a4ab684",
+  "material_sha256": "c54494fad8360ffe71f33e4e52b66c3594ea5e7ce01f7806818ddcee204a0c76",
+  "native_checkpoint_sha256": "ee69d3f7f8944a596dce178b2779f0a37c1420518f57a4bd38b4d08d87fada1b",
+  "primary_decision_sha256": "dba50d11f2d1bff1e98078595078395a31d1d547d507695345c695556c30da9e",
+  "submit_stdout_sha256": "c03c337406391ec44f2409959abf3d6adf9d2704a7ff75cb35ae504f888c1517",
+  "submit_exit_sha256": "c43a71062fdfe75f6647da755909e1a12a609f1a5e15414bac169dbc5b5a7e9b",
+  "checkpoint": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023\\checkpoints\\0009.json",
+  "checkpoint_sha256": "f45559f57c351ef604942db4a4f2e630ddcc6033615ce567fc4ef267fdaca7ae",
+  "status": {
+    "phase": "ready",
+    "reason": null,
+    "next_case": "b",
+    "attempts": 2,
+    "known_tokens": 23399,
+    "unknown_reserved_tokens": 80384,
+    "not_sent": 0,
+    "http_requests_known": 2,
+    "http_requests_unknown": 0,
+    "unreviewed_calls": 0,
+    "qualified": false,
+    "publication_allowed": false
+  },
+  "original_timeout_and_unknown_reservation_retained": true,
+  "sealed": false,
+  "report_applied": false,
+  "enterprise_group_verified": false,
+  "semantic_scope": "One facts-only opinion and proposed repair on familiar development material accepted by both reviewers. No edited/fresh report or product admission.",
+  "next_entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-enterprise-20261024-control\\continue-b.ps1",
+  "next_entry_sha256": "95366691309d543702d7acde58171f576ea109449f9a06eff7720a0dd6099a0d",
+  "next_entry_check": {
+    "exit_code": 0,
+    "stdout_sha256": "5286a23cc465044798bab608f0425da4786f7405497073901ea4af18ed584ef3",
+    "entry_sha256": "95366691309d543702d7acde58171f576ea109449f9a06eff7720a0dd6099a0d"
+  },
+  "next_entry_ready": true,
+  "next_action": "User manually runs continue-b.ps1 and enters enterprise Key; one send of b, no repeat of a, no automatic retry loop.",
+  "authorization_expires_at": "2026-10-25T02:56:33.298308+00:00",
+  "new_provider_requests_this_user_execution": 1,
+  "provider_requests_during_review": 0,
+  "key_reads_during_review": 0,
+  "qualified": false,
+  "publication_allowed": false
+}

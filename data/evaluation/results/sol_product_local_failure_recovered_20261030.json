@@ -1,0 +1,58 @@
+{
+  "schema": "sol-product-local-failure-recovery-evidence-v1",
+  "date": "2026-10-30",
+  "status": "offline_recovered_at_first_sol_review",
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "original_head": "2715ae400129d2d8846d429b3c7e4a51bc0998e4",
+  "original_plan_sha256": "ce9e6e49d90415317f6381182f50a8ae9f08fad8baf91ec99f7ce20256a21fca",
+  "original_run_untouched": true,
+  "original_inventory_files": 143,
+  "original_sql_reason": "worker_execution_failed",
+  "original_runtime_reason": "harness_execution_failed",
+  "prefix_operations": 13,
+  "accounting": {
+    "known_tokens": 29323,
+    "requests_observed": 3,
+    "requests_reserved": 3,
+    "retries": 0,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 0,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 151.85899999996764,
+  "new_model_requests": 0,
+  "real_credential_reads": 0,
+  "proof_file": "D:\\rc-recovery-20261030\\verified-runs\\review_1a568160d5aa44b5a2acd2f72fb679f8-recovery.json",
+  "proof_sha256": "2aafac6a2ef4e24eb4d3b0a5bec16faf316aef4d23ccfaeb7bfac2c0f1517255",
+  "ready_file": "D:\\rc-recovery-20261030\\offline-replay\\ready.json",
+  "ready_sha256": "39548acab7301753fa4ffaf2037e1f4d1f613e84957cd34b5aa1e6c0e4a22eca",
+  "checkpoint_sha256": "a80096ba8c992a99f8f98f90fe4c0475a8a73f2c2233ff6daec770b8f76ae527",
+  "first_review_request_sha256": "bd8fe407bd6dc2f6dc7bf8a35fa50cc930b6e3531685db034ae4b03bce0e1f88",
+  "database_dump_sha256": "6d91b44df8934988074b6eff42cf676ba0db313d95bf06ec8b2554deb9c5f46a",
+  "validation": {
+    "new_postgres_tests": {
+      "passed": 6,
+      "seconds": 37.13
+    },
+    "existing_postgres_regression": {
+      "passed": 17,
+      "seconds": 239.43
+    },
+    "related_local_checks": {
+      "passed": 30,
+      "subtests": 12,
+      "seconds": 206.7
+    },
+    "runtime_profile_entrypoints": 11,
+    "governance": "passed",
+    "diff_check": "passed"
+  },
+  "authorization_expires_utc": "2026-10-31T07:45:00+00:00",
+  "remaining_max_requests": 5,
+  "remaining_manual_retries_require_user_trigger": true,
+  "publication_completed": false,
+  "default_route_changed": false,
+  "stage_8e_completed": false,
+  "next_action": "bind clean repair commit and its CI; continue only the same task from the pinned first review input within the original grant"
+}

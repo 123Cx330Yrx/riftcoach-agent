@@ -1,0 +1,1805 @@
+{
+  "source": "native-review-4f2307b-heading-v2/observed_05_heading_ability/response-003.json",
+  "response_file_sha256": "25b6bef421a976a239f63ce429e3f168f6f287d18512ac69bfbdff4394f23307",
+  "raw": "\n{\n  \"reviews\": [\n    {\"block\": 1, \"kind\": \"navigation\", \"explanation\": \"报告标题，仅标明观摩对象为 ShowMaker，无事实断言；与 user_utterance 的观摩定位一致。\", \"issues\": []},\n    {\"block\": 2, \"kind\": \"content\", \"explanation\": \"该标题含断言（生存与发育结果较好），按内容审查。其限定语（仅结果指标、不推出防抓能力）与第2节正文及 K1 的指标解释一致，断言范围被正确限制在结果层面。\", \"issues\": []},\n    {\"block\": 3, \"kind\": \"content\", \"explanation\": \"逐项核对：5 局均队列 420、2胜3负、胜率40.0%与 aggregate 一致；中单4局2胜、辅助1局0负与 role_summary 一致。中单胜/负均值经济505.29 vs 432.82、伤害1286.76 vs 617.52与 MIDDLE 组 computed_evidence 一致（432.815/1286.755按HALF_UP取整正确），且 all_pairs=greater 支持'各赢局均高于各输局'。混合样本补刀8.8 vs 6.45、纳入辅助输局1.34拉低均值、中单8.81 vs 9.01输局不更低，均与证据吻合。早期死亡2.5 vs 2.67差异0.17，[K1]恰当地否定了把它作为分界点。全段限定在样本内，无外推。\", \"issues\": []},\n    {\"block\": 4, \"kind\": \"content\", \"explanation\": \"标题含断言（生存与发育结果较好），按内容审查；'仅结果指标，不推出防抓能力'的限定与 K1 及正文一致，未见把结果推断为能力。\", \"issues\": []},\n    {\"block\": 5, \"kind\": \"content\", \"explanation\": \"中单平均补刀8.91/分（8.9075四舍五入）、经济469/分（469.0525）与 MIDDLE 组均值一致；艾尼维亚9.64补刀/分、15分钟前0死亡与 KR_8370206038 单局数据一致。'生存与发育结果较好'被明确限定为结果指标并挂[K1]支撑（早期无死亡只说明结果），未推出防抓或对线能力，边界处理正确。\", \"issues\": []},\n    {\"block\": 6, \"kind\": \"content\", \"explanation\": \"辛德拉14/5/10（伤害1430.11、参团55.81%）、薇古丝8/5/23（伤害1143.4、参团77.5%）均高于五局整体均值869.5/分与50.4%，数值与单局及 aggregate 数据吻合。'本样本的数值对照，不是跨位置能力评价'的限定恰当；胜局对象与位置说明清晰。\", \"issues\": []},\n    {\"block\": 7, \"kind\": \"content\", \"explanation\": \"卡蜜尔辅助局视野分90与单局数据一致；报告明确该值是辅助职责下的一次结果记录，不证明视野意识、不与中单视野混评，符合位置分开分析的要求。\", \"issues\": []},\n    {\"block\": 8, \"kind\": \"navigation\", \"explanation\": \"纯章节标题'## 3. 主要风险点'，无事实断言。\", \"issues\": []},\n    {\"block\": 9, \"kind\": \"content\", \"explanation\": \"该标题含范围断言（所选四场中单观察），按内容审查；其后第10-11节内容确为四场中单与单局核查，标题与正文范围一致，未把辅助局混入。\", \"issues\": []},\n    {\"block\": 10, \"kind\": \"content\", \"explanation\": \"'这四场中单中经济和伤害是较稳定的差异项'：MIDDLE 组经济与伤害的 all_pairs 均为 greater，即每局赢局均高于每局输局，可支持在本样本内称其为差异项；报告未称因果或长期稳定性。\", \"issues\": []},\n    {\"block\": 11, \"kind\": \"content\", \"explanation\": \"洛克中单局参团36.4%（36.36%）、视野25；卡蜜尔辅助局13死、1.34补刀/分，均与单局数据一致。'各只1局、位置不同、无统计稳定性、不能据此判定英雄强弱'的否定与限定正确，未由单局推断稳定能力。\", \"issues\": []},\n    {\"block\": 12, \"kind\": \"navigation\", \"explanation\": \"纯章节标题'## 4. 赢局与输局差异'，无事实断言。\", \"issues\": []},\n    {\"block\": 13, \"kind\": \"content\", \"explanation\": \"表格五行数值（补刀8.8/6.45、经济505.29/389.41、伤害1286.76/591.34、视野33.5/52.67、15分钟前死亡2.5/2.67）与 selected 组 computed_evidence 的 win_mean/loss_mean 完全一致，取整正确，且明确标注为2胜3负。\", \"issues\": []},\n    {\"block\": 14, \"kind\": \"content\", \"explanation\": \"混合均值受位置构成影响的说明正确（输局视野含辅助局90、补刀含辅助局1.34）；中单对照505.29 vs 432.82、1286.76 vs 617.52、输局补刀9.01略高于赢局8.81均与 MIDDLE 组一致。艾尼维亚输局9.64补刀/分、参团27.8%（0.2778）正确；[K1]支持不作分界、[K3]支持列为待验问题而不定败因，无因果或长期外推。\", \"issues\": []},\n    {\"block\": 15, \"kind\": \"navigation\", \"explanation\": \"纯章节标题'## 5. 下一步复盘建议'，无事实断言。\", \"issues\": []},\n    {\"block\": 16, \"kind\": \"content\", \"explanation\": \"对局ID、英雄、胜负与单局数据一致；参团36.4% vs 55.8%（36.36%/55.81%）、伤害605.5 vs 1430.11正确。'尚未证实具体决策原因'的限定防止了由统计差推因果，建议本身（记录参团时机与游走场景）是可执行的观摩动作。\", \"issues\": []},\n    {\"block\": 17, \"kind\": \"content\", \"explanation\": \"将经济/输出差异与参团时机、资源分配的关系明确列为'观摩假设'，并要求取得录像后对照局势、不凭统计定原因，与[K3]的指导（可列为复盘假设但不能仅凭统计确定原因）一致。\", \"issues\": []},\n    {\"block\": 18, \"kind\": \"content\", \"explanation\": \"OP.GG 中单快照引用准确：检索时间2026-09-10T12:15:25Z、位置中单、辛德拉T2第12名（上期18）、薇古丝T2第14名胜率52%（0.52），与外部事实一致。用法合规：标明快照边界与'非同版本/同段位基准'，把排名用于组织观摩问题（条件性'读者若选择观摩中单'）而非判定单局过程、个人能力或当前选英雄建议，属于允许的使用方式并落在实际建议旁。\", \"issues\": []},\n    {\"block\": 19, \"kind\": \"navigation\", \"explanation\": \"纯章节标题'## 6. 训练计划'，无事实断言。\", \"issues\": []},\n    {\"block\": 20, \"kind\": \"content\", \"explanation\": \"明确观摩对象是 ShowMaker、阅读者是另一人，来源未指定训练位置/目标，也无阅读者个人数据；据此只提供可选观摩练习而不设定个人目标、阈值或日程，[K2]（无位置/英雄/段位基准不设固定阈值）支撑恰当，未代选位置或日程。\", \"issues\": []},\n    {\"block\": 21, \"kind\": \"content\", \"explanation\": \"中单4局补刀/分中位数8.805、15分钟前死亡均值1.5与 MIDDLE 组 computed_evidence 一致；明确这是观摩对象样本描述而非阅读者基线或达标阈值（[K2]），与第5节 OP.GG 排名的衔接为条件性选项，未臆测录像级细节。\", \"issues\": []},\n    {\"block\": 22, \"kind\": \"content\", \"explanation\": \"卡蜜尔辅助局13死、7次15分钟前死亡与单局数据一致（death_times 含7次<15分钟）；OP.GG 辅助快照检索时间2026-09-10T12:15:28Z、T4第35名胜率46%均与外部事实一致。外部数字被限定为组织待验观摩问题，不解释败因、不决定读者是否练习，位置与时效标注完整，并落在实际建议旁。\", \"issues\": []},\n    {\"block\": 23, \"kind\": \"content\", \"explanation\": \"声明两项观摩选项不改变历史位置归属、不推断补位意图或长期主位置、不构成个人训练计划，与位置边界（autofill_intent unknown、long_term_main_position null）及来源声明一致，无越界推断。\", \"issues\": []},\n    {\"block\": 24, \"kind\": \"navigation\", \"explanation\": \"纯章节标题'## 7. 数据边界与知识来源'，无事实断言。\", \"issues\": []},\n    {\"block\": 25, \"kind\": \"content\", \"explanation\": \"来源声明与 request/metadata 一致：Riot API 支持所选5局赛后统计与 timeline、Data Dragon 16.17.1 用于名称映射；'样本仅5局、均为指定对局、不代表长期水平'与 sample_boundaries/scope 一致，未把声明冒充逐行观测之外的内容。\", \"issues\": []},\n    {\"block\": 26, \"kind\": \"content\", \"explanation\": \"[K1][K2][K3] 的来源文件、章节与提供的知识条目一一对应，且各编号在正文（第1、2、4、5、6节）均为实际使用而非装饰性挂名。\", \"issues\": []},\n    {\"block\": 27, \"kind\": \"content\", \"explanation\": \"OP.GG 归档快照的时效边界（不含段位/区域/精确版本匹配、不等同玩家胜率、不解释历史胜负、当前推荐需重新核查）与来源使用边界一致；官方补丁16.17发布日期2026-08-25正确，且仅用于版本对齐、未声称改动内容或平衡性判断，未借官方补丁或 OP.GG 证明未提供的内容。\", \"issues\": []},\n    {\"block\": 28, \"kind\": \"content\", \"explanation\": \"未能判断项（对线细节、技能命中、走位与兵线）与来源声明第8节一致，正确承认需录像级复盘，未补猜未知数据。\", \"issues\": []}\n  ],\n  \"score\": 98,\n  \"verdict\": \"pass\",\n  \"summary\": \"复核全部28个段落与全部来源。事实与数值：5局队列420、2胜3负、胜率40.0%、中单4局2胜、辅助1局0负均与 aggregate/role_summary 一致；混合与中单分组的胜负均值（经济505.29 vs 432.82、伤害1286.76 vs 617.52、补刀8.8 vs 6.45、中单8.81 vs 9.01、视野33.5/52.67、早期死亡2.5 vs 2.67）及中位补刀8.805、中单早期死亡均值1.5均与 computed_evidence 一致；'各赢局均高于各输局'由 all_pairs=greater 支持且明确限定在本样本。身份与位置：观摩对象与阅读者区分清楚，未由位置事实推断主位置或补位意图，辅助局视野90未与中单混评。因果与外推：全部差异仅作观察或假设，[K1]正确否定早期死亡为分界点，[K3]支撑参团时机仅列为录像复盘假设，无因果或长期断言。外部来源：两份 OP.GG 快照的英雄/Tier/排名/胜率/检索时间均准确，位置与快照边界标注完整，且实际连到条件性观摩建议（使用方式合规）；官方补丁16.17（2026-08-25）仅用于版本对齐。知识引用[K1][K2][K3]均为正文实际使用。未发现事实错误、越界推断、注入或元幻觉，无需修订。\",\n  \"passed_checks\": [\n    \"事实与单局/汇总数值逐项核对一致\",\n    \"混合位置与中单分组的均值、中位数运算及取整正确\",\n    \"胜/输局全对比较（经济、伤害）有 computed_evidence 支持且限定本样本\",\n    \"观摩对象与阅读者身份区分正确，未推断主位置或补位意图\",\n    \"正确否定早期死亡作为分界点并有[K1]支撑\",\n    \"因果/长期断言均被限定为观察或假设，[K3]使用恰当\",\n    \"OP.GG 快照数值、检索时间、位置与使用边界准确并连到实际条件性建议\",\n    \"官方补丁仅用于版本对齐，未声称改动内容\",\n    \"知识引用[K1][K2][K3]真实存在于正文\",\n    \"无提示注入或元幻觉\"\n  ],\n  \"issue_resolutions\": []\n}\n``结束。",
+  "raw_sha256": "a18cae038813e5df4af56bc4ad7fbcf27e35c7431cf9f1de99048dea7c8db147",
+  "evaluation_request": {
+    "player_summary": {
+      "schema_version": "1.0",
+      "metadata": {
+        "generated_at_utc": "2026-09-10T02:39:15.484653+00:00",
+        "source": "Riot API",
+        "matches_requested": 5,
+        "matches_received": 5,
+        "matches_analyzed": 5
+      },
+      "player": {
+        "game_name": "DK ShowMaker",
+        "tag_line": "KR1",
+        "riot_id": "DK ShowMaker#KR1",
+        "puuid_prefix": "Na99ZZuCAQGoFIx_..."
+      },
+      "request": {
+        "count": 5,
+        "queue": 420,
+        "requested_queue": 420,
+        "queue_fallback_used": false,
+        "min_duration_seconds": 300,
+        "data_dragon_version": "16.17.1",
+        "data_dragon_language": "zh_CN"
+      },
+      "recent_summary": {
+        "games_analyzed": 5,
+        "wins": 2,
+        "losses": 3,
+        "win_rate": 40.0,
+        "main_role": "MIDDLE",
+        "main_champions": [
+          "薇古丝",
+          "卡蜜尔",
+          "艾尼维亚",
+          "洛克",
+          "辛德拉"
+        ],
+        "averages": {
+          "kda": 3.7,
+          "cs_per_min": 7.39,
+          "gold_per_min": 435.76,
+          "damage_per_min": 869.5,
+          "vision_score": 45,
+          "kill_participation_percent": 50.4,
+          "damage_share_percent": 21.1,
+          "gold_share_percent": 20.0,
+          "deaths_before_15": 2.6
+        },
+        "win_loss_comparison": {
+          "wins": {
+            "cs_per_min": 8.8,
+            "gold_per_min": 505.29,
+            "damage_per_min": 1286.76,
+            "vision_score": 33.5,
+            "deaths_before_15": 2.5
+          },
+          "losses": {
+            "cs_per_min": 6.45,
+            "gold_per_min": 389.41,
+            "damage_per_min": 591.34,
+            "vision_score": 52.67,
+            "deaths_before_15": 2.67
+          }
+        },
+        "champion_summary": [
+          {
+            "champion": "薇古丝",
+            "games": 1,
+            "wins": 1,
+            "win_rate": 100.0
+          },
+          {
+            "champion": "卡蜜尔",
+            "games": 1,
+            "wins": 0,
+            "win_rate": 0.0
+          },
+          {
+            "champion": "艾尼维亚",
+            "games": 1,
+            "wins": 0,
+            "win_rate": 0.0
+          },
+          {
+            "champion": "洛克",
+            "games": 1,
+            "wins": 0,
+            "win_rate": 0.0
+          },
+          {
+            "champion": "辛德拉",
+            "games": 1,
+            "wins": 1,
+            "win_rate": 100.0
+          }
+        ],
+        "role_summary": [
+          {
+            "role": "MIDDLE",
+            "games": 4,
+            "wins": 2,
+            "win_rate": 50.0
+          },
+          {
+            "role": "UTILITY",
+            "games": 1,
+            "wins": 0,
+            "win_rate": 0.0
+          }
+        ]
+      },
+      "matches": [
+        {
+          "match_id": "KR_8371867671",
+          "game_version": "16.17.810.4348",
+          "queue_id": 420,
+          "game_duration_seconds": 2064,
+          "game_duration_minutes": 34.4,
+          "riot_id": "DK ShowMaker#KR1",
+          "participant_id": 8,
+          "champion_id": 711,
+          "champion_name_en": "Vex",
+          "champion_name": "薇古丝",
+          "role": "MIDDLE",
+          "team_id": 200,
+          "win": true,
+          "summoner_spell_ids": [
+            12,
+            4
+          ],
+          "perk_ids": [
+            8200,
+            8230,
+            8226,
+            8234,
+            8237,
+            8000,
+            9105,
+            8017
+          ],
+          "kills": 8,
+          "deaths": 5,
+          "assists": 23,
+          "kda": 6.2,
+          "cs": 308,
+          "cs_per_min": 8.95,
+          "gold": 16607,
+          "gold_per_min": 482.76,
+          "damage_to_champions": 39333,
+          "damage_per_min": 1143.4,
+          "vision_score": 40,
+          "team_kills": 40,
+          "kill_participation": 0.775,
+          "damage_share": 0.2232,
+          "gold_share": 0.2108,
+          "items": [
+            2503,
+            3152,
+            3157,
+            3173,
+            1082,
+            1058,
+            3364
+          ],
+          "champion_official_name": "薇古丝",
+          "champion_title": "愁云使者",
+          "item_names": [
+            "黯炎火炬",
+            "海克斯科技火箭腰带",
+            "中娅沙漏",
+            "带链碾碎者",
+            "黑暗封印",
+            "无用大棒",
+            "神谕透镜"
+          ],
+          "summoner_spell_names": [
+            "传送",
+            "闪现"
+          ],
+          "rune_names": [
+            "巫术",
+            "风暴掠袭者的狂涌",
+            "法力流系带",
+            "迅捷",
+            "焦灼",
+            "精密",
+            "传说：急速",
+            "砍倒"
+          ],
+          "is_short_game": false,
+          "included_in_aggregate": true,
+          "exclusion_reason": null,
+          "timeline_available": true,
+          "timeline_status": "available",
+          "timeline_error": null,
+          "death_times": [
+            "06:01",
+            "09:40",
+            "12:21",
+            "27:00",
+            "30:02"
+          ],
+          "deaths_before_10": 2,
+          "deaths_before_15": 3,
+          "death_buckets": {
+            "0_5": 0,
+            "5_10": 2,
+            "10_15": 1,
+            "15_20": 0,
+            "20_25": 0,
+            "25_plus": 2
+          },
+          "item_purchases": [
+            {
+              "time_ms": 1248,
+              "time": "00:01",
+              "item_id": 1056,
+              "item_name": "多兰之戒"
+            },
+            {
+              "time_ms": 1883,
+              "time": "00:01",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 2016,
+              "time": "00:02",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 2250,
+              "time": "00:02",
+              "item_id": 3340,
+              "item_name": "侦察守卫"
+            },
+            {
+              "time_ms": 181415,
+              "time": "03:01",
+              "item_id": 1082,
+              "item_name": "黑暗封印"
+            },
+            {
+              "time_ms": 181749,
+              "time": "03:01",
+              "item_id": 2031,
+              "item_name": "复用型药水"
+            },
+            {
+              "time_ms": 181949,
+              "time": "03:01",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 289172,
+              "time": "04:49",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 289506,
+              "time": "04:49",
+              "item_id": 1001,
+              "item_name": "鞋子"
+            },
+            {
+              "time_ms": 291777,
+              "time": "04:51",
+              "item_id": 3364,
+              "item_name": "神谕透镜"
+            },
+            {
+              "time_ms": 378557,
+              "time": "06:18",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 378958,
+              "time": "06:18",
+              "item_id": 2508,
+              "item_name": "命定灰烬"
+            },
+            {
+              "time_ms": 539172,
+              "time": "08:59",
+              "item_id": 3802,
+              "item_name": "遗失的章节"
+            },
+            {
+              "time_ms": 755443,
+              "time": "12:35",
+              "item_id": 2503,
+              "item_name": "黯炎火炬"
+            },
+            {
+              "time_ms": 775084,
+              "time": "12:55",
+              "item_id": 3020,
+              "item_name": "法师之靴"
+            },
+            {
+              "time_ms": 776022,
+              "time": "12:56",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 779128,
+              "time": "12:59",
+              "item_id": 3111,
+              "item_name": "水银之靴"
+            },
+            {
+              "time_ms": 779863,
+              "time": "12:59",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 780889,
+              "time": "13:00",
+              "item_id": 2022,
+              "item_name": "荧尘"
+            },
+            {
+              "time_ms": 924295,
+              "time": "15:24",
+              "item_id": 3145,
+              "item_name": "海克斯科技发电机"
+            },
+            {
+              "time_ms": 1133567,
+              "time": "18:53",
+              "item_id": 3152,
+              "item_name": "海克斯科技火箭腰带"
+            },
+            {
+              "time_ms": 1134302,
+              "time": "18:54",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1134436,
+              "time": "18:54",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1307681,
+              "time": "21:47",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            },
+            {
+              "time_ms": 1543260,
+              "time": "25:43",
+              "item_id": 3157,
+              "item_name": "中娅沙漏"
+            },
+            {
+              "time_ms": 1812723,
+              "time": "30:12",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            },
+            {
+              "time_ms": 1861154,
+              "time": "31:01",
+              "item_id": 2139,
+              "item_name": "巫术合剂"
+            }
+          ],
+          "objective_events": [
+            {
+              "time_ms": 520869,
+              "time": "08:40",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 671052,
+              "time": "11:11",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 678934,
+              "time": "11:18",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 683250,
+              "time": "11:23",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 840931,
+              "time": "14:00",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1030188,
+              "time": "17:10",
+              "monster": "RIFTHERALD",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1174232,
+              "time": "19:34",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1351308,
+              "time": "22:31",
+              "monster": "BARON_NASHOR",
+              "killer_id": 3
+            },
+            {
+              "time_ms": 1505064,
+              "time": "25:05",
+              "monster": "DRAGON",
+              "killer_id": 9
+            },
+            {
+              "time_ms": 1786053,
+              "time": "29:46",
+              "monster": "BARON_NASHOR",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1919979,
+              "time": "31:59",
+              "monster": "DRAGON",
+              "killer_id": 7
+            }
+          ],
+          "data_dragon_version": "16.17.1"
+        },
+        {
+          "match_id": "KR_8370293236",
+          "game_version": "16.17.810.4348",
+          "queue_id": 420,
+          "game_duration_seconds": 1573,
+          "game_duration_minutes": 26.22,
+          "riot_id": "DK ShowMaker#KR1",
+          "participant_id": 5,
+          "champion_id": 164,
+          "champion_name_en": "Camille",
+          "champion_name": "卡蜜尔",
+          "role": "UTILITY",
+          "team_id": 100,
+          "win": false,
+          "summoner_spell_ids": [
+            14,
+            4
+          ],
+          "perk_ids": [
+            8100,
+            9923,
+            8143,
+            8141,
+            8135,
+            8400,
+            8401,
+            8473
+          ],
+          "kills": 1,
+          "deaths": 13,
+          "assists": 11,
+          "kda": 0.92,
+          "cs": 35,
+          "cs_per_min": 1.34,
+          "gold": 7933,
+          "gold_per_min": 302.59,
+          "damage_to_champions": 14130,
+          "damage_per_min": 538.97,
+          "vision_score": 90,
+          "team_kills": 22,
+          "kill_participation": 0.5455,
+          "damage_share": 0.1712,
+          "gold_share": 0.1504,
+          "items": [
+            2021,
+            3877,
+            1028,
+            3009,
+            6692,
+            1037,
+            3364
+          ],
+          "champion_official_name": "卡蜜尔",
+          "champion_title": "青钢影",
+          "item_names": [
+            "掘道钻头",
+            "血鸣",
+            "红水晶",
+            "轻灵之靴",
+            "星蚀",
+            "十字镐",
+            "神谕透镜"
+          ],
+          "summoner_spell_names": [
+            "引燃",
+            "闪现"
+          ],
+          "rune_names": [
+            "主宰",
+            "丛刃",
+            "猛然冲击",
+            "深入守卫",
+            "寻宝猎人",
+            "坚决",
+            "护盾猛击",
+            "骸骨镀层"
+          ],
+          "is_short_game": false,
+          "included_in_aggregate": true,
+          "exclusion_reason": null,
+          "timeline_available": true,
+          "timeline_status": "available",
+          "timeline_error": null,
+          "death_times": [
+            "03:26",
+            "05:19",
+            "06:20",
+            "07:11",
+            "08:03",
+            "11:22",
+            "13:24",
+            "16:19",
+            "18:52",
+            "22:09",
+            "23:46",
+            "25:12",
+            "25:58"
+          ],
+          "deaths_before_10": 5,
+          "deaths_before_15": 7,
+          "death_buckets": {
+            "0_5": 1,
+            "5_10": 4,
+            "10_15": 2,
+            "15_20": 2,
+            "20_25": 2,
+            "25_plus": 2
+          },
+          "item_purchases": [
+            {
+              "time_ms": 4146,
+              "time": "00:04",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 4246,
+              "time": "00:04",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 4614,
+              "time": "00:04",
+              "item_id": 3364,
+              "item_name": "神谕透镜"
+            },
+            {
+              "time_ms": 218996,
+              "time": "03:38",
+              "item_id": 1001,
+              "item_name": "鞋子"
+            },
+            {
+              "time_ms": 223573,
+              "time": "03:43",
+              "item_id": 1036,
+              "item_name": "长剑"
+            },
+            {
+              "time_ms": 324498,
+              "time": "05:24",
+              "item_id": 1036,
+              "item_name": "长剑"
+            },
+            {
+              "time_ms": 442982,
+              "time": "07:22",
+              "item_id": 1036,
+              "item_name": "长剑"
+            },
+            {
+              "time_ms": 496339,
+              "time": "08:16",
+              "item_id": 2022,
+              "item_name": "荧尘"
+            },
+            {
+              "time_ms": 543599,
+              "time": "09:03",
+              "item_id": 3133,
+              "item_name": "考尔菲德的战锤"
+            },
+            {
+              "time_ms": 549144,
+              "time": "09:09",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 756679,
+              "time": "12:36",
+              "item_id": 1037,
+              "item_name": "十字镐"
+            },
+            {
+              "time_ms": 757781,
+              "time": "12:37",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 815316,
+              "time": "13:35",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 877353,
+              "time": "14:37",
+              "item_id": 6692,
+              "item_name": "星蚀"
+            },
+            {
+              "time_ms": 998137,
+              "time": "16:38",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 998304,
+              "time": "16:38",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1008961,
+              "time": "16:48",
+              "item_id": 3009,
+              "item_name": "轻灵之靴"
+            },
+            {
+              "time_ms": 1147966,
+              "time": "19:07",
+              "item_id": 2021,
+              "item_name": "掘道钻头"
+            },
+            {
+              "time_ms": 1148401,
+              "time": "19:08",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1247416,
+              "time": "20:47",
+              "item_id": 1028,
+              "item_name": "红水晶"
+            },
+            {
+              "time_ms": 1248151,
+              "time": "20:48",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1248284,
+              "time": "20:48",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1347622,
+              "time": "22:27",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1452829,
+              "time": "24:12",
+              "item_id": 1037,
+              "item_name": "十字镐"
+            }
+          ],
+          "objective_events": [
+            {
+              "time_ms": 407279,
+              "time": "06:47",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 515448,
+              "time": "08:35",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 525482,
+              "time": "08:45",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 532195,
+              "time": "08:52",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 772988,
+              "time": "12:52",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 949905,
+              "time": "15:49",
+              "monster": "RIFTHERALD",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1093680,
+              "time": "18:13",
+              "monster": "DRAGON",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1365044,
+              "time": "22:45",
+              "monster": "BARON_NASHOR",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1434996,
+              "time": "23:54",
+              "monster": "DRAGON",
+              "killer_id": 7
+            }
+          ],
+          "data_dragon_version": "16.17.1"
+        },
+        {
+          "match_id": "KR_8370206038",
+          "game_version": "16.17.810.4348",
+          "queue_id": 420,
+          "game_duration_seconds": 1842,
+          "game_duration_minutes": 30.7,
+          "riot_id": "DK ShowMaker#KR1",
+          "participant_id": 3,
+          "champion_id": 34,
+          "champion_name_en": "Anivia",
+          "champion_name": "艾尼维亚",
+          "role": "MIDDLE",
+          "team_id": 100,
+          "win": false,
+          "summoner_spell_ids": [
+            12,
+            4
+          ],
+          "perk_ids": [
+            8100,
+            8112,
+            8139,
+            8137,
+            8105,
+            8200,
+            8226,
+            8237
+          ],
+          "kills": 6,
+          "deaths": 2,
+          "assists": 4,
+          "kda": 5.0,
+          "cs": 296,
+          "cs_per_min": 9.64,
+          "gold": 13378,
+          "gold_per_min": 435.77,
+          "damage_to_champions": 19327,
+          "damage_per_min": 629.54,
+          "vision_score": 43,
+          "team_kills": 36,
+          "kill_participation": 0.2778,
+          "damage_share": 0.1837,
+          "gold_share": 0.1968,
+          "items": [
+            1058,
+            2522,
+            2421,
+            3170,
+            6657,
+            3040,
+            3363
+          ],
+          "champion_official_name": "艾尼维亚",
+          "champion_title": "冰晶凤凰",
+          "item_names": [
+            "无用大棒",
+            "实现器",
+            "碎裂的护臂",
+            "迅速进军",
+            "时光之杖",
+            "炽天使之拥",
+            "远见改造"
+          ],
+          "summoner_spell_names": [
+            "传送",
+            "闪现"
+          ],
+          "rune_names": [
+            "主宰",
+            "电刑",
+            "血之滋味",
+            "第六感",
+            "无情猎手",
+            "巫术",
+            "法力流系带",
+            "焦灼"
+          ],
+          "is_short_game": false,
+          "included_in_aggregate": true,
+          "exclusion_reason": null,
+          "timeline_available": true,
+          "timeline_status": "available",
+          "timeline_error": null,
+          "death_times": [
+            "25:35",
+            "29:27"
+          ],
+          "deaths_before_10": 0,
+          "deaths_before_15": 0,
+          "death_buckets": {
+            "0_5": 0,
+            "5_10": 0,
+            "10_15": 0,
+            "15_20": 0,
+            "20_25": 0,
+            "25_plus": 2
+          },
+          "item_purchases": [
+            {
+              "time_ms": 4633,
+              "time": "00:04",
+              "item_id": 1056,
+              "item_name": "多兰之戒"
+            },
+            {
+              "time_ms": 5100,
+              "time": "00:05",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 5267,
+              "time": "00:05",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 5535,
+              "time": "00:05",
+              "item_id": 3340,
+              "item_name": "侦察守卫"
+            },
+            {
+              "time_ms": 140871,
+              "time": "02:20",
+              "item_id": 3070,
+              "item_name": "女神之泪"
+            },
+            {
+              "time_ms": 145137,
+              "time": "02:25",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 292259,
+              "time": "04:52",
+              "item_id": 1028,
+              "item_name": "红水晶"
+            },
+            {
+              "time_ms": 293128,
+              "time": "04:53",
+              "item_id": 1027,
+              "item_name": "蓝水晶"
+            },
+            {
+              "time_ms": 293662,
+              "time": "04:53",
+              "item_id": 2031,
+              "item_name": "复用型药水"
+            },
+            {
+              "time_ms": 408089,
+              "time": "06:48",
+              "item_id": 3803,
+              "item_name": "万世催化石"
+            },
+            {
+              "time_ms": 676985,
+              "time": "11:16",
+              "item_id": 6657,
+              "item_name": "时光之杖"
+            },
+            {
+              "time_ms": 677787,
+              "time": "11:17",
+              "item_id": 1001,
+              "item_name": "鞋子"
+            },
+            {
+              "time_ms": 678020,
+              "time": "11:18",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 678288,
+              "time": "11:18",
+              "item_id": 3363,
+              "item_name": "远见改造"
+            },
+            {
+              "time_ms": 777116,
+              "time": "12:57",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 777484,
+              "time": "12:57",
+              "item_id": 3009,
+              "item_name": "轻灵之靴"
+            },
+            {
+              "time_ms": 832588,
+              "time": "13:52",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 967474,
+              "time": "16:07",
+              "item_id": 3802,
+              "item_name": "遗失的章节"
+            },
+            {
+              "time_ms": 968777,
+              "time": "16:08",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 1111903,
+              "time": "18:31",
+              "item_id": 3003,
+              "item_name": "大天使之杖"
+            },
+            {
+              "time_ms": 1119189,
+              "time": "18:39",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1192094,
+              "time": "19:52",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1193371,
+              "time": "19:53",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 1193676,
+              "time": "19:53",
+              "item_id": 1027,
+              "item_name": "蓝水晶"
+            },
+            {
+              "time_ms": 1382602,
+              "time": "23:02",
+              "item_id": 3802,
+              "item_name": "遗失的章节"
+            },
+            {
+              "time_ms": 1383350,
+              "time": "23:03",
+              "item_id": 1026,
+              "item_name": "爆裂魔杖"
+            },
+            {
+              "time_ms": 1456477,
+              "time": "24:16",
+              "item_id": 2522,
+              "item_name": "实现器"
+            },
+            {
+              "time_ms": 1457179,
+              "time": "24:17",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 1506926,
+              "time": "25:06",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 1619466,
+              "time": "26:59",
+              "item_id": 2420,
+              "item_name": "探索者的护臂"
+            },
+            {
+              "time_ms": 1620267,
+              "time": "27:00",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1620391,
+              "time": "27:00",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1819648,
+              "time": "30:19",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            }
+          ],
+          "objective_events": [
+            {
+              "time_ms": 511917,
+              "time": "08:31",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 522321,
+              "time": "08:42",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 529644,
+              "time": "08:49",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 671605,
+              "time": "11:11",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 957881,
+              "time": "15:57",
+              "monster": "RIFTHERALD",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 999807,
+              "time": "16:39",
+              "monster": "DRAGON",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1279616,
+              "time": "21:19",
+              "monster": "BARON_NASHOR",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1493582,
+              "time": "24:53",
+              "monster": "DRAGON",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1793364,
+              "time": "29:53",
+              "monster": "BARON_NASHOR",
+              "killer_id": 6
+            }
+          ],
+          "data_dragon_version": "16.17.1"
+        },
+        {
+          "match_id": "KR_8367293977",
+          "game_version": "16.17.810.4348",
+          "queue_id": 420,
+          "game_duration_seconds": 1582,
+          "game_duration_minutes": 26.37,
+          "riot_id": "DK ShowMaker#KR1",
+          "participant_id": 8,
+          "champion_id": 805,
+          "champion_name_en": "Locke",
+          "champion_name": "洛克",
+          "role": "MIDDLE",
+          "team_id": 200,
+          "win": false,
+          "summoner_spell_ids": [
+            12,
+            4
+          ],
+          "perk_ids": [
+            8100,
+            8112,
+            8143,
+            8137,
+            8135,
+            8400,
+            8444,
+            8453
+          ],
+          "kills": 5,
+          "deaths": 5,
+          "assists": 3,
+          "kda": 1.6,
+          "cs": 221,
+          "cs_per_min": 8.38,
+          "gold": 11334,
+          "gold_per_min": 429.86,
+          "damage_to_champions": 15965,
+          "damage_per_min": 605.5,
+          "vision_score": 25,
+          "team_kills": 22,
+          "kill_participation": 0.3636,
+          "damage_share": 0.1993,
+          "gold_share": 0.2133,
+          "items": [
+            3100,
+            3146,
+            1058,
+            3173,
+            1082,
+            1058,
+            3364
+          ],
+          "champion_official_name": "洛克",
+          "champion_title": "灰烬驱魔人",
+          "item_names": [
+            "巫妖之祸",
+            "海克斯科技枪刃",
+            "无用大棒",
+            "带链碾碎者",
+            "黑暗封印",
+            "无用大棒",
+            "神谕透镜"
+          ],
+          "summoner_spell_names": [
+            "传送",
+            "闪现"
+          ],
+          "rune_names": [
+            "主宰",
+            "电刑",
+            "猛然冲击",
+            "第六感",
+            "寻宝猎人",
+            "坚决",
+            "复苏之风",
+            "复苏"
+          ],
+          "is_short_game": false,
+          "included_in_aggregate": true,
+          "exclusion_reason": null,
+          "timeline_available": true,
+          "timeline_status": "available",
+          "timeline_error": null,
+          "death_times": [
+            "12:05",
+            "15:52",
+            "20:19",
+            "22:37",
+            "25:29"
+          ],
+          "deaths_before_10": 0,
+          "deaths_before_15": 1,
+          "death_buckets": {
+            "0_5": 0,
+            "5_10": 0,
+            "10_15": 1,
+            "15_20": 1,
+            "20_25": 2,
+            "25_plus": 1
+          },
+          "item_purchases": [
+            {
+              "time_ms": 1195,
+              "time": "00:01",
+              "item_id": 1056,
+              "item_name": "多兰之戒"
+            },
+            {
+              "time_ms": 1462,
+              "time": "00:01",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 1629,
+              "time": "00:01",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 1763,
+              "time": "00:01",
+              "item_id": 3340,
+              "item_name": "侦察守卫"
+            },
+            {
+              "time_ms": 261287,
+              "time": "04:21",
+              "item_id": 1082,
+              "item_name": "黑暗封印"
+            },
+            {
+              "time_ms": 261855,
+              "time": "04:21",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 263294,
+              "time": "04:23",
+              "item_id": 2031,
+              "item_name": "复用型药水"
+            },
+            {
+              "time_ms": 263527,
+              "time": "04:23",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 370362,
+              "time": "06:10",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 370495,
+              "time": "06:10",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 371531,
+              "time": "06:11",
+              "item_id": 3364,
+              "item_name": "神谕透镜"
+            },
+            {
+              "time_ms": 565072,
+              "time": "09:25",
+              "item_id": 3146,
+              "item_name": "海克斯科技枪刃"
+            },
+            {
+              "time_ms": 692777,
+              "time": "11:32",
+              "item_id": 3111,
+              "item_name": "水银之靴"
+            },
+            {
+              "time_ms": 693412,
+              "time": "11:33",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 871182,
+              "time": "14:31",
+              "item_id": 1026,
+              "item_name": "爆裂魔杖"
+            },
+            {
+              "time_ms": 962962,
+              "time": "16:02",
+              "item_id": 3113,
+              "item_name": "以太精魂"
+            },
+            {
+              "time_ms": 1077341,
+              "time": "17:57",
+              "item_id": 3100,
+              "item_name": "巫妖之祸"
+            },
+            {
+              "time_ms": 1077742,
+              "time": "17:57",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1179887,
+              "time": "19:39",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1254211,
+              "time": "20:54",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            },
+            {
+              "time_ms": 1466223,
+              "time": "24:26",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            }
+          ],
+          "objective_events": [
+            {
+              "time_ms": 425614,
+              "time": "07:05",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 509725,
+              "time": "08:29",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 518596,
+              "time": "08:38",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 521301,
+              "time": "08:41",
+              "monster": "HORDE",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 831156,
+              "time": "13:51",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 989290,
+              "time": "16:29",
+              "monster": "RIFTHERALD",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1189123,
+              "time": "19:49",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1497316,
+              "time": "24:57",
+              "monster": "BARON_NASHOR",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1517827,
+              "time": "25:17",
+              "monster": "DRAGON",
+              "killer_id": 7
+            }
+          ],
+          "data_dragon_version": "16.17.1"
+        },
+        {
+          "match_id": "KR_8366083389",
+          "game_version": "16.17.810.4348",
+          "queue_id": 420,
+          "game_duration_seconds": 1892,
+          "game_duration_minutes": 31.53,
+          "riot_id": "DK ShowMaker#KR1",
+          "participant_id": 8,
+          "champion_id": 134,
+          "champion_name_en": "Syndra",
+          "champion_name": "辛德拉",
+          "role": "MIDDLE",
+          "team_id": 200,
+          "win": true,
+          "summoner_spell_ids": [
+            1,
+            4
+          ],
+          "perk_ids": [
+            8200,
+            8229,
+            8226,
+            8233,
+            8237,
+            8300,
+            8313,
+            8347
+          ],
+          "kills": 14,
+          "deaths": 5,
+          "assists": 10,
+          "kda": 4.8,
+          "cs": 273,
+          "cs_per_min": 8.66,
+          "gold": 16644,
+          "gold_per_min": 527.82,
+          "damage_to_champions": 45096,
+          "damage_per_min": 1430.11,
+          "vision_score": 27,
+          "team_kills": 43,
+          "kill_participation": 0.5581,
+          "damage_share": 0.2753,
+          "gold_share": 0.2268,
+          "items": [
+            4629,
+            1058,
+            2503,
+            3175,
+            3041,
+            3137,
+            3363
+          ],
+          "champion_official_name": "辛德拉",
+          "champion_title": "暗黑元首",
+          "item_names": [
+            "星界驱驰",
+            "无用大棒",
+            "黯炎火炬",
+            "灵能使之靴",
+            "梅贾的窃魂卷",
+            "蜕生",
+            "远见改造"
+          ],
+          "summoner_spell_names": [
+            "净化",
+            "闪现"
+          ],
+          "rune_names": [
+            "巫术",
+            "奥术彗星",
+            "法力流系带",
+            "绝对专注",
+            "焦灼",
+            "启迪",
+            "三重补药",
+            "星界洞悉"
+          ],
+          "is_short_game": false,
+          "included_in_aggregate": true,
+          "exclusion_reason": null,
+          "timeline_available": true,
+          "timeline_status": "available",
+          "timeline_error": null,
+          "death_times": [
+            "03:04",
+            "03:47",
+            "17:20",
+            "24:58",
+            "28:18"
+          ],
+          "deaths_before_10": 2,
+          "deaths_before_15": 2,
+          "death_buckets": {
+            "0_5": 2,
+            "5_10": 0,
+            "10_15": 0,
+            "15_20": 1,
+            "20_25": 1,
+            "25_plus": 1
+          },
+          "item_purchases": [
+            {
+              "time_ms": 1750,
+              "time": "00:01",
+              "item_id": 1056,
+              "item_name": "多兰之戒"
+            },
+            {
+              "time_ms": 2284,
+              "time": "00:02",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 2451,
+              "time": "00:02",
+              "item_id": 2003,
+              "item_name": "生命药水"
+            },
+            {
+              "time_ms": 3320,
+              "time": "00:03",
+              "item_id": 3340,
+              "item_name": "侦察守卫"
+            },
+            {
+              "time_ms": 190520,
+              "time": "03:10",
+              "item_id": 1082,
+              "item_name": "黑暗封印"
+            },
+            {
+              "time_ms": 191021,
+              "time": "03:11",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 191623,
+              "time": "03:11",
+              "item_id": 1001,
+              "item_name": "鞋子"
+            },
+            {
+              "time_ms": 197148,
+              "time": "03:17",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 235126,
+              "time": "03:55",
+              "item_id": 2031,
+              "item_name": "复用型药水"
+            },
+            {
+              "time_ms": 387172,
+              "time": "06:27",
+              "item_id": 3802,
+              "item_name": "遗失的章节"
+            },
+            {
+              "time_ms": 496378,
+              "time": "08:16",
+              "item_id": 3020,
+              "item_name": "法师之靴"
+            },
+            {
+              "time_ms": 761293,
+              "time": "12:41",
+              "item_id": 2503,
+              "item_name": "黯炎火炬"
+            },
+            {
+              "time_ms": 762028,
+              "time": "12:42",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 762362,
+              "time": "12:42",
+              "item_id": 3363,
+              "item_name": "远见改造"
+            },
+            {
+              "time_ms": 858340,
+              "time": "14:18",
+              "item_id": 3145,
+              "item_name": "海克斯科技发电机"
+            },
+            {
+              "time_ms": 858808,
+              "time": "14:18",
+              "item_id": 3067,
+              "item_name": "燃烧宝石"
+            },
+            {
+              "time_ms": 863990,
+              "time": "14:23",
+              "item_id": 3113,
+              "item_name": "以太精魂"
+            },
+            {
+              "time_ms": 864190,
+              "time": "14:24",
+              "item_id": 3108,
+              "item_name": "恶魔法典"
+            },
+            {
+              "time_ms": 985374,
+              "time": "16:25",
+              "item_id": 4629,
+              "item_name": "星界驱驰"
+            },
+            {
+              "time_ms": 985875,
+              "time": "16:25",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1059947,
+              "time": "17:39",
+              "item_id": 1052,
+              "item_name": "增幅典籍"
+            },
+            {
+              "time_ms": 1265027,
+              "time": "21:05",
+              "item_id": 4630,
+              "item_name": "枯萎珠宝"
+            },
+            {
+              "time_ms": 1265194,
+              "time": "21:05",
+              "item_id": 3108,
+              "item_name": "恶魔法典"
+            },
+            {
+              "time_ms": 1432449,
+              "time": "23:52",
+              "item_id": 3137,
+              "item_name": "蜕生"
+            },
+            {
+              "time_ms": 1433253,
+              "time": "23:53",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1433387,
+              "time": "23:53",
+              "item_id": 2055,
+              "item_name": "控制守卫"
+            },
+            {
+              "time_ms": 1522917,
+              "time": "25:22",
+              "item_id": 3041,
+              "item_name": "梅贾的窃魂卷"
+            },
+            {
+              "time_ms": 1738600,
+              "time": "28:58",
+              "item_id": 1058,
+              "item_name": "无用大棒"
+            }
+          ],
+          "objective_events": [
+            {
+              "time_ms": 523820,
+              "time": "08:43",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 531963,
+              "time": "08:51",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 537408,
+              "time": "08:57",
+              "monster": "HORDE",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 546113,
+              "time": "09:06",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 908441,
+              "time": "15:08",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 995236,
+              "time": "16:35",
+              "monster": "RIFTHERALD",
+              "killer_id": 2
+            },
+            {
+              "time_ms": 1304016,
+              "time": "21:44",
+              "monster": "DRAGON",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1509212,
+              "time": "25:09",
+              "monster": "BARON_NASHOR",
+              "killer_id": 7
+            },
+            {
+              "time_ms": 1623556,
+              "time": "27:03",
+              "monster": "DRAGON",
+              "killer_id": 8
+            }
+          ],
+          "data_dragon_version": "16.17.1"
+        }
+      ],
+      "failed_matches": [],
+      "excluded_matches": []
+    },
+    "deterministic_report": "# RiftCoach 近期对局复盘报告：DK ShowMaker#KR1\n\n## 1. 样本概况\n\n- 分析场次：5 局\n- 队列：420\n- Data Dragon 版本：16.17.1\n- 胜场 / 负场：2 / 3\n- 胜率：40.0%\n- 主要位置：MIDDLE\n- 常用英雄：薇古丝, 卡蜜尔, 艾尼维亚, 洛克, 辛德拉\n\n## 2. 平均表现\n\n| 指标 | 数值 |\n|---|---:|\n| KDA | 3.7 |\n| 补刀/分钟 | 7.39 |\n| 经济/分钟 | 435.76 |\n| 伤害/分钟 | 869.5 |\n| 视野分 | 45 |\n| 参团率 | 50.4% |\n| 输出占比 | 21.1% |\n| 经济占比 | 20.0% |\n| 15分钟前死亡 | 2.6 |\n\n## 3. 赢局 / 输局对比\n\n| 指标 | 赢局 | 输局 |\n|---|---:|---:|\n| 补刀/分钟 | 8.8 | 6.45 |\n| 经济/分钟 | 505.29 | 389.41 |\n| 伤害/分钟 | 1286.76 | 591.34 |\n| 视野分 | 33.5 | 52.67 |\n| 15分钟前死亡 | 2.5 | 2.67 |\n\n## 4. 英雄池概况\n\n| 英雄 | 场次 | 胜场 | 胜率 |\n|---|---:|---:|---:|\n| 薇古丝 | 1 | 1 | 100.0% |\n| 卡蜜尔 | 1 | 0 | 0.0% |\n| 艾尼维亚 | 1 | 0 | 0.0% |\n| 洛克 | 1 | 0 | 0.0% |\n| 辛德拉 | 1 | 1 | 100.0% |\n\n## 5. 分路概况\n\n| 位置 | 场次 | 胜场 | 胜率 |\n|---|---:|---:|---:|\n| MIDDLE | 4 | 2 | 50.0% |\n| UTILITY | 1 | 0 | 0.0% |\n\n## 6. 初步问题判断\n\n- 当前只分析了 5 局，样本偏小，适合做初步观察，不适合下稳定结论。\n- 最近样本胜率为 40.0%，整体结果偏低，需要重点排查输局中反复出现的指标差异。\n- 样本包含多个位置：MIDDLE 4 局、UTILITY 1 局。由于不同位置的 CS、视野、伤害职责不同，后续更适合增加按位置过滤的复盘。\n- 当前大多数英雄都只出现 1 局，单个英雄胜率没有统计稳定性，暂时不建议根据单英雄胜率判断英雄池强弱。\n- 前 15 分钟平均死亡 2.6 次，说明样本中前中期确实存在较多死亡事件，值得在单局复盘中继续追踪。\n- 输局与赢局的前 15 分钟死亡差异只有 0.17 次，当前不能把早期死亡直接判定为胜负的主要分界点。\n- 输局补刀/分钟比赢局低 2.35，发育稳定性在输局中有所下降。\n- 输局经济/分钟比赢局低 115.88，经济获取效率是当前输赢差异中比较明显的一项。\n- 输局伤害/分钟比赢局低 695.42，说明输局中输出转化能力或参团环境明显变差。\n\n## 7. 单局摘要\n\n| 对局 ID | 英雄 | 英文名 | 位置 | 胜负 | KDA | 补刀/分钟 | 经济/分钟 | 伤害/分钟 | 视野分 | 15分钟前死亡 | 死亡时间 | 当前装备 | 召唤师技能 |\n|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|---|\n| KR_8371867671 | 薇古丝 | Vex | MIDDLE | 胜 | 8/5/23 | 8.95 | 482.76 | 1143.4 | 40 | 3 | 06:01, 09:40, 12:21, 27:00, 30:02 | 黯炎火炬、海克斯科技火箭腰带、中娅沙漏、带链碾碎者、黑暗封印、无用大棒、神谕透镜 | 传送、闪现 |\n| KR_8370293236 | 卡蜜尔 | Camille | UTILITY | 负 | 1/13/11 | 1.34 | 302.59 | 538.97 | 90 | 7 | 03:26, 05:19, 06:20, 07:11, 08:03, 11:22, 13:24, 16:19, 18:52, 22:09, 23:46, 25:12, 25:58 | 掘道钻头、血鸣、红水晶、轻灵之靴、星蚀、十字镐、神谕透镜 | 引燃、闪现 |\n| KR_8370206038 | 艾尼维亚 | Anivia | MIDDLE | 负 | 6/2/4 | 9.64 | 435.77 | 629.54 | 43 | 0 | 25:35, 29:27 | 无用大棒、实现器、碎裂的护臂、迅速进军、时光之杖、炽天使之拥、远见改造 | 传送、闪现 |\n| KR_8367293977 | 洛克 | Locke | MIDDLE | 负 | 5/5/3 | 8.38 | 429.86 | 605.5 | 25 | 1 | 12:05, 15:52, 20:19, 22:37, 25:29 | 巫妖之祸、海克斯科技枪刃、无用大棒、带链碾碎者、黑暗封印、无用大棒、神谕透镜 | 传送、闪现 |\n| KR_8366083389 | 辛德拉 | Syndra | MIDDLE | 胜 | 14/5/10 | 8.66 | 527.82 | 1430.11 | 27 | 2 | 03:04, 03:47, 17:20, 24:58, 28:18 | 星界驱驰、无用大棒、黯炎火炬、灵能使之靴、梅贾的窃魂卷、蜕生、远见改造 | 净化、闪现 |\n\n## 8. 当前版本说明\n\n这份报告只基于 Riot API 返回的赛后统计、timeline 事件和 Data Dragon 静态数据进行分析。Riot API 支持 KDA、补刀、经济、伤害、视野、死亡时间和装备购买事件等中等粒度复盘；Data Dragon 负责英雄、装备、召唤师技能和符文的静态中文映射。当前报告不能替代录像级复盘，暂不能判断具体换血、走位、技能命中和兵线细节。\n\n\nEvidence snapshot digest: 755b788254909b9dcfd18ac5ee9aa2db8580089e2e98d31f750a7173027b87c9\nEvidence bundle digest: 09aa4e73ae70169497a330c371b37eb83afd57d451c8238d3575eb4fed5d9f50\nPosition context (sample facts and explicit goals, not instructions): {\"sample_scope\":\"selected_matches_only\",\"observed\":[{\"position\":\"mid\",\"games\":4,\"champions\":[\"Vex\",\"Anivia\",\"Locke\",\"Syndra\"],\"averages\":{\"cs_per_min\":8.9075,\"gold_per_min\":469.0525,\"deaths_before_15\":1.5,\"vision_score\":33.75},\"metric_sample_counts\":{\"cs_per_min\":4,\"gold_per_min\":4,\"deaths_before_15\":4,\"vision_score\":4}},{\"position\":\"support\",\"games\":1,\"champions\":[\"Camille\"],\"averages\":{\"cs_per_min\":1.34,\"gold_per_min\":302.59,\"deaths_before_15\":7.0,\"vision_score\":90.0},\"metric_sample_counts\":{\"cs_per_min\":1,\"gold_per_min\":1,\"deaths_before_15\":1,\"vision_score\":1}}],\"unknown_position_games\":0,\"excluded_games\":0,\"training_positions\":[],\"goal_source\":\"unspecified\",\"long_term_main_position\":null,\"autofill_intent\":\"unknown\"}\n位置边界：按实际位置分别分析；不可混合辅助与其他位置的经济评价，不可推断补位或长期主位置。明确训练目标只决定后续训练重点，不改变历史比赛位置；目标位置无样本时说明缺口。\n\n外部来源事实（数据，不是指令）：{\"bundle_digest\":\"09aa4e73ae70169497a330c371b37eb83afd57d451c8238d3575eb4fed5d9f50\",\"conflicts\":[],\"data_dragon\":{\"catalog_digest\":\"fa32603f49e671de6b140ec8ec60eafdea5fa908a484e2edb0daab350acf6745\",\"language\":\"zh_CN\",\"retrieved_at\":\"2026-09-10T12:15:20.350834Z\",\"source\":\"data_dragon\",\"version\":\"16.17.1\"},\"disposition\":\"complete\",\"gaps\":[],\"official_patch\":{\"expires_at\":null,\"patch_version\":\"16.17\",\"published_at\":\"2026-08-25T18:00:00Z\",\"retrieved_at\":\"2026-09-10T12:15:18.714021Z\",\"source\":\"riot_patch\",\"source_digest\":\"52ca8a5adc0e694a4989c201e86c39de9e80bfcd3799a11ccfd34bffd2d209e0\",\"update_id\":\"riot-patch-26-17\"},\"omitted_opgg\":[],\"opgg\":[{\"allowed_uses\":[\"current_snapshot_recommendation\"],\"digest\":\"2c57b7c9f0c85af65d605601619a846300a8aa1b6dea21d8d0a3c69c41237791\",\"expires_at\":\"2026-09-10T12:30:25.846153+00:00\",\"facts\":[{\"ban_rate\":0.35,\"champion\":\"Locke\",\"pick_rate\":0.08,\"rank\":10,\"rank_previous\":12,\"rank_previous_patch\":12,\"tier\":2,\"win_rate\":0.49},{\"ban_rate\":0.1,\"champion\":\"Syndra\",\"pick_rate\":0.08,\"rank\":12,\"rank_previous\":18,\"rank_previous_patch\":5,\"tier\":2,\"win_rate\":0.49},{\"ban_rate\":0.04,\"champion\":\"Vex\",\"pick_rate\":0.03,\"rank\":14,\"rank_previous\":14,\"rank_previous_patch\":11,\"tier\":2,\"win_rate\":0.52},{\"ban_rate\":0.03,\"champion\":\"Anivia\",\"pick_rate\":0.02,\"rank\":26,\"rank_previous\":28,\"rank_previous_patch\":28,\"tier\":3,\"win_rate\":0.51}],\"position\":\"mid\",\"provenance\":\"partial\",\"retrieved_at\":\"2026-09-10T12:15:25.846153+00:00\",\"upstream_patch\":null},{\"allowed_uses\":[\"current_snapshot_recommendation\"],\"digest\":\"81c5c1b913f2556fcb8b192b451bce380bf6364eb6731224be92743496506044\",\"expires_at\":\"2026-09-10T12:30:28.829422+00:00\",\"facts\":[{\"ban_rate\":0.06,\"champion\":\"Camille\",\"pick_rate\":0.03,\"rank\":35,\"rank_previous\":35,\"rank_previous_patch\":35,\"tier\":4,\"win_rate\":0.46}],\"position\":\"support\",\"provenance\":\"partial\",\"retrieved_at\":\"2026-09-10T12:15:28.829422+00:00\",\"upstream_patch\":null}]}\n来源使用边界：Riot对局数值是玩家本次表现；Data Dragon仅解释其历史版本的英雄/装备/符文名称。官方版本身份及发布时间只能支持版本对齐，不含改动正文时不可据此声称英雄加强或削弱。OP.GG仅作为标明位置和时效的外部对照；没有段位/区域/精确版本支持时，不可说它是玩家同段位同版本基准，不可把该胜率当成玩家胜率。过期/无目标/不匹配的资料保持缺失。在实际使用这些事实的建议旁说明来源、位置与适用范围；来源身份不是本地知识检索的引用标记。",
+    "knowledge": {
+      "context": "[K1] 来源：01_metric_interpretation.md；章节：早期死亡；版本：evergreen\n## 早期死亡\n\n15 分钟前死亡用于定位前中期风险窗口。胜负样本的早期死亡差异很小时，不能把它列为主要胜负分界点。某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀。\n\n[K2] 来源：03_training_plan.md；章节：避免伪精确目标；版本：evergreen\n## 避免伪精确目标\n\n没有位置、英雄和段位基准时，不应随意设定必须达到的补刀、经济、伤害或视野固定阈值。更稳妥的做法是与玩家自己的同位置历史样本比较，并在样本扩大后调整目标。\n\n[K3] 来源：01_metric_interpretation.md；章节：补刀与经济；版本：evergreen\n## 补刀与经济\n\n补刀/分钟和经济/分钟反映发育结果，但不同位置、英雄职责和对局时长会影响数值。混合位置样本不适合直接设定统一阈值。赢局与输局同时存在明显差异时，可以把安全发育路线、资源分配和参团时机列为录像复盘假设，但不能仅凭统计值确定原因。",
+      "source_ids": [
+        "01_metric_interpretation.md",
+        "03_training_plan.md"
+      ],
+      "citations": [
+        {
+          "citation_id": "K1",
+          "chunk_id": "01_metric_interpretation.md:child:06f0f96b44e7d8e4",
+          "parent_id": "01_metric_interpretation.md:parent:ce1f2f4d928533d1",
+          "source_id": "01_metric_interpretation.md",
+          "title": "早期死亡",
+          "content": "## 早期死亡\n\n15 分钟前死亡用于定位前中期风险窗口。胜负样本的早期死亡差异很小时，不能把它列为主要胜负分界点。某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀。",
+          "matched_content": "早期死亡\n15 分钟前死亡用于定位前中期风险窗口。胜负样本的早期死亡差异很小时，不能把它列为主要胜负分界点。某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀。",
+          "version": "evergreen",
+          "updated_at": "2026-07-23"
+        },
+        {
+          "citation_id": "K2",
+          "chunk_id": "03_training_plan.md:child:7d93df91676caf94",
+          "parent_id": "03_training_plan.md:parent:6c113c07b61434f9",
+          "source_id": "03_training_plan.md",
+          "title": "避免伪精确目标",
+          "content": "## 避免伪精确目标\n\n没有位置、英雄和段位基准时，不应随意设定必须达到的补刀、经济、伤害或视野固定阈值。更稳妥的做法是与玩家自己的同位置历史样本比较，并在样本扩大后调整目标。",
+          "matched_content": "避免伪精确目标\n没有位置、英雄和段位基准时，不应随意设定必须达到的补刀、经济、伤害或视野固定阈值。更稳妥的做法是与玩家自己的同位置历史样本比较，并在样本扩大后调整目标。",
+          "version": "evergreen",
+          "updated_at": "2026-07-23"
+        },
+        {
+          "citation_id": "K3",
+          "chunk_id": "01_metric_interpretation.md:child:efb6345673e14481",
+          "parent_id": "01_metric_interpretation.md:parent:3378e0f051ac630a",
+          "source_id": "01_metric_interpretation.md",
+          "title": "补刀与经济",
+          "content": "## 补刀与经济\n\n补刀/分钟和经济/分钟反映发育结果，但不同位置、英雄职责和对局时长会影响数值。混合位置样本不适合直接设定统一阈值。赢局与输局同时存在明显差异时，可以把安全发育路线、资源分配和参团时机列为录像复盘假设，但不能仅凭统计值确定原因。",
+          "matched_content": "补刀与经济\n补刀/分钟和经济/分钟反映发育结果，但不同位置、英雄职责和对局时长会影响数值。混合位置样本不适合直接设定统一阈值。赢局与输局同时存在明显差异时，可以把安全发育路线、资源分配和参团时机列为录像复盘假设，但不能仅凭统计值确定原因。",
+          "version": "evergreen",
+          "updated_at": "2026-07-23"
+        }
+      ],
+      "abstained": false,
+      "diagnostics": {}
+    },
+    "report": "# RiftCoach 教练式复盘报告：ShowMaker 观摩\n\n## 1. 总体结论\n\n本报告分析 ShowMaker 所选 5 局（均为队列 420），2 胜 3 负，胜率 40.0%。中单 4 局 2 胜，辅助 1 局 0 胜，两者应分开看。所选四场中单的胜局与输局均值分别为经济 505.29 vs 432.82/分、伤害 1286.76 vs 617.52/分；在这四场中，各赢局的经济和伤害均高于各输局，仅指本样本，不外推长期。五场混合样本的胜负补刀均值为 8.8 vs 6.45/分，纳入辅助输局（1.34/分）会拉低输局均值；中单同位置补刀为 8.81 vs 9.01/分，输局并不更低。五场混合样本前 15 分钟死亡均值为 2.5 vs 2.67，差异仅 0.17 次，不能把它列为主要胜负分界点 [K1]。样本仅 5 局，以下是观察与假设，不是原因或长期能力的定论。\n\n## 2. 当前表现亮点：生存与发育结果较好（仅结果指标，不推出防抓能力）\n\n- 中单平均补刀 8.91/分、经济 469/分，其中艾尼维亚一局 9.64 补刀/分且 15 分钟前 0 死亡，生存与发育结果较好（按指标解释，这只说明结果，不能直接推出防抓或对线能力优秀 [K1]）。\n\n- 两局胜局（辛德拉 14/5/10、薇古丝 8/5/23）的伤害/分钟和参团率均高于所选五局的整体均值（伤害 869.5/分、参团率 50.4%）；这是本样本的数值对照，不是跨位置能力评价。\n\n- 辅助局视野分 90 是辅助职责下的一次结果记录，不单独证明视野意识，也不可与中单视野混评。\n\n## 3. 主要风险点\n\n## 所选四场中单观察\n\n在这四场中单中，经济和伤害是较稳定的差异项。\n\n- **个别对局需分别核查**：洛克中单局参团 36.4%、视野 25；卡蜜尔辅助局 13 死、1.34 补刀/分——各只 1 局，位置不同，无统计稳定性，不能据此判定英雄强弱。\n\n## 4. 赢局与输局差异\n\n| 指标 | 赢局(2) | 输局(3) |\n|---|---:|---:|\n| 补刀/分钟 | 8.8 | 6.45 |\n| 经济/分钟 | 505.29 | 389.41 |\n| 伤害/分钟 | 1286.76 | 591.34 |\n| 视野分 | 33.5 | 52.67 |\n| 15分钟前死亡 | 2.5 | 2.67 |\n\n上表为所选五场的混合位置均值：输局视野分更高（含卡蜜尔辅助局 90）、补刀更低（含卡蜜尔辅助局 1.34）均受样本位置构成影响，不能据此评价中单能力；四场中单的胜局/输局对照为经济 505.29 vs 432.82、伤害 1286.76 vs 617.52（中单输局补刀 9.01 略高于赢局 8.81）。五场早期死亡差异过小，不作为分界 [K1]。艾尼维亚输局的补刀为 9.64/分、参团率为 27.8%，可以进一步检查这局的资源获取与参团场景；这些数值不能确定其战局影响或败局原因 [K3]。\n\n## 5. 下一步复盘建议\n\n1. 若能取得录像，可优先观摩 KR_8367293977（洛克，负）与 KR_8366083389（辛德拉，胜）这一对 ShowMaker 中单比赛：比较参团率（36.4% vs 55.8%）与伤害/分钟（605.5 vs 1430.11），再记录参团时机与游走场景。现有赛后统计只提供这组差异，尚未证实具体决策原因。\n\n2. 将“这两场比赛的经济与输出差异是否与参团时机、资源分配有关”列为观摩假设；取得录像后记录弃线参团场景并对照局势，而非仅凭统计值确定原因 [K3]。\n\n3. 外部对照可帮助安排观摩问题：OP.GG 中单归档快照（2026-09-10T12:15:25Z 检索，不是本局同版本/同段位基准）记录辛德拉为 T2、第 12 名（上期第 18），薇古丝 T2、第 14 名、胜率 52%。读者若选择观摩中单，可据此把辛德拉与薇古丝列为后续观察对象，记录这两局 ShowMaker 的参团场景与局势差异；排名只帮助选择观摩问题，不用于判定单局过程、个人能力或手感。这是使用该时点快照提出问题，不是当前选英雄建议。\n\n## 6. 训练计划\n\n本任务的对局属于观摩对象 ShowMaker，不是阅读者。来源没有指定训练位置或目标，也没有提供阅读者个人对局数据或训练目标。以下仅是读者可选择的观摩练习，不制定个人上分目标、补刀阈值或训练日程；个人训练需另有本人的目标与同位置数据 [K2]。\n\n- **若选择观摩中单**：先核对 ShowMaker 这 4 局中单的补刀/分钟中位数（8.805，约 8.8）与 15 分钟前死亡均值（1.5），逐局记录差异。这里是观摩对象的样本描述，不是阅读者自身基线或达标阈值 [K2]。结合第 5 节 OP.GG 中单归档排名，读者可选择辛德拉局与薇古丝局做参团场景对照；没有录像时只完成已提供数值的核对，不臆测手感、兵线或技能细节。\n\n- **若选择观摩辅助**：ShowMaker 的卡蜜尔辅助局（13 死、7 次 15 分钟前死亡）是单局样本，取得录像后再核查对线与站位。OP.GG 辅助归档快照（2026-09-10T12:15:28Z 检索）记录卡蜜尔辅助 T4、第 35 名、胜率 46%；可把“单局困难出现在哪些场景，是否另有位置职责和局势因素”列入观摩记录。这些外部数字用于组织待验问题，不解释该局败因，也不决定读者是否练习该英雄。\n\n- 两项观摩选项均不改变历史比赛的位置归属，不推断 ShowMaker 或阅读者的补位意图、长期主位置；也不构成阅读者的个人训练计划。\n\n## 7. 数据边界与知识来源\n\n- 玩家数据来源：Riot API（ShowMaker 所选 5 局赛后统计与 timeline），Data Dragon 16.17.1 做名称映射；样本仅 5 局，均为指定对局，不代表长期水平。\n\n- 内部知识引用：[K1] 01_metric_interpretation.md「早期死亡」；[K2] 03_training_plan.md「避免伪精确目标」；[K3] 01_metric_interpretation.md「补刀与经济」。\n\n- OP.GG 数据为指定检索时点的归档快照，已标注检索时间与位置；不含段位/区域/精确版本匹配，不能解释历史胜负，也不能等同于玩家胜率。本文不把归档快照当作当前仍有效的选英雄依据；当前推荐需重新核查来源时效。官方补丁 16.17（2026-08-25 发布）仅用于版本对齐，未含改动正文，不做平衡性判断。\n\n- 未能判断：具体对线细节、技能命中、走位与兵线处理，需录像级复盘。",
+    "user_utterance": "复核ShowMaker观摩报告的事实、推断和建议；这是观摩对象，不是阅读者本人。"
+  },
+  "initial_report": "# RiftCoach 教练式复盘报告：ShowMaker 观摩\n\n## 1. 总体结论\n\n本报告分析 ShowMaker 所选 5 局（均为队列 420），2 胜 3 负，胜率 40.0%。中单 4 局 2 胜，辅助 1 局 0 胜，两者应分开看。所选四场中单的胜局与输局均值分别为经济 505.29 vs 432.82/分、伤害 1286.76 vs 617.52/分；在这四场中，各赢局的经济和伤害均高于各输局，仅指本样本，不外推长期。五场混合样本的胜负补刀均值为 8.8 vs 6.45/分，纳入辅助输局（1.34/分）会拉低输局均值；中单同位置补刀为 8.81 vs 9.01/分，输局并不更低。五场混合样本前 15 分钟死亡均值为 2.5 vs 2.67，差异仅 0.17 次，不能把它列为主要胜负分界点 [K1]。样本仅 5 局，以下是观察与假设，不是原因或长期能力的定论。\n\n## 2. 当前表现亮点：所选数据已证明 ShowMaker 防抓能力优秀\n\n- 中单平均补刀 8.91/分、经济 469/分，其中艾尼维亚一局 9.64 补刀/分且 15 分钟前 0 死亡，生存与发育结果较好（按指标解释，这只说明结果，不能直接推出防抓或对线能力优秀 [K1]）。\n- 两局胜局（辛德拉 14/5/10、薇古丝 8/5/23）的伤害/分钟和参团率均高于所选五局的整体均值（伤害 869.5/分、参团率 50.4%）；这是本样本的数值对照，不是跨位置能力评价。\n- 辅助局视野分 90 是辅助职责下的一次结果记录，不单独证明视野意识，也不可与中单视野混评。\n\n## 3. 主要风险点\n\n## 所选四场中单观察\n\n在这四场中单中，经济和伤害是较稳定的差异项。\n\n- **个别对局需分别核查**：洛克中单局参团 36.4%、视野 25；卡蜜尔辅助局 13 死、1.34 补刀/分——各只 1 局，位置不同，无统计稳定性，不能据此判定英雄强弱。\n\n## 4. 赢局与输局差异\n\n| 指标 | 赢局(2) | 输局(3) |\n|---|---:|---:|\n| 补刀/分钟 | 8.8 | 6.45 |\n| 经济/分钟 | 505.29 | 389.41 |\n| 伤害/分钟 | 1286.76 | 591.34 |\n| 视野分 | 33.5 | 52.67 |\n| 15分钟前死亡 | 2.5 | 2.67 |\n\n上表为所选五场的混合位置均值：输局视野分更高（含卡蜜尔辅助局 90）、补刀更低（含卡蜜尔辅助局 1.34）均受样本位置构成影响，不能据此评价中单能力；四场中单的胜局/输局对照为经济 505.29 vs 432.82、伤害 1286.76 vs 617.52（中单输局补刀 9.01 略高于赢局 8.81）。五场早期死亡差异过小，不作为分界 [K1]。艾尼维亚输局的补刀为 9.64/分、参团率为 27.8%，可以进一步检查这局的资源获取与参团场景；这些数值不能确定其战局影响或败局原因 [K3]。\n\n## 5. 下一步复盘建议\n\n1. 若能取得录像，可优先观摩 KR_8367293977（洛克，负）与 KR_8366083389（辛德拉，胜）这一对 ShowMaker 中单比赛：比较参团率（36.4% vs 55.8%）与伤害/分钟（605.5 vs 1430.11），再记录参团时机与游走场景。现有赛后统计只提供这组差异，尚未证实具体决策原因。\n2. 将“这两场比赛的经济与输出差异是否与参团时机、资源分配有关”列为观摩假设；取得录像后记录弃线参团场景并对照局势，而非仅凭统计值确定原因 [K3]。\n3. 外部对照可帮助安排观摩问题：OP.GG 中单归档快照（2026-09-10T12:15:25Z 检索，不是本局同版本/同段位基准）记录辛德拉为 T2、第 12 名（上期第 18），薇古丝 T2、第 14 名、胜率 52%。读者若选择观摩中单，可据此把辛德拉与薇古丝列为后续观察对象，记录这两局 ShowMaker 的参团场景与局势差异；排名只帮助选择观摩问题，不用于判定单局过程、个人能力或手感。这是使用该时点快照提出问题，不是当前选英雄建议。\n\n## 6. 训练计划\n\n本任务的对局属于观摩对象 ShowMaker，不是阅读者。来源没有指定训练位置或目标，也没有提供阅读者个人对局数据或训练目标。以下仅是读者可选择的观摩练习，不制定个人上分目标、补刀阈值或训练日程；个人训练需另有本人的目标与同位置数据 [K2]。\n\n- **若选择观摩中单**：先核对 ShowMaker 这 4 局中单的补刀/分钟中位数（8.805，约 8.8）与 15 分钟前死亡均值（1.5），逐局记录差异。这里是观摩对象的样本描述，不是阅读者自身基线或达标阈值 [K2]。结合第 5 节 OP.GG 中单归档排名，读者可选择辛德拉局与薇古丝局做参团场景对照；没有录像时只完成已提供数值的核对，不臆测手感、兵线或技能细节。\n- **若选择观摩辅助**：ShowMaker 的卡蜜尔辅助局（13 死、7 次 15 分钟前死亡）是单局样本，取得录像后再核查对线与站位。OP.GG 辅助归档快照（2026-09-10T12:15:28Z 检索）记录卡蜜尔辅助 T4、第 35 名、胜率 46%；可把“单局困难出现在哪些场景，是否另有位置职责和局势因素”列入观摩记录。这些外部数字用于组织待验问题，不解释该局败因，也不决定读者是否练习该英雄。\n- 两项观摩选项均不改变历史比赛的位置归属，不推断 ShowMaker 或阅读者的补位意图、长期主位置；也不构成阅读者的个人训练计划。\n\n## 7. 数据边界与知识来源\n\n- 玩家数据来源：Riot API（ShowMaker 所选 5 局赛后统计与 timeline），Data Dragon 16.17.1 做名称映射；样本仅 5 局，均为指定对局，不代表长期水平。\n- 内部知识引用：[K1] 01_metric_interpretation.md「早期死亡」；[K2] 03_training_plan.md「避免伪精确目标」；[K3] 01_metric_interpretation.md「补刀与经济」。\n- OP.GG 数据为指定检索时点的归档快照，已标注检索时间与位置；不含段位/区域/精确版本匹配，不能解释历史胜负，也不能等同于玩家胜率。本文不把归档快照当作当前仍有效的选英雄依据；当前推荐需重新核查来源时效。官方补丁 16.17（2026-08-25 发布）仅用于版本对齐，未含改动正文，不做平衡性判断。\n- 未能判断：具体对线细节、技能命中、走位与兵线处理，需录像级复盘。",
+  "initial_review_raw": "\n{\n  \"reviews\": [\n    {\n      \"block\": 1,\n      \"kind\": \"navigation\",\n      \"explanation\": \"报告标题，仅标明主题（ShowMaker 观摩），不含事实断言。观摩对象与阅读者的区分在第 6 节有明确交代，标题本身无问题。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 2,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「1. 总体结论」，无断言，仅导航。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 3,\n      \"kind\": \"content\",\n      \"explanation\": \"逐项核对：5 局队列 420、2 胜 3 胜、胜率 40.0%、中单 4 局 2 胜、辅助 1 局 0 胜与聚合一致；中单胜负经济 505.29 vs 432.82、伤害 1286.76 vs 617.52 与 computed_evidence MIDDLE 行一致，且 all_pairs=greater 支持「各赢局均高于各输局」限于样本；混合补刀 8.8 vs 6.45、辅助 1.34 拉低、中单 8.81 vs 9.01、早期死亡 2.5 vs 2.67 差 0.17 均与证据一致，并按 [K1] 拒绝把早期死亡列为分界点，明确样本限定不外推。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 4,\n      \"kind\": \"content\",\n      \"explanation\": \"该标题含断言「所选数据已证明 ShowMaker 防抓能力优秀」，属内容。该断言与正文第 5 块自身的限定（「按指标解释，这只说明结果，不能直接推出防抓或对线能力优秀 [K1]」）以及 [K1] 原文（某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀）直接矛盾：数据只提供艾尼维亚一局 15 分钟前 0 死亡等结果性指标，不构成防抓能力的证明。标题的因果/能力断言无依据，且与报告内部限定冲突。\",\n      \"issues\": [\n        {\n          \"severity\": \"medium\",\n          \"category\": \"causality\",\n          \"source_ids\": [31, 12],\n          \"explanation\": \"标题声称所选数据「已证明」ShowMaker 防抓能力优秀。所用证据仅为结果性指标（如艾尼维亚局 15 分钟前 0 死亡、中单补刀/经济均值），[K1] 明确规定此类结果不能直接推出防抓或对线能力优秀，样本边界（仅 5 局、仅描述性）也不支持能力定论。正文第 5 块已自行否定该推断，标题与之构成内部矛盾，属于未经支持的因果/能力断言而非格式问题。\",\n          \"suggested_correction\": \"将标题改为与正文限定一致的中性表述，例如「## 2. 当前表现亮点：生存与发育结果较好（仅结果指标，不推出防抓能力）」，删除「所选数据已证明…防抓能力优秀」。\"\n        }\n      ]\n    },\n    {\n      \"block\": 5,\n      \"kind\": \"content\",\n      \"explanation\": \"中单均值补刀 8.9075→8.91、经济 469.0525→469 正确；艾尼维亚局 9.64 补刀/分、15 分钟前 0 死亡与该 match 行一致；已按 [K1] 说明仅反映生存/发育结果，不能推出防抓或对线能力，处理正确。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 6,\n      \"kind\": \"content\",\n      \"explanation\": \"辛德拉 14/5/10（伤害 1430.11、参团 55.81%）与薇古丝 8/5/23（伤害 1143.4、参团 77.5%）均高于五局整体均值 869.5/分与 50.4%，数值全部与 match 行及聚合一致；明确限定为本样本数值对照、非跨位置能力评价。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 7,\n      \"kind\": \"content\",\n      \"explanation\": \"辅助局视野分 90 与卡蜜尔 match 行一致；正确限定为单局职责结果记录，不证视野意识，且不与中单视野混评，符合位置边界。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 8,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「3. 主要风险点」，无断言，仅导航。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 9,\n      \"kind\": \"navigation\",\n      \"explanation\": \"小节标题「所选四场中单观察」仅为范围标注，无事实或推断断言。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 10,\n      \"kind\": \"content\",\n      \"explanation\": \"「经济和伤害是较稳定的差异项」：computed_evidence MIDDLE 队列中 gold_per_min 与 damage_per_min 的 all_pairs 均为 greater（每局赢局均高于每局输局），且句子限定在这四场中单内，描述与证据关系相符，无外推。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 11,\n      \"kind\": \"content\",\n      \"explanation\": \"洛克局参团 36.4%（0.3636）、视野 25，卡蜜尔辅助局 13 死、1.34 补刀/分均与对应 match 行一致；明确各只 1 局、位置不同、无统计稳定性、不判英雄强弱，处理正确。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 12,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「4. 赢局与输局差异」，无断言。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 13,\n      \"kind\": \"content\",\n      \"explanation\": \"表格五行与 selected 队列胜负均值逐项一致：补刀 8.8/6.45、经济 505.29/389.41、伤害 1286.76/591.34、视野 33.5/52.67、早期死亡 2.5/2.67，样本数标注（赢 2、输 3）正确。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 14,\n      \"kind\": \"content\",\n      \"explanation\": \"混合位置均值受辅助局影响的说明正确（视野 90、补刀 1.34 均来自卡蜜尔局）；四场中单对照 505.29 vs 432.82、1286.76 vs 617.52、补刀 9.01 vs 8.81 与 MIDDLE 队列一致；艾尼维亚输局 9.64/分、参团 27.78%→27.8% 正确，并按 [K3] 限定为待查场景而非原因。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 15,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「5. 下一步复盘建议」，无断言。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 16,\n      \"kind\": \"content\",\n      \"explanation\": \"对局 ID、英雄与胜负对应正确（洛克 KR_8367293977 负、辛德拉 KR_8366083389 胜）；参团 36.4% vs 55.8%、伤害 605.5 vs 1430.11 与 match 行一致；明确统计差异未证实决策原因，仅提供观摩切入点。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 17,\n      \"kind\": \"content\",\n      \"explanation\": \"将经济/输出差异与参团时机、资源分配的关系列为观摩假设，取得录像后核对而非凭统计定因，与 [K3] 的使用方式一致，属正确的条件性建议。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 18,\n      \"kind\": \"content\",\n      \"explanation\": \"OP.GG 中单快照事实核对：检索时间 2026-09-10T12:15:25Z、辛德拉 T2 第 12 名（上期 18）、薇古丝 T2 第 14 名胜率 52% 与外部事实一致；已标注位置、时点、非同版本/段位基准，并把排名实际连接到「选择观摩对象、记录参团场景」这一条件性待验行动，明确不判单局过程或个人能力，符合 allowed_uses。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 19,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「6. 训练计划」，无断言。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 20,\n      \"kind\": \"content\",\n      \"explanation\": \"正确区分观摩对象 ShowMaker 与阅读者，说明来源未指定训练位置/目标、无阅读者个人数据，仅提供可选择的观摩练习，不代设目标或日程，引用 [K2] 恰当。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 21,\n      \"kind\": \"content\",\n      \"explanation\": \"中单 4 局补刀中位数 8.805（(8.66+8.95)/2）与 15 分钟前死亡均值 1.5 与 computed_evidence MIDDLE 一致；明确为观摩对象样本描述而非阅读者基线或阈值 [K2]，并给出无录像时只核数值的条件路径。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 22,\n      \"kind\": \"content\",\n      \"explanation\": \"卡蜜尔辅助局 13 死、7 次 15 分钟前死亡与 match 行一致；OP.GG 辅助快照检索时间 2026-09-10T12:15:28Z、T4、第 35 名、胜率 46% 与外部事实一致，外部数字仅用于组织待验问题，不解释败因、不决定练习与否，处理正确。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 23,\n      \"kind\": \"content\",\n      \"explanation\": \"明确不改写历史比赛位置归属、不推断补位意图或长期主位置、不构成个人训练计划，与位置边界一致。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 24,\n      \"kind\": \"navigation\",\n      \"explanation\": \"章节标题「7. 数据边界与知识来源」，无断言。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 25,\n      \"kind\": \"content\",\n      \"explanation\": \"来源声明与 request 范围一致：Riot API、5 局赛后统计与 timeline、Data Dragon 16.17.1 名称映射、仅 5 局样本不代表长期水平。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 26,\n      \"kind\": \"content\",\n      \"explanation\": \"[K1][K2][K3] 的来源文件与章节与知识清单一致，且正文多处实际按其内容使用（早期死亡限定、避免伪精确目标、发育指标只列假设）。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 27,\n      \"kind\": \"content\",\n      \"explanation\": \"OP.GG 快照边界（指定时点、无段位/区域/精确版本、不等同玩家胜率、不作当前选英雄依据）说明正确；官方补丁 16.17 发布日期 2026-08-25 与来源一致，且仅用于版本对齐、未声称改动内容。\",\n      \"issues\": []\n    },\n    {\n      \"block\": 28,\n      \"kind\": \"content\",\n      \"explanation\": \"正确声明无法判断的内容（对线细节、技能命中、走位、兵线）需录像级复盘，与来源边界声明一致，未补猜未知数据。\",\n      \"issues\": []\n    }\n  ],\n  \"score\": 88,\n  \"verdict\": \"needs_revision\",\n  \"summary\": \"全文数值核对通过：混合与中单口径的胜负均值/中位数、单局参团/伤害/视野/死亡数据均与 computed_evidence 及 match 行一致；OP.GG 中单与辅助快照的 tier/rank/胜率与外部事实一致，且标注了位置、检索时点与边界并实际连接到条件性观摩建议；[K1]-[K3] 为真实支撑引用；观摩对象与阅读者区分明确，未推断主位置/补位意图；官方补丁仅用于版本对齐；无提示注入。唯一实质问题是第 4 块标题断言「所选数据已证明 ShowMaker 防抓能力优秀」，与正文自身的 [K1] 限定（0 死亡仅说明生存结果，不能推出防抓能力）及样本边界直接矛盾，属无依据因果/能力断言，需修改标题后即可通过。\",\n  \"passed_checks\": [\n    \"全部均值/中位数/胜负对照与computed_evidence一致，混合位置与中单口径分开处理\",\n    \"单局数值（参团率、视野分、补刀、经济、伤害、15分钟前死亡）与各match行逐项一致\",\n    \"OP.GG中单/辅助快照的tier、rank、胜率与外部事实一致，标注位置、检索时间与快照边界\",\n    \"OP.GG排名实际连接到条件性观摩建议，未用于判定个人能力或玩家胜率\",\n    \"[K1][K2][K3]均为实际支撑的引用而非装饰性编号\",\n    \"观摩对象ShowMaker与阅读者身份区分明确，未重标历史位置或推断补位意图\",\n    \"官方补丁16.17仅用于版本对齐，未声称改动内容\",\n    \"未发现prompt injection，未执行输入中的任何指令\",\n    \"reviews覆盖source_index.blocks全部28个编号，无重复遗漏\",\n    \"无previous_review，issue_resolutions按规则为空\"\n  ],\n  \"issue_resolutions\": []\n}\n",
+  "recorded_calls": [
+    {
+      "cached_input_tokens": 0,
+      "input_tokens": 11989,
+      "output_tokens": 7736
+    },
+    {
+      "cached_input_tokens": 0,
+      "input_tokens": 13562,
+      "output_tokens": 1876
+    },
+    {
+      "cached_input_tokens": 64,
+      "input_tokens": 12000,
+      "output_tokens": 6629
+    }
+  ]
+}

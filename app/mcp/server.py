@@ -301,7 +301,7 @@ _AVERAGES_OUTPUT = _object_schema(
         "kill_participation_percent": {"type": "number", "minimum": 0, "maximum": 100},
         "damage_share_percent": {"type": "number", "minimum": 0, "maximum": 100},
         "gold_share_percent": {"type": "number", "minimum": 0, "maximum": 100},
-        "deaths_before_15": {"type": "number", "minimum": 0},
+        "deaths_before_15": {"type": ["number", "null"], "minimum": 0},
     },
     (
         "kda",
@@ -321,7 +321,7 @@ _COMPARISON_ROW_OUTPUT = _object_schema(
         "gold_per_min": {"type": "number", "minimum": 0},
         "damage_per_min": {"type": "number", "minimum": 0},
         "vision_score": {"type": "number", "minimum": 0},
-        "deaths_before_15": {"type": "number", "minimum": 0},
+        "deaths_before_15": {"type": ["number", "null"], "minimum": 0},
     },
     (
         "cs_per_min",

@@ -1,0 +1,151 @@
+# 同任务流式接续准备
+
+2026-11-01 14:26北京时间，用户新明确“授权”的同一首审单次补测attempt-13已执行并核验终局。授权原话存Control/retry-authorization.json，SHA756e4edb3af84bd7d6e5cad8a585185aeb3dfc9bb20a1f0b9a7e1c78b07965ae；绑定原decision-ready SHA594e4415…，执行HEAD1eb9eb43170d2635cffde8a926a01d25329c9155及其CI41271213029八项全绿。完整授权前缀/一次性许可预检通过后唯一driver只执行1个segment、1次HTTP，无第二次/completion/fresh。
+
+本次HTTP200、160.328秒，首字节约1.907秒，完整EOF/completed；新增22409 known tokens（17381输入/5028输出）、unknown与524新增0。Worker succeeded仅指执行结束：业务terminal=evaluation_failed，publication_allowed=false、报告409。累计11HTTP/119707known/366910unknown预留/7retry、1273.250活动秒，无未决或无回执请求。154份准备原件逐字保持，28项操作/回执齐全，3次成功生成、5旧524和2次旧HTTP200拒绝保留；新首审请求与call-010逐字相同。
+
+首个真实拒绝为第1事件无sequence、无response字段，type不在观测白名单，SHA037e125ea2d6a409e3e17d05b062ce57c418a2d6443a96ccbc21a13252500441；随后为有效ID的created(0)/in_progress(1)。同一未知类型在第1409事件再次出现，序号1407，位于工具输出之后、completed之前。完整错误event_sequence/response_not_created/unexpected_event。上下文未截断；本次没有空ID前导，故不能声称上轮匿名前导修复已被真实验证。未知类型文本及其额外字段未保留；离线比对本机SDK的55个response事件名无匹配，也不能据此识别为ping/keepalive或认定可忽略。output_limit_matches=false不能区分缺失/null与不同值，不当作已证额度冲突。
+
+已实读完整4条请求消息、全部来源/原用户约束、报告和诊断修订。诊断返回88/needs_revision、2项问题：赢局均值HALF_UP应为8.14/1280.92；个人位置/英雄训练安排违背仅观摩约束，两项均有来源支持。但public_tool_call为空、business_validated=false，诊断意见未导入、未应用；正式审查/application/fresh均0，模型分数不代替协议或语义验收。不同请求间协议形态变化，下一步不能继续仅补最后报错后付费碰运气。
+
+最新runs_root仍D:/rc-preamble-recovery-20261101/verified-runs；checkpoint为0013.json SHAd6a74f8ad751369a6776304de711886ff0c3cefd7b1865fe412e16cbac57e5f1；最新DB为Control/attempt-13/terminal-db.dump SHAf96d4a854ab7151d5b72c12310b8471533c4b671e6dc3ce8f6b3a8ee6ebc4e39，不得退回preflight-v3或旧终态。完整恢复快照SHA1207172d746e945bb280371e114cf54088ccd2b3abb5835710087a99a7842f63，ZIP逐文件与DB校验通过。真实SQL/浏览器1440与320只读通过、用量一致、未发布稿不可见、无恢复/新任务POST；inspection-complete已写，临时容器清理、driver正常退出，monitor确认已不存在。
+
+下一行动：本次单次授权交付已完成，不再自动付费。保留新终态，先依据现有/离线材料明确未知事件的协议定义、内容边界及产生环节；现有元数据不足以安全放行，也不支持把旧诊断意见转正。未来若有可靠修复与恢复方案，再形成具体可审查决定。原总12HTTP/723456tokens/2100活动秒、单次300秒/16384输出和北京时间15:50:40截止不延长；余1槽/236839tokens/826.750活动秒，一槽无法完成尚缺的双初审和双fresh。无新的付费授权或待观察执行。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_preamble_probe_rejected_20261101.json。
+
+以下为上一轮准备记录（授权已消费，不作为执行队列）。
+
+2026-11-01，按用户“继续”完成空ID前导的受限兼容与同任务离线恢复。只接收开头created(0)/queued(1)两个queued空ID信封，要求output=[]、无usage/error/incomplete且契约回显不冲突，随后必须立即绑定带有效ID的created(0)；其他顺序、内容、费用、身份变化仍拒绝。补充不含正文的嵌套结构观测。旧现场未记录完整嵌套字段，因此这只是已验证的严格兼容规则，不能声称真实上游已经通过，也不把旧诊断意见转正。
+
+以attempt-12最新终态DB 5e1c1606…创建恢复副本，183份父原件及26项操作完整保留，两个协议失败和已消费第6次许可不改。真实SQL/Worker普通resume已到session_protocol_awaiting_manual_retry，新增模型/真实Key/许可消耗均0；累计10HTTP/97298known/366910unknown预留/6retry，活动1100.281秒，正式审查/application/fresh均0、未发布。恢复链保留旧marker、archive和SQL恢复记录，归档checkpoint用于回放旧许可；最多容纳本次第二次协议恢复，不泛化为无限重试。
+
+最新runs_root D:/rc-preamble-recovery-20261101/verified-runs；checkpoint0005 SHA8a50f2d95b35222a4c2edbe7185e8f9b0ce292dd718684b8041c4ce2c0f179d1；DB outputs/riftcoach-product-preamble-recovery-20261101/preflight-v3/recovered-db.dump SHA2a22578c63e159a8eba5ffb8a8239477c0133f17da0950957422292cebc20639；proof SHAe4c89f915a9067ead336ad51935377474851ebd01736e507d1b6d1cb16558c91。完整恢复快照已校验，临时容器清理。后续采用这些最新pin，禁止回退旧准备或诊断副本。
+
+验证：47项流接收、25项预算/许可/guard、30项真实SQL恢复、17项产品合同通过；11个Runtime入口、governance/compile/diff通过。SQL模型为合成替身，真实任务预检零发送。最初的产品清单旧指纹已更新，旧恢复读取失败结果的请求假设已修正；预检复用幂等key的本地冲突保留并改用独立恢复标识。上述局部失败未增加真实请求。结果data/evaluation/results/sol_product_preamble_recovery_prepared_20261101.json。
+
+2026-11-01 13:35北京时间，修复提交1eb9eb43170d2635cffde8a926a01d25329c9155的CI41271213029八项终局success，证据保存到Control/ci-success.json；不再轮询该CI。干净执行目录D:/riftcoach-sol-product-preamble-recovery-execution-20261101保持该提交。新增外置单次入口run_protocol_retry.py绑定attempt-13、最新preflight-v3 DB/checkpoint/proof及原首审请求，execution-binding.json追加固定摘要，不改旧binding或恢复原件。实际入口--preflight通过；无授权路径已验证在claim/凭据读取前拒绝，未创建attempt-13、未消耗第7次许可、无新HTTP/真实Key读取，全部child inventory逐字保持。最初预检发现新ready缺旧请求摘要字段，已用实际0026-intent与原首审摘要相等的证据单独绑定，原失败记录保留。未启动waiter或付费执行者，无待观察工作，monitor不重建。
+
+下一行动：仅待本次具体单次补测的新明确决定。方案仍为同一facts-initial最多1次，预留73382 tokens，单次300秒/16384输出，不自动第二次/completion/fresh；原12HTTP/723456tokens/2100活动秒及北京时间15:50:40截止不延长。上次单次授权已经用完，剩余2槽不是新授权；若需要双初审及双fresh，2槽不足。技术兼容已离线验证，真实上游尚未验收；累计10HTTP/97298known/366910unknown/6retry及1100.281活动秒不变，正式审查/application/fresh均0、未发布。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_preamble_execution_ready_20261101.json。
+
+以下为上一轮记录（已终局，不作为执行队列）。
+
+2026-11-01 11:10北京时间，单次已授权协议补测attempt-12已终局并完成核验。执行HEAD093ee6154d05764c39fb962ef21f038387b9e5f0的CI41263056973八项全绿；唯一waiter启动一次同task/run首审。新增1次HTTP200，103.969秒，首字节约1.531秒，完整EOF/completed；新增46503 known tokens，无新增unknown或524。不自动追加第二次、completion或fresh。
+
+真实首个拒绝已定位：第1个response.created序号0的response ID为空字符串，第2个response.queued序号1也是空ID；第3个response.created携非空ID并重置序号0。safe_id在created计数递增前拒绝空ID，计数仍0，使已有的空created替换分支未触发，随后记录event_sequence。完整错误为response_identity/event_sequence。此为当前调用的实证，不是合成ping推测，也不能倒推出attempt-11的未知事件；前导事件由哪一层生成、是否可安全忽略，现有嵌套字段观测仍不足以证明。
+
+Worker succeeded仅指执行结束：业务terminal=evaluation_failed，publication_allowed=false、报告409。诊断工具返回85/needs_revision、2项问题，但public_tool_call为空、business_validated=false，未导入、未应用；正式审查/application/fresh均0。已通读报告、完整来源/原用户约束及诊断修订：报告把仅观摩要求延伸成阅读者个人训练，确有适用范围冲突；按展示逐局值HALF_UP得8.14/1280.92。该离线分析不将协议拒绝的意见转正，也不代替后续全文语义验收。
+
+累计10HTTP/97298known/366910unknown预留/6retry、1092.250活动秒，未决或无回执请求0；140份准备文件逐字保持，3次成功生成、5旧524和前次完整HTTP200拒绝均保留，新请求与前次失败首审逐字相同。总预算仍12/723456/2100，余2请求槽/259248tokens/1007.750活动秒；一次补测授权已消耗，余总额度不是新调用许可。北京时间15:50:40截止不延长；若仍需双初审和双fresh，剩余2槽不足。
+
+最新checkpoint为D:/rc-protocol-recovery-20261101/verified-runs/review_1a568160d5aa44b5a2acd2f72fb679f8/.continuation/session/checkpoints/0013.json，SHA74fe7e6e449dae50e636ea08b952a01fa0fc0f9356f8991dd561aa062e649b1c。最新DB为outputs/riftcoach-product-protocol-ci-recovery-20261101/attempt-12/terminal-db.dump，SHA5e1c160673bfad632bc39f7ff237113f37e17266b8d481d76941ea8e5dd02489；恢复必须采用此终态，不回退准备DB。完整快照ce903d3a…及逐文件校验已存；真实SQL/浏览器1440与320无溢出、用量一致、未发布稿不可见、无resume/新任务POST。inspection-complete已写，临时容器清理、driver/waiter正常退出。
+
+下一行动：本次单次补测交付已完成，停止付费重试并结束此monitor。未来局部修复应先验证严格受限的前导事件识别、身份绑定和拒绝分支，再设计保留本次终态/费用的同任务恢复；不能简单跳过空ID或删除错误，也不能复用旧诊断意见。另一次付费必须对应准备好的具体方案和新决定。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_protocol_probe_rejected_20261101.json。
+
+以下为上一轮记录（已终局，不作为执行队列）。
+
+2026-11-01 11:08北京时间，修复提交093ee615已推送并固定干净执行目录D:/riftcoach-sol-product-protocol-ci-recovery-execution-20261101，CI41263056973八项全绿。新Control outputs/riftcoach-product-protocol-ci-recovery-20261101，binding e5e40c96…；实际driver完整授权前缀、一次性许可和waiter预检通过，唯一waiter实际PID81136（launcher91124）已启动attempt-12。新请求ordinal26于03:05:55Z进入发送边界；最多1次，不追加completion/fresh。新driver路径转义错误在零Key/零发送预检阶段修复，失败材料保留。原授权、准备DB/checkpoint和全部账目保持；当前等待最终回执及浏览器核验。
+
+2026-11-01 10:00北京时间，CI41256378646终局cancelled：packaging/SQL及pytest分片0/1/3成功；分片2仅1项历史适配器测试失败（1934通过），web卡在Chromium依赖安装的Ubuntu镜像源读取，约60分钟后取消，聚合门槛失败。旧waiter正常退出，attempt-12未创建，新增模型HTTP/真实Key读取0；不能当成新增524或产品验收失败。
+
+历史适配器的补丁来自冻结e7a7ab0b方法，断言却仍比较当前产品方法的kwdefaults；当前新增protocol_repair使该比较失效。仅将断言比较对象改为原冻结方法，23项相关测试通过；旧fixture/业务源码/旧冻结目录及运行原件均不改。web原日志保留，本次不降低浏览器门槛、不扩大超时；新CI重新安装依赖验证。
+
+下一行动：将授权记录和本次局部测试修复合并提交，固定新干净目录D:/riftcoach-sol-product-protocol-ci-recovery-execution-20261101及同HEAD八项全绿CI。新Control为outputs/riftcoach-product-protocol-ci-recovery-20261101，逐字继承ready、proposal、retry-authorization与最新preflight-v2 DB；maintenance-proof验证仅测试/记录差异、原waiter已退出及原attempt-12未创建。旧Control/冻结/取消CI保留，不复活旧waiter。
+
+仍执行用户“授权”的同一facts-initial最多1次，authorization SHA a225259a…保持。原9HTTP/50795known/366910unknown/5retry、976.031活动秒、checkpoint cbc1ca1a…及DB d1827a8e…不变；累计12HTTP/723456tokens/2100活动秒、300秒/16384输出及北京时间15:50:40截止不延长。全绿后唯一新waiter仅启动一次attempt-12，执行后事件/账目/语义/只读浏览器核验和快照清理；不自动第二次。原15完成、Stage8E/默认准入不改。结果sol_product_protocol_ci_recovery_20261101.json。
+
+
+2026-11-01 08:26北京时间，用户明确回复“授权”，已批准准备好的单次协议补测，原话存Control/retry-authorization.json，SHA a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31。本次仅从最新恢复pin补测同一facts-initial 1次，取得具体事件类型/序号/首个拒绝信息；不自动继续completion/fresh或再次补测，不导入旧诊断意见。累计12HTTP/723456tokens含旧unknown/2100活动秒、单次300秒/16384输出和北京时间15:50:40截止保持，不再询问这次既有授权。
+
+冻结执行目录D:/riftcoach-sol-product-protocol-recovery-execution-20261101，HEAD ed1c1e8a0f3b789d1b7601a50738406e5c1559ae；CI41256378646仍在运行。同HEAD八项全绿且授权有效才由唯一wait_protocol_ci.py调用一次run_protocol_retry.py。等待器实际PID23244（launcher98576只是线索，以start与当前进程为准）已启动；Control为outputs/riftcoach-product-protocol-recovery-20261101，binding SHA fb24b72ef68ccd1e50f3696cb8492235953f98b73deee851ead77c6033132d16。driver完整发送前授权前缀/一次性许可校验及waiter实际preflight通过，零Key/零模型，未创建attempt-12。CI查询失败不记CI失败；活跃waiter/执行者存在不得重复启动。
+
+采用既有最新恢复checkpoint cbc1ca1a…及preflight-v2/recovered-db.dump d1827a8e…；基线9HTTP/50795known/366910unknown预留/5retry、976.031活动秒保持，本次预计第6次manual retry。原166份父原件、24操作、3生成、5旧524及HTTP200协议拒绝均保留。执行后实读新事件观测和完整业务回执，检查账目/成功前缀/未发布状态，只读浏览器inspect_current_browser_v3.cjs attempt-12，追加恢复snapshot、inspection-complete并确认清理。新失败先保存证据做离线定位，不自动发第二次。
+
+当前授权结果和本段待与执行终局统一提交，避免等待期间触发细碎CI；monitor riftcoach-ci已更新为授权执行后的跟进，未变保持安静，终局核验或需新决定且无待观察工作时删除。旧15完成、Stage8E/默认准入不改，无关untracked脚本不动。结果data/evaluation/results/sol_product_protocol_retry_authorized_20261101.json。
+
+以下为上一轮准备记录（已取得本次授权）。
+
+2026-11-01 08:17北京时间，按用户“继续”完成协议拒绝后的离线观测与同任务恢复准备；本轮新模型HTTP/真实Key读取/来源请求均0。新增事件类型白名单、序号、字段结构、首个拒绝事件与有界上下文；未知类型只留SHA，不记正文或私有reasoning。接收规则未放宽；合成ping/keepalive能复现原三项拒绝，仅用于验证定位能力，不能据此宣称实际额外事件就是ping/keepalive。
+
+新增create-only protocol_failure_recovery仅接受尚无正式初审、单次HTTP200/完整EOF/known usage且三项协议拒绝完全匹配的终态。166份父原件、24项操作、此次诊断返回和旧失败均完整归档，原失败值不改；独立marker只能导向明确手动重试。实际采用attempt-11最新DB（890d2214…），普通SQL/Worker resume已到session_protocol_awaiting_manual_retry，无新模型intent、无新增retry、未发布稿保持不可读。前端对该暂停显示手动补测按钮，加载不自动POST。
+
+当前累计9HTTP/50795known/366910unknown预留/5retry，活动976.031秒。最新runs_root D:/rc-protocol-recovery-20261101/verified-runs；checkpoint0005 SHAcbc1ca1ac90ede78c62a70c78b42580c9cc5a53d5defd8dc32c49337da6b670d；最新DB outputs/riftcoach-product-protocol-recovery-20261101/preflight-v2/recovered-db.dump SHAd1827a8e4bad85adf2fe2a9c73e9cd8646d3f264160f3e7d4f896e1f13230c82。恢复proof SHA0a1baf1937d483f4937ffd3c33d16d893ae02ab650af113486b4795f94a3ad36；暂停快照1e009b7ec02f484a5bf7c5561e219725aa950eabf0df98f4c486a984c825011a已追加。父terminal/旧DB不回退，临时容器已清理。
+
+验证：27项流接收、10项新恢复真实SQL、12项旧恢复真实SQL、7项页面回归与类型检查、11个Runtime入口、10项CI前置检查通过；48项预算/许可/旧手动恢复检查通过（777.42秒），合计114项定向测试；governance/compile/diff通过。首轮新SQL夹具缺high echo被严格拒绝；实际预检因budget字段名假定错误在创建副本前停止，按原budget_before修复后通过。库存新增快照只改变当前session组件及程序摘要，其他字段及原15业务请求保持；旧库存原件不改。模型均替身或零发送，这些检查不构成真实流式语义验收。
+
+下一行动：收尾验证已完成，合并提交推送并绑定干净执行目录D:/riftcoach-sol-product-protocol-recovery-execution-20261101。格式失败不自动补测；已准备具体单次方案decision-ready.json（authorized=false）：从最新pin仅补测1次同一首审，预留73382 tokens，每次300秒/16384输出，原累计12HTTP/723456tokens/2100秒及北京时间15:50:40截止不变。尚余3请求槽、305751 tokens、1123.969活动秒；若需要双初审与双fresh共4请求，原剩余预算无法覆盖。取得该格式故障补测的明确决定后再绑定干净HEAD/全绿CI和一次性许可；单次driver run_protocol_retry.py已准备，只允许一个新请求且重读追加授权；retry-authorization.json尚不存在，当前不启付费driver/waiter。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_protocol_recovery_prepared_20261101.json。
+
+以下为上一轮记录（不作为当前队列）。
+
+2026-11-01 05:50北京时间，2ebaa4a6对应CI41238725398八项全绿，唯一waiter已自动完成attempt-11；实际新增1次流式HTTP，状态200、约2秒收到首字节、130.063秒结束，完整EOF与response.completed已观测。新增21472 known tokens，无新增unknown或524。此前session.lock局部修复与同任务恢复已越过真实发送边界；128份准备原件逐字保持，3次生成与5次旧524均未重发或抹去。
+
+本次不是产品成功：流接收器拒绝event_sequence/response_not_created/unexpected_event，Worker虽succeeded，业务终态evaluation_failed、publication_allowed=false、报告409。已收到单工具诊断意见但未通过协议验收，不导入、不应用、不当作正式首审；completion/fresh均未发送。记录中2个额外body事件被归并为other_body_event，具体类型与位置未留存，不能断言ping/keepalive或某一上游事件就是根因，也不能据终态completed直接放行。本地协议兼容/观测不足和可能上游序列异常尚不能区分；不继续盲目重测。
+
+累计9HTTP/50795known/366910unknown预留/5retry、活动973.047秒；尚余3请求槽、305751 tokens含预留空间、1126.953活动秒，原北京时间15:50:40截止不延长。若下一次仍需双初审及双fresh，4请求会超过剩余3槽，不能默增预算。最新checkpoint0011 SHA3856284d916cf836f432cde784b0676291bb8969f9b8b6a2183ed3f92222bf3d；最新DB outputs/riftcoach-product-stream-guard-recovery-20261101/attempt-11/terminal-db.dump SHA890d221477640d0ffa79235ad5f69f00d714021b88b6f86f735d1dcc8aeccb71。不能退回ready DB；本次有真实发送，不符合zero_send_recovery。
+
+真实浏览器/SQL只读1440与320通过，用量一致、未发布稿不可见、无resume/新任务POST。外置v2脚本的旧乱码selector先导致等待超时，原失败日志保留；v3按当前locale更正Unicode selector后通过，无产品代码修改。完整快照8185ff91…与terminal-snapshot.json已存，inspection-complete已写；临时容器清理，driver/waiter正常退出。
+
+下一行动：此轮执行与核验已终局，禁止自动付费补测。下一次执行前需要补仅含事件类型/序号/结构的观测，明确同task/run保留此次真实返回与终态的恢复方案，再对格式故障追加执行取得明确决定；不能直接把未验证诊断意见转正。当前没有待观察执行者，收尾后结束本monitor。旧15完成、Stage8E/默认准入不变。结果data/evaluation/results/sol_product_stream_protocol_rejected_20261101.json。
+
+以下为上一轮记录（不作为当前队列）。
+
+2026-11-01 04:21北京时间，已完成本地零发送拒绝的窄范围恢复与实际数据库预检。新增zero_send_recovery只允许固定父checkpoint之后恰好多一条manual-retry、transport与审查journal零新增、未发布且没有evaluation意见的本地拒绝；归档完整父terminal/原件，逐字继承23项操作与全部回执，不删除原terminal或回退DB。旧手动许可从归档检查点回放，当前额度仅重新绑定新guard，authorization/累计上限/截止保持。
+
+采用attempt-10最新DB（288a96dd…），真实SQL/Worker普通resume已到达相同facts-initial请求发送前边界，新增HTTP0、真实Key读取0、来源调用0；累计8HTTP/29323known/366910unknown预留/5retry，活动838.344秒。当前runs_root D:/rc-stream-guard-recovery-20261101/verified-runs，checkpoint 080c977df9ad3080d79a23a265043ea2744b816062ae76f0569ae1aee54c3541；最新DB outputs/riftcoach-product-stream-guard-recovery-20261101/recovered-db.dump，SHA 43934d6c2f75be2cf5f84b8ae145e5e7b42032658df9b86f4d67901030d86dbc。不能使用旧准备DB或诊断副本。
+
+外置guard持锁时仅排除session.lock，其余原件及session完整性仍核；普通异常记body-free类别并转SessionBlocked暂停，避免Harness误记业务拒绝。实际拒绝任务已有证据快照；它是拒绝阶段的来源快照，不代表报告发布。恢复保留原publication-1，后续按恢复proof固定新refresh_id，Worker与reconciliation一致，测试验证两份快照都保留。没有把publication_reference的存在错误地当成已发布。
+
+验证：12项真实SQL恢复/拒绝篡改/身份与旧pin场景通过，25项预算/许可/guard、17项产品合同、43项任务模型/恢复、10项CI前置检查通过；11个Runtime入口、compile/governance/diff通过。四项产品测试在编辑期间遇到fingerprint漂移，固定输入后定向复跑4项通过；最终验证增强后两种发布模式的SQL正向再次通过。外部模型均替身，实际原任务预检零发送，不冒充流式语义验收。临时容器均清理，未启动付费执行者。
+
+下一行动：一次提交推送，固定干净执行目录D:/riftcoach-sol-product-guard-recovery-execution-20261101和同HEAD新CI；当前外置Control outputs/riftcoach-product-stream-guard-recovery-20261101，唯一新执行attempt-11，旧attempt-10/退出记录保持。新driver普通resume（manual_retry=false），复用第5次已提交许可，无新许可消耗；核driver/waiter实际发送前guard后启动唯一waiter，CI八项全绿且原授权有效才发，最多4新审查、每segment1。授权3203ae78…仍12/723456/2100、每次300秒/16384输出、北京时间11月1日15:50:40截止，不延长。原15完成、Stage8E/默认准入不改。结果data/evaluation/results/sol_product_stream_guard_recovery_prepared_20261101.json。
+
+以下为上一轮记录（不作为当前队列）。
+
+2026-11-01 04:05北京时间，CI41229639171（b3ee0313）八项通过，唯一waiter自动启动attempt-10。实际新增模型HTTP/回执/未决intent均0；Worker虽返回succeeded，业务终态为evaluation_failed、publication_allowed=false，报告API409，不能记产品成功。原8HTTP/29323known/366910unknown预留保持；手动许可已追加为第5次retry，活动836.813秒。原131份准备原件逐字保持。
+
+相同driver、初始DB和成功前缀在隔离临时SQL中零密钥/零发送复现PermissionError：持有Windows会话互斥锁时，外置guard又读取child_inventory中的session.lock。只在持锁检查排除该互斥文件后，同材料到达diagnostic_send_boundary并正确paused；其他证据哈希/请求pin保持检查。原现场未保存异常栈，结论来自可区分的本地复现；不是新增524。修正尚仅在诊断副本验证，不能据此称正式续接完成。
+
+真实只读浏览器1440/320验收通过：未审稿不可读，累计用量一致，无恢复点击/新增请求。完整运行快照与最新DB已留存，inspection-complete已写，执行器/waiter正常退出，实际与两次诊断临时容器均清理。最新正式checkpoint 2cffffb7c3bc7e192ddb88b14f20f2b3c4b9dbddc04d8c8a97a10c08157c3d7d；最新DB outputs/riftcoach-product-stream-ci-recovery-20261101/attempt-10/terminal-db.dump，SHA 288a96dd362da2af19534182f818d8e514c81dd0fc2575019c82ec257d02ff49。该session已封闭为本地拒绝，不能普通resume或退回迁移DB。
+
+下一行动：完成同task/run的create-only本地拒绝恢复，归档并保留此次terminal、23项已提交操作、第5次许可及全部费用/时间；严格证明未新增模型、未产生审查或发布后再采用最新DB恢复副本。现有local_failure_recovery只支持生成前失败，stream_migration只支持旧非流式暂停，均不适用，不能宽泛绕过或删除terminal。新driver持锁时只排除session.lock，guard异常显式暂停并留下安全错误类别。以真实SQL/Worker零发送到达下一请求边界验证恢复与guard，完成后在原授权12/723456/2100及北京时间15:50:40截止内续首审，无新审批必要；不重发生成、不清零、不自动重试付费故障。旧15完成、Stage8E与默认准入保持。证据data/evaluation/results/sol_product_stream_local_guard_failure_20261101.json。当前无活跃付费执行者或waiter；monitor继续推动本地修复，旧首启已用不可重启。
+
+以下为上一轮记录（不作为当前队列）。
+
+2026-11-01 02:32北京时间，CI41223907574以failure结束，唯一等待器正常退出，新增模型请求0。web-checks通过；pytest分片1和2各失败1项，均为原15时间追加适配器测试仍给当前产品函数匹配旧预算读取语句，触发source_shape/retry_shape；不是上游524。原日志保存在outputs/riftcoach-product-stream-authorized-20261101/ci-failure-41223907574。
+
+已将这两个历史回归绑定原15最后两例冻结e7a7ab0b的真实方法，逐字提取并固定来源和SHA；旧适配器与产品源码均不改。另验证旧适配器继续拒绝当前execution_limits接口，避免绕过现产品任务预算。23项针对性检查、来源逐字校验、governance与diff检查通过。原15完成保留，当前任务仍8HTTP/29323known/366910unknown预留/4retry，最新checkpoint fc0d4830…与DB f3a5f822…未变。
+
+下一行动：仅测试/记录维护提交后建立独立干净执行目录D:/riftcoach-sol-product-stream-ci-recovery-execution-20261101及同HEAD新CI，外置Control outputs/riftcoach-product-stream-ci-recovery-20261101固定逐文件差异与原准备材料。保留原cfcbb6d1冻结源码、失败CI、绑定和退出原件；核业务源码零差异及实际driver/waiter发送前guard后，仅启动一个新waiter。授权3203ae78…、12/723456/2100总预算及北京时间11月1日15:50:40截止保持，最多4新审查、每segment1次、不自动重试故障。待新CI全绿才续接原任务；Stage8E/默认准入不改。结果data/evaluation/results/sol_product_stream_ci_recovery_20261101.json。
+
+
+## 当前：追加额度已授权
+
+2026-11-01 01:18北京时间，用户明确“确认”同任务追加预算，已写create-only授权authorization.json，SHA 3203ae789cb82ba88d0ab66bcd51a6037f681a3278061ce08a31435f3fb7136f。累计上限12实际请求/723456tokens含历史unknown预留/2100活动秒；每请求300秒/16384输出、截止北京时间11月1日15:50:40保持。只复用当前3次成功生成，从同一facts-initial继续，必要时走双初审→唯一application→同稿双fresh；不导入诊断意见、不清零历史失败/费用，不增加自动重试。
+
+追加预算作为该任务session内单独原件固定，不改全局8请求/401920tokens/900秒。新请求实时检查该任务额度/期限；历史许可按原合同回放，新手动补测绑定最新pin。追加许可禁止新生成，HTTP恢复入口不能提交额度。直接回读历史高ordinal回执不派发网络请求；实际新发送仍受逐请求预算和任务版本绑定约束。
+
+真实临时Postgres/API/Worker零发送预检通过。仍为8HTTP/29323known/366910unknown预留/4retry、3次成功生成和5次524；累计活动827.172秒。原目录和旧DB保持。当前runs_root D:/rc-stream-20261101/verified-runs，task941d238c-972b-4b5a-bedc-302af12d1504/run review_1a568160d5aa44b5a2acd2f72fb679f8；最新checkpoint fc0d48305548f26c2abbc47fb566fb9d95822b3de5e8ad2e1d6a24781153de06，最新DB outputs/riftcoach-product-stream-authorized-20261101/migrated-db.dump SHA f3a5f822fe3b6bb487f3e65e32bad28fb7031287d4c23f870bd1d975178130f7。后续不能退回上轮迁移DB或attempt-9 DB。
+
+相称验证78项通过：追加额度/产品链/旧手动许可40，真实SQL续接1，CI相同前置检查10，既有角色预算失败27；11个Runtime清单、compile/governance/diff检查通过。新清单只随相关源码指纹更新，旧清单、业务请求、15例标签及原15完成不改。SQL与模型替身验证不冒充真实流式上游验收。本轮准备阶段新付费0。
+
+下一行动：一次提交推送后，固定干净执行cwd D:/riftcoach-sol-product-stream-budget-execution-20261101及同HEAD CI，核外置run_stream_continuation.py和唯一wait_stream_ci.py发送前guard。只有CI八项全绿且授权有效时，启动一次原任务流式续接，每segment最多1新请求，总新增最多4；普通成功边界可续下一职责，524/格式/语义暂停不自动补测。外置Control outputs/riftcoach-product-stream-authorized-20261101，binding.json固定HEAD/CI/授权/最新DB与驱动；attempt-10是唯一执行输出，先核waiter/进程/claim，禁止重复首启。执行返回后核真实费用与原件，使用inspect_current_browser_v2.cjs attempt-10只读验收并完成快照/清理；监控无变化不通知，终局删除。Stage8E、默认发布准入不变。结果data/evaluation/results/sol_product_stream_budget_authorized_20261101.json。
+
+以下为历史准备记录。
+
+目标：保留原3次成功生成、5次524及全部费用，将同task/run从1.7.0迁到1.7.1；先在新目录和临时SQL中零发送验证，不改原目录/DB/冻结源码。
+
+实现：Worker新绑定固定execution_contract，旧绑定不会隐式改用新版本。迁移器只接受未发布、未封闭、初审前的生成成功和有真实524回执的失败；核每次请求/回执/累计费用，逐字复制operations/transport/journal，另存父原件归档，新guard明确新版本。SQL通过锁定同owner/task/run和原checkpoint的一次行政更新采用证明；仍需普通resume，迁移本身不发请求。
+
+验证：原件篡改/错误身份/缺失回执/旧pin/并发状态拒绝；合成SQL/Worker恢复与真实原任务临时SQL零发送回放。补测次数授权保留；旧8请求/401920tokens/900活动秒不自行扩大，当前不读模型凭据。
+
+终点：形成可核的迁移证明、成功前缀复用/零发送结果和具体后续预算。新预算获授权前保持当前首审暂停，不能把旧诊断意见导入或另开新任务清零费用。
+
+## 准备结果
+
+2026-11-01 00:55北京时间，完成同一产品任务从1.7.0非流式到1.7.1流式的受控迁移准备。Worker绑定明确记录execution_contract；旧绑定不能隐式升级。迁移仅接受尚未取得初审意见的成功生成与真实524回执，SQL按同owner/task/run及旧checkpoint采用证明，仍保持当前首审暂停。迁移不是重开任务，不授予预算或自动补测权限。
+
+实际旧数据库在临时Postgres恢复后，原3次成功生成、5次524、8HTTP/29323known/366910unknown预留/4retry完整继承；198份父运行原件及原DB均保持，39个父检查点归档。旧已提交补充许可只允许按归档原pin回放，新许可仍必须绑定最新pin。普通resume实走API/SQL/Worker但新模型请求0、来源请求0、真实模型凭据读取0；未审查报告409，assistant消息0，临时迁移容器已清理。累计活动时间由824.281增加至825.968秒（本地恢复耗时），没有清零。
+
+当前可恢复副本runs_root D:/rc-stream-20261101/verified-runs；task941d238c-972b-4b5a-bedc-302af12d1504、run review_1a568160d5aa44b5a2acd2f72fb679f8不变。最新checkpoint e35377cdd14a02e1a48b8c07d8fc9055dd99358d6b323909af6eaeba86c91d3d；数据库outputs/riftcoach-product-stream-migration-20261101/migrated-db.dump，SHA e7dd1d529d880ea369eb52757fd5b1c1553eb51d1fb1c4bb05a1cb1a83cdf209。后续从此副本接续，旧目录/DB继续只读，不回退旧快照。
+
+验证：迁移/旧本地故障恢复/补充许可22项通过，包含真实临时SQL/Worker与替身模型；CI相同前置检查10项通过，11个Runtime清单及compile/governance/diff检查通过。原CI41220508456的web-checks失败是上轮遗漏natural_duty当前清单维护，仅app.runtime.coach_contract指纹变化；新增当前快照并改测试引用，旧快照及其他20字段保留。原CI四个pytest分片仍在运行，不把未结束项写成通过。本轮不重跑无关整套测试，原15完成不撤销。
+
+下一行动：就同一任务确认具体追加预算方案（尚未授权）：增加4个请求槽、321536tokens及1200活动秒，累计12请求/723456tokens/2100秒；每请求300秒和16384输出保持。覆盖双初审，以及必要修订后的双fresh；不重复生成，不导入诊断意见，不清零未知费用。手动重试次数授权保留，失败仍消耗实际槽与token预留，不自动循环；截止仍北京时间11月1日15:50:40，不自行延长。获准后实现仅该task的追加预算绑定，验证旧许可回放及新发送上限，固定执行版本并按同HEAD CI结果续流式首审。当前无付费执行者或waiter，Stage8E及默认准入保持。工作卡docs/plans/2026-11-01-product-stream-continuation.md；结果data/evaluation/results/sol_product_stream_migration_ready_20261101.json。

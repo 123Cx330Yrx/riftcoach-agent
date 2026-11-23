@@ -1,0 +1,104 @@
+{
+  "accounting": {
+    "known_tokens": 29323,
+    "requests_observed": 8,
+    "requests_reserved": 8,
+    "retries": 4,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 366910,
+    "unresolved_intents": 0
+  },
+  "active_seconds": 825.9679999999789,
+  "archived_checkpoints": 39,
+  "assistant_messages": 0,
+  "budget_proposal": {
+    "additional": {
+      "execution_timeout_s": 1200,
+      "max_calls": 4,
+      "total_tokens": 321536
+    },
+    "authorized": false,
+    "automatic_retry": false,
+    "baseline": {
+      "known_tokens": 29323,
+      "requests_observed": 8,
+      "requests_reserved": 8,
+      "retries": 4,
+      "scope": "cumulative_session",
+      "unknown_token_reservation": 366910,
+      "unresolved_intents": 0
+    },
+    "baseline_active_seconds": 825.9679999999789,
+    "checkpoint_sha256": "e35377cdd14a02e1a48b8c07d8fc9055dd99358d6b323909af6eaeba86c91d3d",
+    "diagnostic_opinion_imported": false,
+    "expires_at_utc": "2026-11-01T07:50:40.024669+00:00",
+    "generation_requests": 0,
+    "global_product_limits_changed": false,
+    "kind": "same-product-task-stream-budget-proposal-v1",
+    "logical_steps": [
+      "facts-initial",
+      "completion-initial",
+      "facts-fresh-if-repaired",
+      "completion-fresh-if-repaired"
+    ],
+    "manual_retry_count_authorization_retained": true,
+    "max_output_tokens": 16384,
+    "note": "Four request slots cover the normal remaining path; a transport failure consumes a slot and its reserved tokens. Stop the affected step if cumulative limits cannot cover continuation.",
+    "original_limits": {
+      "execution_timeout_s": 900,
+      "max_calls": 8,
+      "total_tokens": 401920
+    },
+    "proposed_limits": {
+      "execution_timeout_s": 2100,
+      "max_calls": 12,
+      "total_tokens": 723456
+    },
+    "release_policy_unchanged": true,
+    "request_timeout_s": 300,
+    "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+    "task_id": "941d238c-972b-4b5a-bedc-302af12d1504",
+    "unknown_reservation_cleared": false
+  },
+  "checks": {
+    "ci_early_checks": 10,
+    "external_models": "scripted",
+    "real_parent_replay": "temporary PostgreSQL, API, Worker; zero send",
+    "runtime_profiles": 11,
+    "scoped_regression": 22
+  },
+  "ci_failure": {
+    "cause": "current natural_duty inventory snapshot omitted after coach_contract change",
+    "job_id": 124593870702,
+    "other_pytest_shards": "in_progress_at_closeout",
+    "run_id": 41220508456
+  },
+  "database_dump_sha256": "e7dd1d529d880ea369eb52757fd5b1c1553eb51d1fb1c4bb05a1cb1a83cdf209",
+  "evidence": {
+    "api-readback.json": "34644299160f1dff46bba2f601212023d0b4910a70f1bfec704b6350e0601065",
+    "budget-proposal.json": "0d868cba2bfdaeef41ff6174380b70ea6ea9c13187bd05f50420e845dad56a72",
+    "cleanup.json": "0aaa30fb51d936aaf08fd4f6108b6b840b39be389ad57e30e5779318a70c0013",
+    "final-readback.json": "57735349a1c7a3d3bb47284f989fd71a3829c44ed095582c595c541825cae78e",
+    "migration.json": "6b30154be6849d718d5b00cdc408e171a72672441ee2197bc22f5a954818b720",
+    "ready.json": "5c7b7ef1cb6e170a7f2afc4b1bd83675284a92166bf6ed128d44703ca8e2c00d"
+  },
+  "execution_authorized": false,
+  "global_product_defaults_changed": false,
+  "kind": "sol-product-stream-migration-preparation",
+  "latest_checkpoint_sha256": "e35377cdd14a02e1a48b8c07d8fc9055dd99358d6b323909af6eaeba86c91d3d",
+  "new_model_requests": 0,
+  "nonstream_524": 5,
+  "original_files_unchanged": true,
+  "parent_files": 198,
+  "prepared_at_local": "2026-11-01 00:55",
+  "proof_path": "D:\\rc-stream-20261101\\verified-runs\\stream-migration-proof.json",
+  "proof_sha256": "c342967cc359bd9a1334debaa8d2f29b93b270c4030e30c37c3738a97f49a6db",
+  "real_key_reads": 0,
+  "report_http_status": 409,
+  "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+  "runs_root": "D:\\rc-stream-20261101\\verified-runs",
+  "source_requests": 0,
+  "stage_8e_complete": false,
+  "successful_generation": 3,
+  "task_id": "941d238c-972b-4b5a-bedc-302af12d1504"
+}

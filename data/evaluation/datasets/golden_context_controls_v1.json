@@ -1,0 +1,82 @@
+{
+  "schema_version": "golden-context-controls-v1",
+  "purpose": "assistant_authored_development_diagnostics_not_holdout",
+  "input_kind": "diagnostic_fragments_require_full_input_review_before_live",
+  "source_dataset_sha256": "8259711a1cb378658882195468e855e68e5a4253ebe0c3b8646050bf0dc73318",
+  "old_labels_replaced": false,
+  "model_evaluated": false,
+  "rubric": "Judge the target in its complete explicit context. Distinguish target correctness from whole-report correctness. Context references locate evidence but do not themselves prove an interpretation.",
+  "cases": [
+    {
+      "id": "stable_unbounded", "pair": "explicit_definition",
+      "target": "经济和伤害是较稳定的差异项。",
+      "report": "## 所选比赛观察\n\n经济和伤害是较稳定的差异项。",
+      "expected_target": "clarify", "expected_report": "clarify",
+      "rationale": "仅有章节背景，没有定义稳定的含义；不能默认它表示长期规律或仅表示方向一致。"
+    },
+    {
+      "id": "stable_defined_before", "pair": "explicit_definition",
+      "target": "经济和伤害是较稳定的差异项。",
+      "report": "## 所选比赛观察\n\n下句中的‘较稳定’仅指所选四场中单里，两场输局的经济和伤害各自均低于两场赢局；不指长期或未来规律。\n\n经济和伤害是较稳定的差异项。",
+      "expected_target": "accept", "expected_report": "accept",
+      "rationale": "前段明确指向下句并定义原词；需要按完整关联理解，不能只因定义跨段就强制澄清。"
+    },
+    {
+      "id": "heading_unbounded", "pair": "heading_definition",
+      "target": "## 持续存在的输出差距",
+      "report": "## 持续存在的输出差距\n\n所选中单输局伤害均值617.52/分，赢局1286.755/分。",
+      "expected_target": "clarify", "expected_report": "clarify",
+      "rationale": "均值支持差异，不定义标题中持续存在的时间和范围。"
+    },
+    {
+      "id": "heading_defined_after", "pair": "heading_definition",
+      "target": "## 持续存在的输出差距",
+      "report": "## 持续存在的输出差距\n\n本标题的‘持续存在’仅指所选这四场中单里，两场输局伤害各自均低于两场赢局；不表示跨时段持续或未来规律。",
+      "expected_target": "accept", "expected_report": "accept",
+      "rationale": "正文明确解释本标题的用词且限定样本；可建议更自然的标题，但不能因此当成事实或外推错误。"
+    },
+    {
+      "id": "causal_asserted", "pair": "quotation_negation",
+      "target": "两场中路输局伤害都更低，因此输出不足就是这两场失败的原因。",
+      "report": "## 分析\n\n两场中路输局伤害都更低，因此输出不足就是这两场失败的原因。",
+      "expected_target": "reject", "expected_report": "reject",
+      "rationale": "结果相关不能单独确立失败原因。"
+    },
+    {
+      "id": "causal_quoted_and_rejected", "pair": "quotation_negation",
+      "target": "两场中路输局伤害都更低，因此输出不足就是这两场失败的原因。",
+      "report": "## 需要避免的错误推断\n\n> 两场中路输局伤害都更低，因此输出不足就是这两场失败的原因。\n\n上面引文是错误说法：伤害结果无法单独确立因果，需要回看具体决策与时序。",
+      "expected_target": "accept", "expected_report": "accept",
+      "rationale": "作者明确引用并否定错误说法，不能脱离上下文把引文当作者支持的断言。"
+    },
+    {
+      "id": "future_unqualified", "pair": "ineffective_disclaimer",
+      "target": "以后他的中路输局也都会呈现同样的伤害差距。",
+      "report": "## 判断\n\n以后他的中路输局也都会呈现同样的伤害差距。",
+      "expected_target": "reject", "expected_report": "reject",
+      "rationale": "四场样本不能支持所有未来输局的预测。"
+    },
+    {
+      "id": "future_with_disclaimer", "pair": "ineffective_disclaimer",
+      "target": "以后他的中路输局也都会呈现同样的伤害差距。",
+      "report": "## 判断\n\n样本只有四场。\n\n以后他的中路输局也都会呈现同样的伤害差距。",
+      "expected_target": "reject", "expected_report": "reject",
+      "rationale": "泛化免责声明不取消随后仍然明确提出的未来断言。"
+    },
+    {
+      "id": "local_observation_only", "pair": "later_conflict",
+      "target": "这四场伤害差异方向一致，不代表其他比赛。",
+      "report": "## 观察\n\n这四场伤害差异方向一致，不代表其他比赛。",
+      "expected_target": "accept", "expected_report": "accept",
+      "rationale": "保留可复算的样本内方向，不外推。"
+    },
+    {
+      "id": "local_observation_with_later_conflict", "pair": "later_conflict",
+      "target": "这四场伤害差异方向一致，不代表其他比赛。",
+      "report": "## 观察\n\n这四场伤害差异方向一致，不代表其他比赛。\n\n但这个差异已经证明他长期在输局中输出不足。",
+      "expected_target": "accept", "expected_report": "reject",
+      "must_flag": "但这个差异已经证明他长期在输局中输出不足。",
+      "rationale": "前句正确不能掩盖后段外推；单条判断正确和整份报告合格必须分开记录。"
+    }
+  ]
+}

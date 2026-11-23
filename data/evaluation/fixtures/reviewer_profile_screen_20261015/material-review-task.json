@@ -1,0 +1,38 @@
+{
+  "kind": "ordinary-development-material-review-not-native-business-certification",
+  "cwd": "D:/riftcoach-natural-duty-six",
+  "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+  "inputs": [
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/natural_duty_observed_review_20261015/review-evidence/material.json",
+      "sha256": "8b2343d550a402ca18c58926b8044749342fef7c1ae3126663e3f1aff37192c6"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-facts.json",
+      "sha256": "abaa7cebd116b496a7c94b63c7464981ab8ecb83e35d4108e3cddb5c1857b674"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r01-completion.json",
+      "sha256": "fc408e9e182cec2234439957f1c83d720154d0403519354bec74427f10a6bf9d"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-facts.json",
+      "sha256": "f9df23ed4183d3478ce1c1e13a5cfd609025b00f3ee6d3c6e680077faf697110"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/requests/r02-completion.json",
+      "sha256": "aeb497a870a5a080ee8a5ed9c1faac46055ce2fc4fc39002cc1d0565b5a0efb1"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/r01.md",
+      "sha256": "0a4c073e282beca5cbb3e1226e628e0a033ff8a43b0a210a1a0e1816dc85bcb6"
+    },
+    {
+      "path": "D:/riftcoach-natural-duty-six/data/evaluation/fixtures/reviewer_profile_screen_20261015/r02.md",
+      "sha256": "c3e944095a41b00303b6a7f86fc413c120b009b884a8cd5c5025d9a42a2385d0"
+    }
+  ],
+  "exclude": "Do not read evaluation.json, other reviewers judgments, or private reasoning. No provider calls or changes to inputs.",
+  "output": "C:/Users/33502/Documents/Agent/outputs/reviewer-profile-screen-20261015/independent-material-review.md",
+  "task": "Read both full reports and all source/policy/tool inputs. Decide whether either report contains real issues; cite exact clauses and supporting sources. Check the sole contrast and any unanticipated flaw. Do not equate numeric targets, training vocabulary, or unknown goals with errors. Decide usable/unresolved/reject as material for a diagnostic, not product qualification."
+}

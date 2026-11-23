@@ -8,17 +8,20 @@ import type {
 import type { MessageKey } from "./locale"
 
 export const eventMessageKeys: Readonly<Record<TaskEventKindWire, MessageKey>> = {
+  snapshot_imported: "event.snapshot_imported",
   created: "event.created",
   claimed: "event.claimed",
   execution_started: "event.execution_started",
   heartbeat: "event.heartbeat",
   cancel_requested: "event.cancel_requested",
-  checkpoint_saved: "event.checkpoint_saved",
+  checkpointed: "event.checkpoint_saved",
   recovery_required: "event.recovery_required",
-  requeued: "event.requeued",
+  recovery_requeued: "event.requeued",
+  continuation_resumed: "event.continuation_resumed",
   succeeded: "event.succeeded",
   failed: "event.failed",
   cancelled: "event.cancelled",
+  reconciled: "event.reconciled",
 }
 
 export const taskStatusMessageKeys: Readonly<Record<TaskStatusWire, MessageKey>> = {

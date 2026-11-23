@@ -34,6 +34,7 @@ reports/cn_terminology_review_*.json
 
 # Harness runs
 data/runs/
+data/observation_exports/
 
 # Local verification scratch artifacts
 tmp/
@@ -51,3 +52,6 @@ web/public/assets/wallpapers/regions/*.png
 # OS
 .DS_Store
 Thumbs.db
+# Real golden-slice receipts are write-once; local attempts stay out of the
+# worktree until a verified canonical receipt is explicitly selected.
+/data/evaluation/results/golden_slices/

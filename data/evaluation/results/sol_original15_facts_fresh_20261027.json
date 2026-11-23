@@ -1,0 +1,638 @@
+{
+  "kind": "sol-original15-scope4-facts-fresh-20261027",
+  "accepted_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-facts-fresh-accepted.json",
+  "accepted_evidence_sha256": "a3996e13c0797a4067487942c208e53af352a73b98c3dda5cf6e501d6a8ecf33",
+  "frontier_evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-frontier-0073.json",
+  "frontier_sha256": "6d306200bc2a38dd60ac1ba92e989a12e52ce0540750888778226bcc547b1018",
+  "accepted": {
+    "version": "original15-scope4-facts-fresh-accepted-v1",
+    "case": "scope:4",
+    "stage": "facts-fresh",
+    "provider_verdict": "pass",
+    "provider_score": 100,
+    "advisories": [
+      {
+        "block": 4
+      },
+      {
+        "block": 6
+      }
+    ],
+    "http_requests": 1,
+    "input_tokens": 17827,
+    "output_tokens": 564,
+    "known_tokens": 18391,
+    "elapsed_s": 27.937,
+    "primary_accepted": true,
+    "independent_accepted": true,
+    "native_submission_accepted": true,
+    "native_observed": {
+      "author_json_equal": true,
+      "author_sha256": "27c055e314c18e28ed0670109e395cc5a89fae88ea2c03ece852be6243d28195",
+      "author_text_equal": false,
+      "checkpoint_sha256": "98e4bbddebda2970c21b65507bbc48b1ab44b3df3f0813780b27cabb2b52eba2",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17943-45ed-76c0-90c3-65fcf12f49ca/msg_0fdcb483ddf38b4a016adf8eeb4d44819db4e5505a4019e6fc",
+      "key_reads": 0,
+      "native_final_sha256": "983b43d71a912fb04a76d564b4d8c5a03a77551b62915820713eea3c4be9f62e",
+      "native_import_verified": true,
+      "original_stdout_roots": {
+        "checkpoint_sha256": "d862935f72f6080a2a8a3297ef3ac34d0e4c4fc9d47ac0b4c2b66c25933cdc6d",
+        "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60"
+      },
+      "provider_requests": 0,
+      "raw_event_sha256": "251d96008060225487f742e52f1b98424ede8fc25ffe47a756f1354391b62885",
+      "review": {
+        "binding": {
+          "key": "facts-fresh",
+          "plan_sha256": "4ec449ca567d1e0d4c339bfbada14ebfc8bab952aa3dbcc57a4aba66e367df04",
+          "report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+          "request_sha256": "8b8efc28b2dce7651f89245d90f71279841e549a3e27fedcb29f6e5eed04d69c",
+          "response_sha256": "4890759a678f94283dc7c55a5a4fe1b6d064627fc7d769d1dd0a0a8777b51da5",
+          "stage": "final"
+        },
+        "decision": {
+          "accepted": true,
+          "actual_report_checked": true,
+          "compatibility": null,
+          "defects": [],
+          "kind": "opinion",
+          "material_sha256": "fe62a6602c0bb2294b8bcd57329170a83d55ceb80083967746b13b062a89215b",
+          "report_assessment": null,
+          "reviewer": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+          "source_review": "\u672c\u6b21\u72ec\u7acb\u91cd\u8bfb\u5e76\u5ba1\u67e5\u4e86 material.json \u7684\u5b8c\u6574\u65b0\u7a3f25\u6bb5\u3001complete_source \u4e2d\u7684\u539f\u59cb\u4e8b\u5b9e\u4e0e\u51fa\u5904\u3001\u751f\u6210\u6295\u5f71\u3001\u786e\u5b9a\u6027\u62a5\u544a\u3001K1\u81f3K5\u5168\u6587\u3001\u5b9e\u9645\u7528\u6237\u539f\u8bdd\u3001\u8bf7\u6c42\u5185\u5b8c\u6574\u4e8b\u5b9e\u804c\u8d23\u653f\u7b56\u3001\u8868\u884c\u53ca computed_evidence\uff0c\u5e76\u6838\u5bf9\u552f\u4e00\u539f\u59cb Provider \u610f\u89c1\u3002\u6750\u6599 SHA256 \u4e3a fe62a6602c0bb2294b8bcd57329170a83d55ceb80083967746b13b062a89215b\uff0c\u5b9e\u9645\u65b0\u7a3f SHA256 \u4e3a 03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e\u3002\u538b\u7f29\u6295\u5f71\u6062\u590d\u7684 facts\u3001provenance \u4e0e complete_source \u4e00\u81f4\u3002\u672c\u6b21\u5224\u65ad\u6765\u81ea\u5bf9\u5b9e\u9645\u65b0\u7a3f\u7684\u91cd\u65b0\u6838\u9a8c\uff0c\u4e0d\u4ee5\u5148\u524d\u8f6e\u6b21\u6216100\u5206\u4ee3\u66ff\u5ba1\u67e5\u3002Provider \u8f93\u51fa\u4e3a pass\u3001issues\u4e0eissue_resolutions\u5747\u7a7a\uff0c\u4ec5\u5728\u7b2c4\u30016\u6bb5\u4fdd\u7559advisories\uff1b\u672a\u63d0\u4f9b\u65e7\u95ee\u9898\uff0c\u7a7aissue_resolutions\u7b26\u5408\u72ec\u7acbfresh\u804c\u8d23\u3002\n\n\u6837\u672c\u4e3a DK ShowMaker#KR1 \u76845\u5c40\uff0c\u5b9e\u9645\u5355\u5c40queue_id\u5747420\uff0c\u5168\u90e8\u7eb3\u5165\uff0c\u65e0\u5931\u8d25\u3001\u6392\u9664\u6216\u6295\u5f71\u9057\u6f0f\uff1b4\u5c40\u4e2d\u53552\u80dc2\u8d1f\u30011\u5c40\u8f85\u52a9\u5361\u871c\u5c14\u544a\u8d1f\uff0c\u5408\u8ba12\u80dc3\u8d1f\u300140.0%\u30025\u4e2a\u82f1\u96c4\u54041\u5c40\u3002\u7b2c4\u300110\u300123\u6bb5\u6ca1\u6709\u5c06\u4f4d\u7f6e\u8bb0\u5f55\u91cd\u6807\u4e3a\u4e3b\u4f4d\u7f6e\u610f\u56fe\u3001\u8865\u4f4d\u6216\u957f\u671f\u80fd\u529b\u3002\u751f\u6210\u65f6\u95f4\u4e3a2026-09-10 UTC\uff0cData Dragon\u7248\u672c16.17.1\u4ec5\u627f\u62c5\u9759\u6001\u6620\u5c04\uff1b\u65b0\u7a3f\u6ca1\u6709\u62ff\u9759\u6001\u6570\u636e\u6216\u672a\u77e5\u5916\u90e8\u5feb\u7167\u8bc1\u660e\u5386\u53f2\u539f\u56e0\u3002\n\n\u6309\u9010\u5c40\u539f\u503c\u590d\u7b97\uff0c\u4e2d\u5355\u80dc\u8d25\u8865\u5200/\u5206\u949f\u4e3a8.805\u4e0e9.01\uff0c\u7ecf\u6d4e/\u5206\u949f\u4e3a505.29\u4e0e432.815\uff0c\u4f24\u5bb3/\u5206\u949f\u4e3a1286.755\u4e0e617.52\uff0c\u89c6\u91ce\u5206\u4e3a33.5\u4e0e34\uff1b\u6309HALF_UP\u5c55\u793a\u7ecf\u6d4e432.82\u3001\u4f24\u5bb31286.76\u5747\u6b63\u786e\u3002\u4f24\u5bb3\u5dee\u4e3a669.235\uff0c\u7ea6669\u7684\u8868\u8ff0\u6210\u7acb\u3002\u8f85\u52a9\u5355\u5c401/13/11\u3001\u8865\u52001.34\u3001\u4f24\u5bb3538.97\u3001\u7ecf\u6d4e302.59\u3001\u89c6\u91ce90\u300115\u5206\u949f\u524d\u6b7b\u4ea17\u6b21\u5747\u5bf9\u5e94\u539f\u59cb\u884c\u3002\u8f9b\u5fb7\u62c914/5/10\u3001\u8865\u52008.66\u3001\u4f24\u5bb31430.11\u548c\u8f93\u51fa\u5360\u6bd40.2753\u537327.53%\u7ea627.5%\u5747\u6b63\u786e\uff0c\u4f24\u5bb3/\u5206\u949f\u4e0e\u8f93\u51fa\u5360\u6bd4\u4e5f\u5747\u4e3a\u672c\u4e94\u5c40\u6700\u9ad8\u3002\u827e\u5c3c\u7ef4\u4e9a9.64\u8865\u5200\u3001\u65e9\u671f\u96f6\u6b7b\u4ea1\u7b26\u5408\u6765\u6e90\uff0c\u6b63\u6587\u6ca1\u6709\u7531\u6b64\u63a8\u51fa\u9632\u6293\u6216\u5bf9\u7ebf\u80fd\u529b\u3002\n\n\u7b2c14\u6bb5\u5bf9\u65e9\u671f\u6b7b\u4ea1\u7684\u5b9e\u9645\u6bd4\u8f83\u73b0\u5df2\u660e\u786e\u533a\u5206\u53e3\u5f84\uff1a\u4e2d\u5355\u80dc\u5c403\u4e0e2\u6b21\uff0c\u5747\u503c2.5\uff1b\u4e2d\u5355\u8d25\u5c400\u4e0e1\u6b21\uff0c\u5747\u503c0.5\uff0c\u80dc\u5c40\u591a2\u6b21\uff1b\u6df7\u4f4d\u8d25\u5c407\u30010\u30011\u6b21\uff0c\u5747\u503c8/3\u7ea62.67\uff0c\u6df7\u4f4d\u80dc\u5c40\u4ecd2.5\u3002\u5c0f\u5dee\u5f02\u88ab\u660e\u786e\u9650\u5b9a\u5728\u5168\u6837\u672c\u3002\u7b2c4\u6bb5\u65e9\u6b7b\u53e5\u672c\u8eab\u672a\u660e\u786e\u53e6\u6307\u4e2d\u5355\uff0c\u7ed3\u5408\u7b2c14\u6bb5\u7684\u660e\u786e\u5bf9\u7167\u4e0e\u5168\u7bc7\u4e94\u5c40\u8303\u56f4\uff0c\u5176\u7701\u7565\u8303\u56f4\u53ef\u4ee5\u6d88\u89e3\u4e3a\u5168\u6837\u672c\uff0c\u4e0d\u6784\u6210\u6b8b\u5b58\u7684\u4e2d\u53552.5\u7ea6\u7b49\u4e8e0.5\u65ad\u8a00\uff1b\u628a\u5168\u6837\u672c\u9650\u5b9a\u524d\u79fb\u53ef\u4ee5\u6539\u5584\u9605\u8bfb\uff0c\u4f46\u6ca1\u6709\u5fc5\u987b\u4fee\u6b63\u7684\u4e8b\u5b9e\u5185\u5bb9\uff0c\u4e5f\u6ca1\u6709\u636e\u6b64\u65ad\u8a00\u964d\u4f4e\u6b7b\u4ea1\u5bf9\u83b7\u80dc\u65e0\u6548\u6216\u8bc1\u660e\u56e0\u679c\u96f6\u6548\u5e94\u3002\n\n\u6df7\u4f4d\u5747\u503c\u76f8\u5bf9\u4e2d\u5355\u5747\u503c\u5728\u8865\u5200\u3001\u7ecf\u6d4e\u4e0e\u4f24\u5bb3\u4e0a\u5b9e\u9645\u964d\u4f4e\uff1a\u5168\u4e94\u5c40\u8865\u52007.394\u5bf9\u4e2d\u53558.9075\u3001\u7ecf\u6d4e435.76\u5bf9469.0525\u3001\u4f24\u5bb3869.504\u5bf9952.1375\uff1b\u89c6\u91ce\u548c\u65e9\u6b7b\u65b9\u5411\u76f8\u53cd\uff0c\u4f46\u7b2c4\u6bb5\u6ca1\u6709\u58f0\u79f0\u6bcf\u4e00\u6307\u6807\u5747\u88ab\u62c9\u4f4e\u3002\u7b2c13\u6bb5\u5217\u51fa\u7684\u8f85\u52a9\u9ad8\u89c6\u91ce\u672a\u88ab\u62b9\u53bb\uff0c\u4e0d\u80fd\u589e\u8865\u5168\u79f0\u6765\u5236\u9020\u9519\u8bef\u3002\u7b2c14\u6bb5\u5173\u4e8e\u5dee\u8ddd\u7684\u5224\u65ad\u4ea6\u6210\u7acb\uff1a\u8865\u5200\u80dc\u51cf\u8d25\u7531\u6df7\u4f4d2.351666\u2026\u53d8\u4e3a\u4e2d\u5355-0.205\uff0c\u8f85\u52a9\u5c40\u660e\u663e\u6539\u53d8\u6bd4\u8f83\uff1b\u4f24\u5bb3\u80dc\u51cf\u8d25\u4ece695.418333\u2026\u53d8\u4e3a669.235\uff0c\u4ec5\u5dee26.183333\u2026\uff0c\u7ea6\u5360\u6df7\u4f4d\u5dee\u8ddd3.77%\uff0c\u6545\u4e0d\u80fd\u4e3b\u8981\u5f52\u56e0\u4e8e\u8f85\u52a9\u5c40\u3002\u8fd9\u91cc\u662f\u6709\u91cf\u7ea7\u652f\u6301\u7684\u6837\u672c\u6784\u6210\u8bf4\u660e\uff0c\u4e14\u660e\u786e\u4e0d\u8bc1\u660e\u80fd\u529b\u3001\u9010\u5c40\u4e00\u81f4\u6216\u80dc\u8d1f\u56e0\u679c\u3002\u7b2c6\u6bb5\u4ee5\u56db\u5c40\u4e2d\u5355\u8865\u52008.38\u81f39.64\u53ca\u80dc\u8d25\u5747\u503c\u63a5\u8fd1\u8bf4\u660e\u672c\u6837\u672c\u8865\u5200\u53d1\u80b2\u8282\u594f\uff0c\u660e\u786e\u4e0a\u4e0b\u6587\u6ca1\u6709\u65ad\u8a00\u957f\u671f\u7a33\u5b9a\u80fd\u529b\u3001\u8f85\u52a9\u5c40\u540c\u6837\u7a33\u5b9a\u6216\u5168\u90e8\u53d1\u80b2\u6307\u6807\u5747\u65e0\u5dee\u5f02\uff1b\u8fdb\u4e00\u6b65\u9650\u5b9a\u63aa\u8f9e\u53ef\u4ee5\u662fadvisory\uff0c\u4e0d\u662f\u5fc5\u8981\u4e8b\u5b9e\u4fee\u8ba2\u3002\n\n\u5efa\u8bae\u548c\u5f15\u7528\u5747\u7ed3\u5408\u5168\u6587\u6838\u9a8c\u3002K1\u652f\u6301\u65e9\u6b7b\u98ce\u9669\u5b9a\u4f4d\u3001\u5c0f\u5dee\u5f02\u975e\u4e3b\u8981\u5206\u754c\u53ca\u4e0d\u80fd\u7531\u96f6\u65e9\u6b7b\u63a8\u51fa\u80fd\u529b\uff1bK2\u652f\u6301\u5c06\u8def\u7ebf\u3001\u8d44\u6e90\u5206\u914d\u548c\u53c2\u56e2\u65f6\u673a\u4f5c\u4e3a\u5f85\u9a8c\u5047\u8bbe\uff1bK5\u8981\u6c42\u7edf\u8ba1\u63cf\u8ff0\u7ed3\u679c\u3001\u65f6\u95f4\u7ebf\u5b9a\u4f4d\u4e8b\u4ef6\u3001\u5f55\u50cf\u5224\u65ad\u539f\u56e0\u3002\u7b2c11\u300116\u300117\u6bb5\u4fdd\u7559\u4e86\u8fd9\u4e9b\u8bc1\u636e\u5c42\u6b21\uff0c\u672a\u58f0\u79f0\u5df2\u6709\u8def\u7ebf\u6216\u6280\u80fd\u539f\u56e0\u89c2\u6d4b\uff1b\u827e\u5c3c\u7ef4\u4e9a\u6b7b\u4ea125:35\u300129:27\u548c\u6d1b\u514b12:05\u81f325:29\u5206\u5e03\u4e0e\u9010\u5c40\u6b7b\u4ea1\u5217\u8868\u4e00\u81f4\uff0c\u8587\u53e4\u4e1d\u4e0e\u8f9b\u5fb7\u62c9\u65e9\u6b7b3\u4e0e2\u6b21\u4ea6\u51c6\u786e\u3002K4\u652f\u6301\u9009\u62e9\u6709\u9650\u89c2\u5bdf\u5bf9\u8c61\u3001\u6bd4\u8f83\u8d44\u6e90\u524d\u540e\u8def\u7ebf\u5e76\u8bb0\u5f55\u53d8\u5316\uff0c\u7b2c20\u6bb5\u76841\u81f32\u5c40\u53ca5\u5206\u949f\u89c2\u5bdf\u533a\u95f4\u5c5e\u4e8e\u89c2\u6469\u65b9\u6cd5\uff0c\u6ca1\u6709\u5192\u5145\u6709\u4f9d\u636e\u7684\u7ee9\u6548\u9608\u503c\u3002K3\u652f\u6301\u7f3a\u5c11\u4f4d\u7f6e\u3001\u82f1\u96c4\u3001\u6bb5\u4f4d\u57fa\u51c6\u65f6\u4e0d\u8bbe\u56fa\u5b9a\u76ee\u6807\u53ca\u6269\u5927\u540c\u4f4d\u7f6e\u5386\u53f2\u6837\u672c\u6bd4\u8f83\uff0c\u7b2c21\u6bb5\u6ca1\u6709\u634f\u9020\u6570\u503c\u95e8\u69db\u3002\n\n\u5b9e\u9645\u7528\u6237\u4ec5\u8981\u6c42\u590d\u6838ShowMaker\u89c2\u6469\u62a5\u544a\u5e76\u6f84\u6e05\u5bf9\u8c61\u4e0d\u662f\u9605\u8bfb\u8005\uff1b\u7b2c4\u300119\u6bb5\u660e\u786e\u4fdd\u6301\u8be5\u8eab\u4efd\uff0c\u4e0d\u5c06\u804c\u4e1a\u9009\u624b\u6837\u672c\u5f53\u9605\u8bfb\u8005\u4e2a\u4eba\u57fa\u7ebf\u3002\u672a\u63d0\u4f9b\u8bad\u7ec3\u76ee\u6807\uff0c\u7b2c19\u6bb5\u672a\u4ee3\u9009\u4f4d\u7f6e\uff0c\u7edf\u9886\u540e\u6587\u4e3a\u6761\u4ef6\u6027\u89c2\u6469\u7ec3\u4e60\uff1b\u7b2c20\u300121\u6bb5\u6ca1\u6709\u8f6c\u6362\u4e3a\u9605\u8bfb\u8005\u5fc5\u987b\u5b9e\u6218\u7684\u65e5\u7a0b\u3001\u82f1\u96c4\u6216\u8fbe\u6807\u5b89\u6392\u3002external_fact_paths\u4e3a\u7a7a\u4e14external_bundle\u4e0d\u53ef\u7528\uff0c\u7b2c24\u6bb5\u51c6\u786e\u58f0\u660eOP.GG\u6570\u636e\u7f3a\u53e3\uff0c\u6ca1\u6709\u4f7f\u7528\u5176\u672a\u63d0\u4f9b\u7684tier\u3001\u6392\u540d\u6216\u80dc\u7387\u4f5c\u5efa\u8bae\u3002K1\u81f3K5\u7684\u7f16\u53f7\u3001\u6807\u9898\u4e0e\u6765\u6e90\u5bf9\u5e94\uff0c\u5747\u662f\u901a\u7528\u65b9\u6cd5\u800c\u975e\u73a9\u5bb6\u4e13\u5c5e\u4e8b\u5b9e\u3002\u5168\u6587\u6ca1\u6709\u9700\u7ec8\u6b62\u7684\u63d0\u793a\u6ce8\u5165\u3002\n\n\u56e0\u6b64\uff0cProvider\u7684\u4e8b\u5b9e\u804c\u8d23pass\u4e0e\u7a7aissues\u6210\u7acb\uff0c\u7b2c4\u30016\u6bb5advisories\u6ca1\u6709\u63a9\u76d6\u5b9e\u8d28\u9519\u8bef\uff0c\u4e5f\u6ca1\u6709\u4ea7\u751f\u65e0\u4f9d\u636e\u89e3\u91ca\u3001\u7ea0\u6b63\u6216\u5f15\u7528\u3002\u63a5\u53d7\u8be5\u610f\u89c1\uff0cdefects\u4e3a\u7a7a\u3002\u6b64\u63a5\u53d7\u4ec5\u5bf9\u5e94\u672c\u6b21\u4e8b\u5b9e\u5ba1\u67e5\uff0c\u4e0d\u8bc4\u4ef7\u4efb\u52a1\u5b8c\u6210\u5ea6\uff0c\u4e5f\u4e0d\u4ee3\u8868\u62a5\u544a\u53d1\u5e03\u3001\u751f\u4ea7\u51c6\u5165\u6216\u5176\u4ed6\u804c\u8d23\u5df2\u7ecf\u901a\u8fc7\u3002"
+        }
+      },
+      "terminal_newline_only_difference": true
+    },
+    "native_observed_sha256": "8b731adb245ff82910bf6b68a220e0954a4c47b1fb678b9d299b633dbdd00e04",
+    "primary_file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-control\\scope-4-facts-fresh-primary.json",
+    "primary_sha256": "928fd145781aead951377c950280a51e2ce69774aaddf8a7af2c9846a6e56bdd",
+    "submission_sha256": "445a083c12e9cb35520e5df2f00a2168b06175e0ec7ba2a4a4cb45e04b5f4995",
+    "unmodified_exact_byte_gate_passed": false,
+    "recorded_terminal_lf_exception": {
+      "version": "original15-one-native-terminal-lf-recovery-v1",
+      "launch_plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
+      "checkpoint_sha256": "98e4bbddebda2970c21b65507bbc48b1ab44b3df3f0813780b27cabb2b52eba2",
+      "binding": {
+        "key": "facts-fresh",
+        "plan_sha256": "4ec449ca567d1e0d4c339bfbada14ebfc8bab952aa3dbcc57a4aba66e367df04",
+        "report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+        "request_sha256": "8b8efc28b2dce7651f89245d90f71279841e549a3e27fedcb29f6e5eed04d69c",
+        "response_sha256": "4890759a678f94283dc7c55a5a4fe1b6d064627fc7d769d1dd0a0a8777b51da5",
+        "stage": "final"
+      },
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17943-45ed-76c0-90c3-65fcf12f49ca/msg_0fdcb483ddf38b4a016adf8eeb4d44819db4e5505a4019e6fc",
+      "raw_event_sha256": "251d96008060225487f742e52f1b98424ede8fc25ffe47a756f1354391b62885",
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-authors\\98e4bbddebda2970c21b65507bbc48b1ab44b3df3f0813780b27cabb2b52eba2.json",
+      "author_sha256": "27c055e314c18e28ed0670109e395cc5a89fae88ea2c03ece852be6243d28195",
+      "native_final_sha256": "983b43d71a912fb04a76d564b4d8c5a03a77551b62915820713eea3c4be9f62e",
+      "reason": "The one original author file ends in one LF absent from the genuine native final. Every preceding byte is identical. Preserve both raw originals; allow only this pinned pair. No semantic or identity waiver; no second final or model request.",
+      "qualification_effect": "Administrative exception recorded; no product or full15 qualification granted."
+    },
+    "exception_module_sha256": "eded5cf3763bf8366c80aeadd03a55b1096e91e85af8f179705c89e6c2fb1d78",
+    "focused_checks_passed": 15,
+    "source_response_and_author_originals_preserved": true,
+    "original_provider_exit": {
+      "operation": "run",
+      "case": "scope:4",
+      "exit_code": 0,
+      "stdout": "0070.stdout.txt",
+      "stdout_sha256": "59c5288821a198d4a7976e31e4db5388e827a520d2b67fceaef0cb1b4a17f65e"
+    },
+    "original_provider_exit_sha256": "9c6fd9dbedba709b1fb3aaf0db5bdbc7672850be5d3cea1875542c105044ab29",
+    "failed_import_exit": {
+      "operation": "submit",
+      "case": "scope:4",
+      "exit_code": 1,
+      "stdout": "0071.stdout.txt",
+      "stdout_sha256": "2f2d2bcfe6592aa1a95ae0373bf19f071b8c6512d1a7c515387775c8198a72a9"
+    },
+    "failed_import_exit_sha256": "23c2e12e6dd6b698abf0acadafa2bc1ac4990ab908a2b1185d937108dfcb756a",
+    "accepted_import_exit": {
+      "operation": "submit",
+      "case": "scope:4",
+      "exit_code": 0,
+      "stdout": "0072.stdout.txt",
+      "stdout_sha256": "684e99bc6a7af12d76226f36f4552fa16a0c25b9f77ef923a62fd7ad91f08303"
+    },
+    "accepted_import_exit_sha256": "03462a5bca6f4ed5b463f4423af08c16e74a5fddda5e623139e3ecdef28e07f6",
+    "last_exit": {
+      "operation": "run",
+      "case": "scope:4",
+      "exit_code": 0,
+      "stdout": "0073.stdout.txt",
+      "stdout_sha256": "f24df053727d50f5491f86447e07c501cefd487f98cf2658727636fdbaaa5cc1"
+    },
+    "last_exit_sha256": "c2f49734aeba9fbf9da211d5851d15365674369c982bd98f117458ff58276d39",
+    "original_stdout_roots": {
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+      "checkpoint_sha256": "dec629079db578da53ef7ded4ad9e1127be912723b9d665b96b606b2b3043117"
+    },
+    "actual_report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+    "application_sha256": "2ab2b91577f4a2723708d44748b2967f916cfecbea0f10b3b1200985629c94b7",
+    "next_stage": "completion-fresh",
+    "next_stage_sent": false,
+    "cases_completed": 4,
+    "qualified": false,
+    "publication_allowed": false,
+    "new_recovery_provider_requests": 0,
+    "key_reads": 0
+  },
+  "read_only_frontier": {
+    "accounting": {
+      "calls": 3,
+      "reserved_tokens": 0,
+      "retries": 0,
+      "tokens": 58890
+    },
+    "actual_edit_performed": true,
+    "actual_report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+    "administrative_native_byte_exception": {
+      "author_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-sol-original15-20261025-authors\\98e4bbddebda2970c21b65507bbc48b1ab44b3df3f0813780b27cabb2b52eba2.json",
+      "author_sha256": "27c055e314c18e28ed0670109e395cc5a89fae88ea2c03ece852be6243d28195",
+      "binding": {
+        "key": "facts-fresh",
+        "plan_sha256": "4ec449ca567d1e0d4c339bfbada14ebfc8bab952aa3dbcc57a4aba66e367df04",
+        "report_sha256": "03d488224b274c350441213f73bf831d925d751ae6f982440972610ccf48246e",
+        "request_sha256": "8b8efc28b2dce7651f89245d90f71279841e549a3e27fedcb29f6e5eed04d69c",
+        "response_sha256": "4890759a678f94283dc7c55a5a4fe1b6d064627fc7d769d1dd0a0a8777b51da5",
+        "stage": "final"
+      },
+      "checkpoint_sha256": "98e4bbddebda2970c21b65507bbc48b1ab44b3df3f0813780b27cabb2b52eba2",
+      "event_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936/01a17943-45ed-76c0-90c3-65fcf12f49ca/msg_0fdcb483ddf38b4a016adf8eeb4d44819db4e5505a4019e6fc",
+      "launch_plan_sha256": "ef53345fa8ec21fb25bc8aed36cfc4f55305e230959f497fae5576eb63fdd806",
+      "native_final_sha256": "983b43d71a912fb04a76d564b4d8c5a03a77551b62915820713eea3c4be9f62e",
+      "qualification_effect": "Administrative exception recorded; no product or full15 qualification granted.",
+      "raw_event_sha256": "251d96008060225487f742e52f1b98424ede8fc25ffe47a756f1354391b62885",
+      "reason": "The one original author file ends in one LF absent from the genuine native final. Every preceding byte is identical. Preserve both raw originals; allow only this pinned pair. No semantic or identity waiver; no second final or model request.",
+      "version": "original15-one-native-terminal-lf-recovery-v1"
+    },
+    "application_sha256": "2ab2b91577f4a2723708d44748b2967f916cfecbea0f10b3b1200985629c94b7",
+    "batch_accounting": {
+      "calls": 17,
+      "http_requests_known": 17,
+      "http_requests_unknown": 0,
+      "known_tokens": 319634,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "retries": 0,
+      "unknown_reserved_tokens": 0
+    },
+    "batch_closed": false,
+    "case": "scope:4",
+    "cases_completed": 4,
+    "completed_cases": [
+      {
+        "accounting": {
+          "calls": 2,
+          "reserved_tokens": 0,
+          "retries": 0,
+          "tokens": 39425
+        },
+        "native_reviews": 2,
+        "result": {
+          "accounting": {
+            "attempts": [
+              {
+                "input_tokens": 20097,
+                "model": "gpt-6.1-sol",
+                "ordinal": 1,
+                "output_tokens": 557,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "c5ae8f5d8ed9b0b31d82122c3c3e64b52dadfc2577c1a88b4b112a8710875517",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 18524,
+                "model": "gpt-6.1-sol",
+                "ordinal": 2,
+                "output_tokens": 247,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "307d1144681fb8835a3592ee28809e476b45157692fc8f399e57d7bb439b758e",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              }
+            ],
+            "calls": 2,
+            "failed": false,
+            "logical": {
+              "generation": 0,
+              "review": 2
+            },
+            "reserved_tokens": 0,
+            "retries": 0,
+            "router_calls": 2,
+            "stopped": false,
+            "tokens": 39425
+          },
+          "actual_report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+          "expected_outcome": "candidate_initial_pass_unqualified",
+          "key": "claim-scope:1",
+          "matched": true,
+          "outcome": "candidate_initial_pass_unqualified",
+          "production_admitted": false,
+          "publication_allowed": false
+        },
+        "strict_replay": true,
+        "transport": {
+          "actual_attempts": 2,
+          "completed_calls": 2,
+          "failed_calls": 0,
+          "http_requests_known": 2,
+          "http_requests_unknown": 0,
+          "known_tokens": 39425,
+          "known_usage_calls": 2,
+          "not_sent": 0,
+          "receiptless_calls": 0,
+          "unknown_reserved_tokens": 0,
+          "unknown_usage_calls": 0
+        }
+      },
+      {
+        "accounting": {
+          "calls": 4,
+          "reserved_tokens": 0,
+          "retries": 0,
+          "tokens": 70729
+        },
+        "native_reviews": 6,
+        "result": {
+          "accounting": {
+            "attempts": [
+              {
+                "input_tokens": 20114,
+                "model": "gpt-6.1-sol",
+                "ordinal": 1,
+                "output_tokens": 1025,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "835726e1a43b733054c454530e4b3b6c6a32cef3a3a1f902129bd3bce1922d01",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 18541,
+                "model": "gpt-6.1-sol",
+                "ordinal": 2,
+                "output_tokens": 263,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "545a42b2ef6393cb77e0f391cd3c66645281daa3376d33ec45bb12b061675778",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 17776,
+                "model": "gpt-6.1-sol",
+                "ordinal": 3,
+                "output_tokens": 867,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "ec196e21b676a452b2f70b356a0b1913453b0cd382081a542caba69e40132a48",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 11991,
+                "model": "gpt-6.1-sol",
+                "ordinal": 4,
+                "output_tokens": 152,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "96219dfffb3b01c83977ef345671a8f28604fc6291e6bc311ba83c3e3b35880b",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              }
+            ],
+            "calls": 4,
+            "failed": false,
+            "logical": {
+              "generation": 0,
+              "review": 4
+            },
+            "reserved_tokens": 0,
+            "retries": 0,
+            "router_calls": 4,
+            "stopped": false,
+            "tokens": 70729
+          },
+          "actual_report_sha256": "cabe09860894fac8814dfb206ac12bf35a3dcd756ba7a2122e3ae058932a6586",
+          "expected_outcome": "candidate_repaired_pass_unqualified",
+          "key": "claim-scope:4",
+          "matched": true,
+          "outcome": "candidate_repaired_pass_unqualified",
+          "production_admitted": false,
+          "publication_allowed": false
+        },
+        "strict_replay": true,
+        "transport": {
+          "actual_attempts": 4,
+          "completed_calls": 4,
+          "failed_calls": 0,
+          "http_requests_known": 4,
+          "http_requests_unknown": 0,
+          "known_tokens": 70729,
+          "known_usage_calls": 4,
+          "not_sent": 0,
+          "receiptless_calls": 0,
+          "unknown_reserved_tokens": 0,
+          "unknown_usage_calls": 0
+        }
+      },
+      {
+        "accounting": {
+          "calls": 4,
+          "reserved_tokens": 0,
+          "retries": 0,
+          "tokens": 74782
+        },
+        "native_reviews": 6,
+        "result": {
+          "accounting": {
+            "attempts": [
+              {
+                "input_tokens": 20160,
+                "model": "gpt-6.1-sol",
+                "ordinal": 1,
+                "output_tokens": 936,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "77d1a1912330fb03db8a5cca3f85f0167a5201a0a3b5cff4ae97684c7b5518c8",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 18587,
+                "model": "gpt-6.1-sol",
+                "ordinal": 2,
+                "output_tokens": 248,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "66eface7698a19b31571b0946dc503391c7cf7a78630f3bcc4fd97e49d181389",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 17821,
+                "model": "gpt-6.1-sol",
+                "ordinal": 3,
+                "output_tokens": 577,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "b0b34607fc91725933b43aa03b080f98f099daca9b72cbd2cd649e496c7e52cc",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 16248,
+                "model": "gpt-6.1-sol",
+                "ordinal": 4,
+                "output_tokens": 205,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "ebcf227eff8f9a5ffb4c212fab93969456c35dfd606f2ee766b6b24ff8eaa070",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              }
+            ],
+            "calls": 4,
+            "failed": false,
+            "logical": {
+              "generation": 0,
+              "review": 4
+            },
+            "reserved_tokens": 0,
+            "retries": 0,
+            "router_calls": 4,
+            "stopped": false,
+            "tokens": 74782
+          },
+          "actual_report_sha256": "b52a27c31eca782dff9429ff0dc0dcc8706596e3ee58f8223e78bf6e93aef820",
+          "expected_outcome": "candidate_repaired_pass_unqualified",
+          "key": "claim-scope:3",
+          "matched": true,
+          "outcome": "candidate_repaired_pass_unqualified",
+          "production_admitted": false,
+          "publication_allowed": false
+        },
+        "strict_replay": true,
+        "transport": {
+          "actual_attempts": 4,
+          "completed_calls": 4,
+          "failed_calls": 0,
+          "http_requests_known": 4,
+          "http_requests_unknown": 0,
+          "known_tokens": 74782,
+          "known_usage_calls": 4,
+          "not_sent": 0,
+          "receiptless_calls": 0,
+          "unknown_reserved_tokens": 0,
+          "unknown_usage_calls": 0
+        }
+      },
+      {
+        "accounting": {
+          "calls": 4,
+          "reserved_tokens": 0,
+          "retries": 0,
+          "tokens": 75808
+        },
+        "native_reviews": 6,
+        "result": {
+          "accounting": {
+            "attempts": [
+              {
+                "input_tokens": 20150,
+                "model": "gpt-6.1-sol",
+                "ordinal": 1,
+                "output_tokens": 1536,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "98e84355eaf6d30ce9e7a12574062d55a99d0f7fb6b21cf988f5fd212110438e",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 18577,
+                "model": "gpt-6.1-sol",
+                "ordinal": 2,
+                "output_tokens": 234,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "e98677650c80cb0681a2290c6c4a55b362b3e5bfb1748287f9e52ee0e13cbf53",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 17819,
+                "model": "gpt-6.1-sol",
+                "ordinal": 3,
+                "output_tokens": 1050,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "6750330ddab903708dd92da4bdf5c314bfaa7dc1749203ab9cf1d9ac9ec7a206",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              },
+              {
+                "input_tokens": 16246,
+                "model": "gpt-6.1-sol",
+                "ordinal": 4,
+                "output_tokens": 196,
+                "phase": "native_business_review",
+                "profile": "sol-high-nonstream-v1",
+                "request_sha256": "259289e70cc83add555a3f1b87b75ce1192dbb1288a668dc3ea09781dd565b0c",
+                "role": "review",
+                "status": "completed",
+                "transport_id": "natural-sol-dual-necessity-nonstream-v1"
+              }
+            ],
+            "calls": 4,
+            "failed": false,
+            "logical": {
+              "generation": 0,
+              "review": 4
+            },
+            "reserved_tokens": 0,
+            "retries": 0,
+            "router_calls": 4,
+            "stopped": false,
+            "tokens": 75808
+          },
+          "actual_report_sha256": "3d5836fdea0474ac7d61126d11114eb36eff8dc9c74c8f7db3ecb36d05833d97",
+          "expected_outcome": "candidate_repaired_pass_unqualified",
+          "key": "attribution:1",
+          "matched": true,
+          "outcome": "candidate_repaired_pass_unqualified",
+          "production_admitted": false,
+          "publication_allowed": false
+        },
+        "strict_replay": true,
+        "transport": {
+          "actual_attempts": 4,
+          "completed_calls": 4,
+          "failed_calls": 0,
+          "http_requests_known": 4,
+          "http_requests_unknown": 0,
+          "known_tokens": 75808,
+          "known_usage_calls": 4,
+          "not_sent": 0,
+          "receiptless_calls": 0,
+          "unknown_reserved_tokens": 0,
+          "unknown_usage_calls": 0
+        }
+      }
+    ],
+    "exception_installation": {
+      "correction_to_observer_note": "The first observer correction mistakenly inferred the full importer was JSON-only. The profile ExactNativeGate also requires byte identity. Its real failure was diagnosed, then this explicit pinned LF-only exception was prepared; original importer is not reported as having passed unchanged.",
+      "focused_checks_passed": 15,
+      "frozen_sources_changed": false,
+      "manifest_sha256": "ecef23a378ffc2c6250dcf7756ed7ca91fc66de2b76de84a53bffa03da189206",
+      "module_sha256": "eded5cf3763bf8366c80aeadd03a55b1096e91e85af8f179705c89e6c2fb1d78",
+      "operator_sha256": "0389c7408bbe08523cbfa86cb40da39adf81db1448a818df71b8c39be23dd9ff",
+      "provider_requests": 0,
+      "settings_sha256": "0db326e2374313184cb2bf9ec004c2ae260026b04ea484728b4b1d6d4d6a0a9d"
+    },
+    "fresh_same_actual_report_verified": true,
+    "frozen_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+    "frozen_status": "",
+    "global_unused_ceiling": {
+      "http_requests": 103,
+      "tokens": 9326446
+    },
+    "key_reads": 0,
+    "last_exit": {
+      "case": "scope:4",
+      "exit_code": 0,
+      "operation": "run",
+      "stdout": "0073.stdout.txt",
+      "stdout_sha256": "f24df053727d50f5491f86447e07c501cefd487f98cf2658727636fdbaaa5cc1"
+    },
+    "last_return": {
+      "key": "scope:4",
+      "phase": "paused",
+      "publication_allowed": false,
+      "reason": "session_model_boundary"
+    },
+    "native_decisions": [
+      {
+        "accepted": true,
+        "key": "facts-initial"
+      },
+      {
+        "accepted": true,
+        "key": "completion-initial"
+      },
+      {
+        "accepted": true,
+        "key": "compatibility"
+      },
+      {
+        "accepted": true,
+        "key": "edit"
+      },
+      {
+        "accepted": true,
+        "key": "facts-fresh"
+      }
+    ],
+    "new_provider_requests": 0,
+    "next_request_sha256": "cf311790d91ea4fc89d1f053781a0dfc8dd6ff90d14122dffa7d1ba498722741",
+    "next_stage": "completion-fresh",
+    "original_stdout_roots": {
+      "checkpoint_sha256": "dec629079db578da53ef7ded4ad9e1127be912723b9d665b96b606b2b3043117",
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60"
+    },
+    "pre_recovery_evidence_and_authors_unchanged": true,
+    "pre_restart_business_and_author_files_unchanged": true,
+    "publication_allowed": false,
+    "qualified": false,
+    "read_only_inventory_unchanged": true,
+    "status": {
+      "checkpoint_sha256": "dec629079db578da53ef7ded4ad9e1127be912723b9d665b96b606b2b3043117",
+      "closed": false,
+      "format_waiting": false,
+      "guard_sha256": "79c4de34a1e0acb97de16723a431e3daa7a96ccb0e555419e6b7db7bff19eb60",
+      "operations": 18,
+      "production_admitted": false,
+      "publication_allowed": false,
+      "timeout_waiting": false,
+      "unresolved": []
+    },
+    "strict_replay_under_recorded_terminal_lf_exception": true,
+    "transport": {
+      "actual_attempts": 3,
+      "completed_calls": 3,
+      "failed_calls": 0,
+      "http_requests_known": 3,
+      "http_requests_unknown": 0,
+      "known_tokens": 58890,
+      "known_usage_calls": 3,
+      "not_sent": 0,
+      "receiptless_calls": 0,
+      "unknown_reserved_tokens": 0,
+      "unknown_usage_calls": 0
+    },
+    "version": "original15-scope4-facts-fresh-frontier-audit-v1"
+  },
+  "execution_head": "34abe04e2218f523505f32e41817eb24e9c179c1",
+  "ci_run": "40188299016",
+  "automation_status": "PAUSED",
+  "qualification": false
+}

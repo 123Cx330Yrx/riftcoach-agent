@@ -1,0 +1,101 @@
+{
+  "kind": "sol-product-preamble-execution-ready-v1",
+  "at_utc": "2026-11-01T05:35:05.919533+00:00",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-preamble-recovery-20261101",
+  "head": "1eb9eb43170d2635cffde8a926a01d25329c9155",
+  "execution_cwd": "D:\\riftcoach-sol-product-preamble-recovery-execution-20261101",
+  "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 41271213029,
+    "headSha": "1eb9eb43170d2635cffde8a926a01d25329c9155",
+    "jobs": [
+      {
+        "name": "postgres-migrations",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:13:18Z"
+      },
+      {
+        "name": "pytest-shards (1)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:57:29Z"
+      },
+      {
+        "name": "pytest-shards (2)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:55:00Z"
+      },
+      {
+        "name": "packaging-smoke",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T03:59:05Z"
+      },
+      {
+        "name": "web-checks",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:03:21Z"
+      },
+      {
+        "name": "pytest-shards (0)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:37:39Z"
+      },
+      {
+        "name": "pytest-shards (3)",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:49:22Z"
+      },
+      {
+        "name": "pytest",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-11-01T04:57:52Z"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/41271213029"
+  },
+  "execution_binding_sha256": "320723bb16047e8763fa0969bd11a30dca003e4e02e250d428115d0ac4843262",
+  "driver_sha256": "e0067dae3f0f9c4ca2ab46d1ecb55988eb164e08c1b62dfcf78f9ef625d88645",
+  "decision_sha256": "594e441533e8925ba32c4b3669f3d921851754981c9608ebba54d09da9446298",
+  "checkpoint_sha256": "8a50f2d95b35222a4c2edbe7185e8f9b0ce292dd718684b8041c4ce2c0f179d1",
+  "database_sha256": "2a22578c63e159a8eba5ffb8a8239477c0133f17da0950957422292cebc20639",
+  "proof_sha256": "e4c89f915a9067ead336ad51935377474851ebd01736e507d1b6d1cb16558c91",
+  "first_review_request_sha256": "bd8fe407bd6dc2f6dc7bf8a35fa50cc930b6e3531685db034ae4b03bce0e1f88",
+  "preflight": {
+    "preflight": "passed",
+    "new_model_requests": 0,
+    "real_key_reads": 0
+  },
+  "authorization_gate": {
+    "at_utc": "2026-11-01T05:34:34.284707+00:00",
+    "missing_authorization_rejected": true,
+    "rejection_before_claim_and_credentials": true,
+    "inventory_unchanged": true,
+    "new_model_requests": 0,
+    "real_key_reads": 0,
+    "new_manual_retries": 0,
+    "attempt_created": false,
+    "authorization_created": false
+  },
+  "initial_preflight_local_failure": "new ready omitted old request pin; separately bound actual unchanged intent; no sends",
+  "execution_authorized": false,
+  "paid_execution_started": false,
+  "waiter_started": false,
+  "monitor_required": false,
+  "new_model_requests": 0,
+  "real_key_reads": 0,
+  "new_manual_retries": 0,
+  "publication_allowed": false,
+  "proposed_requests": 1,
+  "remaining_total_request_slots": 2,
+  "deadline_utc": "2026-11-01T07:50:40.024669+00:00",
+  "next_action": "new explicit decision for one same facts-initial probe; no automatic completion/fresh or second probe"
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "status": "implemented_verified_not_deployed",
+  "baseline_head": "788d0be791ec070a56f72f607746cf5323b8ab19",
+  "scope": "owner_scoped_workbench_pause_resume_manual_retry_cancel",
+  "new_paid_model_requests": 0,
+  "real_key_reads": 0,
+  "product_database_migrated": false,
+  "default_route_changed": false,
+  "publication_policy_changed": false,
+  "original15_rerun": false,
+  "verification": {
+    "unit": {
+      "files": 7,
+      "passed": 64,
+      "duration_seconds": 6.53
+    },
+    "typecheck": "passed",
+    "browser": {
+      "engine": "chromium",
+      "passed": 2,
+      "duration_seconds": 7.8,
+      "viewports": [
+        1440,
+        320
+      ],
+      "locales": [
+        "zh-CN",
+        "en"
+      ],
+      "api": "local HTTP fixture and Playwright route stubs; no production database or external model"
+    },
+    "previous_backend_evidence_reused": "data/evaluation/results/sol_product_worker_continuation_20261030.json"
+  },
+  "observed_behaviors": [
+    "No automatic retry on load or page reload",
+    "One explicit manual retry POST with current checkpoint and CSRF",
+    "Duplicate clicks suppressed; uncertain response reuses same idempotency key",
+    "Cancellation sends empty body and idempotency key",
+    "Unresolved intent disables resend; cancellation retains unknown usage",
+    "Stale checkpoint response requires refresh; foreign detail rejected",
+    "Late response after leaving task ignored",
+    "Explicit pause/resume events refresh task; replayed heartbeat cannot remount recovery panel",
+    "Paused status and brief no longer claim ongoing generation"
+  ],
+  "failures_fixed": [
+    {
+      "check": "initial browser recovery run",
+      "result": "2 failed",
+      "cause": "Earlier running heartbeat replay repeatedly reloaded a paused task",
+      "fix": "Refresh only for explicit recovery_required or continuation_resumed events; added regression and reran browser checks"
+    }
+  ],
+  "local_test_environment": {
+    "dependency_lock_matched": true,
+    "temporary_node_modules_junction": true,
+    "browser_config_note": "Temporary local-only Vite allowlist for junction package fonts; not committed as product configuration",
+    "temporary_files_and_junction_removed": true
+  },
+  "source_sha256": {
+    "web/src/api/taskContinuationApi.ts": "17b7651406f3c076751f0d4e7fdb3de97c5dc6dd3e00562aaeb22ade639744e8",
+    "web/src/api/client.ts": "a400aff20c6411a5b8ce1bf79fa765a331be82b555052052d76e1fa55dd59505",
+    "web/src/api/decoders.ts": "26c149ee3008608a7788ca5bb85c9c6c060902c2105e7619ada8ea105b4f63c1",
+    "web/src/components/TaskRecoveryPanel.tsx": "5faec38597945e72633691ee951e58dc2075580423f3c580853dafb1d830e590",
+    "web/src/components/ProductStateBanner.tsx": "ec655cf625984921d85540c56f90bfe21f28bc6659f7b440e80013fec99a1b89",
+    "web/src/components/CoachBrief.tsx": "ae8ab898622031061925a83dd56903003e1944a24601d5eb7f4c8125350d3508",
+    "web/src/workbench/liveController.ts": "339f3b6fbe9c286570c1a0bf6578724630b47965d1fbb759332850ba936775d7",
+    "web/src/app/App.tsx": "315f05357fdaa34bf17b24be26aef3b64340713ca584ddc2e3d250d478279c51",
+    "web/src/i18n/locale.ts": "4c1ba76a52fe4e747c5113a7f8be3a6f7c5dfe8b15b25da38c90b03913a441e9",
+    "web/src/styles/workbench.css": "e20a08af199d7124434a6ec3c506ecddb3bcb65d41790785a0ab15cb4f251fdb"
+  },
+  "screenshots": {
+    "recovery-1440.png": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\recovery-ui\\recovery-1440.png",
+      "sha256": "8e4ab89e2b1653e4980c440cf0a04005765256d8d1410cf7f7b7106b634e55c8"
+    },
+    "recovery-320.png": {
+      "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-integration-20261030\\recovery-ui\\recovery-320.png",
+      "sha256": "0af901ae7ae0ae34f9dbdbc68d7ab7b8806ed2192da8248aa1efd29b7b4a5add"
+    }
+  },
+  "limitations": [
+    "No new backend or true database execution in this UI package; previous same-interface backend evidence reused.",
+    "No public deployment, production adoption or live external-model browser chain.",
+    "Integrity problems, conflicting patches and unresolved intent require actual repair; UI does not claim to repair them.",
+    "ADR0119 remains proposed; original 15 and sealed histories unchanged."
+  ]
+}

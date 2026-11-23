@@ -1,0 +1,157 @@
+{
+  "experiment": "role-context-factorial-v1",
+  "candidate": {
+    "composition": "flash-generation-glm53-review-v1",
+    "contract": {
+      "contract_id": "recent-form-review-roles-v1",
+      "version": "1.5.1",
+      "scope": "unadmitted_opt_in",
+      "sha256": "538f9be6325bbb722423e85d0835a2c04b21a2fb1a003379b562176dc7ac3d0a"
+    },
+    "program_sha256": "ec4ab4aae3e8083ff0edb50f06fa1b7a4110f8448b86394fa6d1ce4bb0b022c2",
+    "manifest_sha256": "a16a812c6f1448da41d1aa415233dbf4286ce61276285ced6066a0c2dc34df6b",
+    "asset_sha256": {
+      "skills/recent-form-review/SKILL.md": "a06cc50f56bf3581580626532b1d6d39aaedb7dca098ae0624a9965af5875117",
+      "skills/recent-form-review/manifest.yaml": "c9409933c3e4069749f59dd582887656055f9450b30ab84014ec5018a8cce7a0"
+    },
+    "source_projection": "native-explicit-source-projection-v1",
+    "request_delivery": "role-review-tool-schema-only-v1",
+    "roles": {
+      "generation": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-process-stream-high-32768-v1",
+        "sdk_max_retries": 0
+      },
+      "revision": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-process-stream-high-32768-v1",
+        "sdk_max_retries": 0
+      },
+      "review": {
+        "provider": "zhipu",
+        "model": "glm-5.3",
+        "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-glm53-review-high-32768-v1",
+        "sdk_max_retries": 0
+      }
+    },
+    "policy_sha256": "add504f1b20057ca3ce3afad2db8421d098fa926fdcab3306ef1393adab6ebed",
+    "schema_sha256": "4998bcc56e4f89e99bc81e08e0d1151ba7896fcbbb08debdd5e9dfd6e5803bfa"
+  },
+  "model": "glm-5.3",
+  "reasoning_effort": "high",
+  "transport_id": "golden-glm53-review-high-32768-v1",
+  "sdk_retries": 0,
+  "evidence_sha256": "700eacc1d70d5c8b651c8f1adcfe23ca2ccc906c3906fd8309805a7fe6b0f673",
+  "script_sha256": "ed6d579acc8e3f4dc8b76940a60e762cba0ffc4f624213a6f0b819814879843e",
+  "cells": [
+    {
+      "id": "original",
+      "expanded_paragraph": false,
+      "removed_intro": false,
+      "target_block_host_only": 4,
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "request_sha256": "dbd99f6bd183a9743835b1096de9bcd614b1c914366778260a2ca4138a1eeccd",
+      "input_ceiling": 42834,
+      "block_count": 25,
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227"
+    },
+    {
+      "id": "expanded",
+      "expanded_paragraph": true,
+      "removed_intro": false,
+      "target_block_host_only": 4,
+      "report_sha256": "53401432e4550368b258bcdd84b6493f5e7b990d428d99b53135568d1205c163",
+      "request_sha256": "d753c3a0eca4fdd2f6961cfb5a779181ab3b196146d49511ccd5620f4ee909dd",
+      "input_ceiling": 43038,
+      "block_count": 25,
+      "input_sha256": "0eacf8c3101eb416997093b220252e5a0ed104845f196e7e3f2c285b6ef8911c"
+    },
+    {
+      "id": "no_intro",
+      "expanded_paragraph": false,
+      "removed_intro": true,
+      "target_block_host_only": 3,
+      "report_sha256": "533cbe68142f05da79b68fe6d8b9928f5bba55929186e424611e3870869ad1c1",
+      "request_sha256": "d5e2e287465952291eb79678409fe3afec2c40eef7f4d95b4b9516c65b002449",
+      "input_ceiling": 42626,
+      "block_count": 24,
+      "input_sha256": "f3c6905c94c8fa049e2fb506c9fd5ab85687cf97cf8ba001cba7bba4c0446679"
+    },
+    {
+      "id": "expanded_no_intro",
+      "expanded_paragraph": true,
+      "removed_intro": true,
+      "target_block_host_only": 3,
+      "report_sha256": "a6d34fed126741899edf8d75ad42ace364d008c99449ca6782c0d00a9496bf5b",
+      "request_sha256": "5a1c04088a92d5824d39ae38b02fe39eba64fc96c1b8beac94f634080d5ea3ba",
+      "input_ceiling": 42832,
+      "block_count": 24,
+      "input_sha256": "2920402c54cdc9ccf1573913d782df5f3a57ecee259157a3246ce49b756c187d"
+    }
+  ],
+  "order": [
+    "original",
+    "expanded",
+    "no_intro",
+    "expanded_no_intro",
+    "expanded_no_intro",
+    "no_intro",
+    "expanded",
+    "original"
+  ],
+  "original_target_sha256": "4755fcf44697764fc122af1cff777c81446556a09f29e2b060e4afd4a486ed1a",
+  "original_report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+  "historical_success_report_sha256": "ceeddca221c11cf26167b377698a02518d55cdedbcb1602c630dee30756cc2a1",
+  "intervention_scope": "Whole explanation-paragraph replacement versus introductory paragraph removal (includes renumbering); not pure detail or pure position.",
+  "original_15_unchanged": true,
+  "labels_sent_to_model": false,
+  "budget": {
+    "max_calls": 8,
+    "max_seconds": 2400,
+    "request_seconds": 300,
+    "output_cap": 32768,
+    "input_ceiling": 342660,
+    "total_tokens": 604804,
+    "estimated_uncached_cny": "10.081312",
+    "hard_billing_cap": false
+  },
+  "stop_rule": "Stop on transport/channel/identity/budget/security failure. Record schema defects without repair; preplanned semantic failures are observations, not accepted reports.",
+  "decisions": {
+    "first_round_same_target_outcome": "Stop after four: no distinguishable factor pattern; no stability claim.",
+    "first_round_different_target_outcome": "Run the four fixed conditions once more in reverse order, then stop.",
+    "within_cell_flip": "Do not adopt a text/layout intervention from this batch; qualify reliability before further prompt changes.",
+    "repeat_consistent_factor_pattern": "Context sensitivity signal only; test a source-preserving general input intervention with true-error controls before adoption.",
+    "all_pass": "No factor attribution or stability proof; do not credit one factor or inherit original-15 qualification.",
+    "all_fail": "No supported context intervention; stop this line.",
+    "incomplete": "No full factorial conclusion; retain cost and unusable outputs."
+  },
+  "production_admitted": false,
+  "semantic_fix_verified": false,
+  "qualification_evidence": false
+}

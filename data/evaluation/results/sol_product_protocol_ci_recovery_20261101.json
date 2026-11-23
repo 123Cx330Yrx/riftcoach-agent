@@ -1,0 +1,71 @@
+{
+  "at_utc": "2026-11-01T01:54:58.391544+00:00",
+  "ci_id": 41256378646,
+  "head": "ed1c1e8a0f3b789d1b7601a50738406e5c1559ae",
+  "conclusion": "cancelled",
+  "jobs": [
+    {
+      "name": "packaging-smoke",
+      "conclusion": "success",
+      "databaseId": 124700305163
+    },
+    {
+      "name": "pytest-shards (1)",
+      "conclusion": "success",
+      "databaseId": 124700305253
+    },
+    {
+      "name": "postgres-migrations",
+      "conclusion": "success",
+      "databaseId": 124700305257
+    },
+    {
+      "name": "pytest-shards (2)",
+      "conclusion": "failure",
+      "databaseId": 124700305261
+    },
+    {
+      "name": "web-checks",
+      "conclusion": "cancelled",
+      "databaseId": 124700305328
+    },
+    {
+      "name": "pytest-shards (3)",
+      "conclusion": "success",
+      "databaseId": 124700305341
+    },
+    {
+      "name": "pytest-shards (0)",
+      "conclusion": "success",
+      "databaseId": 124700305394
+    },
+    {
+      "name": "pytest",
+      "conclusion": "failure",
+      "databaseId": 124719074852
+    }
+  ],
+  "evidence": {
+    "ci-terminal.json": "1c5863edebbedc074b4c9a55e040dc268e7b2eb00cf315dc32fd4e65a9e05961",
+    "ci-shard2-failure.log": "3a752b51722e72fbc4073751ea0c1802d88ee9e5451c33c770131fb1c4282f33",
+    "ci-web-cancelled.log": "337d9709ff88cde920fb6f337d9a655ae2dfe10b17a04f231c067e0fd1497a76",
+    "waiter-protocol-exit.json": "82918567da9d61a0e79f24e44652f3459a4930c0b087fbb345694e1defa3c084"
+  },
+  "diagnosis": {
+    "shard2": "Frozen original15 retry defaults incorrectly compared with current product method defaults. Compare the patched function to its exact frozen source method.",
+    "web": "Dependency installation repeatedly reported Ign for azure.archive.ubuntu.com, then no progress until cancellation at the 60-minute job limit. No browser tests ran; this is infrastructure evidence, not product acceptance."
+  },
+  "repair": "Only the historical adapter test assertion changes; current product code and frozen fixture bytes unchanged.",
+  "validation": {
+    "targeted_tests": 23,
+    "passed": true,
+    "new_model_requests": 0,
+    "real_key_reads": 0
+  },
+  "authorization_sha256": "a225259ab6a110762c015168711bba0d456afd799d27e3d95bb0f52754f58c31",
+  "next_control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-protocol-ci-recovery-20261101",
+  "next_execution_root": "D:/riftcoach-sol-product-protocol-ci-recovery-execution-20261101",
+  "budget_unchanged": true,
+  "deadline_unchanged": true,
+  "attempt12_created": false
+}

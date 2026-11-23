@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
+import { TASK_EVENT_KINDS } from "./wire"
 
 import {
   createTaskEventStream,
@@ -42,6 +43,15 @@ class FakeEventSource implements EventSourceLike {
 }
 
 describe("one native EventSource lifecycle", () => {
+  it.each(TASK_EVENT_KINDS)("accepts the backend event kind %s without dropping the stream", kind => {
+    const source = new FakeEventSource()
+    const onEvent = vi.fn()
+    createTaskEventStream({ taskId: TASK_ID, runId: RUN_ID,
+      eventSourceFactory: () => source, onEvent, onState: vi.fn(), onTerminal: vi.fn() })
+    source.emit("task.lifecycle", JSON.stringify({ ...JSON.parse(payload(1)), event_kind: kind }), "1")
+    expect(onEvent).toHaveBeenCalledOnce()
+    expect(source.close).not.toHaveBeenCalled()
+  })
   it("accepts cursor jumps, ignores replay duplicates and closes on terminal", () => {
     const source = new FakeEventSource()
     const events: number[] = []

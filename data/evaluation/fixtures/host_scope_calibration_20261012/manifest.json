@@ -1,0 +1,17 @@
+{
+  "kind": "synthetic-host-scope-calibration-v1",
+  "materials_sha256": "100427c3fc61538c5157828bd6d38f050c32836bb994fc8db2fa41c6d129e46b",
+  "task_sha256": "f8b2460420c55bbec847d360db660a9db8a9b798f267a45c70ba627771b9a93a",
+  "full_policy_sha256": "0faece18a3e5885682842ec6d66dc17e2b7f7b2f0dca3a93a830d8a8f2b84f90",
+  "case_ids": [
+    "K6",
+    "B4",
+    "Q7",
+    "T9",
+    "N2",
+    "R3"
+  ],
+  "provider_calls": 0,
+  "native_reviews": 0,
+  "limitations": "Preparatory synthetic diagnostics only. No enforced OS file sandbox or empirical Host reliability claim."
+}

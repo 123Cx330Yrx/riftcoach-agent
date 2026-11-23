@@ -1,0 +1,59 @@
+{
+  "version": "role-continuation-campaign-v1",
+  "profile": "correction-scope",
+  "identity": {
+    "contract": {
+      "contract_id": "recent-form-review-roles-v1",
+      "version": "1.5.4",
+      "scope": "unadmitted_opt_in",
+      "sha256": "68f341bda79cc3c0b8d2e94fdfb02baa1e7b5572b3c4c16770aa61fa8f0b6193"
+    },
+    "workflow_id": "golden-role-correction-scope-workflow-v1",
+    "source_projection": "native-coarse-source-projection-v1",
+    "manifest_sha256": "24a876ae985244f552a663147720fa0435bc49b53e1c41b857ff2f2aad6c4201"
+  },
+  "original15_plan_sha256": "e232a64672b1ab64bb7bca3e5bc8e766bad33594ff99997cde7db9d12d78bf15",
+  "original_batch_budget": {
+    "max_calls": 35,
+    "max_tokens": 3386880,
+    "max_seconds": 10500
+  },
+  "parents": [
+    {
+      "run_directory": "data/runs/role_task_observation/correction-scope-role-qualification-v1",
+      "closed_export": "data/evaluation/results/golden_correction_scope_qualification_result_v1.json",
+      "closed_export_sha256": "ee06f2188ddc70dfc5aafbc0bba4518f572b22d862c7382ff84ca950cdb9ce91",
+      "preparation": "data/evaluation/results/golden_correction_scope_qualification_preparation_v1.json"
+    },
+    {
+      "run_directory": "data/runs/role_task_observation/correction-scope-unexecuted-v1",
+      "closed_export": "data/evaluation/results/golden_correction_scope_unexecuted_result_v1.json",
+      "closed_export_sha256": "5f22b873a8f2506b46abaaa44fd80a36fb173a5e6df86f2748ba402abaa96309",
+      "preparation": "data/evaluation/results/golden_correction_scope_unexecuted_preparation_v1.json"
+    },
+    {
+      "run_directory": "data/runs/role_task_observation/correction-scope-post-host-audit-v1",
+      "closed_export": "data/evaluation/results/golden_correction_scope_post_host_audit_result_v1.json",
+      "closed_export_sha256": "d536cd2a99893c73c3aa022dc613158fdda90574517a732bb1af8ba959a33069",
+      "preparation": "data/evaluation/results/golden_correction_scope_post_host_audit_preparation_v1.json"
+    }
+  ],
+  "last_closed_export_sha256": "d536cd2a99893c73c3aa022dc613158fdda90574517a732bb1af8ba959a33069",
+  "target": {
+    "experiment": "correction-scope-campaign-v1",
+    "run_directory": "data/runs/role_task_observation/correction-scope-campaign-v1",
+    "preparation": "data/evaluation/results/golden_correction_scope_campaign_preparation_v1.json",
+    "closed_export": "data/evaluation/results/golden_correction_scope_campaign_result_v1.json",
+    "state": "unstarted",
+    "closed_export_sha256": null
+  },
+  "host_review_submission_mode": "independent-drafts-v1",
+  "source_files": [
+    "scripts/role_continuation.py",
+    "scripts/run_correction_scope_unexecuted.py",
+    "scripts/role_stage_review_drafts.py",
+    "scripts/write_role_stage_decision.py",
+    "scripts/run_role_task_observation.py",
+    "scripts/qualify_role_observations.py"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "version": "retained-report-fresh-preparation-v1",
+  "recorded_at": "2026-10-29T02:11:32.504049+00:00",
+  "operator": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-retained-fresh-20261029",
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-retained-fresh-20261029-control",
+  "plan_sha256": "670d8f83e7c161fefe090de4b194a094e27d79cbbbef2b29f73791ba506900d9",
+  "execution_head": "7de9ca5893c770e1f88869b158c314cfd33252b2",
+  "execution_cwd": "D:/riftcoach-retained-fresh-execution-20261029",
+  "verified_preparation": {
+    "plan_sha256": "670d8f83e7c161fefe090de4b194a094e27d79cbbbef2b29f73791ba506900d9",
+    "head": "7de9ca5893c770e1f88869b158c314cfd33252b2",
+    "cwd": "D:/riftcoach-retained-fresh-execution-20261029",
+    "python": "D:/riftcoach-agent-rq192-pr/.venv/Scripts/python.exe",
+    "clean": true,
+    "strict_native_preflight_replay": true,
+    "native": {
+      "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+      "independent_thread_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+      "verified": true,
+      "independent_agent_path": "/root/necessity_independent",
+      "input_readability": {
+        "thread_id": "01a166cd-5e17-7fc2-9cbf-b7c9751a9936",
+        "turn_id": "01a18564-b801-7ab1-ad2d-9ada2d282ac2",
+        "dispatch_id": "amsg_01a18564-b885-77b3-a93e-abbf36000a1b",
+        "current_input_readable": false,
+        "future_input_guaranteed": false,
+        "current_route_and_final_available": true,
+        "host_review_evidence_policy": "native-final-attestation-v1"
+      }
+    },
+    "native_preflight": {
+      "guard_sha256": "70796cfc876137a1cbd4db13ebe51fe0698ec7142bccc566edb6e03690fd3ff1",
+      "checkpoint_sha256": "6b6b3ad70adb72c3a5f2520c784d4e24c2b7f74ecc8c055ebfb1145b90840935"
+    },
+    "source_files": 952,
+    "original_parent_inventories_unchanged": true,
+    "source_materials_rebuilt": true,
+    "preflight_stdout_sha256": "3b7748be183e9aa3039891fc33c1aa85c046b34d1610fffbb44a0e606fab9966",
+    "submit_stdout_sha256": "3d124c9ebe318283ca102831385e23ed48d9b88c54d4ebddb7656a98fd6f606a",
+    "new_provider_requests": 0,
+    "key_reads": 0,
+    "execution_prepared": true,
+    "authorization_present": false,
+    "ci_run": "40803681477",
+    "ci_status_last_observed": "in_progress",
+    "publication_allowed": false
+  },
+  "control_file_sha256": {
+    "plan-reference.json": "4cb6ab6d8192d9f9041c073fea0ec0746113895ee42e580d84bf76c762bfccb6",
+    "preparation-verified.json": "7d3178935111e67e0e07472a78c450185cc55dc319f5728bb7c4e64f174b5545",
+    "native-preflight-proof.json": "c75924e008f9926e56a810737e7f4761b0b26e5079b004dc46b667e048171e3b",
+    "native-preflight-start.stdout.jsonl": "3b7748be183e9aa3039891fc33c1aa85c046b34d1610fffbb44a0e606fab9966",
+    "native-preflight-submit.stdout.jsonl": "3d124c9ebe318283ca102831385e23ed48d9b88c54d4ebddb7656a98fd6f606a",
+    "authorization.proposal.json": "f176728be63d36ffcbed76e8f0dd27f748f2fefc418cbc17072b69d123f0316f",
+    "run_segment.py": "20687d68e3148370f72dcc54b67a9f02c8415c58f013e5627b5f2c51be432711",
+    "start-authorized.ps1": "95c892b18915c2f1bcb46ab30667636d0b6122314691a782d0522a671ad1d472"
+  },
+  "local_verification": {
+    "launcher_tests_passed": 9,
+    "launcher_tests_seconds": 73.75,
+    "seal_strengthening_followup_passed": 1,
+    "seal_strengthening_followup_seconds": 34.19,
+    "control_wrapper_compile": true,
+    "missing_authorization_check": "awaiting_authorization_or_native_preflight",
+    "frozen_checkout_clean": true
+  },
+  "ci": {
+    "run_id": "40803681477",
+    "head": "7de9ca5893c770e1f88869b158c314cfd33252b2",
+    "last_observed_status": "in_progress",
+    "successful_jobs": [
+      "packaging-smoke",
+      "postgres-migrations",
+      "web-checks"
+    ],
+    "pending_jobs": [
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)"
+    ],
+    "workflow_cancel_in_progress_configured": false
+  },
+  "authorization_present": false,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "business_execution_exists": false,
+  "next_action": "Request authorization for two retained-report fresh reviews; send only after exact execution HEAD CI succeeds.",
+  "qualified": false,
+  "publication_allowed": false
+}

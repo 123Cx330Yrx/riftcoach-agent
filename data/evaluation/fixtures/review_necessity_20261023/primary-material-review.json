@@ -1,0 +1,137 @@
+{
+  "kind": "primary-full-source-material-audit-v1",
+  "reviewer": "primary",
+  "independent": false,
+  "cases": {
+    "a": "00338bbc5e5e81a06ad462069024027be255411fb1221cba55c0abf9da3c2d32",
+    "b": "92904899ae6c7b95b4f75a89d3ff510be8c7d6739dfee77fe7ebe292360c33bc",
+    "c": "7141e301c580d024812de74baa091c46dd7aa2557fa8e967d3c0d7f8fb9952f7"
+  },
+  "context_sha256": "f5520898301e46c7682e2781f469700298dcbdc64516ff56dada65643c0358d3",
+  "source_pack_sha256": "b880a30307062d26883a71337a00d6025c9f8c4a1cee2c29679d6cb3fa04377d",
+  "complete_report_blocks": {
+    "a": 28,
+    "b": 28,
+    "c": 28
+  },
+  "full_source_keys": [
+    "source_index",
+    "facts_and_provenance",
+    "generation_facts",
+    "deterministic_source_facts",
+    "knowledge",
+    "user_utterance"
+  ],
+  "computed": {
+    "mid_cs": "8.91",
+    "mid_win_cs": "8.81",
+    "mid_loss_cs": "9.01",
+    "syndra_damage_share": "27.5",
+    "vex_kp": "77.5",
+    "locke_kp": "36.4"
+  },
+  "coverage": [
+    {
+      "blocks": [
+        1,
+        2,
+        4,
+        9,
+        12,
+        15,
+        19,
+        23
+      ],
+      "finding": "Titles/structure; no independent factual claims."
+    },
+    {
+      "blocks": [
+        3
+      ],
+      "finding": "Observer/reader identity explicit; 5 games, queue420,2W3L,40%,4mid/1support and mixed win/loss values match. No reader baseline or causal claim."
+    },
+    {
+      "blocks": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "finding": "Syndra KDA14/5/10,DPM1430.11,CS8.66,share27.5%; Vex8/5/23,CS8.95,KP77.5%; Anivia2deaths/0before15; midCS8.91 match sources. K1 limits are retained."
+    },
+    {
+      "blocks": [
+        10
+      ],
+      "finding": "a/b explicitly retain uncertain video hypotheses and statistical non-causation supported by K2/K3; Locke605.5/KP36.4 are correct. c independently asserts established causes without process evidence and contradicts its earlier caveat. Necessary error only in c."
+    },
+    {
+      "blocks": [
+        11,
+        18,
+        22
+      ],
+      "finding": "Camille1/13/11,7early deaths,GPM302.59 and single support game supported; conditional review and sampling do not infer support ability. OP.GGsupporttier4/rank35 supported."
+    },
+    {
+      "blocks": [
+        13,
+        14
+      ],
+      "finding": "Mixed averages reproduce source_reported aggregates; vision52.67vs33.5 and earlydeaths2.67vs2.5 differ by.17. No stable ability or causal inference."
+    },
+    {
+      "blocks": [
+        16,
+        20
+      ],
+      "finding": "Goal unspecified/training positions empty. Conditional position practice, marking observed deaths/returns/teamfight nodes as review checks supported by K3; no claim those causes occurred."
+    },
+    {
+      "blocks": [
+        17,
+        21
+      ],
+      "finding": "Mid OP.GGVex tier2/rank14/win52%/pick.03, Syndra tier2/rank12,Locke tier2/rank10,Anivia tier3/rank26 match source snapshots. Position/time/uncertain patch and no past-causation boundary retained. a arbitrary7.5 target lacks source. b/c only record a metric; added8.81/9.01 arithmetic correct. K4 supports observable goals/cycle/review, not7.5."
+    },
+    {
+      "blocks": [
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "finding": "Five Riot games/mixed positions/single champion samples; DataDragon16.17.1 mapping; official16.17 publication2026-08-25 identity only; frozen OP.GG2026-09-10 snapshot only. K1-K4 names/sections and uses match all four supplied knowledge chunks."
+    }
+  ],
+  "label_decisions": {
+    "a": {
+      "maintain": true,
+      "expected": "needs_revision",
+      "necessary_blocks": [
+        21
+      ]
+    },
+    "b": {
+      "maintain": true,
+      "expected": "pass",
+      "necessary_blocks": []
+    },
+    "c": {
+      "maintain": true,
+      "expected": "needs_revision",
+      "necessary_blocks": [
+        10
+      ]
+    }
+  },
+  "contrast_checks": "Each sole replacement is unique and other complete report blocks/source data remain identical.",
+  "scope": "Primary acceptance of author-controlled development labels, not independent acceptance, paid output acceptance, fresh review, or qualification.",
+  "labels_usable_for_development": true,
+  "independent_acceptance": false,
+  "model_semantic_improvement": false,
+  "provider_requests": 0,
+  "key_reads": 0,
+  "publication_allowed": false
+}

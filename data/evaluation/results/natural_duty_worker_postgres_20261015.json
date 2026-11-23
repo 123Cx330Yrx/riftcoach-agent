@@ -1,0 +1,92 @@
+{
+  "schema_version": "natural-duty-worker-postgres-validation-v1",
+  "created_at": "2026-10-15T03:49:21.717497+00:00",
+  "base_head": "49d7ddd233cab7adc237eaf276d0f2ce0443c800",
+  "test_file": "tests/test_natural_duty_worker_postgres.py",
+  "test_sha256": "af372f23e65ca4511a1b9436f924699a9610bfc7c1a1258e349bb3f7731a5de2",
+  "passed": 7,
+  "skipped": 0,
+  "duration_seconds": 26.69,
+  "real_components": [
+    "Postgres17",
+    "FastAPI",
+    "ReviewWorker",
+    "RecentReviewTaskExecutor",
+    "NaturalDutyCandidate",
+    "AgentLoop",
+    "LocalRAG",
+    "DispatchAwareRuntime",
+    "Trace",
+    "FileRunReceiptStore",
+    "owner_usage_API"
+  ],
+  "scripted_components": [
+    "model_responses",
+    "Riot_source"
+  ],
+  "outcomes": [
+    {
+      "scenario": "initial_pass",
+      "calls": 4,
+      "sql_status": "succeeded",
+      "report_available": false
+    },
+    {
+      "scenario": "repair",
+      "calls": 6,
+      "sql_status": "succeeded",
+      "report_available": false
+    },
+    {
+      "scenario": "cancel_after_1",
+      "calls": 1,
+      "sql_status": "cancelled",
+      "report_available": false
+    },
+    {
+      "scenario": "cancel_after_4",
+      "calls": 4,
+      "sql_status": "cancelled",
+      "report_available": false
+    },
+    {
+      "scenario": "cancel_after_5",
+      "calls": 5,
+      "sql_status": "cancelled",
+      "report_available": false
+    },
+    {
+      "scenario": "cancel_after_6",
+      "calls": 6,
+      "sql_status": "cancelled",
+      "report_available": false
+    },
+    {
+      "scenario": "foreign_cancel_after_4",
+      "calls": 6,
+      "sql_status": "succeeded",
+      "report_available": false
+    }
+  ],
+  "assertions": [
+    "Actual 10 input and 10 output known tokens per response persist in Trace and owner usage projection.",
+    "No next model send after owner cancellation; foreign cancellation returns 404.",
+    "No published local report or public report access; owner report 409, nonowner usage/report/task 404.",
+    "Terminal tasks are not reclaimed; repeat cancellation does not append events."
+  ],
+  "external_model_requests": 0,
+  "production_code_changed": false,
+  "default_registration_added": false,
+  "product_qualified": false,
+  "natural_model_consumption_proven": false,
+  "temporary_database": {
+    "container": "riftcoach-natural-duty-test-20261015",
+    "image": "postgres:17-alpine",
+    "host": "127.0.0.1",
+    "port": 10803,
+    "product_database_used": false,
+    "removed": true
+  },
+  "docker_recovery": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-docker-recovery-20261015\\recovery-result.json",
+  "public_ci_added": true
+}

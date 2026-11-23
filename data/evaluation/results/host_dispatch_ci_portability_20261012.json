@@ -1,0 +1,53 @@
+{
+  "version": "host-dispatch-ci-portability-v1",
+  "recorded_at": "2026-10-12T13:47:41.317325+00:00",
+  "frozen_head": "549220ab1b8c7a4edcd93dd74ab6c366c9c2a733",
+  "failed_ci_run": "38254464870",
+  "failed_job": "114828831807",
+  "plan_sha256": "8b93463e04a5d4321727ba06188914047d12215d097a12fc0091eabb2e3d0dda",
+  "failure": "Substring assertion rejects valid POSIX absolute /bin/python -m command",
+  "tests": {
+    "result": "28 passed",
+    "seconds": 107.43,
+    "command": "python -m pytest tests/test_dispatch_assertions.py tests/test_host_review_workspace.py tests/test_document_full_report_remaining_initial.py -q --tb=short",
+    "environment": "Windows; POSIX and Windows command-string regression cases included; public Linux repair CI pending"
+  },
+  "local_setup_failure": {
+    "result": "13 failed, 11 passed, 4 errors",
+    "reason": "New checkout CRLF conversion changed frozen dataset bytes; affected assertions not reached",
+    "resolution": "Restored 2386 pristine text files to exact HEAD blob bytes; index refreshed without content changes"
+  },
+  "package_verification": {
+    "checkout": "D:\\riftcoach-agent-rq192-pr",
+    "verified": true,
+    "requests": 4,
+    "source_sha256_all_match": true,
+    "test_fix_paths_bound_by_plan": false,
+    "files": {
+      "plan.json": "cc509040e24c82fb08b5d802b467ecdf14979e35371504a53bb2252db171bd3a",
+      "R4-baseline-initial/material.json": "cb304ab677961a4ad32afd4e3623f9fd5fd9481abb36096422f114be91bd5b08",
+      "R4-baseline-initial/prepared-request.json": "1abcf77d5495ae0e8fe4cd8cfdc127e8e5994ff4c25773a0f34b0915a83c1ab5",
+      "R4-relation-contrast-initial/material.json": "d325da93fa56dbb8e25c19a0b3a84af1528480ffc2ae0156dcfecf2fe98ea748",
+      "R4-relation-contrast-initial/prepared-request.json": "08c207d4b05ba7787cb798f82dacd392d716560d5fd7c5422f2b26e7882a3c07",
+      "T9-baseline-initial/material.json": "3d0da6b298adfb8d6728114730b38a75dc6b186b0ae0905446d20fe110d09e49",
+      "T9-baseline-initial/prepared-request.json": "6fa3e2e0a775969afe9cffbdfcd8981c3af659111c18f3140781b875b3b43890",
+      "T9-relation-contrast-initial/material.json": "a53bd72b8f755e838d21b988c8201eaa3c09b7091e0d54a849524f03357dcb38",
+      "T9-relation-contrast-initial/prepared-request.json": "1be565d2a9156d8a562231f0493c04b0216b03e685b7c919866b5ffc452c3b58"
+    },
+    "isolated_checkout_verify": "Rejected source raw-byte differences from CRLF/LF checkout; package not rebuilt or changed. Original execution checkout verify passed."
+  },
+  "operator_evidence": {
+    "authorization.json": "05b417b175dccfc6b7c8026dd83e525d58590e125f59d9eaa08834e5b6d16a6d",
+    "waiter-operator-stop.json": "32dc20026bb8d7affe0f0c33cdb184da1cf2d4893656ebc0516ee4ee8ecafb81",
+    "ci-shard0.log": "a14f62ea14b9310cec6155a0b502c62cd4ed1e32b46f81785b0bbf4fcb47dfb9"
+  },
+  "original_authorization_expiry": "2026-10-13T13:18:08.784319Z",
+  "provider_calls": 0,
+  "http_requests": 0,
+  "business_submissions": 0,
+  "new_qualifications": 0,
+  "run_exists": false,
+  "execution_exists": false,
+  "automation_status": "PAUSED",
+  "next_action": "Push isolated repair for exact-HEAD CI, then obtain explicit migration binding before first paid execution. Preserve original authorization and expiry."
+}

@@ -1,0 +1,237 @@
+{
+  "recorded_at_utc": "2026-10-31T20:04:39.892630+00:00",
+  "status": "local_zero_send_rejection_recovery_in_progress",
+  "ci": {
+    "id": 41229639171,
+    "head": "b3ee03130b44de5825ed9be119bc57d91465bf58",
+    "conclusion": "success"
+  },
+  "execution": {
+    "continuation": {
+      "checkpoint_sha256": "2cffffb7c3bc7e192ddb88b14f20f2b3c4b9dbddc04d8c8a97a10c08157c3d7d",
+      "profile": "sol-dual-product-v1",
+      "publication_allowed": false,
+      "reason": null,
+      "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+      "session_accounting": {
+        "known_tokens": 29323,
+        "requests_observed": 8,
+        "requests_reserved": 8,
+        "retries": 5,
+        "scope": "cumulative_session",
+        "unknown_token_reservation": 366910,
+        "unresolved_intents": 0
+      },
+      "status": "succeeded",
+      "task_id": "941d238c-972b-4b5a-bedc-302af12d1504"
+    },
+    "database_dump_sha256": "288a96dd362da2af19534182f818d8e514c81dd0fc2575019c82ec257d02ff49",
+    "inherited_model_requests": 8,
+    "new_model_entries": 0,
+    "run_id": "review_1a568160d5aa44b5a2acd2f72fb679f8",
+    "segments": 1,
+    "status": "succeeded",
+    "task_id": "941d238c-972b-4b5a-bedc-302af12d1504"
+  },
+  "actual_active_seconds": 836.8129999999801,
+  "old_prefix_verified_files": 131,
+  "snapshot": {
+    "path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-stream-ci-recovery-20261101\\attempt-10\\local-rejection-snapshot.json",
+    "sha256": "0ee64630604dd3e5c815298553ea5c6e5cef9d267673a7c9bfcf164bc05b0932"
+  },
+  "browser": {
+    "actual_api": true,
+    "actual_sql": true,
+    "actual_model_usage": {
+      "scope": "cumulative_session",
+      "requests_reserved": 8,
+      "requests_observed": 8,
+      "known_tokens": 29323,
+      "unknown_token_reservation": 366910,
+      "retries": 5,
+      "unresolved_intents": 0
+    },
+    "report_visible": false,
+    "rendered_report_sha256": null,
+    "widths": [
+      {
+        "width": 1440,
+        "noHorizontalOverflow": true
+      },
+      {
+        "width": 320,
+        "noHorizontalOverflow": true
+      }
+    ],
+    "writes": [
+      "/api/auth/session",
+      "/api/auth/session"
+    ],
+    "responses": [
+      {
+        "path": "/src/api/client.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/liveWorkbenchApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/playerLinkApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/taskEventStream.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/decoders.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/taskContinuationApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/recentReviewApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/wire.ts",
+        "status": 200
+      },
+      {
+        "path": "/api/auth/session",
+        "status": 200
+      },
+      {
+        "path": "/api/player-profiles",
+        "status": 200
+      },
+      {
+        "path": "/api/player-profiles/cfc1494a-b227-42cd-a875-af1d6aa8499e/reviews/recent/latest",
+        "status": 200
+      },
+      {
+        "path": "/api/runs/review_1a568160d5aa44b5a2acd2f72fb679f8/product-state",
+        "status": 200
+      },
+      {
+        "path": "/api/tasks/941d238c-972b-4b5a-bedc-302af12d1504/events",
+        "status": 200
+      },
+      {
+        "path": "/api/tasks/941d238c-972b-4b5a-bedc-302af12d1504",
+        "status": 200
+      },
+      {
+        "path": "/api/runs/review_1a568160d5aa44b5a2acd2f72fb679f8/usage",
+        "status": 200
+      },
+      {
+        "path": "/src/api/liveWorkbenchApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/client.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/playerLinkApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/taskEventStream.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/decoders.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/taskContinuationApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/recentReviewApi.ts",
+        "status": 200
+      },
+      {
+        "path": "/src/api/wire.ts",
+        "status": 200
+      },
+      {
+        "path": "/api/auth/session",
+        "status": 200
+      },
+      {
+        "path": "/api/player-profiles",
+        "status": 200
+      },
+      {
+        "path": "/api/player-profiles/cfc1494a-b227-42cd-a875-af1d6aa8499e/reviews/recent/latest",
+        "status": 200
+      },
+      {
+        "path": "/api/tasks/941d238c-972b-4b5a-bedc-302af12d1504/events",
+        "status": 200
+      },
+      {
+        "path": "/api/tasks/941d238c-972b-4b5a-bedc-302af12d1504",
+        "status": 200
+      },
+      {
+        "path": "/api/runs/review_1a568160d5aa44b5a2acd2f72fb679f8/product-state",
+        "status": 200
+      },
+      {
+        "path": "/api/runs/review_1a568160d5aa44b5a2acd2f72fb679f8/usage",
+        "status": 200
+      }
+    ],
+    "evidence": null
+  },
+  "diagnosis": {
+    "original_exception_stack_recorded": false,
+    "replicated_exception": {
+      "frames": [
+        {
+          "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-stream-ci-recovery-20261101\\zero-send-diagnosis\\reproduce.py",
+          "function": "audited_guard",
+          "line": 154
+        },
+        {
+          "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-stream-ci-recovery-20261101\\zero-send-diagnosis\\reproduce.py",
+          "function": "guarded",
+          "line": 146
+        },
+        {
+          "file": "C:\\Users\\33502\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pathlib.py",
+          "function": "read_bytes",
+          "line": 1051
+        }
+      ],
+      "type": "PermissionError"
+    },
+    "locked_inventory_path": ".continuation/session.lock",
+    "fixed_probe_status": "paused",
+    "fixed_probe_reason": "diagnostic_send_boundary",
+    "both_probes_real_key_reads": 0,
+    "both_probes_new_model_requests": 0,
+    "probe_only_root_identity_projection": true,
+    "original_or_frozen_files_changed": false
+  },
+  "cleanup": {
+    "actual_container_removed": true,
+    "original_probe_container_removed": true,
+    "fixed_probe_container_removed": true,
+    "waiter_exit": {
+      "execution_failure_recorded": false,
+      "reason": "single_child_returned",
+      "returncode": 0
+    }
+  },
+  "next": "Preserve current terminal and retry decision; prepare create-only same-task recovery from attempt-10 latest DB/checkpoint, verify committed prefix and task limits, then ordinary resume. No old DB rollback or paid retry until recovery verified.",
+  "stage8e_completed": false,
+  "default_admission_changed": false
+}

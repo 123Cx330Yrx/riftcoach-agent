@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-11-03T01:48:15.218273+00:00",
+  "automation_id": "riftcoach-ci",
+  "kind": "chat-same-task-review-continuation-authorized-v1",
+  "status": "ACTIVE",
+  "interval_minutes": 5,
+  "authorization_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-chat-guard-recovery-20261103\\continuation-authorization.json",
+  "authorization_sha256": "3f4d5ef8be4e1d45c1c136c4b0c9003957e290da9ede1c1249bb0595e14aa65e",
+  "ci_run_id": 41558836855,
+  "head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+  "purpose": "Wait for all 12 same-HEAD CI jobs and continue only the approved same-task review scope.",
+  "live_paid_runner_created": false,
+  "new_model_requests": 0,
+  "user_quote": "\u786e\u8ba4\u5e76\u4e14\u5f00\u4e2a\u4efb\u52a1\u7b49",
+  "task_id": "04c9a865-db03-4edb-af9e-70cb8d719db0",
+  "run_id": "review_ee91ab480ecf4c4992f82ec08cc4bbf4",
+  "scope": {
+    "new_tasks": 0,
+    "new_generation_calls": 0,
+    "max_new_review_http": 4,
+    "manual_retry": false,
+    "path": "two initial reviews; only if required one deterministic application and two fresh reviews of that identical report",
+    "stop_on_new_failure": true,
+    "automatic_paid_retry": false,
+    "total_calls": 8,
+    "total_tokens_including_unknown": 401920,
+    "total_active_seconds": 900,
+    "per_request_timeout": 300,
+    "per_request_output_cap": 16384,
+    "expires_at": "2026-11-03T16:30:06+00:00",
+    "extend_deadline": false
+  },
+  "ci_observed": {
+    "status": "in_progress",
+    "success_jobs": 7,
+    "running_pytest_shards": 4,
+    "aggregate_pending": true
+  },
+  "p3_accepted": false,
+  "external_runner_preparation": {
+    "at": "2026-11-03T02:00:26.422975+00:00",
+    "runner": "run_review_segment.py",
+    "runner_sha256": "0a7e45ec3f9eab9f61f68e0613a0ead7e18a7e2926584daf461f05b05e5d4095",
+    "browser_script_sha256": "f0bd8cb4ecc20a5a1f7b97c2948dce63e7ce32a134af4d96c8859fa6b455acbb",
+    "authorization_sha256": "3f4d5ef8be4e1d45c1c136c4b0c9003957e290da9ede1c1249bb0595e14aa65e",
+    "head": "a70451060c9d0f5201bd0b154b96a85f2567c9ef",
+    "ci_run_id": 41558836855,
+    "actual_locked_preflight": "passed",
+    "request": {
+      "duty": "facts",
+      "stage": "initial",
+      "max_tokens": 16384,
+      "timeout_s": 300.0,
+      "reservation_tokens": 78924,
+      "normalized_request_sha256": "b9d22eda8d670017a7739e9c007b082f5015d46c4b56b3e73eb54abc8fc259cd"
+    },
+    "accounting": {
+      "scope": "cumulative_session",
+      "requests_reserved": 3,
+      "requests_observed": 3,
+      "known_tokens": 29849,
+      "unknown_token_reservation": 0,
+      "retries": 0,
+      "unresolved_intents": 0
+    },
+    "negative_scope_checks": {
+      "oversized_output": "rejected",
+      "oversized_timeout": "rejected",
+      "unknown_cost": "rejected",
+      "retry": "rejected",
+      "unresolved_intent": "rejected",
+      "exhausted_tokens": "rejected",
+      "exhausted_time": "rejected",
+      "extra_segment": "rejected"
+    },
+    "new_model_requests": 0,
+    "real_key_reads": 0,
+    "execution_claim_created": false,
+    "live_sql_worker_validation": "Existing preparation validated ordinary resume/Worker to the first review; this external runner has only read-only preflight and scope checks, not a new live Worker run."
+  },
+  "record_semantics": "Historical authorization/preflight observation at recorded_at; ACTIVE does not describe current execution state.",
+  "terminal_record": "data/evaluation/results/sol_product_chat_review_continuation_completed_20261103.json"
+}

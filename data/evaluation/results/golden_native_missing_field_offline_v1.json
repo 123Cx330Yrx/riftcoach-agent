@@ -1,0 +1,45 @@
+{
+  "analyst_authored_block": 14,
+  "experiment": "golden-native-issues-review-v3.4",
+  "explicit_replacement_scripted_path": [
+    {
+      "phase": "native_business_review",
+      "input_ceiling": 44628,
+      "output_reservation": 32768
+    },
+    {
+      "phase": "native_business_reassessment",
+      "input_ceiling": 47150,
+      "output_reservation": 32768
+    },
+    {
+      "phase": "native_business_revision",
+      "input_ceiling": 38052,
+      "output_reservation": 32768
+    },
+    {
+      "phase": "native_business_review",
+      "input_ceiling": 44630,
+      "output_reservation": 32768
+    },
+    {
+      "phase": "native_business_reassessment",
+      "input_ceiling": 44994,
+      "output_reservation": 32768
+    }
+  ],
+  "final_scripted_verdict": "pass",
+  "full_output_reservation": 383294,
+  "initial_raw_sha256": "8f6bff1cce57b22ce821edba8af1ad07acd9964c0b185af8c49ce087c1af0332",
+  "live_status": "offline_missing_field_reassessment",
+  "no_field_inference_from_prose": true,
+  "provider_calls": 0,
+  "real_model_correction_still_unproven": true,
+  "reassessment_raw_sha256": "eaa05e624116ee85080aa8d3aa1733f72a1414f7a25175ac14a295155daa2261",
+  "retained_after_field_addition_rejected": true,
+  "semantic_approval": false,
+  "shared_total_budget": 401920,
+  "unmodified_real_outputs_remain_rejected": true,
+  "exact_source_request_data_preserved": true,
+  "source_request_data_sha256": "a0e789f23705d441dfe1b5fb487a5ef9bdccab21870e0caf38211e25329e64d8"
+}

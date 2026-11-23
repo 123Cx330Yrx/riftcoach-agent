@@ -1,0 +1,167 @@
+{
+  "kind": "remaining4-readonly-native-engineering-review-v1",
+  "event_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce/01a126a4-ee1e-7e41-bc40-509e63eff849/msg_0bd309c68634713d016aca6946153c87d1ac61bccc1a075524",
+  "native_turn_status": "completed",
+  "native_error": null,
+  "tool_items": [
+    {
+      "type": "commandExecution",
+      "id": "exec-1a112963-a970-47e5-9d28-0d30537978ae"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-723203f6-3797-4bfe-be18-3f3c06f7de84"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-daa79268-05d6-48ce-ac30-563e95d1a926"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-acc58059-6b0d-4629-a85c-aede8eacd054"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-66edc618-f751-4cee-b9fa-3ca3f04b8b43"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-a59728ed-f277-4a0a-b283-cc6fe32e6848"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-dac91110-260b-486b-8f6c-8a7a52dd9cfa"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-9a136751-8f9f-4830-8866-26726133202b"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-21953bd8-2046-4f1d-af24-7d08d23fbe74"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-159cd77c-5491-40a6-b118-1cc122fb2674"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-961999d1-eae7-4141-9e86-50dcdaf4a347"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-73653b68-5b89-4c26-b7c3-45b99a9c7862"
+    },
+    {
+      "type": "contextCompaction",
+      "id": "01a126a5-d3bd-7021-818c-c4edb7fd96e1"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-c9f141f6-3166-4624-98a7-40c897447bc6"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-deef8085-ae81-4f6c-826c-0514e8c0571f"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-accc9dca-d333-47af-91bc-ccda9401c827"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-0f9c6389-5f7a-4e3e-a7b0-51a96807138a"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-c2bc59e3-1874-485f-94d4-ea9690d18bc6"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-629d6f49-b37b-4eb2-9901-2cb37a19d30c"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-0571bccf-7b8d-4bd6-a4b0-58efc48aab85"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-ea928a95-6b4d-402d-b5c7-9e60241c3163"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_b9d9da8830934538a91326d9cafe91cc"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-43ba3d39-53a4-4190-8857-990e9a6407ee"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-0d6e2317-79e5-47fd-84a5-670f812131db"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-c8ae6bf5-77be-4b0f-aaa4-76bb60b60790"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-2f2e7d6f-4e22-4c5c-beff-5b95586c7c22"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-5ec8b76c-fdc6-4340-bd40-229ad37caadc"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-4cf354c4-19f3-461b-a1ec-fad157719985"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_waqkDJcix9IQueqMXIqsGZeH"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-46758b8b-cde1-4b2a-b085-1d8101a9542f"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-3190ad46-773f-4391-b71f-2a92996dfc9f"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-5662d8fd-625e-4471-845b-15870a27a70d"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-0fbe63b3-e2dc-4119-a12b-f5c37153926b"
+    },
+    {
+      "type": "commandExecution",
+      "id": "exec-6d1437c2-e662-4a55-8411-30bc764ce58e"
+    },
+    {
+      "type": "subAgentActivity",
+      "id": "call_5b561ab3dec345d8b5b72980eb3446d6"
+    }
+  ],
+  "raw_final": "{\n  \"task\": \"remaining4_engineering_review\",\n  \"accepted\": true,\n  \"blocking_findings\": [],\n  \"scope\": {\n    \"keys\": [\"observed:2\", \"observed:3\", \"observed:4\", \"observed:5\"],\n    \"previous_run_restarted\": false,\n    \"previously_sent_cases_repeated\": false,\n    \"claim-scope:2_credit\": 0,\n    \"observed:1_credit\": 0,\n    \"execution_ready\": false\n  },\n  \"evidence\": [\n    {\n      \"check\": \"旧批冻结完整性\",\n      \"result\": \"旧8 seal 原始 SHA 与指定值一致；138 份原件全部逐项匹配，47 份冻结来源原始 SHA 全部匹配。\",\n      \"seal_sha256\": \"75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8\",\n      \"close_audit_sha256\": \"97b0b89682c093963fef7a3dbc93bfb593dfe5b2b27287143e816b7a30aa1937\"\n    },\n    {\n      \"check\": \"范围、请求与模块隔离\",\n      \"result\": \"实际 prepare 恰选 observed:2–5，各 cell 与旧 seal 精确一致，保留 candidate_request_sha256。新 runner/evidence 均为隔离对象；旧 adapter 的 RUN_IDS 无 remaining4，旧 evidence.runner 接线保持不变。\",\n      \"locations\": [\n        \"scripts/document_remaining4_adapter.py:12\",\n        \"scripts/document_remaining4_adapter.py:18\",\n        \"scripts/document_remaining4_adapter.py:30\",\n        \"scripts/document_remaining4_adapter.py:55\"\n      ]\n    },\n    {\n      \"check\": \"五个旧认证 stage 的真实 native 门\",\n      \"result\": \"通过只读 CodexReadOnlyClient 和 CodexHostReviewEventSource.fetch 实际核验：五项均 completed、精确 binding 匹配，并通过 native-final-attestation-v1。\",\n      \"stages\": [\n        \"claim-scope:5/initial\",\n        \"claim-scope:6/initial\",\n        \"claim-scope:6/revision\",\n        \"claim-scope:6/final\",\n        \"claim-scope:7/initial\"\n      ]\n    },\n    {\n      \"check\": \"observed:1 双派发拒绝\",\n      \"result\": \"原 turn completed、error=null、唯一终答可读，但同一 turn 存在两条 NEW_TASK。实际 fetch 仍拒绝 codex_review_host_rollout_dispatch_or_final_ambiguous，未补认证。\",\n      \"new_task_indices\": [505, 552],\n      \"message_index\": 550,\n      \"final_sha256\": \"a8c583113c865bf06debfb1a045192fe4010913f75210041a319f8cfe76e37bb\"\n    },\n    {\n      \"check\": \"native、checkpoint、replay 与停止规则\",\n      \"result\": \"新 adapter 保留旧 wait_reviews 和 submission 接线；认证仍核 native binding 与 checkpoint。离线测试验证 initial/revision/final 接缝、semantic rejection 后继续下一独立 case、abort/checkpoint 失败停止，以及 replay 账务一致和 seal 不可覆盖。\",\n      \"locations\": [\n        \"scripts/document_remaining8_adapter.py:86\",\n        \"scripts/run_full15_resumption_candidate.py:214\",\n        \"scripts/run_full15_resumption_candidate.py:359\",\n        \"scripts/full15_resumption_evidence.py:200\",\n        \"scripts/full15_resumption_evidence.py:431\",\n        \"scripts/full15_resumption_evidence.py:506\"\n      ]\n    },\n    {\n      \"check\": \"Linux 换行映射边界\",\n      \"result\": \"manifest 的47个路径及 frozen_raw_sha256 与旧 seal 精确一致，47个 LF SHA 均匹配，其中21份存在换行差异。映射仅由测试 fixture 临时 monkeypatch，production_override=false，生产代码无 manifest 引用；测试确认生产原始 SHA 校验拒绝归一化来源。\",\n      \"locations\": [\n        \"tests/test_document_remaining4_adapter.py:19\",\n        \"tests/test_document_remaining4_adapter.py:149\",\n        \"tests/fixtures/document_remaining4_frozen_newlines.json\"\n      ]\n    }\n  ],\n  \"budget\": {\n    \"max_calls\": 12,\n    \"role_calls\": {\"glm-5.3\": 8, \"glm-5.3-flash\": 4},\n    \"max_tokens\": 1161216,\n    \"max_active_seconds\": 3600,\n    \"estimated_uncached_cny\": \"12.0078336\",\n    \"execution_authorized\": false,\n    \"paid_plan_frozen\": false\n  },\n  \"tests\": {\n    \"command\": \".\\\\.venv\\\\Scripts\\\\python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_document_remaining4_adapter.py\",\n    \"passed\": 7,\n    \"failed\": 0,\n    \"duration_seconds\": 70.65,\n    \"mode\": \"offline synthetic\"\n  },\n  \"reviewed_file_sha256\": {\n    \"scripts/document_remaining4_adapter.py\": \"274099121e3c3b448337c3863f9ce1dde4cf19f8883656e1b76dee477d8a2ffe\",\n    \"tests/test_document_remaining4_adapter.py\": \"be9684af98bac296ccfffbdd147857c21ad1d5f5053e8cfe1e257fdeaf0f5735\",\n    \"tests/fixtures/document_remaining4_frozen_newlines.json\": \"99e70694da168d9e5335976a5a10a5e69ae4c8903ebef5288837f90a16099be5\"\n  },\n  \"provider_calls\": 0,\n  \"source_or_run_files_modified_by_reviewer\": false,\n  \"qualification\": {\n    \"new_qualification\": 0,\n    \"original15_qualified\": false,\n    \"production_admitted\": false,\n    \"business_reviews_reassessed\": false\n  },\n  \"limitations\": [\n    \"测试在 Windows 执行；Linux 换行行为由冻结 manifest 核验和生产归一化拒绝测试覆盖，未实际运行 Linux。\",\n    \"pytest 临时输出与其他 Agent 的同名测试目录并存，未删除归属不明确的临时目录。\"\n  ]\n}",
+  "native_lineage_and_latest_dispatch": {
+    "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+    "independent_thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+    "verified": true,
+    "independent_agent_path": "/root/remaining8_independent",
+    "input_readability": {
+      "thread_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce",
+      "turn_id": "01a126a4-ee1e-7e41-bc40-509e63eff849",
+      "dispatch_id": "amsg_01a126a4-eebd-7cb0-a8d5-3fca9c05bf04",
+      "current_input_readable": false,
+      "future_input_guaranteed": false,
+      "current_route_and_final_available": true,
+      "host_review_evidence_policy": "native-final-attestation-v1"
+    }
+  },
+  "provider_calls": 0,
+  "business_review": false,
+  "qualification_credit": 0
+}

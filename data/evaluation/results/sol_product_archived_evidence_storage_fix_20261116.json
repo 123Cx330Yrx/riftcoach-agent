@@ -1,0 +1,81 @@
+{
+  "recorded_at": "2026-11-16T06:04:57.785946+00:00",
+  "kind": "archived_evidence_storage_time_fix",
+  "base_head": "7a4cda0122e85cb7ad65ab7fea4698bdddf60579",
+  "root_cause": "Snapshot stored_at incorrectly used historical Evidence bundle creation time, preceding new task creation.",
+  "ci_coverage_correction": "New archived SQL file was absent from explicit PostgreSQL CI list; prior SQL green did not execute it.",
+  "fix": "Use manifest-bound terminal receipt timestamp for stable storage projection; keep archived bundle bytes and original observation times.",
+  "validation": {
+    "postgres_passed": 11,
+    "related_offline_passed": 107,
+    "runtime_profiles": 12,
+    "current_inventories": 2
+  },
+  "original_failure": "EvidenceSnapshotRepositoryError: evidence_snapshot_time_invalid at evidence_snapshot_repository.py:147",
+  "ci_failure": {
+    "run": 42765141272,
+    "job": 129659747794,
+    "stage": "apt dependency install",
+    "cause": "security.ubuntu.com package download connection timeout",
+    "failed_jobs_rerun": true
+  },
+  "effects": {
+    "model_requests": 0,
+    "new_source_requests": 0,
+    "real_product_tasks_created": 1,
+    "credential_names_read": [
+      "llm-api",
+      "sol-review-api"
+    ]
+  },
+  "limits": [
+    "New same-commit CI pending",
+    "First real model request not sent",
+    "P3_not_accepted"
+  ],
+  "sql_preflight": {
+    "task_id": "6392ac98-db41-431c-b101-53b1e0925481",
+    "run_id": "review_132979adce0546e9a9ac2bcaf6386eee",
+    "request": {
+      "role": "generation",
+      "input_token_ceiling": 32976,
+      "serialized_bytes": 30838,
+      "sha256": "795c01c0abbafb19f0851d93faec2abecc610b04f2a79fd323f6d8d5279fba25",
+      "max_output": 16384,
+      "timeout": 300.0,
+      "accounting": {
+        "scope": "cumulative_session",
+        "requests_reserved": 0,
+        "requests_observed": 0,
+        "known_tokens": 0,
+        "unknown_token_reservation": 0,
+        "retries": 0,
+        "unresolved_intents": 0
+      },
+      "active_seconds": 0.43800000000010186,
+      "will_send": false
+    },
+    "accounting": {
+      "scope": "cumulative_session",
+      "retries": 0,
+      "known_tokens": 0,
+      "requests_observed": 0,
+      "requests_reserved": 0,
+      "unresolved_intents": 0,
+      "unknown_token_reservation": 0
+    },
+    "checkpoint_sha256": "587e266eabe0218626af4c5579bcfad1ac024c74bdf92f03ba567dd88f468fe7",
+    "database": {
+      "sha256": "97ff031b2bc25688739b68d0c6d9ab84bf5029ace8171d4d3b86327c622890e7",
+      "bytes": 136744
+    },
+    "real_postgres_memory": true,
+    "real_api_worker": true,
+    "evidence": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-execution-20261116\\preflight"
+  },
+  "terminal_ci": {
+    "run": 43814573385,
+    "all_12_completed_success": true,
+    "proof": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\ci-terminal-43814573385.json"
+  }
+}

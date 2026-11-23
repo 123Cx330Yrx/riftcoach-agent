@@ -730,3 +730,134 @@ def test_recorder_builds_terminal_trace_from_one_source_of_events():
     assert trace.usage == rec.usage
     assert trace.elapsed_ms == rec.events[-1].elapsed_ms
     assert trace.runtime_status.value == "completed"
+
+
+
+def role_prices():
+    return {
+        ("offline-fake", model): RuntimePricingProfile(
+            profile_id="offline-fake-role-schedule",
+            version="1.0.0",
+            provider_id="offline-fake",
+            model=model,
+            currency="CNY",
+            input_cost_per_million=Decimal(input_price),
+            output_cost_per_million=Decimal(output_price),
+        )
+        for model, input_price, output_price in [
+            ("fake-v1", "0.8", "2.8"),
+            ("fake-reviewer-v1", "8", "28"),
+        ]
+    }
+
+
+def emit_model_call(rec, ordinal, model, *, tokens=None):
+    rec.emit(ProviderCallStartedSignal(
+        provider_id="offline-fake", model=model, ordinal=ordinal, iteration=ordinal,
+    ))
+    if tokens is None:
+        rec.emit(ProviderCallFailedSignal(
+            provider_id="offline-fake", model=model, ordinal=ordinal,
+            failure_code="provider_failed",
+        ))
+    else:
+        rec.emit(ProviderCallCompletedSignal(
+            provider_id="offline-fake", model=model, ordinal=ordinal,
+            input_tokens=tokens[0], output_tokens=tokens[1], finish_reason="stop",
+        ))
+
+
+def test_role_prices_follow_each_actual_model_under_one_schedule():
+    prices = role_prices()
+    rec = RuntimeRecorder(run_id="role_prices", model_pricing_profiles=prices)
+    start_agent(rec)
+    # Mutating the caller's dict cannot change an already-started run's price schedule.
+    prices.clear()
+    emit_model_call(rec, 1, "fake-v1", tokens=(1_000_000, 100_000))
+    emit_model_call(rec, 2, "fake-reviewer-v1", tokens=(100_000, 50_000))
+    complete(rec)
+
+    assert rec.usage.cost == Decimal("3.28")
+    assert rec.usage.cost_observation is CostObservation.COMPLETE
+    assert rec.usage.currency == "CNY"
+    assert rec.usage.pricing_profile_id == "offline-fake-role-schedule"
+    assert rec.usage.pricing_profile_version == "1.0.0"
+    assert rec.usage.input_tokens == 1_100_000
+    assert rec.usage.output_tokens == 150_000
+    assert [event.signal.model for event in rec.events
+            if isinstance(event.signal, ProviderCallStartedSignal)] == ["fake-v1", "fake-reviewer-v1"]
+
+
+@pytest.mark.parametrize("with_response", [False, True])
+def test_failed_role_call_preserves_unknown_usage_and_partial_known_tokens(with_response):
+    rec = RuntimeRecorder(run_id="role_unknown_usage", model_pricing_profiles=role_prices())
+    start_agent(rec)
+    if with_response:
+        emit_model_call(rec, 1, "fake-v1", tokens=(11, 7))
+    emit_model_call(rec, 2 if with_response else 1, "fake-reviewer-v1")
+    usage = rec.usage
+    assert usage.provider_calls_attempted == (2 if with_response else 1)
+    assert usage.provider_responses_observed == (1 if with_response else 0)
+    assert usage.observed_input_tokens == (11 if with_response else 0)
+    assert usage.observed_output_tokens == (7 if with_response else 0)
+    assert usage.input_tokens is None
+    assert usage.output_tokens is None
+    assert usage.cost is None
+    assert usage.token_observation is (TokenObservation.PARTIAL if with_response else TokenObservation.UNKNOWN)
+    assert usage.cost_observation is (CostObservation.PARTIAL if with_response else CostObservation.UNKNOWN)
+
+
+@pytest.mark.parametrize("terminal", ["complete", "fail"])
+def test_role_call_closure_must_match_its_started_model(terminal):
+    rec = RuntimeRecorder(run_id="role_identity_match", model_pricing_profiles=role_prices())
+    start_agent(rec)
+    rec.emit(ProviderCallStartedSignal(provider_id="offline-fake", model="fake-reviewer-v1", ordinal=1, iteration=1))
+    if terminal == "complete":
+        wrong = ProviderCallCompletedSignal(provider_id="offline-fake", model="fake-v1", ordinal=1,
+            input_tokens=100, output_tokens=50, finish_reason="stop")
+    else:
+        wrong = ProviderCallFailedSignal(provider_id="offline-fake", model="fake-v1", ordinal=1,
+            failure_code="provider_failed")
+    previous = rec.events
+    with pytest.raises(RuntimeRecorderError, match="identity mismatch"):
+        rec.emit(wrong)
+    assert rec.events == previous
+    assert rec.usage.provider_responses_observed == 0
+    rec.emit(wrong.model_copy(update={"model": "fake-reviewer-v1"}))
+    assert rec.usage.provider_calls_attempted == 1
+
+
+def test_role_pricing_rejects_unpriced_actual_model_before_call_event():
+    rec = RuntimeRecorder(run_id="role_missing_price", model_pricing_profiles=role_prices())
+    start_agent(rec)
+    previous = rec.events
+    with pytest.raises(RuntimeRecorderError, match="pricing"):
+        rec.emit(ProviderCallStartedSignal(provider_id="offline-fake", model="unexpected-model", ordinal=1, iteration=1))
+    assert rec.events == previous
+    assert rec.usage.provider_calls_attempted == 0
+    emit_model_call(rec, 1, "fake-v1", tokens=(11, 7))
+    assert rec.usage.cost == Decimal("0.0000284")
+
+
+@pytest.mark.parametrize("changed", [
+    {"profile_id": "other-schedule"}, {"version": "2.0.0"}, {"currency": "USD"},
+])
+def test_role_prices_cannot_mix_schedule_identity_or_currency(changed):
+    prices = role_prices()
+    key = ("offline-fake", "fake-reviewer-v1")
+    prices[key] = prices[key].model_copy(update=changed)
+    with pytest.raises(ValueError, match="schedule"):
+        RuntimeRecorder(run_id="role_bad_schedule", model_pricing_profiles=prices)
+
+
+def test_role_pricing_configuration_rejects_ambiguous_or_mislabelled_prices():
+    prices = role_prices()
+    first = next(iter(prices.values()))
+    with pytest.raises(ValueError, match="not both"):
+        RuntimeRecorder(run_id="role_ambiguous_price", pricing_profile=first, model_pricing_profiles=prices)
+    with pytest.raises(ValueError, match="key"):
+        RuntimeRecorder(run_id="role_wrong_price_key", model_pricing_profiles={
+            ("offline-fake", "fake-reviewer-v1"): first,
+        })
+    with pytest.raises(ValueError, match="empty"):
+        RuntimeRecorder(run_id="role_empty_prices", model_pricing_profiles={})

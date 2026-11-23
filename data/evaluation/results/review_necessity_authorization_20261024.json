@@ -1,0 +1,59 @@
+{
+  "kind": "review-necessity-authorization-activation-v1",
+  "date": "2026-10-24",
+  "authorization": {
+    "file": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\user-authorization-20261024.json",
+    "sha256": "85c771e39fa28f07b43ddcf66c3e32b0a4a2f71ddec93a6d1224aff1108b8e92",
+    "approved": true,
+    "expires_at": "2026-10-25T02:56:33.298308+00:00",
+    "expires_at_beijing": "2026-10-25T10:56:33.298308+08:00"
+  },
+  "plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+  "checkpoint_sha256": "09dd5c9e4610dc80ad421a6b858ede6d36fbfcfdb95cbefa04512826ba7425f8",
+  "execution_head": "6052be74aa8943ef6a52ceb1707b89bf3de83bad",
+  "ci": {
+    "run_id": "39895429952",
+    "head_sha": "6052be74aa8943ef6a52ceb1707b89bf3de83bad",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      "packaging-smoke",
+      "postgres-migrations",
+      "pytest",
+      "pytest-shards (0)",
+      "pytest-shards (1)",
+      "pytest-shards (2)",
+      "pytest-shards (3)",
+      "web-checks"
+    ]
+  },
+  "native_reverified": true,
+  "operator_and_authors_unchanged": true,
+  "status": {
+    "phase": "ready",
+    "reason": null,
+    "next_case": "a",
+    "attempts": 0,
+    "known_tokens": 0,
+    "unknown_reserved_tokens": 0,
+    "not_sent": 0,
+    "http_requests_known": 0,
+    "http_requests_unknown": 0,
+    "unreviewed_calls": 0,
+    "qualified": false,
+    "publication_allowed": false
+  },
+  "control": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control",
+  "entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\start-authorized.ps1",
+  "control_evidence_sha256": {
+    "user-authorization-20261024.json": "85c771e39fa28f07b43ddcf66c3e32b0a4a2f71ddec93a6d1224aff1108b8e92",
+    "authorization.binding.json": "5581d6767aed862b0a06ae38cd248f22ee8605626d89a0629e1fa35e8c624241",
+    "authorized-preflight-20261024.json": "d41ba008c4b44d760eca2b49daf8eedddd0a3ffd5cf32ca034593bc546f01696",
+    "start-authorized.ps1": "ebe5fb4ae1929b6aac9a29b5166da8772080f569f3bd15fe71c54b4175c151b0"
+  },
+  "new_provider_requests": 0,
+  "new_real_key_reads": 0,
+  "next_action": "User runs existing start-authorized.ps1 in terminal and enters Tianjige GPT-pro Key at hidden prompt for case a only. Review before any next case.",
+  "qualified": false,
+  "publication_allowed": false
+}

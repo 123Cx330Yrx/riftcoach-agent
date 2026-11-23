@@ -1,0 +1,170 @@
+{
+  "experiment": "golden-native-tool-review-v1",
+  "head_sha": "3fa81a39ba71b9d2dd2fc8263c58ba80050ace40",
+  "ci_run": "35687655648",
+  "cases": [
+    {
+      "run_id": "native-review-3fa81a3-tool-claim-1",
+      "case_id": "original_topic_window",
+      "result": {
+        "attempted_calls": 1,
+        "automatic_path_pass": true,
+        "completed_calls": 1,
+        "expected_report": "accept",
+        "final_score": 96,
+        "final_verdict": "pass",
+        "id": "original_topic_window",
+        "initial_control": {
+          "expected_report": "accept",
+          "id": "original_topic_window",
+          "manual_adjudication_required": false,
+          "matched": true,
+          "score": 96,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": false,
+          "unexpected_issue_indices": [],
+          "valid": true,
+          "verdict": "pass"
+        },
+        "input_tokens": 11508,
+        "manual_adjudication_required": false,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 3986,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "score": 96,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": false,
+        "unexpected_issue_indices": [],
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "pass"
+      },
+      "calls": [
+        {
+          "file": "response-001.json",
+          "finish_reason": "tool_calls",
+          "content_present": false,
+          "tool_calls": [
+            {
+              "id": "call_dcecca87b6e04354ac8c3f0d",
+              "name": "submit_report_review",
+              "arguments": {
+                "issue_resolutions": [],
+                "issues": [],
+                "score": 96,
+                "verdict": "pass"
+              }
+            }
+          ],
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11508,
+            "output_tokens": 3986
+          }
+        }
+      ],
+      "source_dir": "data/runs/inference_development/native-review-3fa81a3-tool-claim-1/original_topic_window"
+    },
+    {
+      "run_id": "native-review-3fa81a3-tool-claim-4",
+      "case_id": "explicit_universal_metrics",
+      "result": {
+        "attempted_calls": 1,
+        "automatic_path_pass": false,
+        "completed_calls": 1,
+        "expected_report": "reject",
+        "id": "explicit_universal_metrics",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "explicit_universal_metrics",
+          "manual_adjudication_required": true,
+          "matched": true,
+          "score": 86,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": true,
+          "unexpected_issue_indices": [
+            2
+          ],
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 11518,
+        "manual_adjudication_required": true,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 1834,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "score": 86,
+        "semantic_approval": false,
+        "stop_reason": "unadjudicated_control_findings",
+        "suggested_category_matched": false,
+        "target_location_flagged": true,
+        "unexpected_issue_indices": [
+          2
+        ],
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "calls": [
+        {
+          "file": "response-001.json",
+          "finish_reason": "tool_calls",
+          "content_present": false,
+          "tool_calls": [
+            {
+              "id": "call_6f253ff3865644d1ae9347e8",
+              "name": "submit_report_review",
+              "arguments": {
+                "issue_resolutions": [],
+                "issues": [
+                  {
+                    "block": 4,
+                    "category": "fact_error",
+                    "explanation": "原文断言所选全部5局的每一个指标均值都被辅助局（卡蜜尔）拉低，并特别点名视野分与15分钟前死亡。但按computed_evidence逐指标核对：全组视野分均值45高于仅中单的33.75（辅助局视野分90是拉高而非拉低）；全组15分钟前死亡均值2.6高于中单的1.5（辅助局7次拉高）；死亡均值6高于中单4.25、助攻10.2高于10、10分钟前死亡1.8高于1。被拉低的是击杀、KDA、补刀、经济、伤害等指标，但'每一个指标'与点名的视野分、15分钟前死亡方向相反，构成与来源的直接冲突。",
+                    "severity": "medium",
+                    "source_ids": [
+                      31
+                    ],
+                    "suggested_correction": "改为：'所选5局中，输出与发育类指标（击杀、KDA、补刀/分钟、经济/分钟、伤害/分钟）的均值均被辅助局拉低；但视野分与15分钟前死亡反而被辅助局抬高（视野分90、15分钟前死亡7次），死亡与10分钟前死亡同样被抬高。因此混合均值需按位置分开解读。'"
+                  },
+                  {
+                    "block": 6,
+                    "category": "other",
+                    "explanation": "'说明这 5 局内发育节奏未随胜负明显波动'把仅基于4局中单的补刀均值对比（8.805对9.01）的表述扩展到'这5局'，且辅助局补刀/分钟仅1.34，若按全样本口径补刀均值差异明显（8.8对6.45）。完整上下文可推断其意指中单4局，但量词指向全部5局与辅助局数据冲突，易被脱离上下文误读。",
+                    "severity": "low",
+                    "source_ids": [
+                      9,
+                      13,
+                      17
+                    ],
+                    "suggested_correction": "将'这 5 局内'改为'这 4 局中单内'，明确该结论仅限中单对局，与第1节按位置分开解读的口径一致。"
+                  }
+                ],
+                "score": 86,
+                "verdict": "needs_revision"
+              }
+            }
+          ],
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11518,
+            "output_tokens": 1834
+          }
+        }
+      ],
+      "source_dir": "data/runs/inference_development/native-review-3fa81a3-tool-claim-4/explicit_universal_metrics"
+    }
+  ],
+  "third_case_executed": false,
+  "manual_semantic_acceptance": false,
+  "production_admitted": false,
+  "public_only": true,
+  "decision": "stop_after_case_4_semantic_false_positive"
+}

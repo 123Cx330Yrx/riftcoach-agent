@@ -1,0 +1,65 @@
+{
+  "kind": "product-generation-transport-role-local-fix-v1",
+  "observed_date": "2026-11-16",
+  "problem": "Concrete role adapter applied the historical natural-duty guard to current product-generation requests before transport IO.",
+  "fix": "Select the existing product generation role guard for its exact policy id; retain legacy validation for historical requests.",
+  "code": "app/runtime/receipted_provider_factory.py",
+  "prior_head": "3a99ccd07c5f728410d466f83d43472eb2db53a7",
+  "prior_ci": {
+    "run": 43814573385,
+    "all_12_completed_success": true,
+    "proof": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\ci-terminal-43814573385.json"
+  },
+  "checks": {
+    "transport_request_regression": 70,
+    "real_postgres_worker_api": 18,
+    "current_runtime_profiles": 12,
+    "current_inventories": 2,
+    "product_contract_regression": 32,
+    "governance": "passed",
+    "total_related_offline": 102,
+    "compile": "passed",
+    "diff": "passed"
+  },
+  "task_id": "6392ac98-db41-431c-b101-53b1e0925481",
+  "run_id": "review_132979adce0546e9a9ac2bcaf6386eee",
+  "original_accounting": {
+    "known_tokens": 0,
+    "requests_observed": 0,
+    "requests_reserved": 1,
+    "retries": 0,
+    "scope": "cumulative_session",
+    "unknown_token_reservation": 49360,
+    "unresolved_intents": 1
+  },
+  "recovery": {
+    "status": "prepared_and_tested_on_disposable_database_not_adopted_to_actual_task",
+    "proof_path": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-execution-20261116\\pretransport-recovery\\proof.json",
+    "proof_sha256": "1c89e0c583444f8a94fe00d8a50a90894f0d6eed41a6f6a32fd2f92cfcb7fabf",
+    "parent_archive_sha256": "03f1af42b14215e17094e3d96de11dbb0ee7fcc69c1c611a27c8dd8d1c7409e3",
+    "database_sha256": "de7b14ba32caa931768bb5f7c13e7ebe6066bdc7bd9e586671a8f7173bad3718",
+    "child_accounting": {
+      "known_tokens": 0,
+      "requests_observed": 0,
+      "requests_reserved": 0,
+      "retries": 0,
+      "scope": "cumulative_session",
+      "unknown_token_reservation": 0,
+      "unresolved_intents": 0
+    },
+    "actual_parent_unchanged": true,
+    "exercise": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-product-naming-tone-20261103\\sql-execution-20261116\\pretransport-recovery-exercise\\worker-zero-send.json",
+    "driver_sha256": "0110f9144bb1cd3e203e75df214c8df40c8a04dd1f28f89f2bd86bd591ec42ce",
+    "recovery_script_sha256": "1b0b052126b1958c6e2531d41f6baf763a42c29fd016dc10d40e71c5b40d1189"
+  },
+  "new_model_requests": 0,
+  "new_match_sources": 0,
+  "real_key_reads": 0,
+  "new_tasks": 0,
+  "semantic_acceptance": false,
+  "p3_status": "P3_not_accepted",
+  "stage": "8E",
+  "default_admission_changed": false,
+  "public_ci_status": "blocked_by_failed_web_inventory_job",
+  "ci_failure_followup": "data/evaluation/results/sol_product_generation_transport_ci_repair_20261116.json"
+}

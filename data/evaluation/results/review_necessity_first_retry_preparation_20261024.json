@@ -1,0 +1,71 @@
+{
+  "kind": "review-necessity-first-retry-preparation-v1",
+  "user_decision": {
+    "date": "2026-10-24",
+    "user_text": "\u80fd\u4e0d\u9650\u5236\u8865\u6d4b\u989d\u5ea6\u5417\uff0c\u53ef\u4ee5\u591a\u6b21\u8865\u6d4b\uff0c\u4f60\u5148\u51c6\u5907\u597d\u7b2c\u4e00\u6b21",
+    "interpretation": "User permits multiple explicit manual timeout supplements and prioritizes preparation of the first. No automatic repeated sends. Preserve every attempt and cumulative known/unknown accounting. Existing frozen executor remains one shared retry until a separately recorded compatible extension is implemented; this file does not silently modify old grant or plan.",
+    "current_first_retry_covered_by_original_grant": true,
+    "additional_retry_extension_pending": true,
+    "first_retry_script": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\retry-first.ps1",
+    "first_retry_script_sha256": "499c7d4e171913bc69e6ba58da1345dc6723ad4d028f33a1522abd878a24ba06",
+    "original_checkpoint_sha256": "77132319c39245dec87a9587f0624fb3c5eda7cd1014d0e1a15064719c2dd807",
+    "new_provider_requests": 0
+  },
+  "preflight": {
+    "checked_at": "2026-10-24T03:05:50.863693+00:00",
+    "ok": true,
+    "plan_sha256": "f3c2c586c799946665aae6faab3de23eb69322c1b379d1510f32959cd3b8934e",
+    "checkpoint_sha256": "77132319c39245dec87a9587f0624fb3c5eda7cd1014d0e1a15064719c2dd807",
+    "status": {
+      "phase": "retry_available",
+      "reason": "worker_rejected",
+      "next_case": "a",
+      "attempts": 1,
+      "known_tokens": 0,
+      "unknown_reserved_tokens": 80384,
+      "not_sent": 0,
+      "http_requests_known": 1,
+      "http_requests_unknown": 0,
+      "unreviewed_calls": 0,
+      "qualified": false,
+      "publication_allowed": false
+    },
+    "ci": {
+      "run_id": "39895429952",
+      "head_sha": "6052be74aa8943ef6a52ceb1707b89bf3de83bad",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        "packaging-smoke",
+        "postgres-migrations",
+        "pytest",
+        "pytest-shards (0)",
+        "pytest-shards (1)",
+        "pytest-shards (2)",
+        "pytest-shards (3)",
+        "web-checks"
+      ]
+    },
+    "authorization_sha256": "85c771e39fa28f07b43ddcf66c3e32b0a4a2f71ddec93a6d1224aff1108b8e92",
+    "authorization_expires_at": "2026-10-25T02:56:33.298308+00:00",
+    "operator_and_authors_unchanged": true,
+    "entry": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-review-necessity-verified-20261023-control\\retry-first.ps1",
+    "entry_sha256": "499c7d4e171913bc69e6ba58da1345dc6723ad4d028f33a1522abd878a24ba06",
+    "new_provider_requests": 0,
+    "new_real_key_reads": 0,
+    "first_retry_only": true,
+    "multiple_retry_extension_decision_recorded": true,
+    "executor_multiple_retry_limit_already_changed": false
+  },
+  "actual_windows_powershell_entry_check": {
+    "exit_code": 0,
+    "operator_and_authors_unchanged": true,
+    "stdout_sha256": "c02885437b6b8cad51a539c804e74219f612b1077c9e0057aaa336ff52607d5a",
+    "provider_requests": 0,
+    "real_key_reads": 0
+  },
+  "original_operator_and_author_files_unchanged": true,
+  "executed_retry": false,
+  "qualified": false,
+  "publication_allowed": false
+}
