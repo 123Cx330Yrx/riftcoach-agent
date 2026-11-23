@@ -170,7 +170,9 @@ def component_fingerprints(skill):
                  'app/product/draft_guard_recovery.py',
                  'app/product/protocol_failure_recovery.py',
                  'app/tasks/reconciliation.py', 'app/tasks/models.py', 'app/persistence/task_repository.py',
-                 'app/persistence/task_continuations.py'):
+                 'app/persistence/task_continuations.py', 'app/product/generation_binding.py',
+                 'app/tasks/service.py', 'app/persistence/task_record.py',
+                 'app/api/composition.py', 'migrations/versions/0016_task_generation_binding.py'):
         key = path.replace('/', '.').removesuffix('.py')
         rows[key] = ComponentFingerprint(component_id=key, source=path,
             sha256=hashlib.sha256((ROOT / path).read_text(encoding='utf-8').encode()).hexdigest())

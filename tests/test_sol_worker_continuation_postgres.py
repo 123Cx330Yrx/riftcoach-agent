@@ -29,6 +29,7 @@ def continued_api(migrated_product_api):
         repo = migrated_product_api[2]
         with repo._session_factory() as session, session.begin():
             session.execute(sa.text("DELETE FROM review_task_events WHERE event_kind = 'continuation_resumed'"))
+            session.execute(sa.text("UPDATE review_tasks SET generation_binding = NULL"))
 
 
 def setup_worker(tmp_path, monkeypatch, repository, *, mode="pass", statuses=(),

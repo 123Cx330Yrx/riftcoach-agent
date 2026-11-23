@@ -615,7 +615,8 @@ class RuntimeTrace(RuntimeContractModel):
                 candidates += (product,)
             if snapshot.contract_id == 'natural-flash-sol-product-chat-v1':
                 from app.product.sol_chat_contract import CONTRACT as chat_product
-                candidates += (chat_product,)
+                from app.product.player_wording_worker import CONTRACT as wording
+                candidates += (chat_product, wording)
             role_contract = next((contract for contract in
                 candidates
                 if snapshot == contract.snapshot()), None)

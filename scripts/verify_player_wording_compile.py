@@ -11,7 +11,7 @@ from app.agent.loop import _to_tool_spec
 from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling as ceiling
 from app.evidence.fusion import EvidenceBundle
 from app.memory.context_models import MemoryContextBinding
-from app.product import player_wording_contract as wording, sol_chat_contract as chat, sol_contract as responses
+from app.product import player_wording_contract as wording, player_wording_worker, sol_chat_contract as chat, sol_contract as responses
 from app.product.player_language import render_product_report
 from app.product.recent_review import ConversationRecentReviewRequest, RecentReviewRuntimeRequestCompiler
 from app.product.review_purpose import ProductContextBuilder
@@ -56,6 +56,25 @@ def verify(root):
         return compiler.compile(execution, ctx)
     old = compile_with(ProductContextBuilder(coach_contract=chat.CONTRACT, compact_json=True, purpose='observed'))
     new = compile_with(wording.PlayerWordingContextBuilder(purpose='observed'))
+    # The selectable Worker must compile the same complete input as the offline
+    # proposal, through its own manifest, policy and Runtime context guard.
+    from app.runtime.coach_contract import require_coach_context
+    worker_root = RuntimeCompositionRoot.from_directories(
+        skills_root=player_wording_worker.ASSETS/'skills',
+        prompt_programs_root=player_wording_worker.ASSETS/'prompt_programs',
+        coach_contract=player_wording_worker.CONTRACT)
+    worker_job = RecentReviewRuntimeRequestCompiler(worker_root.skill_catalog,
+        coach_contract=player_wording_worker.CONTRACT).compile(
+        ConversationRecentReviewRequest(count=5, queue=420, focus='overall'), player_summary=summary,
+        deterministic_report=report, run_id=root.name, memory_context_binding=binding)
+    worker_execution = SkillExecutionBoundary(worker_root.skill_catalog).validate(worker_job.execution_request)
+    worker_context = ProductContextBuilder(coach_contract=player_wording_worker.CONTRACT,
+        compact_json=True, purpose='observed').build(worker_execution,
+            max_context_tokens=worker_job.policy.max_context_tokens)
+    require_coach_context(worker_context, player_wording_worker.CONTRACT)
+    worker_compiled = AgentRunCompiler(registry, request_policy=player_wording_worker.CONTRACT.request_policy).compile(
+        worker_execution, worker_context)
+    assert worker_compiled == new
     assert old.messages[1:] == new.messages[1:] and old.allowed_tools == new.allowed_tools
     assert all(new.metadata[k] == v for k,v in old.metadata.items() if k != 'context_estimated_tokens')
     rows = []
@@ -85,7 +104,9 @@ def verify(root):
     total = 18467 + rows[-1]['after'] + rows[-1]['output_limit'] + 321536
     assert total <= 401920 and rows[-1]['output_limit'] == 15135
     return dict(version=wording.VERSION, run=root.name, rows=rows, reviews=checks, historical_third_total=total,
-                historical_third_margin=401920-total, model_calls=0, worker_enabled=False)
+                historical_third_margin=401920-total, model_calls=0, worker_enabled=False,
+                explicit_worker_contract=player_wording_worker.CONTRACT.snapshot().model_dump(mode='json'),
+                explicit_worker_input_matches_offline=True)
 
 
 if __name__ == '__main__':

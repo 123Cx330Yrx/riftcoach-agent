@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "80e2f55b2d5805088277fef14e18391e6a8b64ccba914b8b30cf6c7cb00c599c"
+      "sha256": "15289cdd84414081238d2858df4ed55480f3693197332a53046ecffb2aa1915f"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "051639f5bfea674ebbe2552e62175dd73104c705df9093041aaad2bcae6a31cb"
+      "sha256": "4e5340983a5a41993f42b09b13ce5288f0d97ef8ff060093ab63e94ee6da24d1"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -262,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "4a5d06f372a03f36c2f396e5abe19b7af387ee1f9d888fb463831eae6756d151"
+      "sha256": "249d3dce07000485615d108fe04ed2a7d1f16b868f18d8c398d5d8eff47d9315"
     },
     {
       "component_id": "app.model_runtime",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "a2dd734a5925fb9c1ce06c119fc05cfb30559b06b269349a7d5c2ad526e4b59b"
+      "sha256": "864e33e60b7b844f38103a97990ec185f3c5b2940334fb8bcae612a4e5804323"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -347,12 +347,12 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "ea0e20e260c9f1d9014752f03954ede3c5bd6b33f562265768e312a854cf6533"
+      "sha256": "e08c8b93001c916a58dcbbb81b80cc66218899c6bbcd2288c2d05bf3665cec1f"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "609bb0168649198edba2a71c9faf18c3678b71902bb62491f1d7ebf8863ec06b"
+      "sha256": "15fb7d473ee41d9462d8c1cd994eb171a20e0f084ea3ab77b70e98492e7efc51"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
@@ -427,12 +427,12 @@
     {
       "component_id": "app.product.sol_contract",
       "source": "app/product/sol_contract.py",
-      "sha256": "f8b8a4ef25915a5058559a40463121a09d7b10caceac6e789355d1706c6338cb"
+      "sha256": "97ba61eed17bf9d1afe3d2009669faa9e076d72ee8a5154542d438c3dc67eb18"
     },
     {
       "component_id": "app.product.sol_workflow",
       "source": "app/product/sol_workflow.py",
-      "sha256": "a99f0115be830c7a45569b334775900e20cbb9d8a5fd4131d8f207bad67f224a"
+      "sha256": "cac3c24ef693a1a84a172836f4088ae8dd313a0d6f0581d1c2fb69d6e6910f6a"
     },
     {
       "component_id": "app.product.generation_request",
@@ -482,7 +482,7 @@
     {
       "component_id": "app.workers.sol_continuation",
       "source": "app/workers/sol_continuation.py",
-      "sha256": "3b988116beb95450e0c4745f2afcc47735f52ff23f8c03f81dc572188fb5269d"
+      "sha256": "aa1d7df17d80dbf3b1deafe0ef370b0c832594dc33d7eeb55a973ad665936684"
     },
     {
       "component_id": "app.product.zero_send_recovery",
@@ -507,17 +507,42 @@
     {
       "component_id": "app.tasks.models",
       "source": "app/tasks/models.py",
-      "sha256": "a5cb50ea3bb3ce411f0bb0b639cb0733a2f56d1ce34be95d74e0d7e43f83e433"
+      "sha256": "5a7ef47fd786a45609c43c51295b5798023ed7ee5fa9764f90b7bfdbff50ea37"
     },
     {
       "component_id": "app.persistence.task_repository",
       "source": "app/persistence/task_repository.py",
-      "sha256": "946bbf0456fb4b250db40da44f9564b1224d4c8e9e994eb0866860213160bb4d"
+      "sha256": "6f4ed3782b97afeccd8fda600230c4c89f802df9ec7a3b0e78400e77e2956afa"
     },
     {
       "component_id": "app.persistence.task_continuations",
       "source": "app/persistence/task_continuations.py",
-      "sha256": "a4cff22a3fde30a983e0fd63d8971149891d7ab3a90af33a3a7057cec8c1a8ac"
+      "sha256": "6aff04d65094da5e2723a1bf2cd03ca4b57126c2df78c73f65f8eb6403c944b6"
+    },
+    {
+      "component_id": "app.product.generation_binding",
+      "source": "app/product/generation_binding.py",
+      "sha256": "fce74c68f76430021e52f61374f183cf88c0d82bc0c9eb79566c71d36f3ab30c"
+    },
+    {
+      "component_id": "app.tasks.service",
+      "source": "app/tasks/service.py",
+      "sha256": "079a4d9eda9a6b60adfbb8feed8ecfe1aa5e3e35ca1779b3e316c159174414c3"
+    },
+    {
+      "component_id": "app.persistence.task_record",
+      "source": "app/persistence/task_record.py",
+      "sha256": "5e07805ad2e9f915b6329de2c3adacd1b0e0bd236c1b59afe7cad7f569064f07"
+    },
+    {
+      "component_id": "app.api.composition",
+      "source": "app/api/composition.py",
+      "sha256": "09ec32b00151e31299b619ba9fe64a03eb7b8d6ea79f38af84cb32ed83f2e609"
+    },
+    {
+      "component_id": "migrations.versions.0016_task_generation_binding",
+      "source": "migrations/versions/0016_task_generation_binding.py",
+      "sha256": "5a29479e3f803625090ba7ba9c8d471769773a99172457ad3a47ab148d789c2f"
     },
     {
       "component_id": "coach_execution_contract",
@@ -525,5 +550,5 @@
       "sha256": "c3a401f98768de45afd491e53030437a48a134a1fa8cac76b0eb6f2d8bca52dd"
     }
   ],
-  "program_sha256": "233769122842fd8e8a4869213e8b58ec78ce6c6d7cd51cac1ad830dc5d5cc663"
+  "program_sha256": "f022be830eeb72fa8ac0aba99bc19d38b02002394ef0e0164bff761c9f5e66ef"
 }

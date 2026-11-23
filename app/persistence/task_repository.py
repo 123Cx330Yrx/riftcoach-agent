@@ -1251,6 +1251,7 @@ class PostgresTaskRepository:
             idempotency_key=pending.idempotency_key,
             request_fingerprint=pending.request_fingerprint,
             request_payload=copy.deepcopy(pending.request_payload),
+            generation_binding=copy.deepcopy(pending.generation_binding),
             publication_mode=pending.publication_mode.value,
             status=TaskStatus.QUEUED.value,
             worker_id=None,
@@ -1427,6 +1428,7 @@ class PostgresTaskRepository:
             idempotency_key=pending.idempotency_key,
             request_fingerprint=request_fingerprint,
             request_payload=copy.deepcopy(pending.request_payload),
+            generation_binding=copy.deepcopy(pending.generation_binding),
             publication_mode=pending.publication_mode.value,
             conversation_id=binding.conversation_id,
             relationship_id=binding.relationship_id,
@@ -1958,6 +1960,7 @@ def _record_to_task(
         idempotency_key=record.idempotency_key,
         request_fingerprint=record.request_fingerprint,
         request_payload=copy.deepcopy(record.request_payload),
+        generation_binding=copy.deepcopy(record.generation_binding),
         # Older in-memory/fixture ORM rows may omit the post-0012 column;
         # treat that pre-migration shape exactly like the database default.
         publication_mode=TaskPublicationMode(record.publication_mode or "legacy"),

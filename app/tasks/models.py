@@ -277,6 +277,7 @@ class PendingReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    generation_binding: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
     publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
@@ -300,6 +301,7 @@ class PendingConversationReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     conversation_id: UUID
     request_payload: dict[str, JsonValue]
+    generation_binding: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
     publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
@@ -323,6 +325,7 @@ class ReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    generation_binding: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
     publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     publication_reference: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
     summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)

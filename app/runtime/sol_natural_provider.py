@@ -24,8 +24,8 @@ def inventory(directory):
 
 def selected_contract(value=None):
     from app.evaluation import sol_necessity_contract, sol_completion_contract, sol_review_contract
-    from app.product import sol_contract, sol_chat_contract
-    if value in (sol_contract, sol_chat_contract):
+    from app.product import sol_contract, sol_chat_contract, player_wording_worker
+    if value in (sol_contract, sol_chat_contract, player_wording_worker):
         return value
     if value is None or value is contract:
         return contract

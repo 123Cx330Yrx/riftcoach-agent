@@ -1,3 +1,13 @@
+## 2026-11-23 创建绑定与显式口吻Worker
+
+2026-11-23：新任务创建绑定 generation profile 与组件快照的实质包已实现，显式 Worker sol-dual-product-wording-v2 / 1.7.11 使用新生成口吻，旧 Chat 四审保持。普通及 conversation API 由服务端显式选择，默认不变；同幂等键返回原绑定，Worker 在源/模型 IO 前及行锁内复核，旧 NULL 任务不交给新 Worker。实际 Runtime pass/repair 续接通过，完整封存输入与离线候选一致，历史第三轮仍余28；真实模型/Key/新取源/封存任务写入0。13 Runtime/2当前清单及web前置11项通过；SQL新增11例已收集，尚未执行，本机Docker正常启动后引擎API仍超时。当前等待同提交CI核验SQL和迁移；不能宣称本包工程验收或P3完成。见 ADR0122 与 product_generation_binding_20261123.json。
+
+发现并修复首次无continuation时暂停路径不能落库的问题，以及新provider缺少父legacy接口别名；离线迁移回退改为SQL内锁表保护，以同时支持SQL脚本和在线执行。已有成功检查不重复累计为新业务证据。
+
+## 2026-11-23 独立生成版本 CI 终局
+
+2026-11-23 终局核验：提交 51f99c430a85fc1583c07084af74470299a160c6 的 CI 44453190031 全部 12 项 completed/success（含 web-checks、四个 PostgreSQL 分片及迁移、四个 pytest 分片及聚合、packaging-smoke）。回执保存在 Control/ci-terminal-44453190031.json。此结果覆盖独立离线生成版本，尚未启用 Worker 或验证新模型自然度；下一行动保持。
+
 ## 2026-11-19 玩家措辞独立编译验证
 
 11-19 已接入独立离线生成版本 product-generation-player-wording-v2。实际 ProductContextBuilder 与 AgentRunCompiler 重新渲染同一份五场材料，三轮含真实后缀的完整输入上界为 32948 / 42388 / 46754；第三轮沿用历史用量与输出上限，整任务预留 401892/401920。Chat 四审完整请求与封存回执逐字节一致；Responses 同四个上下文仅作离线构造。新版本的组件清单绑定父版本、程序、生成策略与实现；12 个旧运行配置与 2 个既有清单均通过。结果见 `data/evaluation/results/product_player_wording_compile_20261119.json`。

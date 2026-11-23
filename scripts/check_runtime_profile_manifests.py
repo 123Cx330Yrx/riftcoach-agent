@@ -27,7 +27,7 @@ def check_inventories(repository: Path) -> int:
 def check() -> int:
     from app.runtime import coach_contract as coach
     from app.evaluation import natural_duty_contract, sol_natural_contract, sol_necessity_contract, sol_review_contract
-    from app.product import sol_contract, sol_chat_contract
+    from app.product import sol_contract, sol_chat_contract, player_wording_worker
     from app.runtime.composition import RuntimeCompositionRoot
 
     profiles = (
@@ -42,6 +42,7 @@ def check() -> int:
         ('sol_review_v1', sol_review_contract.CONTRACT),
         ('sol_product_v1', sol_contract.CONTRACT),
         ('sol_product_chat_v1', sol_chat_contract.CONTRACT),
+        ('sol_product_wording_worker_v2', player_wording_worker.CONTRACT),
     )
     repository = Path(__file__).resolve().parents[1]
     root = repository / 'examples/runtime_profiles'

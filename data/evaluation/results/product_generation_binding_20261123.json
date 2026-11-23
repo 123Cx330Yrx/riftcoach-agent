@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-23",
+  "work_package": "task-generation-binding-and-explicit-wording-worker",
+  "base_commit": "51f99c430a85fc1583c07084af74470299a160c6",
+  "profile": "sol-dual-product-wording-v2",
+  "contract_version": "1.7.11",
+  "compile": {
+    "version": "product-generation-player-wording-v2",
+    "run": "review_132979adce0546e9a9ac2bcaf6386eee",
+    "rows": [
+      {
+        "ordinal": 1,
+        "before": 32976,
+        "after": 32948,
+        "wire_bytes": 30852,
+        "sha256": "055c3bdf4d81822338ed3c9132c1c495ab2bbc1fb5c6dcbbc728aec5efb0f1d7",
+        "output_limit": 16384
+      },
+      {
+        "ordinal": 2,
+        "before": 42416,
+        "after": 42388,
+        "wire_bytes": 40137,
+        "sha256": "878e09b2342c94fd7a293e9e06fe5d86359514a9efd3f7d8672d0095540840c4",
+        "output_limit": 16384
+      },
+      {
+        "ordinal": 3,
+        "before": 46782,
+        "after": 46754,
+        "wire_bytes": 44439,
+        "sha256": "87cde8c19283d7a21a3e64078c80957aa5bf86a36ebdfbc5de08878f1ed9ed87",
+        "output_limit": 15135
+      }
+    ],
+    "reviews": [
+      {
+        "ordinal": 4,
+        "route": "natural-flash-sol-product-chat-v1",
+        "input_ceiling": 59962,
+        "sha256": "d51e79c39b9d06df51e7c3949050dba359f8b83ea1969c23612b917fa443ea37"
+      },
+      {
+        "ordinal": 4,
+        "route": "natural-flash-sol-product-v1",
+        "input_ceiling": 59962,
+        "sha256": "1b18eddf89ac15c3fdd291cc563b593b31f247d07516f7dbc574765d62ab0e34"
+      },
+      {
+        "ordinal": 5,
+        "route": "natural-flash-sol-product-chat-v1",
+        "input_ceiling": 55566,
+        "sha256": "756cc73d29f7cd6609daf79871cbd05ac120b5dbe595b4585e0f73385a51012f"
+      },
+      {
+        "ordinal": 5,
+        "route": "natural-flash-sol-product-v1",
+        "input_ceiling": 55566,
+        "sha256": "68793a993ee0fda1d743b76e9b4c6d03af4d3f94d1e9674ced8d1787bd7221ba"
+      },
+      {
+        "ordinal": 6,
+        "route": "natural-flash-sol-product-chat-v1",
+        "input_ceiling": 53860,
+        "sha256": "63243a8ceb027fcd6d3e647d0b939107ad3282123bb4e6548cb6d6c2a2550c9d"
+      },
+      {
+        "ordinal": 6,
+        "route": "natural-flash-sol-product-v1",
+        "input_ceiling": 53860,
+        "sha256": "8a456cb418798f546e99dd11a451f599f82fd9b85edd4a02fbd29df934679a37"
+      },
+      {
+        "ordinal": 7,
+        "route": "natural-flash-sol-product-chat-v1",
+        "input_ceiling": 49464,
+        "sha256": "c09c979faaf6a17bc40e4005f46a233fec9ee8746b88800d13f49ff7c870dee4"
+      },
+      {
+        "ordinal": 7,
+        "route": "natural-flash-sol-product-v1",
+        "input_ceiling": 49464,
+        "sha256": "5619435a1de92b68b365c37f1cf1459a693b0b4d8c55b2149911266e05db73b7"
+      }
+    ],
+    "historical_third_total": 401892,
+    "historical_third_margin": 28,
+    "model_calls": 0,
+    "worker_enabled": false,
+    "explicit_worker_contract": {
+      "contract_id": "natural-flash-sol-product-chat-v1",
+      "version": "1.7.11",
+      "scope": "unadmitted_opt_in",
+      "sha256": "c2304652681ab87cf423c85e4c4c7f939e840ef2c7caae522403a87eea6fac8d"
+    },
+    "explicit_worker_input_matches_offline": true
+  },
+  "verification": {
+    "runtime_binding_and_pass_repair_resume": "5 passed",
+    "player_language_source_scope": "24 passed (2 other binding cases also passed; context test fixed separately)",
+    "web_entry_gates": "11 passed",
+    "runtime_profiles": 13,
+    "inventories": 2,
+    "postgres_new_cases_collected": 11,
+    "postgres_local_execution": "not verified; Docker init API unavailable",
+    "same_commit_ci": "pending",
+    "service_api_worker_and_migration_metadata": "48 passed, 11 SQL skipped; explicit empty test database URL",
+    "original15_business_inventory": "unchanged against parent commit; only component/program fingerprints refreshed",
+    "archived_final_report_sha256": "0eb3aef62d8349368f715f28790a2ef4345aae44c1fb57f22cc1e89ad3795165"
+  },
+  "boundaries": {
+    "live_model_requests": 0,
+    "real_key_reads": 0,
+    "new_game_sources": 0,
+    "archived_task_writes": 0,
+    "production_default_changed": false,
+    "P3": "not_accepted"
+  },
+  "probe_sha256": "92927957d456eb38009b728c7f261e3a419077f392f7d03df391ab145a6946db"
+}

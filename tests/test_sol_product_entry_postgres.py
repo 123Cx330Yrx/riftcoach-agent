@@ -14,7 +14,7 @@ from app.memory.models import RelationshipRole
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
 from app.persistence.player_records import PlayerAliasRecord
 from app.persistence.terminal_turn_writer import PostgresTerminalTurnWriter
-from app.product import sol_contract as responses_product, sol_chat_contract as chat_product
+from app.product import sol_contract as responses_product, sol_chat_contract as chat_product, player_wording_worker
 from app.tasks.models import TaskPublicationMode
 from tests.memory_candidate_postgres_support import seed_conversation
 from tests.test_evidence_product_api_postgres import migrated_product_api
@@ -24,7 +24,7 @@ from tests.test_sol_worker_continuation_postgres import continued_api, setup_wor
 
 @pytest.mark.parametrize('conversation_bound,role', [(False, RelationshipRole.OBSERVED),
     (True, RelationshipRole.OBSERVED), (True, RelationshipRole.SELF)])
-@pytest.mark.parametrize('product', [responses_product, chat_product], ids=['responses', 'chat'])
+@pytest.mark.parametrize('product', [responses_product, chat_product, player_wording_worker], ids=['responses', 'chat', 'wording'])
 def test_composed_api_binds_evidence_and_observed_conversation(
     continued_api, tmp_path, monkeypatch, conversation_bound, role, product,
 ):
@@ -40,6 +40,8 @@ def test_composed_api_binds_evidence_and_observed_conversation(
     env = dict(DATABASE_URL=os.environ['RIFTCOACH_TEST_DATABASE_URL'],
         RIFTCOACH_API_PROFILE='test', RIFTCOACH_LOCAL_OWNER_ID='owner-1',
         RIFTCOACH_RUNS_ROOT=str(tmp_path), RIFTCOACH_TASK_PUBLICATION_MODE='evidence_bound_v1')
+    if product is player_wording_worker:
+        env['RIFTCOACH_TASK_GENERATION_PROFILE'] = product.WORKER_PROFILE
     def client(owner):
         return TestClient(create_composed_app(environment=env,
             actor_provider=StaticActorContextProvider(owner_id=owner, profile='test')))
@@ -58,6 +60,11 @@ def test_composed_api_binds_evidence_and_observed_conversation(
         task, run = UUID(response.json()['task_id']), response.json()['run_id']
         stored = repo.get_by_task_id(owner_id='owner-1', task_id=task)
         assert stored.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1
+        if product is player_wording_worker:
+            from app.product.generation_binding import capture
+            assert stored.generation_binding == capture(product.WORKER_PROFILE)
+            assert owner.post(path, headers={'Idempotency-Key': 'forged-generation'},
+                json={**payload, 'generation_binding': stored.generation_binding}).status_code == 422
         if conversation_bound:
             assert stored.conversation_binding.relationship_role is role
             assert other.post(path, headers={'Idempotency-Key': 'foreign'}, json=payload).status_code == 404

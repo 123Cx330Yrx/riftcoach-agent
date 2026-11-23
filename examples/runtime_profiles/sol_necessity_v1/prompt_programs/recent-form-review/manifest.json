@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "80e2f55b2d5805088277fef14e18391e6a8b64ccba914b8b30cf6c7cb00c599c"
+      "sha256": "15289cdd84414081238d2858df4ed55480f3693197332a53046ecffb2aa1915f"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -242,7 +242,7 @@
     {
       "component_id": "app.runtime.coach_budget",
       "source": "app/runtime/coach_budget.py",
-      "sha256": "051639f5bfea674ebbe2552e62175dd73104c705df9093041aaad2bcae6a31cb"
+      "sha256": "4e5340983a5a41993f42b09b13ce5288f0d97ef8ff060093ab63e94ee6da24d1"
     },
     {
       "component_id": "app.runtime.coach_context",
@@ -262,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "4a5d06f372a03f36c2f396e5abe19b7af387ee1f9d888fb463831eae6756d151"
+      "sha256": "249d3dce07000485615d108fe04ed2a7d1f16b868f18d8c398d5d8eff47d9315"
     },
     {
       "component_id": "app.model_runtime",
@@ -282,7 +282,7 @@
     {
       "component_id": "app.product.natural_duty_candidate",
       "source": "app/product/natural_duty_candidate.py",
-      "sha256": "a2dd734a5925fb9c1ce06c119fc05cfb30559b06b269349a7d5c2ad526e4b59b"
+      "sha256": "864e33e60b7b844f38103a97990ec185f3c5b2940334fb8bcae612a4e5804323"
     },
     {
       "component_id": "scripts.review_duty_direct_patch",
@@ -347,12 +347,12 @@
     {
       "component_id": "app.runtime.sol_natural_provider",
       "source": "app/runtime/sol_natural_provider.py",
-      "sha256": "ea0e20e260c9f1d9014752f03954ede3c5bd6b33f562265768e312a854cf6533"
+      "sha256": "e08c8b93001c916a58dcbbb81b80cc66218899c6bbcd2288c2d05bf3665cec1f"
     },
     {
       "component_id": "app.evaluation.sol_natural_session",
       "source": "app/evaluation/sol_natural_session.py",
-      "sha256": "609bb0168649198edba2a71c9faf18c3678b71902bb62491f1d7ebf8863ec06b"
+      "sha256": "15fb7d473ee41d9462d8c1cd994eb171a20e0f084ea3ab77b70e98492e7efc51"
     },
     {
       "component_id": "app.runtime.sol_session_runtime",
@@ -415,5 +415,5 @@
       "sha256": "196f6839982e8a4c56b2ac80c55b7519984c91f1aee5bdb99b885aaed8303335"
     }
   ],
-  "program_sha256": "7c207b61ca796622d0ff9ef30c336548b2401fd9ffb72b46d57567d08f19d0ac"
+  "program_sha256": "12c6f6254413a12038fad31bb648debdb54ba3f4eff4ef3b79df4d532585edc8"
 }

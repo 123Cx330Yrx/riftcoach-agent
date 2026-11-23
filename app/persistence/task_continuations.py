@@ -46,6 +46,12 @@ class PostgresTaskContinuations:
         with self.repository._session_factory() as session, session.begin():
             record = self._row(session, task.task_id, task.owner_id, lock=True)
             self._live(record, task)
+            if record.generation_binding != task.generation_binding:
+                raise ContinuationError("generation_binding_changed")
+            from app.product.generation_binding import verify
+            verify(record.generation_binding, binding["worker_profile"])
+            if binding.get("generation_binding") != record.generation_binding:
+                raise ContinuationError("generation_binding_changed")
             value = deepcopy(record.continuation_reference)
             if value is None:
                 from app.tasks.continuation import contract_for_worker_profile
@@ -84,7 +90,9 @@ class PostgresTaskContinuations:
         with self.repository._session_factory() as session, session.begin():
             record = self._row(session, task.task_id, task.owner_id, lock=True)
             self._live(record, task)
-            if record.continuation_reference is None:
+            if record.continuation_reference is None and reason not in {
+                    "generation_binding_required", "generation_profile_mismatch",
+                    "generation_binding_changed", "continuation_profile_unavailable"}:
                 raise ContinuationError("continuation_missing")
             now = max(record.updated_at, datetime.now(timezone.utc))
             record.status = TaskStatus.RECOVERY_REQUIRED.value

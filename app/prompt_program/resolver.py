@@ -169,6 +169,9 @@ class PromptProgramResolver:
         if grounded and self.coach_contract.version == '1.7.9':
             from app.product.sol_contract import component_fingerprints
             current = component_fingerprints(skill)
+        if grounded and self.coach_contract.version == '1.7.11':
+            from app.product.player_wording_worker import component_fingerprints
+            current = component_fingerprints(skill)
         if grounded and self.coach_contract.version == '1.7.10':
             from app.product.sol_chat_contract import component_fingerprints
             current = component_fingerprints(skill)

@@ -78,6 +78,7 @@ class ReviewTaskService:
         run_id_factory: RunIdFactory | None = None,
         clock: Clock | None = None,
         continuation_store=None,
+        generation_profile: str | None = None,
     ) -> None:
         for method_name in ("create_or_replay", "get_by_task_id", "get_by_run_id"):
             if not callable(getattr(repository, method_name, None)):
@@ -91,6 +92,8 @@ class ReviewTaskService:
 
         self._repository = repository
         self._continuations = continuation_store
+        from app.product.generation_binding import capture
+        self._generation_binding = capture(generation_profile) if generation_profile is not None else None
         self._capacity = capacity or TaskCapacityPolicy()
         self._task_id_factory = task_id_factory
         self._run_id_factory = run_id_factory or _default_run_id
@@ -116,6 +119,7 @@ class ReviewTaskService:
                 request_fingerprint=fingerprint,
                 request_payload=request_payload,
                 publication_mode=command.publication_mode,
+                generation_binding=self._generation_binding,
                 created_at=self._clock(),
             )
         except (StopIteration, TypeError, ValueError, ValidationError):
@@ -176,6 +180,7 @@ class ReviewTaskService:
                 conversation_id=command.conversation_id,
                 request_payload=command.request.model_dump(mode="json"),
                 publication_mode=command.publication_mode,
+                generation_binding=self._generation_binding,
                 created_at=self._clock(),
             )
         except (StopIteration, TypeError, ValueError, ValidationError):

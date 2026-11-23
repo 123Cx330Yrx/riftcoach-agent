@@ -137,6 +137,7 @@ class ApiCompositionSettings:
     runs_root: Path
     local_owner_id: str | None = field(repr=False)
     task_publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
+    generation_profile: str | None = None
     cors_origins: tuple[str, ...] = ()
     cors_allow_credentials: bool = False
     task_capacity: TaskCapacityPolicy = field(
@@ -157,6 +158,10 @@ def load_api_composition_settings(
     environment: Mapping[str, str],
 ) -> ApiCompositionSettings:
     raw_profile = environment.get("RIFTCOACH_API_PROFILE", "production")
+    from app.tasks.continuation import PRODUCT_WORKER_PROFILES
+    generation_profile = environment.get("RIFTCOACH_TASK_GENERATION_PROFILE")
+    if generation_profile is not None and generation_profile not in PRODUCT_WORKER_PROFILES:
+        raise ValueError("RIFTCOACH_TASK_GENERATION_PROFILE is invalid")
     profile = raw_profile.strip().lower()
     if profile not in {"local", "test", "production"}:
         raise ValueError("RIFTCOACH_API_PROFILE must be local, test or production")
@@ -260,6 +265,7 @@ def load_api_composition_settings(
         runs_root=runs_root,
         local_owner_id=local_owner_id,
         task_publication_mode=task_publication_mode,
+        generation_profile=generation_profile,
         cors_origins=cors_origins,
         cors_allow_credentials=cors_allow_credentials,
         task_capacity=task_capacity,
@@ -858,6 +864,7 @@ def create_composed_app(
                 ReviewTaskService(
                     repository=repository,
                     capacity=api_settings.task_capacity,
+                    generation_profile=api_settings.generation_profile,
                     continuation_store=PostgresTaskContinuations(repository),
                 )
             )

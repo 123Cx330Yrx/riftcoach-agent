@@ -23,7 +23,7 @@ from app.tasks.reliable_runtime import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0015_task_continuation"
+HEAD = "0016_task_generation_binding"
 
 
 def alembic_config() -> Config:

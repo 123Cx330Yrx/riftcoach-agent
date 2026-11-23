@@ -126,6 +126,11 @@ class SolContinuationExecutor:
 
     def execute(self, task):
         contract = self.contract
+        from app.product.generation_binding import verify
+        try:
+            verify(task.generation_binding, self.profile)
+        except ContinuationError as exc:
+            return TaskExecutionPause(task.run_id, exc.code)
         binding = dict(worker_profile=self.profile,
             adapter_version=2 if task.publication_mode.value == "evidence_bound_v1" else 1,
             candidate_contract=contract.VERSION, task_id=str(task.task_id),
@@ -136,6 +141,8 @@ class SolContinuationExecutor:
             from app.product.review_purpose import task_purpose
             binding['product_task_purpose'] = task_purpose(task)
             binding['execution_contract'] = contract.CONTRACT.snapshot().model_dump(mode='json')
+        if task.generation_binding is not None:
+            binding["generation_binding"] = task.generation_binding
         try:
             saved = self.store.begin(task, binding)
         except ContinuationError as exc:
@@ -210,6 +217,6 @@ class ContinuationRoutingExecutor:
         saved = self.store.load(owner_id=task.owner_id, task_id=task.task_id)
         if self.candidate is not None:
             return self.candidate.execute(task)
-        if saved is not None:
+        if task.generation_binding is not None or saved is not None:
             return TaskExecutionPause(task.run_id, "continuation_profile_unavailable")
         return self.legacy.execute(task)

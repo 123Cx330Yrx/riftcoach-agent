@@ -1,5 +1,11 @@
 # RiftCoach 产品推进与验收计划
 
+2026-11-23：新任务创建绑定 generation profile 与组件快照的实质包已实现，显式 Worker sol-dual-product-wording-v2 / 1.7.11 使用新生成口吻，旧 Chat 四审保持。普通及 conversation API 由服务端显式选择，默认不变；同幂等键返回原绑定，Worker 在源/模型 IO 前及行锁内复核，旧 NULL 任务不交给新 Worker。实际 Runtime pass/repair 续接通过，完整封存输入与离线候选一致，历史第三轮仍余28；真实模型/Key/新取源/封存任务写入0。13 Runtime/2当前清单及web前置11项通过；SQL新增11例已收集，尚未执行，本机Docker正常启动后引擎API仍超时。当前等待同提交CI核验SQL和迁移；不能宣称本包工程验收或P3完成。见 ADR0122 与 product_generation_binding_20261123.json。
+
+本包结束条件：同提交SQL/迁移与Runtime验证成功，生成版本在正常API和Worker链路可追溯；实际新模型自然度不是这组替身测试的结论。
+
+2026-11-23 终局核验：提交 51f99c430a85fc1583c07084af74470299a160c6 的 CI 44453190031 全部 12 项 completed/success（含 web-checks、四个 PostgreSQL 分片及迁移、四个 pytest 分片及聚合、packaging-smoke）。回执保存在 Control/ci-terminal-44453190031.json。此结果覆盖独立离线生成版本，尚未启用 Worker 或验证新模型自然度；下一行动保持。
+
 2026-11-18：唯一获批的 DK ShowMaker 五场观摩任务在隔离 SQL 中发布。执行提交 f19769de 的 CI 43829159227 全部 12 项成功。两次派生恢复保留原现场，累计 7 次 HTTP、100063 已知 tokens、293.796 活动秒，重试及未决请求均为 0。
 
 结果：`data/evaluation/results/sol_product_player_language_observed_closeout_20261118.json`。两次终审与发布稿字节一致；1440/320 两端正文完整，Evidence 各保留 5 条匹配、15 条缺口。

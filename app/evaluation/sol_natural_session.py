@@ -90,8 +90,8 @@ class CandidateSession:
         self.worker_product = worker_product
         self.worker_managed = worker_development or worker_product
         if worker_product:
-            from app.product import sol_contract, sol_chat_contract
-            if (worker_development or self.contract_module not in (sol_contract, sol_chat_contract)
+            from app.product import sol_contract, sol_chat_contract, player_wording_worker
+            if (worker_development or self.contract_module not in (sol_contract, sol_chat_contract, player_wording_worker)
                     or binding.get("worker_profile") != self.contract_module.WORKER_PROFILE
                     or not binding.get("task_id") or continuation is not None):
                 raise ValueError("session_worker_product_binding")
